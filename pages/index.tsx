@@ -1,32 +1,23 @@
 import { ReactElement } from 'react'
 
-import { Typography } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import { colors } from 'thebadge-ui-library'
 
 import { NextPageWithLayout } from '@/pages/_app'
+import LinkWithTranslation from '@/src/components/helpers/LinkWithTranslation'
 import { DefaultLayout } from '@/src/components/layout/BaseLayout'
-import { useWeb3ConnectedApp, useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
-
-const Address: React.FC = () => {
-  const { address } = useWeb3ConnectedApp()
-
-  return address ? (
-    <Typography color={colors.white} variant="title1">
-      {address}
-    </Typography>
-  ) : null
-}
 
 const Home: NextPageWithLayout = () => {
-  const { isAppConnected } = useWeb3Connection()
-
   return (
-    <>
+    <Box display="flex">
       <Typography color={colors.white} variant="h3">
         Welcome to THE BADGE!
       </Typography>
-      {isAppConnected && <Address />}
-    </>
+      <Box display="flex" flexDirection="column">
+        <LinkWithTranslation pathname="/creator/register">1. Register emitter</LinkWithTranslation>
+        <LinkWithTranslation pathname="/types/create">2. Create badge-type</LinkWithTranslation>
+      </Box>
+    </Box>
   )
 }
 
