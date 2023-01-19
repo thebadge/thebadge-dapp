@@ -1,14 +1,13 @@
-import { Checkbox, TextField } from '@mui/material'
-import { createTsForm } from '@ts-react/form'
+import { TextField } from '@mui/material'
 import { z } from 'zod'
 
+import { CheckBox } from '@/src/components/form/CheckBox'
+import { CheckBoxSchema } from '@/src/components/form/helpers/customSchemas'
+
 // create the mapping
-const mapping = [
+export const mappingSchemaToComponents = [
   [z.string(), TextField],
-  [z.boolean(), Checkbox],
+  [CheckBoxSchema, CheckBox],
   [z.number(), TextField],
   // TODO Add file types
 ] as const // 👈 `as const` is necessary
-
-// A typesafe React component
-const CustomFormFromSchema = createTsForm(mapping)

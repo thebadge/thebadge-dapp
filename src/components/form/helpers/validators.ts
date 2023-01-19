@@ -1,16 +1,14 @@
 import { isAddress } from 'ethers/lib/utils'
 import { ZodType, z } from 'zod'
 
+import { AddressSchema, NumberSchema } from '@/src/components/form/helpers/customSchemas'
 import { KLEROS_LIST_TYPES, MetadataColumn } from '@/src/utils/kleros/types'
 
-const zAddress = z
-  .string({ required_error: 'Is required' })
-  .refine(isAddress, { message: 'Address must be an valid Ethereum addresses.' })
-
-const zNumber = z.number({
-  required_error: 'Is required',
-  invalid_type_error: 'Must be a number',
+const zAddress = AddressSchema.refine(isAddress, {
+  message: 'Address must be an valid Ethereum addresses.',
 })
+
+const zNumber = NumberSchema
 
 const zText = z
   .string({
@@ -91,7 +89,10 @@ function getZValidator(fieldType: KLEROS_LIST_TYPES) {
 export default function schemaFactory(fields: MetadataColumn[]) {
   const shape: { [key: string]: ZodType } = {}
   fields.forEach((field) => {
-    shape[field.label] = getZValidator(field.type)
+    shape[field.label] = getZValidator(field.type).describe(
+      `${field.label} // ${field.description}`,
+    )
+    //Magic explained here: https://github.com/iway1/react-ts-form#qol
   })
 
   return z.object(shape)

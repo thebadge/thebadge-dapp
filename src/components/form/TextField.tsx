@@ -1,4 +1,4 @@
-import { TextFieldProps as MUITextFieldProps } from '@mui/material'
+import { TextField as MUITextField, TextFieldProps as MUITextFieldProps } from '@mui/material'
 
 export enum TextFieldStatus {
   error = 'error',
@@ -12,5 +12,5 @@ interface TextFieldCSSProps {
 type TextFieldProps = MUITextFieldProps & TextFieldCSSProps
 
 export default function TextField(props: TextFieldProps) {
-  return <TextField {...props} />
+  return <MUITextField {...props} />
 }
