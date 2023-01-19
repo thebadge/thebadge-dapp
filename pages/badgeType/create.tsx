@@ -1,17 +1,13 @@
-import { useReducer } from 'react'
-import styled from 'styled-components'
-
-import { constants, ethers } from 'ethers'
-import { AbiCoder, defaultAbiCoder, parseUnits } from 'ethers/lib/utils'
+import { styled } from '@mui/material'
+import { constants } from 'ethers'
+import { defaultAbiCoder, parseUnits } from 'ethers/lib/utils'
 
 import TxButton from '@/src/components/buttons/txButton'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
-import { generateKlerosListMetaEvidence } from '@/src/utils/kleros/generateKlerosListMetaEvidence'
-import { KLEROS_LIST_TYPES } from '@/src/utils/kleros/types'
 import { TheBadge__factory } from '@/types/generated/typechain'
 
-const Form = styled.form`
+const Form = styled('form')`
   width: 100%;
 `
 
@@ -24,6 +20,8 @@ export default function RegisterEmitterForm() {
   const theBadge = useContractInstance(TheBadge__factory, 'TheBadge')
 
   if (!address) {
+    // TODO Improve not connected wallet workflow
+
     return 'Not connected'
   }
 
