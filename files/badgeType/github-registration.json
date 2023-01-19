@@ -1,0 +1,34 @@
+{
+  "name": "Github",
+  "title": "Add a Github to Github",
+  "description": "Someone requested to add a Github to Github",
+  "rulingOptions": {
+    "titles": ["Yes, Add It", "No, Don't Add It"],
+    "descriptions": [
+      "Select this if you think the Github complies with the required criteria and should be added.",
+      "Select this if you think the Github does not comply with the required criteria and should not be added."
+    ]
+  },
+  "category": "Curated Lists",
+  "question": "Does the Github comply with the required criteria?",
+  "fileURI": "ipfs://QmXTYGaV23KCGN4PxP6R9GvTsyU4gi9X2ymarL2M1k1vju",
+  "evidenceDisplayInterfaceURI": "/ipfs/QmQjJio59WkrQDzPC5kSP3EiGaqrWxjGfkvhmD2mWwm41M/index.html",
+  "metadata": {
+    "tcrTitle": "Github",
+    "tcrDescription": "Github badge types allows a Github user to claim ownership of a Github account",
+    "columns": [
+      {
+        "label": "Github account",
+        "description": "Enter your Github account",
+        "type": "text",
+        "isIdentifier": true
+      }
+    ],
+    "itemName": "Github",
+    "itemNamePlural": "Github",
+    "logoURI": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
+    "requireRemovalEvidence": true,
+    "isTCRofTCRs": false,
+    "relTcrDisabled": true
+  }
+}

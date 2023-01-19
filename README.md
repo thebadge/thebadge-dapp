@@ -1,0 +1,1 @@
+# TheBadge - Frontend DApp

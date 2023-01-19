@@ -1,0 +1,11 @@
+{
+  "header": {
+    "home": "HOME",
+    "wallet": {
+      "connect": "Connect wallet"
+    }
+  },
+  "footer": {
+    "copyright": "Copyright © {{year}} • TheBadge.xyz • All Rights Reserved"
+  }
+}
