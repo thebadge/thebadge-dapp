@@ -4,7 +4,7 @@ import { Box, styled } from '@mui/material'
 
 import { FormStatus } from './FormStatus'
 import { Label } from './Label'
-import { TextFieldStatus } from '@/src/components/form/Textfield'
+import { TextFieldStatus } from '@/src/components/form/TextField'
 
 const StyledBox = styled(Box)<{ status?: TextFieldStatus }>(() => ({}))
 
