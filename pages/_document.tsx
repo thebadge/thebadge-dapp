@@ -79,13 +79,7 @@ export default class MyDocument extends Document {
           <link href="/favicon/site.webmanifest" rel="manifest" />
           <link color="#333" href="/favicon/safari-pinned-tab.svg" rel="mask-icon" />
           <meta content="#333" name="msapplication-TileColor" />
-          <meta content="#333" name="theme-color"></meta>
-          <link href="https://fonts.googleapis.com" rel="preconnect" />
-          <link crossOrigin="crossorigin" href="https://fonts.gstatic.com" rel="preconnect" />
-          <link
-            href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
-            rel="stylesheet"
-          />
+          <meta content="#333" name="theme-color" />
         </Head>
         <body>
           <Main />

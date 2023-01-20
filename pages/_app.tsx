@@ -5,6 +5,7 @@ import { ReactElement, ReactNode } from 'react'
 
 import createCache from '@emotion/cache'
 import { CacheProvider, EmotionCache } from '@emotion/react'
+import { Box } from '@mui/material'
 import { GoogleAnalytics } from 'nextjs-google-analytics'
 import { SWRConfig } from 'swr'
 
@@ -50,26 +51,28 @@ export default function App({
       <GoogleAnalytics />
       <Head />
       <CacheProvider value={emotionCache}>
-        <SWRConfig
-          value={{
-            suspense: true,
-            revalidateOnFocus: false,
-          }}
-        >
-          <Web3ConnectionProvider>
-            <ThemeProvider>
-              <SafeSuspense>
-                <TransactionNotificationProvider>
-                  <CookiesWarningProvider>
-                    {getLayout(<Component {...pageProps} />)}
-                    <Footer />
-                  </CookiesWarningProvider>
-                </TransactionNotificationProvider>
-              </SafeSuspense>
-              <Toast />
-            </ThemeProvider>
-          </Web3ConnectionProvider>
-        </SWRConfig>
+        <Box sx={{ display: 'flex', minHeight: '100vh', flexDirection: 'column' }}>
+          <SWRConfig
+            value={{
+              suspense: true,
+              revalidateOnFocus: false,
+            }}
+          >
+            <Web3ConnectionProvider>
+              <ThemeProvider>
+                <SafeSuspense>
+                  <TransactionNotificationProvider>
+                    <CookiesWarningProvider>
+                      {getLayout(<Component {...pageProps} />)}
+                      <Footer />
+                    </CookiesWarningProvider>
+                  </TransactionNotificationProvider>
+                </SafeSuspense>
+                <Toast />
+              </ThemeProvider>
+            </Web3ConnectionProvider>
+          </SWRConfig>
+        </Box>
       </CacheProvider>
     </>
   )

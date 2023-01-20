@@ -30,7 +30,7 @@ const Wrapper = styled('span')<{ disabled?: boolean }>`
         `}
 `
 
-export const Radiobutton: React.FC<PropsWithChildren<Props>> = ({
+export const RadioButton: React.FC<PropsWithChildren<Props>> = ({
   checked,
   children,
   disabled,

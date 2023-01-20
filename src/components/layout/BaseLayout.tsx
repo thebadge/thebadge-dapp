@@ -5,6 +5,8 @@ import { BackgroundGradient } from '@/src/components/layout/BackgroundGradient'
 import Header from '@/src/components/layout/Header'
 
 const Content = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
   position: 'relative',
   '& .headroom--scrolled': {
     // When header is sticky on scroll, we reduce the size of the padding and the logo
@@ -24,9 +26,9 @@ type DefaultLayoutProps = {
 
 export const DefaultLayout = ({ children }: DefaultLayoutProps) => {
   return (
-    <div>
+    <>
       <BackgroundGradient />
-      <Container>
+      <Container sx={{ flex: 1 }}>
         <Content>
           <Headroom
             style={{
@@ -38,6 +40,6 @@ export const DefaultLayout = ({ children }: DefaultLayoutProps) => {
           {children}
         </Content>
       </Container>
-    </div>
+    </>
   )
 }

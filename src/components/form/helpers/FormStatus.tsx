@@ -1,6 +1,6 @@
 import { Box, styled } from '@mui/material'
 
-import { TextFieldStatus } from '@/src/components/form/TextField'
+import { TextFieldStatus } from '../TextField'
 
 export const FormStatus = styled(Box)<{ status?: TextFieldStatus }>`
   color: ${({ status, theme: { palette } }) =>
