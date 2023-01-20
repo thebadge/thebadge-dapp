@@ -14,8 +14,8 @@ const Home: NextPageWithLayout = () => {
         Welcome to THE BADGE!
       </Typography>
       <Box display="flex" flexDirection="column">
-        <LinkWithTranslation pathname="/creator/register">1. Register emitter</LinkWithTranslation>
-        <LinkWithTranslation pathname="/types/create">2. Create badge-type</LinkWithTranslation>
+        <LinkWithTranslation pathname="/creator/register">1. Register Creator</LinkWithTranslation>
+        <LinkWithTranslation pathname="/type/create">2. Create badge-type</LinkWithTranslation>
       </Box>
     </Box>
   )
