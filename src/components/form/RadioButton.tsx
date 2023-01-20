@@ -1,21 +1,56 @@
-import React from 'react'
+import React, { PropsWithChildren } from 'react'
 
-import { Radio } from '@mui/material'
-import { useDescription, useTsController } from '@ts-react/form'
+import { Label } from '@mui/icons-material'
+import { Radio, css, styled } from '@mui/material'
 
-import { TextFieldStatus } from '@/src/components/form/TextField'
-import { FormField } from '@/src/components/form/helpers/FormField'
+export interface Props {
+  checked?: boolean
+  disabled?: boolean
+  onClick?: () => void
+}
 
-export function RadioButton() {
-  const { error, field } = useTsController<boolean>()
-  const { label } = useDescription()
+const Wrapper = styled('span')<{ disabled?: boolean }>`
+  align-items: center;
+  column-gap: 8px;
+  display: flex;
+  max-width: fit-content;
 
+  ${({ disabled }) =>
+    disabled
+      ? css`
+          cursor: not-allowed;
+          opacity: 0.5;
+
+          .label {
+            cursor: not-allowed;
+          }
+        `
+      : css`
+          cursor: pointer;
+        `}
+`
+
+export const RadioButton: React.FC<PropsWithChildren<Props>> = ({
+  checked,
+  children,
+  disabled,
+  onClick,
+  ...restProps
+}) => {
   return (
-    <FormField
-      formControl={<Radio checked={!!field.value} />}
-      label={label}
-      status={error ? TextFieldStatus.error : TextFieldStatus.success}
-      statusText={error?.errorMessage}
-    />
+    <Wrapper
+      disabled={disabled}
+      onClick={() => {
+        if (disabled) return
+
+        if (typeof onClick !== 'undefined') {
+          onClick()
+        }
+      }}
+      {...restProps}
+    >
+      <Radio checked={checked} />
+      {children && <Label>{children}</Label>}
+    </Wrapper>
   )
 }
