@@ -9,15 +9,15 @@ import { DefaultLayout } from '@/src/components/layout/BaseLayout'
 
 const TypePreview: NextPageWithLayout = () => {
   const searchParams = useSearchParams()
-  const hash = searchParams.get('hash')
+  const typeId = searchParams.get('typeId')
   return (
     <>
       <Typography color={colors.white} variant="h3">
         Welcome to THE BADGE!
       </Typography>
 
-      <Typography color={colors.white} variant="h3">
-        Here you can preview a badge type {hash}
+      <Typography color={colors.white} variant="h5">
+        Here you can preview a badge type {typeId}
       </Typography>
     </>
   )
