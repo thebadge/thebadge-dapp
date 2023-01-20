@@ -12,12 +12,12 @@ const StyledTextField = styled(MUITextField)(({ theme }) => ({
   margin: theme.spacing(1),
 }))
 
-export default function TextField() {
-  const { error, field } = useTsController<string>()
+export default function NumberField() {
+  const { error, field } = useTsController<number>()
   const { label } = useDescription()
 
   function onChange(e: any) {
-    field.onChange(e.target.value)
+    field.onChange(Number(e.target.value))
   }
 
   console.log(label)

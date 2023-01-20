@@ -15,7 +15,9 @@ const Home: NextPageWithLayout = () => {
       </Typography>
       <Box display="flex" flexDirection="column">
         <LinkWithTranslation pathname="/creator/register">1. Register Creator</LinkWithTranslation>
-        <LinkWithTranslation pathname="/type/create">2. Create badge-type</LinkWithTranslation>
+        <LinkWithTranslation pathname="/badge/type/create">
+          2. Create badge-type
+        </LinkWithTranslation>
       </Box>
     </Box>
   )

@@ -48,6 +48,7 @@
     "react-headroom": "^3.2.1",
     "react-hook-form": "^7.42.1",
     "react-hot-toast": "^2.4.0",
+    "react-images-uploading": "^3.1.7",
     "sanitize.css": "^13.0.0",
     "swr": "^2.0.0",
     "thebadge-ui-library": "^1.2.1",

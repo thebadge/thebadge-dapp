@@ -29,11 +29,29 @@ const HARDCODED_TEST_FIELDS = [
     type: KLEROS_LIST_TYPES.NUMBER,
     isIdentifier: false,
   },
-
   {
     label: 'Your address',
     description: 'Enter your eth address',
     type: KLEROS_LIST_TYPES.ADDRESS,
+    isIdentifier: false,
+  },
+  {
+    label: 'Just a boolean',
+    description: 'true / false',
+    type: KLEROS_LIST_TYPES.BOOLEAN,
+    isIdentifier: false,
+  },
+  {
+    label: 'Long text input',
+    description: 'You can enter a very long text here, go ahead and try it',
+    type: KLEROS_LIST_TYPES.LONG_TEXT,
+    isIdentifier: false,
+  },
+
+  {
+    label: 'Upload your file',
+    description: '',
+    type: KLEROS_LIST_TYPES.FILE,
     isIdentifier: false,
   },
 ]

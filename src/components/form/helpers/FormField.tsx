@@ -6,14 +6,20 @@ import { TextFieldStatus } from '../TextField'
 import { FormStatus } from './FormStatus'
 import { Label } from './Label'
 
-const StyledBox = styled(Box)<{ status?: TextFieldStatus }>(() => ({}))
+const StyledBox = styled(Box)<{ status?: TextFieldStatus }>(() => ({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  flexDirection: 'column',
+}))
 
 export const FormField: React.FC<{
   formControl: React.ReactElement
   label?: string
+  labelPosition?: 'top' | 'left'
   status?: TextFieldStatus | undefined
   statusText?: string | undefined
-}> = ({ formControl, label, status, statusText, ...restProps }) => {
+}> = ({ formControl, label, labelPosition = 'top', status, statusText, ...restProps }) => {
   const control = useMemo(
     () =>
       cloneElement(formControl, {
@@ -24,8 +30,10 @@ export const FormField: React.FC<{
 
   return (
     <StyledBox status={status} {...restProps}>
-      {label && <Label>{label}</Label>}
-      {control}
+      <Box sx={{ display: 'flex', flexDirection: labelPosition === 'top' ? 'column' : 'row' }}>
+        {label && <Label>{label}</Label>}
+        {control}
+      </Box>
       {statusText && <FormStatus status={status}>{statusText}</FormStatus>}
     </StyledBox>
   )
