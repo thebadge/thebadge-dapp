@@ -64,7 +64,7 @@ function getZValidator(fieldType: KLEROS_LIST_TYPES) {
   }
 }
 
-export default function schemaFactory(fields: MetadataColumn[]) {
+export default function klerosSchemaFactory(fields: MetadataColumn[]) {
   const shape: { [key: string]: ZodType } = {}
   fields.forEach((field) => {
     shape[field.label] = getZValidator(field.type).describe(

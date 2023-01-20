@@ -18,7 +18,7 @@ export function ImageInput() {
   const onChange = (imageList: ImageListType) => {
     // data for submit
     if (imageList[0]) {
-      field.onChange(imageList[0].dataURL)
+      field.onChange(imageList[0])
     } else {
       field.onChange(null)
     }

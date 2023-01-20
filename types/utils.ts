@@ -74,3 +74,10 @@ export type IntrinsicElements<H extends HTMLElement = HTMLElement> = DetailedHTM
 export const isFulfilled = <T>(
   input: PromiseSettledResult<T>,
 ): input is PromiseFulfilledResult<T> => input.status === 'fulfilled'
+
+export type BackendResponse<T> = {
+  error: boolean
+  statusCode: number
+  message?: string
+  result: null | T
+}

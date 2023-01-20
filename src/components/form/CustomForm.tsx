@@ -16,19 +16,23 @@ const StyledFormContainer = styled(Box)(({ theme }) => ({
 }))
 
 function MyCustomFormComponent({
+  buttonDisabled,
+  buttonLabel = 'Submit',
   children,
   onSubmit,
 }: {
   children: ReactNode
   onSubmit: () => void
+  buttonLabel?: string
+  buttonDisabled?: boolean
 }) {
   return (
     <form onSubmit={onSubmit} style={{ display: 'flex', flexDirection: 'column' }}>
       {/* children are you form field components */}
       <StyledFormContainer>{children}</StyledFormContainer>
       <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-        <Button color="darkGreen" type="submit" variant="contained">
-          Submit
+        <Button color="darkGreen" disabled={buttonDisabled} type="submit" variant="contained">
+          {buttonLabel}
         </Button>
       </Box>
     </form>
