@@ -14,8 +14,15 @@ export function CheckBox() {
 
   return (
     <FormField
-      formControl={<MUICheckbox checked={!!field.value} onChange={handleChange} />}
+      formControl={
+        <MUICheckbox
+          checked={!!field.value}
+          onChange={handleChange}
+          sx={{ width: 'fit-content' }}
+        />
+      }
       label={label}
+      labelPosition={'left'}
       status={error ? TextFieldStatus.error : TextFieldStatus.success}
       statusText={error?.errorMessage}
     />

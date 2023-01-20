@@ -10,6 +10,10 @@ const mulishFont = Mulish({
 
 export const getTheme = (mode?: PaletteMode): ThemeOptions => ({
   ...defaultTheme,
+  palette: {
+    mode: 'dark', // TODO Temporal fix until we update the lib
+    ...defaultTheme.palette,
+  },
   typography: {
     ...defaultTheme.typography,
     fontFamily: mulishFont.style.fontFamily,

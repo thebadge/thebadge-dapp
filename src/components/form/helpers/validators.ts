@@ -1,11 +1,21 @@
 import { ZodType, z } from 'zod'
 
-import { AddressSchema, NumberSchema } from '@/src/components/form/helpers/customSchemas'
+import {
+  AddressSchema,
+  CheckBoxSchema,
+  FileSchema,
+  ImageSchema,
+  LongTextSchema,
+  NumberSchema,
+} from '@/src/components/form/helpers/customSchemas'
 import { KLEROS_LIST_TYPES, MetadataColumn } from '@/src/utils/kleros/types'
 
 const zAddress = AddressSchema
-
 const zNumber = NumberSchema
+const zBoolean = CheckBoxSchema
+const zLongText = LongTextSchema
+const zImage = ImageSchema
+const zFile = FileSchema
 
 const zText = z
   .string({
@@ -13,18 +23,6 @@ const zText = z
     invalid_type_error: 'Must be an string',
   })
   .min(2, { message: 'Text field most have at least 2 characters.' })
-
-const zLongText = z
-  .string({
-    required_error: 'Is required',
-    invalid_type_error: 'Must be an string',
-  })
-  .min(25, { message: 'Text field most have at least 25 characters.' })
-
-const zBoolean = z.boolean({
-  required_error: 'Is required',
-  invalid_type_error: 'Must be a boolean',
-})
 
 const zLink = z
   .string({
@@ -39,23 +37,6 @@ const zTwitterUser = z
     invalid_type_error: 'Must be a twitter user',
   })
   .startsWith('@')
-
-// TODO Move to env variables
-const MAX_FILE_SIZE = 500000
-const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
-
-const zImage = z
-  .custom<File>()
-  .refine((files) => files?.length == 1, 'Image is required.')
-  .refine((files) => files?.size <= MAX_FILE_SIZE, `Max file size is 5MB.`)
-  .refine(
-    (files) => ACCEPTED_IMAGE_TYPES.includes(files?.type),
-    '.jpg, .jpeg, .png and .webp files are accepted.',
-  )
-
-const zFile = z
-  .custom<File>()
-  .refine((file) => file?.size <= MAX_FILE_SIZE, `Max file size is 5MB.`)
 
 function getZValidator(fieldType: KLEROS_LIST_TYPES) {
   switch (fieldType) {
