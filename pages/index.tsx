@@ -5,7 +5,18 @@ import { colors } from 'thebadge-ui-library'
 
 import { NextPageWithLayout } from '@/pages/_app'
 import LinkWithTranslation from '@/src/components/helpers/LinkWithTranslation'
-import { DefaultLayout } from '@/src/components/layout/BaseLayout'
+import { MainLayout } from '@/src/components/layout/MainLayout'
+import { useWeb3ConnectedApp } from '@/src/providers/web3ConnectionProvider'
+
+const Address: React.FC = () => {
+  const { address } = useWeb3ConnectedApp()
+
+  return address ? (
+    <Typography color={colors.white} variant="title1">
+      {address}
+    </Typography>
+  ) : null
+}
 
 const Home: NextPageWithLayout = () => {
   return (
@@ -24,7 +35,7 @@ const Home: NextPageWithLayout = () => {
 }
 
 Home.getLayout = function getLayout(page: ReactElement) {
-  return <DefaultLayout>{page}</DefaultLayout>
+  return <MainLayout>{page}</MainLayout>
 }
 
 export default Home

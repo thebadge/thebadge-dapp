@@ -1,8 +1,9 @@
 import { Box, Container, styled } from '@mui/material'
 import Headroom from 'react-headroom'
+import { BackgroundGradient, gradients } from 'thebadge-ui-library'
 
-import { BackgroundGradient } from '@/src/components/layout/BackgroundGradient'
-import Header from '@/src/components/layout/Header'
+import Header from '@/src/components/header/Header'
+import { MainMenu } from '@/src/components/navigation/MainMenu'
 
 const Content = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -24,10 +25,19 @@ type DefaultLayoutProps = {
   children: React.ReactElement
 }
 
-export const DefaultLayout = ({ children }: DefaultLayoutProps) => {
+const NavigationRoom = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'row',
+  padding: '5%',
+  [theme.breakpoints.up('xl')]: {
+    padding: '10%',
+  },
+}))
+
+export const MainLayout = ({ children }: DefaultLayoutProps) => {
   return (
     <>
-      <BackgroundGradient />
+      <BackgroundGradient gradient={gradients.gradientBackground} />
       <Container sx={{ flex: 1 }}>
         <Content>
           <Headroom
@@ -37,7 +47,10 @@ export const DefaultLayout = ({ children }: DefaultLayoutProps) => {
           >
             <Header />
           </Headroom>
-          {children}
+          <NavigationRoom>
+            <MainMenu />
+            <Container>{children}</Container>
+          </NavigationRoom>
         </Content>
       </Container>
     </>

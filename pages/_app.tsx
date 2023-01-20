@@ -5,6 +5,7 @@ import { ReactElement, ReactNode } from 'react'
 
 import createCache from '@emotion/cache'
 import { CacheProvider, EmotionCache } from '@emotion/react'
+import { styled } from '@mui/material'
 import { Box } from '@mui/material'
 import { GoogleAnalytics } from 'nextjs-google-analytics'
 import { SWRConfig } from 'swr'
@@ -38,6 +39,22 @@ const clientSideEmotionCache = createCache({
   prepend: true,
 }) as EmotionCache
 
+export const InnerContainer = styled('div')(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  flexGrow: 1,
+  flexShrink: 0,
+  margin: '0 auto',
+  maxWidth: '100%',
+  // width: theme.layout.maxWidth,
+}))
+
+const Container = styled(InnerContainer)`
+  flex-grow: 1;
+  padding-bottom: 25px;
+  padding-top: 25px;
+`
+
 export default function App({
   Component,
   pageProps,
@@ -63,7 +80,7 @@ export default function App({
                 <SafeSuspense>
                   <TransactionNotificationProvider>
                     <CookiesWarningProvider>
-                      {getLayout(<Component {...pageProps} />)}
+                      <Container>{getLayout(<Component {...pageProps} />)}</Container>
                       <Footer />
                     </CookiesWarningProvider>
                   </TransactionNotificationProvider>
