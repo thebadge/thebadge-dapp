@@ -2,9 +2,9 @@ import React, { cloneElement, useMemo } from 'react'
 
 import { Box, styled } from '@mui/material'
 
+import { TextFieldStatus } from '../TextField'
 import { FormStatus } from './FormStatus'
 import { Label } from './Label'
-import { TextFieldStatus } from '@/src/components/form/Textfield'
 
 const StyledBox = styled(Box)<{ status?: TextFieldStatus }>(() => ({}))
 

@@ -1,4 +1,5 @@
 import { createUniqueFieldSchema } from '@ts-react/form'
+import { isAddress } from 'ethers/lib/utils'
 import { z } from 'zod'
 
 // Why we need these schemas?
@@ -21,7 +22,9 @@ export const RadioButtonSchema = createUniqueFieldSchema(
 )
 
 export const AddressSchema = createUniqueFieldSchema(
-  z.string({ required_error: 'Is required' }),
+  z.string({ required_error: 'Is required' }).refine(isAddress, {
+    message: 'Address must be an valid Ethereum addresses.',
+  }),
   'AddressSchema',
 )
 

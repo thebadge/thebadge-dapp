@@ -13,7 +13,7 @@ function MyCustomFormComponent({
 }) {
   return (
     <form onSubmit={onSubmit}>
-      {/* children is you form field components */}
+      {/* children are you form field components */}
       {children}
       <button type="submit">Submit</button>
     </form>

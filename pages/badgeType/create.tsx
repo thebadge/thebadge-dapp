@@ -1,4 +1,4 @@
-import { styled } from '@mui/material'
+import { Box } from '@mui/material'
 import { constants } from 'ethers'
 import { defaultAbiCoder, parseUnits } from 'ethers/lib/utils'
 
@@ -6,14 +6,6 @@ import TxButton from '@/src/components/buttons/txButton'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { TheBadge__factory } from '@/types/generated/typechain'
-
-const Form = styled('form')`
-  width: 100%;
-`
-
-export type FormData = {
-  hash: string
-}
 
 export default function RegisterEmitterForm() {
   const { address } = useWeb3Connection()
@@ -47,7 +39,7 @@ export default function RegisterEmitterForm() {
   // console.log(JSON.stringify(registration))
 
   return (
-    <Form>
+    <Box>
       <TxButton
         tx={() => {
           const klerosControllerDataEncoded = defaultAbiCoder.encode(
@@ -98,6 +90,6 @@ export default function RegisterEmitterForm() {
       >
         Create badge-type
       </TxButton>
-    </Form>
+    </Box>
   )
 }

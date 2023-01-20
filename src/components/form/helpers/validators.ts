@@ -1,12 +1,9 @@
-import { isAddress } from 'ethers/lib/utils'
 import { ZodType, z } from 'zod'
 
 import { AddressSchema, NumberSchema } from '@/src/components/form/helpers/customSchemas'
 import { KLEROS_LIST_TYPES, MetadataColumn } from '@/src/utils/kleros/types'
 
-const zAddress = AddressSchema.refine(isAddress, {
-  message: 'Address must be an valid Ethereum addresses.',
-})
+const zAddress = AddressSchema
 
 const zNumber = NumberSchema
 
