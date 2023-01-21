@@ -27,10 +27,10 @@ export type FormData = {
   hash: string
 }
 
-const RegisterCuratorSchema = z.object({
+export const RegisterCuratorSchema = z.object({
   name: z.string().describe('Your name // ??'),
   description: z.string().describe('Tell us about you // Tell us about you'),
-  image: ImageSchema.describe('Your logo // Upload a logo that identifies you'), // Image Schema MUST BE the created one
+  logo: ImageSchema.describe('Your logo // Upload a logo that identifies you'), // Image Schema MUST BE the created one
   website: z.string().describe(`Website // ??`),
   twitter: z.string().describe(`Twitter // ??`),
   discord: z.string().describe(`Discord // ??`),
@@ -52,7 +52,7 @@ const Register: NextPageWithLayout = () => {
       throw Error('Web3 address not provided')
     }
 
-    const { image, ...rest } = data
+    const { logo: image, ...rest } = data
 
     const uploadedInfo = await ipfsUpload({
       attributes: JSON.stringify(rest),
