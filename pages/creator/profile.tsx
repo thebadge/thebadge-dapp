@@ -1,7 +1,7 @@
 import { useRouter } from 'next/navigation'
 import { ReactElement } from 'react'
 
-import { Typography } from '@mui/material'
+import { Button, Typography } from '@mui/material'
 import { ethers } from 'ethers'
 import { colors } from 'thebadge-ui-library'
 import { z } from 'zod'
@@ -44,27 +44,34 @@ const Profile: NextPageWithLayout = () => {
         This is your creator profile
       </Typography>
 
-      {/* TODO: fix este bardo con los divs  */}
       <div>
-        <>Name: {creatorMetadata.name}</>
-      </div>
-      <div>
-        <>Description: {creatorMetadata.description}</>
-      </div>
-      <div>
-        <>Website: {creatorMetadata.website}</>
-      </div>
-      <div>
-        <>Twitter: {creatorMetadata.twitter}</>
-      </div>
-      <div>
-        <>Discord: {creatorMetadata.discord}</>
-      </div>
-      <div>
-        <>Email: {creatorMetadata.email}</>
+        {/* TODO: fix este bardo con los divs  */}
+        <div>
+          <>Name: {creatorMetadata.name}</>
+        </div>
+        <div>
+          <>Description: {creatorMetadata.description}</>
+        </div>
+        <div>
+          <>Website: {creatorMetadata.website}</>
+        </div>
+        <div>
+          <>Twitter: {creatorMetadata.twitter}</>
+        </div>
+        <div>
+          <>Discord: {creatorMetadata.discord}</>
+        </div>
+        <div>
+          <>Email: {creatorMetadata.email}</>
+        </div>
+
+        <img alt="logo" src={(creatorMetadata.logo as any).s3Url} />
       </div>
 
-      <img alt="logo" src={(creatorMetadata.logo as any).s3Url} />
+      <div>
+        <Button disabled>Verify my account</Button>
+        (coming soon)
+      </div>
     </>
   )
 }
