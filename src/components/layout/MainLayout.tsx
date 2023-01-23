@@ -37,7 +37,6 @@ const NavigationRoom = styled(Box)(({ theme }) => ({
 export const MainLayout = ({ children }: DefaultLayoutProps) => {
   return (
     <>
-      <BackgroundGradient gradient={gradients.gradientBackground} />
       <Container sx={{ flex: 1 }}>
         <Content>
           <Headroom

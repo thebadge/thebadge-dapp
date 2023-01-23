@@ -21,6 +21,7 @@ import SectionReferencesProvider from '@/src/providers/referencesProvider'
 import ThemeProvider from '@/src/providers/themeProvider'
 import 'node_modules/thebadge-ui-library/dist/index.css'
 import 'sanitize.css'
+import { BackgroundGradient, gradients } from "thebadge-ui-library";
 
 const Web3ConnectionProvider = dynamic(() => import('@/src/providers/web3ConnectionProvider'), {
   ssr: false,
@@ -45,7 +46,6 @@ export const InnerContainer = styled('div')(({ theme }) => ({
   flexDirection: 'column',
   flexGrow: 1,
   flexShrink: 0,
-  margin: '0 auto',
   maxWidth: '100%',
   // width: theme.layout.maxWidth,
 }))
@@ -80,6 +80,7 @@ export default function App({
                   <SectionReferencesProvider>
                     <TransactionNotificationProvider>
                       <CookiesWarningProvider>
+                        <BackgroundGradient gradient={gradients.gradientBackground} />
                         <Container>{getLayout(<Component {...pageProps} />)}</Container>
                         <Footer />
                       </CookiesWarningProvider>
