@@ -1,13 +1,12 @@
 import { useRouter } from 'next/router'
-import { ReactElement, useReducer } from 'react'
+import { ReactElement } from 'react'
 
-import { Typography, styled } from '@mui/material'
+import { Typography } from '@mui/material'
 import { ethers } from 'ethers'
 import { colors } from 'thebadge-ui-library'
 import { z } from 'zod'
 
 import { NextPageWithLayout } from '@/pages/_app'
-import TxButton from '@/src/components/buttons/txButton'
 import { CustomFormFromSchema } from '@/src/components/form/CustomForm'
 import { ImageSchema } from '@/src/components/form/helpers/customSchemas'
 import { DefaultLayout } from '@/src/components/layout/BaseLayout'
@@ -17,15 +16,6 @@ import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { SubgraphName, getSubgraphSdkByNetwork } from '@/src/subgraph/subgraph'
 import ipfsUpload from '@/src/utils/ipfsUpload'
 import { TheBadge__factory } from '@/types/generated/typechain'
-
-// TODO Delete and use the dynamic one
-const Form = styled('form')`
-  width: 100%;
-`
-
-export type FormData = {
-  hash: string
-}
 
 export const RegisterCuratorSchema = z.object({
   name: z.string().describe('Your name // ??'),
