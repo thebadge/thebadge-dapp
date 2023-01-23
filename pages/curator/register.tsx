@@ -15,9 +15,11 @@ const Register: NextPageWithLayout = () => {
     cel: NumberSchema.describe('Field Label // Label description'), // You can use one already create,
     image: ImageSchema.describe('Field Label // Label description'), // Image Schema MUST BE the created one
   })
-  function onSubmit(data: z.infer<typeof RegisterCuratorSchema>) {
+
+  async function onSubmit(data: z.infer<typeof RegisterCuratorSchema>) {
     // gets typesafe data when form is submitted
   }
+
   return (
     <>
       <Typography color={colors.white} variant="h3">

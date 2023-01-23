@@ -1,8 +1,9 @@
 import React from 'react'
 
-import { Box, Checkbox as MUICheckbox } from '@mui/material'
+import { Box, Button, Container } from '@mui/material'
 import { useDescription, useTsController } from '@ts-react/form'
 import ImageUploading, { ImageListType } from 'react-images-uploading'
+import { colors } from 'thebadge-ui-library'
 import { z } from 'zod'
 
 import { TextFieldStatus } from '@/src/components/form/TextField'
@@ -12,13 +13,13 @@ import { ImageSchema } from '@/src/components/form/helpers/customSchemas'
 export function ImageInput() {
   const { error, field } = useTsController<z.infer<typeof ImageSchema>>()
   const { label } = useDescription()
-  const [images, setImages] = React.useState<ImageListType | null>(null)
+  const [images, setImages] = React.useState<ImageListType>([])
   const maxNumber = 1
 
   const onChange = (imageList: ImageListType) => {
     // data for submit
     if (imageList[0]) {
-      field.onChange(imageList[0].dataURL)
+      field.onChange(imageList[0])
     } else {
       field.onChange(null)
     }
@@ -28,7 +29,7 @@ export function ImageInput() {
   return (
     <FormField
       formControl={
-        <Box sx={{ display: 'flex', background: 'rgba(0,0,0,0.4)', width: '50vw' }}>
+        <Container sx={{ display: 'flex', background: 'rgba(0,0,0,0.4)', width: '100vw' }}>
           <ImageUploading
             dataURLKey="data_url"
             maxNumber={maxNumber}
@@ -41,29 +42,44 @@ export function ImageInput() {
               imageList,
               isDragging,
               onImageRemove,
-              onImageRemoveAll,
               onImageUpdate,
               onImageUpload,
             }) => (
               // write your building UI
-              <div className="upload__image-wrapper">
-                <button
-                  onClick={onImageUpload}
-                  style={isDragging ? { color: 'red' } : undefined}
-                  {...dragProps}
-                >
-                  Click or Drop here
-                </button>
-                &nbsp;
-                <button onClick={onImageRemoveAll}>Remove all images</button>
+              <Box display="flex" flexDirection="column" sx={{ flex: 1 }}>
+                {imageList.length === 0 && (
+                  <Button
+                    onClick={onImageUpload}
+                    sx={{
+                      height: '50px',
+                      borderWidth: 1,
+                      borderColor: isDragging ? colors.green : colors.grey,
+                      borderStyle: 'dashed',
+                    }}
+                    variant="text"
+                    {...dragProps}
+                  >
+                    Click or Drop here
+                  </Button>
+                )}
                 {imageList.map((image, index) => (
-                  <div className="image-item" key={index}>
-                    <img alt="" src={image['data_url']} width="100" />
-                    <div className="image-item__btn-wrapper">
+                  <Box
+                    className="image-item"
+                    key={index}
+                    sx={{ display: 'flex', flexDirection: 'row' }}
+                  >
+                    <img alt="" src={image['data_url']} width="200" />
+                    <Box
+                      display="flex"
+                      flexDirection="column"
+                      justifyContent="space-evenly"
+                      marginLeft={2}
+                    >
                       <button onClick={() => onImageUpdate(index)}>Update</button>
+
                       <button onClick={() => onImageRemove(index)}>Remove</button>
-                    </div>
-                  </div>
+                    </Box>
+                  </Box>
                 ))}
                 {errors && (
                   <div>
@@ -75,10 +91,10 @@ export function ImageInput() {
                     )}
                   </div>
                 )}
-              </div>
+              </Box>
             )}
           </ImageUploading>
-        </Box>
+        </Container>
       }
       label={label}
       status={error ? TextFieldStatus.error : TextFieldStatus.success}

@@ -52,10 +52,10 @@ const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/web
 export const ImageSchema = createUniqueFieldSchema(
   z
     .any()
-    .refine((files) => files?.length == 1, 'Image is required.')
-    .refine((files) => files?.[0]?.size <= MAX_FILE_SIZE, `Max file size is 5MB.`)
+    .refine(({ file }) => !!file, 'Upload an image is required.')
+    .refine(({ file }) => file?.size <= MAX_FILE_SIZE, `Max file size is 5MB.`)
     .refine(
-      (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
+      ({ file }) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
       '.jpg, .jpeg, .png and .webp files are accepted.',
     ),
   'ImageSchema',
@@ -63,7 +63,7 @@ export const ImageSchema = createUniqueFieldSchema(
 export const FileSchema = createUniqueFieldSchema(
   z
     .any()
-    .refine((files) => files?.length == 1, 'Upload a file is required.')
-    .refine((files) => files?.[0]?.size <= MAX_FILE_SIZE, `Max file size is 5MB.`),
+    .refine(({ file }) => !!file, 'Upload a file is required.')
+    .refine(({ file }) => file?.size <= MAX_FILE_SIZE, `Max file size is 5MB.`),
   'FileSchema',
 )

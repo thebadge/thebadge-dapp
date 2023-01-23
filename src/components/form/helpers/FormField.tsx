@@ -6,11 +6,12 @@ import { TextFieldStatus } from '../TextField'
 import { FormStatus } from './FormStatus'
 import { Label } from './Label'
 
-const StyledBox = styled(Box)<{ status?: TextFieldStatus }>(() => ({
+const StyledBox = styled(Box)<{ status?: TextFieldStatus }>(({ theme }) => ({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
   flexDirection: 'column',
+  margin: theme.spacing(1),
 }))
 
 export const FormField: React.FC<{
