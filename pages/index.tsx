@@ -1,3 +1,4 @@
+import { useSectionReferences } from "@/src/providers/referencesProvider";
 import { ReactElement } from 'react'
 
 import { Box, Typography } from '@mui/material'
@@ -19,8 +20,10 @@ const Address: React.FC = () => {
 }
 
 const Home: NextPageWithLayout = () => {
+  const { homeSection } = useSectionReferences()
+
   return (
-    <Box display="flex">
+    <Box display="flex" ref={homeSection}>
       <Typography color={colors.white} variant="h3">
         Welcome to THE BADGE!
       </Typography>

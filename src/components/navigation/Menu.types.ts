@@ -1,4 +1,9 @@
+import { RefObject } from 'react'
+
+import { UrlObject } from 'url'
+
 export type MenuItemType = 'color' | 'gray' | 'small'
+export type MenuItemHrefType = RefObject<HTMLDivElement> | UrlObject | string | null
 export type MenuItemElement = {
   type: MenuItemType
   disabled?: boolean
@@ -8,12 +13,14 @@ export type MenuItem = {
   type: MenuItemType
   icon: React.ReactNode
   title?: string
-  ref: string
+  subItems?: Array<SubMenuItem>
   validation?: boolean
   disabled?: boolean
-  subItems?: Array<MenuSubItem>
+  href?: MenuItemHrefType
+  customOnClickBehavior?: () => void
 }
-export type MenuSubItem = {
+export type SubMenuItem = {
   title: string
-  ref: string
+  href?: MenuItemHrefType
+  customOnClickBehavior?: () => void
 }

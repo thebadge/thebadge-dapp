@@ -17,6 +17,7 @@ import Toast from '@/src/components/toast/Toast'
 import { Head } from '@/src/pagePartials/index/Head'
 import { TransactionNotificationProvider } from '@/src/providers/TransactionNotificationProvider'
 import CookiesWarningProvider from '@/src/providers/cookiesWarningProvider'
+import SectionReferencesProvider from '@/src/providers/referencesProvider'
 import ThemeProvider from '@/src/providers/themeProvider'
 import 'node_modules/thebadge-ui-library/dist/index.css'
 import 'sanitize.css'
@@ -76,12 +77,14 @@ export default function App({
             <Web3ConnectionProvider>
               <ThemeProvider>
                 <SafeSuspense>
-                  <TransactionNotificationProvider>
-                    <CookiesWarningProvider>
-                      <Container>{getLayout(<Component {...pageProps} />)}</Container>
-                      <Footer />
-                    </CookiesWarningProvider>
-                  </TransactionNotificationProvider>
+                  <SectionReferencesProvider>
+                    <TransactionNotificationProvider>
+                      <CookiesWarningProvider>
+                        <Container>{getLayout(<Component {...pageProps} />)}</Container>
+                        <Footer />
+                      </CookiesWarningProvider>
+                    </TransactionNotificationProvider>
+                  </SectionReferencesProvider>
                 </SafeSuspense>
                 <Toast />
               </ThemeProvider>

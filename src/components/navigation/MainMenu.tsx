@@ -8,9 +8,18 @@ import { DarkMode as DarkModeIcon } from '@/src/components/assets/DarkMode'
 import { Discord as DiscordIcon } from '@/src/components/assets/Discord'
 import { Earn as EarnIcon } from '@/src/components/assets/Earn'
 import { Home as HomeIcon } from '@/src/components/assets/Home'
+import { LightMode as LightModeIcon } from '@/src/components/assets/LightMode'
 import { Profile as ProfileIcon } from '@/src/components/assets/Profile'
-import { MenuItem, MenuItemElement, MenuItemType } from '@/src/components/navigation/Menu.types'
+import {
+  MenuItem,
+  MenuItemElement,
+  MenuItemType,
+  SubMenuItem,
+} from '@/src/components/navigation/Menu.types'
+import { useSectionReferences } from '@/src/providers/referencesProvider'
+import { useColorMode } from '@/src/providers/themeProvider'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+import { ThemeType } from '@/src/theme/types'
 
 const MenuContainer = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -82,7 +91,7 @@ const MenuItemsBottomContainer = styled('div')(({ theme }) => ({
   width: '3rem',
 }))
 
-const getBackgroundColor = (type: MenuItemType): string => {
+const getMenuItemBackgroundColor = (type: MenuItemType): string => {
   switch (type) {
     case 'color':
       return colors.greenLogo
@@ -94,7 +103,7 @@ const getBackgroundColor = (type: MenuItemType): string => {
   }
 }
 
-const getHoverBackgroundColor = (type: MenuItemType): string => {
+const getMenuItemHoverBackgroundColor = (type: MenuItemType): string => {
   switch (type) {
     case 'color':
       return '#22DBBD'
@@ -126,10 +135,10 @@ const MenuItem = styled('div')<MenuItemElement>(({ disabled, selected, theme, ty
         border: 'none',
       }),
 
-  background: `${getBackgroundColor(type)}`,
+  background: `${getMenuItemBackgroundColor(type)}`,
 
   '&:hover': {
-    background: `${getHoverBackgroundColor(type)}`,
+    background: `${getMenuItemHoverBackgroundColor(type)}`,
   },
 
   ...(selected
@@ -180,11 +189,33 @@ export const MainMenu: React.FC = ({ ...restProps }) => {
   // const t = useTranslations('mainMenu')
   const { address } = useWeb3Connection()
   const router = useRouter()
+  const { homeSection, scrollTo } = useSectionReferences()
+  const { mode, toggleColorMode } = useColorMode()
 
   const [selectedElement, setSelectedElement] = useState(-1)
 
-  const onMenuItemClick = (index: number, item: MenuItem) => {
+  const navigateTo = async (link: any) => {
+    if (link) {
+      if (link.current) {
+        scrollTo(link)
+      } else {
+        await router.push(link)
+      }
+    }
+  }
+
+  const onItemClick = async (item: MenuItem | SubMenuItem) => {
+    if (item.href) {
+      await navigateTo(item.href)
+    }
+    if (item.customOnClickBehavior) {
+      item.customOnClickBehavior()
+    }
+  }
+
+  const onMenuItemClick = async (item: MenuItem, index: number) => {
     setSelectedElement(index)
+    await onItemClick(item)
   }
 
   const topMenuItems: Array<MenuItem> = [
@@ -192,27 +223,27 @@ export const MainMenu: React.FC = ({ ...restProps }) => {
       type: 'color',
       icon: <HomeIcon />,
       title: 'Home',
-      ref: '#home',
+      href: homeSection,
       subItems: [
         {
           title: 'Get a certificate',
-          ref: '#',
+          href: '#getCertificate',
         },
         {
           title: 'Protocol statistics',
-          ref: '#',
+          href: '#statistics',
         },
         {
           title: 'The Badge DAO',
-          ref: '#',
+          href: '#',
         },
         {
           title: '$BADGE token',
-          ref: '#',
+          href: '#',
         },
         {
           title: 'FAQ',
-          ref: '#',
+          href: '#',
         },
       ],
     },
@@ -220,19 +251,19 @@ export const MainMenu: React.FC = ({ ...restProps }) => {
       type: 'color',
       icon: <EarnIcon />,
       title: 'Earn money',
-      ref: '#earn',
+      href: '#earn',
       subItems: [
         {
           title: 'Become a curator',
-          ref: '#',
+          href: '#',
         },
         {
           title: 'Become a creator',
-          ref: '#',
+          href: '#',
         },
         {
           title: 'Become a third-party entity',
-          ref: '#',
+          href: '#',
         },
       ],
     },
@@ -240,20 +271,20 @@ export const MainMenu: React.FC = ({ ...restProps }) => {
       type: 'color',
       icon: <ProfileIcon />,
       title: 'Profile',
-      ref: '#profile',
+      href: '#profile',
       validation: !!address,
       subItems: [
         {
           title: 'My profile',
-          ref: '#',
+          href: '#',
         },
         {
           title: 'Badges in review',
-          ref: '#',
+          href: '#',
         },
         {
           title: 'Created badges',
-          ref: '#',
+          href: '#',
         },
       ],
     },
@@ -263,33 +294,38 @@ export const MainMenu: React.FC = ({ ...restProps }) => {
     {
       type: 'gray',
       icon: <DiscordIcon />,
-      ref: '#discord',
+      href: '#discord',
     },
     {
       type: 'small',
-      icon: <DarkModeIcon />,
-      ref: '#mode',
+      icon: mode === ThemeType.dark ? <LightModeIcon /> : <DarkModeIcon />,
+      customOnClickBehavior: () => toggleColorMode(), // change theme
     },
   ]
-
-  const renderMenuItem = (item: MenuItem, index: number): React.ReactNode => {
+  const renderMenuItem = (item: MenuItem, itemIndex: number): React.ReactNode => {
     return (
       (item.validation === undefined || item.validation) && (
         <MenuItemContainer type={item.type}>
           <MenuItem
             disabled={!!item.disabled}
-            onClick={() => onMenuItemClick(index, item)}
-            selected={selectedElement === index}
+            onClick={async () => await onMenuItemClick(item, itemIndex)}
+            selected={selectedElement === itemIndex}
             type={item.type}
           >
             {item.icon}
           </MenuItem>
-          {item.subItems && selectedElement === index ? (
+          {item.subItems && selectedElement === itemIndex ? (
             <SubMenuContainer type={item.type}>
-              <SubMenuTitleItem>{item.title}</SubMenuTitleItem>
-              {item.subItems.map((subItem) => (
-                // eslint-disable-next-line react/jsx-key
-                <SubMenuItem>{subItem.title}</SubMenuItem>
+              <SubMenuTitleItem onClick={async () => await onItemClick(item)}>
+                {item.title}
+              </SubMenuTitleItem>
+              {item.subItems.map((subItem, subItemIndex) => (
+                <SubMenuItem
+                  key={'item-' + itemIndex + '-subItem-' + subItemIndex}
+                  onClick={async () => await onItemClick(subItem)}
+                >
+                  {subItem.title}
+                </SubMenuItem>
               ))}
             </SubMenuContainer>
           ) : null}
