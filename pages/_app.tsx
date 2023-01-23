@@ -51,8 +51,6 @@ export const InnerContainer = styled('div')(({ theme }) => ({
 
 const Container = styled(InnerContainer)`
   flex-grow: 1;
-  padding-bottom: 25px;
-  padding-top: 25px;
 `
 
 export default function App({

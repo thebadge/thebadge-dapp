@@ -24,6 +24,9 @@ const MenuContainer = styled('div')(({ theme }) => ({
 }))
 
 const MainMenuContainer = styled(MenuContainer)(({ theme }) => ({
+  height: 'fit-content',
+  position: 'sticky',
+  top: '8rem',
   marginRight: '5%',
 
   [theme.breakpoints.up('xl')]: {
