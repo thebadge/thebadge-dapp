@@ -3,9 +3,8 @@ import nullthrows from 'nullthrows'
 
 import { ContractsKeys, contracts } from '@/src/contracts/contracts'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
-import { ObjectValues } from '@/types/utils'
-
 import * as typechainImports from '@/types/generated/typechain'
+import { ObjectValues } from '@/types/utils'
 
 type GetFactories<T> = T extends { connect: (...args: never) => unknown } ? T : never
 

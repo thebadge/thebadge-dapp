@@ -15,7 +15,6 @@ import useTransaction from '@/src/hooks/useTransaction'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { SubgraphName, getSubgraphSdkByNetwork } from '@/src/subgraph/subgraph'
 import ipfsUpload from '@/src/utils/ipfsUpload'
-
 import { TheBadge__factory } from '@/types/generated/typechain'
 
 export const RegisterCuratorSchema = z.object({
