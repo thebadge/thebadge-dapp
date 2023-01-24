@@ -7,6 +7,7 @@ import { z } from 'zod'
 import { NextPageWithLayout } from '@/pages/_app'
 import { CustomFormFromSchema } from '@/src/components/form/CustomForm'
 import { ImageSchema, NumberSchema } from '@/src/components/form/helpers/customSchemas'
+
 import { DefaultLayout } from '@/src/components/layout/BaseLayout'
 
 const Register: NextPageWithLayout = () => {

@@ -5,6 +5,7 @@ import { defaultAbiCoder, parseUnits } from 'ethers/lib/utils'
 import TxButton from '@/src/components/buttons/txButton'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+
 import { TheBadge__factory } from '@/types/generated/typechain'
 
 export default function RegisterEmitterForm() {

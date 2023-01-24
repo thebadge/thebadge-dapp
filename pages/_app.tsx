@@ -9,6 +9,7 @@ import { styled } from '@mui/material'
 import { Box } from '@mui/material'
 import { GoogleAnalytics } from 'nextjs-google-analytics'
 import { SWRConfig } from 'swr'
+import { BackgroundGradient, gradients } from 'thebadge-ui-library'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { Footer } from '@/src/components/layout/Footer'
@@ -19,9 +20,9 @@ import { TransactionNotificationProvider } from '@/src/providers/TransactionNoti
 import CookiesWarningProvider from '@/src/providers/cookiesWarningProvider'
 import SectionReferencesProvider from '@/src/providers/referencesProvider'
 import ThemeProvider from '@/src/providers/themeProvider'
+
 import 'node_modules/thebadge-ui-library/dist/index.css'
 import 'sanitize.css'
-import { BackgroundGradient, gradients } from "thebadge-ui-library";
 
 const Web3ConnectionProvider = dynamic(() => import('@/src/providers/web3ConnectionProvider'), {
   ssr: false,

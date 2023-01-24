@@ -1,6 +1,5 @@
 import { Box, Container, styled } from '@mui/material'
 import Headroom from 'react-headroom'
-import { BackgroundGradient, gradients } from 'thebadge-ui-library'
 
 import Header from '@/src/components/header/Header'
 import { MainMenu } from '@/src/components/navigation/MainMenu'

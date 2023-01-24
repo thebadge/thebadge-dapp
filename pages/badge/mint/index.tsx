@@ -4,6 +4,7 @@ import { Typography } from '@mui/material'
 import { colors } from 'thebadge-ui-library'
 
 import { NextPageWithLayout } from '@/pages/_app'
+
 import { DefaultLayout } from '@/src/components/layout/BaseLayout'
 
 const MintBadge: NextPageWithLayout = () => {

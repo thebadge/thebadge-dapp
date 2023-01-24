@@ -1,4 +1,3 @@
-import { useSectionReferences } from "@/src/providers/referencesProvider";
 import { ReactElement } from 'react'
 
 import { Box, Typography } from '@mui/material'
@@ -7,6 +6,7 @@ import { colors } from 'thebadge-ui-library'
 import { NextPageWithLayout } from '@/pages/_app'
 import LinkWithTranslation from '@/src/components/helpers/LinkWithTranslation'
 import { MainLayout } from '@/src/components/layout/MainLayout'
+import { useSectionReferences } from '@/src/providers/referencesProvider'
 import { useWeb3ConnectedApp } from '@/src/providers/web3ConnectionProvider'
 
 const Address: React.FC = () => {
