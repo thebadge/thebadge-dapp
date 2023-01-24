@@ -33,7 +33,7 @@ const NavigationRoom = styled(Box)(({ theme }) => ({
   },
 }))
 
-export const MainLayout = ({ children }: DefaultLayoutProps) => {
+export const DefaultLayout = ({ children }: DefaultLayoutProps) => {
   return (
     <>
       <Container sx={{ flex: 1 }}>

@@ -5,8 +5,7 @@ import { Typography } from '@mui/material'
 import { colors } from 'thebadge-ui-library'
 
 import { NextPageWithLayout } from '@/pages/_app'
-
-import { DefaultLayout } from '@/src/components/layout/BaseLayout'
+import { DefaultLayout } from '@/src/components/layout/DefaultLayout'
 
 const TypePreview: NextPageWithLayout = () => {
   const searchParams = useSearchParams()

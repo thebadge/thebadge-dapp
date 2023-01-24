@@ -9,13 +9,13 @@ import { z } from 'zod'
 import { NextPageWithLayout } from '@/pages/_app'
 import { CustomFormFromSchema } from '@/src/components/form/CustomForm'
 import { ImageSchema } from '@/src/components/form/helpers/customSchemas'
+import { DefaultLayout } from '@/src/components/layout/DefaultLayout'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
 import useTransaction from '@/src/hooks/useTransaction'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { SubgraphName, getSubgraphSdkByNetwork } from '@/src/subgraph/subgraph'
 import ipfsUpload from '@/src/utils/ipfsUpload'
 
-import { DefaultLayout } from '@/src/components/layout/BaseLayout'
 import { TheBadge__factory } from '@/types/generated/typechain'
 
 export const RegisterCuratorSchema = z.object({

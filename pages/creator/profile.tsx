@@ -9,11 +9,10 @@ import { z } from 'zod'
 import { NextPageWithLayout } from '@/pages/_app'
 import { RegisterCuratorSchema } from '@/pages/creator/register'
 import { withGenericSuspense } from '@/src/components/helpers/SafeSuspense'
+import { DefaultLayout } from '@/src/components/layout/DefaultLayout'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { SubgraphName, getSubgraphSdkByNetwork } from '@/src/subgraph/subgraph'
-
-import { DefaultLayout } from '@/src/components/layout/BaseLayout'
 
 type CreatorMetadata = z.infer<typeof RegisterCuratorSchema>
 

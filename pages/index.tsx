@@ -5,7 +5,7 @@ import { colors } from 'thebadge-ui-library'
 
 import { NextPageWithLayout } from '@/pages/_app'
 import LinkWithTranslation from '@/src/components/helpers/LinkWithTranslation'
-import { MainLayout } from '@/src/components/layout/MainLayout'
+import { DefaultLayout } from '@/src/components/layout/DefaultLayout'
 import { useSectionReferences } from '@/src/providers/referencesProvider'
 import { useWeb3ConnectedApp } from '@/src/providers/web3ConnectionProvider'
 
@@ -38,7 +38,7 @@ const Home: NextPageWithLayout = () => {
 }
 
 Home.getLayout = function getLayout(page: ReactElement) {
-  return <MainLayout>{page}</MainLayout>
+  return <DefaultLayout>{page}</DefaultLayout>
 }
 
 export default Home
