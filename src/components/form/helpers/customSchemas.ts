@@ -2,6 +2,8 @@ import { createUniqueFieldSchema } from '@ts-react/form'
 import { isAddress } from 'ethers/lib/utils'
 import { z } from 'zod'
 
+import { KLEROS_LIST_TYPES_KEYS } from '@/src/utils/kleros/types'
+
 // Why we need these schemas?
 // https://github.com/iway1/react-ts-form#dealing-with-collisions
 
@@ -66,4 +68,9 @@ export const FileSchema = createUniqueFieldSchema(
     .refine(({ file }) => !!file, 'Upload a file is required.')
     .refine(({ file }) => file?.size <= MAX_FILE_SIZE, `Max file size is 5MB.`),
   'FileSchema',
+)
+
+export const FieldTypeSchema = createUniqueFieldSchema(
+  z.enum(KLEROS_LIST_TYPES_KEYS),
+  'FieldTypeSchema',
 )

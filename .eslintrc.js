@@ -23,6 +23,7 @@ module.exports = {
     'sort-destructure-keys',
     'jsx-a11y',
     'prettier',
+    'unused-imports'
   ],
   extends: [
     'next/core-web-vitals',
@@ -38,6 +39,7 @@ module.exports = {
     'import/extensions': 0,
     'import/no-cycle': [0, { ignoreExternal: true }],
     'import/no-unresolved': 0,
+    "unused-imports/no-unused-imports": "error",
     'import/order': [
       'error',
       {

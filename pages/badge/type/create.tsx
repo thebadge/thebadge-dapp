@@ -1,67 +1,39 @@
-import { ReactElement } from 'react'
+import { ReactElement, useCallback, useState } from 'react'
 
 import { Typography } from '@mui/material'
+import update from 'immutability-helper'
 import { colors } from 'thebadge-ui-library'
-import { z } from 'zod'
 
 import { NextPageWithLayout } from '@/pages/_app'
-import { CustomFormFromSchema } from '@/src/components/form/CustomForm'
-import klerosSchemaFactory from '@/src/components/form/helpers/validators'
 import { DefaultLayout } from '@/src/components/layout/BaseLayout'
-import { KLEROS_LIST_TYPES } from '@/src/utils/kleros/types'
-
-const HARDCODED_TEST_FIELDS = [
-  {
-    label: 'Github account',
-    description: 'Enter your Github account',
-    type: KLEROS_LIST_TYPES.TEXT,
-    isIdentifier: true,
-  },
-  {
-    label: 'Twitter account',
-    description: 'Enter your Twitter account',
-    type: KLEROS_LIST_TYPES.TWITTER_USER_ID,
-    isIdentifier: false,
-  },
-  {
-    label: 'Just a number',
-    description: 'Enter a number',
-    type: KLEROS_LIST_TYPES.NUMBER,
-    isIdentifier: false,
-  },
-  {
-    label: 'Your address',
-    description: 'Enter your eth address',
-    type: KLEROS_LIST_TYPES.ADDRESS,
-    isIdentifier: false,
-  },
-  {
-    label: 'Just a boolean',
-    description: 'true / false',
-    type: KLEROS_LIST_TYPES.BOOLEAN,
-    isIdentifier: false,
-  },
-  {
-    label: 'Long text input',
-    description: 'You can enter a very long text here, go ahead and try it',
-    type: KLEROS_LIST_TYPES.LONG_TEXT,
-    isIdentifier: false,
-  },
-
-  {
-    label: 'Upload your file',
-    description: '',
-    type: KLEROS_LIST_TYPES.FILE,
-    isIdentifier: false,
-  },
-]
+import FormFieldCreator from '@/src/pagePartials/badgeTypes/FormFieldCreator'
+import { MetadataColumn } from '@/src/utils/kleros/types'
 
 const Create: NextPageWithLayout = () => {
-  const CreateBadgeSchema = klerosSchemaFactory(HARDCODED_TEST_FIELDS)
+  const [fields, setFields] = useState<MetadataColumn[]>([])
 
-  function onSubmit(data: z.infer<typeof CreateBadgeSchema>) {
-    // gets typesafe data when form is submitted
+  function addFieldsHandler(data: MetadataColumn) {
+    setFields((prev) => [...prev, data])
   }
+
+  const moveField = useCallback((dragIndex: number, hoverIndex: number) => {
+    setFields((prevFields: MetadataColumn[]) =>
+      update(prevFields, {
+        $splice: [
+          [dragIndex, 1],
+          [hoverIndex, 0, prevFields[dragIndex] as MetadataColumn],
+        ],
+      }),
+    )
+  }, [])
+
+  const removeField = useCallback((removeIndex: number) => {
+    setFields((prevFields: MetadataColumn[]) =>
+      update(prevFields, {
+        $splice: [[removeIndex, 1]],
+      }),
+    )
+  }, [])
 
   return (
     <>
@@ -73,7 +45,12 @@ const Create: NextPageWithLayout = () => {
         Please fulfill the form
       </Typography>
 
-      <CustomFormFromSchema onSubmit={onSubmit} schema={CreateBadgeSchema} />
+      <FormFieldCreator
+        addField={addFieldsHandler}
+        fields={fields}
+        moveField={moveField}
+        removeField={removeField}
+      />
     </>
   )
 }

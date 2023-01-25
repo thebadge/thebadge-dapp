@@ -4,7 +4,7 @@ import { useDescription, useTsController } from '@ts-react/form'
 import { TextFieldStatus } from '@/src/components/form/TextField'
 import { FormField } from '@/src/components/form/helpers/FormField'
 
-export function CheckBox() {
+export default function CheckBox() {
   const { error, field } = useTsController<boolean>()
   const { label } = useDescription()
 

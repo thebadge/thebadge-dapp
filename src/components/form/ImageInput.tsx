@@ -10,7 +10,7 @@ import { TextFieldStatus } from '@/src/components/form/TextField'
 import { FormField } from '@/src/components/form/helpers/FormField'
 import { ImageSchema } from '@/src/components/form/helpers/customSchemas'
 
-export function ImageInput() {
+export default function ImageInput() {
   const { error, field } = useTsController<z.infer<typeof ImageSchema>>()
   const { label } = useDescription()
   const [images, setImages] = React.useState<ImageListType>([])

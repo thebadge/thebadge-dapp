@@ -8,6 +8,8 @@ import { mappingSchemaToComponents } from '@/src/components/form/helpers/schemaT
 const StyledFormContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexFlow: 'row wrap',
+  justifyContent: 'center',
+  alignItems: 'flex-end',
   ':nth-of-child': {
     display: 'flex',
     flex: '1 1 25%',
