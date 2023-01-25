@@ -1,4 +1,16 @@
-import { textInputs } from 'polished'
+export const KLEROS_LIST_TYPES_KEYS = [
+  'ADDRESS',
+  'RICH_ADDRESS',
+  'NUMBER',
+  'TEXT',
+  'BOOLEAN',
+  'GTCR_ADDRESS',
+  'IMAGE',
+  'FILE',
+  'LINK',
+  'TWITTER_USER_ID',
+  'LONG_TEXT',
+] as const
 
 export enum KLEROS_LIST_TYPES {
   ADDRESS = 'address',
