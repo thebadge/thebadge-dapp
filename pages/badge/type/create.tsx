@@ -9,6 +9,7 @@ import { CustomFormFromSchema } from '@/src/components/form/CustomForm'
 import {
   FileSchema,
   ImageSchema,
+  KlerosDynamicFields,
   LongTextSchema,
 } from '@/src/components/form/helpers/customSchemas'
 import { DefaultLayout } from '@/src/components/layout/BaseLayout'
@@ -25,9 +26,11 @@ export const BadgeTypeCreateSchema = z.object({
   criteriaFileUri: FileSchema.describe(
     'Upload a PDF file that describes the requirements to mint a badge. // ??',
   ),
-  // listItemInfo: KlerosFieldTypeSchema,
   listLogoUri: ImageSchema.describe(
     'Upload a logo for your badge type, this logo will be used each time a user mints a badge. // ??',
+  ),
+  listItemInfo: KlerosDynamicFields.describe(
+    'Evidence fields // List of fields that the user will need to provider to be able to mint this badge type.',
   ),
 })
 

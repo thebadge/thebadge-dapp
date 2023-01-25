@@ -16,7 +16,7 @@ const HeaderContainer = styled(Box)(({ theme }) => ({
   transform: 'translateX(-50%)',
   background: gradients.gradientBackground,
   // With this the header background and page background has the same match
-  backgroundSize: '100vh 100vw',
+  backgroundSize: '100vw 100vh',
   paddingTop: theme.spacing(4),
   paddingBottom: theme.spacing(1),
   paddingLeft: '5%',

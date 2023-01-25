@@ -54,10 +54,10 @@ const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/web
 export const ImageSchema = createUniqueFieldSchema(
   z
     .any()
-    .refine(({ file }) => !!file, 'Upload an image is required.')
-    .refine(({ file }) => file?.size <= MAX_FILE_SIZE, `Max file size is 5MB.`)
+    .refine((value) => !!value?.file, 'Upload an image is required.')
+    .refine((value) => value?.file?.size <= MAX_FILE_SIZE, `Max file size is 5MB.`)
     .refine(
-      ({ file }) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
+      (value) => ACCEPTED_IMAGE_TYPES.includes(value?.file?.type),
       '.jpg, .jpeg, .png and .webp files are accepted.',
     ),
   'ImageSchema',
@@ -65,8 +65,8 @@ export const ImageSchema = createUniqueFieldSchema(
 export const FileSchema = createUniqueFieldSchema(
   z
     .any()
-    .refine(({ file }) => !!file, 'Upload a file is required.')
-    .refine(({ file }) => file?.size <= MAX_FILE_SIZE, `Max file size is 5MB.`),
+    .refine((value) => !!value && !!value.file, 'Upload a file is required.')
+    .refine((value) => value?.file?.size <= MAX_FILE_SIZE, `Max file size is 5MB.`),
   'FileSchema',
 )
 
@@ -78,7 +78,9 @@ export const KlerosFieldTypeSchema = createUniqueFieldSchema(
 // Schema used to generate a form inside the KlerosDynamicFields handler and also
 // to create the KlerosDynamicFields Unique field
 export const KlerosFormFieldSchema = z.object({
-  name: z.string().describe('Name // Field name that the user will be when they create the badge.'),
+  label: z
+    .string()
+    .describe('Name // Field name that the user will be when they create the badge.'),
   description: z
     .string()
     .describe('Description // Field description that explains what the field data is'),
@@ -87,7 +89,9 @@ export const KlerosFormFieldSchema = z.object({
 
 export const KlerosDynamicFields = createUniqueFieldSchema(
   z
-    .array(KlerosFormFieldSchema)
+    .array(KlerosFormFieldSchema, {
+      required_error: 'Must provide at least one field.',
+    })
     .min(1, 'Must provide at least one field.')
     .max(20, `Can't add more than twenty (20)`),
   'KlerosDynamicFields',

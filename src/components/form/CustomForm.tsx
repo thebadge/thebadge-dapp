@@ -41,7 +41,40 @@ function MyCustomFormComponent({
   )
 }
 
+/**
+ * In same cases we want to have some kind of nested or "stepped" forms, so we
+ * want to avoid the use of type=submit and also the user of another Form Tag
+ */
+function MyCustomFormComponentWithoutSubmit({
+  buttonDisabled,
+  buttonLabel = 'Submit',
+  children,
+  onSubmit,
+}: {
+  children: ReactNode
+  onSubmit: () => void
+  buttonLabel?: string
+  buttonDisabled?: boolean
+}) {
+  return (
+    <Box style={{ display: 'flex', flexDirection: 'column' }}>
+      {/* children are you form field components */}
+      <StyledFormContainer>{children}</StyledFormContainer>
+      <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+        <Button color="darkGreen" disabled={buttonDisabled} onClick={onSubmit} variant="contained">
+          {buttonLabel}
+        </Button>
+      </Box>
+    </Box>
+  )
+}
+
 // A typesafe React component
 export const CustomFormFromSchema = createTsForm(mappingSchemaToComponents, {
   FormComponent: MyCustomFormComponent,
+})
+
+// A typesafe React component
+export const CustomFormFromSchemaWithoutSubmit = createTsForm(mappingSchemaToComponents, {
+  FormComponent: MyCustomFormComponentWithoutSubmit,
 })

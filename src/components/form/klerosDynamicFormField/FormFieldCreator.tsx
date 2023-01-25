@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback } from 'react'
 
 import { Box } from '@mui/material'
 import { useTsController } from '@ts-react/form'
@@ -8,81 +8,81 @@ import { HTML5Backend } from 'react-dnd-html5-backend'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-import { CustomFormFromSchema } from '@/src/components/form/CustomForm'
+import { CustomFormFromSchemaWithoutSubmit } from '@/src/components/form/CustomForm'
 import { TextFieldStatus } from '@/src/components/form/TextField'
 import { FormStatus } from '@/src/components/form/helpers/FormStatus'
 import {
+  KlerosDynamicFields,
   KlerosFieldTypeSchema,
   KlerosFormFieldSchema,
 } from '@/src/components/form/helpers/customSchemas'
 import FormFieldItem from '@/src/components/form/klerosDynamicFormField/FormFieldItem'
-import { KLEROS_LIST_TYPES, KLEROS_LIST_TYPES_KEYS, MetadataColumn } from '@/src/utils/kleros/types'
+import { KLEROS_LIST_TYPES, KLEROS_LIST_TYPES_KEYS } from '@/src/utils/kleros/types'
 
 export default function KlerosDynamicFieldsCreator() {
-  const { error, field } = useTsController<MetadataColumn[]>()
+  const { error, field } = useTsController<z.infer<typeof KlerosDynamicFields>>()
 
   // Need to type the useForm call accordingly
   const form = useForm<z.infer<typeof KlerosFormFieldSchema>>()
   const { reset } = form
 
-  const [fields, setFields] = useState<MetadataColumn[]>([])
+  const moveField = useCallback(
+    (dragIndex: number, hoverIndex: number) => {
+      if (field.value) {
+        field.onChange(
+          update(field.value, {
+            $splice: [
+              [dragIndex, 1],
+              [hoverIndex, 0, field.value[dragIndex]],
+            ],
+          }),
+        )
+      }
+    },
+    [field],
+  )
 
-  useEffect(() => {
-    // Its may not be the best way, but it's the easiest. Let's go back to it later on.
-    field.onChange(fields)
-    // eslint-disable-next-line
-  }, [fields])
+  const removeField = useCallback(
+    (removeIndex: number) => {
+      field.onChange(
+        update(field.value, {
+          $splice: [[removeIndex, 1]],
+        }),
+      )
+    },
+    [field],
+  )
 
-  const moveField = useCallback((dragIndex: number, hoverIndex: number) => {
-    setFields((prevFields: MetadataColumn[]) =>
-      update(prevFields, {
-        $splice: [
-          [dragIndex, 1],
-          [hoverIndex, 0, prevFields[dragIndex] as MetadataColumn],
-        ],
-      }),
-    )
+  const renderFieldItem = useCallback(
+    (field: z.infer<typeof KlerosFormFieldSchema>, index: number) => {
+      return (
+        <FormFieldItem
+          field={{ ...field, index }}
+          index={index}
+          key={field.label + index}
+          moveItem={moveField}
+          removeItem={() => removeField(index)}
+        />
+      )
+      // eslint-disable-next-line
   }, [])
-
-  const removeField = useCallback((removeIndex: number) => {
-    setFields((prevFields: MetadataColumn[]) =>
-      update(prevFields, {
-        $splice: [[removeIndex, 1]],
-      }),
-    )
-  }, [])
-
-  const renderFieldItem = useCallback((field: MetadataColumn, index: number) => {
-    return (
-      <FormFieldItem
-        field={{ ...field, index }}
-        index={index}
-        key={field.label + index}
-        moveItem={moveField}
-        removeItem={() => removeField(index)}
-      />
-    )
-    // eslint-disable-next-line
-  }, [])
-
-  function addFieldsHandler(data: MetadataColumn) {
-    setFields((prev) => [...prev, data])
-  }
 
   function submitHandler(data: z.infer<typeof KlerosFormFieldSchema>) {
-    addFieldsHandler({
-      description: data.description,
-      label: data.name,
-      type: data.type as unknown as KLEROS_LIST_TYPES,
-      isIdentifier: false,
-    })
-    reset() // Clean the form data
+    field.onChange([
+      ...(field.value ? field.value : []),
+      {
+        description: data.description,
+        label: data.label,
+        type: data.type as unknown as KLEROS_LIST_TYPES,
+      },
+    ])
+    reset() // Reset fields data
   }
 
   return (
     <Box>
       <Box>
-        <CustomFormFromSchema
+        <CustomFormFromSchemaWithoutSubmit
           form={form}
           formProps={{
             buttonLabel: '+ Add Field',
@@ -100,7 +100,7 @@ export default function KlerosDynamicFieldsCreator() {
       {error && <FormStatus status={TextFieldStatus.error}>{error.errorMessage}</FormStatus>}
       <Box>
         <DndProvider backend={HTML5Backend}>
-          {fields.map((field, index) => renderFieldItem(field, index))}
+          {field?.value?.map((field, index) => renderFieldItem(field, index))}
         </DndProvider>
       </Box>
     </Box>
