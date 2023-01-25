@@ -80,33 +80,6 @@ const Register: NextPageWithLayout = () => {
         onSubmit={onSubmit}
         schema={RegisterCuratorSchema}
       />
-      {/* <Label>Name</Label>
-      <Row>
-        <Textfield onChange={(event) => setFormData({ namwe: event.target.value })} />
-      </Row>
-
-      <Label>Description</Label>
-      <Row>
-        <Textfield onChange={(event) => setFormData({ description: event.target.value })} />
-      </Row> */}
-
-      {/* <Formfield
-        formControl={
-          <Textfield
-            onChange={(event) => setFormData({ hash: event.target.value })}
-            value={formData.hash}
-          />
-        }
-        label="IPFS Hash"
-      /> */}
-
-      {/* <TxButton
-          disabled={false}
-          onSend={(tx) => tx && setFormData({ hash: '' })}
-          tx={() => theBadge.registerEmitter(address, formData.hash)}
-        >
-          Register
-        </TxButton> */}
     </>
   )
 }

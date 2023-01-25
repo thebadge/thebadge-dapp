@@ -6,6 +6,7 @@ import TxButton from '@/src/components/buttons/txButton'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { TheBadge__factory } from '@/types/generated/typechain'
+// import { generateKlerosListMetaEvidence } from '@/src/utils/kleros/generateKlerosListMetaEvidence'
 
 export default function RegisterEmitterForm() {
   const { address } = useWeb3Connection()
@@ -33,7 +34,7 @@ export default function RegisterEmitterForm() {
   //   ], // listItemInfo: MetadataColumn[],
   //   'https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png', // listLogoUri: string, upload logo provided to the user to IPFS and use that hash
   //   true, // requireRemovalEvidence: boolean,
-  //   true, // wrelTcrDisabled: boolean, // research about it
+  //   true, // relTcrDisabled: boolean, // research about it
   // )
 
   // console.log(JSON.stringify(registration))

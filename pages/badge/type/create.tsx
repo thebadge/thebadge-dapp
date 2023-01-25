@@ -2,12 +2,56 @@ import { ReactElement } from 'react'
 
 import { Typography } from '@mui/material'
 import { colors } from 'thebadge-ui-library'
+import { z } from 'zod'
 
 import { NextPageWithLayout } from '@/pages/_app'
-import KlerosDynamicFieldsCreator from '@/src/components/form/klerosDynamicFormField/FormFieldCreator'
+import { CustomFormFromSchema } from '@/src/components/form/CustomForm'
+import {
+  FileSchema,
+  ImageSchema,
+  LongTextSchema,
+} from '@/src/components/form/helpers/customSchemas'
 import { DefaultLayout } from '@/src/components/layout/BaseLayout'
+import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+import { generateKlerosListMetaEvidence } from '@/src/utils/kleros/generateKlerosListMetaEvidence'
 
-const Create: NextPageWithLayout = () => {
+export const BadgeTypeCreateSchema = z.object({
+  badgeTypeName: z.string().describe('Enter the name of this badge type // ??'),
+  badgeTypeDescription: LongTextSchema.describe('Enter a description for your badge type // ??'),
+  badgeName: z.string().describe('How are the badges users will mint be called? // ??'),
+  badgeNamePlural: z
+    .string()
+    .describe('How are the badges users will mint be called for plural? // ??'),
+  criteriaFileUri: FileSchema.describe(
+    'Upload a PDF file that describes the requirements to mint a badge. // ??',
+  ),
+  // listItemInfo: KlerosFieldTypeSchema,
+  listLogoUri: ImageSchema.describe(
+    'Upload a logo for your badge type, this logo will be used each time a user mints a badge. // ??',
+  ),
+})
+
+const CreateBadgeType: NextPageWithLayout = () => {
+  const { address } = useWeb3Connection()
+
+  const onSubmit = (data: z.infer<typeof BadgeTypeCreateSchema>) => {
+    const { clearing, registration } = generateKlerosListMetaEvidence(
+      'Github', // itemName: string,
+      'Github', // itemNamePlural: string,
+      'ipfs://QmXTYGaV23KCGN4PxP6R9GvTsyU4gi9X2ymarL2M1k1vju', // criteriaFileUri, this file is used to describe the requirements to mint a badge
+      'Github', //listName: string,
+      'Github badge types allows a Github user to claim ownership of a Github account', //listDescription: string,
+      [], // listItemInfo: MetadataColumn[],
+      'https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png', // listLogoUri: string, upload logo provided to the user to IPFS and use that hash
+      true, // requireRemovalEvidence: boolean,
+      true, // relTcrDisabled: boolean, // research about it
+    )
+
+    console.log(data)
+    console.log(clearing)
+    console.log(registration)
+  }
+
   return (
     <>
       <Typography color={colors.white} variant="h3">
@@ -18,13 +62,20 @@ const Create: NextPageWithLayout = () => {
         Please fulfill the form
       </Typography>
 
-      <KlerosDynamicFieldsCreator />
+      <CustomFormFromSchema
+        formProps={{
+          buttonDisabled: !address,
+          buttonLabel: address ? 'Register' : 'Connect wallet',
+        }}
+        onSubmit={onSubmit}
+        schema={BadgeTypeCreateSchema}
+      />
     </>
   )
 }
 
-Create.getLayout = function getLayout(page: ReactElement) {
+CreateBadgeType.getLayout = function getLayout(page: ReactElement) {
   return <DefaultLayout>{page}</DefaultLayout>
 }
 
-export default Create
+export default CreateBadgeType
