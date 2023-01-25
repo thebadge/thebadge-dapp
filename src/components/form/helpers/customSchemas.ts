@@ -2,6 +2,7 @@ import { createUniqueFieldSchema } from '@ts-react/form'
 import { isAddress } from 'ethers/lib/utils'
 import { z } from 'zod'
 
+import { KlerosFormFieldSchema } from '@/src/components/form/klerosDynamicFormField/FormFieldCreator'
 import { KLEROS_LIST_TYPES_KEYS } from '@/src/utils/kleros/types'
 
 // Why we need these schemas?
@@ -70,7 +71,15 @@ export const FileSchema = createUniqueFieldSchema(
   'FileSchema',
 )
 
-export const FieldTypeSchema = createUniqueFieldSchema(
+export const KlerosFieldTypeSchema = createUniqueFieldSchema(
   z.enum(KLEROS_LIST_TYPES_KEYS),
   'FieldTypeSchema',
+)
+
+export const KlerosDynamicFields = createUniqueFieldSchema(
+  z
+    .array(KlerosFormFieldSchema)
+    .min(1, 'Must provide at least one field.')
+    .max(20, `Can't add more than twenty (20)`),
+  'KlerosDynamicFields',
 )

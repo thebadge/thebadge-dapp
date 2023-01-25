@@ -9,12 +9,14 @@ import TextArea from '@/src/components/form/TextArea'
 import {
   AddressSchema,
   CheckBoxSchema,
-  FieldTypeSchema,
   FileSchema,
   ImageSchema,
+  KlerosDynamicFields,
+  KlerosFieldTypeSchema,
   LongTextSchema,
   NumberSchema,
 } from '@/src/components/form/helpers/customSchemas'
+import KlerosDynamicFieldsCreator from '@/src/components/form/klerosDynamicFormField/FormFieldCreator'
 
 // Create the mapping btw each schema type to the React component used for it
 export const mappingSchemaToComponents = [
@@ -25,6 +27,7 @@ export const mappingSchemaToComponents = [
   [LongTextSchema, TextArea],
   [ImageSchema, ImageInput],
   [FileSchema, ImageInput],
-  [FieldTypeSchema, DropdownSelect],
+  [KlerosFieldTypeSchema, DropdownSelect],
+  [KlerosDynamicFields, KlerosDynamicFieldsCreator],
   // TODO Add file types
 ] as const // 👈 `as const` is necessary
