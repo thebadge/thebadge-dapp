@@ -2,7 +2,6 @@ import { createUniqueFieldSchema } from '@ts-react/form'
 import { isAddress } from 'ethers/lib/utils'
 import { z } from 'zod'
 
-import { KlerosFormFieldSchema } from '@/src/components/form/klerosDynamicFormField/FormFieldCreator'
 import { KLEROS_LIST_TYPES_KEYS } from '@/src/utils/kleros/types'
 
 // Why we need these schemas?
@@ -75,6 +74,16 @@ export const KlerosFieldTypeSchema = createUniqueFieldSchema(
   z.enum(KLEROS_LIST_TYPES_KEYS),
   'FieldTypeSchema',
 )
+
+// Schema used to generate a form inside the KlerosDynamicFields handler and also
+// to create the KlerosDynamicFields Unique field
+export const KlerosFormFieldSchema = z.object({
+  name: z.string().describe('Name // Field name that the user will be when they create the badge.'),
+  description: z
+    .string()
+    .describe('Description // Field description that explains what the field data is'),
+  type: KlerosFieldTypeSchema.describe('Field Type // Type of the required data'),
+})
 
 export const KlerosDynamicFields = createUniqueFieldSchema(
   z

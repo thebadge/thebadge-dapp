@@ -11,17 +11,12 @@ import { z } from 'zod'
 import { CustomFormFromSchema } from '@/src/components/form/CustomForm'
 import { TextFieldStatus } from '@/src/components/form/TextField'
 import { FormStatus } from '@/src/components/form/helpers/FormStatus'
-import { KlerosFieldTypeSchema } from '@/src/components/form/helpers/customSchemas'
+import {
+  KlerosFieldTypeSchema,
+  KlerosFormFieldSchema,
+} from '@/src/components/form/helpers/customSchemas'
 import FormFieldItem from '@/src/components/form/klerosDynamicFormField/FormFieldItem'
 import { KLEROS_LIST_TYPES, KLEROS_LIST_TYPES_KEYS, MetadataColumn } from '@/src/utils/kleros/types'
-
-export const KlerosFormFieldSchema = z.object({
-  name: z.string().describe('Name // Field name that the user will be when they create the badge.'),
-  description: z
-    .string()
-    .describe('Description // Field description that explains what the field data is'),
-  type: KlerosFieldTypeSchema.describe('Field Type // Type of the required data'),
-})
 
 export default function KlerosDynamicFieldsCreator() {
   const { error, field } = useTsController<MetadataColumn[]>()
