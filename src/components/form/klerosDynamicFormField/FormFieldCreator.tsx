@@ -17,7 +17,7 @@ import {
   KlerosFormFieldSchema,
 } from '@/src/components/form/helpers/customSchemas'
 import FormFieldItem from '@/src/components/form/klerosDynamicFormField/FormFieldItem'
-import { KLEROS_LIST_TYPES, KLEROS_LIST_TYPES_KEYS } from '@/src/utils/kleros/types'
+import { KLEROS_LIST_TYPES, KLEROS_LIST_TYPES_KEYS } from '@/types/kleros/types'
 
 export default function KlerosDynamicFieldsCreator() {
   const { error, field } = useTsController<z.infer<typeof KlerosDynamicFields>>()
@@ -65,7 +65,9 @@ export default function KlerosDynamicFieldsCreator() {
         />
       )
       // eslint-disable-next-line
-  }, [])
+    },
+    [],
+  )
 
   function submitHandler(data: z.infer<typeof KlerosFormFieldSchema>) {
     field.onChange([

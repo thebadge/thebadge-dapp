@@ -8,7 +8,7 @@ import {
   LongTextSchema,
   NumberSchema,
 } from '@/src/components/form/helpers/customSchemas'
-import { KLEROS_LIST_TYPES, MetadataColumn } from '@/src/utils/kleros/types'
+import { KLEROS_LIST_TYPES, MetadataColumn } from '@/types/kleros/types'
 
 const zAddress = AddressSchema
 const zNumber = NumberSchema

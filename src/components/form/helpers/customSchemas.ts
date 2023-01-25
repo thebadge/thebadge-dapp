@@ -2,7 +2,7 @@ import { createUniqueFieldSchema } from '@ts-react/form'
 import { isAddress } from 'ethers/lib/utils'
 import { z } from 'zod'
 
-import { KLEROS_LIST_TYPES_KEYS } from '@/src/utils/kleros/types'
+import { KLEROS_LIST_TYPES_KEYS } from '@/types/kleros/types'
 
 // Why we need these schemas?
 // https://github.com/iway1/react-ts-form#dealing-with-collisions

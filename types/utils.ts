@@ -81,3 +81,5 @@ export type BackendResponse<T> = {
   message?: string
   result: null | T
 }
+
+export type BackendFileUpload = { mimeType: string; base64File: string }
