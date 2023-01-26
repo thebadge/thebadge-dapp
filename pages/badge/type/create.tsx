@@ -1,7 +1,7 @@
 import { ReactElement } from 'react'
 
 import { Typography } from '@mui/material'
-import { BigNumber, constants } from 'ethers'
+import { constants } from 'ethers'
 import { defaultAbiCoder, parseUnits } from 'ethers/lib/utils'
 import { colors } from 'thebadge-ui-library'
 import { z } from 'zod'
@@ -13,7 +13,6 @@ import {
   ImageSchema,
   KlerosDynamicFields,
   LongTextSchema,
-  TokenInputSchema,
 } from '@/src/components/form/helpers/customSchemas'
 import { isMetadataColumnArray } from '@/src/components/form/helpers/validators'
 import { DefaultLayout } from '@/src/components/layout/BaseLayout'
