@@ -31,7 +31,7 @@ export const AddressSchema = createUniqueFieldSchema(
 )
 
 export const TokenInputSchema = createUniqueFieldSchema(
-  z.string({ required_error: 'Is required' }).min(1, { message: '' }),
+  z.string({ required_error: 'Is required' }),
   'TokenInputSchema',
 )
 
