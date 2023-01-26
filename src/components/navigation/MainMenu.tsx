@@ -271,7 +271,7 @@ export const MainMenu: React.FC = ({ ...restProps }) => {
   const renderMenuItem = (item: MenuItem, itemIndex: number): React.ReactNode => {
     return (
       (item.validation === undefined || item.validation) && (
-        <MenuItemContainer type={item.type}>
+        <MenuItemContainer key={'menuItem-' + itemIndex} type={item.type}>
           <MenuItem
             disabled={!!item.disabled}
             onClick={async () => await onMenuItemClick(item, itemIndex)}
