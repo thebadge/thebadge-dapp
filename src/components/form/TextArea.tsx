@@ -23,7 +23,6 @@ export default function TextArea() {
     field.onChange(e.target.value)
   }
 
-  console.log(label)
   return (
     <StyledTextField
       color="secondary"
