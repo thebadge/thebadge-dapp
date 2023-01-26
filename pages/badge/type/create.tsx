@@ -40,7 +40,7 @@ export const BadgeTypeCreateSchema = z.object({
       'Challenge period duration // During this time the community can analyze the evidence and challenge it.',
     ),
   // TODO: add rigorousness component. It can be a radio button for now with three options basic, medium, heavy. Later we can migrate to a slider
-  // the values for each option should be 1, 2 and 3 respectively (check base deposit on how it will impact.)
+  // the values for each option should be 1.5, 2 and 3 respectively (check base deposit on how it will impact.)
   rigorousness: z
     .number()
     .min(1)
@@ -119,8 +119,8 @@ const CreateBadgeType: NextPageWithLayout = () => {
           `ipfs://${clearingIPFSUploaded.result?.ipfsHash}`, // clearing file
           data.challengePeriodDuration, // challengePeriodDuration:
           [
-            baseDeposit.mul(data.rigorousness).toString(), // jurors * fee per juror + rigorousness
-            baseDeposit.toString(), // The base deposit to remove an item.
+            baseDeposit.add(klerosCourtInfo.feeForJuror.mul(data.rigorousness)).toString(), // jurors * fee per juror + rigorousness
+            baseDeposit.add(klerosCourtInfo.feeForJuror.mul(data.rigorousness)).toString(), // The base deposit to remove an item.
             baseDeposit.div(2).toString(), // The base deposit to challenge a submission.
             baseDeposit.div(4).toString(), // The base deposit to challenge a removal request.
           ], // baseDeposits:
