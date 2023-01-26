@@ -1,4 +1,5 @@
 import ERC20 from './abis/ERC20.json'
+import Kleros from './abis/Kleros.json'
 import KlerosBadgeTypeController from './abis/KlerosBadgeTypeController.json'
 import TheBadge from './abis/TheBadge.json'
 import { Chains } from '@/src/config/web3'
@@ -15,6 +16,12 @@ export const contracts = {
       [Chains.goerli]: '0xBAE7c07155bA9A789a2fD0f6194c89Bc373838ca',
     },
     abi: KlerosBadgeTypeController,
+  },
+  Kleros: {
+    address: {
+      [Chains.goerli]: '0x1128ed55ab2d796fa92d2f8e1f336d745354a77a',
+    },
+    abi: Kleros,
   },
   DAI: {
     address: {

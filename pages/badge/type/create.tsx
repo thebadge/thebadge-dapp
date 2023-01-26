@@ -1,7 +1,7 @@
 import { ReactElement } from 'react'
 
 import { Typography } from '@mui/material'
-import { constants } from 'ethers'
+import { BigNumber, constants } from 'ethers'
 import { defaultAbiCoder, parseUnits } from 'ethers/lib/utils'
 import { colors } from 'thebadge-ui-library'
 import { z } from 'zod'
@@ -13,14 +13,16 @@ import {
   ImageSchema,
   KlerosDynamicFields,
   LongTextSchema,
+  TokenInputSchema,
 } from '@/src/components/form/helpers/customSchemas'
 import { isMetadataColumnArray } from '@/src/components/form/helpers/validators'
 import { DefaultLayout } from '@/src/components/layout/BaseLayout'
+import { contracts } from '@/src/contracts/contracts'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import ipfsUpload from '@/src/utils/ipfsUpload'
 import { generateKlerosListMetaEvidence } from '@/src/utils/kleros/generateKlerosListMetaEvidence'
-import { TheBadge__factory } from '@/types/generated/typechain'
+import { Kleros__factory, TheBadge__factory } from '@/types/generated/typechain'
 
 export const BadgeTypeCreateSchema = z.object({
   badgeTypeName: z.string().describe('name // ??'),
@@ -38,13 +40,20 @@ export const BadgeTypeCreateSchema = z.object({
     .describe(
       'Challenge period duration // During this time the community can analyze the evidence and challenge it.',
     ),
+  // TODO: add rigorousness component. It can be a radio button for now with three options basic, medium, heavy. Later we can migrate to a slider
+  // the values for each option should be 1, 2 and 3 respectively (check base deposit on how it will impact.)
+  rigorousness: z
+    .number()
+    .min(1)
+    .max(3)
+    .describe('Rigorousness // How rigorous the emission of badges should be'),
   badgeMetadataColumns: KlerosDynamicFields.describe(
     'Evidence fields // List of fields that the user will need to provider to be able to mint this badge type.',
   ),
 })
 
 const CreateBadgeType: NextPageWithLayout = () => {
-  const { address } = useWeb3Connection()
+  const { address, appChainId, readOnlyAppProvider } = useWeb3Connection()
   const theBadge = useContractInstance(TheBadge__factory, 'TheBadge')
 
   const onSubmit = async (data: z.infer<typeof BadgeTypeCreateSchema>) => {
@@ -80,6 +89,13 @@ const CreateBadgeType: NextPageWithLayout = () => {
       attributes: JSON.stringify(clearing),
     })
 
+    const kleros = Kleros__factory.connect(
+      contracts.Kleros.address[appChainId],
+      readOnlyAppProvider,
+    )
+    const klerosCourtInfo = await kleros.courts(0)
+    const baseDeposit = klerosCourtInfo.feeForJuror.mul(data.numberOfJurors)
+
     const klerosControllerDataEncoded = defaultAbiCoder.encode(
       [
         `tuple(
@@ -99,15 +115,15 @@ const CreateBadgeType: NextPageWithLayout = () => {
           address as string, // governor
           constants.AddressZero, // admin
           0, // courtId, Fixed for now. Let's use General court
-          1, // numberOfJurors:
+          data.numberOfJurors, // numberOfJurors:
           `ipfs://${registrationIPFSUploaded.result?.ipfsHash}`, // registration file
           `ipfs://${clearingIPFSUploaded.result?.ipfsHash}`, // clearing file
-          10, // challengePeriodDuration:
+          data.challengePeriodDuration, // challengePeriodDuration:
           [
-            0,
-            parseUnits('0.01', 18).toString(),
-            parseUnits('0.01', 18).toString(),
-            parseUnits('0.01', 18).toString(),
+            baseDeposit.mul(data.rigorousness).toString(), // jurors * fee per juror + rigorousness
+            baseDeposit.toString(), // The base deposit to remove an item.
+            baseDeposit.div(2).toString(), // The base deposit to challenge a submission.
+            baseDeposit.div(4).toString(), // The base deposit to challenge a removal request.
           ], // baseDeposits:
           [100, 100, 100], // stakeMultipliers:
         ],
@@ -116,7 +132,7 @@ const CreateBadgeType: NextPageWithLayout = () => {
 
     return theBadge.createBadgeType(
       {
-        metadata: 'ipfs://QmZrfVxGCo3L6qUeg7C1RXqCRDrzMkMeDNXUcBg9Yxrtaa', // TODO: check what info we need to define
+        metadata: 'ipfs://QmZrfVxGCo3L6qUeg7C1RXqCRDrzMkMeDNXUcBg9Yxrtaa', // TODO: should we use a custom one? or the one for TCR is ok?
         controllerName: 'kleros',
         mintCost: parseUnits('0.1', 18),
         mintFee: parseUnits('0.1', 18),
