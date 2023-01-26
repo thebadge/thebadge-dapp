@@ -213,8 +213,8 @@ export const MainMenu: React.FC = ({ ...restProps }) => {
           minHeight: 0,
           margin: 0,
           '& .Mui-expanded': {
-            margin: 0,
-            minHeight: 0,
+            margin: '0 !important',
+            minHeight: '0 !important',
           },
         }}
       >
@@ -226,8 +226,8 @@ export const MainMenu: React.FC = ({ ...restProps }) => {
             minHeight: 0,
             margin: 0,
             '& .MuiAccordionSummary-content, & .Mui-expanded': {
-              margin: 0,
-              minHeight: 0,
+              margin: '0 !important',
+              minHeight: '0 !important',
             },
           }}
         >
