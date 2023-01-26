@@ -1,6 +1,6 @@
 import { Box, styled } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
-import { LogoTheBadgeWithText, gradients } from 'thebadge-ui-library'
+import { LogoTheBadgeWithText } from 'thebadge-ui-library'
 
 import ConnectWalletButton from '@/src/components/header/ConnectWalletButton'
 import { UserDropdown } from '@/src/components/header/UserDropdown'

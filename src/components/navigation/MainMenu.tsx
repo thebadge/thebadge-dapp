@@ -2,14 +2,7 @@ import { useRouter } from 'next/router'
 import { useState } from 'react'
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Fade,
-  Typography,
-  styled,
-} from '@mui/material'
+import { Accordion, AccordionDetails, AccordionSummary, Fade, styled } from '@mui/material'
 
 import { useMainMenuItems } from '@/src/components/navigation/MainMenu.config'
 import { MenuItem, MenuItemElement, SubMenuItem } from '@/src/components/navigation/MainMenu.types'
