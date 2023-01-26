@@ -30,6 +30,11 @@ export const AddressSchema = createUniqueFieldSchema(
   'AddressSchema',
 )
 
+export const TokenInputSchema = createUniqueFieldSchema(
+  z.string({ required_error: 'Is required' }).min(1, { message: '' }),
+  'TokenInputSchema',
+)
+
 export const NumberSchema = createUniqueFieldSchema(
   z.number({
     required_error: 'Is required',
@@ -62,6 +67,7 @@ export const ImageSchema = createUniqueFieldSchema(
     ),
   'ImageSchema',
 )
+
 export const FileSchema = createUniqueFieldSchema(
   z
     .any()
@@ -83,8 +89,8 @@ export const KlerosFormFieldSchema = z.object({
     .describe('Name // Field name that the user will be when they create the badge.'),
   description: z
     .string()
-    .describe('Description // Field description that explains what the field data is'),
-  type: KlerosFieldTypeSchema.describe('Field Type // Type of the required data'),
+    .describe('Description // Field description that explains what the field data is.'),
+  type: KlerosFieldTypeSchema.describe('Field Type // Type of the required data.'),
 })
 
 export const KlerosDynamicFields = createUniqueFieldSchema(

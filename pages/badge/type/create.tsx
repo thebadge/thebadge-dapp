@@ -14,6 +14,7 @@ import {
   KlerosDynamicFields,
   LongTextSchema,
 } from '@/src/components/form/helpers/customSchemas'
+import { isMetadataColumnArray } from '@/src/components/form/helpers/validators'
 import { DefaultLayout } from '@/src/components/layout/BaseLayout'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
@@ -48,14 +49,25 @@ const CreateBadgeType: NextPageWithLayout = () => {
 
   const onSubmit = async (data: z.infer<typeof BadgeTypeCreateSchema>) => {
     console.log(data)
+    const {
+      badgeMetadataColumns,
+      badgeName,
+      badgeTypeDescription,
+      badgeTypeLogoUri,
+      badgeTypeName,
+      criteriaFileUri,
+    } = data
+
+    // Safe-ward to infer MetadataColumn[], It will never go throw the return
+    if (!isMetadataColumnArray(badgeMetadataColumns)) return
 
     const { clearing, registration } = generateKlerosListMetaEvidence(
-      data.badgeName, //badgeName
-      { mimeType: data.criteriaFileUri!.file.type, base64File: data.criteriaFileUri!.data_url }, //criteriaFileUri
-      data.badgeTypeName, //badgeTypeName
-      data.badgeTypeDescription, //badgeTypeDescription
-      data.badgeMetadataColumns as any, //badgeMetadataColumns
-      { mimeType: data.badgeTypeLogoUri!.file.type, base64File: data.badgeTypeLogoUri!.data_url }, //badgeTypeLogoUri
+      badgeName, //badgeName
+      { mimeType: criteriaFileUri?.file.type, base64File: criteriaFileUri?.data_url }, //criteriaFileUri
+      badgeTypeName, //badgeTypeName
+      badgeTypeDescription, //badgeTypeDescription
+      badgeMetadataColumns, //badgeMetadataColumns
+      { mimeType: badgeTypeLogoUri?.file.type, base64File: badgeTypeLogoUri?.data_url }, //badgeTypeLogoUri
     )
 
     console.log(registration)

@@ -6,6 +6,7 @@ import DropdownSelect from '@/src/components/form/DropdownSelect'
 import ImageInput from '@/src/components/form/ImageInput'
 import NumberField from '@/src/components/form/NumberField'
 import TextArea from '@/src/components/form/TextArea'
+import TokenInput from '@/src/components/form/TokenInput'
 import {
   AddressSchema,
   CheckBoxSchema,
@@ -15,6 +16,7 @@ import {
   KlerosFieldTypeSchema,
   LongTextSchema,
   NumberSchema,
+  TokenInputSchema,
 } from '@/src/components/form/helpers/customSchemas'
 import KlerosDynamicFieldsCreator from '@/src/components/form/klerosDynamicFormField/FormFieldCreator'
 
@@ -27,6 +29,7 @@ export const mappingSchemaToComponents = [
   [LongTextSchema, TextArea],
   [ImageSchema, ImageInput],
   [FileSchema, ImageInput],
+  [TokenInputSchema, TokenInput],
   [KlerosFieldTypeSchema, DropdownSelect],
   [KlerosDynamicFields, KlerosDynamicFieldsCreator],
   // TODO Add file types

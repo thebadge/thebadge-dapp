@@ -50,6 +50,7 @@ export default function KlerosDynamicFieldsCreator() {
         }),
       )
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [field],
   )
 
@@ -64,9 +65,8 @@ export default function KlerosDynamicFieldsCreator() {
           removeItem={() => removeField(index)}
         />
       )
-      // eslint-disable-next-line
     },
-    [],
+    [moveField, removeField],
   )
 
   function submitHandler(data: z.infer<typeof KlerosFormFieldSchema>) {
