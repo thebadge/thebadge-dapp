@@ -1,13 +1,21 @@
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 
-import { Fade, styled } from '@mui/material'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Fade,
+  Typography,
+  styled,
+} from '@mui/material'
 
+import { useMainMenuItems } from '@/src/components/navigation/MainMenu.config'
 import { MenuItem, MenuItemElement, SubMenuItem } from '@/src/components/navigation/MainMenu.types'
 import {
   getMenuItemBackgroundColor,
   getMenuItemHoverBackgroundColor,
-  useMainMenuItems,
 } from '@/src/components/navigation/MainMenu.utils'
 import { useSectionReferences } from '@/src/providers/referencesProvider'
 
@@ -195,6 +203,71 @@ export const MainMenu: React.FC = ({ ...restProps }) => {
     await onItemClick(item)
   }
 
+  const renderSubItemWithSubItems = (subItem: SubMenuItem): React.ReactNode => {
+    return (
+      <Accordion
+        sx={{
+          color: 'inherit',
+          backgroundColor: 'inherit',
+          boxShadow: 0,
+          minHeight: 0,
+          margin: 0,
+          '& .Mui-expanded': {
+            margin: 0,
+            minHeight: 0,
+          },
+        }}
+      >
+        <AccordionSummary
+          aria-controls="content"
+          expandIcon={<ExpandMoreIcon htmlColor={'#4f4f4f'} sx={{ width: 16, height: 16 }} />}
+          sx={{
+            padding: 0,
+            minHeight: 0,
+            margin: 0,
+            '& .MuiAccordionSummary-content, & .Mui-expanded': {
+              margin: 0,
+              minHeight: 0,
+            },
+          }}
+        >
+          {subItem.title}
+        </AccordionSummary>
+        <AccordionDetails sx={{ minHeight: 0, margin: 0, padding: '1rem 0 0 1rem' }}>
+          {subItem.subItems?.map((subItemSubItem, subItemSubItemIndex) => (
+            <SubMenuItem
+              key={'subItem-' + subItemSubItem + '-subItemSubItem-' + subItemSubItemIndex}
+              onClick={async () => await onItemClick(subItemSubItem)}
+            >
+              {subItemSubItem.title}
+            </SubMenuItem>
+          ))}
+        </AccordionDetails>
+      </Accordion>
+    )
+  }
+
+  const renderSubItems = (item: MenuItem, itemIndex: number): React.ReactNode => {
+    return (
+      <Fade in={selectedElement === itemIndex}>
+        <SubMenuContainer type={item.type}>
+          <SubMenuTitleItem onClick={async () => await onItemClick(item)}>
+            {item.title}
+          </SubMenuTitleItem>
+
+          {item.subItems?.map((subItem, subItemIndex) => (
+            <SubMenuItem
+              key={'item-' + itemIndex + '-subItem-' + subItemIndex}
+              onClick={async () => await onItemClick(subItem)}
+            >
+              {subItem.subItems ? renderSubItemWithSubItems(subItem) : subItem.title}
+            </SubMenuItem>
+          ))}
+        </SubMenuContainer>
+      </Fade>
+    )
+  }
+
   const renderMenuItem = (item: MenuItem, itemIndex: number): React.ReactNode => {
     return (
       (item.validation === undefined || item.validation) && (
@@ -207,23 +280,7 @@ export const MainMenu: React.FC = ({ ...restProps }) => {
           >
             {item.icon}
           </MenuItem>
-          {item.subItems && selectedElement === itemIndex ? (
-            <Fade in={selectedElement === itemIndex}>
-              <SubMenuContainer type={item.type}>
-                <SubMenuTitleItem onClick={async () => await onItemClick(item)}>
-                  {item.title}
-                </SubMenuTitleItem>
-                {item.subItems.map((subItem, subItemIndex) => (
-                  <SubMenuItem
-                    key={'item-' + itemIndex + '-subItem-' + subItemIndex}
-                    onClick={async () => await onItemClick(subItem)}
-                  >
-                    {subItem.title}
-                  </SubMenuItem>
-                ))}
-              </SubMenuContainer>
-            </Fade>
-          ) : null}
+          {item.subItems && selectedElement === itemIndex ? renderSubItems(item, itemIndex) : null}
         </MenuItemContainer>
       )
     )
