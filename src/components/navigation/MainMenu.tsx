@@ -15,8 +15,8 @@ import { useSectionReferences } from '@/src/providers/referencesProvider'
 const MenuContainer = styled('div')(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
-  background: '#F4F4F4',
-  boxShadow: '0px 0px 6px rgba(0, 0, 0, 0.3)',
+  background: theme.palette.background.default,
+  boxShadow: `0px 0px 6px ${theme.palette.mainMenu.boxShadow.default}`,
   borderRadius: '0px 20px 0px 0px',
   padding: '3rem 1rem',
   gap: '2.5rem',
@@ -93,7 +93,7 @@ const MenuItem = styled('div')<MenuItemElement>(({ disabled, selected, theme, ty
         width: '1.5rem',
         height: '1.5rem',
         borderRadius: '0.75rem',
-        border: '1px solid #1C1B1F',
+        border: `1px solid ${theme.palette.mainMenu.itemBorder.default}`,
       }
     : {
         width: '3rem',
@@ -110,7 +110,7 @@ const MenuItem = styled('div')<MenuItemElement>(({ disabled, selected, theme, ty
 
   ...(selected
     ? {
-        border: '1px solid #1C1B1F',
+        border: `1px solid ${theme.palette.mainMenu.itemBorder.default}`,
       }
     : null),
 
@@ -128,9 +128,9 @@ const SubMenuTitleItem = styled('div')(({ theme }) => ({
   fontSize: '12px',
   lineHeight: '15px',
   textTransform: 'uppercase',
-  color: '#000000',
+  color: `${theme.palette.text.primary}`,
   paddingBottom: '0.5rem',
-  borderBottom: '1px solid #000000',
+  borderBottom: `1px solid ${theme.palette.text.primary}`,
 
   '&:hover': {
     opacity: 0.7,
@@ -148,7 +148,7 @@ const SubMenuItem = styled('div')(({ theme }) => ({
   paddingBottom: '0.5rem',
 
   '&:hover': {
-    color: '#000000',
+    color: `${theme.palette.text.primary}`,
   },
 }))
 
@@ -205,6 +205,7 @@ export const MainMenu: React.FC = ({ ...restProps }) => {
           boxShadow: 0,
           minHeight: 0,
           margin: 0,
+          backgroundImage: 'none',
           '& .Mui-expanded': {
             margin: '0 !important',
             minHeight: '0 !important',

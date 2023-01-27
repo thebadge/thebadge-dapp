@@ -1,8 +1,11 @@
+import { useColorMode } from "@/src/providers/themeProvider";
+import { getTheme } from "@/src/theme/theme";
 import { Box, Container, styled } from '@mui/material'
 import Headroom from 'react-headroom'
 
 import Header from '@/src/components/header/Header'
 import { MainMenu } from '@/src/components/navigation/MainMenu'
+import { BackgroundGradient } from "thebadge-ui-library";
 
 const Content = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -34,23 +37,29 @@ const NavigationRoom = styled(Box)(({ theme }) => ({
 }))
 
 export const DefaultLayout = ({ children }: DefaultLayoutProps) => {
+  const { mode } = useColorMode()
+  const theme = getTheme(mode)
   return (
     <>
-      <Container sx={{ flex: 1 }}>
-        <Content>
-          <Headroom
-            style={{
-              transition: 'all .5s cubic-bezier(0.83, 0, 0.17, 1)',
-            }}
-          >
-            <Header />
-          </Headroom>
+      <Content>
+        <Headroom
+          style={{
+            transition: 'all .5s cubic-bezier(0.83, 0, 0.17, 1)',
+            background: '#000000'
+          }}
+        >
+          <Container sx={{ flex: 1 }}>
+          <Header />
+          </Container>
+        </Headroom>
+        <BackgroundGradient gradient={theme.palette?.backgroundGradient[mode]} />
+        <Container sx={{ flex: 1 }}>
           <NavigationRoom>
             <MainMenu />
             <Container>{children}</Container>
           </NavigationRoom>
-        </Content>
-      </Container>
+        </Container>
+      </Content>
     </>
   )
 }

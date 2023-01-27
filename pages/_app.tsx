@@ -1,3 +1,5 @@
+import themeProvider, { useColorMode } from "@/src/providers/themeProvider";
+import { getTheme } from "@/src/theme/theme";
 import type { NextPage } from 'next'
 import type { AppProps } from 'next/app'
 import dynamic from 'next/dynamic'
@@ -9,7 +11,6 @@ import { styled } from '@mui/material'
 import { Box } from '@mui/material'
 import { GoogleAnalytics } from 'nextjs-google-analytics'
 import { SWRConfig } from 'swr'
-import { BackgroundGradient, gradients } from 'thebadge-ui-library'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { Footer } from '@/src/components/layout/Footer'
@@ -81,7 +82,6 @@ export default function App({
                   <SectionReferencesProvider>
                     <TransactionNotificationProvider>
                       <CookiesWarningProvider>
-                        <BackgroundGradient gradient={gradients.gradientBackground} />
                         <Container>{getLayout(<Component {...pageProps} />)}</Container>
                         <Footer />
                       </CookiesWarningProvider>

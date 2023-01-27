@@ -14,8 +14,8 @@ const HeaderContainer = styled(Box)(({ theme }) => ({
   position: 'relative',
   left: '50%',
   transform: 'translateX(-50%)',
-  paddingTop: theme.spacing(4),
-  paddingBottom: theme.spacing(1),
+  paddingTop: theme.spacing(2),
+  paddingBottom: theme.spacing(2),
   paddingLeft: '5%',
   paddingRight: 'calc(5% - 16px)',
   [theme.breakpoints.up('xl')]: {
@@ -41,7 +41,7 @@ const Header = () => {
           flex: 1,
         }}
       >
-        <LogoTheBadgeWithText size={212} />
+        <LogoTheBadgeWithText size={92} />
       </Box>
       <Box display="flex">
         <WrongNetwork />
