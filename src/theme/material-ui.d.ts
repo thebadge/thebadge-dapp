@@ -1,4 +1,5 @@
 import '@mui/material/styles/createPalette';
+import { TBPaletteColorOptions } from "@/src/theme/theme";
 import {
   PaletteColorOptions,
   SimplePaletteColorOptions,
@@ -79,6 +80,11 @@ declare module '@mui/material/styles' {
     white: SimplePaletteColorOptions;
     deepPurple: SimplePaletteColorOptions;
     darkBlue: SimplePaletteColorOptions;
+    backgroundGradient: SimplePaletteColorOptions;
+    mainMenu: {
+      boxShadow: SimplePaletteColorOptions;
+      itemBorder: SimplePaletteColorOptions;
+    }
   }
 
   // allow configuration using `createTheme`
@@ -91,6 +97,11 @@ declare module '@mui/material/styles' {
     white: PaletteColorOptions;
     deepPurple: PaletteColorOptions;
     darkBlue: PaletteColorOptions;
+    backgroundGradient: PaletteColorOptions;
+    mainMenu: {
+      boxShadow: PaletteColorOptions;
+      itemBorder: PaletteColorOptions;
+    }
   }
 
   export interface Theme {

@@ -11,30 +11,10 @@ const mulishFont = Mulish({
 const gradientLight =
   'linear-gradient(180deg, rgba(137, 28, 251, 0.2475) -13.61%, rgba(255, 255, 255, 0.254) 40.93%, rgba(255, 255, 255, 0.55) 82.02%, rgba(255, 255, 255, 0.75) 129.84%)'
 
-export interface TBPaletteColorOptions {
-  default?: string
-  light?: string
-  dark?: string
-  contrastText?: string
-}
-
-interface TBPaletteExtensions {
-  backgroundGradient: TBPaletteColorOptions
-  mainMenu: {
-    boxShadow: TBPaletteColorOptions
-    itemBorder: TBPaletteColorOptions
-  }
-}
-
-declare module '@mui/material/styles' {
-  type Palette = Palette & TBPaletteExtensions
-  type PaletteOptions = TBPaletteColorOptions
-}
-
 export const getTheme = (mode?: PaletteMode): ThemeOptions => ({
   ...defaultTheme,
   palette: {
-    mode: 'dark', // TODO Temporal fix until we update the lib
+    mode,
     ...defaultTheme.palette,
     text: {
       primary: mode === 'light' ? '#000000' : '#ffffff',
@@ -45,16 +25,16 @@ export const getTheme = (mode?: PaletteMode): ThemeOptions => ({
       default: mode === 'light' ? '#F4F4F4' : '#000000',
     },
     backgroundGradient: {
-      default: gradientLight,
+      main: gradientLight,
       light: gradientLight,
       dark: gradients.gradientBackground,
     },
     mainMenu: {
       boxShadow: {
-        default: mode === 'light' ? 'rgba(0, 0, 0, 0.3)' : 'rgba(255, 255, 255, 0.25)',
+        main: mode === 'light' ? 'rgba(0, 0, 0, 0.3)' : 'rgba(255, 255, 255, 0.25)',
       },
       itemBorder: {
-        default: mode === 'light' ? '#1C1B1F' : '#ffffff',
+        main: mode === 'light' ? '#1C1B1F' : '#ffffff',
       },
     },
   },

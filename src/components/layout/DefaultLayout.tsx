@@ -1,4 +1,5 @@
 import { Box, Container, styled } from '@mui/material'
+import { PaletteColorOptions } from '@mui/material/styles/createPalette'
 import Headroom from 'react-headroom'
 import { BackgroundGradient } from 'thebadge-ui-library'
 
@@ -52,7 +53,9 @@ export const DefaultLayout = ({ children }: DefaultLayoutProps) => {
             <Header />
           </Container>
         </Headroom>
-        <BackgroundGradient gradient={theme.palette?.backgroundGradient[mode]} />
+        <BackgroundGradient
+          gradient={theme.palette?.backgroundGradient[mode as keyof PaletteColorOptions]}
+        />
         <Container sx={{ flex: 1 }}>
           <NavigationRoom>
             <MainMenu />

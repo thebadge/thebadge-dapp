@@ -16,7 +16,7 @@ const MenuContainer = styled('div')(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   background: theme.palette.background.default,
-  boxShadow: `0px 0px 6px ${theme.palette.mainMenu.boxShadow.default}`,
+  boxShadow: `0px 0px 6px ${theme.palette.mainMenu.boxShadow.main}`,
   borderRadius: '0px 20px 0px 0px',
   padding: '3rem 1rem',
   gap: '2.5rem',
@@ -93,7 +93,7 @@ const MenuItem = styled('div')<MenuItemElement>(({ disabled, selected, theme, ty
         width: '1.5rem',
         height: '1.5rem',
         borderRadius: '0.75rem',
-        border: `1px solid ${theme.palette.mainMenu.itemBorder.default}`,
+        border: `1px solid ${theme.palette.mainMenu.itemBorder.main}`,
       }
     : {
         width: '3rem',
@@ -110,7 +110,7 @@ const MenuItem = styled('div')<MenuItemElement>(({ disabled, selected, theme, ty
 
   ...(selected
     ? {
-        border: `1px solid ${theme.palette.mainMenu.itemBorder.default}`,
+        border: `1px solid ${theme.palette.mainMenu.itemBorder.main}`,
       }
     : null),
 
