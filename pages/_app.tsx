@@ -1,5 +1,3 @@
-import themeProvider, { useColorMode } from "@/src/providers/themeProvider";
-import { getTheme } from "@/src/theme/theme";
 import type { NextPage } from 'next'
 import type { AppProps } from 'next/app'
 import dynamic from 'next/dynamic'
