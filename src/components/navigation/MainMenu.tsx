@@ -2,7 +2,14 @@ import { useRouter } from 'next/router'
 import { useState } from 'react'
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import { Accordion, AccordionDetails, AccordionSummary, Fade, styled } from '@mui/material'
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  ClickAwayListener,
+  Fade,
+  styled,
+} from '@mui/material'
 
 import { useMainMenuItems } from '@/src/components/navigation/MainMenu.config'
 import { MenuItem, MenuItemElement, SubMenuItem } from '@/src/components/navigation/MainMenu.types'
@@ -34,7 +41,7 @@ const MainMenuContainer = styled(MenuContainer)(({ theme }) => ({
   },
 }))
 
-const SubMenuContainer = styled(MenuContainer)<MenuItemElement>(({ theme, type }) => ({
+const SubMenuContainer = styled(MenuContainer)<MenuItemElement>(({ type }) => ({
   position: 'relative',
 
   ...(type === 'small'
@@ -51,7 +58,7 @@ const SubMenuContainer = styled(MenuContainer)<MenuItemElement>(({ theme, type }
   gap: '2rem',
 }))
 
-const MenuItemContainer = styled('div')<MenuItemElement>(({ theme, type }) => ({
+const MenuItemContainer = styled('div')<MenuItemElement>(({ type }) => ({
   height: '3rem',
   position: 'relative',
 
@@ -66,7 +73,7 @@ const MenuItemContainer = styled('div')<MenuItemElement>(({ theme, type }) => ({
       }),
 }))
 
-const MenuItemsTopContainer = styled('div')(({ theme }) => ({
+const MenuItemsTopContainer = styled('div')(() => ({
   display: 'flex',
   flexDirection: 'column',
   flex: 1,
@@ -75,7 +82,7 @@ const MenuItemsTopContainer = styled('div')(({ theme }) => ({
   width: '3rem',
 }))
 
-const MenuItemsBottomContainer = styled('div')(({ theme }) => ({
+const MenuItemsBottomContainer = styled('div')(() => ({
   display: 'flex',
   flexDirection: 'column',
   gap: '1.25rem',
@@ -144,7 +151,7 @@ const SubMenuItem = styled('div')(({ theme }) => ({
   fontSize: '11px',
   lineHeight: '14px',
   textTransform: 'uppercase',
-  color: '#4f4f4f',
+  color: theme.palette.text.secondary,
   paddingBottom: '0.5rem',
 
   '&:hover': {
@@ -191,6 +198,10 @@ export const MainMenu: React.FC = ({ ...restProps }) => {
     }
   }
 
+  const onClose = () => {
+    setSelectedElement(-1) // unselect
+  }
+
   const onMenuItemClick = async (item: MenuItem, index: number) => {
     toggleSelectedElement(index)
     await onItemClick(item)
@@ -231,7 +242,7 @@ export const MainMenu: React.FC = ({ ...restProps }) => {
           {subItem.subItems?.map((subItemSubItem, subItemSubItemIndex) => (
             <SubMenuItem
               key={'subItem-' + subItemSubItem + '-subItemSubItem-' + subItemSubItemIndex}
-              onClick={async () => await onItemClick(subItemSubItem)}
+              onClick={() => onItemClick(subItemSubItem)}
             >
               {subItemSubItem.title}
             </SubMenuItem>
@@ -245,14 +256,12 @@ export const MainMenu: React.FC = ({ ...restProps }) => {
     return (
       <Fade in={selectedElement === itemIndex}>
         <SubMenuContainer type={item.type}>
-          <SubMenuTitleItem onClick={async () => await onItemClick(item)}>
-            {item.title}
-          </SubMenuTitleItem>
+          <SubMenuTitleItem onClick={() => onItemClick(item)}>{item.title}</SubMenuTitleItem>
 
           {item.subItems?.map((subItem, subItemIndex) => (
             <SubMenuItem
               key={'item-' + itemIndex + '-subItem-' + subItemIndex}
-              onClick={async () => await onItemClick(subItem)}
+              onClick={() => onItemClick(subItem)}
             >
               {subItem.subItems ? renderSubItemWithSubItems(subItem) : subItem.title}
             </SubMenuItem>
@@ -268,7 +277,7 @@ export const MainMenu: React.FC = ({ ...restProps }) => {
         <MenuItemContainer key={'menuItem-' + itemIndex} type={item.type}>
           <MenuItem
             disabled={!!item.disabled}
-            onClick={async () => await onMenuItemClick(item, itemIndex)}
+            onClick={() => onMenuItemClick(item, itemIndex)}
             selected={selectedElement === itemIndex}
             type={item.type}
           >
@@ -281,13 +290,15 @@ export const MainMenu: React.FC = ({ ...restProps }) => {
   }
 
   return (
-    <MainMenuContainer {...restProps}>
-      <MenuItemsTopContainer>
-        {topMenuItems.map((item, index) => renderMenuItem(item, index))}
-      </MenuItemsTopContainer>
-      <MenuItemsBottomContainer>
-        {bottomMenuItems.map((item, index) => renderMenuItem(item, index + topMenuItems.length))}
-      </MenuItemsBottomContainer>
-    </MainMenuContainer>
+    <ClickAwayListener onClickAway={onClose}>
+      <MainMenuContainer {...restProps}>
+        <MenuItemsTopContainer>
+          {topMenuItems.map((item, index) => renderMenuItem(item, index))}
+        </MenuItemsTopContainer>
+        <MenuItemsBottomContainer>
+          {bottomMenuItems.map((item, index) => renderMenuItem(item, index + topMenuItems.length))}
+        </MenuItemsBottomContainer>
+      </MainMenuContainer>
+    </ClickAwayListener>
   )
 }
