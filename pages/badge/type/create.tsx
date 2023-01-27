@@ -5,7 +5,7 @@ import { colors } from 'thebadge-ui-library'
 
 import { NextPageWithLayout } from '@/pages/_app'
 import KlerosDynamicFieldsCreator from '@/src/components/form/klerosDynamicFormField/FormFieldCreator'
-import { DefaultLayout } from '@/src/components/layout/BaseLayout'
+import { DefaultLayout } from '@/src/components/layout/DefaultLayout'
 
 const Create: NextPageWithLayout = () => {
   return (

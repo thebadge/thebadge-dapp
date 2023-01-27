@@ -7,7 +7,7 @@ import { z } from 'zod'
 import { NextPageWithLayout } from '@/pages/_app'
 import { CustomFormFromSchema } from '@/src/components/form/CustomForm'
 import klerosSchemaFactory from '@/src/components/form/helpers/validators'
-import { DefaultLayout } from '@/src/components/layout/BaseLayout'
+import { DefaultLayout } from '@/src/components/layout/DefaultLayout'
 import { KLEROS_LIST_TYPES } from '@/src/utils/kleros/types'
 
 const HARDCODED_TEST_FIELDS = [
