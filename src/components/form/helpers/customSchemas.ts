@@ -3,6 +3,7 @@ import { isAddress } from 'ethers/lib/utils'
 import { z } from 'zod'
 
 import { KLEROS_LIST_TYPES_KEYS } from '@/types/kleros/types'
+import { Severity, Severity_Keys } from '@/types/utils'
 
 // Why we need these schemas?
 // https://github.com/iway1/react-ts-form#dealing-with-collisions
@@ -74,6 +75,19 @@ export const FileSchema = createUniqueFieldSchema(
     .refine((value) => !!value && !!value.file, 'Upload a file is required.')
     .refine((value) => value?.file?.size <= MAX_FILE_SIZE, `Max file size is 5MB.`),
   'FileSchema',
+)
+
+export const ExpirationTypeSchema = createUniqueFieldSchema(
+  z.number({
+    required_error: 'Is required',
+    invalid_type_error: 'Must enter an amount of days',
+  }),
+  'ExpirationTypeSchema',
+)
+
+export const SeverityTypeSchema = createUniqueFieldSchema(
+  z.enum(Severity_Keys),
+  'SeverityTypeSchema',
 )
 
 export const KlerosFieldTypeSchema = createUniqueFieldSchema(

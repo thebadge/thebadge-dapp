@@ -1,11 +1,10 @@
-import { ChangeEvent, DOMAttributes, HTMLAttributes, useEffect, useMemo } from 'react'
+import { ChangeEvent, useEffect, useMemo } from 'react'
 
 import { Box, Button, TextField, styled } from '@mui/material'
 import { useDescription, useTsController } from '@ts-react/form'
 import { BigNumberInput } from 'big-number-input'
 import { BigNumber } from 'ethers/lib/ethers'
 import { formatUnits } from 'ethers/lib/utils'
-import { ErrorOption } from 'react-hook-form/dist/types/errors'
 import { z } from 'zod'
 
 import { TokenInputSchema } from '@/src/components/form/helpers/customSchemas'
@@ -19,7 +18,9 @@ const Wrapper = styled(Box)(({ theme }) => ({
   width: '100%',
 }))
 
-const Balance = styled(Box)<{ balancePosition?: BalancePosition }>(({ theme }) => ({
+const Balance = styled(Box, { shouldForwardProp: (propName) => propName !== 'balancePosition' })<{
+  balancePosition?: BalancePosition
+}>(({ theme }) => ({
   color: theme.palette.text.primary,
   fontSize: '1.2rem',
   fontWeight: '400',
@@ -89,7 +90,6 @@ export default function TokenInput({
               }}
               onChange={(e: ChangeEvent<HTMLInputElement>) => props.onChange && props.onChange(e)}
               placeholder="0.00"
-              type="number"
               value={props.value}
               variant="standard"
             />

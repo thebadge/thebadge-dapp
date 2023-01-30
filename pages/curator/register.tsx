@@ -9,17 +9,21 @@ import { z } from 'zod'
 import { NextPageWithLayout } from '@/pages/_app'
 import { CustomFormFromSchema } from '@/src/components/form/CustomForm'
 import {
-  ImageSchema,
+  ExpirationTypeSchema,
+  FileSchema,
   NumberSchema,
+  SeverityTypeSchema,
   TokenInputSchema,
 } from '@/src/components/form/helpers/customSchemas'
 import { DefaultLayout } from '@/src/components/layout/DefaultLayout'
 
 const RegisterCuratorSchema = z.object({
-  name: z.string().describe('Field Label // Label description'), // You can create one manually
-  cel: NumberSchema.describe('Field Label // Label description'), // You can use one already create,
-  image: ImageSchema.describe('Field Label // Label description'), // Image Schema MUST BE the created one
-  test: TokenInputSchema.describe('TESTING // TESTING'),
+  name: z.string().describe('String Field // Label description'), // You can create one manually
+  cel: NumberSchema.describe('Number Field // Label description'), // You can use one already create,
+  image: FileSchema.describe('PDF File Field // Label description'), // Image Schema MUST BE the created one
+  test: TokenInputSchema.describe('Token Field // TESTING'),
+  days: ExpirationTypeSchema.describe('Expiration days // TESTING'),
+  severity: SeverityTypeSchema.describe('Court Severity // Choose a value'),
 })
 
 const Register: NextPageWithLayout = () => {
