@@ -4,6 +4,7 @@ import { Typography } from '@mui/material'
 import { constants } from 'ethers'
 import { defaultAbiCoder, parseUnits } from 'ethers/lib/utils'
 import { colors } from 'thebadge-ui-library'
+import { z } from 'zod'
 
 import { NextPageWithLayout } from '@/pages/_app'
 import { CustomFormFromSchema } from '@/src/components/form/CustomForm'
