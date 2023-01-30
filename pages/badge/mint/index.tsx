@@ -5,7 +5,7 @@ import { colors } from 'thebadge-ui-library'
 
 import { NextPageWithLayout } from '@/pages/_app'
 import LinkWithTranslation from '@/src/components/helpers/LinkWithTranslation'
-import { DefaultLayout } from '@/src/components/layout/BaseLayout'
+import { DefaultLayout } from '@/src/components/layout/DefaultLayout'
 
 const MintBadge: NextPageWithLayout = () => {
   return (

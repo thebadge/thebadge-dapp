@@ -5,6 +5,7 @@ import { ReactElement, ReactNode } from 'react'
 
 import createCache from '@emotion/cache'
 import { CacheProvider, EmotionCache } from '@emotion/react'
+import { styled } from '@mui/material'
 import { Box } from '@mui/material'
 import { GoogleAnalytics } from 'nextjs-google-analytics'
 import { SWRConfig } from 'swr'
@@ -16,7 +17,9 @@ import Toast from '@/src/components/toast/Toast'
 import { Head } from '@/src/pagePartials/index/Head'
 import { TransactionNotificationProvider } from '@/src/providers/TransactionNotificationProvider'
 import CookiesWarningProvider from '@/src/providers/cookiesWarningProvider'
+import SectionReferencesProvider from '@/src/providers/referencesProvider'
 import ThemeProvider from '@/src/providers/themeProvider'
+
 import 'node_modules/thebadge-ui-library/dist/index.css'
 import 'sanitize.css'
 
@@ -37,6 +40,19 @@ const clientSideEmotionCache = createCache({
   key: 'css',
   prepend: true,
 }) as EmotionCache
+
+export const InnerContainer = styled('div')(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  flexGrow: 1,
+  flexShrink: 0,
+  maxWidth: '100%',
+  // width: theme.layout.maxWidth,
+}))
+
+const Container = styled(InnerContainer)`
+  flex-grow: 1;
+`
 
 export default function App({
   Component,
@@ -61,12 +77,14 @@ export default function App({
             <Web3ConnectionProvider>
               <ThemeProvider>
                 <SafeSuspense>
-                  <TransactionNotificationProvider>
-                    <CookiesWarningProvider>
-                      {getLayout(<Component {...pageProps} />)}
-                      <Footer />
-                    </CookiesWarningProvider>
-                  </TransactionNotificationProvider>
+                  <SectionReferencesProvider>
+                    <TransactionNotificationProvider>
+                      <CookiesWarningProvider>
+                        <Container>{getLayout(<Component {...pageProps} />)}</Container>
+                        <Footer />
+                      </CookiesWarningProvider>
+                    </TransactionNotificationProvider>
+                  </SectionReferencesProvider>
                 </SafeSuspense>
                 <Toast />
               </ThemeProvider>

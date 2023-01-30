@@ -13,7 +13,7 @@ import {
   NumberSchema,
   TokenInputSchema,
 } from '@/src/components/form/helpers/customSchemas'
-import { DefaultLayout } from '@/src/components/layout/BaseLayout'
+import { DefaultLayout } from '@/src/components/layout/DefaultLayout'
 
 const RegisterCuratorSchema = z.object({
   name: z.string().describe('Field Label // Label description'), // You can create one manually

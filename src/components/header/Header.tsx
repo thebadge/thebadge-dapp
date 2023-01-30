@@ -1,6 +1,6 @@
 import { Box, styled } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
-import { LogoTheBadgeWithText, gradients } from 'thebadge-ui-library'
+import { LogoTheBadgeWithText } from 'thebadge-ui-library'
 
 import ConnectWalletButton from '@/src/components/header/ConnectWalletButton'
 import { UserDropdown } from '@/src/components/header/UserDropdown'
@@ -14,11 +14,8 @@ const HeaderContainer = styled(Box)(({ theme }) => ({
   position: 'relative',
   left: '50%',
   transform: 'translateX(-50%)',
-  background: gradients.gradientBackground,
-  // With this the header background and page background has the same match
-  backgroundSize: '100vw 100vh',
-  paddingTop: theme.spacing(4),
-  paddingBottom: theme.spacing(1),
+  paddingTop: theme.spacing(2),
+  paddingBottom: theme.spacing(2),
   paddingLeft: '5%',
   paddingRight: 'calc(5% - 16px)',
   [theme.breakpoints.up('xl')]: {
@@ -32,7 +29,7 @@ const HeaderContainer = styled(Box)(({ theme }) => ({
 }))
 
 const Header = () => {
-  const { connectWallet, isWalletConnected } = useWeb3Connection()
+  const { connectWallet, isWalletConnected, isWalletNetworkSupported } = useWeb3Connection()
 
   const { t } = useTranslation()
 
@@ -44,7 +41,7 @@ const Header = () => {
           flex: 1,
         }}
       >
-        <LogoTheBadgeWithText size={212} />
+        <LogoTheBadgeWithText size={92} />
       </Box>
       <Box display="flex">
         <WrongNetwork />
