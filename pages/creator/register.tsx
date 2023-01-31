@@ -63,12 +63,9 @@ const Register: NextPageWithLayout = () => {
     if (!address) {
       throw Error('Web3 address not provided')
     }
-
-    const { logo: image, ...rest } = data
-
     const uploadedInfo = await ipfsUpload({
-      attributes: JSON.stringify({ ...rest }),
-      files: [{ fileName: 'logo', mimeType: image.file.type, base64File: image.data_url }],
+      attributes: JSON.stringify(data),
+      files: ['logo'],
     })
 
     const transaction = await sendTx(() =>
