@@ -24,16 +24,13 @@ import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import ipfsUpload from '@/src/utils/ipfsUpload'
 import { generateKlerosListMetaEvidence } from '@/src/utils/kleros/generateKlerosListMetaEvidence'
 import { Kleros__factory, TheBadge__factory } from '@/types/generated/typechain'
+import { Severity } from '@/types/utils'
 
 export const BadgeTypeCreateSchema = z.object({
-  badgeTypeName: z.string().describe('name // ??'),
-  badgeTypeDescription: LongTextSchema.describe('description // ??'),
-  badgeTypeLogoUri: ImageSchema.describe('The logo for your badge type // ??'),
-  badgeName: z.string().describe('badge name // ??'),
+  name: z.string().describe('name // ??'),
+  description: LongTextSchema.describe('description // ??'),
+  logoUri: ImageSchema.describe('The logo for your badge type // ??'),
   criteriaFileUri: FileSchema.describe('PDF with the requirements to mint a badge. // ??'),
-  numberOfJurors: NumberSchema.describe(
-    'Number of Jurors // In case arbitration is needed it will determine how many jurors the court will have.',
-  ),
   challengePeriodDuration: NumberSchema.describe(
     'Challenge period duration // During this time the community can analyze the evidence and challenge it.',
   ),
@@ -52,44 +49,46 @@ const CreateBadgeType: NextPageWithLayout = () => {
   const theBadge = useContractInstance(TheBadge__factory, 'TheBadge')
 
   const onSubmit = async (data: z.infer<typeof BadgeTypeCreateSchema>) => {
-    console.log(data)
-    const {
-      badgeMetadataColumns,
-      badgeName,
-      badgeTypeDescription,
-      badgeTypeLogoUri,
-      badgeTypeName,
-      criteriaFileUri,
-    } = data
+    const { badgeMetadataColumns, criteriaFileUri, description, logoUri, name } = data
 
     // Safe-ward to infer MetadataColumn[], It will never go throw the return
     if (!isMetadataColumnArray(badgeMetadataColumns)) return
 
     const { clearing, registration } = generateKlerosListMetaEvidence(
-      badgeName, //badgeName
+      name, //badgeName
       { mimeType: criteriaFileUri?.file.type, base64File: criteriaFileUri?.data_url }, //criteriaFileUri
-      badgeTypeName, //badgeTypeName
-      badgeTypeDescription, //badgeTypeDescription
+      name, //badgeTypeName
+      description, //badgeTypeDescription
       badgeMetadataColumns, //badgeMetadataColumns
-      { mimeType: badgeTypeLogoUri?.file.type, base64File: badgeTypeLogoUri?.data_url }, //badgeTypeLogoUri
+      { mimeType: logoUri?.file.type, base64File: logoUri?.data_url }, //badgeTypeLogoUri
     )
-
-    console.log(registration)
+    debugger
     const registrationIPFSUploaded = await ipfsUpload({
       attributes: JSON.stringify(registration),
+      files: ['criteriaFileUri', 'badgeTypeLogoUri'],
     })
 
-    console.log(clearing)
     const clearingIPFSUploaded = await ipfsUpload({
       attributes: JSON.stringify(clearing),
+      files: ['criteriaFileUri', 'badgeTypeLogoUri'],
     })
 
+    const badgeTypeIPFSUploaded = await ipfsUpload({
+      attributes: JSON.stringify({
+        description: data.description,
+        image: { mimeType: logoUri?.file.type, base64File: logoUri?.data_url },
+        name: name,
+      }),
+      files: ['image'],
+    })
+    debugger
     const kleros = Kleros__factory.connect(
       contracts.Kleros.address[appChainId],
       readOnlyAppProvider,
     )
-    const klerosCourtInfo = await kleros.courts(0)
-    const baseDeposit = klerosCourtInfo.feeForJuror.mul(data.numberOfJurors)
+    const numberOfJurors = Severity[data.rigorousness as keyof typeof Severity]
+    const klerosCourtInfo = await kleros.courts(0) // TODO: fixed for now
+    const baseDeposit = klerosCourtInfo.feeForJuror.mul(numberOfJurors)
 
     const klerosControllerDataEncoded = defaultAbiCoder.encode(
       [
@@ -110,7 +109,7 @@ const CreateBadgeType: NextPageWithLayout = () => {
           address as string, // governor
           constants.AddressZero, // admin
           0, // courtId, Fixed for now. Let's use General court
-          data.numberOfJurors, // numberOfJurors:
+          numberOfJurors, // numberOfJurors:
           `ipfs://${registrationIPFSUploaded.result?.ipfsHash}`, // registration file
           `ipfs://${clearingIPFSUploaded.result?.ipfsHash}`, // clearing file
           data.challengePeriodDuration, // challengePeriodDuration:
@@ -125,12 +124,13 @@ const CreateBadgeType: NextPageWithLayout = () => {
       ],
     )
 
+    debugger
     return theBadge.createBadgeType(
       {
-        metadata: 'ipfs://QmZrfVxGCo3L6qUeg7C1RXqCRDrzMkMeDNXUcBg9Yxrtaa', // TODO: should we use a custom one? or the one for TCR is ok?
+        metadata: `ipfs://${badgeTypeIPFSUploaded.result?.ipfsHash}`, // TODO: should we use a custom one? or the one for TCR is ok?
         controllerName: 'kleros',
         mintCost: parseUnits('0.1', 18),
-        mintFee: parseUnits('0.1', 18),
+        mintFee: parseUnits('0.1', 18), // TODO: this is a legacy field that is not used in the SC, will be removed in a newer deploy
         validFor: 0, // in seconds, 0 infinite
       },
       klerosControllerDataEncoded,
