@@ -13,6 +13,8 @@ import {
   ImageSchema,
   KlerosDynamicFields,
   LongTextSchema,
+  NumberSchema,
+  SeverityTypeSchema,
 } from '@/src/components/form/helpers/customSchemas'
 import { isMetadataColumnArray } from '@/src/components/form/helpers/validators'
 import { DefaultLayout } from '@/src/components/layout/DefaultLayout'
@@ -29,23 +31,17 @@ export const BadgeTypeCreateSchema = z.object({
   badgeTypeLogoUri: ImageSchema.describe('The logo for your badge type // ??'),
   badgeName: z.string().describe('badge name // ??'),
   criteriaFileUri: FileSchema.describe('PDF with the requirements to mint a badge. // ??'),
-  numberOfJurors: z
-    .number()
-    .describe(
-      'Number of Jurors // In case arbitration is needed it will determine how many jurors the court will have.',
-    ),
-  challengePeriodDuration: z
-    .number()
-    .describe(
-      'Challenge period duration // During this time the community can analyze the evidence and challenge it.',
-    ),
+  numberOfJurors: NumberSchema.describe(
+    'Number of Jurors // In case arbitration is needed it will determine how many jurors the court will have.',
+  ),
+  challengePeriodDuration: NumberSchema.describe(
+    'Challenge period duration // During this time the community can analyze the evidence and challenge it.',
+  ),
   // TODO: add rigorousness component. It can be a radio button for now with three options basic, medium, heavy. Later we can migrate to a slider
   // the values for each option should be 1.5, 2 and 3 respectively (check base deposit on how it will impact.)
-  rigorousness: z
-    .number()
-    .min(1)
-    .max(3)
-    .describe('Rigorousness // How rigorous the emission of badges should be'),
+  rigorousness: SeverityTypeSchema.describe(
+    'Rigorousness // How rigorous the emission of badges should be',
+  ),
   badgeMetadataColumns: KlerosDynamicFields.describe(
     'Evidence fields // List of fields that the user will need to provider to be able to mint this badge type.',
   ),
