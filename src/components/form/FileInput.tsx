@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf'
 import { Box, Button, Container, Typography, styled } from '@mui/material'
 import { useDescription, useTsController } from '@ts-react/form'
 import ImageUploading, { ImageListType } from 'react-images-uploading'
@@ -26,7 +27,7 @@ const Wrapper = styled(Box)(({ theme }) => ({
 export default function FileInput() {
   const { error, field } = useTsController<z.infer<typeof FileSchema>>()
   const { label } = useDescription()
-  const [files, setFiles] = useState<ImageListType>([])
+  const [files, setFiles] = useState<ImageListType>(field.value ? [field.value] : [])
   const maxNumber = 1
 
   const onChange = (fileList: ImageListType) => {
@@ -53,7 +54,7 @@ export default function FileInput() {
               dataURLKey="data_url"
               maxNumber={maxNumber}
               onChange={onChange}
-              value={files ?? []}
+              value={files}
             >
               {({
                 dragProps,
@@ -87,16 +88,31 @@ export default function FileInput() {
                       key={index}
                       sx={{ display: 'flex', flexDirection: 'row' }}
                     >
-                      <Typography>{image.file?.name}</Typography>
+                      <Box alignItems="center" display="flex" flexDirection="row">
+                        <PictureAsPdfIcon sx={{ mr: 1 }} />
+                        <Typography>{image.file?.name}</Typography>
+                      </Box>
                       <Box
                         display="flex"
                         flexDirection="column"
                         justifyContent="space-evenly"
                         marginLeft={2}
                       >
-                        <button onClick={() => onImageUpdate(index)}>Update</button>
+                        <Button
+                          color="info"
+                          onClick={() => onImageUpdate(index)}
+                          variant="outlined"
+                        >
+                          Update
+                        </Button>
 
-                        <button onClick={() => onImageRemove(index)}>Remove</button>
+                        <Button
+                          color="error"
+                          onClick={() => onImageRemove(index)}
+                          variant="outlined"
+                        >
+                          Remove
+                        </Button>
                       </Box>
                     </Box>
                   ))}

@@ -8,6 +8,7 @@ import {
   ImageSchema,
   LongTextSchema,
   NumberSchema,
+  TwitterSchema,
 } from '@/src/components/form/helpers/customSchemas'
 import { KLEROS_LIST_TYPES, MetadataColumn } from '@/types/kleros/types'
 
@@ -25,12 +26,13 @@ const zLink = z
   })
   .startsWith('http')
 
-const zTwitterUser = z
-  .string({
-    required_error: 'Is required',
-    invalid_type_error: 'Must be a twitter user',
-  })
-  .startsWith('@')
+export function isEmail(email: string) {
+  return String(email)
+    .toLowerCase()
+    .match(
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+    )
+}
 
 function getZValidator(fieldType: KLEROS_LIST_TYPES) {
   switch (fieldType) {
@@ -39,7 +41,7 @@ function getZValidator(fieldType: KLEROS_LIST_TYPES) {
     case KLEROS_LIST_TYPES.BOOLEAN:
       return CheckBoxSchema
     case KLEROS_LIST_TYPES.TWITTER_USER_ID:
-      return zTwitterUser
+      return TwitterSchema
     case KLEROS_LIST_TYPES.LINK:
       return zLink
     case KLEROS_LIST_TYPES.LONG_TEXT:
