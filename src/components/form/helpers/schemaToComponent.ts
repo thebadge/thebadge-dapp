@@ -1,6 +1,7 @@
 import { z } from 'zod'
 
 import TextField from '../TextField'
+import AvatarInput from '@/src/components/form/AvatarInput'
 import CheckBox from '@/src/components/form/CheckBox'
 import DropdownSelect from '@/src/components/form/DropdownSelect'
 import ExpirationField from '@/src/components/form/ExpirationField'
@@ -12,7 +13,9 @@ import TextArea from '@/src/components/form/TextArea'
 import TokenInput from '@/src/components/form/TokenInput'
 import {
   AddressSchema,
+  AvatarSchema,
   CheckBoxSchema,
+  EmailSchema,
   ExpirationTypeSchema,
   FileSchema,
   ImageSchema,
@@ -22,6 +25,7 @@ import {
   NumberSchema,
   SeverityTypeSchema,
   TokenInputSchema,
+  TwitterSchema,
 } from '@/src/components/form/helpers/customSchemas'
 import KlerosDynamicFieldsCreator from '@/src/components/form/klerosDynamicFormField/FormFieldCreator'
 
@@ -31,8 +35,11 @@ export const mappingSchemaToComponents = [
   [CheckBoxSchema, CheckBox],
   [NumberSchema, NumberField],
   [AddressSchema, TextField],
+  [TwitterSchema, TextField],
+  [EmailSchema, TextField],
   [LongTextSchema, TextArea],
   [ImageSchema, ImageInput],
+  [AvatarSchema, AvatarInput],
   [FileSchema, FileInput],
   [TokenInputSchema, TokenInput],
   [KlerosFieldTypeSchema, DropdownSelect],

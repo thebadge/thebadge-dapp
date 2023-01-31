@@ -1,30 +1,45 @@
 import { useRouter } from 'next/router'
 import { ReactElement } from 'react'
 
-import { Typography } from '@mui/material'
+import { Stack, Typography } from '@mui/material'
 import { ethers } from 'ethers'
 import { colors } from 'thebadge-ui-library'
-import { z } from 'zod'
+import { ZodObject, z } from 'zod'
 
 import { NextPageWithLayout } from '@/pages/_app'
-import { CustomFormFromSchema } from '@/src/components/form/CustomForm'
-import { ImageSchema } from '@/src/components/form/helpers/customSchemas'
+import {
+  AvatarSchema,
+  CheckBoxSchema,
+  EmailSchema,
+  LongTextSchema,
+  TwitterSchema,
+} from '@/src/components/form/helpers/customSchemas'
 import { DefaultLayout } from '@/src/components/layout/DefaultLayout'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
 import useTransaction from '@/src/hooks/useTransaction'
+import RegistrationSteps from '@/src/pagePartials/creator/register/RegistrationSteps'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { SubgraphName, getSubgraphSdkByNetwork } from '@/src/subgraph/subgraph'
 import ipfsUpload from '@/src/utils/ipfsUpload'
 import { TheBadge__factory } from '@/types/generated/typechain'
 
-export const RegisterCuratorSchema = z.object({
+export const RegisterCuratorSchemaStep1 = z.object({
   name: z.string().describe('Your name // ??'),
-  description: z.string().describe('Tell us about you // Tell us about you'),
-  logo: ImageSchema.describe('Your logo // Upload a logo that identifies you'), // Image Schema MUST BE the created one
-  website: z.string().describe(`Website // ??`),
-  twitter: z.string().describe(`Twitter // ??`),
-  discord: z.string().describe(`Discord // ??`),
-  email: z.string().describe(`Email // ??`),
+  description: LongTextSchema.describe(
+    'Description // Tell us about you, share some of you background with the community.',
+  ),
+  logo: AvatarSchema.describe('Profile photo // Upload a photo that identifies you.'), // Image Schema MUST BE the created one
+})
+
+export const RegisterCuratorSchemaStep2 = z.object({
+  website: z.string().describe(`Website // ??`).optional(),
+  twitter: TwitterSchema.describe(`Twitter // ??`).optional(),
+  discord: z.string().describe(`Discord // ??`).optional(),
+  email: EmailSchema.describe(`Email // ??`),
+})
+
+export const RegisterCuratorSchemaStep3 = z.object({
+  terms: CheckBoxSchema.describe(`Terms & Conditions // ??`),
 })
 
 const Register: NextPageWithLayout = () => {
@@ -37,19 +52,25 @@ const Register: NextPageWithLayout = () => {
   const gql = getSubgraphSdkByNetwork(appChainId, SubgraphName.TheBadge)
   const creatorByAddress = gql.useEmitter({ id: address || ethers.constants.AddressZero })
 
-  async function onSubmit(data: z.infer<typeof RegisterCuratorSchema>) {
+  async function onSubmit(data: ZodObject<any>[]) {
+    const [step1, step2, step3] = data
+    // This is not the best way to do it, but is the only one that came to my mind now.
+    const typedStep1 = step1 as unknown as z.infer<typeof RegisterCuratorSchemaStep1>
+    const typedStep2 = step2 as unknown as z.infer<typeof RegisterCuratorSchemaStep2>
+    const typedStep3 = step3 as unknown as z.infer<typeof RegisterCuratorSchemaStep3>
+
     if (!address) {
       throw Error('Web3 address not provided')
     }
 
-    const ipfsUploadFile = { ...data }
-    ipfsUploadFile.logo = {
-      mimeType: data.logo.file.type,
-      base64File: data.logo.data_url,
+    const typedStepAux = { ...typedStep1 }
+    typedStepAux.logo = {
+      mimeType: typedStep1.logo.file.type,
+      base64File: typedStep1.logo.data_url,
     }
 
     const uploadedInfo = await ipfsUpload({
-      attributes: JSON.stringify(ipfsUploadFile),
+      attributes: JSON.stringify({ ...typedStepAux, ...typedStep2, ...typedStep3 }),
       files: ['logo'],
     })
 
@@ -68,21 +89,21 @@ const Register: NextPageWithLayout = () => {
 
   return (
     <>
-      <Typography color={colors.white} variant="h3">
-        Register as a creator
-      </Typography>
-
-      <Typography color={colors.white} variant="h5">
-        Once registered as a creator you will be granted the possibility to created badge types.
-      </Typography>
-
-      <CustomFormFromSchema
-        formProps={{
-          buttonDisabled: !address,
-          buttonLabel: address ? 'Register' : 'Connect wallet',
-        }}
+      <Stack sx={{ mb: 2 }}>
+        <Typography color={colors.white} variant="h3">
+          Register as a creator
+        </Typography>
+        <Typography color={colors.white} variant="h5">
+          Once registered as a creator you will be granted the possibility to created badge types.
+        </Typography>
+      </Stack>
+      <RegistrationSteps
         onSubmit={onSubmit}
-        schema={RegisterCuratorSchema}
+        stepSchemas={[
+          RegisterCuratorSchemaStep1,
+          RegisterCuratorSchemaStep2,
+          RegisterCuratorSchemaStep3,
+        ]}
       />
     </>
   )

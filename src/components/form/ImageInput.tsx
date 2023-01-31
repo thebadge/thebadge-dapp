@@ -21,7 +21,7 @@ const Wrapper = styled(Box)(({ theme }) => ({
 export default function ImageInput() {
   const { error, field } = useTsController<z.infer<typeof ImageSchema>>()
   const { label } = useDescription()
-  const [images, setImages] = useState<ImageListType>([])
+  const [images, setImages] = useState<ImageListType>(field.value ? [field.value] : [])
   const maxNumber = 1
 
   const onChange = (imageList: ImageListType) => {
@@ -46,7 +46,7 @@ export default function ImageInput() {
               dataURLKey="data_url"
               maxNumber={maxNumber}
               onChange={onChange}
-              value={images ?? []}
+              value={images}
             >
               {({
                 dragProps,

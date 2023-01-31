@@ -141,44 +141,4 @@ export const UserDropdown: React.FC = () => {
       )}
     </>
   )
-  /*
-  return (
-    <>
-      <Wrapper
-        dropdownButton={
-          <UserButton>
-            <User />
-            <SmallCircle state={isWalletNetworkSupported ? 'ok' : 'error'} />
-          </UserButton>
-        }
-        dropdownPosition={DropdownPosition.right}
-        items={[
-          <ItemDirectionColumn
-            key="0"
-            onClick={() => window.open(getExplorerUrl(address || ''), '_blank')}
-          >
-            <ItemTitle>Connected</ItemTitle>{' '}
-            <AddressRow>
-              {address ? (
-                <>
-                  {truncateStringInTheMiddle(address, 10, 8)} <Link />
-                </>
-              ) : (
-                'Error'
-              )}
-            </AddressRow>
-          </ItemDirectionColumn>,
-          <Item key="1" onClick={() => setShowNetworkModal(true)}>
-            <span>Switch network</span>
-            <SwitchNetwork />
-          </Item>,
-          <Item key="2" onClick={disconnectWallet}>
-            <span>Log out</span> <Logout />
-          </Item>,
-        ]}
-        {...restProps}
-      />
-      {showNetworkModal && <ModalSwitchNetwork onClose={() => setShowNetworkModal(false)} />}
-    </>
-  )*/
 }

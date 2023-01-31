@@ -2,8 +2,9 @@ import { createUniqueFieldSchema } from '@ts-react/form'
 import { isAddress } from 'ethers/lib/utils'
 import { z } from 'zod'
 
+import { isEmail } from '@/src/components/form/helpers/validators'
 import { KLEROS_LIST_TYPES_KEYS } from '@/types/kleros/types'
-import { Severity, Severity_Keys } from '@/types/utils'
+import { Severity_Keys } from '@/types/utils'
 
 // Why we need these schemas?
 // https://github.com/iway1/react-ts-form#dealing-with-collisions
@@ -29,6 +30,23 @@ export const AddressSchema = createUniqueFieldSchema(
     message: 'Address must be an valid Ethereum addresses.',
   }),
   'AddressSchema',
+)
+
+export const TwitterSchema = createUniqueFieldSchema(
+  z
+    .string({
+      required_error: 'Is required',
+      invalid_type_error: 'Must be a twitter user',
+    })
+    .startsWith('@'),
+  'TwitterSchema',
+)
+
+export const EmailSchema = createUniqueFieldSchema(
+  z.string({ required_error: 'Is required' }).refine(isEmail, {
+    message: 'Must be a valid email addresses.',
+  }),
+  'EmailSchema',
 )
 
 export const TokenInputSchema = createUniqueFieldSchema(
@@ -67,6 +85,18 @@ export const ImageSchema = createUniqueFieldSchema(
       '.jpg, .jpeg, .png and .webp files are accepted.',
     ),
   'ImageSchema',
+)
+
+export const AvatarSchema = createUniqueFieldSchema(
+  z
+    .any()
+    .refine((value) => !!value?.file, 'Upload an image is required.')
+    .refine((value) => value?.file?.size <= MAX_FILE_SIZE, `Max file size is 5MB.`)
+    .refine(
+      (value) => ACCEPTED_IMAGE_TYPES.includes(value?.file?.type),
+      '.jpg, .jpeg, .png and .webp files are accepted.',
+    ),
+  'AvatarSchema',
 )
 
 export const FileSchema = createUniqueFieldSchema(

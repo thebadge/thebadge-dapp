@@ -11,7 +11,6 @@ const StyledBox = styled(Box)<{ status?: TextFieldStatus }>(({ theme }) => ({
   justifyContent: 'center',
   alignItems: 'center',
   flexDirection: 'column',
-  margin: theme.spacing(1),
 }))
 
 export const FormField: React.FC<{

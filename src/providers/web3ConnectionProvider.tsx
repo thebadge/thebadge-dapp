@@ -104,6 +104,7 @@ export type Web3Context = {
   walletChainId: number | null
   web3Provider: Web3Provider | null
   blockiesIcon: ReactElement | null
+  blockiesAvatar: ReactElement | null
 }
 
 export type Web3Connected = RequiredNonNull<Web3Context>
@@ -197,7 +198,12 @@ export default function Web3ConnectionProvider({ children }: Props) {
     }
   }
 
-  const blockiesIcon = address ? <Blockies scale={4} seed={address} size={15} /> : null
+  // Icon version is a canvas of 10 x 3.2 = 32px to display it entirely
+  const blockiesIcon = address ? <Blockies scale={3.2} seed={address} size={10} /> : null
+  // Avatar version is a canvas of 10 x 10 = 100px to display it entirely
+  const blockiesAvatar = address ? (
+    <Blockies className="blockies-avatar" scale={10} seed={address} size={10} />
+  ) : null
 
   const value = {
     address,
@@ -220,6 +226,7 @@ export default function Web3ConnectionProvider({ children }: Props) {
     walletChainId,
     web3Provider,
     blockiesIcon,
+    blockiesAvatar,
   }
 
   return <Web3ContextConnection.Provider value={value}>{children}</Web3ContextConnection.Provider>
