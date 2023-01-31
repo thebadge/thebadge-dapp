@@ -5,6 +5,7 @@ import { Home as HomeIcon } from '@/src/components/assets/Home'
 import { LightMode as LightModeIcon } from '@/src/components/assets/LightMode'
 import { Profile as ProfileIcon } from '@/src/components/assets/Profile'
 import { MenuItem } from '@/src/components/navigation/MainMenu.types'
+import { DISCORD_URL } from '@/src/constants/common'
 import { useSectionReferences } from '@/src/providers/referencesProvider'
 import { useColorMode } from '@/src/providers/themeProvider'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
@@ -20,7 +21,7 @@ export const useMainMenuItems = () => {
       type: 'color',
       icon: <HomeIcon />,
       title: 'Home',
-      href: homeSection,
+      href: homeSection?.current ? homeSection : '/',
       subItems: [
         {
           title: 'Get a certificate',
@@ -112,7 +113,8 @@ export const useMainMenuItems = () => {
     {
       type: 'gray',
       icon: <DiscordIcon />,
-      href: '#discord',
+      href: DISCORD_URL,
+      openLinkInNewTab: true,
     },
     {
       type: 'small',

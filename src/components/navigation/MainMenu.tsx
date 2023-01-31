@@ -1,3 +1,4 @@
+import { indexOf } from "lodash";
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 
@@ -35,6 +36,7 @@ const MainMenuContainer = styled(MenuContainer)(({ theme }) => ({
   position: 'sticky',
   top: '8rem',
   marginRight: '5%',
+  zIndex: 100,
 
   [theme.breakpoints.up('xl')]: {
     marginRight: 'calc(10% - 16px)',
@@ -56,6 +58,7 @@ const SubMenuContainer = styled(MenuContainer)<MenuItemElement>(({ type }) => ({
   padding: '2rem',
   width: '13rem',
   gap: '2rem',
+  zIndex: 100,
 }))
 
 const MenuItemContainer = styled('div')<MenuItemElement>(({ type }) => ({
@@ -166,19 +169,23 @@ export const MainMenu: React.FC = ({ ...restProps }) => {
   const [selectedElement, setSelectedElement] = useState(-1)
   const { bottomMenuItems, topMenuItems } = useMainMenuItems()
 
-  const navigateTo = async (link: any) => {
+  const navigateTo = async (link: any, openInNewTab?: boolean) => {
     if (link) {
       if (link.current) {
         scrollTo(link)
       } else {
-        await router.push(link)
+        if (openInNewTab) {
+          window.open(link)
+        } else {
+          await router.push(link)
+        }
       }
     }
   }
 
   const onItemClick = async (item: MenuItem | SubMenuItem) => {
     if (item.href) {
-      await navigateTo(item.href)
+      await navigateTo(item.href, item.openLinkInNewTab)
 
       if (!item.subItems) {
         // close after click if no subItems opening
