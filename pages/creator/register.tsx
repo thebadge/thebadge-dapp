@@ -42,6 +42,13 @@ export const RegisterCuratorSchemaStep3 = z.object({
   terms: CheckBoxSchema.describe(`Terms & Conditions // ??`),
 })
 
+// Merge all in one schema
+export const RegisterCuratorSchema = z
+  .object({})
+  .merge(RegisterCuratorSchemaStep1)
+  .merge(RegisterCuratorSchemaStep2)
+  .merge(RegisterCuratorSchemaStep3)
+
 const Register: NextPageWithLayout = () => {
   const { address, appChainId } = useWeb3Connection()
   const router = useRouter()
@@ -52,21 +59,15 @@ const Register: NextPageWithLayout = () => {
   const gql = getSubgraphSdkByNetwork(appChainId, SubgraphName.TheBadge)
   const creatorByAddress = gql.useEmitter({ id: address || ethers.constants.AddressZero })
 
-  async function onSubmit(data: ZodObject<any>[]) {
-    const [step1, step2, step3] = data
-    // This is not the best way to do it, but is the only one that came to my mind now.
-    const typedStep1 = step1 as unknown as z.infer<typeof RegisterCuratorSchemaStep1>
-    const typedStep2 = step2 as unknown as z.infer<typeof RegisterCuratorSchemaStep2>
-    const typedStep3 = step3 as unknown as z.infer<typeof RegisterCuratorSchemaStep3>
-
+  async function onSubmit(data: z.infer<typeof RegisterCuratorSchema>) {
     if (!address) {
       throw Error('Web3 address not provided')
     }
 
-    const { logo: image, ...rest } = typedStep1
+    const { logo: image, ...rest } = data
 
     const uploadedInfo = await ipfsUpload({
-      attributes: JSON.stringify({ ...rest, ...typedStep2, ...typedStep3 }),
+      attributes: JSON.stringify({ ...rest }),
       files: [{ fileName: 'logo', mimeType: image.file.type, base64File: image.data_url }],
     })
 
