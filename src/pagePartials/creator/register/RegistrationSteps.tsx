@@ -16,7 +16,7 @@ import useIsMobile from '@/src/hooks/useIsMobile'
 
 type RegistrationStepsProps = {
   stepSchemas: (AnyZodObject | ZodEffects<any, any, any>)[]
-  onSubmit: (data: AnyZodObject[]) => void
+  onSubmit: (data: any) => void
 }
 
 const steps = ['Basic information.', 'How to contact you.', 'Agreement.']
@@ -90,7 +90,13 @@ export default function RegistrationSteps({ onSubmit, stepSchemas }: Registratio
   }
 
   const handleOnSubmit = () => {
-    const formData = Object.values(stepsData)
+    let formData = {}
+    Object.values(stepsData).forEach((step) => {
+      formData = {
+        ...formData,
+        ...step,
+      }
+    })
     onSubmit(formData)
   }
 
