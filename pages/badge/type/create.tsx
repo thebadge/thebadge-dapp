@@ -33,13 +33,13 @@ export const BadgeTypeCreateSchema = z.object({
   logoUri: ImageSchema.describe('The logo for your badge type // ??'),
   criteriaFileUri: FileSchema.describe('PDF with the requirements to mint a badge. // ??'),
   challengePeriodDuration: NumberSchema.describe(
-    'Challenge period duration // During this time the community can analyze the evidence and challenge it.',
+    'Challenge period duration // Challenge period duration in days. During this time the community can analyze the evidence and challenge it.',
   ),
   rigorousness: SeverityTypeSchema.describe(
     'Rigorousness // How rigorous the emission of badges should be',
   ),
   mintCost: NumberSchema.describe(
-    'Cost to mint the badge in ETH // How much it will be necessary to deposit.',
+    'Cost to mint in ETH // How much it will be necessary to deposit.',
   ),
   validFor: ExpirationTypeSchema.describe(
     'Expiration time // The badge will valid for this amount of  (0 is forever)',

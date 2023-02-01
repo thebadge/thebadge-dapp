@@ -84,6 +84,7 @@ export default function ExpirationField() {
           <MUISelect
             id="unit-select"
             onChange={handleDropdownChange}
+            size="small"
             sx={{ textTransform: 'capitalize', ml: 2 }}
             value={unit || ''}
           >

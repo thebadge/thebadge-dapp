@@ -1,7 +1,8 @@
 import { ChangeEvent, useState } from 'react'
 import * as React from 'react'
 
-import { TextField as MUITextField, Stack } from '@mui/material'
+import InfoIcon from '@mui/icons-material/Info'
+import { TextField as MUITextField, Stack, Tooltip } from '@mui/material'
 import { useDescription, useTsController } from '@ts-react/form'
 import { BigNumberInput } from 'big-number-input'
 import { formatUnits } from 'ethers/lib/utils'
@@ -13,7 +14,7 @@ type NumberFieldProps = {
 export default function NumberField({ decimals = 0 }: NumberFieldProps) {
   const { error, field } = useTsController<number>()
   const [stringValue, setStringValue] = useState<string>('')
-  const { label } = useDescription()
+  const { label, placeholder } = useDescription()
 
   function onChange(e: string) {
     const value = e
@@ -36,6 +37,13 @@ export default function NumberField({ decimals = 0 }: NumberFieldProps) {
       renderInput={(props) => (
         <Stack>
           <MUITextField
+            InputProps={{
+              endAdornment: (
+                <Tooltip title={placeholder}>
+                  <InfoIcon />
+                </Tooltip>
+              ),
+            }}
             color="secondary"
             error={!!error}
             helperText={error?.errorMessage}
