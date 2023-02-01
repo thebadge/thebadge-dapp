@@ -42,8 +42,8 @@ export const BadgeTypeCreateSchema = z.object({
   rigorousness: SeverityTypeSchema.describe(
     'Rigorousness // How rigorous the emission of badges should be',
   ),
-  mintCost: TokenInputSchema.describe(
-    'Cost to mint the badge // How much it will be necessary to deposit.',
+  mintCost: NumberSchema.describe(
+    'Cost to mint the badge in ETH // How much it will be necessary to deposit.',
   ),
   badgeMetadataColumns: KlerosDynamicFields.describe(
     'Evidence fields // List of fields that the user will need to provider to be able to mint this badge type.',
@@ -144,23 +144,23 @@ const CreateBadgeType: NextPageWithLayout = () => {
       klerosControllerDataEncoded,
     )
   }
-  const form = useForm<z.infer<typeof BadgeTypeCreateSchema>>()
-  const { clearErrors, setError } = form
 
-  const triggerTestError = useCallback(
-    (error: ErrorOption) => {
-      // We need to create this kind of helper function that set the error directly
-      // to the form, we need to do it in the parent form component like this.
-      setError('mintCost', error)
-    },
-    [setError],
-  )
+  // const form = useForm<z.infer<typeof BadgeTypeCreateSchema>>()
+  // const { clearErrors, setError } = form
+  // const triggerTestError = useCallback(
+  //   (error: ErrorOption) => {
+  //     // We need to create this kind of helper function that set the error directly
+  //     // to the form, we need to do it in the parent form component like this.
+  //     setError('mintCost', error)
+  //   },
+  //   [setError],
+  // )
 
-  const cleanTestError = useCallback(() => {
-    // We need to create this kind of helper function that clear the error directly
-    // to the form, we need to do it in the parent form component like this.
-    clearErrors('mintCost')
-  }, [clearErrors])
+  // const cleanTestError = useCallback(() => {
+  //   // We need to create this kind of helper function that clear the error directly
+  //   // to the form, we need to do it in the parent form component like this.
+  //   clearErrors('mintCost')
+  // }, [clearErrors])
 
   return (
     <>
@@ -173,7 +173,7 @@ const CreateBadgeType: NextPageWithLayout = () => {
       </Typography>
 
       <CustomFormFromSchema
-        form={form}
+        // form={form}
         formProps={{
           useGridLayout: true,
           gridColumns: 3,
@@ -181,14 +181,14 @@ const CreateBadgeType: NextPageWithLayout = () => {
           buttonLabel: address ? 'Register' : 'Connect wallet',
         }}
         onSubmit={onSubmit}
-        props={{
-          mintCost: {
-            decimals: 18,
-            maxValue: parseUnits('100', 18),
-            setError: triggerTestError,
-            cleanError: cleanTestError,
-          },
-        }}
+        // props={{
+        //   mintCost: {
+        //     decimals: 18,
+        //     maxValue: parseUnits('100', 18),
+        //     setError: triggerTestError,
+        //     cleanError: cleanTestError,
+        //   },
+        // }}
         schema={BadgeTypeCreateSchema}
       />
     </>
