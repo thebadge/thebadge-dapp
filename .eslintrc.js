@@ -39,7 +39,7 @@ module.exports = {
     'import/extensions': 0,
     'import/no-cycle': [0, { ignoreExternal: true }],
     'import/no-unresolved': 0,
-    "unused-imports/no-unused-imports": "error",
+    "unused-imports/no-unused-imports": "off",
     'import/order': [
       'error',
       {

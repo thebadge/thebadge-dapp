@@ -17,7 +17,7 @@ export default function NumberField() {
   const { label } = useDescription()
 
   function onChange(e: any) {
-    field.onChange(Number(e.target.value))
+    field.onChange(Number(e.target.value.replace(/[^0-9.]/g, '')))
   }
 
   return (
@@ -27,6 +27,7 @@ export default function NumberField() {
       helperText={error?.errorMessage}
       label={label}
       onChange={onChange}
+      type="number"
       value={field.value ? field.value : ''}
       variant={'standard'}
     />

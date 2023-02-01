@@ -2,7 +2,9 @@ import { createUniqueFieldSchema } from '@ts-react/form'
 import { isAddress } from 'ethers/lib/utils'
 import { z } from 'zod'
 
-import { KLEROS_LIST_TYPES_KEYS } from '@/src/utils/kleros/types'
+import { isEmail } from '@/src/components/form/helpers/validators'
+import { KLEROS_LIST_TYPES_KEYS } from '@/types/kleros/types'
+import { Severity_Keys } from '@/types/utils'
 
 // Why we need these schemas?
 // https://github.com/iway1/react-ts-form#dealing-with-collisions
@@ -30,6 +32,28 @@ export const AddressSchema = createUniqueFieldSchema(
   'AddressSchema',
 )
 
+export const TwitterSchema = createUniqueFieldSchema(
+  z
+    .string({
+      required_error: 'Is required',
+      invalid_type_error: 'Must be a twitter user',
+    })
+    .startsWith('@'),
+  'TwitterSchema',
+)
+
+export const EmailSchema = createUniqueFieldSchema(
+  z.string({ required_error: 'Is required' }).refine(isEmail, {
+    message: 'Must be a valid email addresses.',
+  }),
+  'EmailSchema',
+)
+
+export const TokenInputSchema = createUniqueFieldSchema(
+  z.string({ required_error: 'Is required' }),
+  'TokenInputSchema',
+)
+
 export const NumberSchema = createUniqueFieldSchema(
   z.number({
     required_error: 'Is required',
@@ -54,20 +78,46 @@ const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/web
 export const ImageSchema = createUniqueFieldSchema(
   z
     .any()
-    .refine(({ file }) => !!file, 'Upload an image is required.')
-    .refine(({ file }) => file?.size <= MAX_FILE_SIZE, `Max file size is 5MB.`)
+    .refine((value) => !!value?.file, 'Upload an image is required.')
+    .refine((value) => value?.file?.size <= MAX_FILE_SIZE, `Max file size is 5MB.`)
     .refine(
-      ({ file }) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
+      (value) => ACCEPTED_IMAGE_TYPES.includes(value?.file?.type),
       '.jpg, .jpeg, .png and .webp files are accepted.',
     ),
   'ImageSchema',
 )
+
+export const AvatarSchema = createUniqueFieldSchema(
+  z
+    .any()
+    .refine((value) => !!value?.file, 'Upload an image is required.')
+    .refine((value) => value?.file?.size <= MAX_FILE_SIZE, `Max file size is 5MB.`)
+    .refine(
+      (value) => ACCEPTED_IMAGE_TYPES.includes(value?.file?.type),
+      '.jpg, .jpeg, .png and .webp files are accepted.',
+    ),
+  'AvatarSchema',
+)
+
 export const FileSchema = createUniqueFieldSchema(
   z
     .any()
-    .refine(({ file }) => !!file, 'Upload a file is required.')
-    .refine(({ file }) => file?.size <= MAX_FILE_SIZE, `Max file size is 5MB.`),
+    .refine((value) => !!value && !!value.file, 'Upload a file is required.')
+    .refine((value) => value?.file?.size <= MAX_FILE_SIZE, `Max file size is 5MB.`),
   'FileSchema',
+)
+
+export const ExpirationTypeSchema = createUniqueFieldSchema(
+  z.number({
+    required_error: 'Is required',
+    invalid_type_error: 'Must enter an amount of days',
+  }),
+  'ExpirationTypeSchema',
+)
+
+export const SeverityTypeSchema = createUniqueFieldSchema(
+  z.enum(Severity_Keys),
+  'SeverityTypeSchema',
 )
 
 export const KlerosFieldTypeSchema = createUniqueFieldSchema(
@@ -78,16 +128,20 @@ export const KlerosFieldTypeSchema = createUniqueFieldSchema(
 // Schema used to generate a form inside the KlerosDynamicFields handler and also
 // to create the KlerosDynamicFields Unique field
 export const KlerosFormFieldSchema = z.object({
-  name: z.string().describe('Name // Field name that the user will be when they create the badge.'),
+  label: z
+    .string()
+    .describe('Name // Field name that the user will be when they create the badge.'),
   description: z
     .string()
-    .describe('Description // Field description that explains what the field data is'),
-  type: KlerosFieldTypeSchema.describe('Field Type // Type of the required data'),
+    .describe('Description // Field description that explains what the field data is.'),
+  type: KlerosFieldTypeSchema.describe('Field Type // Type of the required data.'),
 })
 
 export const KlerosDynamicFields = createUniqueFieldSchema(
   z
-    .array(KlerosFormFieldSchema)
+    .array(KlerosFormFieldSchema, {
+      required_error: 'Must provide at least one field.',
+    })
     .min(1, 'Must provide at least one field.')
     .max(20, `Can't add more than twenty (20)`),
   'KlerosDynamicFields',

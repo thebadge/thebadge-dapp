@@ -81,3 +81,13 @@ export type BackendResponse<T> = {
   message?: string
   result: null | T
 }
+
+export type BackendFileUpload = { fileName: string; mimeType: string; base64File: string }
+
+export enum Severity {
+  'Normal' = 1,
+  'Above average' = 3,
+  'Heavy' = 5,
+}
+
+export const Severity_Keys = ['Normal', 'Above average', 'Heavy'] as const

@@ -5,12 +5,13 @@ import DragIndicatorIcon from '@mui/icons-material/DragIndicator'
 import { Box, Stack, Typography, styled } from '@mui/material'
 import { Identifier, XYCoord } from 'dnd-core'
 import { useDrag, useDrop } from 'react-dnd'
+import { z } from 'zod'
 
-import { MetadataColumn } from '@/src/utils/kleros/types'
+import { KlerosFormFieldSchema } from '@/src/components/form/helpers/customSchemas'
 
 type FormFieldItemProps = {
   index: number
-  field: MetadataColumn & { index: number }
+  field: z.infer<typeof KlerosFormFieldSchema> & { index: number }
   moveItem: (dragIndex: number, hoverIndex: number) => void
   removeItem: () => void
 }

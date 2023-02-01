@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 
-import { Box, Button, Container, styled } from '@mui/material'
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf'
+import { Box, Button, Container, Typography, styled } from '@mui/material'
 import { useDescription, useTsController } from '@ts-react/form'
 import ImageUploading, { ImageListType } from 'react-images-uploading'
 import { colors } from 'thebadge-ui-library'
@@ -8,7 +9,7 @@ import { z } from 'zod'
 
 import { TextFieldStatus } from '@/src/components/form/TextField'
 import { FormField } from '@/src/components/form/helpers/FormField'
-import { ImageSchema } from '@/src/components/form/helpers/customSchemas'
+import { FileSchema } from '@/src/components/form/helpers/customSchemas'
 
 const Wrapper = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -20,20 +21,25 @@ const Wrapper = styled(Box)(({ theme }) => ({
   gridColumn: 'span 1 / 4',
 }))
 
-export default function ImageInput() {
-  const { error, field } = useTsController<z.infer<typeof ImageSchema>>()
+/**
+ * File Input use the same library that ImageInput does, but it has custom
+ * config on accepted files
+ * @constructor
+ */
+export default function FileInput() {
+  const { error, field } = useTsController<z.infer<typeof FileSchema>>()
   const { label } = useDescription()
-  const [images, setImages] = useState<ImageListType>(field.value ? [field.value] : [])
+  const [files, setFiles] = useState<ImageListType>(field.value ? [field.value] : [])
   const maxNumber = 1
 
-  const onChange = (imageList: ImageListType) => {
+  const onChange = (fileList: ImageListType) => {
     // data for submit
-    if (imageList[0]) {
-      field.onChange(imageList[0])
+    if (fileList[0]) {
+      field.onChange(fileList[0])
     } else {
       field.onChange(null)
     }
-    setImages(imageList)
+    setFiles(fileList)
   }
 
   return (
@@ -45,10 +51,12 @@ export default function ImageInput() {
             sx={{ display: 'flex', background: 'rgba(0,0,0,0.4)', width: '100%' }}
           >
             <ImageUploading
+              acceptType={['pdf']}
+              allowNonImageType={true}
               dataURLKey="data_url"
               maxNumber={maxNumber}
               onChange={onChange}
-              value={images}
+              value={files}
             >
               {({
                 dragProps,
@@ -78,26 +86,41 @@ export default function ImageInput() {
                   )}
                   {imageList.map((image, index) => (
                     <Box
-                      className="image-item"
+                      className="pdf-item"
                       key={index}
                       sx={{ display: 'flex', flexDirection: 'row' }}
                     >
-                      <img alt="" src={image['data_url']} width="200" />
+                      <Box alignItems="center" display="flex" flexDirection="row">
+                        <PictureAsPdfIcon sx={{ mr: 1 }} />
+                        <Typography>{image.file?.name}</Typography>
+                      </Box>
                       <Box
                         display="flex"
                         flexDirection="column"
                         justifyContent="space-evenly"
                         marginLeft={2}
                       >
-                        <button onClick={() => onImageUpdate(index)}>Update</button>
+                        <Button
+                          color="info"
+                          onClick={() => onImageUpdate(index)}
+                          variant="outlined"
+                        >
+                          Update
+                        </Button>
 
-                        <button onClick={() => onImageRemove(index)}>Remove</button>
+                        <Button
+                          color="error"
+                          onClick={() => onImageRemove(index)}
+                          variant="outlined"
+                        >
+                          Remove
+                        </Button>
                       </Box>
                     </Box>
                   ))}
                   {errors && (
                     <div>
-                      {errors.maxNumber && <span>Number of selected images exceed maxNumber</span>}
+                      {errors.maxNumber && <span>Number of selected files exceed maxNumber</span>}
                       {errors.acceptType && <span>Your selected file type is not allow</span>}
                       {errors.maxFileSize && <span>Selected file size exceed maxFileSize</span>}
                       {errors.resolution && (

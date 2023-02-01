@@ -20,7 +20,7 @@ export const useMainMenuItems = () => {
       type: 'color',
       icon: <HomeIcon />,
       title: 'Home',
-      href: homeSection,
+      href: homeSection?.current ? homeSection : '/',
       subItems: [
         {
           title: 'Get a certificate',
@@ -56,7 +56,7 @@ export const useMainMenuItems = () => {
         },
         {
           title: 'Become a creator',
-          href: '#',
+          href: '/creator/register',
         },
         {
           title: 'Become a third-party entity',

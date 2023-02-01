@@ -33,6 +33,7 @@ const MenuContainer = styled('div')(({ theme }) => ({
 const MainMenuContainer = styled(MenuContainer)(({ theme }) => ({
   height: 'fit-content',
   position: 'sticky',
+  left: theme.spacing(4),
   top: '8rem',
   marginRight: '5%',
 
