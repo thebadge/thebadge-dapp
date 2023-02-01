@@ -8,8 +8,8 @@ import { HTML5Backend } from 'react-dnd-html5-backend'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-import { CustomFormFromSchemaWithoutSubmit } from '@/src/components/form/CustomForm'
 import { TextFieldStatus } from '@/src/components/form/TextField'
+import { CustomFormFromSchemaWithoutSubmit } from '@/src/components/form/customForms/CustomForm'
 import { FormStatus } from '@/src/components/form/helpers/FormStatus'
 import {
   KlerosDynamicFields,

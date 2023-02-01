@@ -10,7 +10,7 @@ import Stepper from '@mui/material/Stepper'
 import Typography from '@mui/material/Typography'
 import { AnyZodObject, ZodEffects } from 'zod'
 
-import { CustomFormFromSchemaWithoutSubmit } from '@/src/components/form/CustomForm'
+import { CustomFormFromSchemaWithoutSubmit } from '@/src/components/form/customForms/CustomForm'
 import { useForceRender } from '@/src/hooks/useForceRender'
 import useIsMobile from '@/src/hooks/useIsMobile'
 
