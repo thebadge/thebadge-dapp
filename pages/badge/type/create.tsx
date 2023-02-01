@@ -9,7 +9,7 @@ import { colors } from 'thebadge-ui-library'
 import { z } from 'zod'
 
 import { NextPageWithLayout } from '@/pages/_app'
-import { CustomFormFromSchema } from '@/src/components/form/CustomForm'
+import { CustomFormFromSchema } from '@/src/components/form/customForms/CustomForm'
 import {
   FileSchema,
   ImageSchema,
