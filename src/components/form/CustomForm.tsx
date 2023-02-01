@@ -11,7 +11,7 @@ const StyledFlexFormContainer = styled(Box)(({ theme }) => ({
   justifyContent: 'center',
   alignItems: 'flex-end',
   margin: theme.spacing(2, 0),
-  '& .MuiBox-root': {
+  '& > *': {
     display: 'flex',
     flex: '1 1 25%',
   },
@@ -22,10 +22,12 @@ const StyledGridFormContainer = styled(Box, {
 })<{ gridColumns: number }>(({ gridColumns, theme }) => ({
   display: 'grid',
   gridTemplateColumns: `repeat(${gridColumns}, 1fr)`,
+  gridAutoColumns: '1fr',
   gap: theme.spacing(2),
-  gridAutoRows: 'minmax(1fr, auto)',
+  gridAutoRows: 'minmax(7rem, auto)',
+  placeContent: 'center center',
   margin: theme.spacing(2, 0),
-  '& .MuiBox-root': {
+  '& > *': {
     justifyContent: 'flex-end',
   },
 }))
@@ -34,17 +36,27 @@ function MyCustomFormComponent({
   buttonDisabled,
   buttonLabel = 'Submit',
   children,
+  gridColumns = 2,
   onSubmit,
+  useGridLayout,
 }: {
   children: ReactNode
   onSubmit: () => void
   buttonLabel?: string
   buttonDisabled?: boolean
+  useGridLayout?: boolean
+  gridColumns?: number
 }) {
   return (
     <form onSubmit={onSubmit} style={{ display: 'flex', flexDirection: 'column' }}>
       {/* children are you form field components */}
-      <StyledFlexFormContainer>{children}</StyledFlexFormContainer>
+      {useGridLayout ? (
+        <StyledGridFormContainer gridColumns={gridColumns} id="grid-container">
+          {children}
+        </StyledGridFormContainer>
+      ) : (
+        <StyledFlexFormContainer id="flex-container">{children}</StyledFlexFormContainer>
+      )}
       <Box sx={{ display: 'flex', justifyContent: 'center' }}>
         <Button color="darkGreen" disabled={buttonDisabled} type="submit" variant="contained">
           {buttonLabel}

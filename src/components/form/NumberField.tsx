@@ -17,7 +17,7 @@ export default function NumberField() {
   const { label } = useDescription()
 
   function onChange(e: any) {
-    field.onChange(e.target.value.replace(/[^0-9.]/g, ''))
+    field.onChange(Number(e.target.value.replace(/[^0-9.]/g, '')))
   }
 
   return (

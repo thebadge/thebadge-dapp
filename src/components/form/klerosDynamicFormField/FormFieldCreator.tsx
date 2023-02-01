@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 
-import { Box } from '@mui/material'
+import { Box, styled } from '@mui/material'
 import { useTsController } from '@ts-react/form'
 import update from 'immutability-helper'
 import { DndProvider } from 'react-dnd'
@@ -18,6 +18,16 @@ import {
 } from '@/src/components/form/helpers/customSchemas'
 import FormFieldItem from '@/src/components/form/klerosDynamicFormField/FormFieldItem'
 import { KLEROS_LIST_TYPES, KLEROS_LIST_TYPES_KEYS } from '@/types/kleros/types'
+
+const Wrapper = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flex: 1,
+  flexDirection: 'column',
+  position: 'relative',
+  rowGap: theme.spacing(1),
+  width: '100%',
+  gridColumn: '1 / 4',
+}))
 
 export default function KlerosDynamicFieldsCreator() {
   const { error, field } = useTsController<z.infer<typeof KlerosDynamicFields>>()
@@ -82,7 +92,7 @@ export default function KlerosDynamicFieldsCreator() {
   }
 
   return (
-    <Box>
+    <Wrapper>
       <Box>
         <CustomFormFromSchemaWithoutSubmit
           form={form}
@@ -105,6 +115,6 @@ export default function KlerosDynamicFieldsCreator() {
           {field?.value?.map((field, index) => renderFieldItem(field, index))}
         </DndProvider>
       </Box>
-    </Box>
+    </Wrapper>
   )
 }
