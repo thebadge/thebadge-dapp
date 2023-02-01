@@ -31,14 +31,15 @@ export const BadgeTypeCreateSchema = z.object({
   description: LongTextSchema.describe('description // ??'),
   logoUri: ImageSchema.describe('The logo for your badge type // ??'),
   criteriaFileUri: FileSchema.describe('PDF with the requirements to mint a badge. // ??'),
-  challengePeriodDuration: NumberSchema.describe(
-    'Challenge period duration // During this time the community can analyze the evidence and challenge it.',
-  ),
+  // challengePeriodDuration: NumberSchema.describe(
+  //   'Challenge period duration // During this time the community can analyze the evidence and challenge it.',
+  // ),
   // TODO: add rigorousness component. It can be a radio button for now with three options basic, medium, heavy. Later we can migrate to a slider
   // the values for each option should be 1.5, 2 and 3 respectively (check base deposit on how it will impact.)
   rigorousness: SeverityTypeSchema.describe(
     'Rigorousness // How rigorous the emission of badges should be',
   ),
+  // mintCost: TokenInputSchema.describe('The value a user has to pay to mint a badge // ??'),
   badgeMetadataColumns: KlerosDynamicFields.describe(
     'Evidence fields // List of fields that the user will need to provider to be able to mint this badge type.',
   ),
@@ -56,21 +57,25 @@ const CreateBadgeType: NextPageWithLayout = () => {
 
     const { clearing, registration } = generateKlerosListMetaEvidence(
       name, //badgeName
-      { mimeType: criteriaFileUri?.file.type, base64File: criteriaFileUri?.data_url }, //criteriaFileUri
+      {
+        fileName: 'fileURI',
+        mimeType: criteriaFileUri?.file.type,
+        base64File: criteriaFileUri?.data_url,
+      }, //criteriaFileUri
       name, //badgeTypeName
       description, //badgeTypeDescription
       badgeMetadataColumns, //badgeMetadataColumns
-      { mimeType: logoUri?.file.type, base64File: logoUri?.data_url }, //badgeTypeLogoUri
+      { fileName: 'logoURI', mimeType: logoUri?.file.type, base64File: logoUri?.data_url }, //badgeTypeLogoUri
     )
-    debugger
+    //debugger
     const registrationIPFSUploaded = await ipfsUpload({
       attributes: JSON.stringify(registration),
-      files: ['criteriaFileUri', 'badgeTypeLogoUri'],
+      files: ['fileURI', 'metadata.logoURI'],
     })
 
     const clearingIPFSUploaded = await ipfsUpload({
       attributes: JSON.stringify(clearing),
-      files: ['criteriaFileUri', 'badgeTypeLogoUri'],
+      files: ['fileURI', 'metadata.logoURI'],
     })
 
     const badgeTypeIPFSUploaded = await ipfsUpload({
@@ -81,7 +86,7 @@ const CreateBadgeType: NextPageWithLayout = () => {
       }),
       files: ['image'],
     })
-    debugger
+
     const kleros = Kleros__factory.connect(
       contracts.Kleros.address[appChainId],
       readOnlyAppProvider,
@@ -112,7 +117,7 @@ const CreateBadgeType: NextPageWithLayout = () => {
           numberOfJurors, // numberOfJurors:
           `ipfs://${registrationIPFSUploaded.result?.ipfsHash}`, // registration file
           `ipfs://${clearingIPFSUploaded.result?.ipfsHash}`, // clearing file
-          data.challengePeriodDuration, // challengePeriodDuration:
+          60 * 10, //data.challengePeriodDuration, // challengePeriodDuration:
           [
             baseDeposit.add(klerosCourtInfo.feeForJuror.mul(data.rigorousness)).toString(), // jurors * fee per juror + rigorousness
             baseDeposit.add(klerosCourtInfo.feeForJuror.mul(data.rigorousness)).toString(), // The base deposit to remove an item.
@@ -124,14 +129,13 @@ const CreateBadgeType: NextPageWithLayout = () => {
       ],
     )
 
-    debugger
     return theBadge.createBadgeType(
       {
         metadata: `ipfs://${badgeTypeIPFSUploaded.result?.ipfsHash}`, // TODO: should we use a custom one? or the one for TCR is ok?
         controllerName: 'kleros',
         mintCost: parseUnits('0.1', 18),
-        mintFee: parseUnits('0.1', 18), // TODO: this is a legacy field that is not used in the SC, will be removed in a newer deploy
-        validFor: 0, // in seconds, 0 infinite
+        mintFee: 0, // TODO: this is a legacy field that is not used in the SC, will be removed in a newer deploy
+        validFor: 60 * 10, // data.challengePeriodDuration, // in seconds, 0 infinite
       },
       klerosControllerDataEncoded,
     )
@@ -153,6 +157,12 @@ const CreateBadgeType: NextPageWithLayout = () => {
           buttonLabel: address ? 'Register' : 'Connect wallet',
         }}
         onSubmit={onSubmit}
+        // props={{
+        //   mintCost: {
+        //     decimals: 18,
+        //     maxValue: parseUnits('100', 18).toString(),
+        //   },
+        // }}
         schema={BadgeTypeCreateSchema}
       />
     </>

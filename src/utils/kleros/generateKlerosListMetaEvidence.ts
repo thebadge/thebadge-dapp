@@ -31,11 +31,11 @@ type klerosListStructure = {
 
 export function generateKlerosListMetaEvidence(
   badgeName: string,
-  criteriaFileUri: BackendFileUpload,
+  fileURI: BackendFileUpload,
   badgeTypeName: string,
   badgeTypeDescription: string,
   badgeMetadataColumns: MetadataColumn[],
-  badgeTypeLogoUri: BackendFileUpload,
+  logoURI: BackendFileUpload,
   requireRemovalEvidence = true,
   relTcrDisabled = true, // research about it
   category = 'Curated Lists',
@@ -59,7 +59,7 @@ export function generateKlerosListMetaEvidence(
     },
     category,
     question: `Does the ${badgeName} comply with the required criteria?`,
-    fileURI: criteriaFileUri,
+    fileURI,
     evidenceDisplayInterfaceURI,
     metadata: {
       tcrTitle: badgeTypeName,
@@ -67,7 +67,7 @@ export function generateKlerosListMetaEvidence(
       columns: badgeMetadataColumns,
       itemName: badgeName,
       itemNamePlural,
-      logoURI: badgeTypeLogoUri,
+      logoURI,
       requireRemovalEvidence,
       isTCRofTCRs: false,
       relTcrDisabled,
@@ -87,7 +87,7 @@ export function generateKlerosListMetaEvidence(
     },
     category,
     question: `Does the ${badgeName} comply with the required criteria?`,
-    fileURI: criteriaFileUri,
+    fileURI,
     evidenceDisplayInterfaceURI,
     metadata: {
       tcrTitle: badgeTypeName,
@@ -95,7 +95,7 @@ export function generateKlerosListMetaEvidence(
       columns: badgeMetadataColumns,
       itemName: badgeName,
       itemNamePlural,
-      logoURI: badgeTypeLogoUri,
+      logoURI,
       requireRemovalEvidence,
       isTCRofTCRs: false,
       relTcrDisabled,
