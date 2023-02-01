@@ -3,7 +3,7 @@ import axios from 'axios'
 import { BackendResponse } from '@/types/utils'
 
 type Args = {
-  attributes: string
+  attributes: Record<string, unknown>
   filePaths?: string[]
 }
 

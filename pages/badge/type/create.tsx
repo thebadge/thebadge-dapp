@@ -72,21 +72,21 @@ const CreateBadgeType: NextPageWithLayout = () => {
       { fileName: 'logoURI', mimeType: logoUri?.file.type, base64File: logoUri?.data_url }, //badgeTypeLogoUri
     )
     const registrationIPFSUploaded = await ipfsUpload({
-      attributes: JSON.stringify(registration),
+      attributes: registration,
       filePaths: ['fileURI', 'metadata.logoURI'],
     })
 
     const clearingIPFSUploaded = await ipfsUpload({
-      attributes: JSON.stringify(clearing),
+      attributes: clearing,
       filePaths: ['fileURI', 'metadata.logoURI'],
     })
 
     const badgeTypeIPFSUploaded = await ipfsUpload({
-      attributes: JSON.stringify({
+      attributes: {
         description: data.description,
         image: { mimeType: logoUri?.file.type, base64File: logoUri?.data_url },
         name: name,
-      }),
+      },
       filePaths: ['image'],
     })
 
