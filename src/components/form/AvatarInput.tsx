@@ -16,6 +16,7 @@ import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 
 const Wrapper = styled(Box)(({ theme }) => ({
   display: 'flex',
+  flex: 1,
   flexDirection: 'column',
   justifyContent: 'center',
   position: 'relative',

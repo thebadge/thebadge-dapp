@@ -13,10 +13,11 @@ export enum TextFieldStatus {
 
 const Wrapper = styled(Box)(({ theme }) => ({
   display: 'flex',
+  flex: 1,
   flexDirection: 'column',
   position: 'relative',
   rowGap: theme.spacing(1),
-  gridColumn: 1,
+  gridColumn: 'auto',
 }))
 
 const StyledTextField = styled(MUITextField)(({ theme }) => ({
@@ -36,7 +37,7 @@ export default function TextArea() {
       <StyledTextField
         color="secondary"
         error={!!error}
-        helperText={error?.errorMessage}
+        helperText={error?.errorMessage || ' '}
         label={label}
         multiline
         onChange={onChange}

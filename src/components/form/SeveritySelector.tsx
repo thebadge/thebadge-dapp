@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import InfoIcon from '@mui/icons-material/Info'
 import { Box, Slider, Tooltip, Typography, styled } from '@mui/material'
@@ -16,13 +16,20 @@ const Wrapper = styled(Box)(({ theme }) => ({
   flexDirection: 'column',
   position: 'relative',
   rowGap: theme.spacing(1),
-  width: '50%',
+  gridColumn: 'span 1 / span 2',
 }))
 
 export default function SeveritySelector() {
   const { error, field } = useTsController<z.infer<typeof SeverityTypeSchema>>()
-  const { label } = useDescription()
+  const { label, placeholder } = useDescription()
   const [value, setValue] = useState<number>(1)
+
+  useEffect(() => {
+    // Use effect to set the default value, is made on this way to
+    // prevent the use of default props on the form
+    field.onChange(Severity[value])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const handleChange = (e: Event, newValue: number | number[]) => {
     if (!Array.isArray(newValue)) {
@@ -60,7 +67,7 @@ export default function SeveritySelector() {
             />
             <Typography>
               {valuetext(value)}
-              <Tooltip title={`Depending on how much severity you require, the court.......`}>
+              <Tooltip title={placeholder}>
                 <InfoIcon sx={{ ml: 1 }} />
               </Tooltip>
             </Typography>

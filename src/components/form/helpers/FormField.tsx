@@ -11,6 +11,8 @@ const StyledBox = styled(Box)<{ status?: TextFieldStatus }>(({ theme }) => ({
   justifyContent: 'center',
   alignItems: 'center',
   flexDirection: 'column',
+  position: 'relative',
+  rowGap: theme.spacing(1),
 }))
 
 export const FormField: React.FC<{
@@ -18,8 +20,8 @@ export const FormField: React.FC<{
   label?: string
   labelPosition?: 'top' | 'left'
   status?: TextFieldStatus | undefined
-  statusText?: string | undefined
-}> = ({ formControl, label, labelPosition = 'top', status, statusText, ...restProps }) => {
+  statusText?: string
+}> = ({ formControl, label, labelPosition = 'top', status, statusText = ' ', ...restProps }) => {
   const control = useMemo(
     () =>
       cloneElement(formControl, {

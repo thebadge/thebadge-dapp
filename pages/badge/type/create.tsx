@@ -1,8 +1,10 @@
-import { ReactElement } from 'react'
+import { ReactElement, useCallback } from 'react'
 
 import { Typography } from '@mui/material'
 import { constants } from 'ethers'
 import { defaultAbiCoder, parseUnits } from 'ethers/lib/utils'
+import { useForm } from 'react-hook-form'
+import { ErrorOption } from 'react-hook-form/dist/types/errors'
 import { colors } from 'thebadge-ui-library'
 import { z } from 'zod'
 
@@ -15,6 +17,7 @@ import {
   LongTextSchema,
   NumberSchema,
   SeverityTypeSchema,
+  TokenInputSchema,
 } from '@/src/components/form/helpers/customSchemas'
 import { isMetadataColumnArray } from '@/src/components/form/helpers/validators'
 import { DefaultLayout } from '@/src/components/layout/DefaultLayout'
@@ -39,7 +42,9 @@ export const BadgeTypeCreateSchema = z.object({
   rigorousness: SeverityTypeSchema.describe(
     'Rigorousness // How rigorous the emission of badges should be',
   ),
-  // mintCost: TokenInputSchema.describe('The value a user has to pay to mint a badge // ??'),
+  mintCost: TokenInputSchema.describe(
+    'Cost to mint the badge // How much it will be necessary to deposit.',
+  ),
   badgeMetadataColumns: KlerosDynamicFields.describe(
     'Evidence fields // List of fields that the user will need to provider to be able to mint this badge type.',
   ),
@@ -67,7 +72,6 @@ const CreateBadgeType: NextPageWithLayout = () => {
       badgeMetadataColumns, //badgeMetadataColumns
       { fileName: 'logoURI', mimeType: logoUri?.file.type, base64File: logoUri?.data_url }, //badgeTypeLogoUri
     )
-    //debugger
     const registrationIPFSUploaded = await ipfsUpload({
       attributes: JSON.stringify(registration),
       files: ['fileURI', 'metadata.logoURI'],
@@ -140,6 +144,23 @@ const CreateBadgeType: NextPageWithLayout = () => {
       klerosControllerDataEncoded,
     )
   }
+  const form = useForm<z.infer<typeof BadgeTypeCreateSchema>>()
+  const { clearErrors, setError } = form
+
+  const triggerTestError = useCallback(
+    (error: ErrorOption) => {
+      // We need to create this kind of helper function that set the error directly
+      // to the form, we need to do it in the parent form component like this.
+      setError('mintCost', error)
+    },
+    [setError],
+  )
+
+  const cleanTestError = useCallback(() => {
+    // We need to create this kind of helper function that clear the error directly
+    // to the form, we need to do it in the parent form component like this.
+    clearErrors('mintCost')
+  }, [clearErrors])
 
   return (
     <>
@@ -152,17 +173,22 @@ const CreateBadgeType: NextPageWithLayout = () => {
       </Typography>
 
       <CustomFormFromSchema
+        form={form}
         formProps={{
+          useGridLayout: true,
+          gridColumns: 3,
           buttonDisabled: !address,
           buttonLabel: address ? 'Register' : 'Connect wallet',
         }}
         onSubmit={onSubmit}
-        // props={{
-        //   mintCost: {
-        //     decimals: 18,
-        //     maxValue: parseUnits('100', 18).toString(),
-        //   },
-        // }}
+        props={{
+          mintCost: {
+            decimals: 18,
+            maxValue: parseUnits('100', 18),
+            setError: triggerTestError,
+            cleanError: cleanTestError,
+          },
+        }}
         schema={BadgeTypeCreateSchema}
       />
     </>

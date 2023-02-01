@@ -10,6 +10,8 @@ export enum TextFieldStatus {
 
 const Wrapper = styled(Box)(({ theme }) => ({
   display: 'flex',
+
+  flex: 1,
   flexDirection: 'column',
   position: 'relative',
   rowGap: theme.spacing(1),

@@ -50,7 +50,7 @@ export const RegisterCuratorSchema = z
   .merge(RegisterCuratorSchemaStep3)
 
 const Register: NextPageWithLayout = () => {
-  const { address, appChainId } = useWeb3Connection()
+  const { address, appChainId, isWalletConnected } = useWeb3Connection()
   const router = useRouter()
   const sendTx = useTransaction()
 
@@ -79,6 +79,10 @@ const Register: NextPageWithLayout = () => {
 
   if (creatorByAddress.data?.emitter) {
     router.push('/creator/profile')
+  }
+
+  if (!isWalletConnected) {
+    return <Typography>Please connect your wallet to continue</Typography>
   }
 
   return (
