@@ -1,35 +1,52 @@
+import { ChangeEvent, useState } from 'react'
 import * as React from 'react'
 
-import { TextField as MUITextField, styled } from '@mui/material'
+import { TextField as MUITextField, Stack } from '@mui/material'
 import { useDescription, useTsController } from '@ts-react/form'
+import { BigNumberInput } from 'big-number-input'
+import { formatUnits } from 'ethers/lib/utils'
 
-export enum TextFieldStatus {
-  error = 'error',
-  success = 'success',
+type NumberFieldProps = {
+  decimals?: number
 }
 
-const StyledTextField = styled(MUITextField)(({ theme }) => ({
-  margin: theme.spacing(1),
-}))
-
-export default function NumberField() {
+export default function NumberField({ decimals = 0 }: NumberFieldProps) {
   const { error, field } = useTsController<number>()
+  const [stringValue, setStringValue] = useState<string>('')
   const { label } = useDescription()
 
-  function onChange(e: any) {
-    field.onChange(Number(e.target.value.replace(/[^0-9.]/g, '')))
+  function onChange(e: string) {
+    const value = e
+    setStringValue(value)
+    if (e === '') {
+      // We need to send a bad type to trigger the error in an easy way
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      field.onChange(e)
+    } else {
+      const formattedValue = formatUnits(value, decimals)
+      field.onChange(Number(formattedValue))
+    }
   }
 
   return (
-    <StyledTextField
-      color="secondary"
-      error={!!error}
-      helperText={error?.errorMessage}
-      label={label}
+    <BigNumberInput
+      decimals={decimals}
       onChange={onChange}
-      type="number"
-      value={field.value ? field.value : ''}
-      variant={'standard'}
+      renderInput={(props) => (
+        <Stack>
+          <MUITextField
+            color="secondary"
+            error={!!error}
+            helperText={error?.errorMessage}
+            label={label}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => props.onChange && props.onChange(e)}
+            value={props.value}
+            variant={'standard'}
+          />
+        </Stack>
+      )}
+      value={stringValue}
     />
   )
 }

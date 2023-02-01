@@ -1,7 +1,7 @@
 import { ChangeEvent, useEffect, useMemo } from 'react'
 
 import { BigNumberish } from '@ethersproject/bignumber'
-import { Box, Button, TextField, styled } from '@mui/material'
+import { Box, Button, Stack, TextField, styled } from '@mui/material'
 import { useDescription, useTsController } from '@ts-react/form'
 import { BigNumberInput } from 'big-number-input'
 import { BigNumber } from 'ethers/lib/ethers'
@@ -75,16 +75,20 @@ export default function TokenInput({
             decimals={decimals}
             onChange={onChange}
             renderInput={(props) => (
-              <TextField
-                color="secondary"
-                inputProps={{
-                  min: 0,
-                }}
-                onChange={(e: ChangeEvent<HTMLInputElement>) => props.onChange && props.onChange(e)}
-                placeholder="0.00"
-                value={props.value}
-                variant="standard"
-              />
+              <Stack>
+                <TextField
+                  color="secondary"
+                  inputProps={{
+                    min: 0,
+                  }}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                    props.onChange && props.onChange(e)
+                  }
+                  placeholder="0.00"
+                  value={props.value}
+                  variant="standard"
+                />
+              </Stack>
             )}
             value={value || ''}
           />
