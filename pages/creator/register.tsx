@@ -65,7 +65,7 @@ const Register: NextPageWithLayout = () => {
     }
     const uploadedInfo = await ipfsUpload({
       attributes: JSON.stringify(data),
-      files: ['logo'],
+      filePaths: ['logo'],
     })
 
     const transaction = await sendTx(() =>
