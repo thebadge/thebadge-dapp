@@ -24,23 +24,29 @@ const options = ['day', 'month', 'year']
 const Wrapper = styled(Box)(({ theme }) => ({
   display: 'flex',
   flex: 1,
-  flexDirection: 'column',
+  flexDirection: 'row',
+  justifyContent: 'end',
   position: 'relative',
   rowGap: theme.spacing(1),
-  width: '50%',
 }))
 
 export default function ExpirationField() {
   const { error, field } = useTsController<z.infer<typeof ExpirationTypeSchema>>()
-  const { label } = useDescription()
+  const { label, placeholder } = useDescription()
+  const [stringValue, setStringValue] = useState<string>('')
+
   const [unit, setUnit] = useState<'day' | 'month' | 'year'>('day')
 
   function onChange(e: any) {
-    field.onChange(e.target.value.replace(/[^0-9.]/g, ''))
+    const cleanValue = e.target.value.replace(/[^0-9.]/g, '') || '0'
+    if (/^-?\d+(?:\.\d*)?$/.test(cleanValue)) {
+      setStringValue(cleanValue)
+      field.onChange(Number(cleanValue))
+    }
   }
 
   function validTo(days?: z.infer<typeof ExpirationTypeSchema>) {
-    if (!days) return '-'
+    if (!days || days === 0) return 'End of time.'
     return dayjs().add(days, unit).format('DD/MM/YYYY')
   }
 
@@ -51,50 +57,51 @@ export default function ExpirationField() {
   }
 
   return (
-    <Wrapper>
-      <FormField
-        formControl={
-          <Box>
-            <TextField
-              InputProps={{
-                endAdornment: (
-                  <Tooltip
-                    title={`e.g. If you mint this badge today, It will expire on: ${validTo(
+    <FormField
+      formControl={
+        <Wrapper>
+          <TextField
+            InputProps={{
+              endAdornment: (
+                <Tooltip
+                  title={
+                    placeholder +
+                    `\n e.g. If you mint this badge today, It will expire on: ${validTo(
                       field.value,
-                    )}`}
-                  >
-                    <InfoIcon />
-                  </Tooltip>
-                ),
-              }}
-              color="secondary"
-              error={!!error}
-              helperText={error?.errorMessage}
-              label={label}
-              onChange={onChange}
-              value={field.value ? field.value : ''}
-              variant={'standard'}
-            />
-            <MUISelect
-              id="unit-select"
-              onChange={handleDropdownChange}
-              sx={{ textTransform: 'capitalize', ml: 2 }}
-              value={unit || ''}
-            >
-              {options.map((op) => {
-                return (
-                  <MenuItem key={op} sx={{ textTransform: 'capitalize' }} value={op}>
-                    {op}s
-                  </MenuItem>
-                )
-              })}
-            </MUISelect>
-          </Box>
-        }
-        labelPosition={'top'}
-        status={error ? TextFieldStatus.error : TextFieldStatus.success}
-        statusText={error?.errorMessage}
-      />
-    </Wrapper>
+                    )}`
+                  }
+                >
+                  <InfoIcon />
+                </Tooltip>
+              ),
+            }}
+            color="secondary"
+            onChange={onChange}
+            sx={{ justifyContent: 'end' }}
+            value={stringValue}
+            variant={'standard'}
+          />
+          <MUISelect
+            id="unit-select"
+            onChange={handleDropdownChange}
+            size="small"
+            sx={{ textTransform: 'capitalize', ml: 2 }}
+            value={unit || ''}
+          >
+            {options.map((op) => {
+              return (
+                <MenuItem key={op} sx={{ textTransform: 'capitalize' }} value={op}>
+                  {op}s
+                </MenuItem>
+              )
+            })}
+          </MUISelect>
+        </Wrapper>
+      }
+      label={label}
+      labelPosition={'top'}
+      status={error ? TextFieldStatus.error : TextFieldStatus.success}
+      statusText={error?.errorMessage}
+    />
   )
 }

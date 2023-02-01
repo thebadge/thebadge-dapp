@@ -9,6 +9,7 @@ import { z } from 'zod'
 import { NextPageWithLayout } from '@/pages/_app'
 import { CustomFormFromSchema } from '@/src/components/form/customForms/CustomForm'
 import {
+  ExpirationTypeSchema,
   FileSchema,
   ImageSchema,
   KlerosDynamicFields,
@@ -32,16 +33,16 @@ export const BadgeTypeCreateSchema = z.object({
   logoUri: ImageSchema.describe('The logo for your badge type // ??'),
   criteriaFileUri: FileSchema.describe('PDF with the requirements to mint a badge. // ??'),
   challengePeriodDuration: NumberSchema.describe(
-    'Challenge period duration // During this time the community can analyze the evidence and challenge it.',
+    'Challenge period duration // Challenge period duration in days. During this time the community can analyze the evidence and challenge it.',
   ),
   rigorousness: SeverityTypeSchema.describe(
     'Rigorousness // How rigorous the emission of badges should be',
   ),
   mintCost: NumberSchema.describe(
-    'Cost to mint the badge in ETH // How much it will be necessary to deposit.',
+    'Cost to mint in ETH // How much it will be necessary to deposit.',
   ),
-  validFor: NumberSchema.describe(
-    'The badge will valid for this amount of  (0 is forever) // How many days the badge will be valid.',
+  validFor: ExpirationTypeSchema.describe(
+    'Expiration time // The badge will valid for this amount of  (0 is forever)',
   ),
   badgeMetadataColumns: KlerosDynamicFields.describe(
     'Evidence fields // List of fields that the user will need to provider to be able to mint this badge type.',
@@ -154,7 +155,6 @@ const CreateBadgeType: NextPageWithLayout = () => {
       </Typography>
 
       <CustomFormFromSchema
-        // form={form}
         formProps={{
           useGridLayout: true,
           gridColumns: 3,
@@ -162,6 +162,11 @@ const CreateBadgeType: NextPageWithLayout = () => {
           buttonLabel: address ? 'Register' : 'Connect wallet',
         }}
         onSubmit={onSubmit}
+        props={{
+          mintCost: {
+            decimals: 4,
+          },
+        }}
         schema={BadgeTypeCreateSchema}
       />
     </>
