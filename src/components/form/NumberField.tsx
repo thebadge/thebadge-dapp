@@ -27,6 +27,7 @@ export default function NumberField() {
       helperText={error?.errorMessage}
       label={label}
       onChange={onChange}
+      type="number"
       value={field.value ? field.value : ''}
       variant={'standard'}
     />

@@ -4,7 +4,7 @@ import { BackendResponse } from '@/types/utils'
 
 type Args = {
   attributes: string
-  files?: string[]
+  filePaths?: string[]
 }
 
 export default async function ipfsUpload(
