@@ -64,11 +64,11 @@ const Register: NextPageWithLayout = () => {
 
   return (
     <>
-      <Typography color={colors.white} variant="h3">
+      <Typography variant="h3">
         Register as a creator
       </Typography>
 
-      <Typography color={colors.white} variant="h5">
+      <Typography variant="h5">
         Once registered as a creator you will be granted the possibility to created badge types.
       </Typography>
 

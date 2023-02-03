@@ -9,11 +9,11 @@ import { DefaultLayout } from '@/src/components/layout/DefaultLayout'
 const Profile: NextPageWithLayout = () => {
   return (
     <>
-      <Typography color={colors.white} variant="h3">
+      <Typography  variant="h3">
         Welcome to THE BADGE!
       </Typography>
 
-      <Typography color={colors.white} variant="h3">
+      <Typography  variant="h3">
         This is your curator profile
       </Typography>
     </>

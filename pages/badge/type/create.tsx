@@ -10,11 +10,11 @@ import { DefaultLayout } from '@/src/components/layout/DefaultLayout'
 const Create: NextPageWithLayout = () => {
   return (
     <>
-      <Typography color={colors.white} variant="h3">
+      <Typography variant="h3">
         Welcome to THE BADGE!
       </Typography>
 
-      <Typography color={colors.white} variant="h3">
+      <Typography variant="h3">
         Please fulfill the form
       </Typography>
 

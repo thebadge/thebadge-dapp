@@ -63,11 +63,11 @@ const MintBadgeType: NextPageWithLayout = () => {
   }
   return (
     <>
-      <Typography color={colors.white} variant="h3">
+      <Typography variant="h3">
         Welcome to THE BADGE!
       </Typography>
 
-      <Typography color={colors.white} variant="h5">
+      <Typography variant="h5">
         Here you can complete the process to mint a badge type
       </Typography>
 

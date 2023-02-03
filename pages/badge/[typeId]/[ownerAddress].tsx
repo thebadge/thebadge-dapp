@@ -9,11 +9,11 @@ import { DefaultLayout } from '@/src/components/layout/DefaultLayout'
 const ViewBadge: NextPageWithLayout = () => {
   return (
     <>
-      <Typography color={colors.white} variant="h3">
+      <Typography variant="h3">
         Welcome to THE BADGE!
       </Typography>
 
-      <Typography color={colors.white} variant="h5">
+      <Typography variant="h5">
         Here you can view a Badge type for a given Address
       </Typography>
     </>

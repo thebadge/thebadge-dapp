@@ -13,7 +13,7 @@ const Address: React.FC = () => {
   const { address } = useWeb3ConnectedApp()
 
   return address ? (
-    <Typography color={colors.white} variant="title1">
+    <Typography  variant="title1">
       {address}
     </Typography>
   ) : null
@@ -24,8 +24,8 @@ const Home: NextPageWithLayout = () => {
 
   return (
     <Box display="flex" flexDirection="column" ref={homeSection}>
-      <Typography color={colors.white} variant="h3">
-        Welcome to THE BADGE!
+      <Typography variant="h2">
+        Welcome to The Badge!
       </Typography>
       <Box display="flex" flexDirection="column">
         <LinkWithTranslation pathname="/creator/register">1. Register Creator</LinkWithTranslation>

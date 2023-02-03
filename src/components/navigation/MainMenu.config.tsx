@@ -53,11 +53,11 @@ export const useMainMenuItems = () => {
       subItems: [
         {
           title: 'Become a curator',
-          href: '#',
+          href: '/curator/register',
         },
         {
           title: 'Become a creator',
-          href: '#',
+          href: '/creator/register',
         },
         {
           title: 'Become a third-party entity',
@@ -92,7 +92,7 @@ export const useMainMenuItems = () => {
               href: '#',
             },
             {
-              title: 'Discover',
+              title: 'You may be interested in',
               href: '#',
             },
           ],

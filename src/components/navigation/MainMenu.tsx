@@ -1,12 +1,12 @@
-import { indexOf } from "lodash";
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import React, { useState } from 'react'
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Button,
   ClickAwayListener,
   Fade,
   styled,
@@ -92,11 +92,18 @@ const MenuItemsBottomContainer = styled('div')(() => ({
   width: '3rem',
 }))
 
+const MenuItemBox = styled(Button)(({ theme }) => ({
+  display: 'flex',
+  minWidth: 0,
+  padding: 0,
+}))
+
 const MenuItem = styled('div')<MenuItemElement>(({ disabled, selected, theme, type }) => ({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
   cursor: 'pointer',
+  minWidth: 0,
 
   ...(type === 'small'
     ? {
@@ -132,10 +139,14 @@ const MenuItem = styled('div')<MenuItemElement>(({ disabled, selected, theme, ty
     : null),
 }))
 
-const SubMenuTitleItem = styled('div')(({ theme }) => ({
+const SubMenuTitleItem = styled(Button)(({ theme }) => ({
+  justifyContent: 'inherit',
+  minWidth: 0,
+  padding: 0,
+  borderRadius: 0,
   cursor: 'pointer',
   fontWeight: 900,
-  fontSize: '12px',
+  fontSize: '12px !important',
   lineHeight: '15px',
   textTransform: 'uppercase',
   color: `${theme.palette.text.primary}`,
@@ -145,20 +156,28 @@ const SubMenuTitleItem = styled('div')(({ theme }) => ({
   '&:hover': {
     opacity: 0.7,
     borderBottom: '1px solid rgba(0, 0, 0, 0.7)',
+    background: 'transparent',
   },
 }))
 
-const SubMenuItem = styled('div')(({ theme }) => ({
+const SubMenuItem = styled(Button)(({ theme }) => ({
+  display: 'flex',
+  justifyContent: 'inherit',
+  minWidth: 0,
+  padding: 0,
+  borderRadius: 0,
+  textAlign: 'start',
   cursor: 'pointer',
   fontWeight: 600,
-  fontSize: '11px',
-  lineHeight: '14px',
+  fontSize: '11px !important',
+  lineHeight: '14px !important',
   textTransform: 'uppercase',
   color: theme.palette.text.secondary,
   paddingBottom: '0.5rem',
 
   '&:hover': {
     color: `${theme.palette.text.primary}`,
+    background: 'transparent',
   },
 }))
 
@@ -232,6 +251,7 @@ export const MainMenu: React.FC = ({ ...restProps }) => {
       >
         <AccordionSummary
           aria-controls="content"
+          disableRipple={true}
           expandIcon={<ExpandMoreIcon htmlColor={'#4f4f4f'} sx={{ width: 16, height: 16 }} />}
           sx={{
             padding: 0,
@@ -250,6 +270,9 @@ export const MainMenu: React.FC = ({ ...restProps }) => {
             <SubMenuItem
               key={'subItem-' + subItemSubItem + '-subItemSubItem-' + subItemSubItemIndex}
               onClick={() => onItemClick(subItemSubItem)}
+              sx={{
+                textTransform: 'none',
+              }}
             >
               {subItemSubItem.title}
             </SubMenuItem>
@@ -282,14 +305,17 @@ export const MainMenu: React.FC = ({ ...restProps }) => {
     return (
       (item.validation === undefined || item.validation) && (
         <MenuItemContainer key={'menuItem-' + itemIndex} type={item.type}>
-          <MenuItem
-            disabled={!!item.disabled}
+          <MenuItemBox
             onClick={() => onMenuItemClick(item, itemIndex)}
-            selected={selectedElement === itemIndex}
-            type={item.type}
           >
-            {item.icon}
-          </MenuItem>
+            <MenuItem
+              disabled={!!item.disabled}
+              selected={selectedElement === itemIndex}
+              type={item.type}
+            >
+              {item.icon}
+            </MenuItem>
+          </MenuItemBox>
           {item.subItems && selectedElement === itemIndex ? renderSubItems(item, itemIndex) : null}
         </MenuItemContainer>
       )
