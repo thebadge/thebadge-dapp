@@ -98,6 +98,14 @@ export const useMainMenuItems = () => {
           ],
         },
         {
+          title: 'Create badge type',
+          href: '/badge/type/create',
+        },
+        {
+          title: 'Mint badge',
+          href: '/badge/mint',
+        },
+        {
           title: 'Badges in review',
           href: '#',
         },

@@ -17,11 +17,10 @@ export const getMenuItemBackgroundColor = (type: MenuItemType): string => {
 export const getMenuItemHoverBackgroundColor = (type: MenuItemType): string => {
   switch (type) {
     case 'color':
-      return '#22DBBD'
+      return '#1bad96'
     case 'gray':
-      return '#828282'
     case 'small':
     default:
-      return 'transparent'
+      return '#828282'
   }
 }

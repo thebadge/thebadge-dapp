@@ -13,7 +13,12 @@ import {
 } from '@mui/material'
 
 import { useMainMenuItems } from '@/src/components/navigation/MainMenu.config'
-import { MenuItem, MenuItemElement, SubMenuItem } from '@/src/components/navigation/MainMenu.types'
+import {
+  MenuItem,
+  MenuItemElement,
+  MenuItemType,
+  SubMenuItem,
+} from '@/src/components/navigation/MainMenu.types'
 import {
   getMenuItemBackgroundColor,
   getMenuItemHoverBackgroundColor,
@@ -96,6 +101,7 @@ const MenuItemBox = styled(Button)(({ theme }) => ({
   display: 'flex',
   minWidth: 0,
   padding: 0,
+  borderRadius: '0.8rem',
 }))
 
 const MenuItem = styled('div')<MenuItemElement>(({ disabled, selected, theme, type }) => ({
@@ -121,7 +127,7 @@ const MenuItem = styled('div')<MenuItemElement>(({ disabled, selected, theme, ty
 
   background: `${getMenuItemBackgroundColor(type)}`,
 
-  '&:hover': {
+  '&:hover, &.Mui-focusVisible': {
     background: `${getMenuItemHoverBackgroundColor(type)}`,
   },
 
@@ -153,7 +159,7 @@ const SubMenuTitleItem = styled(Button)(({ theme }) => ({
   paddingBottom: '0.5rem',
   borderBottom: `1px solid ${theme.palette.text.primary}`,
 
-  '&:hover': {
+  '&:hover, &.Mui-focusVisible': {
     opacity: 0.7,
     borderBottom: '1px solid rgba(0, 0, 0, 0.7)',
     background: 'transparent',
@@ -169,13 +175,13 @@ const SubMenuItem = styled(Button)(({ theme }) => ({
   textAlign: 'start',
   cursor: 'pointer',
   fontWeight: 600,
-  fontSize: '11px !important',
+  fontSize: '12px !important',
   lineHeight: '14px !important',
   textTransform: 'uppercase',
   color: theme.palette.text.secondary,
   paddingBottom: '0.5rem',
 
-  '&:hover': {
+  '&:hover, &.Mui-focusVisible': {
     color: `${theme.palette.text.primary}`,
     background: 'transparent',
   },
@@ -268,6 +274,7 @@ export const MainMenu: React.FC = ({ ...restProps }) => {
         <AccordionDetails sx={{ minHeight: 0, margin: 0, padding: '1rem 0 0 1rem' }}>
           {subItem.subItems?.map((subItemSubItem, subItemSubItemIndex) => (
             <SubMenuItem
+              disableRipple={true}
               key={'subItem-' + subItemSubItem + '-subItemSubItem-' + subItemSubItemIndex}
               onClick={() => onItemClick(subItemSubItem)}
               sx={{
@@ -286,10 +293,13 @@ export const MainMenu: React.FC = ({ ...restProps }) => {
     return (
       <Fade in={selectedElement === itemIndex}>
         <SubMenuContainer type={item.type}>
-          <SubMenuTitleItem onClick={() => onItemClick(item)}>{item.title}</SubMenuTitleItem>
+          <SubMenuTitleItem disableRipple={true} onClick={() => onItemClick(item)}>
+            {item.title}
+          </SubMenuTitleItem>
 
           {item.subItems?.map((subItem, subItemIndex) => (
             <SubMenuItem
+              disableRipple={true}
               key={'item-' + itemIndex + '-subItem-' + subItemIndex}
               onClick={() => onItemClick(subItem)}
             >
@@ -306,7 +316,13 @@ export const MainMenu: React.FC = ({ ...restProps }) => {
       (item.validation === undefined || item.validation) && (
         <MenuItemContainer key={'menuItem-' + itemIndex} type={item.type}>
           <MenuItemBox
+            disableRipple={true}
             onClick={() => onMenuItemClick(item, itemIndex)}
+            sx={{
+              '&.Mui-focusVisible': {
+                background: `${getMenuItemHoverBackgroundColor(item.type)}`,
+              },
+            }}
           >
             <MenuItem
               disabled={!!item.disabled}
