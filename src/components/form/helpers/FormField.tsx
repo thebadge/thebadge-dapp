@@ -31,7 +31,7 @@ export const FormField: React.FC<{
   )
 
   return (
-    <StyledBox data-grid={{ x: 0, y: 0, w: 1, h: 1 }} status={status} {...restProps}>
+    <StyledBox status={status} {...restProps}>
       <Box sx={{ display: 'flex', flexDirection: labelPosition === 'top' ? 'column' : 'row' }}>
         {label && <Label>{label}</Label>}
         {control}

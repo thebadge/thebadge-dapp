@@ -15,11 +15,11 @@ import {
 } from '@/src/components/form/helpers/customSchemas'
 
 type RegistrationStepsProps = {
-  onSubmit: (data: any) => void
+  onSubmit: (data: z.infer<typeof RegisterCuratorSchema>) => void
 }
 
 const steps = ['Basic information.', 'How to contact you.', 'Agreement.']
-// TODO Move both props out of the comp, this one should be re-usable
+
 const formGridLayout: DataGrid[][] = [
   [
     { i: 'TextField', x: 0, y: 0, w: 3, h: 1, static: true },
