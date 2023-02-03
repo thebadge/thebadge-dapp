@@ -55,7 +55,8 @@ const CreateBadgeType: NextPageWithLayout = () => {
 
   const onSubmit = async (data: z.infer<typeof BadgeTypeCreateSchema>) => {
     const { badgeMetadataColumns, criteriaFileUri, description, logoUri, name } = data
-
+    debugger
+    return
     // Safe-ward to infer MetadataColumn[], It will never go throw the return
     if (!isMetadataColumnArray(badgeMetadataColumns)) return
 
@@ -138,7 +139,7 @@ const CreateBadgeType: NextPageWithLayout = () => {
         controllerName: 'kleros',
         mintCost: parseUnits(data.mintCost.toString(), 18),
         mintFee: 0, // TODO: this is a legacy field that is not used in the SC, will be removed in a newer deploy
-        validFor: 60 * 10, // data.challengePeriodDuration, // in seconds, 0 infinite
+        validFor: data.validFor, // data.challengePeriodDuration, // in seconds, 0 infinite
       },
       klerosControllerDataEncoded,
     )
