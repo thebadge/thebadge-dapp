@@ -13,7 +13,6 @@ export enum TextFieldStatus {
 
 const Wrapper = styled(Box)(({ theme }) => ({
   display: 'flex',
-  flex: 1,
   flexDirection: 'column',
   position: 'relative',
   rowGap: theme.spacing(1),
@@ -21,7 +20,7 @@ const Wrapper = styled(Box)(({ theme }) => ({
 }))
 
 const StyledTextField = styled(MUITextField)(({ theme }) => ({
-  margin: theme.spacing(1),
+  margin: theme.spacing(0),
 }))
 
 export default function TextArea() {

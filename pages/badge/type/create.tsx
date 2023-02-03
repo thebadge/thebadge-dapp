@@ -156,8 +156,6 @@ const CreateBadgeType: NextPageWithLayout = () => {
 
       <CustomFormFromSchema
         formProps={{
-          useGridLayout: true,
-          gridColumns: 3,
           buttonDisabled: !address,
           buttonLabel: address ? 'Register' : 'Connect wallet',
         }}

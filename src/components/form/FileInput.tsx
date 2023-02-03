@@ -13,7 +13,6 @@ import { FileSchema } from '@/src/components/form/helpers/customSchemas'
 
 const Wrapper = styled(Box)(({ theme }) => ({
   display: 'flex',
-  flex: 1,
   flexDirection: 'column',
   position: 'relative',
   rowGap: theme.spacing(1),
