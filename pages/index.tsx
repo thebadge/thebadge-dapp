@@ -34,7 +34,7 @@ const Home: NextPageWithLayout = () => {
         <LinkWithTranslation pathname="/badge/type/create">
           3. Create badge-type
         </LinkWithTranslation>
-        <LinkWithTranslation pathname="/badge/mint">4. Mint badge</LinkWithTranslation>
+        <LinkWithTranslation pathname="/badge/mint/3">4. Mint badge (github) </LinkWithTranslation>
       </Box>
     </Box>
   )

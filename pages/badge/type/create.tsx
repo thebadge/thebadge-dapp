@@ -55,8 +55,7 @@ const CreateBadgeType: NextPageWithLayout = () => {
 
   const onSubmit = async (data: z.infer<typeof BadgeTypeCreateSchema>) => {
     const { badgeMetadataColumns, criteriaFileUri, description, logoUri, name } = data
-    debugger
-    return
+
     // Safe-ward to infer MetadataColumn[], It will never go throw the return
     if (!isMetadataColumnArray(badgeMetadataColumns)) return
 

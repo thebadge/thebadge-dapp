@@ -24,6 +24,29 @@ export const BADGE_TYPES = gql`
   }
 `
 
+export const BADGE_TYPE = gql`
+  query badgeType($id: ID!) {
+    badgeType(id: $id) {
+      id
+      metadataURL
+      controllerName
+      mintCost
+      validFor
+      paused
+      emitter {
+        metadata
+      }
+      klerosBadge {
+        klerosMetadataURL
+        klerosTCRList
+        badgesMintedAmount
+        submissionBaseDeposit
+        challengePeriodDuration
+      }
+    }
+  }
+`
+
 // export const EXAMPLE_QUERY_BY_ID = gql`
 //   query exampleById($id: ID!) {
 //     example(id: $id) {
