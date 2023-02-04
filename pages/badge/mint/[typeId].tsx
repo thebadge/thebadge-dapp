@@ -81,7 +81,7 @@ const MintBadgeType: NextPageWithLayout = () => {
     typeof calls
   >(calls, [[badgeTypeId]], `klerosBadgeRequestValue-${badgeTypeId}`)
 
-  console.log(badgeTypeMetadata.data.file.metadata.columns)
+  //console.log(badgeTypeMetadata.data?.file.metadata.columns)
 
   const CreateBadgeSchema = z.object({
     evidenceFileUri: FileSchema.describe(
