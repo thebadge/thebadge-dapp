@@ -36,11 +36,12 @@ export default function DropdownSelect({
         label={label}
         labelId="select-helper-label"
         onChange={handleChange}
+        sx={{ textTransform: 'capitalize' }}
         value={field.value || ''}
       >
         {options.map((op) => {
           return (
-            <MenuItem key={op} value={op}>
+            <MenuItem key={op} sx={{ textTransform: 'capitalize' }} value={op}>
               {op}
             </MenuItem>
           )
