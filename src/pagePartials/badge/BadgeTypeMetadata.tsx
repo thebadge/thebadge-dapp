@@ -8,10 +8,12 @@ type Props = {
 function BadgeTypeMetadata({ metadata }: Props) {
   const res: any = useS3Metadata(metadata)
   console.log({ res })
-  console.log({ n: res.data.file.name })
-  console.log({ d: res.data.file.description })
-  // console.log({ res.data.file.name })
-  return <div>Details</div>
+  return (
+    <div>
+      <div>Name: {res.data.file.name}</div>
+      <div>Desc: {res.data.file.description}</div>
+    </div>
+  )
 }
 
 export default withGenericSuspense(BadgeTypeMetadata)

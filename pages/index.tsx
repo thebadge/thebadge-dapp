@@ -7,17 +7,16 @@ import { NextPageWithLayout } from '@/pages/_app'
 import LinkWithTranslation from '@/src/components/helpers/LinkWithTranslation'
 import { DefaultLayout } from '@/src/components/layout/DefaultLayout'
 import { useSectionReferences } from '@/src/providers/referencesProvider'
-import { useWeb3ConnectedApp } from '@/src/providers/web3ConnectionProvider'
 
-const Address: React.FC = () => {
-  const { address } = useWeb3ConnectedApp()
+// const Address: React.FC = () => {
+//   const { address } = useWeb3ConnectedApp()
 
-  return address ? (
-    <Typography color={colors.white} variant="title1">
-      {address}
-    </Typography>
-  ) : null
-}
+//   return address ? (
+//     <Typography color={colors.white} variant="title1">
+//       {address}
+//     </Typography>
+//   ) : null
+// }
 
 const Home: NextPageWithLayout = () => {
   const { homeSection } = useSectionReferences()
@@ -30,11 +29,10 @@ const Home: NextPageWithLayout = () => {
       <Box display="flex" flexDirection="column">
         <LinkWithTranslation pathname="/creator/register">1. Register Creator</LinkWithTranslation>
         <LinkWithTranslation pathname="/curator/register">2. Register Curator</LinkWithTranslation>
-
         <LinkWithTranslation pathname="/badge/type/create">
           3. Create badge-type
         </LinkWithTranslation>
-        <LinkWithTranslation pathname="/badge/mint/3">4. Mint badge (github) </LinkWithTranslation>
+        <LinkWithTranslation pathname="/badge/explorer">3. Explore badges</LinkWithTranslation>
       </Box>
     </Box>
   )

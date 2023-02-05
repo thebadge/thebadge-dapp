@@ -1,13 +1,13 @@
+import Link from 'next/link'
 import { ReactElement } from 'react'
 
 import { Typography } from '@mui/material'
+import { formatUnits } from 'ethers/lib/utils'
 import { colors } from 'thebadge-ui-library'
 
 import { NextPageWithLayout } from '@/pages/_app'
 import { DefaultLayout } from '@/src/components/layout/DefaultLayout'
-import useS3Metadata from '@/src/hooks/useS3Metadata'
 import BadgeTypeMetadata from '@/src/pagePartials/badge/BadgeTypeMetadata'
-import CreatorDetails from '@/src/pagePartials/creator/CreatorDetails'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { SubgraphName, getSubgraphSdkByNetwork } from '@/src/subgraph/subgraph'
 
@@ -26,14 +26,17 @@ const ExploreBadges: NextPageWithLayout = () => {
         {badgeTypes.data?.badgeTypes.map((bt) => {
           return (
             <div key={bt.id}>
-              <div>{bt.controllerName}</div>
-              <div>{bt.emitter.metadata}</div>
+              <BadgeTypeMetadata metadata={bt.metadataURL} />
+              <div>mintCost: {formatUnits(bt.mintCost, 18)} + Kleros deposit</div>
+              <div>ValidFor: {bt.validFor} </div>
+              <div>paused: {bt.paused ? 'Yes' : 'No'}</div>
+              <div>Controller: {bt.controllerName}</div>
+              <div>Metadata: {bt.emitter.metadata}</div>
               {/* This is broken because the metadata is not linked on IPFS. */}
               {/* <CreatorDetails metadata={bt.emitter.metadata} /> */}
-              <div>{bt.mintCost}</div>
-              <div>{bt.paused}</div>
-              <div>{bt.validFor}</div>
-              <BadgeTypeMetadata metadata={bt.metadataURL} />
+              <Link href={`/badge/mint/${bt.id}`}>Mint</Link>
+
+              <br />
             </div>
           )
         })}
