@@ -32,31 +32,3 @@ export type MetadataColumn = {
   type: KLEROS_LIST_TYPES
   isIdentifier: boolean
 }
-
-export type klerosListStructure = {
-  name: string
-  title: string
-  description: string
-  rulingOptions: {
-    titles: string[]
-    descriptions: string[]
-  }
-  category: string
-  question: string
-  fileURI: string
-  evidenceDisplayInterfaceURI: string
-  metadata: {
-    tcrTitle: string
-    tcrDescription: string
-    columns: MetadataColumn[]
-    itemName: string
-    itemNamePlural: string
-    logoURI: string
-    requireRemovalEvidence: boolean
-    isTCRofTCRs: boolean
-    relTcrDisabled: boolean
-    parentTCRAddress?: string
-  }
-  _v?: string
-  evidenceDisplayInterfaceRequiredParams?: string[]
-}

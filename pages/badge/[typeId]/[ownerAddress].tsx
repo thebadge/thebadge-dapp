@@ -8,9 +8,13 @@ import { DefaultLayout } from '@/src/components/layout/DefaultLayout'
 const ViewBadge: NextPageWithLayout = () => {
   return (
     <>
-      <Typography variant="h3">Welcome to THE BADGE!</Typography>
+      <Typography component={'div'} variant="h3">
+        Welcome to THE BADGE!
+      </Typography>
 
-      <Typography variant="h5">Here you can view a Badge type for a given Address</Typography>
+      <Typography component={'div'} variant="h5">
+        Here you can view a Badge type for a given Address
+      </Typography>
     </>
   )
 }

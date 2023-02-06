@@ -1,44 +1,73 @@
-import { MetadataColumn, klerosListStructure } from '@/src/utils/kleros/types'
+import { MetadataColumn } from '@/types/kleros/types'
+import { BackendFileUpload } from '@/types/utils'
+
+type klerosListStructure = {
+  name: string
+  title: string
+  description: string
+  rulingOptions: {
+    titles: string[]
+    descriptions: string[]
+  }
+  category: string
+  question: string
+  fileURI: BackendFileUpload
+  evidenceDisplayInterfaceURI: string
+  metadata: {
+    tcrTitle: string
+    tcrDescription: string
+    columns: MetadataColumn[]
+    itemName: string
+    itemNamePlural: string
+    logoURI: BackendFileUpload
+    requireRemovalEvidence: boolean
+    isTCRofTCRs: boolean
+    relTcrDisabled: boolean
+    parentTCRAddress?: string
+  }
+  _v?: string
+  evidenceDisplayInterfaceRequiredParams?: string[]
+}
 
 export function generateKlerosListMetaEvidence(
-  itemName: string,
-  itemNamePlural: string,
-  criteriaFileUri: string,
-  listName: string,
-  listDescription: string,
-  listItemInfo: MetadataColumn[],
-  listLogoUri: string,
-  requireRemovalEvidence: boolean,
-  relTcrDisabled: boolean, // research about it
+  badgeName: string,
+  fileURI: BackendFileUpload,
+  badgeTypeName: string,
+  badgeTypeDescription: string,
+  badgeMetadataColumns: MetadataColumn[],
+  logoURI: BackendFileUpload,
+  requireRemovalEvidence = true,
+  relTcrDisabled = true, // research about it
   category = 'Curated Lists',
   evidenceDisplayInterfaceURI = '/ipfs/QmQjJio59WkrQDzPC5kSP3EiGaqrWxjGfkvhmD2mWwm41M/index.html',
 ): { registration: klerosListStructure; clearing: klerosListStructure } {
   // TODO
   // check max items indexed = 3
-  // check filesUris are IPFS
+
+  const itemNamePlural = `${badgeName}s`
 
   const registration: klerosListStructure = {
-    name: listName,
-    title: `Add a ${itemName} to ${itemNamePlural}`,
-    description: `Someone requested to add a ${itemName} to ${itemNamePlural}`,
+    name: badgeTypeName,
+    title: `${badgeTypeName} evidences.`,
+    description: `Add the evidence of the badge ${badgeName} to the list of evidences of ${badgeTypeName}.`,
     rulingOptions: {
       titles: ['Yes, Add It', "No, Don't Add It"],
       descriptions: [
-        `Select this if you think the ${itemName} complies with the required criteria and should be added.`,
-        `Select this if you think the ${itemName} does not comply with the required criteria and should not be added.`,
+        `Select this if you think the ${badgeName} complies with the required criteria and should be added.`,
+        `Select this if you think the ${badgeName} does not comply with the required criteria and should not be added.`,
       ],
     },
     category,
-    question: `Does the ${itemName} comply with the required criteria?`,
-    fileURI: criteriaFileUri,
+    question: `Does the ${badgeName} comply with the required criteria?`,
+    fileURI,
     evidenceDisplayInterfaceURI,
     metadata: {
-      tcrTitle: listName,
-      tcrDescription: listDescription,
-      columns: listItemInfo,
-      itemName,
+      tcrTitle: badgeTypeName,
+      tcrDescription: badgeTypeDescription,
+      columns: badgeMetadataColumns,
+      itemName: badgeName,
       itemNamePlural,
-      logoURI: listLogoUri,
+      logoURI,
       requireRemovalEvidence,
       isTCRofTCRs: false,
       relTcrDisabled,
@@ -46,27 +75,27 @@ export function generateKlerosListMetaEvidence(
   }
 
   const clearing: klerosListStructure = {
-    name: listName,
-    title: `Remove a ${itemName} from ${itemNamePlural}`,
-    description: `Someone requested to remove a ${itemName} to ${itemNamePlural}`,
+    name: badgeTypeName,
+    title: `Remove a ${badgeName} from ${itemNamePlural}`,
+    description: `Someone requested to remove a ${badgeName} to ${itemNamePlural}`,
     rulingOptions: {
       titles: ['Yes, Remove It', "No, Don't Remove It"],
       descriptions: [
-        `Select this if you think the ${itemName} does not comply with the required criteria and should be removed.`,
-        `Select this if you think the ${itemName} complies with the required criteria and should not be removed.`,
+        `Select this if you think the ${badgeName} does not comply with the required criteria and should be removed.`,
+        `Select this if you think the ${badgeName} complies with the required criteria and should not be removed.`,
       ],
     },
     category,
-    question: `Does the ${itemName} comply with the required criteria?`,
-    fileURI: criteriaFileUri,
+    question: `Does the ${badgeName} comply with the required criteria?`,
+    fileURI,
     evidenceDisplayInterfaceURI,
     metadata: {
-      tcrTitle: listName,
-      tcrDescription: listDescription,
-      columns: listItemInfo,
-      itemName,
+      tcrTitle: badgeTypeName,
+      tcrDescription: badgeTypeDescription,
+      columns: badgeMetadataColumns,
+      itemName: badgeName,
       itemNamePlural,
-      logoURI: listLogoUri,
+      logoURI,
       requireRemovalEvidence,
       isTCRofTCRs: false,
       relTcrDisabled,

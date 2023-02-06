@@ -6,13 +6,6 @@ import { Box, Typography, styled } from '@mui/material'
 import { NextPageWithLayout } from '@/pages/_app'
 import { DefaultLayout } from '@/src/components/layout/DefaultLayout'
 import { useSectionReferences } from '@/src/providers/referencesProvider'
-import { useWeb3ConnectedApp } from '@/src/providers/web3ConnectionProvider'
-
-const Address: React.FC = () => {
-  const { address } = useWeb3ConnectedApp()
-
-  return address ? <Typography variant="title1">{address}</Typography> : null
-}
 
 const CertificationProcess: React.FC = () => {
   return (

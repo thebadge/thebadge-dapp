@@ -10,7 +10,7 @@ export const Footer: React.FC = () => {
 
   return (
     <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-      <Typography>
+      <Typography component={'div'}>
         {t('footer.copyright', { year })}
         {cookiesWarningEnabled && (
           <>

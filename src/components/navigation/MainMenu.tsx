@@ -34,18 +34,13 @@ const MenuContainer = styled('div')(({ theme }) => ({
 const MainMenuContainer = styled(MenuContainer)(({ theme }) => ({
   height: 'fit-content',
   position: 'sticky',
-  top: '8rem',
-  marginRight: '5%',
+  left: theme.spacing(6),
+  top: theme.spacing(12),
   zIndex: 100,
-
-  [theme.breakpoints.up('xl')]: {
-    marginRight: 'calc(10% - 16px)',
-  },
 }))
 
 const SubMenuContainer = styled(MenuContainer)<MenuItemElement>(({ type }) => ({
   position: 'relative',
-
   ...(type === 'small'
     ? {
         left: '3.25rem',

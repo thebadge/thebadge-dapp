@@ -1,3 +1,4 @@
+import { ErrorOption } from 'react-hook-form/dist/types/errors'
 import { ZodType, z } from 'zod'
 
 import {
@@ -7,15 +8,9 @@ import {
   ImageSchema,
   LongTextSchema,
   NumberSchema,
+  TwitterSchema,
 } from '@/src/components/form/helpers/customSchemas'
-import { KLEROS_LIST_TYPES, MetadataColumn } from '@/src/utils/kleros/types'
-
-const zAddress = AddressSchema
-const zNumber = NumberSchema
-const zBoolean = CheckBoxSchema
-const zLongText = LongTextSchema
-const zImage = ImageSchema
-const zFile = FileSchema
+import { KLEROS_LIST_TYPES, MetadataColumn } from '@/types/kleros/types'
 
 const zText = z
   .string({
@@ -31,37 +26,51 @@ const zLink = z
   })
   .startsWith('http')
 
-const zTwitterUser = z
-  .string({
-    required_error: 'Is required',
-    invalid_type_error: 'Must be a twitter user',
-  })
-  .startsWith('@')
+export function isEmail(email: string) {
+  return String(email)
+    .toLowerCase()
+    .match(
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+    )
+}
 
 function getZValidator(fieldType: KLEROS_LIST_TYPES) {
   switch (fieldType) {
     case KLEROS_LIST_TYPES.ADDRESS:
-      return zAddress
+      return AddressSchema
     case KLEROS_LIST_TYPES.BOOLEAN:
-      return zBoolean
+      return CheckBoxSchema
     case KLEROS_LIST_TYPES.TWITTER_USER_ID:
-      return zTwitterUser
+      return TwitterSchema
     case KLEROS_LIST_TYPES.LINK:
       return zLink
     case KLEROS_LIST_TYPES.LONG_TEXT:
-      return zLongText
+      return LongTextSchema
     case KLEROS_LIST_TYPES.TEXT:
       return zText
     case KLEROS_LIST_TYPES.NUMBER:
-      return zNumber
+      return NumberSchema
     case KLEROS_LIST_TYPES.IMAGE:
-      return zImage
+      return ImageSchema
     case KLEROS_LIST_TYPES.FILE:
-      return zFile
+      return FileSchema
     case KLEROS_LIST_TYPES.GTCR_ADDRESS:
     case KLEROS_LIST_TYPES.RICH_ADDRESS:
-      return zAddress
+      return AddressSchema
   }
+}
+
+// Properties needed to do error handling inside the Form Field component
+export type ErrorHelperProps = {
+  setError: (error: ErrorOption) => void
+  cleanError: () => void
+}
+
+export function isMetadataColumnArray(obj: any): obj is MetadataColumn[] {
+  if (obj !== null && typeof obj === 'object' && obj.length > 0) {
+    return 'type' in obj[0]
+  }
+  return false
 }
 
 export default function klerosSchemaFactory(fields: MetadataColumn[]) {

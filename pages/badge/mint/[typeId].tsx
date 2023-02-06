@@ -4,10 +4,10 @@ import { Typography } from '@mui/material'
 import { z } from 'zod'
 
 import { NextPageWithLayout } from '@/pages/_app'
-import { CustomFormFromSchema } from '@/src/components/form/CustomForm'
+import { CustomFormFromSchema } from '@/src/components/form/customForms/CustomForm'
 import klerosSchemaFactory from '@/src/components/form/helpers/validators'
 import { DefaultLayout } from '@/src/components/layout/DefaultLayout'
-import { KLEROS_LIST_TYPES } from '@/src/utils/kleros/types'
+import { KLEROS_LIST_TYPES } from '@/types/kleros/types'
 
 const HARDCODED_TEST_FIELDS = [
   {
@@ -62,9 +62,13 @@ const MintBadgeType: NextPageWithLayout = () => {
   }
   return (
     <>
-      <Typography variant="h3">Welcome to THE BADGE!</Typography>
+      <Typography component={'div'} variant="h3">
+        Welcome to THE BADGE!
+      </Typography>
 
-      <Typography variant="h5">Here you can complete the process to mint a badge type</Typography>
+      <Typography component={'div'} variant="h5">
+        Here you can complete the process to mint a badge type
+      </Typography>
 
       <CustomFormFromSchema onSubmit={onSubmit} schema={CreateBadgeSchema} />
     </>

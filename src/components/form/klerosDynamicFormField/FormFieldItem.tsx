@@ -5,12 +5,13 @@ import DragIndicatorIcon from '@mui/icons-material/DragIndicator'
 import { Box, Stack, Typography, styled } from '@mui/material'
 import { Identifier, XYCoord } from 'dnd-core'
 import { useDrag, useDrop } from 'react-dnd'
+import { z } from 'zod'
 
-import { MetadataColumn } from '@/src/utils/kleros/types'
+import { KlerosFormFieldSchema } from '@/src/components/form/helpers/customSchemas'
 
 type FormFieldItemProps = {
   index: number
-  field: MetadataColumn & { index: number }
+  field: z.infer<typeof KlerosFormFieldSchema> & { index: number }
   moveItem: (dragIndex: number, hoverIndex: number) => void
   removeItem: () => void
 }
@@ -134,15 +135,21 @@ export default function FormFieldItem({ field, index, moveItem, removeItem }: Fo
     <Container data-handler-id={handlerId} isDragging={isDragging} isOver={isOver} ref={ref}>
       <DragIndicatorIcon />
       <Stack>
-        <Typography variant="title4">Label</Typography>
+        <Typography component={'div'} variant="title4">
+          Label
+        </Typography>
         {field.label}
       </Stack>
       <Stack>
-        <Typography variant="title4">Description</Typography>
+        <Typography component={'div'} variant="title4">
+          Description
+        </Typography>
         {field.description}
       </Stack>
       <Stack>
-        <Typography variant="title4">Type</Typography>
+        <Typography component={'div'} variant="title4">
+          Type
+        </Typography>
         {field.type}
       </Stack>
       <Box

@@ -35,9 +35,13 @@ const Profile: NextPageWithLayout = () => {
 
   return (
     <>
-      <Typography variant="h3">Welcome to THE BADGE!</Typography>
+      <Typography component={'div'} variant="h3">
+        Welcome to THE BADGE!
+      </Typography>
 
-      <Typography variant="h3">This is your creator profile</Typography>
+      <Typography component={'div'} variant="h3">
+        This is your creator profile
+      </Typography>
 
       <div>
         {/* TODO: fix este bardo con los divs  */}

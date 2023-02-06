@@ -48,6 +48,8 @@ export const RPCProvidersENV: Record<RPCProviders, any> = {
   [RPCProviders.alchemy]: process.env.NEXT_PUBLIC_ALCHEMY_TOKEN,
 }
 
+export const isGitHubActionBuild = process.env.IS_GH_ACTION === 'true'
+
 export type ProviderChains = { [key in RPCProviders]: { [key in ChainsValues]: string } }
 
 type BaseAppContractInfo = {
@@ -81,3 +83,13 @@ export type BackendResponse<T> = {
   message?: string
   result: null | T
 }
+
+export type BackendFileUpload = { fileName: string; mimeType: string; base64File: string }
+
+export enum Severity {
+  'Normal' = 1,
+  'Above average' = 3,
+  'Heavy' = 5,
+}
+
+export const Severity_Keys = ['Normal', 'Above average', 'Heavy'] as const

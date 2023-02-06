@@ -22,6 +22,9 @@ import ThemeProvider from '@/src/providers/themeProvider'
 
 import 'node_modules/thebadge-ui-library/dist/index.css'
 import 'sanitize.css'
+import 'src/theme/global.css'
+import '/node_modules/react-grid-layout/css/styles.css'
+import '/node_modules/react-resizable/css/styles.css'
 
 const Web3ConnectionProvider = dynamic(() => import('@/src/providers/web3ConnectionProvider'), {
   ssr: false,
@@ -41,7 +44,7 @@ const clientSideEmotionCache = createCache({
   prepend: true,
 }) as EmotionCache
 
-export const InnerContainer = styled('div')(({ theme }) => ({
+export const InnerContainer = styled('div')(() => ({
   display: 'flex',
   flexDirection: 'column',
   flexGrow: 1,

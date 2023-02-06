@@ -29,7 +29,7 @@ const HeaderContainer = styled(Box)(({ theme }) => ({
 }))
 
 const Header = () => {
-  const { connectWallet, isWalletConnected, isWalletNetworkSupported } = useWeb3Connection()
+  const { connectWallet, isWalletConnected } = useWeb3Connection()
 
   const { t } = useTranslation()
 
