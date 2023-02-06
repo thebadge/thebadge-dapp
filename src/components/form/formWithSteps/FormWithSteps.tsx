@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { useRef } from 'react'
 
-import { StepContent } from '@mui/material'
+import { Stack, StepContent } from '@mui/material'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Step from '@mui/material/Step'
@@ -183,15 +183,17 @@ export function FormWithSteps({
               )}
             </Box>
             {allStepsCompleted() && (
-              <Box>
+              <Stack>
                 {
                   // Review pre submit
                 }
                 <Box>{handleFormSubmitReview()}</Box>
-                <Button onClick={handleOnSubmit} variant="contained">
-                  {'Submit'}
-                </Button>
-              </Box>
+                <Box display="flex" justifyContent="center">
+                  <Button onClick={handleOnSubmit} variant="contained">
+                    {'Submit'}
+                  </Button>
+                </Box>
+              </Stack>
             )}
           </>
         )}

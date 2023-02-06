@@ -56,16 +56,15 @@ export const RegisterCuratorSchemaStep3 = z.object({
 
 export default function RegistrationSteps({ onSubmit }: RegistrationStepsProps) {
   const handleOnSubmit = (data: z.infer<typeof RegisterCuratorSchema>) => {
-    console.log(data)
     onSubmit(data)
   }
 
   function handleFormPreview(data: z.infer<typeof RegisterCuratorSchema>) {
     return (
-      <Stack>
-        <Typography variant="subtitle1">Please review your data</Typography>
+      <Stack gap={2} margin={1}>
+        <Typography variant="title3">Please review your data</Typography>
         <Stack>
-          <Typography variant="subtitle2">Creator Information</Typography>
+          <Typography variant="title2">Creator Information</Typography>
           <Box display="flex" flexDirection="row">
             <Stack>
               <Typography variant="body1">{data.name}</Typography>
@@ -75,7 +74,7 @@ export default function RegistrationSteps({ onSubmit }: RegistrationStepsProps) 
               <img alt="" src={data.logo.data_url} width="150" />
             </Avatar>
           </Box>
-          <Typography variant="subtitle2">Creator Contact</Typography>
+          <Typography variant="title2">Creator Contact</Typography>
           <Stack>
             <Typography variant="body1">{data.email}</Typography>
 
