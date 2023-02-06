@@ -20,7 +20,7 @@ jobs:
       - name: Set up node
         uses: actions/setup-node@v1
         with:
-          node-version: '16.13.2'
+          node-version: '16.x'
 
       - name: Install dependencies
         uses: bahmutov/npm-install@v1
@@ -40,6 +40,8 @@ jobs:
       - name: Build next.js app
         # change this if your site requires a custom build command
         run: yarn build
+        env:
+          IS_GH_ACTION: true
 
       # Here's the first place where next-bundle-analysis' own script is used
       # This step pulls the raw bundle stats for the current bundle
