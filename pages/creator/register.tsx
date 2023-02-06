@@ -40,9 +40,8 @@ const Register: NextPageWithLayout = () => {
     if (!address) {
       throw Error('Web3 address not provided')
     }
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const uploadedInfo = await ipfsUpload({ attributes: JSON.stringify(data), filePaths: ['logo'] })
+
+    const uploadedInfo = await ipfsUpload({ attributes: data, filePaths: ['logo'] })
 
     const transaction = await sendTx(() =>
       theBadge.registerEmitter(address, `ipfs://${uploadedInfo.result?.ipfsHash}`),
