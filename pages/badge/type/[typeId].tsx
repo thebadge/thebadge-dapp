@@ -11,11 +11,11 @@ const TypePreview: NextPageWithLayout = () => {
   const typeId = searchParams.get('typeId')
   return (
     <>
-      <Typography component={'div'} variant="h3">
+      <Typography component={'h3'} variant="h3">
         Welcome to THE BADGE!
       </Typography>
 
-      <Typography component={'div'} variant="h5">
+      <Typography component={'h5'} variant="h5">
         Here you can preview a badge type {typeId}
       </Typography>
     </>

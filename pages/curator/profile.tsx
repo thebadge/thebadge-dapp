@@ -8,11 +8,11 @@ import { DefaultLayout } from '@/src/components/layout/DefaultLayout'
 const Profile: NextPageWithLayout = () => {
   return (
     <>
-      <Typography component={'div'} variant="h3">
+      <Typography component={'h3'} variant="h3">
         Welcome to THE BADGE!
       </Typography>
 
-      <Typography component={'div'} variant="h3">
+      <Typography component={'h5'} variant="h5">
         This is your curator profile
       </Typography>
     </>

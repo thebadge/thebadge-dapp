@@ -63,10 +63,10 @@ const Register: NextPageWithLayout = () => {
   return (
     <>
       <Stack sx={{ mb: 2 }}>
-        <Typography component={'div'} variant="h3">
+        <Typography component={'h3'} variant="h3">
           Register as a creator
         </Typography>
-        <Typography component={'div'} variant="h5">
+        <Typography component={'h5'} variant="h5">
           Once registered as a creator you will be granted the possibility to created badge types.
         </Typography>
       </Stack>
