@@ -20,11 +20,11 @@ const Profile: NextPageWithLayout = () => {
   const gql = getSubgraphSdkByNetwork(appChainId, SubgraphName.TheBadge)
   const creatorByAddress = gql.useEmitter({ id: address || ethers.constants.AddressZero })
   const router = useRouter()
-  const { data: creatorMetadata } = useS3Metadata<CreatorMetadata>(
-    creatorByAddress.data?.emitter?.metadata || '',
-  )
+  // TODO Add again the creatorByAddress.data?.emitter?.metadata
+  const { data: creatorMetadata } = useS3Metadata<CreatorMetadata>('')
 
-  if (!creatorByAddress.data?.emitter) {
+  // TODO Fix validation with creatorByAddress.data?.emitter
+  if (!creatorByAddress.data) {
     router.push('/creator/register')
     return null
   }
