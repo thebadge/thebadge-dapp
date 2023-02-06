@@ -2,7 +2,6 @@ import { useSearchParams } from 'next/navigation'
 import { ReactElement } from 'react'
 
 import { Typography } from '@mui/material'
-import { colors } from 'thebadge-ui-library'
 
 import { NextPageWithLayout } from '@/pages/_app'
 import { DefaultLayout } from '@/src/components/layout/DefaultLayout'
@@ -12,13 +11,9 @@ const TypePreview: NextPageWithLayout = () => {
   const typeId = searchParams.get('typeId')
   return (
     <>
-      <Typography variant="h3">
-        Welcome to THE BADGE!
-      </Typography>
+      <Typography variant="h3">Welcome to THE BADGE!</Typography>
 
-      <Typography variant="h5">
-        Here you can preview a badge type {typeId}
-      </Typography>
+      <Typography variant="h5">Here you can preview a badge type {typeId}</Typography>
     </>
   )
 }

@@ -3,7 +3,6 @@ import { ReactElement } from 'react'
 
 import { Typography } from '@mui/material'
 import { ethers } from 'ethers'
-import { colors } from 'thebadge-ui-library'
 import { z } from 'zod'
 
 import { NextPageWithLayout } from '@/pages/_app'
@@ -64,9 +63,7 @@ const Register: NextPageWithLayout = () => {
 
   return (
     <>
-      <Typography variant="h3">
-        Register as a creator
-      </Typography>
+      <Typography variant="h3">Register as a creator</Typography>
 
       <Typography variant="h5">
         Once registered as a creator you will be granted the possibility to created badge types.

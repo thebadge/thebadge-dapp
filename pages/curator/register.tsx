@@ -1,7 +1,6 @@
 import { ReactElement } from 'react'
 
 import { Typography } from '@mui/material'
-import { colors } from 'thebadge-ui-library'
 import { z } from 'zod'
 
 import { NextPageWithLayout } from '@/pages/_app'
@@ -22,11 +21,9 @@ const Register: NextPageWithLayout = () => {
 
   return (
     <>
-      <Typography  variant="h3">
-        Welcome to THE BADGE!
-      </Typography>
+      <Typography variant="h3">Welcome to THE BADGE!</Typography>
 
-      <Typography  variant="h5">
+      <Typography variant="h5">
         Here you can choose the badge type that you want to mint, and complete the process
       </Typography>
 

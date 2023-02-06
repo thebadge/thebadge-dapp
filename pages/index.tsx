@@ -1,7 +1,7 @@
 import { ReactElement } from 'react'
 
 import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined'
-import { Box, styled, Typography } from "@mui/material";
+import { Box, Typography, styled } from '@mui/material'
 
 import { NextPageWithLayout } from '@/pages/_app'
 import { DefaultLayout } from '@/src/components/layout/DefaultLayout'
@@ -34,8 +34,8 @@ const CertificationProcess: React.FC = () => {
   )
 }
 
-const Section = styled('div')(({}) => ({
-  border: '1px solid #FFFFFF',
+const Section = styled('div')(({ theme }) => ({
+  border: `1px solid ${theme.palette.white}`,
   boxShadow: '0px 0px 6px rgba(0, 0, 0, 0.3)',
   borderRadius: '15px',
   minHeight: '100px',

@@ -13,12 +13,7 @@ import {
 } from '@mui/material'
 
 import { useMainMenuItems } from '@/src/components/navigation/MainMenu.config'
-import {
-  MenuItem,
-  MenuItemElement,
-  MenuItemType,
-  SubMenuItem,
-} from '@/src/components/navigation/MainMenu.types'
+import { MenuItem, MenuItemElement, SubMenuItem } from '@/src/components/navigation/MainMenu.types'
 import {
   getMenuItemBackgroundColor,
   getMenuItemHoverBackgroundColor,

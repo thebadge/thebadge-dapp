@@ -1,6 +1,5 @@
 import { Box, Typography } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
-import { colors } from 'thebadge-ui-library'
 
 import { useCookiesWarningContext } from '@/src/providers/cookiesWarningProvider'
 

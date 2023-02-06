@@ -3,7 +3,6 @@ import { ReactElement } from 'react'
 
 import { Button, Typography } from '@mui/material'
 import { ethers } from 'ethers'
-import { colors } from 'thebadge-ui-library'
 import { z } from 'zod'
 
 import { NextPageWithLayout } from '@/pages/_app'
@@ -36,13 +35,9 @@ const Profile: NextPageWithLayout = () => {
 
   return (
     <>
-      <Typography  variant="h3">
-        Welcome to THE BADGE!
-      </Typography>
+      <Typography variant="h3">Welcome to THE BADGE!</Typography>
 
-      <Typography  variant="h3">
-        This is your creator profile
-      </Typography>
+      <Typography variant="h3">This is your creator profile</Typography>
 
       <div>
         {/* TODO: fix este bardo con los divs  */}

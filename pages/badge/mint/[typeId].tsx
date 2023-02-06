@@ -1,7 +1,6 @@
 import { ReactElement } from 'react'
 
 import { Typography } from '@mui/material'
-import { colors } from 'thebadge-ui-library'
 import { z } from 'zod'
 
 import { NextPageWithLayout } from '@/pages/_app'
@@ -63,13 +62,9 @@ const MintBadgeType: NextPageWithLayout = () => {
   }
   return (
     <>
-      <Typography variant="h3">
-        Welcome to THE BADGE!
-      </Typography>
+      <Typography variant="h3">Welcome to THE BADGE!</Typography>
 
-      <Typography variant="h5">
-        Here you can complete the process to mint a badge type
-      </Typography>
+      <Typography variant="h5">Here you can complete the process to mint a badge type</Typography>
 
       <CustomFormFromSchema onSubmit={onSubmit} schema={CreateBadgeSchema} />
     </>
