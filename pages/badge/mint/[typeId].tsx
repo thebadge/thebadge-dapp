@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { ReactElement, useEffect, useState } from 'react'
+import { ReactElement } from 'react'
 
 import { Typography } from '@mui/material'
 import { BigNumber } from 'ethers'
@@ -26,28 +26,6 @@ import {
   KlerosBadgeTypeController__factory,
   TheBadge__factory,
 } from '@/types/generated/typechain'
-import { KLEROS_LIST_TYPES, MetadataColumn } from '@/types/kleros/types'
-
-// const getKlerosFieldByString = (column: MetadataColumn) =>
-//   // isIdentifier: boolean, // TODO: fix, is not being saved on the IPFS file of metadata.
-//   {
-//     const values = Object.values(KLEROS_LIST_TYPES)
-//     if (!values.includes(type as KLEROS_LIST_TYPES)) {
-//       throw `Type ${type} is not part of KLEROS_LIST_TYPES.`
-//     }
-
-//     return {
-//       label,
-//       description,
-//       type: type as KLEROS_LIST_TYPES,
-//       // isIdentifier: isIdentifier,
-//     }
-//   }
-
-type MitCostProps = {
-  mintCost: string
-  badgeTypeId: string
-}
 
 const MintBadgeType: NextPageWithLayout = () => {
   const { address, appChainId } = useWeb3Connection()
