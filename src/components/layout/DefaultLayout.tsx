@@ -4,7 +4,7 @@ import Headroom from 'react-headroom'
 import { BackgroundGradient } from 'thebadge-ui-library'
 
 import Header from '@/src/components/header/Header'
-import { MainMenu } from '@/src/components/navigation/MainMenu'
+import MainMenu from '@/src/components/navigation/MainMenu'
 import { useColorMode } from '@/src/providers/themeProvider'
 
 const Content = styled(Box)(({ theme }) => ({
@@ -34,7 +34,7 @@ const NavigationRoom = styled(Box)(({ theme }) => ({
   top: theme.spacing(12),
 }))
 
-export const DefaultLayout = ({ children }: DefaultLayoutProps) => {
+export default function DefaultLayout({ children }: DefaultLayoutProps) {
   const theme = useTheme()
   const { mode } = useColorMode()
 

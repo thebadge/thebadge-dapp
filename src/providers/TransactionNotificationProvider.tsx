@@ -34,7 +34,7 @@ const TransactionContext = createContext<TransactionContextValue | undefined>(un
 
 const TRANSACTIONS_STORE = 'pending-transactions'
 
-export const TransactionNotificationProvider: React.FC<PropsWithChildren> = ({ children }) => {
+const TransactionNotificationProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const { address, appChainId, getExplorerUrl, readOnlyAppProvider } = useWeb3Connection()
   const [isRan, setIsRan] = useState(false)
 
@@ -163,7 +163,7 @@ export const TransactionNotificationProvider: React.FC<PropsWithChildren> = ({ c
 
   return <TransactionContext.Provider value={values}>{children}</TransactionContext.Provider>
 }
-
+export default TransactionNotificationProvider
 export function useTransactionNotification() {
   const context = useContext(TransactionContext)
   if (context === undefined) {

@@ -2,9 +2,9 @@ import { ReactElement } from 'react'
 
 import { Box, Typography } from '@mui/material'
 
-import { NextPageWithLayout } from '@/pages/_app'
 import LinkWithTranslation from '@/src/components/helpers/LinkWithTranslation'
-import { DefaultLayout } from '@/src/components/layout/DefaultLayout'
+import DefaultLayout from '@/src/components/layout/DefaultLayout'
+import { NextPageWithLayout } from '@/types/next'
 
 const MintBadge: NextPageWithLayout = () => {
   return (

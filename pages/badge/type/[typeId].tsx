@@ -3,8 +3,8 @@ import { ReactElement } from 'react'
 
 import { Typography } from '@mui/material'
 
-import { NextPageWithLayout } from '@/pages/_app'
-import { DefaultLayout } from '@/src/components/layout/DefaultLayout'
+import DefaultLayout from '@/src/components/layout/DefaultLayout'
+import { NextPageWithLayout } from '@/types/next'
 
 const TypePreview: NextPageWithLayout = () => {
   const searchParams = useSearchParams()

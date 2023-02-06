@@ -7,8 +7,7 @@ import { useTranslation } from 'next-export-i18n'
 import { colors } from 'thebadge-ui-library'
 import { z } from 'zod'
 
-import { NextPageWithLayout } from '@/pages/_app'
-import { DefaultLayout } from '@/src/components/layout/DefaultLayout'
+import DefaultLayout from '@/src/components/layout/DefaultLayout'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
 import useTransaction from '@/src/hooks/useTransaction'
 import RegistrationSteps, {
@@ -20,6 +19,7 @@ import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { SubgraphName, getSubgraphSdkByNetwork } from '@/src/subgraph/subgraph'
 import ipfsUpload from '@/src/utils/ipfsUpload'
 import { TheBadge__factory } from '@/types/generated/typechain'
+import { NextPageWithLayout } from '@/types/next'
 
 // Merge all in one schema
 export const RegisterCuratorSchema = z

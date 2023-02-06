@@ -1,6 +1,6 @@
-import type { NextPage } from 'next'
+import { NextPageWithLayout } from '@/types/next'
 
-const About: NextPage = () => {
+const About: NextPageWithLayout = () => {
   return (
     <>
       <h1>About</h1>

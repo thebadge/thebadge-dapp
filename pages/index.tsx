@@ -3,9 +3,9 @@ import { ReactElement } from 'react'
 import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined'
 import { Box, Typography, styled } from '@mui/material'
 
-import { NextPageWithLayout } from '@/pages/_app'
-import { DefaultLayout } from '@/src/components/layout/DefaultLayout'
+import DefaultLayout from '@/src/components/layout/DefaultLayout'
 import { useSectionReferences } from '@/src/providers/referencesProvider'
+import { NextPageWithLayout } from '@/types/next'
 
 const CertificationProcess: React.FC = () => {
   return (

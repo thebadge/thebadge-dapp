@@ -5,11 +5,11 @@ import { useTranslation } from 'next-export-i18n'
 import { colors } from 'thebadge-ui-library'
 import { z } from 'zod'
 
-import { NextPageWithLayout } from '@/pages/_app'
 import { CustomFormFromSchema } from '@/src/components/form/customForms/CustomForm'
 import klerosSchemaFactory from '@/src/components/form/helpers/validators'
-import { DefaultLayout } from '@/src/components/layout/DefaultLayout'
+import DefaultLayout from '@/src/components/layout/DefaultLayout'
 import { KLEROS_LIST_TYPES } from '@/types/kleros/types'
+import { NextPageWithLayout } from '@/types/next'
 
 const HARDCODED_TEST_FIELDS = [
   {

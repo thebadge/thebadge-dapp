@@ -7,7 +7,6 @@ import { ErrorOption } from 'react-hook-form/dist/types/errors'
 import { colors } from 'thebadge-ui-library'
 import { z } from 'zod'
 
-import { NextPageWithLayout } from '@/pages/_app'
 import { CustomFormFromSchema } from '@/src/components/form/customForms/CustomForm'
 import {
   ExpirationTypeSchema,
@@ -16,7 +15,8 @@ import {
   SeverityTypeSchema,
   TokenInputSchema,
 } from '@/src/components/form/helpers/customSchemas'
-import { DefaultLayout } from '@/src/components/layout/DefaultLayout'
+import DefaultLayout from '@/src/components/layout/DefaultLayout'
+import { NextPageWithLayout } from '@/types/next'
 
 const RegisterCuratorSchema = z.object({
   name: z.string().describe('String Field // Label description'), // You can create one manually

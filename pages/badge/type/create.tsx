@@ -7,7 +7,6 @@ import { useTranslation } from 'next-export-i18n'
 import { colors } from 'thebadge-ui-library'
 import { z } from 'zod'
 
-import { NextPageWithLayout } from '@/pages/_app'
 import { CustomFormFromSchema } from '@/src/components/form/customForms/CustomForm'
 import {
   ExpirationTypeSchema,
@@ -19,13 +18,14 @@ import {
   SeverityTypeSchema,
 } from '@/src/components/form/helpers/customSchemas'
 import { isMetadataColumnArray } from '@/src/components/form/helpers/validators'
-import { DefaultLayout } from '@/src/components/layout/DefaultLayout'
+import DefaultLayout from '@/src/components/layout/DefaultLayout'
 import { contracts } from '@/src/contracts/contracts'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import ipfsUpload from '@/src/utils/ipfsUpload'
 import { generateKlerosListMetaEvidence } from '@/src/utils/kleros/generateKlerosListMetaEvidence'
 import { Kleros__factory, TheBadge__factory } from '@/types/generated/typechain'
+import { NextPageWithLayout } from '@/types/next'
 import { Severity } from '@/types/utils'
 
 export const BadgeTypeCreateSchema = z.object({
