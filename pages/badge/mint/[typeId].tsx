@@ -71,7 +71,7 @@ const MintBadgeType: NextPageWithLayout = () => {
           {t('badge.type.mint.title')}
         </Typography>
 
-        <Typography color={colors.white} textAlign="justify" variant="body4" width="85%">
+        <Typography textAlign="justify" variant="body4" width="85%">
           {t('badge.type.mint.sub-title')}
         </Typography>
       </Stack>
