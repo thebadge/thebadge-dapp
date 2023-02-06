@@ -1,6 +1,6 @@
 import { ReactElement } from 'react'
 
-import { Box, Typography } from '@mui/material'
+import { Box, Typography, styled } from '@mui/material'
 
 import { NextPageWithLayout } from '@/pages/_app'
 import { DefaultLayout } from '@/src/components/layout/DefaultLayout'
@@ -13,20 +13,18 @@ const Address: React.FC = () => {
   return address ? <Typography variant="title1">{address}</Typography> : null
 }
 
+const CenteredText = styled(Typography)(({ theme }) => ({
+  display: 'flex',
+  justifyContent: 'center',
+}))
+
 const Home: NextPageWithLayout = () => {
   const { homeSection } = useSectionReferences()
 
   return (
     <Box display="flex" flexDirection="column" ref={homeSection}>
-      <Typography
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-        }}
-        variant="h2"
-      >
-        Welcome to The Badge!
-      </Typography>
+      <CenteredText variant="h2">Welcome to The Badge!</CenteredText>
+      <CenteredText variant="h4">DECENTRALIZED CERTIFICATION PLATFORM</CenteredText>
       <Box display="flex" flexDirection="column">
         {/*<LinkWithTranslation pathname="/creator/register">1. Register Creator</LinkWithTranslation>*/}
         {/*<LinkWithTranslation pathname="/curator/register">2. Register Curator</LinkWithTranslation>*/}
