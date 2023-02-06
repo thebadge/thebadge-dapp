@@ -1,4 +1,4 @@
-import { Box, Container, styled } from '@mui/material'
+import { Box, Container, styled, useTheme } from '@mui/material'
 import { PaletteColorOptions } from '@mui/material/styles/createPalette'
 import Headroom from 'react-headroom'
 import { BackgroundGradient } from 'thebadge-ui-library'
@@ -6,7 +6,6 @@ import { BackgroundGradient } from 'thebadge-ui-library'
 import Header from '@/src/components/header/Header'
 import { MainMenu } from '@/src/components/navigation/MainMenu'
 import { useColorMode } from '@/src/providers/themeProvider'
-import { getTheme } from '@/src/theme/theme'
 
 const Content = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -38,8 +37,9 @@ const NavigationRoom = styled(Box)(({ theme }) => ({
 }))
 
 export const DefaultLayout = ({ children }: DefaultLayoutProps) => {
+  const theme = useTheme()
   const { mode } = useColorMode()
-  const theme = getTheme(mode)
+
   return (
     <>
       <Content>

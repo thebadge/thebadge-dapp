@@ -1,8 +1,7 @@
 import { Box, Button } from '@mui/material'
 import { createTsForm } from '@ts-react/form'
 
-import FlexFormContainer from '@/src/components/form/customForms/FlexFormContainer'
-import GridFormContainer from '@/src/components/form/customForms/GridFormContainer'
+import { getFormLayout } from '@/src/components/form/customForms/getFormLayout'
 import { CustomFormProps } from '@/src/components/form/customForms/type'
 import { mappingSchemaToComponents } from '@/src/components/form/helpers/schemaToComponent'
 
@@ -10,20 +9,14 @@ function MyCustomFormComponent({
   buttonDisabled,
   buttonLabel = 'Submit',
   children,
-  gridColumns = 2,
+  layout = 'flex',
   onSubmit,
-  useGridLayout,
 }: CustomFormProps) {
+  const Layout = getFormLayout(layout)
   return (
     <form onSubmit={onSubmit} style={{ display: 'flex', flexDirection: 'column' }}>
       {/* children are you form field components */}
-      {useGridLayout ? (
-        <GridFormContainer gridColumns={gridColumns} id="grid-container">
-          {children}
-        </GridFormContainer>
-      ) : (
-        <FlexFormContainer id="flex-container">{children}</FlexFormContainer>
-      )}
+      <Layout>{children}</Layout>
       <Box sx={{ display: 'flex', justifyContent: 'center' }}>
         <Button color="darkGreen" disabled={buttonDisabled} type="submit" variant="contained">
           {buttonLabel}
@@ -42,20 +35,18 @@ function MyCustomFormComponentWithoutSubmit({
   buttonLabel = 'Submit',
   buttonRef,
   children,
-  gridColumns = 2,
+  gridStructure,
+  layout = 'flex',
   onSubmit,
-  useGridLayout,
 }: CustomFormProps) {
+  if (layout !== 'gridResponsive' && gridStructure) {
+    throw new Error(`gridStructure must be provided only on layout = 'gridResponsive'`)
+  }
+  const Layout = getFormLayout(layout)
   return (
     <Box style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
       {/* children are you form field components */}
-      {useGridLayout ? (
-        <GridFormContainer gridColumns={gridColumns} id="grid-container">
-          {children}
-        </GridFormContainer>
-      ) : (
-        <FlexFormContainer id="flex-container">{children}</FlexFormContainer>
-      )}
+      <Layout gridStructure={gridStructure}>{children}</Layout>
       <Box sx={{ display: 'flex', justifyContent: 'center' }}>
         <Button
           color="darkGreen"

@@ -51,7 +51,7 @@ export default function TokenInput({
 }: Props) {
   const { error, field } = useTsController<z.infer<typeof TokenInputSchema>>()
   const { onChange, value } = field
-  const { label, placeholder } = useDescription()
+  const { label } = useDescription()
 
   const maxValueFormatted = formatUnits(maxValue, decimals)
   const valueGreaterThanMaxValue = useMemo(
