@@ -7,6 +7,7 @@ export const SUBGRAPH_ERRORS = gql`
     }
   }
 `
+/*
 export const EMITTERS = gql`
   query emitters {
     emitters {
@@ -26,7 +27,7 @@ export const EMITTER = gql`
     }
   }
 `
-
+*/
 // export const EXAMPLE_QUERY_BY_ID = gql`
 //   query exampleById($id: ID!) {
 //     example(id: $id) {
