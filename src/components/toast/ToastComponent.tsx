@@ -36,7 +36,11 @@ export const ToastComponent: React.FC<{
     variant="outlined"
   >
     {title && <AlertTitle>{title}</AlertTitle>}
-    {message && <Typography variant="body4">{message}</Typography>}
+    {message && (
+      <Typography component={'div'} variant="body4">
+        {message}
+      </Typography>
+    )}
     {link && (
       <Link href={link.url} rel="noreferrer" target="_blank">
         {link.text}

@@ -145,7 +145,7 @@ export function FormWithSteps({
                 },
               }}
             >
-              <Typography component="p" variant="subtitle2">
+              <Typography variant="subtitle2">
                 {label}
               </Typography>
             </StepButton>

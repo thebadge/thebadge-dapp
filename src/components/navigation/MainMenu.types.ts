@@ -18,10 +18,12 @@ export type MenuItem = {
   disabled?: boolean
   href?: MenuItemHrefType
   customOnClickBehavior?: () => void
+  openLinkInNewTab?: boolean
 }
 export type SubMenuItem = {
   title: string
   href?: MenuItemHrefType
   customOnClickBehavior?: () => void
   subItems?: Array<SubMenuItem>
+  openLinkInNewTab?: boolean
 }

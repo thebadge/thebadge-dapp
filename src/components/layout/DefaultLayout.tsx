@@ -28,12 +28,10 @@ type DefaultLayoutProps = {
 }
 
 const NavigationRoom = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'row',
-  paddingTop: '5%',
-  [theme.breakpoints.up('xl')]: {
-    paddingTop: '10%',
-  },
+  position: 'absolute',
+  height: '100%',
+  left: theme.spacing(6),
+  top: theme.spacing(12),
 }))
 
 export const DefaultLayout = ({ children }: DefaultLayoutProps) => {
@@ -56,11 +54,13 @@ export const DefaultLayout = ({ children }: DefaultLayoutProps) => {
         <BackgroundGradient
           gradient={theme.palette?.backgroundGradient[mode as keyof PaletteColorOptions]}
         />
-        <Box sx={{ flex: 1 }}>
+        <Box sx={{ display: 'flex', flex: 1 }}>
           <NavigationRoom>
             <MainMenu />
-            <Container maxWidth={'md'}>{children}</Container>
           </NavigationRoom>
+          <Container maxWidth={'md'} sx={{ margin: theme.spacing(10, 'auto') }}>
+            {children}
+          </Container>
         </Box>
       </Content>
     </>
