@@ -2,8 +2,10 @@ import React, { Children, ReactNode, useMemo } from 'react'
 
 import { Box, styled } from '@mui/material'
 import { Responsive, WidthProvider } from 'react-grid-layout'
+import { breakpoints } from 'thebadge-ui-library'
 
-import { DataGrid, DataGridMapping } from './type'
+import { getDataGridFromMapping, getFormsFieldsTypes } from './GridFormContainer.utilts'
+import { DataGrid } from './type'
 import { GridFormItem } from '@/src/components/form/customForms/GridFormItem'
 import { mappingDataGridForComponents } from '@/src/components/form/customForms/dataGridToComponents'
 
@@ -35,17 +37,23 @@ function ResponsiveGridFromContainer({
   let prevXValue = -1
   return (
     <ResponsiveGridLayout
-      breakpoints={{ xl: 1536, lg: 1200, md: 900, sm: 600, xs: 480, xxs: 0 }}
+      breakpoints={{
+        xl: Number(breakpoints.xl),
+        lg: Number(breakpoints.l),
+        md: Number(breakpoints.m),
+        sm: Number(breakpoints.s),
+      }}
       className="layout"
-      cols={{ xl: 8, lg: 8, md: 8, sm: 6, xs: 4, xxs: 2 }}
+      cols={{ xl: 8, lg: 8, md: 8, sm: 6 }}
       compactType={null}
       isBounded={true}
       isDraggable={true}
       rowHeight={75}
     >
       {
-        // children is a prop that passed to the component
-        // second arg is a callback
+        // children is a prop that passed to the component, second arg is a callback
+        // Children.toArray prevent the need to iterate over undefined values or
+        // nested array of children
         Children.map(Children.toArray(children), (child, index) => {
           let dataGridValue
           let xValue
@@ -53,7 +61,8 @@ function ResponsiveGridFromContainer({
             dataGridValue = gridStructure[index]
             xValue = dataGridValue.x
           } else {
-            // If a gridStructure was not provided, we get the formType of the child, and we attach the dataGrid prop to it
+            // If a gridStructure was not provided, we get the formType of the
+            // child, and we attach the dataGrid prop to it
             dataGridValue = getDataGridFromMapping(
               childrenFromTypes[index],
               mappingDataGridForComponents,
@@ -75,40 +84,6 @@ function ResponsiveGridFromContainer({
       }
     </ResponsiveGridLayout>
   )
-}
-
-const availableFormFields = mappingDataGridForComponents.map((e) => e[1])
-
-const isOneFormTypeOfAvailableFormFields = (c: React.ReactElement) =>
-  availableFormFields.find((formField) => formField === getElemType(c))
-
-function getFormsFieldsTypes(children: React.ReactNode): any[] {
-  return Children.toArray(children).map((child) => {
-    return isOneFormTypeOfAvailableFormFields(child as React.ReactElement)
-      ? getElemType(child)
-      : getChildrenType((child as React.ReactElement).props.children)
-  })
-}
-
-function getChildrenType(node: React.ReactNode) {
-  if (node === null) return 'null'
-  // getFormsFieldsTypes from child it will always end on one
-  if (Array.isArray(node)) return getFormsFieldsTypes(node)[0]
-  if (typeof node === 'object') return getElemType(node)
-  return 'string'
-}
-
-function getElemType(elem: any) {
-  if (typeof elem === 'string') return 'string'
-  if (elem === null) return 'null'
-  return elem.type
-}
-
-function getDataGridFromMapping(compType: any, mapping: DataGridMapping[]) {
-  for (const mappingElement of mapping) {
-    if (compType === mappingElement[1]) return mappingElement[0]
-  }
-  return { i: 'Default', x: 0, y: 0, w: 2, h: 1 }
 }
 
 export default ResponsiveGridFromContainer
