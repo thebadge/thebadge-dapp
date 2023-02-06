@@ -55,6 +55,7 @@ export const getProviderUrl = (
     return getAlchemyRPCUrl(chainId)
 
   // Auto-magic provider
+  if (isGitHubActionBuild) return `placeholder-token-${chainId}`
   if (RPCProvidersENV[RPCProviders.infura]) return getInfuraRPCUrl(chainId)
   if (RPCProvidersENV[RPCProviders.alchemy]) return getAlchemyRPCUrl(chainId)
 
