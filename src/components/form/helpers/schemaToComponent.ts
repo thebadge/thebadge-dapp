@@ -1,6 +1,7 @@
 import { z } from 'zod'
 
 import TextField from '../TextField'
+import AgreementField from '@/src/components/form/AgreementField'
 import AvatarInput from '@/src/components/form/AvatarInput'
 import CheckBox from '@/src/components/form/CheckBox'
 import DropdownSelect from '@/src/components/form/DropdownSelect'
@@ -13,6 +14,7 @@ import TextArea from '@/src/components/form/TextArea'
 import TokenInput from '@/src/components/form/TokenInput'
 import {
   AddressSchema,
+  AgreementSchema,
   AvatarSchema,
   CheckBoxSchema,
   EmailSchema,
@@ -42,6 +44,7 @@ export const mappingSchemaToComponents = [
   [AvatarSchema, AvatarInput],
   [FileSchema, FileInput],
   [TokenInputSchema, TokenInput],
+  [AgreementSchema, AgreementField],
   [KlerosFieldTypeSchema, DropdownSelect],
   [KlerosDynamicFields, KlerosDynamicFieldsCreator],
   [SeverityTypeSchema, SeveritySelector],

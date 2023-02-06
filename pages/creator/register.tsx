@@ -3,6 +3,7 @@ import { ReactElement } from 'react'
 
 import { Stack, Typography } from '@mui/material'
 import { ethers } from 'ethers'
+import { useTranslation } from 'next-export-i18n'
 import { colors } from 'thebadge-ui-library'
 import { z } from 'zod'
 
@@ -28,6 +29,7 @@ export const RegisterCuratorSchema = z
   .merge(RegisterCuratorSchemaStep3)
 
 const Register: NextPageWithLayout = () => {
+  const { t } = useTranslation()
   const { address, appChainId, isWalletConnected } = useWeb3Connection()
   const router = useRouter()
   const sendTx = useTransaction()
@@ -42,7 +44,7 @@ const Register: NextPageWithLayout = () => {
       throw Error('Web3 address not provided')
     }
     const uploadedInfo = await ipfsUpload({
-      attributes: JSON.stringify(data),
+      attributes: data,
       filePaths: ['logo'],
     })
 
@@ -65,12 +67,13 @@ const Register: NextPageWithLayout = () => {
 
   return (
     <>
-      <Stack sx={{ mb: 2 }}>
-        <Typography color={colors.white} variant="h3">
-          Register as a creator
+      <Stack sx={{ mb: 6, gap: 4, alignItems: 'center' }}>
+        <Typography color={colors.purple} textAlign="center" variant="title2">
+          {t('creator.register.title')}
         </Typography>
-        <Typography color={colors.white} variant="h5">
-          Once registered as a creator you will be granted the possibility to created badge types.
+
+        <Typography textAlign="justify" variant="body4" width="85%">
+          {t('creator.register.sub-title')}
         </Typography>
       </Stack>
       <RegistrationSteps onSubmit={onSubmit} />

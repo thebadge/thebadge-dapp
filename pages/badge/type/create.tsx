@@ -1,8 +1,9 @@
 import { ReactElement } from 'react'
 
-import { Typography } from '@mui/material'
+import { Stack, Typography } from '@mui/material'
 import { constants } from 'ethers'
 import { defaultAbiCoder, parseUnits } from 'ethers/lib/utils'
+import { useTranslation } from 'next-export-i18n'
 import { colors } from 'thebadge-ui-library'
 import { z } from 'zod'
 
@@ -50,6 +51,8 @@ export const BadgeTypeCreateSchema = z.object({
 })
 
 const CreateBadgeType: NextPageWithLayout = () => {
+  const { t } = useTranslation()
+
   const { address, appChainId, readOnlyAppProvider } = useWeb3Connection()
   const theBadge = useContractInstance(TheBadge__factory, 'TheBadge')
 
@@ -146,13 +149,15 @@ const CreateBadgeType: NextPageWithLayout = () => {
 
   return (
     <>
-      <Typography color={colors.white} variant="h3">
-        Welcome to THE BADGE!
-      </Typography>
+      <Stack sx={{ mb: 6, gap: 4, alignItems: 'center' }}>
+        <Typography color={colors.purple} textAlign="center" variant="title2">
+          {t('badge.type.create.title')}
+        </Typography>
 
-      <Typography color={colors.white} variant="h3">
-        Please fulfill the form
-      </Typography>
+        <Typography color={colors.white} textAlign="justify" variant="body4" width="85%">
+          {t('badge.type.create.sub-title')}
+        </Typography>
+      </Stack>
 
       <CustomFormFromSchema
         formProps={{

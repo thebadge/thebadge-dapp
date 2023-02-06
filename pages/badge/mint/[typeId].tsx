@@ -1,6 +1,7 @@
 import { ReactElement } from 'react'
 
-import { Typography } from '@mui/material'
+import { Stack, Typography } from '@mui/material'
+import { useTranslation } from 'next-export-i18n'
 import { colors } from 'thebadge-ui-library'
 import { z } from 'zod'
 
@@ -56,6 +57,8 @@ const HARDCODED_TEST_FIELDS = [
   },
 ]
 const MintBadgeType: NextPageWithLayout = () => {
+  const { t } = useTranslation()
+
   const CreateBadgeSchema = klerosSchemaFactory(HARDCODED_TEST_FIELDS)
 
   function onSubmit(data: z.infer<typeof CreateBadgeSchema>) {
@@ -63,13 +66,15 @@ const MintBadgeType: NextPageWithLayout = () => {
   }
   return (
     <>
-      <Typography color={colors.white} variant="h3">
-        Welcome to THE BADGE!
-      </Typography>
+      <Stack sx={{ mb: 6, gap: 4, alignItems: 'center' }}>
+        <Typography color={colors.green} textAlign="center" variant="title2">
+          {t('badge.type.mint.title')}
+        </Typography>
 
-      <Typography color={colors.white} variant="h5">
-        Here you can complete the process to mint a badge type
-      </Typography>
+        <Typography color={colors.white} textAlign="justify" variant="body4" width="85%">
+          {t('badge.type.mint.sub-title')}
+        </Typography>
+      </Stack>
 
       <CustomFormFromSchema onSubmit={onSubmit} schema={CreateBadgeSchema} />
     </>

@@ -18,16 +18,18 @@ export const getTheme = (mode?: PaletteMode): ThemeOptions => ({
     ...defaultTheme.palette,
     text: {
       primary: mode === 'light' ? '#000000' : '#ffffff',
-      light: '#ffffff',
-      dark: '#000000',
+      secondary: mode === 'light' ? 'rgba(0,0,0,0.6)' : 'rgba(255,255,255,0.6)',
+      disabled: mode === 'light' ? 'rgba(0,0,0,0.38)' : 'rgba(255,255,255,0.38)',
+      dark: '#ffffff',
+      light: '#000000',
     },
     background: {
       default: mode === 'light' ? '#F4F4F4' : '#000000',
     },
     backgroundGradient: {
       main: gradientLight,
-      light: gradientLight,
-      dark: gradients.gradientBackground,
+      light: gradients.gradientBackgroundLight,
+      dark: gradients.gradientBackgroundDark,
     },
     mainMenu: {
       boxShadow: {
