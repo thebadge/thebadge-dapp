@@ -3,7 +3,6 @@ import { ReactElement } from 'react'
 
 import { Button, Typography } from '@mui/material'
 import { ethers } from 'ethers'
-import { colors } from 'thebadge-ui-library'
 import { z } from 'zod'
 
 import { NextPageWithLayout } from '@/pages/_app'
@@ -36,11 +35,11 @@ const Profile: NextPageWithLayout = () => {
 
   return (
     <>
-      <Typography color={colors.white} variant="h3">
+      <Typography component={'h3'} variant="h3">
         Welcome to THE BADGE!
       </Typography>
 
-      <Typography color={colors.white} variant="h3">
+      <Typography component={'h5'} variant="h5">
         This is your creator profile
       </Typography>
 

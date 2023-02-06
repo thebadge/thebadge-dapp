@@ -62,25 +62,49 @@ export default function RegistrationSteps({ onSubmit }: RegistrationStepsProps) 
   function handleFormPreview(data: z.infer<typeof RegisterCuratorSchema>) {
     return (
       <Stack gap={2} margin={1}>
-        <Typography variant="title3">Please review your data</Typography>
+        <Typography component={'div'} variant="title3">
+          Please review your data
+        </Typography>
         <Stack>
-          <Typography variant="title2">Creator Information</Typography>
+          <Typography component={'div'} variant="title2">
+            Creator Information
+          </Typography>
           <Box display="flex" flexDirection="row">
             <Stack>
-              <Typography variant="body1">{data.name}</Typography>
-              <Typography variant="body1">{data.description}</Typography>
+              <Typography component={'div'} variant="body1">
+                {data.name}
+              </Typography>
+              <Typography component={'div'} variant="body1">
+                {data.description}
+              </Typography>
             </Stack>
             <Avatar>
               <img alt="" src={data.logo.data_url} width="150" />
             </Avatar>
           </Box>
-          <Typography variant="title2">Creator Contact</Typography>
+          <Typography component={'div'} variant="title2">
+            Creator Contact
+          </Typography>
           <Stack>
-            <Typography variant="body1">{data.email}</Typography>
+            <Typography component={'div'} variant="body1">
+              {data.email}
+            </Typography>
 
-            {data.discord && <Typography variant="body1">{data.discord}</Typography>}
-            {data.website && <Typography variant="body1">{data.website}</Typography>}
-            {data.twitter && <Typography variant="body1">{data.twitter}</Typography>}
+            {data.discord && (
+              <Typography component={'div'} variant="body1">
+                {data.discord}
+              </Typography>
+            )}
+            {data.website && (
+              <Typography component={'div'} variant="body1">
+                {data.website}
+              </Typography>
+            )}
+            {data.twitter && (
+              <Typography component={'div'} variant="body1">
+                {data.twitter}
+              </Typography>
+            )}
           </Stack>
         </Stack>
       </Stack>

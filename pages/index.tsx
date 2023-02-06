@@ -1,30 +1,62 @@
 import { ReactElement } from 'react'
 
-import { Box, Typography } from '@mui/material'
-import { colors } from 'thebadge-ui-library'
+import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined'
+import { Box, Typography, styled } from '@mui/material'
 
 import { NextPageWithLayout } from '@/pages/_app'
-import LinkWithTranslation from '@/src/components/helpers/LinkWithTranslation'
 import { DefaultLayout } from '@/src/components/layout/DefaultLayout'
 import { useSectionReferences } from '@/src/providers/referencesProvider'
+
+const CertificationProcess: React.FC = () => {
+  return (
+    <div>
+      <Typography
+        alignItems={'center'}
+        component="span"
+        display={'flex'}
+        fontSize={12}
+        fontWeight={900}
+        justifyContent={'center'}
+        lineHeight={'15px'}
+        marginBottom={10}
+      >
+        FULL CERTIFICATION PROCESS TUTORIAL
+        <ArrowForwardIosOutlinedIcon />
+      </Typography>
+    </div>
+  )
+}
+
+const Section = styled('div')(({ theme }) => ({
+  border: `1px solid ${theme.palette.white}`,
+  boxShadow: '0px 0px 6px rgba(0, 0, 0, 0.3)',
+  borderRadius: '15px',
+  minHeight: '100px',
+  width: '100%',
+}))
 
 const Home: NextPageWithLayout = () => {
   const { homeSection } = useSectionReferences()
 
   return (
     <Box display="flex" flexDirection="column" ref={homeSection}>
-      <Typography color={colors.white} variant="h3">
-        Welcome to THE BADGE!
+      <Typography component="h2" marginBottom={2} textAlign="center" variant="h2">
+        Welcome to TheBadge!
       </Typography>
-      <Box display="flex" flexDirection="column">
-        <LinkWithTranslation pathname="/creator/register">1. Register Creator</LinkWithTranslation>
-        <LinkWithTranslation pathname="/curator/register">2. Register Curator</LinkWithTranslation>
+      <Typography component="div" marginBottom={10} textAlign="center" variant="h5">
+        DECENTRALIZED CERTIFICATION PLATFORM
+      </Typography>
+      <CertificationProcess />
+      <Section>Claim one of these badges</Section>
+      {/*<Box display="flex" flexDirection="column">*/}
+      {/*<LinkWithTranslation pathname="/creator/register">1. Register Creator</LinkWithTranslation>*/}
+      {/*<LinkWithTranslation pathname="/curator/register">2. Register Curator</LinkWithTranslation>*/}
 
-        <LinkWithTranslation pathname="/badge/type/create">
-          3. Create badge-type
-        </LinkWithTranslation>
-        <LinkWithTranslation pathname="/badge/mint">4. Mint badge</LinkWithTranslation>
-      </Box>
+      {/*<LinkWithTranslation pathname="/badge/type/create">*/}
+      {/*  3. Create badge-type*/}
+      {/*</LinkWithTranslation>*/}
+      {/*<LinkWithTranslation pathname="/badge/mint">4. Mint badge</LinkWithTranslation>*/}
+      {/*</Box>*/}
     </Box>
   )
 }

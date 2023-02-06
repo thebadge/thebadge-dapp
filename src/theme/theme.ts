@@ -8,9 +8,6 @@ const mulishFont = Mulish({
   subsets: ['latin'],
 })
 
-const gradientLight =
-  'linear-gradient(180deg, rgba(137, 28, 251, 0.2475) -13.61%, rgba(255, 255, 255, 0.254) 40.93%, rgba(255, 255, 255, 0.55) 82.02%, rgba(255, 255, 255, 0.75) 129.84%)'
-
 export const getTheme = (mode?: PaletteMode): ThemeOptions => ({
   ...defaultTheme,
   palette: {
@@ -18,16 +15,17 @@ export const getTheme = (mode?: PaletteMode): ThemeOptions => ({
     ...defaultTheme.palette,
     text: {
       primary: mode === 'light' ? '#000000' : '#ffffff',
-      light: '#ffffff',
-      dark: '#000000',
+      secondary: mode === 'light' ? 'rgba(0, 0, 0, 0.6)' : 'rgba(256, 256, 256, 0.6)',
+      light: '#000000',
+      dark: '#ffffff',
     },
     background: {
       default: mode === 'light' ? '#F4F4F4' : '#000000',
     },
     backgroundGradient: {
-      main: gradientLight,
-      light: gradientLight,
-      dark: gradients.gradientBackground,
+      main: gradients.gradientBackgroundLight,
+      light: gradients.gradientBackgroundLight,
+      dark: gradients.gradientBackgroundDark,
     },
     mainMenu: {
       boxShadow: {

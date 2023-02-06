@@ -3,7 +3,6 @@ import { ReactElement } from 'react'
 
 import { Stack, Typography } from '@mui/material'
 import { ethers } from 'ethers'
-import { colors } from 'thebadge-ui-library'
 import { z } from 'zod'
 
 import { NextPageWithLayout } from '@/pages/_app'
@@ -41,10 +40,8 @@ const Register: NextPageWithLayout = () => {
     if (!address) {
       throw Error('Web3 address not provided')
     }
-    const uploadedInfo = await ipfsUpload({
-      attributes: JSON.stringify(data),
-      filePaths: ['logo'],
-    })
+
+    const uploadedInfo = await ipfsUpload({ attributes: data, filePaths: ['logo'] })
 
     const transaction = await sendTx(() =>
       theBadge.registerEmitter(address, `ipfs://${uploadedInfo.result?.ipfsHash}`),
@@ -60,16 +57,16 @@ const Register: NextPageWithLayout = () => {
   }
 
   if (!isWalletConnected) {
-    return <Typography>Please connect your wallet to continue</Typography>
+    return <Typography component={'div'}>Please connect your wallet to continue</Typography>
   }
 
   return (
     <>
       <Stack sx={{ mb: 2 }}>
-        <Typography color={colors.white} variant="h3">
+        <Typography component={'h3'} variant="h3">
           Register as a creator
         </Typography>
-        <Typography color={colors.white} variant="h5">
+        <Typography component={'h5'} variant="h5">
           Once registered as a creator you will be granted the possibility to created badge types.
         </Typography>
       </Stack>

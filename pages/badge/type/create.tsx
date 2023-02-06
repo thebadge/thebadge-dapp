@@ -3,7 +3,6 @@ import { ReactElement } from 'react'
 import { Typography } from '@mui/material'
 import { constants } from 'ethers'
 import { defaultAbiCoder, parseUnits } from 'ethers/lib/utils'
-import { colors } from 'thebadge-ui-library'
 import { z } from 'zod'
 
 import { NextPageWithLayout } from '@/pages/_app'
@@ -146,11 +145,11 @@ const CreateBadgeType: NextPageWithLayout = () => {
 
   return (
     <>
-      <Typography color={colors.white} variant="h3">
+      <Typography component={'h3'} variant="h3">
         Welcome to THE BADGE!
       </Typography>
 
-      <Typography color={colors.white} variant="h3">
+      <Typography component={'h5'} variant="h5">
         Please fulfill the form
       </Typography>
 
