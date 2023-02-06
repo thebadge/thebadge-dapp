@@ -46,7 +46,7 @@ export default function NumberField({ decimals = 0 }: NumberFieldProps) {
             }}
             color="secondary"
             error={!!error}
-            helperText={error?.errorMessage}
+            helperText={error?.errorMessage || ' '}
             label={label}
             onChange={(e: ChangeEvent<HTMLInputElement>) => props.onChange && props.onChange(e)}
             value={props.value}
