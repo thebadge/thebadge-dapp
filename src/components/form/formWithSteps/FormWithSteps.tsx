@@ -145,9 +145,7 @@ export function FormWithSteps({
                 },
               }}
             >
-              <Typography variant="subtitle2">
-                {label}
-              </Typography>
+              <Typography variant="subtitle2">{label}</Typography>
             </StepButton>
             {isMobile && (
               <StepContent>
