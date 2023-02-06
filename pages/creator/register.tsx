@@ -57,7 +57,8 @@ const Register: NextPageWithLayout = () => {
     router.push('/creator/profile')
   }
 
-  if (creatorByAddress.data?.emitter) {
+  // TODO Fix it creatorByAddress.data?.emitter
+  if (creatorByAddress.data) {
     router.push('/creator/profile')
   }
 
