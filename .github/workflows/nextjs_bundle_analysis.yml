@@ -41,6 +41,7 @@ jobs:
         # change this if your site requires a custom build command
         run: yarn build
         env:
+          NEXT_PUBLIC_INFURA_TOKEN: ${{ env.INFURA_TOKEN }}
           IS_GH_ACTION: true
 
       # Here's the first place where next-bundle-analysis' own script is used
