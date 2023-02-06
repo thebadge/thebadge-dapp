@@ -7,22 +7,19 @@ export const SUBGRAPH_ERRORS = gql`
     }
   }
 `
+
 export const EMITTERS = gql`
   query emitters {
-    emitters {
-      id
-      creator
-      metadata
+    _meta {
+      hasIndexingErrors
     }
   }
 `
 
 export const EMITTER = gql`
   query emitter($id: ID!) {
-    emitter(id: $id) {
-      id
-      creator
-      metadata
+    _meta {
+      hasIndexingErrors
     }
   }
 `

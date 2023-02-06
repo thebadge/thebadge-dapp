@@ -1,26 +1,36 @@
-import { Box, Button } from '@mui/material'
+import { Box, Button, styled } from '@mui/material'
 import { createTsForm } from '@ts-react/form'
 
 import { getFormLayout } from '@/src/components/form/customForms/getFormLayout'
 import { CustomFormProps } from '@/src/components/form/customForms/type'
 import { mappingSchemaToComponents } from '@/src/components/form/helpers/schemaToComponent'
 
+const FormButton = styled(Button)(({ theme }) => ({
+  borderRadius: theme.spacing(1.25),
+  fontSize: '14px !important',
+  minHeight: '30px',
+}))
+
 function MyCustomFormComponent({
   buttonDisabled,
   buttonLabel = 'Submit',
   children,
+  gridStructure,
   layout = 'flex',
   onSubmit,
 }: CustomFormProps) {
+  if (layout !== 'gridResponsive' && gridStructure) {
+    throw new Error(`gridStructure must be provided only on layout = 'gridResponsive'`)
+  }
   const Layout = getFormLayout(layout)
   return (
     <form onSubmit={onSubmit} style={{ display: 'flex', flexDirection: 'column' }}>
       {/* children are you form field components */}
-      <Layout>{children}</Layout>
+      <Layout gridStructure={gridStructure}>{children}</Layout>
       <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-        <Button color="darkGreen" disabled={buttonDisabled} type="submit" variant="contained">
+        <FormButton color="primary" disabled={buttonDisabled} type="submit" variant="contained">
           {buttonLabel}
-        </Button>
+        </FormButton>
       </Box>
     </form>
   )
@@ -48,15 +58,15 @@ function MyCustomFormComponentWithoutSubmit({
       {/* children are you form field components */}
       <Layout gridStructure={gridStructure}>{children}</Layout>
       <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-        <Button
-          color="darkGreen"
+        <FormButton
+          color="primary"
           disabled={buttonDisabled}
           onClick={onSubmit}
           ref={buttonRef}
           variant="contained"
         >
           {buttonLabel}
-        </Button>
+        </FormButton>
       </Box>
     </Box>
   )

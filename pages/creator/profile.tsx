@@ -5,13 +5,13 @@ import { Button, Typography } from '@mui/material'
 import { ethers } from 'ethers'
 import { z } from 'zod'
 
-import { NextPageWithLayout } from '@/pages/_app'
 import { RegisterCuratorSchema } from '@/pages/creator/register'
 import { withGenericSuspense } from '@/src/components/helpers/SafeSuspense'
-import { DefaultLayout } from '@/src/components/layout/DefaultLayout'
+import DefaultLayout from '@/src/components/layout/DefaultLayout'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { SubgraphName, getSubgraphSdkByNetwork } from '@/src/subgraph/subgraph'
+import { NextPageWithLayout } from '@/types/next'
 
 type CreatorMetadata = z.infer<typeof RegisterCuratorSchema>
 
@@ -20,11 +20,11 @@ const Profile: NextPageWithLayout = () => {
   const gql = getSubgraphSdkByNetwork(appChainId, SubgraphName.TheBadge)
   const creatorByAddress = gql.useEmitter({ id: address || ethers.constants.AddressZero })
   const router = useRouter()
-  const { data: creatorMetadata } = useS3Metadata<CreatorMetadata>(
-    creatorByAddress.data?.emitter?.metadata || '',
-  )
+  // TODO Add again the creatorByAddress.data?.emitter?.metadata
+  const { data: creatorMetadata } = useS3Metadata<CreatorMetadata>('')
 
-  if (!creatorByAddress.data?.emitter) {
+  // TODO Fix validation with creatorByAddress.data?.emitter
+  if (!creatorByAddress.data) {
     router.push('/creator/register')
     return null
   }

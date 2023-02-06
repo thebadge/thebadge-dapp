@@ -17,6 +17,14 @@ export const CheckBoxSchema = createUniqueFieldSchema(
   'CheckBoxSchema',
 )
 
+export const AgreementSchema = createUniqueFieldSchema(
+  z.boolean({
+    required_error: 'You need to agree to be able to continue.',
+    invalid_type_error: 'You must agree to continue.',
+  }),
+  'AgreementSchema',
+)
+
 export const RadioButtonSchema = createUniqueFieldSchema(
   z.boolean({
     required_error: 'Is required',

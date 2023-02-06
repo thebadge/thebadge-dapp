@@ -87,7 +87,7 @@ const MenuItemsBottomContainer = styled('div')(() => ({
   width: '3rem',
 }))
 
-const MenuItemBox = styled(Button)(({ theme }) => ({
+const MenuItemBox = styled(Button)(() => ({
   display: 'flex',
   minWidth: 0,
   padding: 0,
@@ -177,7 +177,7 @@ const SubMenuItem = styled(Button)(({ theme }) => ({
   },
 }))
 
-export const MainMenu: React.FC = ({ ...restProps }) => {
+export default function MainMenu({ ...restProps }) {
   // const t = useTranslations('mainMenu')
   const router = useRouter()
   const { scrollTo } = useSectionReferences()

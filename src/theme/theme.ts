@@ -15,9 +15,10 @@ export const getTheme = (mode?: PaletteMode): ThemeOptions => ({
     ...defaultTheme.palette,
     text: {
       primary: mode === 'light' ? '#000000' : '#ffffff',
-      secondary: mode === 'light' ? 'rgba(0, 0, 0, 0.6)' : 'rgba(256, 256, 256, 0.6)',
-      light: '#000000',
+      secondary: mode === 'light' ? 'rgba(0,0,0,0.6)' : 'rgba(255,255,255,0.6)',
+      disabled: mode === 'light' ? 'rgba(0,0,0,0.38)' : 'rgba(255,255,255,0.38)',
       dark: '#ffffff',
+      light: '#000000',
     },
     background: {
       default: mode === 'light' ? '#F4F4F4' : '#000000',
