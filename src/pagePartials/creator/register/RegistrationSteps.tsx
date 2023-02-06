@@ -1,175 +1,104 @@
-import { useRef } from 'react'
 import * as React from 'react'
 
-import { StepContent } from '@mui/material'
-import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
-import Step from '@mui/material/Step'
-import StepButton from '@mui/material/StepButton'
-import Stepper from '@mui/material/Stepper'
-import Typography from '@mui/material/Typography'
-import { AnyZodObject, ZodEffects } from 'zod'
+import { Avatar, Box, Stack, Typography } from '@mui/material'
+import { z } from 'zod'
 
-import { CustomFormFromSchemaWithoutSubmit } from '@/src/components/form/customForms/CustomForm'
-import { useForceRender } from '@/src/hooks/useForceRender'
-import useIsMobile from '@/src/hooks/useIsMobile'
+import { RegisterCuratorSchema } from '@/pages/creator/register'
+import { DataGrid } from '@/src/components/form/customForms/type'
+import { FormWithSteps } from '@/src/components/form/formWithSteps/FormWithSteps'
+import {
+  AvatarSchema,
+  CheckBoxSchema,
+  EmailSchema,
+  LongTextSchema,
+  TwitterSchema,
+} from '@/src/components/form/helpers/customSchemas'
 
 type RegistrationStepsProps = {
-  stepSchemas: (AnyZodObject | ZodEffects<any, any, any>)[]
-  onSubmit: (data: any) => void
+  onSubmit: (data: z.infer<typeof RegisterCuratorSchema>) => void
 }
 
 const steps = ['Basic information.', 'How to contact you.', 'Agreement.']
 
-export default function RegistrationSteps({ onSubmit, stepSchemas }: RegistrationStepsProps) {
-  const forceUpdate = useForceRender()
-  const isMobile = useIsMobile()
-  const formButtonRef = useRef<HTMLButtonElement>()
+const formGridLayout: DataGrid[][] = [
+  [
+    { i: 'TextField', x: 0, y: 0, w: 3, h: 1, static: true },
+    { i: 'TextArea', x: 0, y: 1, w: 3, h: 2, static: true },
+    { i: 'AvatarInput', x: 3, y: 0, w: 3, h: 3, static: true },
+  ],
+  [
+    { i: 'TextField', x: 0, y: 1, w: 3, h: 1, static: true },
+    { i: 'TextField', x: 3, y: 1, w: 3, h: 1, static: true },
+    { i: 'TextField', x: 0, y: 1, w: 3, h: 1, static: true },
+    { i: 'TextField', x: 3, y: 1, w: 3, h: 1, static: true },
+  ],
+  [{ i: 'CheckBox', x: 0, y: 0, w: 12, h: 3, static: true }],
+]
 
-  const [activeStep, setActiveStep] = React.useState(0)
-  const [stepsData, setStepsData] = React.useState<{
-    [k: number]: any
-  }>({})
-  const [completed, setCompleted] = React.useState<{
-    [k: number]: boolean
-  }>({})
+export const RegisterCuratorSchemaStep1 = z.object({
+  name: z.string().describe('Your name // ??'),
+  description: LongTextSchema.describe(
+    'Description // Tell us about you, share some of you background with the community.',
+  ),
+  logo: AvatarSchema.describe('Profile photo // Upload a photo that identifies you.'), // Image Schema MUST BE the created one
+})
 
-  const totalSteps = () => {
-    return steps.length
+export const RegisterCuratorSchemaStep2 = z.object({
+  website: z.string().describe(`Website // ??`).optional(),
+  twitter: TwitterSchema.describe(`Twitter // ??`).optional(),
+  discord: z.string().describe(`Discord // ??`).optional(),
+  email: EmailSchema.describe(`Email // ??`),
+})
+
+export const RegisterCuratorSchemaStep3 = z.object({
+  terms: CheckBoxSchema.describe(`Terms & Conditions // ??`),
+})
+
+export default function RegistrationSteps({ onSubmit }: RegistrationStepsProps) {
+  const handleOnSubmit = (data: z.infer<typeof RegisterCuratorSchema>) => {
+    onSubmit(data)
   }
 
-  const completedSteps = () => {
-    return Object.values(completed).filter((c) => c).length
+  function handleFormPreview(data: z.infer<typeof RegisterCuratorSchema>) {
+    return (
+      <Stack gap={2} margin={1}>
+        <Typography variant="title3">Please review your data</Typography>
+        <Stack>
+          <Typography variant="title2">Creator Information</Typography>
+          <Box display="flex" flexDirection="row">
+            <Stack>
+              <Typography variant="body1">{data.name}</Typography>
+              <Typography variant="body1">{data.description}</Typography>
+            </Stack>
+            <Avatar>
+              <img alt="" src={data.logo.data_url} width="150" />
+            </Avatar>
+          </Box>
+          <Typography variant="title2">Creator Contact</Typography>
+          <Stack>
+            <Typography variant="body1">{data.email}</Typography>
+
+            {data.discord && <Typography variant="body1">{data.discord}</Typography>}
+            {data.website && <Typography variant="body1">{data.website}</Typography>}
+            {data.twitter && <Typography variant="body1">{data.twitter}</Typography>}
+          </Stack>
+        </Stack>
+      </Stack>
+    )
   }
-
-  const handleComplete = (step: number) => {
-    const newCompleted = completed
-    newCompleted[step] = true
-    setCompleted(newCompleted)
-    if (Object.values(newCompleted).filter((c) => c).length === totalSteps()) forceUpdate()
-  }
-
-  const allStepsCompleted = () => completedSteps() === totalSteps()
-
-  const isLastStep = () => {
-    return activeStep === totalSteps() - 1
-  }
-
-  const handleNext = () => {
-    handleComplete(activeStep)
-    const newActiveStep = !isLastStep()
-      ? // If not all steps have been completed,
-        // find the first step that has not been completed
-        steps.findIndex((step, i) => !completed[i] && i !== activeStep - 1)
-      : activeStep + 1
-    // We don't want to increase the value over the amount of given schemas
-    if (newActiveStep < 0 || newActiveStep >= stepSchemas.length) return
-    setActiveStep(newActiveStep)
-  }
-
-  const handleBack = (step: number) => {
-    const newCompleted = completed
-    newCompleted[step] = false
-    setCompleted(newCompleted)
-    setActiveStep(step)
-  }
-
-  const handleStep = (step: number) => async () => {
-    // If the user want to go back, we dont need to validate
-    if (activeStep >= step) return handleBack(step)
-    // Is the user is trying to move forward, we need to validate if the step is completed
-    // Hack to click the button and trigger the validations
-    formButtonRef.current?.click()
-  }
-
-  const handleSubmitNext = (data: any) => {
-    const newStepsData = stepsData
-    newStepsData[activeStep] = data
-    setStepsData(newStepsData)
-    handleNext()
-  }
-
-  const handleOnSubmit = () => {
-    let formData = {}
-    Object.values(stepsData).forEach((step) => {
-      formData = {
-        ...formData,
-        ...step,
-      }
-    })
-    onSubmit(formData)
-  }
-
-  const isFormStep = stepSchemas.length > activeStep
 
   return (
-    <Box sx={{ width: '100%' }}>
-      <Stepper
-        activeStep={activeStep}
-        alternativeLabel
-        nonLinear
-        orientation={isMobile ? 'vertical' : 'horizontal'}
-      >
-        {steps.map((label, index) => (
-          <Step completed={completed[index]} key={label}>
-            <StepButton
-              color="inherit"
-              onClick={handleStep(index)}
-              sx={{
-                '& .MuiStepIcon-text': {
-                  fontSize: '1rem',
-                },
-              }}
-            >
-              <Typography variant="subtitle2">{label}</Typography>
-            </StepButton>
-            {isMobile && (
-              <StepContent>
-                <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-                  <CustomFormFromSchemaWithoutSubmit
-                    formProps={{
-                      buttonLabel: 'Next',
-                      buttonRef: formButtonRef,
-                    }}
-                    onSubmit={handleSubmitNext}
-                    schema={stepSchemas[activeStep]}
-                  />
-                </Box>
-              </StepContent>
-            )}
-          </Step>
-        ))}
-      </Stepper>
-      <div>
-        {!isMobile && (
-          <>
-            <Box
-              sx={{ display: allStepsCompleted() ? 'none' : 'flex', flexDirection: 'row', pt: 2 }}
-            >
-              {isFormStep && (
-                <CustomFormFromSchemaWithoutSubmit
-                  formProps={{
-                    buttonLabel: 'Next',
-                    buttonRef: formButtonRef,
-                    useGridLayout: true,
-                  }}
-                  onSubmit={handleSubmitNext}
-                  schema={stepSchemas[activeStep]}
-                />
-              )}
-            </Box>
-            {allStepsCompleted() && (
-              <Box>
-                {
-                  // Review pre submit
-                }
-                <Box>{JSON.stringify(stepsData)}</Box>
-                <Button onClick={handleOnSubmit}>{'Submit'}</Button>
-              </Box>
-            )}
-          </>
-        )}
-      </div>
-    </Box>
+    <FormWithSteps
+      formGridLayout={formGridLayout}
+      formLayout={'gridResponsive'}
+      formSubmitReview={handleFormPreview}
+      onSubmit={handleOnSubmit}
+      stepNames={steps}
+      stepSchemas={[
+        RegisterCuratorSchemaStep1,
+        RegisterCuratorSchemaStep2,
+        RegisterCuratorSchemaStep3,
+      ]}
+    />
   )
 }

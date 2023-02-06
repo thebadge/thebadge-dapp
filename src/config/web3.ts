@@ -1,7 +1,13 @@
 import nullthrows from 'nullthrows'
 
 import { ChainConfig, ChainsValues } from '@/types/chains'
-import { ObjectValues, ProviderChains, RPCProviders, RPCProvidersENV } from '@/types/utils'
+import {
+  ObjectValues,
+  ProviderChains,
+  RPCProviders,
+  RPCProvidersENV,
+  isGitHubActionBuild,
+} from '@/types/utils'
 
 export const Chains = {
   //mainnet: 1,
@@ -33,7 +39,11 @@ export const getProviderUrl = (
   chainId: ChainsValues,
   provider?: ObjectValues<typeof RPCProviders>,
 ) => {
-  if (!RPCProvidersENV[RPCProviders.infura] && !RPCProvidersENV[RPCProviders.alchemy]) {
+  if (
+    !RPCProvidersENV[RPCProviders.infura] &&
+    !RPCProvidersENV[RPCProviders.alchemy] &&
+    !isGitHubActionBuild
+  ) {
     throw new Error(`You must set infura/alchemy token provider in environment variable`)
   }
 
@@ -45,6 +55,7 @@ export const getProviderUrl = (
     return getAlchemyRPCUrl(chainId)
 
   // Auto-magic provider
+  if (isGitHubActionBuild) return `placeholder-token-${chainId}`
   if (RPCProvidersENV[RPCProviders.infura]) return getInfuraRPCUrl(chainId)
   if (RPCProvidersENV[RPCProviders.alchemy]) return getAlchemyRPCUrl(chainId)
 
@@ -53,7 +64,7 @@ export const getProviderUrl = (
 
 // Default chain id from env var
 export const INITIAL_APP_CHAIN_ID = Number(
-  process.env.NEXT_PUBLIC_DEFAULT_CHAIN_ID || '42',
+  process.env.NEXT_PUBLIC_DEFAULT_CHAIN_ID || isGitHubActionBuild ? '5' : '42',
 ) as ChainsValues
 
 export const chainsConfig: Record<ChainsValues, ChainConfig> = {

@@ -46,6 +46,7 @@ const Register: NextPageWithLayout = () => {
   }, [clearErrors])
 
   async function onSubmit(data: z.infer<typeof RegisterCuratorSchema>) {
+    console.log(data)
     // gets typesafe data when form is submitted
   }
 
