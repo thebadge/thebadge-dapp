@@ -1,7 +1,13 @@
 import nullthrows from 'nullthrows'
 
 import { ChainConfig, ChainsValues } from '@/types/chains'
-import { ObjectValues, ProviderChains, RPCProviders, RPCProvidersENV } from '@/types/utils'
+import {
+  ObjectValues,
+  ProviderChains,
+  RPCProviders,
+  RPCProvidersENV,
+  isGitHubActionBuild,
+} from '@/types/utils'
 
 export const Chains = {
   //mainnet: 1,
@@ -33,7 +39,11 @@ export const getProviderUrl = (
   chainId: ChainsValues,
   provider?: ObjectValues<typeof RPCProviders>,
 ) => {
-  if (!RPCProvidersENV[RPCProviders.infura] && !RPCProvidersENV[RPCProviders.alchemy]) {
+  if (
+    !RPCProvidersENV[RPCProviders.infura] &&
+    !RPCProvidersENV[RPCProviders.alchemy] &&
+    !isGitHubActionBuild
+  ) {
     throw new Error(`You must set infura/alchemy token provider in environment variable`)
   }
 
