@@ -2,10 +2,6 @@ name: 'Next.js Bundle Analysis'
 
 on:
   pull_request:
-    types:
-      - opened
-      - edited
-      - reopened
     branches:
       - main # change this if your default branch is named differently
   workflow_dispatch:

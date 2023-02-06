@@ -1,8 +1,7 @@
 import React, { Children, ReactNode, useMemo } from 'react'
 
-import { Box, styled } from '@mui/material'
+import { Box, styled, useTheme } from '@mui/material'
 import { Responsive, WidthProvider } from 'react-grid-layout'
-import { breakpoints } from 'thebadge-ui-library'
 
 import { getDataGridFromMapping, getFormsFieldsTypes } from './GridFormContainer.utilts'
 import { DataGrid } from './type'
@@ -33,15 +32,16 @@ function ResponsiveGridFromContainer({
   children: ReactNode
   gridStructure?: DataGrid[]
 }) {
+  const theme = useTheme()
   const childrenFromTypes = useMemo(() => getFormsFieldsTypes(children), [children])
   let prevXValue = -1
   return (
     <ResponsiveGridLayout
       breakpoints={{
-        xl: Number(breakpoints.xl),
-        lg: Number(breakpoints.l),
-        md: Number(breakpoints.m),
-        sm: Number(breakpoints.s),
+        xl: theme.breakpoints.values.xl,
+        lg: theme.breakpoints.values.lg,
+        md: theme.breakpoints.values.md,
+        sm: theme.breakpoints.values.sm,
       }}
       className="layout"
       cols={{ xl: 8, lg: 8, md: 8, sm: 6 }}
