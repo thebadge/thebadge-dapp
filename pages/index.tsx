@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import { ReactElement } from 'react'
 
 import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined'
@@ -10,6 +11,11 @@ import { NextPageWithLayout } from '@/types/next'
 const CertificationProcess: React.FC = () => {
   return (
     <div>
+      <Box display={'flex'} flexDirection={'row'} gap={8} justifyContent={'center'} mb={4}>
+        <Image alt="TheBadge" height="73" src="shareable/choose.svg" width="116" />
+        <Image alt="TheBadge2w" height="73" src="shareable/evidence.svg" width="116" />
+        <Image alt="TheBadge2" height="73" src="shareable/complete.svg" width="116" />
+      </Box>
       <Typography
         alignItems={'center'}
         component="span"
