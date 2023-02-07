@@ -59,7 +59,7 @@ const Register: NextPageWithLayout = () => {
 
   // TODO Fix it creatorByAddress.data?.emitter
   if (creatorByAddress.data) {
-    router.push('/creator/profile')
+    // router.push('/creator/profile')
   }
 
   if (!isWalletConnected) {

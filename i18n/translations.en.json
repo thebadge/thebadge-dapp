@@ -33,6 +33,31 @@
     }
   },
   "footer": {
+    "about": {
+      "title": "ABOUT",
+      "items": [
+        {
+          "title": "Contact"
+        },
+        {
+          "title": "Community"
+        },
+        {
+          "title": "Whitepaper"
+        }
+      ]
+    },
+    "help": {
+      "title": "HELP",
+      "items": [
+        {
+          "title": "Support"
+        },
+        {
+          "title": "Docs"
+        }
+      ]
+    },
     "copyright": "Copyright © {{year}} • TheBadge.xyz • All Rights Reserved"
   }
 }
