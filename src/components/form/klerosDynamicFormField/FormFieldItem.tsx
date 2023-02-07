@@ -135,15 +135,21 @@ export default function FormFieldItem({ field, index, moveItem, removeItem }: Fo
     <Container data-handler-id={handlerId} isDragging={isDragging} isOver={isOver} ref={ref}>
       <DragIndicatorIcon />
       <Stack>
-        <Typography variant="title4">Label</Typography>
+        <Typography component={'div'} variant="title4">
+          Label
+        </Typography>
         {field.label}
       </Stack>
       <Stack>
-        <Typography variant="title4">Description</Typography>
+        <Typography component={'div'} variant="title4">
+          Description
+        </Typography>
         {field.description}
       </Stack>
       <Stack>
-        <Typography variant="title4">Type</Typography>
+        <Typography component={'div'} variant="title4">
+          Type
+        </Typography>
         {field.type}
       </Stack>
       <Box

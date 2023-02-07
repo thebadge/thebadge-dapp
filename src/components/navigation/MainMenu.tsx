@@ -1,11 +1,12 @@
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import React, { useState } from 'react'
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Button,
   ClickAwayListener,
   Fade,
   styled,
@@ -33,8 +34,9 @@ const MenuContainer = styled('div')(({ theme }) => ({
 const MainMenuContainer = styled(MenuContainer)(({ theme }) => ({
   height: 'fit-content',
   position: 'sticky',
-  left: theme.spacing(4),
-  top: '8rem',
+  left: theme.spacing(6),
+  top: theme.spacing(12),
+  zIndex: 100,
 }))
 
 const SubMenuContainer = styled(MenuContainer)<MenuItemElement>(({ type }) => ({
@@ -51,6 +53,7 @@ const SubMenuContainer = styled(MenuContainer)<MenuItemElement>(({ type }) => ({
   padding: '2rem',
   width: '13rem',
   gap: '2rem',
+  zIndex: 100,
 }))
 
 const MenuItemContainer = styled('div')<MenuItemElement>(({ type }) => ({
@@ -84,11 +87,19 @@ const MenuItemsBottomContainer = styled('div')(() => ({
   width: '3rem',
 }))
 
+const MenuItemBox = styled(Button)(() => ({
+  display: 'flex',
+  minWidth: 0,
+  padding: 0,
+  borderRadius: '0.8rem',
+}))
+
 const MenuItem = styled('div')<MenuItemElement>(({ disabled, selected, theme, type }) => ({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
   cursor: 'pointer',
+  minWidth: 0,
 
   ...(type === 'small'
     ? {
@@ -106,7 +117,7 @@ const MenuItem = styled('div')<MenuItemElement>(({ disabled, selected, theme, ty
 
   background: `${getMenuItemBackgroundColor(type)}`,
 
-  '&:hover': {
+  '&:hover, &.Mui-focusVisible': {
     background: `${getMenuItemHoverBackgroundColor(type)}`,
   },
 
@@ -124,56 +135,72 @@ const MenuItem = styled('div')<MenuItemElement>(({ disabled, selected, theme, ty
     : null),
 }))
 
-const SubMenuTitleItem = styled('div')(({ theme }) => ({
+const SubMenuTitleItem = styled(Button)(({ theme }) => ({
+  justifyContent: 'inherit',
+  minWidth: 0,
+  padding: 0,
+  borderRadius: 0,
   cursor: 'pointer',
   fontWeight: 900,
-  fontSize: '12px',
+  fontSize: '12px !important',
   lineHeight: '15px',
   textTransform: 'uppercase',
   color: `${theme.palette.text.primary}`,
   paddingBottom: '0.5rem',
   borderBottom: `1px solid ${theme.palette.text.primary}`,
 
-  '&:hover': {
+  '&:hover, &.Mui-focusVisible': {
     opacity: 0.7,
     borderBottom: '1px solid rgba(0, 0, 0, 0.7)',
+    background: 'transparent',
   },
 }))
 
-const SubMenuItem = styled('div')(({ theme }) => ({
+const SubMenuItem = styled(Button)(({ theme }) => ({
+  display: 'flex',
+  justifyContent: 'inherit',
+  minWidth: 0,
+  padding: 0,
+  borderRadius: 0,
+  textAlign: 'start',
   cursor: 'pointer',
   fontWeight: 600,
-  fontSize: '11px',
-  lineHeight: '14px',
+  fontSize: '12px !important',
+  lineHeight: '14px !important',
   textTransform: 'uppercase',
   color: theme.palette.text.secondary,
   paddingBottom: '0.5rem',
 
-  '&:hover': {
+  '&:hover, &.Mui-focusVisible': {
     color: `${theme.palette.text.primary}`,
+    background: 'transparent',
   },
 }))
 
-export const MainMenu: React.FC = ({ ...restProps }) => {
+export default function MainMenu({ ...restProps }) {
   // const t = useTranslations('mainMenu')
   const router = useRouter()
   const { scrollTo } = useSectionReferences()
   const [selectedElement, setSelectedElement] = useState(-1)
   const { bottomMenuItems, topMenuItems } = useMainMenuItems()
 
-  const navigateTo = async (link: any) => {
+  const navigateTo = async (link: any, openInNewTab?: boolean) => {
     if (link) {
       if (link.current) {
         scrollTo(link)
       } else {
-        await router.push(link)
+        if (openInNewTab) {
+          window.open(link)
+        } else {
+          await router.push(link)
+        }
       }
     }
   }
 
   const onItemClick = async (item: MenuItem | SubMenuItem) => {
     if (item.href) {
-      await navigateTo(item.href)
+      await navigateTo(item.href, item.openLinkInNewTab)
 
       if (!item.subItems) {
         // close after click if no subItems opening
@@ -220,6 +247,7 @@ export const MainMenu: React.FC = ({ ...restProps }) => {
       >
         <AccordionSummary
           aria-controls="content"
+          disableRipple={true}
           expandIcon={<ExpandMoreIcon htmlColor={'#4f4f4f'} sx={{ width: 16, height: 16 }} />}
           sx={{
             padding: 0,
@@ -236,8 +264,12 @@ export const MainMenu: React.FC = ({ ...restProps }) => {
         <AccordionDetails sx={{ minHeight: 0, margin: 0, padding: '1rem 0 0 1rem' }}>
           {subItem.subItems?.map((subItemSubItem, subItemSubItemIndex) => (
             <SubMenuItem
+              disableRipple={true}
               key={'subItem-' + subItemSubItem + '-subItemSubItem-' + subItemSubItemIndex}
               onClick={() => onItemClick(subItemSubItem)}
+              sx={{
+                textTransform: 'none',
+              }}
             >
               {subItemSubItem.title}
             </SubMenuItem>
@@ -251,10 +283,13 @@ export const MainMenu: React.FC = ({ ...restProps }) => {
     return (
       <Fade in={selectedElement === itemIndex}>
         <SubMenuContainer type={item.type}>
-          <SubMenuTitleItem onClick={() => onItemClick(item)}>{item.title}</SubMenuTitleItem>
+          <SubMenuTitleItem disableRipple={true} onClick={() => onItemClick(item)}>
+            {item.title}
+          </SubMenuTitleItem>
 
           {item.subItems?.map((subItem, subItemIndex) => (
             <SubMenuItem
+              disableRipple={true}
               key={'item-' + itemIndex + '-subItem-' + subItemIndex}
               onClick={() => onItemClick(subItem)}
             >
@@ -270,14 +305,23 @@ export const MainMenu: React.FC = ({ ...restProps }) => {
     return (
       (item.validation === undefined || item.validation) && (
         <MenuItemContainer key={'menuItem-' + itemIndex} type={item.type}>
-          <MenuItem
-            disabled={!!item.disabled}
+          <MenuItemBox
+            disableRipple={true}
             onClick={() => onMenuItemClick(item, itemIndex)}
-            selected={selectedElement === itemIndex}
-            type={item.type}
+            sx={{
+              '&.Mui-focusVisible': {
+                background: `${getMenuItemHoverBackgroundColor(item.type)}`,
+              },
+            }}
           >
-            {item.icon}
-          </MenuItem>
+            <MenuItem
+              disabled={!!item.disabled}
+              selected={selectedElement === itemIndex}
+              type={item.type}
+            >
+              {item.icon}
+            </MenuItem>
+          </MenuItemBox>
           {item.subItems && selectedElement === itemIndex ? renderSubItems(item, itemIndex) : null}
         </MenuItemContainer>
       )

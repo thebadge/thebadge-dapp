@@ -20,11 +20,13 @@ type FormWithStepsProps = {
   stepNames: string[]
   formGridLayout: DataGrid[][]
   formLayout?: FormLayoutType
+  formFieldProps?: Record<string, any>[]
   onSubmit: (data: any) => void
   formSubmitReview: (data: any) => React.ReactNode
 }
 
 export function FormWithSteps({
+  formFieldProps,
   formGridLayout,
   formLayout,
   formSubmitReview,
@@ -155,6 +157,7 @@ export function FormWithSteps({
                       buttonRef: formButtonRef,
                     }}
                     onSubmit={handleSubmitNext}
+                    props={formFieldProps ? formFieldProps[activeStep] : undefined}
                     schema={stepSchemas[activeStep]}
                   />
                 </Box>
@@ -163,7 +166,7 @@ export function FormWithSteps({
           </Step>
         ))}
       </Stepper>
-      <div>
+      <Box sx={{ mt: 2 }}>
         {!isMobile && (
           <>
             <Box
@@ -178,6 +181,7 @@ export function FormWithSteps({
                     buttonRef: formButtonRef,
                   }}
                   onSubmit={handleSubmitNext}
+                  props={formFieldProps ? formFieldProps[activeStep] : undefined}
                   schema={stepSchemas[activeStep]}
                 />
               )}
@@ -197,7 +201,7 @@ export function FormWithSteps({
             )}
           </>
         )}
-      </div>
+      </Box>
     </Box>
   )
 }

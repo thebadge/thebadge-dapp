@@ -1,6 +1,5 @@
 import { Box, Typography } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
-import { colors } from 'thebadge-ui-library'
 
 import { useCookiesWarningContext } from '@/src/providers/cookiesWarningProvider'
 
@@ -11,12 +10,12 @@ export const Footer: React.FC = () => {
 
   return (
     <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-      <Typography color={colors.white}>
+      <Typography component={'div'}>
         {t('footer.copyright', { year })}
         {cookiesWarningEnabled && (
           <>
             &nbsp;-&nbsp;
-            <Typography color={colors.white} component="span" onClick={showCookiesWarning}>
+            <Typography component="span" onClick={showCookiesWarning}>
               Cookies
             </Typography>
           </>

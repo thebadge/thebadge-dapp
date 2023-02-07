@@ -3,13 +3,12 @@ import { ReactElement } from 'react'
 
 import { Typography } from '@mui/material'
 import { formatUnits } from 'ethers/lib/utils'
-import { colors } from 'thebadge-ui-library'
 
-import { NextPageWithLayout } from '@/pages/_app'
-import { DefaultLayout } from '@/src/components/layout/DefaultLayout'
+import DefaultLayout from '@/src/components/layout/DefaultLayout'
 import BadgeTypeMetadata from '@/src/pagePartials/badge/BadgeTypeMetadata'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { SubgraphName, getSubgraphSdkByNetwork } from '@/src/subgraph/subgraph'
+import { NextPageWithLayout } from '@/types/next'
 
 const ExploreBadges: NextPageWithLayout = () => {
   const { appChainId } = useWeb3Connection()
@@ -18,9 +17,7 @@ const ExploreBadges: NextPageWithLayout = () => {
 
   return (
     <>
-      <Typography color={colors.white} variant="h3">
-        Badge types
-      </Typography>
+      <Typography variant="h3">Badge types</Typography>
 
       <div>
         {badgeTypes.data?.badgeTypes.map((bt) => {
@@ -31,7 +28,8 @@ const ExploreBadges: NextPageWithLayout = () => {
               <div>ValidFor: {bt.validFor} </div>
               <div>paused: {bt.paused ? 'Yes' : 'No'}</div>
               <div>Controller: {bt.controllerName}</div>
-              <div>Metadata: {bt.emitter.metadata}</div>
+              {/* TODO ADD Creator/Emitter Metada*/}
+              {/*<div>Metadata: {bt.emitter.metadata}</div>*/}
               {/* This is broken because the metadata is not linked on IPFS. */}
               {/* <CreatorDetails metadata={bt.emitter.metadata} /> */}
               <Link href={`/badge/mint/${bt.id}`}>Mint</Link>

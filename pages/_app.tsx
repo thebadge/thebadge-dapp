@@ -1,7 +1,5 @@
-import type { NextPage } from 'next'
 import type { AppProps } from 'next/app'
 import dynamic from 'next/dynamic'
-import { ReactElement, ReactNode } from 'react'
 
 import createCache from '@emotion/cache'
 import { CacheProvider, EmotionCache } from '@emotion/react'
@@ -15,10 +13,8 @@ import { Footer } from '@/src/components/layout/Footer'
 import { Main } from '@/src/components/layout/Main'
 import Toast from '@/src/components/toast/Toast'
 import { Head } from '@/src/pagePartials/index/Head'
-import { TransactionNotificationProvider } from '@/src/providers/TransactionNotificationProvider'
-import CookiesWarningProvider from '@/src/providers/cookiesWarningProvider'
-import SectionReferencesProvider from '@/src/providers/referencesProvider'
 import ThemeProvider from '@/src/providers/themeProvider'
+import { NextPageWithLayout } from '@/types/next'
 
 import 'node_modules/thebadge-ui-library/dist/index.css'
 import 'sanitize.css'
@@ -26,18 +22,27 @@ import 'src/theme/global.css'
 import '/node_modules/react-grid-layout/css/styles.css'
 import '/node_modules/react-resizable/css/styles.css'
 
+const CookiesWarningProvider = dynamic(() => import('@/src/providers/cookiesWarningProvider'), {
+  ssr: false,
+})
+const SectionReferencesProvider = dynamic(() => import('@/src/providers/referencesProvider'), {
+  ssr: false,
+})
+const TransactionNotificationProvider = dynamic(
+  () => import('@/src/providers/TransactionNotificationProvider'),
+  {
+    ssr: false,
+  },
+)
 const Web3ConnectionProvider = dynamic(() => import('@/src/providers/web3ConnectionProvider'), {
   ssr: false,
 })
-
-export type NextPageWithLayout = NextPage & {
-  getLayout?: (page: ReactElement) => ReactNode
-}
 
 type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout
   emotionCache?: EmotionCache
 }
+
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createCache({
   key: 'css',

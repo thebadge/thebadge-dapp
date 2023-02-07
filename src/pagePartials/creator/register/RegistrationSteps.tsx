@@ -1,14 +1,15 @@
 import * as React from 'react'
 
 import { Avatar, Box, Stack, Typography } from '@mui/material'
+import { useTranslation } from 'next-export-i18n'
 import { z } from 'zod'
 
 import { RegisterCuratorSchema } from '@/pages/creator/register'
 import { DataGrid } from '@/src/components/form/customForms/type'
 import { FormWithSteps } from '@/src/components/form/formWithSteps/FormWithSteps'
 import {
+  AgreementSchema,
   AvatarSchema,
-  CheckBoxSchema,
   EmailSchema,
   LongTextSchema,
   TwitterSchema,
@@ -18,7 +19,7 @@ type RegistrationStepsProps = {
   onSubmit: (data: z.infer<typeof RegisterCuratorSchema>) => void
 }
 
-const steps = ['Basic information.', 'How to contact you.', 'Agreement.']
+const steps = ['Account details.', 'Contact information.', 'Terms and conditions.']
 
 const formGridLayout: DataGrid[][] = [
   [
@@ -32,7 +33,7 @@ const formGridLayout: DataGrid[][] = [
     { i: 'TextField', x: 0, y: 1, w: 3, h: 1, static: true },
     { i: 'TextField', x: 3, y: 1, w: 3, h: 1, static: true },
   ],
-  [{ i: 'CheckBox', x: 0, y: 0, w: 12, h: 3, static: true }],
+  [{ i: 'AgreementSchema', x: 0, y: 0, w: 12, h: 4, static: true }],
 ]
 
 export const RegisterCuratorSchemaStep1 = z.object({
@@ -51,10 +52,12 @@ export const RegisterCuratorSchemaStep2 = z.object({
 })
 
 export const RegisterCuratorSchemaStep3 = z.object({
-  terms: CheckBoxSchema.describe(`Terms & Conditions // ??`),
+  terms: AgreementSchema.describe(`Terms & Conditions // ??`),
 })
 
 export default function RegistrationSteps({ onSubmit }: RegistrationStepsProps) {
+  const { t } = useTranslation()
+
   const handleOnSubmit = (data: z.infer<typeof RegisterCuratorSchema>) => {
     onSubmit(data)
   }
@@ -62,25 +65,49 @@ export default function RegistrationSteps({ onSubmit }: RegistrationStepsProps) 
   function handleFormPreview(data: z.infer<typeof RegisterCuratorSchema>) {
     return (
       <Stack gap={2} margin={1}>
-        <Typography variant="title3">Please review your data</Typography>
+        <Typography component={'div'} variant="title3">
+          Please review your data
+        </Typography>
         <Stack>
-          <Typography variant="title2">Creator Information</Typography>
+          <Typography component={'div'} variant="title2">
+            Creator Information
+          </Typography>
           <Box display="flex" flexDirection="row">
             <Stack>
-              <Typography variant="body1">{data.name}</Typography>
-              <Typography variant="body1">{data.description}</Typography>
+              <Typography component={'div'} variant="body1">
+                {data.name}
+              </Typography>
+              <Typography component={'div'} variant="body1">
+                {data.description}
+              </Typography>
             </Stack>
             <Avatar>
               <img alt="" src={data.logo.data_url} width="150" />
             </Avatar>
           </Box>
-          <Typography variant="title2">Creator Contact</Typography>
+          <Typography component={'div'} variant="title2">
+            Creator Contact
+          </Typography>
           <Stack>
-            <Typography variant="body1">{data.email}</Typography>
+            <Typography component={'div'} variant="body1">
+              {data.email}
+            </Typography>
 
-            {data.discord && <Typography variant="body1">{data.discord}</Typography>}
-            {data.website && <Typography variant="body1">{data.website}</Typography>}
-            {data.twitter && <Typography variant="body1">{data.twitter}</Typography>}
+            {data.discord && (
+              <Typography component={'div'} variant="body1">
+                {data.discord}
+              </Typography>
+            )}
+            {data.website && (
+              <Typography component={'div'} variant="body1">
+                {data.website}
+              </Typography>
+            )}
+            {data.twitter && (
+              <Typography component={'div'} variant="body1">
+                {data.twitter}
+              </Typography>
+            )}
           </Stack>
         </Stack>
       </Stack>
@@ -89,6 +116,15 @@ export default function RegistrationSteps({ onSubmit }: RegistrationStepsProps) 
 
   return (
     <FormWithSteps
+      formFieldProps={[
+        {}, // TODO Review this method of send props
+        {},
+        {
+          terms: {
+            agreementText: t('creator.register.form.terms-conditions'),
+          },
+        },
+      ]}
       formGridLayout={formGridLayout}
       formLayout={'gridResponsive'}
       formSubmitReview={handleFormPreview}

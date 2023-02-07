@@ -3,11 +3,11 @@ import { ReactElement } from 'react'
 
 import { Stack, Typography } from '@mui/material'
 import { ethers } from 'ethers'
+import { useTranslation } from 'next-export-i18n'
 import { colors } from 'thebadge-ui-library'
 import { z } from 'zod'
 
-import { NextPageWithLayout } from '@/pages/_app'
-import { DefaultLayout } from '@/src/components/layout/DefaultLayout'
+import DefaultLayout from '@/src/components/layout/DefaultLayout'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
 import useTransaction from '@/src/hooks/useTransaction'
 import RegistrationSteps, {
@@ -19,6 +19,7 @@ import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { SubgraphName, getSubgraphSdkByNetwork } from '@/src/subgraph/subgraph'
 import ipfsUpload from '@/src/utils/ipfsUpload'
 import { TheBadge__factory } from '@/types/generated/typechain'
+import { NextPageWithLayout } from '@/types/next'
 
 // Merge all in one schema
 export const RegisterCuratorSchema = z
@@ -28,6 +29,7 @@ export const RegisterCuratorSchema = z
   .merge(RegisterCuratorSchemaStep3)
 
 const Register: NextPageWithLayout = () => {
+  const { t } = useTranslation()
   const { address, appChainId, isWalletConnected } = useWeb3Connection()
   const router = useRouter()
   const sendTx = useTransaction()
@@ -55,7 +57,8 @@ const Register: NextPageWithLayout = () => {
     router.push('/creator/profile')
   }
 
-  if (creatorByAddress.data?.emitter) {
+  // TODO Fix it creatorByAddress.data?.emitter
+  if (creatorByAddress.data) {
     router.push('/creator/profile')
   }
 
@@ -65,12 +68,13 @@ const Register: NextPageWithLayout = () => {
 
   return (
     <>
-      <Stack sx={{ mb: 2 }}>
-        <Typography color={colors.white} variant="h3">
-          Register as a creator
+      <Stack sx={{ mb: 6, gap: 4, alignItems: 'center' }}>
+        <Typography color={colors.purple} textAlign="center" variant="title2">
+          {t('creator.register.title')}
         </Typography>
-        <Typography color={colors.white} variant="h5">
-          Once registered as a creator you will be granted the possibility to created badge types.
+
+        <Typography textAlign="justify" variant="body4" width="85%">
+          {t('creator.register.sub-title')}
         </Typography>
       </Stack>
       <RegistrationSteps onSubmit={onSubmit} />

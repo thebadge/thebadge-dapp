@@ -91,7 +91,7 @@ export default function FileInput() {
                     >
                       <Box alignItems="center" display="flex" flexDirection="row">
                         <PictureAsPdfIcon sx={{ mr: 1 }} />
-                        <Typography>{image.file?.name}</Typography>
+                        <Typography component={'div'}>{image.file?.name}</Typography>
                       </Box>
                       <Box
                         display="flex"

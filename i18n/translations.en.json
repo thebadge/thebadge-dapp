@@ -5,6 +5,33 @@
       "connect": "Connect wallet"
     }
   },
+  "creator": {
+    "register": {
+      "title": "Became a Badge Creator",
+      "sub-title": "Do you want to design and publish custom badges that other users can apply for to verify real-world information? Also, you could set the price for the badges you create and receive a share of the fee when users apply for them...So please, complete the form and let´s start creating!",
+      "form": {
+        "terms-conditions": "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet. Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitationam consequat sunt nostrud amet.Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit.\n\nExercitation veniam consequat sunt nostrud ame.Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia cosequat duis enim velit mollit. Exercitation veniam consquat sunt nosrud amet. Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.Amet minim mollit non deserunt ullaco est sit aliqua dolor do amet sint. Velit icia conseuat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet."
+      }
+    }
+  },
+  "curator": {
+    "register": {
+      "title": "Became a Badge Curator",
+      "sub-title": "Do you want to design and publish custom badges that other users can apply for to verify real-world information? Also, you could set the price for the badges you create and receive a share of the fee when users apply for them...So please, complete the form and let´s start creating!"
+    }
+  },
+  "badge" : {
+    "type": {
+      "create": {
+        "title": "Create your Badge Type",
+        "sub-title": "Do you want to design and publish custom badges that other users can apply for to verify real-world information? Also, you could set the price for the badges you create and receive a share of the fee when users apply for them...So please, complete the form and let´s start creating!"
+      },
+      "mint": {
+        "title": "Badge Mint",
+        "sub-title": "Do you want to design and publish custom badges that other users can apply for to verify real-world information? Also, you could set the price for the badges you create and receive a share of the fee when users apply for them...So please, complete the form and let´s start creating!"
+      }
+    }
+  },
   "footer": {
     "copyright": "Copyright © {{year}} • TheBadge.xyz • All Rights Reserved"
   }

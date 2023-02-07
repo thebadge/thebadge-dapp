@@ -1,6 +1,10 @@
 import { Box, styled } from '@mui/material'
 
-const FlexFormContainer = styled(Box)(({ theme }) => ({
+import { DataGrid } from '@/src/components/form/customForms/type'
+
+const FlexFormContainer = styled(Box, {
+  shouldForwardProp: (propName: string) => propName !== 'gridStructure',
+})<{ gridStructure?: DataGrid[] }>(({ theme }) => ({
   display: 'flex',
   flexFlow: 'row wrap',
   justifyContent: 'center',

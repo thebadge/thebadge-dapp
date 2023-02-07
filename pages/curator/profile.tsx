@@ -1,19 +1,18 @@
 import { ReactElement } from 'react'
 
 import { Typography } from '@mui/material'
-import { colors } from 'thebadge-ui-library'
 
-import { NextPageWithLayout } from '@/pages/_app'
-import { DefaultLayout } from '@/src/components/layout/DefaultLayout'
+import DefaultLayout from '@/src/components/layout/DefaultLayout'
+import { NextPageWithLayout } from '@/types/next'
 
 const Profile: NextPageWithLayout = () => {
   return (
     <>
-      <Typography color={colors.white} variant="h3">
+      <Typography component={'h3'} variant="h3">
         Welcome to THE BADGE!
       </Typography>
 
-      <Typography color={colors.white} variant="h3">
+      <Typography component={'h5'} variant="h5">
         This is your curator profile
       </Typography>
     </>

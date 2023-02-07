@@ -1,12 +1,12 @@
 import { ReactElement, useCallback } from 'react'
 
-import { Typography } from '@mui/material'
+import { Stack, Typography } from '@mui/material'
+import { useTranslation } from 'next-export-i18n'
 import { useForm } from 'react-hook-form'
 import { ErrorOption } from 'react-hook-form/dist/types/errors'
 import { colors } from 'thebadge-ui-library'
 import { z } from 'zod'
 
-import { NextPageWithLayout } from '@/pages/_app'
 import { CustomFormFromSchema } from '@/src/components/form/customForms/CustomForm'
 import {
   ExpirationTypeSchema,
@@ -15,7 +15,8 @@ import {
   SeverityTypeSchema,
   TokenInputSchema,
 } from '@/src/components/form/helpers/customSchemas'
-import { DefaultLayout } from '@/src/components/layout/DefaultLayout'
+import DefaultLayout from '@/src/components/layout/DefaultLayout'
+import { NextPageWithLayout } from '@/types/next'
 
 const RegisterCuratorSchema = z.object({
   name: z.string().describe('String Field // Label description'), // You can create one manually
@@ -27,6 +28,8 @@ const RegisterCuratorSchema = z.object({
 })
 
 const Register: NextPageWithLayout = () => {
+  const { t } = useTranslation()
+
   const form = useForm<z.infer<typeof RegisterCuratorSchema>>()
   const { clearErrors, setError } = form
 
@@ -52,13 +55,15 @@ const Register: NextPageWithLayout = () => {
 
   return (
     <>
-      <Typography color={colors.white} variant="h3">
-        Welcome to THE BADGE!
-      </Typography>
+      <Stack sx={{ mb: 6, gap: 4, alignItems: 'center' }}>
+        <Typography color={colors.purple} textAlign="center" variant="title2">
+          {t('creator.register.title')}
+        </Typography>
 
-      <Typography color={colors.white} variant="h5">
-        Here you can choose the badge type that you want to mint, and complete the process
-      </Typography>
+        <Typography textAlign="justify" variant="body4" width="85%">
+          {t('creator.register.sub-title')}
+        </Typography>
+      </Stack>
 
       <CustomFormFromSchema
         form={form}

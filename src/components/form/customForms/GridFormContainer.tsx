@@ -11,8 +11,9 @@ import { mappingDataGridForComponents } from '@/src/components/form/customForms/
 const ResponsiveGridLayout = WidthProvider(Responsive)
 
 export const GridFormContainer = styled(Box, {
-  shouldForwardProp: (propName: string) => propName !== 'gridColumns',
-})<{ gridColumns?: number }>(({ gridColumns = 3, theme }) => ({
+  shouldForwardProp: (propName: string) =>
+    propName !== 'gridColumns' && propName !== 'gridStructure',
+})<{ gridColumns?: number; gridStructure?: DataGrid[] }>(({ gridColumns = 3, theme }) => ({
   display: 'grid',
   gridTemplateColumns: `repeat(${gridColumns}, 1fr)`,
   gridAutoColumns: '1fr',
