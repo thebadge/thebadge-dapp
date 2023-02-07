@@ -41,8 +41,9 @@ export default function SafeSuspense({
     </ErrorBoundary>
   )
 }
+
 export function withGenericSuspense<TProps>(
-  Component: ComponentType<TProps> | NextPageWithLayout,
+  Component: ComponentType<TProps>,
   fallback?: FC<TProps>,
 ) {
   const displayName = Component.displayName || Component.name || 'Component'
