@@ -1,11 +1,33 @@
+import { useRouter } from 'next/navigation'
+
+import { Button, Stack, Typography } from '@mui/material'
 import { FallbackProps } from 'react-error-boundary'
 
 export const GeneralError = ({ error, resetErrorBoundary }: FallbackProps) => {
   return (
     <div role="alert">
-      <div>Oh no</div>
+      <Typography>Oh no</Typography>
       <pre>{error.message}</pre>
       <button onClick={resetErrorBoundary}>Try again</button>
+    </div>
+  )
+}
+
+export const GeneralPageError = ({ error, resetErrorBoundary }: FallbackProps) => {
+  const router = useRouter()
+
+  return (
+    <div role="alert">
+      <Typography>Oh no! 🙈</Typography>
+      <pre>{error.message}</pre>
+      <Stack alignItems="flex-start" gap={1}>
+        <Button color="green" onClick={resetErrorBoundary} sx={{ textTransform: 'none', p: 0 }}>
+          Try again
+        </Button>
+        <Button onClick={() => router.replace('/')} sx={{ textTransform: 'none', p: 0 }}>
+          Go to homepage
+        </Button>
+      </Stack>
     </div>
   )
 }

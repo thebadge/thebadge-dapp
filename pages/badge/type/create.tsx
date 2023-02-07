@@ -18,6 +18,7 @@ import {
   SeverityTypeSchema,
 } from '@/src/components/form/helpers/customSchemas'
 import { isMetadataColumnArray } from '@/src/components/form/helpers/validators'
+import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import DefaultLayout from '@/src/components/layout/DefaultLayout'
 import { contracts } from '@/src/contracts/contracts'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
@@ -141,7 +142,7 @@ const CreateBadgeType: NextPageWithLayout = () => {
         controllerName: 'kleros',
         mintCost: parseUnits(data.mintCost.toString(), 18),
         mintFee: 0, // TODO: this is a legacy field that is not used in the SC, will be removed in a newer deploy
-        validFor: 60 * 10, // data.challengePeriodDuration, // in seconds, 0 infinite
+        validFor: data.validFor, // data.challengePeriodDuration, // in seconds, 0 infinite
       },
       klerosControllerDataEncoded,
     )
@@ -180,4 +181,4 @@ CreateBadgeType.getLayout = function getLayout(page: ReactElement) {
   return <DefaultLayout>{page}</DefaultLayout>
 }
 
-export default CreateBadgeType
+export default withPageGenericSuspense(CreateBadgeType)

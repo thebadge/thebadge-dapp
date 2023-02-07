@@ -1,15 +1,15 @@
 export const KLEROS_LIST_TYPES_KEYS = [
-  'ADDRESS',
-  'RICH_ADDRESS',
-  'NUMBER',
-  'TEXT',
-  'BOOLEAN',
-  'GTCR_ADDRESS',
-  'IMAGE',
-  'FILE',
-  'LINK',
-  'TWITTER_USER_ID',
-  'LONG_TEXT',
+  'address',
+  'rich address',
+  'number',
+  'text',
+  'boolean',
+  'GTCR address',
+  'image',
+  'file',
+  'link',
+  'Twitter User',
+  'long text',
 ] as const
 
 export enum KLEROS_LIST_TYPES {

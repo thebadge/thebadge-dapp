@@ -7,6 +7,7 @@ import { useTranslation } from 'next-export-i18n'
 import { colors } from 'thebadge-ui-library'
 import { z } from 'zod'
 
+import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import DefaultLayout from '@/src/components/layout/DefaultLayout'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
 import useTransaction from '@/src/hooks/useTransaction'
@@ -37,7 +38,9 @@ const Register: NextPageWithLayout = () => {
   const theBadge = useContractInstance(TheBadge__factory, 'TheBadge')
 
   const gql = getSubgraphSdkByNetwork(appChainId, SubgraphName.TheBadge)
-  const creatorByAddress = gql.useEmitter({ id: address || ethers.constants.AddressZero })
+  const userProfile = gql.useUserById({
+    id: address || ethers.constants.AddressZero,
+  })
 
   async function onSubmit(data: z.infer<typeof RegisterCuratorSchema>) {
     if (!address) {
@@ -57,8 +60,7 @@ const Register: NextPageWithLayout = () => {
     router.push('/creator/profile')
   }
 
-  // TODO Fix it creatorByAddress.data?.emitter
-  if (creatorByAddress.data) {
+  if (userProfile.data?.user?.isCreator) {
     router.push('/creator/profile')
   }
 
@@ -86,4 +88,4 @@ Register.getLayout = function getLayout(page: ReactElement) {
   return <DefaultLayout>{page}</DefaultLayout>
 }
 
-export default Register
+export default withPageGenericSuspense(Register)

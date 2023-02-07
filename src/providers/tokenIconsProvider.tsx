@@ -2,7 +2,7 @@ import { FC, PropsWithChildren, createContext, useContext } from 'react'
 
 import useSWR from 'swr'
 
-import { withGenericSuspense } from '@/src/components/helpers/SafeSuspense'
+import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import { TokensLists } from '@/src/config/web3'
 import {
   Token,
@@ -86,7 +86,7 @@ export const TokenIconsContextProvider: FC<PropsWithChildren> = ({ children }) =
   return <TokenIconsContext.Provider value={data}>{children}</TokenIconsContext.Provider>
 }
 
-export default withGenericSuspense(TokenIconsContextProvider)
+export default withPageGenericSuspense(TokenIconsContextProvider)
 
 export function useTokenIcons(): TokenListQueryReturn {
   return useContext<TokenListQueryReturn>(TokenIconsContext)
