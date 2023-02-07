@@ -1,4 +1,4 @@
-import React, { ComponentType, FC, PropsWithChildren, Suspense } from 'react'
+import React, { FC, PropsWithChildren, Suspense } from 'react'
 
 import { Box } from '@mui/material'
 import { ErrorBoundary } from 'react-error-boundary'
@@ -41,31 +41,8 @@ export default function SafeSuspense({
     </ErrorBoundary>
   )
 }
-export function withGenericSuspense<TProps>(
-  Component: ComponentType<TProps> | NextPageWithLayout,
-  fallback?: FC<TProps>,
-) {
-  const displayName = Component.displayName || Component.name || 'Component'
 
-  const ComponentWithGenericSuspense = (props: IntrinsicElements & TProps) => (
-    <ErrorBoundary
-      fallbackRender={({ error, resetErrorBoundary }) => (
-        <GeneralError error={error} resetErrorBoundary={resetErrorBoundary} />
-      )}
-      onError={(error, info) => isDev && console.error(error, info)}
-    >
-      <Suspense fallback={fallback ? fallback(props) : <DefaultFallback />}>
-        <Component {...props} />
-      </Suspense>
-    </ErrorBoundary>
-  )
-
-  ComponentWithGenericSuspense.displayName = `withGenericSuspense(${displayName})`
-
-  return ComponentWithGenericSuspense
-}
-
-export function pageWithGenericSuspense<TProps>(Page: NextPageWithLayout, fallback?: FC<TProps>) {
+export function withPageGenericSuspense<TProps>(Page: NextPageWithLayout, fallback?: FC<TProps>) {
   const displayName = Page.displayName || Page.name || 'Page'
 
   const PageWithGenericSuspense = (props: IntrinsicElements & TProps) => (
@@ -81,7 +58,7 @@ export function pageWithGenericSuspense<TProps>(Page: NextPageWithLayout, fallba
     </ErrorBoundary>
   )
 
-  PageWithGenericSuspense.displayName = `pageWithGenericSuspense(${displayName})`
+  PageWithGenericSuspense.displayName = `withPageGenericSuspense(${displayName})`
   if (Page?.getLayout) PageWithGenericSuspense.getLayout = Page.getLayout
 
   return PageWithGenericSuspense

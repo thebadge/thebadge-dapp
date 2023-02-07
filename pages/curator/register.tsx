@@ -15,7 +15,7 @@ import {
   SeverityTypeSchema,
   TokenInputSchema,
 } from '@/src/components/form/helpers/customSchemas'
-import { pageWithGenericSuspense } from '@/src/components/helpers/SafeSuspense'
+import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import DefaultLayout from '@/src/components/layout/DefaultLayout'
 import { NextPageWithLayout } from '@/types/next'
 
@@ -87,4 +87,4 @@ Register.getLayout = function getLayout(page: ReactElement) {
   return <DefaultLayout>{page}</DefaultLayout>
 }
 
-export default pageWithGenericSuspense(Register)
+export default withPageGenericSuspense(Register)

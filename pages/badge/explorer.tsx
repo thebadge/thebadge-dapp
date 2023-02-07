@@ -4,7 +4,7 @@ import { ReactElement } from 'react'
 import { Typography } from '@mui/material'
 import { formatUnits } from 'ethers/lib/utils'
 
-import { pageWithGenericSuspense } from '@/src/components/helpers/SafeSuspense'
+import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import DefaultLayout from '@/src/components/layout/DefaultLayout'
 import BadgeTypeMetadata from '@/src/pagePartials/badge/BadgeTypeMetadata'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
@@ -48,4 +48,4 @@ ExploreBadges.getLayout = function getLayout(page: ReactElement) {
   return <DefaultLayout>{page}</DefaultLayout>
 }
 
-export default pageWithGenericSuspense(ExploreBadges)
+export default withPageGenericSuspense(ExploreBadges)

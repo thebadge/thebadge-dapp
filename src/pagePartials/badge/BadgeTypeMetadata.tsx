@@ -1,4 +1,4 @@
-import { withGenericSuspense } from '@/src/components/helpers/SafeSuspense'
+import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
 
 type Props = {
@@ -9,11 +9,11 @@ function BadgeTypeMetadata({ metadata }: Props) {
   const res: any = useS3Metadata(metadata)
   console.log({ res })
   return (
-    <div>
+    <SafeSuspense>
       <div>Name: {res.data.file.name}</div>
       <div>Desc: {res.data.file.description}</div>
-    </div>
+    </SafeSuspense>
   )
 }
 
-export default withGenericSuspense(BadgeTypeMetadata)
+export default BadgeTypeMetadata

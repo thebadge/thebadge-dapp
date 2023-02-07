@@ -9,11 +9,9 @@ import { colors } from 'thebadge-ui-library'
 import { z } from 'zod'
 
 import { CustomFormFromSchema } from '@/src/components/form/customForms/CustomForm'
-import { FileSchema } from '@/src/components/form/helpers/customSchemas'
 import klerosSchemaFactory from '@/src/components/form/helpers/validators'
-import { pageWithGenericSuspense } from '@/src/components/helpers/SafeSuspense'
+import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import DefaultLayout from '@/src/components/layout/DefaultLayout'
-import { ZERO_BN } from '@/src/constants/bigNumber'
 import { useContractCall } from '@/src/hooks/useContractCall'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
@@ -32,8 +30,8 @@ const MintBadgeType: NextPageWithLayout = () => {
   const { t } = useTranslation()
   const { address, appChainId } = useWeb3Connection()
   const theBadge = useContractInstance(TheBadge__factory, 'TheBadge')
-
   const router = useRouter()
+
   const badgeTypeId = router.query.typeId as string
   if (!badgeTypeId || typeof badgeTypeId != 'string') {
     throw `No typeId provided us URL query param`
@@ -43,6 +41,7 @@ const MintBadgeType: NextPageWithLayout = () => {
   const badgeType = gql.useBadgeType({ id: badgeTypeId })
 
   // TODO: hardcoded for now, as we only support Kleros.
+  // Get columns required for the form to upload evidence.
   const badgeTypeMetadata = useS3Metadata<{ file: klerosListStructure }>(
     badgeType.data?.badgeType?.klerosBadge?.klerosMetadataURL || '',
   )
@@ -50,37 +49,34 @@ const MintBadgeType: NextPageWithLayout = () => {
     throw `There was an error trying to fetch the metadata for the badge type`
   }
 
-  const CreateBadgeSchema = z.object({
-    evidenceFileUri: FileSchema.describe(
-      'Evidence // PDF with the evidence required to mint a badge.',
-    ),
-    ...klerosSchemaFactory(badgeTypeMetadata.data.file.metadata.columns),
-  })
-
+  // Get kleros deposit value for the badge type
   const klerosController = useContractInstance(
     KlerosBadgeTypeController__factory,
     'KlerosBadgeTypeController',
   )
   const calls = [klerosController.badgeRequestValue] as const
-
   const [{ data: klerosDepositCostData }] = useContractCall<
     KlerosBadgeTypeController,
     typeof calls
   >(calls, [[badgeTypeId]], `klerosBadgeRequestValue-${badgeTypeId}`)
+  if (!klerosDepositCostData?.[0]) {
+    throw `There was not possible to get Kleros deposit price for badge type ${badgeTypeId}`
+  }
 
-  const klerosCost = klerosDepositCostData?.[0] || ZERO_BN
+  const klerosCost = klerosDepositCostData?.[0]
   const mintCostBN = BigNumber.from(badgeType.data?.badgeType?.mintCost || 0)
   const totalMintCost = mintCostBN.add(klerosCost)
 
   async function onSubmit(data: z.infer<typeof CreateBadgeSchema>) {
+    const values: Record<string, unknown> = {}
+    Object.keys(data).forEach((key) => (values[key] = data[key]))
+
     const evidenceIPFSUploaded = await ipfsUpload({
       attributes: {
-        evidence: {
-          mimeType: data.evidenceFileUri?.file.type,
-          base64File: data.evidenceFileUri?.data_url,
-        },
+        columns: badgeTypeMetadata.data?.file.metadata.columns,
+        values,
       },
-      filePaths: ['evidence'],
+      filePaths: [],
     })
 
     const klerosControllerDataEncoded = defaultAbiCoder.encode(
@@ -96,6 +92,10 @@ const MintBadgeType: NextPageWithLayout = () => {
       value: totalMintCost,
     })
   }
+
+  const CreateBadgeSchema = z.object(
+    klerosSchemaFactory(badgeTypeMetadata.data.file.metadata.columns),
+  )
 
   return (
     <>
@@ -127,4 +127,4 @@ MintBadgeType.getLayout = function getLayout(page: ReactElement) {
   return <DefaultLayout>{page}</DefaultLayout>
 }
 
-export default pageWithGenericSuspense(MintBadgeType)
+export default withPageGenericSuspense(MintBadgeType)

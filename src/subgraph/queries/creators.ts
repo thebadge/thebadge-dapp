@@ -1,20 +1,28 @@
 import gql from 'graphql-tag'
 
-export const EMITTERS = gql`
-  query emitters {
-    _meta {
-      hasIndexingErrors
+export const CREATORS = gql`
+  query users {
+    users(where: { isCreator: true }) {
+      id
     }
   }
 `
 
-export const EMITTER = gql`
-  query emitter($id: ID!) {
-    _meta {
-      hasIndexingErrors
-    }
-  }
-`
+// export const EMITTERS = gql`
+//   query emitters {
+//     _meta {
+//       hasIndexingErrors
+//     }
+//   }
+// `
+
+// export const EMITTER = gql`
+//   query emitter($id: ID!) {
+//     _meta {
+//       hasIndexingErrors
+//     }
+//   }
+// `
 
 // export const EXAMPLE_QUERY_BY_ID = gql`
 //   query exampleById($id: ID!) {

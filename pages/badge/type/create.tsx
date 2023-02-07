@@ -18,7 +18,7 @@ import {
   SeverityTypeSchema,
 } from '@/src/components/form/helpers/customSchemas'
 import { isMetadataColumnArray } from '@/src/components/form/helpers/validators'
-import { pageWithGenericSuspense } from '@/src/components/helpers/SafeSuspense'
+import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import DefaultLayout from '@/src/components/layout/DefaultLayout'
 import { contracts } from '@/src/contracts/contracts'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
@@ -181,4 +181,4 @@ CreateBadgeType.getLayout = function getLayout(page: ReactElement) {
   return <DefaultLayout>{page}</DefaultLayout>
 }
 
-export default pageWithGenericSuspense(CreateBadgeType)
+export default withPageGenericSuspense(CreateBadgeType)

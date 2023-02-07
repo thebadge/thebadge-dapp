@@ -10,10 +10,11 @@ export const BADGE_TYPES = gql`
       mintCost
       validFor
       paused
-      # TODO Add creator/emitter
-      #emitter {
-      #  metadata
-      #}
+      badgesMintedAmount
+      creator {
+        id
+        creatorMetadata
+      }
       klerosBadge {
         klerosMetadataURL
         klerosTCRList

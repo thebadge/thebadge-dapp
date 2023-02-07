@@ -3,7 +3,7 @@ import { ReactElement } from 'react'
 
 import { Typography } from '@mui/material'
 
-import { pageWithGenericSuspense } from '@/src/components/helpers/SafeSuspense'
+import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import DefaultLayout from '@/src/components/layout/DefaultLayout'
 import { NextPageWithLayout } from '@/types/next'
 
@@ -27,4 +27,4 @@ TypePreview.getLayout = function getLayout(page: ReactElement) {
   return <DefaultLayout>{page}</DefaultLayout>
 }
 
-export default pageWithGenericSuspense(TypePreview)
+export default withPageGenericSuspense(TypePreview)

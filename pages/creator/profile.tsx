@@ -6,7 +6,7 @@ import { ethers } from 'ethers'
 import { z } from 'zod'
 
 import { RegisterCuratorSchema } from '@/pages/creator/register'
-import { pageWithGenericSuspense } from '@/src/components/helpers/SafeSuspense'
+import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import DefaultLayout from '@/src/components/layout/DefaultLayout'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
@@ -18,13 +18,13 @@ type CreatorMetadata = z.infer<typeof RegisterCuratorSchema>
 const Profile: NextPageWithLayout = () => {
   const { address, appChainId } = useWeb3Connection()
   const gql = getSubgraphSdkByNetwork(appChainId, SubgraphName.TheBadge)
-  const creatorByAddress = gql.useEmitter({ id: address || ethers.constants.AddressZero })
+  const userByAddress = gql.useUserById({ id: address || ethers.constants.AddressZero })
   const router = useRouter()
   // TODO Add again the creatorByAddress.data?.emitter?.metadata
   const { data: creatorMetadata } = useS3Metadata<CreatorMetadata>('')
 
   // TODO Fix validation with creatorByAddress.data?.emitter
-  if (!creatorByAddress.data) {
+  if (!userByAddress.data?.user?.isCreator) {
     router.push('/creator/register')
     return null
   }
@@ -79,4 +79,4 @@ Profile.getLayout = function getLayout(page: ReactElement) {
   return <DefaultLayout>{page}</DefaultLayout>
 }
 
-export default pageWithGenericSuspense(Profile)
+export default withPageGenericSuspense(Profile)
