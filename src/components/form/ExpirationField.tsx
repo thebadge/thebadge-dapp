@@ -41,13 +41,8 @@ export default function ExpirationField() {
     const cleanValue = e.target.value.replace(/[^0-9.]/g, '') || '0'
     if (/^-?\d+(?:\.\d*)?$/.test(cleanValue)) {
       setStringValue(cleanValue)
-      field.onChange(Number(cleanValue))
+      field.onChange(parseToSeconds(cleanValue, unit))
     }
-  }
-
-  function validTo(days?: z.infer<typeof ExpirationTypeSchema>) {
-    if (!days || days === 0) return 'End of time.'
-    return dayjs().add(days, unit).format('DD/MM/YYYY')
   }
 
   function handleDropdownChange(e: SelectChangeEvent) {
@@ -67,6 +62,7 @@ export default function ExpirationField() {
                   title={
                     placeholder +
                     `\n e.g. If you mint this badge today, It will expire on: ${validTo(
+                      unit,
                       field.value,
                     )}`
                   }
@@ -104,4 +100,20 @@ export default function ExpirationField() {
       statusText={error?.errorMessage}
     />
   )
+}
+
+function validTo(unit: 'day' | 'month' | 'year', days?: z.infer<typeof ExpirationTypeSchema>) {
+  if (!days || days === 0) return 'End of time.'
+  return dayjs().add(days, unit).format('DD/MM/YYYY')
+}
+
+function parseToSeconds(value: string, unit: 'day' | 'month' | 'year') {
+  switch (unit) {
+    case 'day':
+      return Number(value) * 60 * 60 // Each day has 60 min, each min has 60 seconds
+    case 'month':
+      return Number(value) * 30 * 60 * 60 // Each month has 30 days as default
+    case 'year':
+      return Number(value) * 360 * 60 * 60 // Each year has 360 days as default
+  }
 }
