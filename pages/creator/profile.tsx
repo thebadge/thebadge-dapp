@@ -6,7 +6,7 @@ import { ethers } from 'ethers'
 import { z } from 'zod'
 
 import { RegisterCuratorSchema } from '@/pages/creator/register'
-import { withGenericSuspense } from '@/src/components/helpers/SafeSuspense'
+import { pageWithGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import DefaultLayout from '@/src/components/layout/DefaultLayout'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
@@ -79,4 +79,4 @@ Profile.getLayout = function getLayout(page: ReactElement) {
   return <DefaultLayout>{page}</DefaultLayout>
 }
 
-export default withGenericSuspense(Profile)
+export default pageWithGenericSuspense(Profile)

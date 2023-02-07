@@ -28,7 +28,7 @@ const ExploreBadges: NextPageWithLayout = () => {
               <div>ValidFor: {bt.validFor} </div>
               <div>paused: {bt.paused ? 'Yes' : 'No'}</div>
               <div>Controller: {bt.controllerName}</div>
-              {/* TODO ADD Creator/Emitter Metada*/}
+              {/* TODO ADD Creator/Emitter Metadata*/}
               {/*<div>Metadata: {bt.emitter.metadata}</div>*/}
               {/* This is broken because the metadata is not linked on IPFS. */}
               {/* <CreatorDetails metadata={bt.emitter.metadata} /> */}

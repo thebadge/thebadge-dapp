@@ -7,6 +7,7 @@ import { useTranslation } from 'next-export-i18n'
 import { colors } from 'thebadge-ui-library'
 import { z } from 'zod'
 
+import { pageWithGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import DefaultLayout from '@/src/components/layout/DefaultLayout'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
 import useTransaction from '@/src/hooks/useTransaction'
@@ -58,7 +59,7 @@ const Register: NextPageWithLayout = () => {
   }
 
   // TODO Fix it creatorByAddress.data?.emitter
-  if (creatorByAddress.data) {
+  if (creatorByAddress.data?._meta?.hasIndexingErrors) {
     router.push('/creator/profile')
   }
 
@@ -86,4 +87,4 @@ Register.getLayout = function getLayout(page: ReactElement) {
   return <DefaultLayout>{page}</DefaultLayout>
 }
 
-export default Register
+export default pageWithGenericSuspense(Register)

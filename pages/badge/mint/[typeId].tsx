@@ -11,7 +11,7 @@ import { z } from 'zod'
 import { CustomFormFromSchema } from '@/src/components/form/customForms/CustomForm'
 import { FileSchema } from '@/src/components/form/helpers/customSchemas'
 import klerosSchemaFactory from '@/src/components/form/helpers/validators'
-import { withGenericSuspense } from '@/src/components/helpers/SafeSuspense'
+import { pageWithGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import DefaultLayout from '@/src/components/layout/DefaultLayout'
 import { ZERO_BN } from '@/src/constants/bigNumber'
 import { useContractCall } from '@/src/hooks/useContractCall'
@@ -127,4 +127,4 @@ MintBadgeType.getLayout = function getLayout(page: ReactElement) {
   return <DefaultLayout>{page}</DefaultLayout>
 }
 
-export default withGenericSuspense(MintBadgeType)
+export default pageWithGenericSuspense(MintBadgeType)
