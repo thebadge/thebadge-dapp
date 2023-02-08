@@ -2,7 +2,7 @@ import * as React from 'react'
 
 import { Stack, Typography } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
-import { BadgePreviewV2 } from 'thebadge-ui-library/src/components/atoms/BadgePreview/v2/BadgePreview'
+import { BadgePreviewV2 } from 'thebadge-ui-library'
 import { AnyZodObject, z } from 'zod'
 
 import { DataGrid } from '@/src/components/form/customForms/type'
