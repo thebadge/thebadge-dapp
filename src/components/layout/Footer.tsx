@@ -16,6 +16,7 @@ import {
   PAPER_URL,
   TWITTER_URL,
 } from '@/src/constants/common'
+import useIsMobile from '@/src/hooks/useIsMobile'
 import { useCookiesWarningContext } from '@/src/providers/cookiesWarningProvider'
 import { useColorMode } from '@/src/providers/themeProvider'
 
@@ -28,6 +29,8 @@ const SocialContainer = styled(Box)(({ theme }) => ({
 }))
 
 export const Footer: React.FC = () => {
+  const isMobile = useIsMobile()
+
   const { mode } = useColorMode()
   const { t } = useTranslation()
   const { cookiesWarningEnabled, showCookiesWarning } = useCookiesWarningContext()
@@ -74,9 +77,14 @@ export const Footer: React.FC = () => {
                 </Typography>
               </Stack>
             </Box>
-            <LogoTheBadgeWithText fill={iconColor} size={120} />
+            {!isMobile && <LogoTheBadgeWithText fill={iconColor} size={120} />}
           </Box>
-          <Box display={'flex'} gap={2} justifyContent={'space-between'}>
+          <Box
+            display={'flex'}
+            flexDirection={isMobile ? 'column' : 'row'}
+            gap={2}
+            justifyContent={'space-between'}
+          >
             <SocialContainer>
               <IconTwitter color={iconColor} link={TWITTER_URL} />
               <IconGithub color={iconColor} link={GITHUB_URL} />
