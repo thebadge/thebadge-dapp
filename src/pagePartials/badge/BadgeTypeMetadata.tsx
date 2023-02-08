@@ -10,8 +10,8 @@ function BadgeTypeMetadata({ metadata }: Props) {
   console.log({ res })
   return (
     <SafeSuspense>
-      <div>Name: {res.data.file.name}</div>
-      <div>Desc: {res.data.file.description}</div>
+      <div>Name: {res.data.content.name}</div>
+      <div>Desc: {res.data.content.description}</div>
     </SafeSuspense>
   )
 }

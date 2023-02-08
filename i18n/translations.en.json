@@ -28,7 +28,8 @@
       },
       "mint": {
         "title": "Badge Mint",
-        "sub-title": "Do you want to design and publish custom badges that other users can apply for to verify real-world information? Also, you could set the price for the badges you create and receive a share of the fee when users apply for them...So please, complete the form and let´s start creating!"
+        "sub-title": "Do you want to design and publish custom badges that other users can apply for to verify real-world information? Also, you could set the price for the badges you create and receive a share of the fee when users apply for them...So please, complete the form and let´s start creating!",
+        "help-steps": "Here you will see a good description about how the process works.... "
       }
     }
   },

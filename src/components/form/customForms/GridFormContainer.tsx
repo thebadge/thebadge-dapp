@@ -58,7 +58,7 @@ function ResponsiveGridFromContainer({
         Children.map(Children.toArray(children), (child, index) => {
           let dataGridValue
           let xValue
-          if (gridStructure) {
+          if (gridStructure && gridStructure.length > 0) {
             dataGridValue = gridStructure[index]
             xValue = dataGridValue.x
           } else {

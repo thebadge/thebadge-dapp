@@ -1,9 +1,6 @@
-import { ReactElement } from 'react'
-
 import { Typography } from '@mui/material'
 
 import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
-import DefaultLayout from '@/src/components/layout/DefaultLayout'
 import { NextPageWithLayout } from '@/types/next'
 
 const Profile: NextPageWithLayout = () => {
@@ -18,10 +15,6 @@ const Profile: NextPageWithLayout = () => {
       </Typography>
     </>
   )
-}
-
-Profile.getLayout = function getLayout(page: ReactElement) {
-  return <DefaultLayout>{page}</DefaultLayout>
 }
 
 export default withPageGenericSuspense(Profile)

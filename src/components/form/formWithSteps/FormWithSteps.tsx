@@ -75,7 +75,7 @@ export function FormWithSteps({
         stepNames.findIndex((step, i) => !completed[i] && i !== activeStep - 1)
       : activeStep + 1
     // We don't want to increase the value over the amount of given schemas
-    if (newActiveStep < 0 || newActiveStep >= stepSchemas.length) return
+    if (newActiveStep < 0 || newActiveStep >= stepNames.length) return
     setActiveStep(newActiveStep)
   }
 
