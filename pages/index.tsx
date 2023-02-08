@@ -12,9 +12,9 @@ const CertificationProcess: React.FC = () => {
   return (
     <div>
       <Box display={'flex'} flexDirection={'row'} gap={8} justifyContent={'center'} mb={4}>
-        <Image alt="TheBadge" height="73" src="shareable/choose.svg" width="116" />
-        <Image alt="TheBadge2w" height="73" src="shareable/evidence.svg" width="116" />
-        <Image alt="TheBadge2" height="73" src="shareable/complete.svg" width="116" />
+        <Image alt="TheBadge" height="93" src="shareable/choose.svg" width="137" />
+        <Image alt="TheBadge2w" height="94" src="shareable/evidence.svg" width="139" />
+        <Image alt="TheBadge2" height="93" src="shareable/complete.svg" width="137" />
       </Box>
       <Typography
         alignItems={'center'}
