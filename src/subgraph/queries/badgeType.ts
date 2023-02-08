@@ -2,8 +2,7 @@ import gql from 'graphql-tag'
 
 export const BADGE_TYPES = gql`
   query badgeTypes {
-    badgeTypes(skip: 2) {
-      # TODO: remove skip:2 after a new version of the contracts is deployed
+    badgeTypes {
       id
       metadataURL
       controllerName

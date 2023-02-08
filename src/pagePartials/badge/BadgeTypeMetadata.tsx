@@ -12,6 +12,7 @@ function BadgeTypeMetadata({ metadata }: Props) {
     <SafeSuspense>
       <div>Name: {res.data.content.name}</div>
       <div>Desc: {res.data.content.description}</div>
+      <img alt="asd" src={res.data.content.image.s3Url} />
     </SafeSuspense>
   )
 }
