@@ -48,15 +48,6 @@ const Home: NextPageWithLayout = () => {
       </Typography>
       <CertificationProcess />
       <Section>Claim one of these badges</Section>
-      {/*<Box display="flex" flexDirection="column">*/}
-      {/*<LinkWithTranslation pathname="/creator/register">1. Register Creator</LinkWithTranslation>*/}
-      {/*<LinkWithTranslation pathname="/curator/register">2. Register Curator</LinkWithTranslation>*/}
-
-      {/*<LinkWithTranslation pathname="/badge/type/create">*/}
-      {/*  3. Create badge-type*/}
-      {/*</LinkWithTranslation>*/}
-      {/*<LinkWithTranslation pathname="/badge/mint">4. Mint badge</LinkWithTranslation>*/}
-      {/*</Box>*/}
     </Box>
   )
 }

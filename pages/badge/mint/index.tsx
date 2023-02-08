@@ -3,6 +3,7 @@ import { ReactElement } from 'react'
 import { Box, Typography } from '@mui/material'
 
 import LinkWithTranslation from '@/src/components/helpers/LinkWithTranslation'
+import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import DefaultLayout from '@/src/components/layout/DefaultLayout'
 import { NextPageWithLayout } from '@/types/next'
 
@@ -30,4 +31,4 @@ MintBadge.getLayout = function getLayout(page: ReactElement) {
   return <DefaultLayout>{page}</DefaultLayout>
 }
 
-export default MintBadge
+export default withPageGenericSuspense(MintBadge)

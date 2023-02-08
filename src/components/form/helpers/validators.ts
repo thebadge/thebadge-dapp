@@ -81,6 +81,6 @@ export default function klerosSchemaFactory(fields: MetadataColumn[]) {
     )
     //Magic explained here: https://github.com/iway1/react-ts-form#qol
   })
-
-  return z.object(shape)
+  return shape
+  // return z.object(shape)
 }
