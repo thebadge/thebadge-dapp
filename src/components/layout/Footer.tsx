@@ -39,36 +39,36 @@ export const Footer: React.FC = () => {
   return (
     <Box>
       <Container>
-        <Stack sx={{ justifyContent: 'center', gap: 5 }}>
+        <Stack sx={{ justifyContent: 'center', gap: 5, mb: 5 }}>
           <Divider color={iconColor} sx={{ borderWidth: '1px' }} />
           <Box sx={{ display: 'flex', flex: 1, justifyContent: 'space-between' }}>
-            <Box sx={{ display: 'flex', gap: 4 }}>
+            <Box sx={{ display: 'flex', gap: 8 }}>
               <Stack gap={1.5}>
-                <Typography fontWeight="600" variant="h6">
+                <Typography fontWeight="800" variant="h6">
                   {t('footer.about.title')}
                 </Typography>
-                <Typography component={'a'} href={EMAIL_URL} variant="body4">
+                <Typography component={'a'} href={EMAIL_URL} sx={{ fontSize: '1rem !important' }}>
                   {/* Contact */}
                   {t('footer.about.items.0.title')}
                 </Typography>
-                <Typography component={'a'} href={DISCORD_URL} variant="body4">
+                <Typography component={'a'} href={DISCORD_URL} sx={{ fontSize: '1rem !important' }}>
                   {/* Community */}
                   {t('footer.about.items.1.title')}
                 </Typography>
-                <Typography component={'a'} href={PAPER_URL} variant="body4">
+                <Typography component={'a'} href={PAPER_URL} sx={{ fontSize: '1rem !important' }}>
                   {/* Whitepaper */}
                   {t('footer.about.items.2.title')}
                 </Typography>
               </Stack>
               <Stack gap={1.5}>
-                <Typography fontWeight="600" variant="h6">
+                <Typography fontWeight="800" variant="h6">
                   {t('footer.help.title')}
                 </Typography>
-                <Typography component={'a'} href={DISCORD_URL} variant="body4">
+                <Typography component={'a'} href={DISCORD_URL} sx={{ fontSize: '1rem !important' }}>
                   {/* Support */}
                   {t('footer.help.items.0.title')}
                 </Typography>
-                <Typography component={'a'} href={DOCS_URL} variant="body4">
+                <Typography component={'a'} href={DOCS_URL} sx={{ fontSize: '1rem !important' }}>
                   {/* Docs */}
                   {t('footer.help.items.1.title')}
                 </Typography>
@@ -76,7 +76,7 @@ export const Footer: React.FC = () => {
             </Box>
             <LogoTheBadgeWithText fill={iconColor} size={120} />
           </Box>
-          <Stack gap={2}>
+          <Box display={'flex'} gap={2} justifyContent={'space-between'}>
             <SocialContainer>
               <IconTwitter color={iconColor} link={TWITTER_URL} />
               <IconGithub color={iconColor} link={GITHUB_URL} />
@@ -95,7 +95,7 @@ export const Footer: React.FC = () => {
                 </>
               )}
             </Typography>
-          </Stack>
+          </Box>
         </Stack>
       </Container>
     </Box>

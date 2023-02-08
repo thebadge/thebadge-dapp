@@ -37,13 +37,13 @@
       "title": "ABOUT",
       "items": [
         {
-          "title": "Contact"
+          "title": "CONTACT"
         },
         {
-          "title": "Community"
+          "title": "COMMUNITY"
         },
         {
-          "title": "Whitepaper"
+          "title": "WHITEPAPER"
         }
       ]
     },
@@ -51,13 +51,13 @@
       "title": "HELP",
       "items": [
         {
-          "title": "Support"
+          "title": "SUPPORT"
         },
         {
-          "title": "Docs"
+          "title": "DOCS"
         }
       ]
     },
-    "copyright": "Copyright © {{year}} • TheBadge.xyz • All Rights Reserved"
+    "copyright": "Copyright © {{year}} • TheBadge.xyz"
   }
 }
