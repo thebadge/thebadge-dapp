@@ -24,7 +24,7 @@ const ExploreBadges: NextPageWithLayout = () => {
             <div key={bt.id}>
               <BadgeTypeMetadata metadata={bt.metadataURL} />
               <div>mintCost: {formatUnits(bt.mintCost, 18)} + Kleros deposit</div>
-              <div>ValidFor: {bt.validFor} </div>
+              <div>ValidFor: {bt.validFor / 60 / 60 / 24} </div>
               <div>paused: {bt.paused ? 'Yes' : 'No'}</div>
               <div>Controller: {bt.controllerName}</div>
               {/* TODO ADD Creator/Emitter Metadata*/}
