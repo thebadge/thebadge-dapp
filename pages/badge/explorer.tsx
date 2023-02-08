@@ -5,6 +5,7 @@ import { formatUnits } from 'ethers/lib/utils'
 
 import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import BadgeTypeMetadata from '@/src/pagePartials/badge/BadgeTypeMetadata'
+import GetBadgeTypeChallengePeriodDuration from '@/src/pagePartials/badge/GetBadgeTypeReviewDueDate'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { SubgraphName, getSubgraphSdkByNetwork } from '@/src/subgraph/subgraph'
 import { NextPageWithLayout } from '@/types/next'
@@ -27,6 +28,11 @@ const ExploreBadges: NextPageWithLayout = () => {
               <div>ValidFor: {bt.validFor / 60 / 60 / 24} </div>
               <div>paused: {bt.paused ? 'Yes' : 'No'}</div>
               <div>Controller: {bt.controllerName}</div>
+              <div>
+                Challenge period duration:
+                <GetBadgeTypeChallengePeriodDuration tcrList={bt.klerosBadge?.klerosTCRList} /> days
+              </div>
+
               {/* TODO ADD Creator/Emitter Metadata*/}
               {/*<div>Metadata: {bt.emitter.metadata}</div>*/}
               {/* This is broken because the metadata is not linked on IPFS. */}
