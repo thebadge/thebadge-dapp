@@ -2,9 +2,15 @@ import { Box, Typography } from '@mui/material'
 
 import LinkWithTranslation from '@/src/components/helpers/LinkWithTranslation'
 import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
+import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+import { SubgraphName, getSubgraphSdkByNetwork } from '@/src/subgraph/subgraph'
 import { NextPageWithLayout } from '@/types/next'
 
 const MintBadge: NextPageWithLayout = () => {
+  const { appChainId } = useWeb3Connection()
+  const gql = getSubgraphSdkByNetwork(appChainId, SubgraphName.TheBadge)
+  const badgeTypes = gql.useBadgeTypes()
+
   return (
     <>
       <Typography component={'h3'} variant="h3">
@@ -16,9 +22,15 @@ const MintBadge: NextPageWithLayout = () => {
       </Typography>
 
       <Box display="flex" flexDirection="column">
-        <LinkWithTranslation pathname="/badge/mint/1">+ Mint badge 1</LinkWithTranslation>
-        <LinkWithTranslation pathname="/badge/mint/2">+ Mint badge 2</LinkWithTranslation>
-        <LinkWithTranslation pathname="/badge/mint/3">+ Mint badge 3</LinkWithTranslation>
+        {badgeTypes.data?.badgeTypes.map((bt) => {
+          return (
+            <div key={bt.id}>
+              <LinkWithTranslation pathname={`/badge/mint/${bt.id}`}>
+                + Mint badge {bt.id}
+              </LinkWithTranslation>
+            </div>
+          )
+        })}
       </Box>
     </>
   )
