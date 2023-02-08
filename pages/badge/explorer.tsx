@@ -1,11 +1,9 @@
 import Link from 'next/link'
-import { ReactElement } from 'react'
 
 import { Typography } from '@mui/material'
 import { formatUnits } from 'ethers/lib/utils'
 
 import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
-import DefaultLayout from '@/src/components/layout/DefaultLayout'
 import BadgeTypeMetadata from '@/src/pagePartials/badge/BadgeTypeMetadata'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { SubgraphName, getSubgraphSdkByNetwork } from '@/src/subgraph/subgraph'
@@ -42,10 +40,6 @@ const ExploreBadges: NextPageWithLayout = () => {
       </div>
     </>
   )
-}
-
-ExploreBadges.getLayout = function getLayout(page: ReactElement) {
-  return <DefaultLayout>{page}</DefaultLayout>
 }
 
 export default withPageGenericSuspense(ExploreBadges)

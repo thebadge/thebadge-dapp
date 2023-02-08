@@ -1,5 +1,4 @@
 import { useRouter } from 'next/router'
-import { ReactElement } from 'react'
 
 import { Stack, Typography } from '@mui/material'
 import { BigNumber } from 'ethers'
@@ -11,7 +10,6 @@ import { z } from 'zod'
 import { CustomFormFromSchema } from '@/src/components/form/customForms/CustomForm'
 import klerosSchemaFactory from '@/src/components/form/helpers/validators'
 import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
-import DefaultLayout from '@/src/components/layout/DefaultLayout'
 import { useContractCall } from '@/src/hooks/useContractCall'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
@@ -121,10 +119,6 @@ const MintBadgeType: NextPageWithLayout = () => {
       <CustomFormFromSchema onSubmit={onSubmit} schema={CreateBadgeSchema} />
     </>
   )
-}
-
-MintBadgeType.getLayout = function getLayout(page: ReactElement) {
-  return <DefaultLayout>{page}</DefaultLayout>
 }
 
 export default withPageGenericSuspense(MintBadgeType)

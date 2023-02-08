@@ -110,10 +110,10 @@ function validTo(unit: 'day' | 'month' | 'year', days?: z.infer<typeof Expiratio
 function parseToSeconds(value: string, unit: 'day' | 'month' | 'year') {
   switch (unit) {
     case 'day':
-      return Number(value) * 60 * 60 // Each day has 60 min, each min has 60 seconds
+      return Number(value) * 24 * 60 * 60 // Each day has 24hs and each hour has 60 min, each min has 60 seconds
     case 'month':
-      return Number(value) * 30 * 60 * 60 // Each month has 30 days as default
+      return Number(value) * 30 * 24 * 60 * 60 // Each month has 30 days as default
     case 'year':
-      return Number(value) * 360 * 60 * 60 // Each year has 360 days as default
+      return Number(value) * 360 * 24 * 60 * 60 // Each year has 360 days as default
   }
 }

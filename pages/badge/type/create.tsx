@@ -1,5 +1,3 @@
-import { ReactElement } from 'react'
-
 import { Stack, Typography } from '@mui/material'
 import { constants } from 'ethers'
 import { defaultAbiCoder, parseUnits } from 'ethers/lib/utils'
@@ -19,7 +17,6 @@ import {
 } from '@/src/components/form/helpers/customSchemas'
 import { isMetadataColumnArray } from '@/src/components/form/helpers/validators'
 import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
-import DefaultLayout from '@/src/components/layout/DefaultLayout'
 import { contracts } from '@/src/contracts/contracts'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
@@ -124,7 +121,7 @@ const CreateBadgeType: NextPageWithLayout = () => {
           numberOfJurors, // numberOfJurors:
           `ipfs://${registrationIPFSUploaded.result?.ipfsHash}`, // registration file
           `ipfs://${clearingIPFSUploaded.result?.ipfsHash}`, // clearing file
-          data.challengePeriodDuration * 24 * 60 * 60, // challengePeriodDuration:
+          data.challengePeriodDuration, // challengePeriodDuration:
           [
             baseDeposit.add(klerosCourtInfo.feeForJuror.mul(numberOfJurors)).toString(), // jurors * fee per juror + rigorousness
             baseDeposit.add(klerosCourtInfo.feeForJuror.mul(numberOfJurors)).toString(), // The base deposit to remove an item.
@@ -175,10 +172,6 @@ const CreateBadgeType: NextPageWithLayout = () => {
       />
     </>
   )
-}
-
-CreateBadgeType.getLayout = function getLayout(page: ReactElement) {
-  return <DefaultLayout>{page}</DefaultLayout>
 }
 
 export default withPageGenericSuspense(CreateBadgeType)

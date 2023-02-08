@@ -1,5 +1,4 @@
 import { useRouter } from 'next/router'
-import { ReactElement } from 'react'
 
 import { Stack, Typography } from '@mui/material'
 import { ethers } from 'ethers'
@@ -8,7 +7,6 @@ import { colors } from 'thebadge-ui-library'
 import { z } from 'zod'
 
 import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
-import DefaultLayout from '@/src/components/layout/DefaultLayout'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
 import useTransaction from '@/src/hooks/useTransaction'
 import RegistrationSteps, {
@@ -82,10 +80,6 @@ const Register: NextPageWithLayout = () => {
       <RegistrationSteps onSubmit={onSubmit} />
     </>
   )
-}
-
-Register.getLayout = function getLayout(page: ReactElement) {
-  return <DefaultLayout>{page}</DefaultLayout>
 }
 
 export default withPageGenericSuspense(Register)
