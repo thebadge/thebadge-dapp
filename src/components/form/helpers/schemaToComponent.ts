@@ -16,6 +16,7 @@ import {
   AddressSchema,
   AgreementSchema,
   AvatarSchema,
+  ChallengePeriodTypeSchema,
   CheckBoxSchema,
   EmailSchema,
   ExpirationTypeSchema,
@@ -49,5 +50,6 @@ export const mappingSchemaToComponents = [
   [KlerosDynamicFields, KlerosDynamicFieldsCreator],
   [SeverityTypeSchema, SeveritySelector],
   [ExpirationTypeSchema, ExpirationField],
+  [ChallengePeriodTypeSchema, NumberField],
   // TODO Add file types
 ] as const // 👈 `as const` is necessary

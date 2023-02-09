@@ -42,6 +42,7 @@ export default function TextArea() {
         onChange={onChange}
         placeholder={placeholder}
         rows={3}
+        sx={{ textTransform: 'capitalize' }}
         value={field.value ? field.value : ''}
         variant={'standard'}
       />

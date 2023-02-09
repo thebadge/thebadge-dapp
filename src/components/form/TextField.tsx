@@ -1,6 +1,7 @@
 import * as React from 'react'
 
-import { Box, TextField as MUITextField, styled } from '@mui/material'
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
+import { Box, TextField as MUITextField, Tooltip, styled } from '@mui/material'
 import { useDescription, useTsController } from '@ts-react/form'
 
 export enum TextFieldStatus {
@@ -21,7 +22,7 @@ const StyledTextField = styled(MUITextField)(({ theme }) => ({
 
 export default function TextField() {
   const { error, field } = useTsController<string>()
-  const { label } = useDescription()
+  const { label, placeholder } = useDescription()
 
   function onChange(e: any) {
     field.onChange(e.target.value)
@@ -30,11 +31,19 @@ export default function TextField() {
   return (
     <Wrapper>
       <StyledTextField
+        InputProps={{
+          endAdornment: (
+            <Tooltip title={placeholder}>
+              <InfoOutlinedIcon />
+            </Tooltip>
+          ),
+        }}
         color="secondary"
         error={!!error}
         helperText={error?.errorMessage || ' '}
         label={label}
         onChange={onChange}
+        sx={{ textTransform: 'capitalize' }}
         value={field.value ? field.value : ''}
         variant={'standard'}
       />

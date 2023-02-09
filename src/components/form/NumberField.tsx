@@ -1,7 +1,7 @@
 import { ChangeEvent, useState } from 'react'
 import * as React from 'react'
 
-import InfoIcon from '@mui/icons-material/Info'
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import { TextField as MUITextField, Stack, Tooltip } from '@mui/material'
 import { useDescription, useTsController } from '@ts-react/form'
 import { BigNumberInput } from 'big-number-input'
@@ -40,7 +40,7 @@ export default function NumberField({ decimals = 0 }: NumberFieldProps) {
             InputProps={{
               endAdornment: (
                 <Tooltip title={placeholder}>
-                  <InfoIcon />
+                  <InfoOutlinedIcon />
                 </Tooltip>
               ),
             }}
@@ -49,6 +49,7 @@ export default function NumberField({ decimals = 0 }: NumberFieldProps) {
             helperText={error?.errorMessage || ' '}
             label={label}
             onChange={(e: ChangeEvent<HTMLInputElement>) => props.onChange && props.onChange(e)}
+            sx={{ textTransform: 'capitalize' }}
             value={props.value}
             variant={'standard'}
           />

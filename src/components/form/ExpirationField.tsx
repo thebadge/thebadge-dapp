@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import * as React from 'react'
 
-import InfoIcon from '@mui/icons-material/Info'
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import {
   Box,
   Select as MUISelect,
@@ -62,12 +62,11 @@ export default function ExpirationField() {
                   title={
                     placeholder +
                     `\n e.g. If you mint this badge today, It will expire on: ${validTo(
-                      unit,
                       field.value,
                     )}`
                   }
                 >
-                  <InfoIcon />
+                  <InfoOutlinedIcon />
                 </Tooltip>
               ),
             }}
@@ -83,6 +82,7 @@ export default function ExpirationField() {
             size="small"
             sx={{ textTransform: 'capitalize', ml: 2 }}
             value={unit || ''}
+            variant="standard"
           >
             {options.map((op) => {
               return (
@@ -102,9 +102,9 @@ export default function ExpirationField() {
   )
 }
 
-function validTo(unit: 'day' | 'month' | 'year', days?: z.infer<typeof ExpirationTypeSchema>) {
+function validTo(days?: z.infer<typeof ExpirationTypeSchema>) {
   if (!days || days === 0) return 'End of time.'
-  return dayjs().add(days, unit).format('DD/MM/YYYY')
+  return dayjs().add(days, 'seconds').format('DD/MM/YYYY')
 }
 
 function parseToSeconds(value: string, unit: 'day' | 'month' | 'year') {

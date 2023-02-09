@@ -123,6 +123,16 @@ export const ExpirationTypeSchema = createUniqueFieldSchema(
   'ExpirationTypeSchema',
 )
 
+export const ChallengePeriodTypeSchema = createUniqueFieldSchema(
+  z
+    .number({
+      required_error: 'Is required',
+      invalid_type_error: 'Must enter an amount of days',
+    })
+    .min(2, 'The challenge time must be greater than 1 day'),
+  'ChallengePeriodTypeSchema',
+)
+
 export const SeverityTypeSchema = createUniqueFieldSchema(
   z.enum(Severity_Keys),
   'SeverityTypeSchema',
@@ -139,10 +149,10 @@ export const KlerosFormFieldSchema = z.object({
   label: z
     .string()
     .describe('Name // Field name that the user will be when they create the badge.'),
-  description: z
-    .string()
-    .describe('Description // Field description that explains what the field data is.'),
   type: KlerosFieldTypeSchema.describe('Field Type // Type of the required data.'),
+  description: LongTextSchema.describe(
+    'Description // Field description that explains what the field data is.',
+  ),
 })
 
 export const KlerosDynamicFields = createUniqueFieldSchema(
