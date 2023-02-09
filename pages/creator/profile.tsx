@@ -1,5 +1,4 @@
 import { useRouter } from 'next/navigation'
-import { ReactElement } from 'react'
 
 import { Button, Typography } from '@mui/material'
 import { ethers } from 'ethers'
@@ -7,7 +6,6 @@ import { z } from 'zod'
 
 import { RegisterCuratorSchema } from '@/pages/creator/register'
 import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
-import DefaultLayout from '@/src/components/layout/DefaultLayout'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { SubgraphName, getSubgraphSdkByNetwork } from '@/src/subgraph/subgraph'
@@ -73,10 +71,6 @@ const Profile: NextPageWithLayout = () => {
       </div>
     </>
   )
-}
-
-Profile.getLayout = function getLayout(page: ReactElement) {
-  return <DefaultLayout>{page}</DefaultLayout>
 }
 
 export default withPageGenericSuspense(Profile)

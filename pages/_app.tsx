@@ -10,7 +10,6 @@ import { SWRConfig } from 'swr'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { Footer } from '@/src/components/layout/Footer'
-import { Main } from '@/src/components/layout/Main'
 import Toast from '@/src/components/toast/Toast'
 import { Head } from '@/src/pagePartials/index/Head'
 import ThemeProvider from '@/src/providers/themeProvider'
@@ -36,6 +35,9 @@ const TransactionNotificationProvider = dynamic(
   },
 )
 const Web3ConnectionProvider = dynamic(() => import('@/src/providers/web3ConnectionProvider'), {
+  ssr: false,
+})
+const DefaultLayout = dynamic(() => import('@/src/components/layout/DefaultLayout'), {
   ssr: false,
 })
 
@@ -69,7 +71,7 @@ export default function App({
   emotionCache = clientSideEmotionCache,
 }: AppPropsWithLayout) {
   // Black magic explained here https://nextjs.org/docs/basic-features/layouts
-  const getLayout = Component.getLayout ?? ((page) => <Main>{page}</Main>)
+  const getLayout = Component.getLayout ?? ((page) => <DefaultLayout>{page}</DefaultLayout>)
 
   return (
     <>
