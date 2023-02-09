@@ -18,7 +18,7 @@ export const Choose = () => {
             fill-opacity="0.4"
           />
         </g>
-        <g id="certf" opacity="0.6">
+        <g class="scaled" opacity="0.6">
           <g id="cert1">
             <g id="Group">
               <path

@@ -17,7 +17,7 @@ export const Evidence = () => {
           fill-opacity="0.4"
           id="2"
         />
-        <g id="upload" opacity="0.6">
+        <g class="scaled" opacity="0.6">
           <g id="Group">
             <g id="Group_2">
               <path

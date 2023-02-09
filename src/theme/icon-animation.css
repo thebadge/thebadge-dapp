@@ -1,0 +1,29 @@
+@keyframes scale{
+    from {
+      transform: scale(0.9);
+    }
+    to {
+      transform: scale(1);
+    }
+  }
+
+  @keyframes rocketMovement {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform:translate(-6%, 3%);
+
+    }
+  }
+
+  .scaled {
+    transform-origin: center;
+    animation: 0.7s ease-in-out infinite alternate scale;
+  }
+  
+  .rocket-movement {
+    transform-origin: center;
+    animation: 0.7s ease-in-out infinite alternate rocketMovement;
+  }
+  
