@@ -1,10 +1,12 @@
-import Image from 'next/image'
 import { ReactElement } from 'react'
 
 import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined'
 import { Box, Typography, styled } from '@mui/material'
 
-import DefaultLayout from '@/src/components/layout/DefaultLayout'
+import { Choose } from '../public/shareable/choose'
+import { Complete } from '../public/shareable/complete'
+import { Evidence } from '../public/shareable/evidence'
+import DefaultLayout from '../src/components/layout/DefaultLayout'
 import { useSectionReferences } from '@/src/providers/referencesProvider'
 import { NextPageWithLayout } from '@/types/next'
 
@@ -12,9 +14,9 @@ const CertificationProcess: React.FC = () => {
   return (
     <div>
       <Box display={'flex'} flexDirection={'row'} gap={8} justifyContent={'center'} mb={4}>
-        <Image alt="TheBadge" height="93" src="shareable/choose.svg" width="137" />
-        <Image alt="TheBadge2w" height="94" src="shareable/evidence.svg" width="139" />
-        <Image alt="TheBadge2" height="93" src="shareable/complete.svg" width="137" />
+        <Choose />
+        <Evidence />
+        <Complete />
       </Box>
       <Typography
         alignItems={'center'}
