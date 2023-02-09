@@ -5,8 +5,6 @@ import { Choose } from '../public/shareable/choose'
 import { Complete } from '../public/shareable/complete'
 import { Evidence } from '../public/shareable/evidence'
 
-import DefaultLayout from '../src/components/layout/DefaultLayout'
-
 import { useSectionReferences } from '@/src/providers/referencesProvider'
 import { NextPageWithLayout } from '@/types/next'
 
