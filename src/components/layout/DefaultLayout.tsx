@@ -58,7 +58,7 @@ export default function DefaultLayout({ children }: DefaultLayoutProps) {
           <NavigationRoom>
             <MainMenu />
           </NavigationRoom>
-          <Container maxWidth={'md'} sx={{ margin: theme.spacing(10, 'auto') }}>
+          <Container maxWidth={'lg'} sx={{ margin: theme.spacing(10, 'auto') }}>
             {children}
           </Container>
         </Box>
