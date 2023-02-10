@@ -35,6 +35,31 @@
     }
   },
   "footer": {
-    "copyright": "Copyright © {{year}} • TheBadge.xyz • All Rights Reserved"
+    "about": {
+      "title": "ABOUT",
+      "items": [
+        {
+          "title": "CONTACT"
+        },
+        {
+          "title": "COMMUNITY"
+        },
+        {
+          "title": "WHITEPAPER"
+        }
+      ]
+    },
+    "help": {
+      "title": "HELP",
+      "items": [
+        {
+          "title": "SUPPORT"
+        },
+        {
+          "title": "DOCS"
+        }
+      ]
+    },
+    "copyright": "Copyright © {{year}} • TheBadge.xyz"
   }
 }
