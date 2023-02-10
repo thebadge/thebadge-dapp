@@ -58,6 +58,8 @@
     "react-hook-form": "^7.43.0",
     "react-hot-toast": "^2.4.0",
     "react-images-uploading": "^3.1.7",
+    "react-markdown": "^8.0.5",
+    "remark-gfm": "^3.0.1",
     "sanitize.css": "^13.0.0",
     "swr": "^2.0.0",
     "thebadge-ui-library": "^1.2.4",

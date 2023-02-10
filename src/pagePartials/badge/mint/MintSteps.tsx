@@ -8,11 +8,14 @@ import { AnyZodObject, z } from 'zod'
 import { DataGrid } from '@/src/components/form/customForms/type'
 import { FormWithSteps } from '@/src/components/form/formWithSteps/FormWithSteps'
 import { AgreementSchema } from '@/src/components/form/helpers/customSchemas'
+import useS3Metadata from '@/src/hooks/useS3Metadata'
+import { BackendFileUpload } from '@/types/utils'
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 type MintStepsProps<SchemaType extends z.ZodEffects<any, any, any> | AnyZodObject = any> = {
   onSubmit: (data: z.TypeOf<SchemaType>) => void
   evidenceSchema: SchemaType
+  logoUri: string | BackendFileUpload
   costs: {
     mintCost: string
     klerosCost: string
@@ -23,7 +26,7 @@ type MintStepsProps<SchemaType extends z.ZodEffects<any, any, any> | AnyZodObjec
 const steps = ['Help', 'Evidence form', 'Badge Preview']
 
 const formGridLayout: DataGrid[][] = [
-  [{ i: 'AgreementSchema', x: 0, y: 0, w: 12, h: 4, static: true }],
+  [{ i: 'AgreementSchema', x: 0, y: 0, w: 12, h: 6, static: true }],
   [],
 ]
 
@@ -31,8 +34,10 @@ export const MintSchemaStep1 = z.object({
   help: AgreementSchema.describe(`How it works // ??`),
 })
 
-export default function MintSteps({ costs, evidenceSchema, onSubmit }: MintStepsProps) {
+export default function MintSteps({ costs, evidenceSchema, logoUri, onSubmit }: MintStepsProps) {
   const { t } = useTranslation()
+  const badgeLogoData = useS3Metadata<{ s3Url: string }>(logoUri as string)
+  const badgeLogoUrl = badgeLogoData.data?.s3Url
 
   const handleOnSubmit = (data: z.infer<typeof evidenceSchema>) => {
     onSubmit(data)
@@ -40,7 +45,7 @@ export default function MintSteps({ costs, evidenceSchema, onSubmit }: MintSteps
 
   function handleFormPreview(data: z.infer<typeof evidenceSchema>) {
     return (
-      <Stack gap={2} margin={1}>
+      <Stack alignItems={'center'} gap={2} margin={1}>
         <Typography variant="h5">
           <div>Mint cost: {costs.mintCost}.</div>
           <div>
@@ -50,11 +55,13 @@ export default function MintSteps({ costs, evidenceSchema, onSubmit }: MintSteps
         </Typography>
         <Typography>This is how you Badge is going to look like</Typography>
         <BadgePreviewV2
+          animationEffects={['wobble', 'grow', 'glare']}
           animationOnHover
           badgeBackgroundUrl="https://images.unsplash.com/photo-1620421680010-0766ff230392?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=749&q=80"
           badgeUrl="https://www.thebadge.xyz"
           description="Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-          size="large"
+          imageUrl={badgeLogoUrl}
+          size="medium"
           subline="Subline Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
           textContrast="dark-withTextBackground"
           title="TITLE xxx Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."

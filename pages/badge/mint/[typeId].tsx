@@ -83,27 +83,17 @@ const MintBadgeType: NextPageWithLayout = () => {
   }
 
   const badgeName = badgeTypeMetadata.data.content.name
-  const badgeDescription = badgeTypeMetadata.data.content.description
+  const badgeLogoUri = badgeTypeMetadata.data.content.metadata.logoURI
 
   return (
     <>
       <Stack sx={{ mb: 6, gap: 4, alignItems: 'center' }}>
         <Typography color={colors.green} textAlign="center" variant="title2">
-          {t('badge.type.mint.title')}
+          {t('badge.type.mint.title', { badgeName })}
         </Typography>
 
         <Typography textAlign="justify" variant="body4" width="85%">
           {t('badge.type.mint.sub-title')}
-        </Typography>
-      </Stack>
-
-      <Stack sx={{ mb: 6, gap: 4, alignItems: 'center' }}>
-        <Typography color={colors.green} textAlign="center" variant="title2">
-          {badgeName}
-        </Typography>
-
-        <Typography textAlign="justify" variant="body4" width="85%">
-          {badgeDescription}
         </Typography>
       </Stack>
 
@@ -114,6 +104,7 @@ const MintBadgeType: NextPageWithLayout = () => {
           klerosCost: formatUnits(klerosCost, 18),
         }}
         evidenceSchema={CreateBadgeSchema}
+        logoUri={badgeLogoUri}
         onSubmit={onSubmit}
       />
     </>

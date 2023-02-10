@@ -28,10 +28,12 @@ export const GridFormContainer = styled(Box, {
 
 function ResponsiveGridFromContainer({
   children,
+  draggable = false,
   gridStructure,
 }: {
   children: ReactNode
   gridStructure?: DataGrid[]
+  draggable?: boolean
 }) {
   const theme = useTheme()
   const childrenFromTypes = useMemo(() => getFormsFieldsTypes(children), [children])
@@ -67,6 +69,7 @@ function ResponsiveGridFromContainer({
             dataGridValue = getDataGridFromMapping(
               childrenFromTypes[index],
               mappingDataGridForComponents,
+              draggable,
             )
             // Trying to prevent collision in a naive way
             xValue = dataGridValue.x > prevXValue ? dataGridValue.x : prevXValue

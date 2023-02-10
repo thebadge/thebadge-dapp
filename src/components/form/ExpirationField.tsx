@@ -97,7 +97,7 @@ export default function ExpirationField() {
       label={label}
       labelPosition={'top'}
       status={error ? TextFieldStatus.error : TextFieldStatus.success}
-      statusText={error?.errorMessage}
+      statusText={error ? error?.errorMessage : ' '}
     />
   )
 }
