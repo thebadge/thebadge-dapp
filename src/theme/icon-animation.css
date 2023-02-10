@@ -18,10 +18,15 @@
 
   .scaled {
     transform-origin: center;
-    animation: 0.7s ease-in-out infinite alternate scale;
+    animation: 0.7s ease-in-out infinite alternate 1s scale;
+  }
+
+  .scaled2 {
+    transform-origin: center;
+    animation: 0.7s ease-in-out infinite alternate 2s scale;
   }
   
   .rocket-movement {
     transform-origin: center;
-    animation: 0.7s ease-in-out infinite alternate rocketMovement;
+    animation: 0.7s ease-in-out infinite alternate 4s rocketMovement;
   }
