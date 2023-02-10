@@ -79,6 +79,16 @@ export const LongTextSchema = createUniqueFieldSchema(
     .min(25, { message: 'Text field most have at least 25 characters.' }),
   'LongTextSchema',
 )
+export const DescriptionTextSchema = createUniqueFieldSchema(
+  z
+    .string({
+      required_error: 'Is required',
+      invalid_type_error: 'Must be an string',
+    })
+    .min(25, { message: 'Text field most have at least 25 characters.' }),
+  'DescriptionTextSchema',
+)
+
 // TODO Move to env variables
 const MAX_FILE_SIZE = 500000
 const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']

@@ -16,7 +16,7 @@ import useKlerosDepositPrice from '@/src/pagePartials/badge/useKlerosDepositPric
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { SubgraphName, getSubgraphSdkByNetwork } from '@/src/subgraph/subgraph'
 import ipfsUpload from '@/src/utils/ipfsUpload'
-import { klerosListStructure } from '@/src/utils/kleros/generateKlerosListMetaEvidence'
+import { KlerosListStructure } from '@/src/utils/kleros/generateKlerosListMetaEvidence'
 import { TheBadge__factory } from '@/types/generated/typechain'
 import { NextPageWithLayout } from '@/types/next'
 
@@ -36,7 +36,7 @@ const MintBadgeType: NextPageWithLayout = () => {
 
   // TODO: hardcoded for now, as we only support Kleros.
   // Get columns required for the form to upload evidence.
-  const badgeTypeMetadata = useS3Metadata<{ content: klerosListStructure }>(
+  const badgeTypeMetadata = useS3Metadata<{ content: KlerosListStructure }>(
     badgeType.data?.badgeType?.klerosBadge?.klerosMetadataURL || '',
   )
   if (badgeTypeMetadata.error || !badgeTypeMetadata.data) {
@@ -82,8 +82,8 @@ const MintBadgeType: NextPageWithLayout = () => {
     })
   }
 
-  const badgeName = badgeTypeMetadata.data.content.name
-  const badgeLogoUri = badgeTypeMetadata.data.content.metadata.logoURI
+  const badgeMetadata = badgeTypeMetadata.data.content
+  const badgeName = badgeMetadata.name
 
   return (
     <>
@@ -98,13 +98,13 @@ const MintBadgeType: NextPageWithLayout = () => {
       </Stack>
 
       <MintSteps
+        badgeMetadata={badgeMetadata}
         costs={{
           mintCost: formatUnits(mintCost, 18),
           totalMintCost: formatUnits(totalMintCost, 18),
           klerosCost: formatUnits(klerosCost, 18),
         }}
         evidenceSchema={CreateBadgeSchema}
-        logoUri={badgeLogoUri}
         onSubmit={onSubmit}
       />
     </>

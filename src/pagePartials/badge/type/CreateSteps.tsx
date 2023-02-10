@@ -12,11 +12,11 @@ import { FormWithSteps } from '@/src/components/form/formWithSteps/FormWithSteps
 import {
   AgreementSchema,
   ChallengePeriodTypeSchema,
+  DescriptionTextSchema,
   ExpirationTypeSchema,
   FileSchema,
   ImageSchema,
   KlerosDynamicFields,
-  LongTextSchema,
   NumberSchema,
   SeverityTypeSchema,
 } from '@/src/components/form/helpers/customSchemas'
@@ -26,9 +26,13 @@ const MintSchemaStep1 = z.object({
 })
 
 const MintSchemaStep2 = z.object({
-  name: z.string().describe('name // ??'),
-  description: LongTextSchema.describe('description // ??'),
-  logoUri: ImageSchema.describe('The logo for your badge type // ??'),
+  name: z.string().describe('Name // ??'),
+  description: DescriptionTextSchema.describe(
+    'Description // This description will be showed on the Badge itself, you can use some helpers to inject user information on it.',
+  ),
+  logoUri: ImageSchema.describe(
+    'The logo for your badge type // This Logo will be on the center part of the Badge itself.',
+  ),
   criteriaFileUri: FileSchema.describe('PDF with the requirements to mint a badge. // ??'),
   challengePeriodDuration: ChallengePeriodTypeSchema.describe(
     'Challenge period duration // Challenge period duration in days. During this time the community can analyze the evidence and challenge it.',
@@ -66,13 +70,13 @@ const formGridLayout: DataGrid[][] = [
   [{ i: 'AgreementSchema', x: 0, y: 0, w: 12, h: 4, static: true }],
   [
     { i: 'TextField', x: 0, y: 0, w: 3, h: 1, static: true },
-    { i: 'TextArea', x: 0, y: 1, w: 3, h: 2, static: true },
-    { i: 'ImageInput', x: 3, y: 0, w: 3, h: 3, static: true },
-    { i: 'FileInput', x: 2, y: 3, w: 3, h: 3, static: true },
-    { i: 'NumberField', x: 0, y: 6, w: 3, h: 1, static: true },
-    { i: 'SeveritySelector', x: 3, y: 6, w: 3, h: 1, static: true },
+    { i: 'DescriptionTextSchema', x: 0, y: 1.5, w: 3, h: 3, static: true },
+    { i: 'ImageInput', x: 3, y: 0, w: 3, h: 3.5, static: true },
+    { i: 'FileInput', x: 2, y: 4, w: 3, h: 3, static: true },
     { i: 'NumberField', x: 0, y: 7, w: 3, h: 1, static: true },
-    { i: 'NumberField', x: 3, y: 7, w: 3, h: 1, static: true },
+    { i: 'SeveritySelector', x: 3, y: 7, w: 3, h: 1, static: true },
+    { i: 'NumberField', x: 0, y: 8, w: 3, h: 1, static: true },
+    { i: 'NumberField', x: 3, y: 8, w: 3, h: 1, static: true },
   ],
   [{ i: 'KlerosDynamicFormField', x: 0, y: 0, w: 6, h: 10, static: true }],
 ]
@@ -118,7 +122,7 @@ export default function CreateSteps({ onSubmit }: MintStepsProps) {
             description={data.description}
             imageUrl={data.logoUri.data_url}
             size="medium"
-            textContrast="dark-withTextBackground"
+            textContrast="light-withTextBackground"
             title="Badge Category"
           />
         </Box>

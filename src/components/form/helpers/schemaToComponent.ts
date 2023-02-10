@@ -4,6 +4,7 @@ import TextField from '../TextField'
 import AgreementField from '@/src/components/form/AgreementField'
 import AvatarInput from '@/src/components/form/AvatarInput'
 import CheckBox from '@/src/components/form/CheckBox'
+import DescriptionInputField from '@/src/components/form/DescriptionInputField'
 import DropdownSelect from '@/src/components/form/DropdownSelect'
 import ExpirationField from '@/src/components/form/ExpirationField'
 import FileInput from '@/src/components/form/FileInput'
@@ -18,6 +19,7 @@ import {
   AvatarSchema,
   ChallengePeriodTypeSchema,
   CheckBoxSchema,
+  DescriptionTextSchema,
   EmailSchema,
   ExpirationTypeSchema,
   FileSchema,
@@ -51,5 +53,6 @@ export const mappingSchemaToComponents = [
   [SeverityTypeSchema, SeveritySelector],
   [ExpirationTypeSchema, ExpirationField],
   [ChallengePeriodTypeSchema, NumberField],
+  [DescriptionTextSchema, DescriptionInputField],
   // TODO Add file types
 ] as const // 👈 `as const` is necessary

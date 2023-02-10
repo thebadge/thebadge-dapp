@@ -1,6 +1,17 @@
 import React, { useState } from 'react'
 
-import { Box, Button, Container, styled } from '@mui/material'
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
+import FileUploadIcon from '@mui/icons-material/FileUpload'
+import {
+  AvatarProps,
+  Box,
+  Container,
+  IconButton,
+  Avatar as MUIAvatar,
+  Stack,
+  Typography,
+  styled,
+} from '@mui/material'
 import { useDescription, useTsController } from '@ts-react/form'
 import ImageUploading, { ImageListType } from 'react-images-uploading'
 import { colors } from 'thebadge-ui-library'
@@ -8,6 +19,7 @@ import { z } from 'zod'
 
 import { TextFieldStatus } from '@/src/components/form/TextField'
 import { FormField } from '@/src/components/form/helpers/FormField'
+import { Label } from '@/src/components/form/helpers/Label'
 import { ImageSchema } from '@/src/components/form/helpers/customSchemas'
 
 const Wrapper = styled(Box)(({ theme }) => ({
@@ -17,6 +29,26 @@ const Wrapper = styled(Box)(({ theme }) => ({
   rowGap: theme.spacing(1),
   width: '100%',
   gridColumn: 'span 1 / 4',
+  borderBottom: '1px solid white',
+}))
+
+const ImageDisplayer = styled(MUIAvatar, {
+  shouldForwardProp: (propName) => propName !== 'isDragging',
+})<
+  AvatarProps & {
+    isDragging?: boolean
+  }
+>(({ isDragging }) => ({
+  width: 200,
+  height: 200,
+  borderWidth: 1,
+  backgroundColor: 'transparent',
+  borderColor: isDragging ? colors.green : 'white',
+  borderStyle: 'dashed',
+  '& .blockies-avatar': {
+    height: '100% !important',
+    width: '100% !important',
+  },
 }))
 
 export default function ImageInput() {
@@ -39,10 +71,7 @@ export default function ImageInput() {
     <Wrapper>
       <FormField
         formControl={
-          <Container
-            maxWidth="md"
-            sx={{ display: 'flex', background: 'rgba(0,0,0,0.4)', width: '100%' }}
-          >
+          <Container maxWidth="md" sx={{ display: 'flex', mt: 2, width: '100%' }}>
             <ImageUploading
               dataURLKey="data_url"
               maxNumber={maxNumber}
@@ -59,38 +88,64 @@ export default function ImageInput() {
                 onImageUpload,
               }) => (
                 // write your building UI
-                <Box display="flex" flexDirection="column" sx={{ flex: 1 }}>
+                <Box
+                  display="flex"
+                  flexDirection="column"
+                  sx={{ flex: 1, flexWrap: 'wrap', alignContent: 'center' }}
+                >
                   {imageList.length === 0 && (
-                    <Button
-                      onClick={onImageUpload}
-                      sx={{
-                        height: '50px',
-                        borderWidth: 1,
-                        borderColor: isDragging ? colors.green : colors.grey,
-                        borderStyle: 'dashed',
-                      }}
-                      variant="text"
+                    <ImageDisplayer
+                      isDragging={isDragging}
                       {...dragProps}
+                      onClick={onImageUpload}
+                      sx={{ cursor: 'pointer' }}
                     >
-                      Click or Drop here
-                    </Button>
+                      <Stack sx={{ flex: 1, flexWrap: 'wrap', alignContent: 'center' }}>
+                        <Typography>{'Click here or drop'}</Typography>
+                        <Box display="flex" justifyContent="center">
+                          <FileUploadIcon color="white" />
+                        </Box>
+                      </Stack>
+                    </ImageDisplayer>
                   )}
                   {imageList.map((image, index) => (
                     <Box
                       className="image-item"
                       key={index}
-                      sx={{ display: 'flex', flexDirection: 'row' }}
+                      sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
                     >
-                      <img alt="" src={image['data_url']} width="200" />
+                      <ImageDisplayer
+                        isDragging={isDragging}
+                        onClick={() => onImageUpdate(index)}
+                        {...dragProps}
+                      >
+                        <img alt="" src={image['data_url']} width="150" />
+                      </ImageDisplayer>
                       <Box
+                        alignItems="center"
                         display="flex"
-                        flexDirection="column"
+                        flexDirection="row"
                         justifyContent="space-evenly"
                         marginLeft={2}
                       >
-                        <button onClick={() => onImageUpdate(index)}>Update</button>
+                        <Label>{label}</Label>
+                        <IconButton
+                          aria-label="upload avatar"
+                          color="secondary"
+                          component="label"
+                          onClick={() => onImageUpdate(index)}
+                        >
+                          <FileUploadIcon color="white" />
+                        </IconButton>
 
-                        <button onClick={() => onImageRemove(index)}>Remove</button>
+                        <IconButton
+                          aria-label="use default avatar"
+                          color="error"
+                          component="label"
+                          onClick={() => onImageRemove(index)}
+                        >
+                          <DeleteOutlineIcon />
+                        </IconButton>
                       </Box>
                     </Box>
                   ))}
