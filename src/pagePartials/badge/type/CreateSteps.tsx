@@ -1,8 +1,6 @@
-import { useRef } from 'react'
 import * as React from 'react'
 
-import { Box, Button, Stack, Typography } from '@mui/material'
-import domtoimage from 'dom-to-image'
+import { Stack, Typography } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
 import { BadgePreviewV2 } from 'thebadge-ui-library'
 import { z } from 'zod'
@@ -83,51 +81,27 @@ const formGridLayout: DataGrid[][] = [
 
 export default function CreateSteps({ onSubmit }: MintStepsProps) {
   const { t } = useTranslation()
-  const badgePreviewRef = useRef<HTMLDivElement>()
 
   const handleOnSubmit = (data: z.infer<typeof BadgeTypeCreateSchema>) => {
     onSubmit(data)
-  }
-
-  const convertPreviewToImage = async () => {
-    if (!badgePreviewRef.current) return
-    let previewImageDataUrl
-    try {
-      // Its having and issue with images that has base64 as source
-      previewImageDataUrl = await domtoimage.toPng(badgePreviewRef.current, {
-        cacheBust: true,
-      })
-      console.log(previewImageDataUrl)
-    } catch (e) {
-      console.log(e)
-      return
-    }
-    const link = document.createElement('a')
-    link.download = 'my-badge-preview.jpeg'
-    link.href = previewImageDataUrl
-    link.click()
   }
 
   function handleFormPreview(data: z.infer<typeof BadgeTypeCreateSchema>) {
     return (
       <Stack alignItems="center" gap={3} margin={4}>
         <Typography>This is how your Badge Type is going to look like</Typography>
-        <Box ref={badgePreviewRef}>
-          <BadgePreviewV2
-            animationEffects={['wobble', 'grow', 'glare']}
-            animationOnHover
-            badgeBackgroundUrl="https://images.unsplash.com/photo-1512998844734-cd2cca565822?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTIyfHxhYnN0cmFjdHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
-            badgeUrl="https://www.thebadge.xyz"
-            category="Badge Category"
-            description={data.description}
-            imageUrl={data.logoUri.data_url}
-            size="medium"
-            textContrast="light-withTextBackground"
-            title={data.name}
-          />
-        </Box>
-
-        <Button onClick={convertPreviewToImage}>Convert Preview to Image</Button>
+        <BadgePreviewV2
+          animationEffects={['wobble', 'grow', 'glare']}
+          animationOnHover
+          badgeBackgroundUrl="https://images.unsplash.com/photo-1512998844734-cd2cca565822?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTIyfHxhYnN0cmFjdHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
+          badgeUrl="https://www.thebadge.xyz"
+          category="Badge Category"
+          description={data.description}
+          imageUrl={data.logoUri.data_url}
+          size="medium"
+          textContrast="light-withTextBackground"
+          title={data.name}
+        />
       </Stack>
     )
   }

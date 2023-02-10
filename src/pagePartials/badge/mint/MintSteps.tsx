@@ -1,7 +1,9 @@
+import { useRef } from 'react'
 import * as React from 'react'
 
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
-import { Box, Stack, Tooltip, Typography } from '@mui/material'
+import { Box, Button, Stack, Tooltip, Typography } from '@mui/material'
+import domtoimage from 'dom-to-image'
 import { useTranslation } from 'next-export-i18n'
 import { BadgePreviewV2 } from 'thebadge-ui-library'
 import { AnyZodObject, z } from 'zod'
@@ -45,6 +47,7 @@ export default function MintSteps({
 }: MintStepsProps) {
   const { t } = useTranslation()
   const { address } = useWeb3Connection()
+  const badgePreviewRef = useRef<HTMLDivElement>()
 
   const badgeLogoUri = badgeMetadata.metadata.logoURI
   const badgeLogoData = useS3Metadata<{ s3Url: string }>(badgeLogoUri as unknown as string)
@@ -52,6 +55,24 @@ export default function MintSteps({
 
   const handleOnSubmit = (data: z.infer<typeof evidenceSchema>) => {
     onSubmit(data)
+  }
+
+  const convertPreviewToImage = async () => {
+    if (!badgePreviewRef.current) return
+    let previewImageDataUrl
+    try {
+      previewImageDataUrl = await domtoimage.toPng(badgePreviewRef.current, {
+        cacheBust: true,
+      })
+      console.log(previewImageDataUrl)
+    } catch (e) {
+      console.log(e)
+      return
+    }
+    const link = document.createElement('a')
+    link.download = 'my-badge-preview.jpeg'
+    link.href = previewImageDataUrl
+    link.click()
   }
 
   function handleFormPreview(data: z.infer<typeof evidenceSchema>) {
@@ -65,18 +86,20 @@ export default function MintSteps({
     return (
       <Stack alignItems={'center'} gap={2} margin={1}>
         <Typography>This is how you Badge is going to look like</Typography>
-        <BadgePreviewV2
-          animationEffects={['wobble', 'grow', 'glare']}
-          animationOnHover
-          badgeBackgroundUrl="https://images.unsplash.com/photo-1512998844734-cd2cca565822?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTIyfHxhYnN0cmFjdHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
-          badgeUrl="https://www.thebadge.xyz"
-          category="Badge for Testing"
-          description={enrichTextWithValues(badgeMetadata.description, enrichTextValues)}
-          imageUrl={badgeLogoUrl}
-          size="medium"
-          textContrast="light-withTextBackground"
-          title={badgeMetadata.name}
-        />
+        <Box ref={badgePreviewRef}>
+          <BadgePreviewV2
+            animationEffects={['wobble', 'grow', 'glare']}
+            animationOnHover
+            badgeBackgroundUrl="https://images.unsplash.com/photo-1512998844734-cd2cca565822?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTIyfHxhYnN0cmFjdHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
+            badgeUrl="https://www.thebadge.xyz"
+            category="Badge for Testing"
+            description={enrichTextWithValues(badgeMetadata.description, enrichTextValues)}
+            imageUrl={badgeLogoUrl}
+            size="medium"
+            textContrast="light-withTextBackground"
+            title={badgeMetadata.name}
+          />
+        </Box>
         <Stack>
           <Typography>Mint cost: {costs.mintCost}.</Typography>
           <Box alignItems={'center'} display="flex">
@@ -87,6 +110,7 @@ export default function MintSteps({
           </Box>
           <Typography>Total (Native token) need: {costs.totalMintCost}.</Typography>
         </Stack>
+        <Button onClick={convertPreviewToImage}>Convert Preview to Image</Button>
       </Stack>
     )
   }
