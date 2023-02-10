@@ -1,8 +1,6 @@
-import { ReactElement } from 'react'
 
 import { Box, Typography, styled } from '@mui/material'
 
-import DefaultLayout from '@/src/components/layout/DefaultLayout'
 import CertificationProcess from '@/src/pagePartials/home/CertificationProcess'
 import { useSectionReferences } from '@/src/providers/referencesProvider'
 import { NextPageWithLayout } from '@/types/next'
@@ -30,10 +28,6 @@ const Home: NextPageWithLayout = () => {
       <Section>Claim one of these badges</Section>
     </Box>
   )
-}
-
-Home.getLayout = function getLayout(page: ReactElement) {
-  return <DefaultLayout>{page}</DefaultLayout>
 }
 
 export default Home

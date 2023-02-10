@@ -24,6 +24,9 @@ export const GeneralPageError = ({ error, resetErrorBoundary }: FallbackProps) =
         <Button color="green" onClick={resetErrorBoundary} sx={{ textTransform: 'none', p: 0 }}>
           Try again
         </Button>
+        <Button onClick={() => router.back()} sx={{ textTransform: 'none', p: 0 }}>
+          Click here to go back
+        </Button>
         <Button onClick={() => router.replace('/')} sx={{ textTransform: 'none', p: 0 }}>
           Go to homepage
         </Button>
