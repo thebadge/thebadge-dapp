@@ -1,37 +1,11 @@
-import Image from 'next/image'
 import { ReactElement } from 'react'
 
-import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined'
 import { Box, Typography, styled } from '@mui/material'
 
 import DefaultLayout from '@/src/components/layout/DefaultLayout'
+import CertificationProcess from '@/src/pagePartials/home/CertificationProcess'
 import { useSectionReferences } from '@/src/providers/referencesProvider'
 import { NextPageWithLayout } from '@/types/next'
-
-const CertificationProcess: React.FC = () => {
-  return (
-    <div>
-      <Box display={'flex'} flexDirection={'row'} gap={8} justifyContent={'center'} mb={4}>
-        <Image alt="TheBadge" height="73" src="shareable/choose.svg" width="116" />
-        <Image alt="TheBadge2w" height="73" src="shareable/evidence.svg" width="116" />
-        <Image alt="TheBadge2" height="73" src="shareable/complete.svg" width="116" />
-      </Box>
-      <Typography
-        alignItems={'center'}
-        component="span"
-        display={'flex'}
-        fontSize={12}
-        fontWeight={900}
-        justifyContent={'center'}
-        lineHeight={'15px'}
-        marginBottom={10}
-      >
-        FULL CERTIFICATION PROCESS TUTORIAL
-        <ArrowForwardIosOutlinedIcon />
-      </Typography>
-    </div>
-  )
-}
 
 const Section = styled('div')(({ theme }) => ({
   border: `1px solid ${theme.palette.white}`,
