@@ -15,6 +15,7 @@ function MyCustomFormComponent({
   buttonDisabled,
   buttonLabel = 'Submit',
   children,
+  draggable,
   gridStructure,
   layout = 'flex',
   onSubmit,
