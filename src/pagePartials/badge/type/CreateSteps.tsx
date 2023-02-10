@@ -31,7 +31,7 @@ const MintSchemaStep2 = z.object({
     'Description // This description will be showed on the Badge itself, you can use some helpers to inject user information on it.',
   ),
   logoUri: ImageSchema.describe(
-    'The logo for your badge type // This Logo will be on the center part of the Badge itself.',
+    'The logo for your badge type // This Logo will be on the center part of the Badge itself. Recommended images with aspect ratio of 1.',
   ),
   criteriaFileUri: FileSchema.describe('PDF with the requirements to mint a badge. // ??'),
   challengePeriodDuration: ChallengePeriodTypeSchema.describe(
@@ -72,11 +72,11 @@ const formGridLayout: DataGrid[][] = [
     { i: 'TextField', x: 0, y: 0, w: 3, h: 1, static: true },
     { i: 'DescriptionTextSchema', x: 0, y: 1.5, w: 3, h: 3, static: true },
     { i: 'ImageInput', x: 3, y: 0, w: 3, h: 3.5, static: true },
-    { i: 'FileInput', x: 2, y: 4, w: 3, h: 3, static: true },
-    { i: 'NumberField', x: 0, y: 7, w: 3, h: 1, static: true },
-    { i: 'SeveritySelector', x: 3, y: 7, w: 3, h: 1, static: true },
-    { i: 'NumberField', x: 0, y: 8, w: 3, h: 1, static: true },
-    { i: 'NumberField', x: 3, y: 8, w: 3, h: 1, static: true },
+    { i: 'FileInput', x: 2, y: 4.5, w: 3, h: 3, static: true },
+    { i: 'NumberField', x: 0, y: 7.5, w: 3, h: 1, static: true },
+    { i: 'SeveritySelector', x: 3, y: 7.5, w: 3, h: 1, static: true },
+    { i: 'NumberField', x: 0, y: 8.5, w: 3, h: 1, static: true },
+    { i: 'NumberField', x: 3, y: 8.5, w: 3, h: 1, static: true },
   ],
   [{ i: 'KlerosDynamicFormField', x: 0, y: 0, w: 6, h: 10, static: true }],
 ]
@@ -118,12 +118,12 @@ export default function CreateSteps({ onSubmit }: MintStepsProps) {
             animationOnHover
             badgeBackgroundUrl="https://images.unsplash.com/photo-1512998844734-cd2cca565822?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTIyfHxhYnN0cmFjdHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
             badgeUrl="https://www.thebadge.xyz"
-            category={data.name}
+            category="Badge Category"
             description={data.description}
             imageUrl={data.logoUri.data_url}
             size="medium"
             textContrast="light-withTextBackground"
-            title="Badge Category"
+            title={data.name}
           />
         </Box>
 

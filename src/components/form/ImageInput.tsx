@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
 import FileUploadIcon from '@mui/icons-material/FileUpload'
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import {
   AvatarProps,
   Box,
@@ -9,6 +10,7 @@ import {
   IconButton,
   Avatar as MUIAvatar,
   Stack,
+  Tooltip,
   Typography,
   styled,
 } from '@mui/material'
@@ -53,7 +55,7 @@ const ImageDisplayer = styled(MUIAvatar, {
 
 export default function ImageInput() {
   const { error, field } = useTsController<z.infer<typeof ImageSchema>>()
-  const { label } = useDescription()
+  const { label, placeholder } = useDescription()
   const [images, setImages] = useState<ImageListType>(field.value ? [field.value] : [])
   const maxNumber = 1
 
@@ -101,7 +103,9 @@ export default function ImageInput() {
                       sx={{ cursor: 'pointer' }}
                     >
                       <Stack sx={{ flex: 1, flexWrap: 'wrap', alignContent: 'center' }}>
-                        <Typography>{'Click here or drop'}</Typography>
+                        <Typography color="text.primary" variant="subtitle2">
+                          Click here or drop
+                        </Typography>
                         <Box display="flex" justifyContent="center">
                           <FileUploadIcon color="white" />
                         </Box>
@@ -164,7 +168,14 @@ export default function ImageInput() {
             </ImageUploading>
           </Container>
         }
-        label={label}
+        label={
+          <Typography>
+            {label}
+            <Tooltip title={placeholder}>
+              <InfoOutlinedIcon sx={{ ml: 1 }} />
+            </Tooltip>
+          </Typography>
+        }
         status={error ? TextFieldStatus.error : TextFieldStatus.success}
         statusText={error?.errorMessage}
       />
