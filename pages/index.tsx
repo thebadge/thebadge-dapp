@@ -1,4 +1,3 @@
-
 import { Box, Typography, styled } from '@mui/material'
 
 import CertificationProcess from '@/src/pagePartials/home/CertificationProcess'
