@@ -62,7 +62,7 @@
     "remark-gfm": "^3.0.1",
     "sanitize.css": "^13.0.0",
     "swr": "^2.0.0",
-    "thebadge-ui-library": "^1.2.4",
+    "thebadge-ui-library": "^1.3.1",
     "wagmi": "^0.10.3",
     "zod": "^3.20.2"
   },
