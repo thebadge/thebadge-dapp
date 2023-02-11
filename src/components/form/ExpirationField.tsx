@@ -25,7 +25,7 @@ const Wrapper = styled(Box)(({ theme }) => ({
   display: 'flex',
   flex: 1,
   flexDirection: 'row',
-  justifyContent: 'end',
+  justifyContent: 'space-between',
   position: 'relative',
   rowGap: theme.spacing(1),
 }))
@@ -71,6 +71,7 @@ export default function ExpirationField() {
               ),
             }}
             color="secondary"
+            label={label}
             onChange={onChange}
             sx={{ justifyContent: 'end' }}
             value={stringValue}
@@ -94,7 +95,6 @@ export default function ExpirationField() {
           </MUISelect>
         </Wrapper>
       }
-      label={label}
       labelPosition={'top'}
       status={error ? TextFieldStatus.error : TextFieldStatus.success}
       statusText={error ? error?.errorMessage : ' '}

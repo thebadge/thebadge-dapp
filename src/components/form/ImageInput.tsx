@@ -21,7 +21,6 @@ import { z } from 'zod'
 
 import { TextFieldStatus } from '@/src/components/form/TextField'
 import { FormField } from '@/src/components/form/helpers/FormField'
-import { Label } from '@/src/components/form/helpers/Label'
 import { ImageSchema } from '@/src/components/form/helpers/customSchemas'
 
 const Wrapper = styled(Box)(({ theme }) => ({
@@ -40,9 +39,10 @@ const ImageDisplayer = styled(MUIAvatar, {
   AvatarProps & {
     isDragging?: boolean
   }
->(({ isDragging }) => ({
+>(({ isDragging, theme }) => ({
   width: 200,
   height: 200,
+  borderRadius: theme.spacing(2),
   borderWidth: 1,
   backgroundColor: 'transparent',
   borderColor: isDragging ? colors.green : 'white',
@@ -132,7 +132,6 @@ export default function ImageInput() {
                         justifyContent="space-evenly"
                         marginLeft={2}
                       >
-                        <Label>{label}</Label>
                         <IconButton
                           aria-label="upload avatar"
                           color="secondary"

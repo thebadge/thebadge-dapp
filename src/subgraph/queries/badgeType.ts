@@ -70,6 +70,26 @@ export const MY_BADGE_TYPES = gql`
   }
 `
 
+export const BADGE_BY_ID = gql`
+  query badgeById($id: ID!) {
+    badge(id: $id) {
+      id
+      status
+      reviewDueDate
+      evidenceMetadataUrl
+      badgeType {
+        validFor
+        paused
+        mintCost
+        metadataURL
+        id
+        controllerName
+        badgesMintedAmount
+      }
+    }
+  }
+`
+
 // export const EXAMPLE_QUERY_BY_ID = gql`
 //   query exampleById($id: ID!) {
 //     example(id: $id) {
