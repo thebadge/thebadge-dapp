@@ -1,5 +1,6 @@
 import { useSearchParams } from 'next/navigation'
 
+import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined'
 import { Box, Divider, Stack, Typography } from '@mui/material'
 import { colors } from 'thebadge-ui-library'
 
@@ -59,6 +60,10 @@ const ViewBadge: NextPageWithLayout = () => {
           </Stack>
           <Divider color={colors.white} />
           <Typography>{badgeType?.badgesMintedAmount} # of claims</Typography>
+          <Box display="flex" justifyContent="space-between">
+            <Typography>Check who else claimed it SEE ALL</Typography>
+            <ShareOutlinedIcon />
+          </Box>
         </Stack>
       </Box>
     </>
