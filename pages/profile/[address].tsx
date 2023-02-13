@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 
 import { Box, Stack, Typography } from '@mui/material'
 import dayjs from 'dayjs'
+import { useTranslation } from 'next-export-i18n'
 import { colors } from 'thebadge-ui-library'
 
 import LinkWithTranslation from '@/src/components/helpers/LinkWithTranslation'
@@ -12,6 +13,8 @@ import { SubgraphName, getSubgraphSdkByNetwork } from '@/src/subgraph/subgraph'
 import { NextPageWithLayout } from '@/types/next'
 
 const Profile: NextPageWithLayout = () => {
+  const { t } = useTranslation()
+
   const { address, appChainId } = useWeb3Connection()
   const searchParams = useSearchParams()
   const router = useRouter()
@@ -32,18 +35,15 @@ const Profile: NextPageWithLayout = () => {
       <Stack sx={{ mb: 6, gap: 4, alignItems: 'center' }}>
         <Typography textAlign="center" variant="subtitle2">
           {address === addressOnUrl
-            ? 'This is your profile'
-            : `This is the profile of ${addressOnUrl}`}
-        </Typography>
-
-        <Typography textAlign="justify" variant="body4">
-          Here you can see the minted badges
+            ? t('profile.title')
+            : t('profile.titleOf', { address: addressOnUrl })}
         </Typography>
       </Stack>
       <Box>
         <Typography color={colors.green} textAlign="center" variant="title2">
-          Badges that you own
+          {t('profile.badgesYouOwn')}
         </Typography>
+        {/*TODO Add the real display UI */}
         {badges.map((bt) => {
           return (
             <Box

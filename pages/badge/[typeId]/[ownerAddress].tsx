@@ -2,6 +2,7 @@ import { useSearchParams } from 'next/navigation'
 
 import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined'
 import { Box, Divider, Stack, Typography } from '@mui/material'
+import { useTranslation } from 'next-export-i18n'
 import { colors } from 'thebadge-ui-library'
 
 import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
@@ -11,6 +12,7 @@ import { SubgraphName, getSubgraphSdkByNetwork } from '@/src/subgraph/subgraph'
 import { NextPageWithLayout } from '@/types/next'
 
 const ViewBadge: NextPageWithLayout = () => {
+  const { t } = useTranslation()
   const { appChainId } = useWeb3Connection()
 
   const searchParams = useSearchParams()
@@ -32,16 +34,17 @@ const ViewBadge: NextPageWithLayout = () => {
           <Stack gap={2}>
             <Typography
               sx={{
-                color: '#22DBBD',
+                color: colors.green,
                 fontSize: '25px !important',
                 fontWeight: 'bold',
                 textShadow: '0px 0px 7px rgba(51, 255, 204, 0.6)',
               }}
             >
+              {/* TODO Replace with Badge real name */}
               Title Github Passport
             </Typography>
             <Typography
-              sx={{ color: '#22DBBD', fontSize: 10, fontWeight: 'bold' }}
+              sx={{ color: colors.green, fontSize: 10, fontWeight: 'bold' }}
               variant="caption"
             >
               BadgeID: {typeId}
@@ -49,8 +52,11 @@ const ViewBadge: NextPageWithLayout = () => {
           </Stack>
           <Divider color={colors.white} />
           <Stack gap={2}>
-            <Typography variant="body2">Issued by: TheBadge</Typography>
             <Typography variant="body2">
+              {t('badge.viewBadge.issueBy', { issuer: 'TheBadge' })}
+            </Typography>
+            <Typography variant="body2">
+              {/* TODO Replace with Badge real description */}
               Minting your GitHub Passport is the first step to getting started with
               Proof-of-Talent. Claim the badge by connecting your GitHub account to Kleoverse and
               prove it is you who’s earning credentials. GitHub is where over 83 million developers
@@ -59,9 +65,12 @@ const ViewBadge: NextPageWithLayout = () => {
             </Typography>
           </Stack>
           <Divider color={colors.white} />
-          <Typography>{badgeType?.badgesMintedAmount} # of claims</Typography>
+          <Typography>
+            {badgeType?.badgesMintedAmount}
+            {t('badge.viewBadge.claims')}
+          </Typography>
           <Box display="flex" justifyContent="space-between">
-            <Typography>Check who else claimed it SEE ALL</Typography>
+            <Typography>{t('badge.viewBadge.checkHowElse')}</Typography>
             <ShareOutlinedIcon />
           </Box>
         </Stack>

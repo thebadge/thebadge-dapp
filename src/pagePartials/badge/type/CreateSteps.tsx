@@ -89,7 +89,7 @@ export default function CreateSteps({ onSubmit }: MintStepsProps) {
   function handleFormPreview(data: z.infer<typeof BadgeTypeCreateSchema>) {
     return (
       <Stack alignItems="center" gap={3} margin={4}>
-        <Typography>This is how your Badge Type is going to look like</Typography>
+        <Typography>{t('badge.type.create.previewTitle')}</Typography>
         <BadgePreviewV2
           animationEffects={['wobble', 'grow', 'glare']}
           animationOnHover

@@ -44,8 +44,8 @@ const ImageDisplayer = styled(MUIAvatar, {
   height: 200,
   borderRadius: theme.spacing(2),
   borderWidth: 1,
-  backgroundColor: 'transparent',
-  borderColor: isDragging ? colors.green : 'white',
+  backgroundColor: colors.transparent,
+  borderColor: isDragging ? colors.green : colors.white,
   borderStyle: 'dashed',
   '& .blockies-avatar': {
     height: '100% !important',

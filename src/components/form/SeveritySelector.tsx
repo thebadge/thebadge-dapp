@@ -22,18 +22,7 @@ const Wrapper = styled(Box)(({ theme }) => ({
 
 const CustomSlider = styled(Slider)({
   height: '5px',
-  '& .MuiSlider-thumb': {
-    [`&:hover, &.Mui-focusVisible`]: {
-      //  boxShadow: '0px 0px 0px 8px var(--box-shadow)',
-    },
-    [`&.Mui-active`]: {
-      //  boxShadow: '0px 0px 0px 14px var(--box-shadow)',
-    },
-  },
   '& .MuiSlider-track': {
-    [`&:hover, &.Mui-focusVisible`]: {
-      //  boxShadow: '0px 0px 0px 8px var(--box-shadow)',
-    },
     background: gradients.gradientHeader,
     border: 'none',
   },
@@ -44,10 +33,6 @@ const marks = [
     value: 1,
     label: Severity_Keys[0],
   },
-  //{
-  //  value: 3,
-  //  label: Severity_Keys[1],
-  //},
   {
     value: 5,
     label: Severity_Keys[2],

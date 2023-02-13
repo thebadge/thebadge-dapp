@@ -85,7 +85,7 @@ export default function MintSteps({
 
     return (
       <Stack alignItems={'center'} gap={2} margin={1}>
-        <Typography>This is how you Badge is going to look like</Typography>
+        <Typography>{t('badge.type.mint.previewTitle')}</Typography>
         <Box ref={badgePreviewRef}>
           <BadgePreviewV2
             animationEffects={['wobble', 'grow', 'glare']}
@@ -101,15 +101,16 @@ export default function MintSteps({
           />
         </Box>
         <Stack>
-          <Typography>Mint cost: {costs.mintCost}.</Typography>
+          <Typography>{t('badge.type.mint.mintCost', { cost: costs.mintCost })}</Typography>
           <Box alignItems={'center'} display="flex">
-            Deposit for Kleros: {costs.klerosCost}.
-            <Tooltip title={'This will be returned if the evidence is valid'}>
+            {t('badge.type.mint.depositCost', { cost: costs.klerosCost })}
+            <Tooltip title={t('badge.type.mint.depositTooltip')}>
               <InfoOutlinedIcon />
             </Tooltip>
           </Box>
-          <Typography>Total (Native token) need: {costs.totalMintCost}.</Typography>
+          <Typography>{t('badge.type.mint.totalCost', { cost: costs.totalMintCost })}</Typography>
         </Stack>
+        {/* TODO Remove button, use the logic to send the image as mint data */}
         <Button onClick={convertPreviewToImage}>Convert Preview to Image</Button>
       </Stack>
     )
