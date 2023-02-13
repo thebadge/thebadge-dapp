@@ -1,28 +1,8 @@
-import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined'
 import { Box, Typography, styled } from '@mui/material'
 
+import CertificationProcess from '@/src/pagePartials/home/CertificationProcess'
 import { useSectionReferences } from '@/src/providers/referencesProvider'
 import { NextPageWithLayout } from '@/types/next'
-
-const CertificationProcess: React.FC = () => {
-  return (
-    <div>
-      <Typography
-        alignItems={'center'}
-        component="span"
-        display={'flex'}
-        fontSize={12}
-        fontWeight={900}
-        justifyContent={'center'}
-        lineHeight={'15px'}
-        marginBottom={10}
-      >
-        FULL CERTIFICATION PROCESS TUTORIAL
-        <ArrowForwardIosOutlinedIcon />
-      </Typography>
-    </div>
-  )
-}
 
 const Section = styled('div')(({ theme }) => ({
   border: `1px solid ${theme.palette.white}`,
