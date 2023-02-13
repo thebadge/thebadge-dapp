@@ -1,7 +1,11 @@
 import { ReactElement } from 'react'
 
+import { ArrowForwardIos } from '@mui/icons-material'
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined'
 import { Box, Divider, Typography, styled, useTheme } from '@mui/material'
+import { A11y, Navigation } from 'swiper'
+import { Swiper, SwiperSlide, useSwiper } from 'swiper/react'
 import {
   BadgePreviewV2,
   ButtonV2,
@@ -13,6 +17,10 @@ import {
 import DefaultLayout from '@/src/components/layout/DefaultLayout'
 import { useSectionReferences } from '@/src/providers/referencesProvider'
 import { NextPageWithLayout } from '@/types/next'
+// Import Swiper styles
+import 'swiper/css'
+import 'swiper/css/navigation'
+import 'swiper/css/pagination'
 
 const CertificationProcess: React.FC = () => {
   return (
@@ -63,6 +71,7 @@ const badgeExample = (
     }}
   ></BadgePreviewV2>
 )
+const badgesExampleList = [badgeExample, badgeExample, badgeExample, badgeExample, badgeExample]
 
 const ClaimBadges = () => {
   const theme = useTheme()
@@ -95,52 +104,82 @@ const ClaimBadges = () => {
         </ButtonV2>
       </SectionTitleBox>
       <Divider color={'#BDBDBD'} />
-      <ResizedBadgePreviewsList
-        badges={[badgeExample, badgeExample, badgeExample, badgeExample, badgeExample]}
-        sx={{ scale: '0.5 !important' }}
-      />
+      <ResizedBadgePreviewsList badges={badgesExampleList} sx={{ scale: '0.5 !important' }} />
     </SectionBox>
   )
 }
 
-const EarnByCurating = () => (
-  <SectionBox>
-    <SectionTitleBox>
-      <Box>
-        <Typography variant={'caption'}>Become a Curator</Typography>
-        <Typography fontSize={'25px'} fontWeight={700} lineHeight={'30px'} mb={2.5}>
-          Earn by Curating
-        </Typography>
-      </Box>
+const EarnByCurating = () => {
+  const swiper = useSwiper()
 
-      <ButtonV2
-        sx={{
-          color: colors.black,
-          backgroundColor: colors.transparent,
-          borderRadius: '10px',
-          fontSize: '11px !important',
-          padding: '0.5rem 1rem !important',
-          height: 'fit-content !important',
-          lineHeight: '14px',
-          fontWeight: 700,
-          boxShadow: 'none',
-          border: `1px solid ${colors.black}`,
-          '&:hover': {
+  return (
+    <SectionBox>
+      <SectionTitleBox>
+        <Box>
+          <Typography variant={'caption'}>Become a Curator</Typography>
+          <Typography fontSize={'25px'} fontWeight={700} lineHeight={'30px'} mb={2.5}>
+            Earn by Curating
+          </Typography>
+        </Box>
+
+        <ButtonV2
+          sx={{
+            color: colors.black,
             backgroundColor: colors.transparent,
-            border: `1px solid ${colors.white}`,
-            color: colors.white,
-          },
-        }}
-      >
-        LEARN MORE
-      </ButtonV2>
-    </SectionTitleBox>
+            borderRadius: '10px',
+            fontSize: '11px !important',
+            padding: '0.5rem 1rem !important',
+            height: 'fit-content !important',
+            lineHeight: '14px',
+            fontWeight: 700,
+            boxShadow: 'none',
+            border: `1px solid ${colors.black}`,
+            '&:hover': {
+              backgroundColor: colors.transparent,
+              border: `1px solid ${colors.white}`,
+              color: colors.white,
+            },
+          }}
+        >
+          LEARN MORE
+        </ButtonV2>
+      </SectionTitleBox>
 
-    <Box sx={{ padding: 5, display: 'flex', justifyContent: 'center' }}>
-      ---- INSERT SWIPER WITH BADGES ----
-    </Box>
-  </SectionBox>
-)
+      <Box sx={{ padding: 4, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <ArrowBackIosIcon
+          className={'badges-swiper-button-prev'}
+          sx={{
+            mr: '1rem',
+            height: '35px',
+            width: '35px',
+          }}
+        />
+        <Swiper
+          modules={[Navigation, A11y]}
+          navigation={{
+            nextEl: '.badges-swiper-button-next',
+            prevEl: '.badges-swiper-button-prev',
+          }}
+          pagination={{ clickable: true }}
+          slidesPerView={4}
+          spaceBetween={25}
+        >
+          {badgesExampleList.map((badge, index) => (
+            <SwiperSlide key={'swiper-badge-' + index}>{badge}</SwiperSlide>
+          ))}
+        </Swiper>
+        <ArrowForwardIos
+          className={'badges-swiper-button-next'}
+          sx={{
+            ml: '1rem',
+            height: '35px',
+            width: '35px',
+          }}
+        />
+      </Box>
+    </SectionBox>
+  )
+}
 
 const BadgeCreator = () => (
   <Box
@@ -150,12 +189,13 @@ const BadgeCreator = () => (
       flexDirection: 'column',
       placeContent: 'center',
       textAlign: 'center',
-      minHeight: '200px'
+      minHeight: '200px',
     }}
   >
     <Typography color={colors.pink} variant="h4">
       Badge Creator
     </Typography>
+    <Typography sx={{}}></Typography>
   </Box>
 )
 
@@ -167,7 +207,7 @@ const ThirdParty = () => (
       flexDirection: 'column',
       placeContent: 'center',
       textAlign: 'center',
-      minHeight: '200px'
+      minHeight: '200px',
     }}
   >
     <Typography color={colors.green} variant="h4">
@@ -236,7 +276,6 @@ const Home: NextPageWithLayout = () => {
           sx={{ borderWidth: '2px' }}
         />
       </Box>
-
     </Box>
   )
 }
