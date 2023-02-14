@@ -1,5 +1,4 @@
 import { useRouter } from 'next/router'
-import { ReactElement } from 'react'
 
 import { Stack, Typography } from '@mui/material'
 import { ethers } from 'ethers'
@@ -7,7 +6,7 @@ import { useTranslation } from 'next-export-i18n'
 import { colors } from 'thebadge-ui-library'
 import { z } from 'zod'
 
-import DefaultLayout from '@/src/components/layout/DefaultLayout'
+import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
 import useTransaction from '@/src/hooks/useTransaction'
 import RegistrationSteps, {
@@ -37,14 +36,19 @@ const Register: NextPageWithLayout = () => {
   const theBadge = useContractInstance(TheBadge__factory, 'TheBadge')
 
   const gql = getSubgraphSdkByNetwork(appChainId, SubgraphName.TheBadge)
-  const creatorByAddress = gql.useEmitter({ id: address || ethers.constants.AddressZero })
+  const userProfile = gql.useUserById({
+    id: address || ethers.constants.AddressZero,
+  })
 
   async function onSubmit(data: z.infer<typeof RegisterCuratorSchema>) {
     if (!address) {
       throw Error('Web3 address not provided')
     }
     const uploadedInfo = await ipfsUpload({
-      attributes: data,
+      attributes: {
+        ...data,
+        logo: { mimeType: data.logo?.file.type, base64File: data.logo?.data_url },
+      },
       filePaths: ['logo'],
     })
 
@@ -57,8 +61,7 @@ const Register: NextPageWithLayout = () => {
     router.push('/creator/profile')
   }
 
-  // TODO Fix it creatorByAddress.data?.emitter
-  if (creatorByAddress.data) {
+  if (userProfile.data?.user?.isCreator) {
     router.push('/creator/profile')
   }
 
@@ -82,8 +85,4 @@ const Register: NextPageWithLayout = () => {
   )
 }
 
-Register.getLayout = function getLayout(page: ReactElement) {
-  return <DefaultLayout>{page}</DefaultLayout>
-}
-
-export default Register
+export default withPageGenericSuspense(Register)

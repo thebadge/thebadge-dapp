@@ -1,7 +1,7 @@
 import { MetadataColumn } from '@/types/kleros/types'
 import { BackendFileUpload } from '@/types/utils'
 
-type klerosListStructure = {
+export type klerosListStructure = {
   name: string
   title: string
   description: string

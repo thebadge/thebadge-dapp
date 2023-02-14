@@ -1,4 +1,4 @@
-import { ReactElement, useCallback } from 'react'
+import { useCallback } from 'react'
 
 import { Stack, Typography } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
@@ -15,7 +15,7 @@ import {
   SeverityTypeSchema,
   TokenInputSchema,
 } from '@/src/components/form/helpers/customSchemas'
-import DefaultLayout from '@/src/components/layout/DefaultLayout'
+import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import { NextPageWithLayout } from '@/types/next'
 
 const RegisterCuratorSchema = z.object({
@@ -82,8 +82,4 @@ const Register: NextPageWithLayout = () => {
   )
 }
 
-Register.getLayout = function getLayout(page: ReactElement) {
-  return <DefaultLayout>{page}</DefaultLayout>
-}
-
-export default Register
+export default withPageGenericSuspense(Register)

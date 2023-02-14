@@ -1,8 +1,6 @@
-import { ReactElement } from 'react'
-
 import { Typography } from '@mui/material'
 
-import DefaultLayout from '@/src/components/layout/DefaultLayout'
+import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import { NextPageWithLayout } from '@/types/next'
 
 const ViewBadge: NextPageWithLayout = () => {
@@ -19,8 +17,4 @@ const ViewBadge: NextPageWithLayout = () => {
   )
 }
 
-ViewBadge.getLayout = function getLayout(page: ReactElement) {
-  return <DefaultLayout>{page}</DefaultLayout>
-}
-
-export default ViewBadge
+export default withPageGenericSuspense(ViewBadge)

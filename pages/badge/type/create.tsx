@@ -1,5 +1,3 @@
-import { ReactElement } from 'react'
-
 import { Stack, Typography } from '@mui/material'
 import { constants } from 'ethers'
 import { defaultAbiCoder, parseUnits } from 'ethers/lib/utils'
@@ -18,7 +16,7 @@ import {
   SeverityTypeSchema,
 } from '@/src/components/form/helpers/customSchemas'
 import { isMetadataColumnArray } from '@/src/components/form/helpers/validators'
-import DefaultLayout from '@/src/components/layout/DefaultLayout'
+import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import { contracts } from '@/src/contracts/contracts'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
@@ -33,6 +31,7 @@ export const BadgeTypeCreateSchema = z.object({
   description: LongTextSchema.describe('description // ??'),
   logoUri: ImageSchema.describe('The logo for your badge type // ??'),
   criteriaFileUri: FileSchema.describe('PDF with the requirements to mint a badge. // ??'),
+  // TODO: make this input its own schema. Validate number required and > 1
   challengePeriodDuration: NumberSchema.describe(
     'Challenge period duration // Challenge period duration in days. During this time the community can analyze the evidence and challenge it.',
   ),
@@ -65,14 +64,13 @@ const CreateBadgeType: NextPageWithLayout = () => {
     const { clearing, registration } = generateKlerosListMetaEvidence(
       name, //badgeName
       {
-        fileName: 'fileURI',
         mimeType: criteriaFileUri?.file.type,
         base64File: criteriaFileUri?.data_url,
       }, //criteriaFileUri
       name, //badgeTypeName
       description, //badgeTypeDescription
       badgeMetadataColumns, //badgeMetadataColumns
-      { fileName: 'logoURI', mimeType: logoUri?.file.type, base64File: logoUri?.data_url }, //badgeTypeLogoUri
+      { mimeType: logoUri?.file.type, base64File: logoUri?.data_url }, //badgeTypeLogoUri
     )
     const registrationIPFSUploaded = await ipfsUpload({
       attributes: registration,
@@ -140,8 +138,8 @@ const CreateBadgeType: NextPageWithLayout = () => {
         metadata: `ipfs://${badgeTypeIPFSUploaded.result?.ipfsHash}`, // TODO: should we use a custom one? or the one for TCR is ok?
         controllerName: 'kleros',
         mintCost: parseUnits(data.mintCost.toString(), 18),
-        mintFee: 0, // TODO: this is a legacy field that is not used in the SC, will be removed in a newer deploy
-        validFor: 60 * 10, // data.challengePeriodDuration, // in seconds, 0 infinite
+        mintFee: 0, // TODO: remove
+        validFor: data.validFor, // in seconds, 0 infinite
       },
       klerosControllerDataEncoded,
     )
@@ -176,8 +174,4 @@ const CreateBadgeType: NextPageWithLayout = () => {
   )
 }
 
-CreateBadgeType.getLayout = function getLayout(page: ReactElement) {
-  return <DefaultLayout>{page}</DefaultLayout>
-}
-
-export default CreateBadgeType
+export default withPageGenericSuspense(CreateBadgeType)

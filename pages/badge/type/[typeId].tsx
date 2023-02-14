@@ -1,9 +1,8 @@
 import { useSearchParams } from 'next/navigation'
-import { ReactElement } from 'react'
 
 import { Typography } from '@mui/material'
 
-import DefaultLayout from '@/src/components/layout/DefaultLayout'
+import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import { NextPageWithLayout } from '@/types/next'
 
 const TypePreview: NextPageWithLayout = () => {
@@ -22,8 +21,4 @@ const TypePreview: NextPageWithLayout = () => {
   )
 }
 
-TypePreview.getLayout = function getLayout(page: ReactElement) {
-  return <DefaultLayout>{page}</DefaultLayout>
-}
-
-export default TypePreview
+export default withPageGenericSuspense(TypePreview)
