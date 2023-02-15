@@ -57,7 +57,7 @@
     "react-images-uploading": "^3.1.7",
     "sanitize.css": "^13.0.0",
     "swr": "^2.0.0",
-    "thebadge-ui-library": "^1.3.3",
+    "thebadge-ui-library": "^1.3.4",
     "wagmi": "^0.10.3",
     "zod": "^3.20.2"
   },

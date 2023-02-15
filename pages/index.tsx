@@ -50,7 +50,7 @@ const SectionTitleBox = styled('div')(({ theme }) => ({
   alignItems: 'center',
 }))
 
-// replace this with badges obtained from backend
+// TODO replace this with badges obtained from backend
 const badgeExample = (
   <BadgePreviewV2
     {...{
@@ -85,9 +85,9 @@ const ClaimBadges = () => {
           Claim one of these badges
         </Typography>
         <ButtonV2
+          backgroundColor={theme.palette.button.backgroundBlue.main}
+          fontColor={'#0D0D0D'}
           sx={{
-            color: '#0D0D0D',
-            backgroundColor: `${theme.palette.button.backgroundBlue.main}`,
             borderRadius: '10px',
             fontSize: '11px !important',
             padding: '0.5rem 1rem !important',
@@ -101,7 +101,10 @@ const ClaimBadges = () => {
         </ButtonV2>
       </SectionTitleBox>
       <Divider color={'#BDBDBD'} />
-      <ResizedBadgePreviewsList badges={badgesExampleList} sx={{ scale: '0.5 !important' }} />
+      <ResizedBadgePreviewsList
+        badges={badgesExampleList}
+        sx={{ mt: 3, padding: 0, scale: '0.9 !important' }}
+      />
     </SectionBox>
   )
 }
@@ -117,9 +120,9 @@ const EarnByCurating = () => (
       </Box>
 
       <ButtonV2
+        backgroundColor={colors.transparent}
+        fontColor={colors.black}
         sx={{
-          color: colors.black,
-          backgroundColor: colors.transparent,
           borderRadius: '10px',
           fontSize: '11px !important',
           padding: '0.5rem 1rem !important',
@@ -180,8 +183,9 @@ const BadgeCreator = () => (
     display={'flex'}
     flex={1}
     flexDirection={'column'}
-    justifyContent={'center'}
-    padding={4}
+    justifyContent={'space-between'}
+    paddingX={5}
+    paddingY={5}
   >
     <Typography
       color={colors.pink}
@@ -232,10 +236,10 @@ const BadgeCreator = () => (
       Learn more
     </Typography>
     <ButtonV2
+      backgroundColor={colors.pink}
+      fontColor={colors.white}
       sx={{
-        mt: 5,
-        color: colors.white,
-        backgroundColor: colors.pink,
+        mt: 4,
         borderRadius: '10px',
         fontSize: '12px !important',
         padding: '0.5rem 1rem !important',
@@ -252,18 +256,53 @@ const BadgeCreator = () => (
 
 const ThirdParty = () => (
   <Box
-    style={{
-      display: 'flex',
-      flex: 1,
-      flexDirection: 'column',
-      placeContent: 'center',
-      textAlign: 'center',
-      minHeight: '200px',
-    }}
+    alignItems={'center'}
+    display={'flex'}
+    flex={1}
+    flexDirection={'column'}
+    justifyContent={'space-between'}
+    paddingX={10}
+    paddingY={5}
   >
-    <Typography color={colors.green} variant="h4">
-      Third Party
+    <Typography color={'#22dbbd'} component={'span'} variant="h5">
+      Are you willing to emit on-chan certificates as a <b>third-party entity?</b>
     </Typography>
+    <Typography
+      component={'div'}
+      fontSize={'12px !important'}
+      fontWeight={600}
+      lineHeight={'16px'}
+      mt={2}
+    >
+      Also known as "Blockchain certifications as a service". These are badges generated and backed
+      by a public or private entity. Entities that are willing to generate these badges have to be
+      registered on the platform before they can start emitting them.
+    </Typography>
+    <Typography
+      component={'span'}
+      fontSize={'12px !important'}
+      fontWeight={700}
+      lineHeight={'14px'}
+      mt={2}
+    >
+      Learn more
+    </Typography>
+    <ButtonV2
+      backgroundColor={'#22dbbd'}
+      fontColor={colors.black}
+      sx={{
+        mt: 4,
+        borderRadius: '10px',
+        fontSize: '12px !important',
+        padding: '0.5rem 1rem !important',
+        height: 'fit-content !important',
+        lineHeight: '14px',
+        fontWeight: 700,
+        boxShadow: 'none',
+      }}
+    >
+      BECOME A THIRD PARTY
+    </ButtonV2>
   </Box>
 )
 
@@ -292,6 +331,7 @@ const Home: NextPageWithLayout = () => {
           boxShadow: `0px 0px 6px ${theme.palette.mainMenu.boxShadow.main}`,
           borderWidth: 'inherit !important',
           mb: '3rem',
+          borderRadius: '15px !important',
         }}
       />
 
@@ -310,7 +350,6 @@ const Home: NextPageWithLayout = () => {
       <Box
         sx={{
           display: 'flex',
-          columnGap: '16px',
           justifyContent: 'center',
           columnGap: '40px',
         }}
@@ -319,13 +358,13 @@ const Home: NextPageWithLayout = () => {
           backgroundColor={colors.transparent}
           borderColor={colors.pink}
           components={[{ component: <BadgeCreator /> }]}
-          sx={{ borderWidth: '2px' }}
+          sx={{ borderRadius: '15px !important', borderWidth: '2px' }}
         />
         <SectionLayout
-          backgroundColor={colors.transparent}
-          borderColor={colors.green}
+          backgroundColor={colors.white}
+          borderColor={colors.transparent}
           components={[{ component: <ThirdParty /> }]}
-          sx={{ borderWidth: '2px' }}
+          sx={{ borderRadius: '15px !important', boxShadow: '0px 0px 6px rgba(0, 0, 0, 0.3)' }}
         />
       </Box>
     </Box>
