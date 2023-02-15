@@ -1,5 +1,5 @@
 import { styled } from '@mui/material'
-import { BadgePreviewV2 } from "thebadge-ui-library";
+import { BadgePreviewV2 } from 'thebadge-ui-library'
 
 const SectionBox = styled('div')(({ theme }) => ({
   width: '100%',

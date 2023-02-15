@@ -1,4 +1,3 @@
-import { useSectionReferences } from "@/src/providers/referencesProvider";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import { Box, Typography } from '@mui/material'
@@ -11,6 +10,7 @@ import {
   SectionTitleBox,
   badgesExampleList,
 } from '@/src/pagePartials/home/SectionBoxes'
+import { useSectionReferences } from '@/src/providers/referencesProvider'
 
 // Import Swiper styles
 import 'swiper/css'

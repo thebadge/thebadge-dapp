@@ -1,4 +1,3 @@
-import { useSectionReferences } from "@/src/providers/referencesProvider";
 import { Divider, Typography, useTheme } from '@mui/material'
 import { ButtonV2, ResizedBadgePreviewsList, colors } from 'thebadge-ui-library'
 
@@ -7,6 +6,7 @@ import {
   SectionTitleBox,
   badgesExampleList,
 } from '@/src/pagePartials/home/SectionBoxes'
+import { useSectionReferences } from '@/src/providers/referencesProvider'
 
 export default function ClaimBadges() {
   const { claimBadgesSection } = useSectionReferences()
