@@ -1,3 +1,4 @@
+import { useSearchParams } from 'next/navigation'
 import { useRef } from 'react'
 import * as React from 'react'
 
@@ -11,9 +12,10 @@ import { AnyZodObject, z } from 'zod'
 import { DataGrid } from '@/src/components/form/customForms/type'
 import { FormWithSteps } from '@/src/components/form/formWithSteps/FormWithSteps'
 import { AgreementSchema } from '@/src/components/form/helpers/customSchemas'
+import { APP_URL } from '@/src/constants/common'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
-import enrichTextWithValues from '@/src/utils/enrichTextWithValues'
+import enrichTextWithValues, { EnrichTextValues } from '@/src/utils/enrichTextWithValues'
 import { KlerosListStructure } from '@/src/utils/kleros/generateKlerosListMetaEvidence'
 
 // eslint-disable-next-line @typescript-eslint/ban-types
@@ -47,6 +49,9 @@ export default function MintSteps({
 }: MintStepsProps) {
   const { t } = useTranslation()
   const { address } = useWeb3Connection()
+  const searchParams = useSearchParams()
+  const typeId = searchParams.get('typeId')
+
   const badgePreviewRef = useRef<HTMLDivElement>()
 
   const badgeLogoUri = badgeMetadata.metadata.logoURI
@@ -79,7 +84,9 @@ export default function MintSteps({
     if (!address) {
       throw Error('Please connect your wallet')
     }
-    const enrichTextValues = {
+    const enrichTextValues: EnrichTextValues = {
+      '{displayName}': '',
+      '{expirationTime}': '',
       '{address}': address,
     }
 
@@ -91,7 +98,7 @@ export default function MintSteps({
             animationEffects={['wobble', 'grow', 'glare']}
             animationOnHover
             badgeBackgroundUrl="https://images.unsplash.com/photo-1512998844734-cd2cca565822?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTIyfHxhYnN0cmFjdHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
-            badgeUrl="https://www.thebadge.xyz"
+            badgeUrl={`${APP_URL}/${typeId}/${address}`}
             category="Badge for Testing"
             description={enrichTextWithValues(badgeMetadata.description, enrichTextValues)}
             imageUrl={badgeLogoUrl}

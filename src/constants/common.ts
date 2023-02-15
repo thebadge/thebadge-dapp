@@ -11,3 +11,6 @@ export const MEDIUM_URL = process.env.NEXT_PUBLIC_MEDIUM_URL || 'https://medium.
 export const GITHUB_URL = process.env.NEXT_PUBLIC_GITHUB_URL || 'https://github.com/thebadge'
 export const EMAIL_URL = process.env.NEXT_PUBLIC_EMAIL_URL || 'mailto:hello@thebadge.xyz'
 export const DOCS_URL = process.env.NEXT_PUBLIC_DOCS_URL || 'https://docs.thebadge.xyz/'
+
+export const APP_URL = process.env.NEXT_PUBLIC_FRONTEND_URL || 'http://localhost:3000'
+export const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5001'

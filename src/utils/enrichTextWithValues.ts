@@ -1,7 +1,7 @@
 export const ENRICH_TEXT_VARIABLES = ['{address}', '{displayName}', '{expirationTime}'] as const
 
 export type EnrichTextValues = {
-  [key in typeof ENRICH_TEXT_VARIABLES[number]]?: string
+  [key in typeof ENRICH_TEXT_VARIABLES[number]]: string
 }
 
 export default function enrichTextWithValues(badgeDescription: string, values: EnrichTextValues) {
