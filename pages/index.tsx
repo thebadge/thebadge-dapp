@@ -1,6 +1,6 @@
-import { ArrowForwardIos, TaskAlt as TaskAltIcon } from '@mui/icons-material'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
-import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined'
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
+import TaskAltIcon from '@mui/icons-material/TaskAlt'
 import { Box, Divider, Typography, styled, useTheme } from '@mui/material'
 import { A11y, Navigation } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/react'
@@ -12,32 +12,13 @@ import {
   colors,
 } from 'thebadge-ui-library'
 
+import CertificationProcess from '@/src/pagePartials/home/CertificationProcess'
 import { useSectionReferences } from '@/src/providers/referencesProvider'
 import { NextPageWithLayout } from '@/types/next'
 // Import Swiper styles
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
-
-const CertificationProcess: React.FC = () => {
-  return (
-    <div>
-      <Typography
-        alignItems={'center'}
-        component="span"
-        display={'flex'}
-        fontSize={12}
-        fontWeight={900}
-        justifyContent={'center'}
-        lineHeight={'15px'}
-        marginBottom={10}
-      >
-        FULL CERTIFICATION PROCESS TUTORIAL
-        <ArrowForwardIosOutlinedIcon />
-      </Typography>
-    </div>
-  )
-}
 
 const SectionBox = styled('div')(({ theme }) => ({
   width: '100%',
@@ -165,7 +146,7 @@ const EarnByCurating = () => (
           <SwiperSlide key={'swiper-badge-' + index}>{badge}</SwiperSlide>
         ))}
       </Swiper>
-      <ArrowForwardIos
+      <ArrowForwardIosIcon
         className={'badges-swiper-button-next'}
         sx={{
           ml: '1rem',

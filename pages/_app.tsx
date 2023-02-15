@@ -20,6 +20,7 @@ import 'sanitize.css'
 import 'src/theme/global.css'
 import '/node_modules/react-grid-layout/css/styles.css'
 import '/node_modules/react-resizable/css/styles.css'
+import 'src/theme/icon-animation.css'
 
 const CookiesWarningProvider = dynamic(() => import('@/src/providers/cookiesWarningProvider'), {
   ssr: false,
