@@ -1,7 +1,10 @@
 import { Box, Typography } from '@mui/material'
 import { ButtonV2, colors } from 'thebadge-ui-library'
 
+import { useSectionReferences } from '@/src/providers/referencesProvider'
+
 export default function ThirdParty() {
+  const { becomeAThirdPartySection } = useSectionReferences()
   return (
     <Box
       alignItems={'center'}
@@ -11,6 +14,7 @@ export default function ThirdParty() {
       justifyContent={'space-between'}
       paddingX={10}
       paddingY={5}
+      ref={becomeAThirdPartySection}
     >
       <Typography color={'#22dbbd'} component={'span'} variant="h5">
         Are you willing to emit on-chan certificates as a <b>third-party entity?</b>

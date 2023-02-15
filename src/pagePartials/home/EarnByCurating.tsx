@@ -1,3 +1,4 @@
+import { useSectionReferences } from "@/src/providers/referencesProvider";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import { Box, Typography } from '@mui/material'
@@ -17,8 +18,9 @@ import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 
 export default function EarnByCurating() {
+  const { earnByCuratingSection } = useSectionReferences()
   return (
-    <SectionBox>
+    <SectionBox ref={earnByCuratingSection}>
       <SectionTitleBox>
         <Box>
           <Typography variant={'caption'}>Become a Curator</Typography>

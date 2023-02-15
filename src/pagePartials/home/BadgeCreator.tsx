@@ -2,7 +2,10 @@ import TaskAltIcon from '@mui/icons-material/TaskAlt'
 import { Box, Typography } from '@mui/material'
 import { ButtonV2, colors } from 'thebadge-ui-library'
 
+import { useSectionReferences } from '@/src/providers/referencesProvider'
+
 export default function BadgeCreator() {
+  const { becomeACreatorSection } = useSectionReferences()
   return (
     <Box
       alignItems={'center'}
@@ -12,6 +15,7 @@ export default function BadgeCreator() {
       justifyContent={'space-between'}
       paddingX={5}
       paddingY={5}
+      ref={becomeACreatorSection}
     >
       <Typography
         color={colors.pink}
