@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 
-import { Box, styled } from '@mui/material'
+import { Box, Typography, styled } from '@mui/material'
 import { useTsController } from '@ts-react/form'
 import update from 'immutability-helper'
 import { DndProvider } from 'react-dnd'
@@ -111,9 +111,24 @@ export default function KlerosDynamicFieldsCreator() {
       </Box>
       {error && <FormStatus status={TextFieldStatus.error}>{error.errorMessage}</FormStatus>}
       <Box>
-        <DndProvider backend={HTML5Backend}>
-          {field?.value?.map((field, index) => renderFieldItem(field, index))}
-        </DndProvider>
+        <Box sx={{ display: 'flex', justifyContent: 'space-evenly', mb: 4, ml: 5, mr: 5 }}>
+          <Typography sx={{ flex: 1 }} variant="subtitle1">
+            Name
+          </Typography>
+
+          <Typography sx={{ flex: 2 }} variant="subtitle1">
+            Description
+          </Typography>
+
+          <Typography sx={{ flex: 1 }} variant="subtitle1">
+            Type
+          </Typography>
+        </Box>
+        <Box sx={{ overflowY: 'auto' }}>
+          <DndProvider backend={HTML5Backend}>
+            {field?.value?.map((field, index) => renderFieldItem(field, index))}
+          </DndProvider>
+        </Box>
       </Box>
     </Wrapper>
   )

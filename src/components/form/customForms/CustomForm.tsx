@@ -15,6 +15,7 @@ function MyCustomFormComponent({
   buttonDisabled,
   buttonLabel = 'Submit',
   children,
+  draggable,
   gridStructure,
   layout = 'flex',
   onSubmit,
@@ -26,7 +27,9 @@ function MyCustomFormComponent({
   return (
     <form onSubmit={onSubmit} style={{ display: 'flex', flexDirection: 'column' }}>
       {/* children are you form field components */}
-      <Layout gridStructure={gridStructure}>{children}</Layout>
+      <Layout draggable={draggable} gridStructure={gridStructure}>
+        {children}
+      </Layout>
       <Box sx={{ display: 'flex', justifyContent: 'center' }}>
         <FormButton color="primary" disabled={buttonDisabled} type="submit" variant="contained">
           {buttonLabel}
@@ -45,6 +48,7 @@ function MyCustomFormComponentWithoutSubmit({
   buttonLabel = 'Submit',
   buttonRef,
   children,
+  draggable,
   gridStructure,
   layout = 'flex',
   onSubmit,
@@ -56,7 +60,9 @@ function MyCustomFormComponentWithoutSubmit({
   return (
     <Box style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
       {/* children are you form field components */}
-      <Layout gridStructure={gridStructure}>{children}</Layout>
+      <Layout draggable={draggable} gridStructure={gridStructure}>
+        {children}
+      </Layout>
       <Box sx={{ display: 'flex', justifyContent: 'center' }}>
         <FormButton
           color="primary"

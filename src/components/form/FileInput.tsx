@@ -45,10 +45,7 @@ export default function FileInput() {
     <Wrapper>
       <FormField
         formControl={
-          <Container
-            maxWidth="md"
-            sx={{ display: 'flex', background: 'rgba(0,0,0,0.4)', width: '100%' }}
-          >
+          <Container maxWidth="md" sx={{ display: 'flex', width: '100%' }}>
             <ImageUploading
               acceptType={['pdf']}
               allowNonImageType={true}

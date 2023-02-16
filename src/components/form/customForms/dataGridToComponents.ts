@@ -1,5 +1,6 @@
 import AvatarInput from '@/src/components/form/AvatarInput'
 import CheckBox from '@/src/components/form/CheckBox'
+import DescriptionInputField from '@/src/components/form/DescriptionInputField'
 import DropdownSelect from '@/src/components/form/DropdownSelect'
 import ExpirationField from '@/src/components/form/ExpirationField'
 import FileInput from '@/src/components/form/FileInput'
@@ -17,6 +18,7 @@ export const mappingDataGridForComponents: DataGridMapping[] = [
   [{ i: 'CheckBox', x: 0, y: 0, w: 1, h: 1 }, CheckBox],
   [{ i: 'NumberField', x: 0, y: 0, w: 3, h: 1 }, NumberField],
   [{ i: 'TextArea', x: 0, y: 0, w: 3, h: 2 }, TextArea],
+  [{ i: 'DescriptionInputField', x: 0, y: 1, w: 3, h: 3 }, DescriptionInputField],
   [{ i: 'ImageInput', x: 0, y: 0, w: 3, h: 3 }, ImageInput],
   [{ i: 'AvatarInput', x: 0, y: 0, w: 3, h: 3 }, AvatarInput],
   [{ i: 'FileInput', x: 0, y: 0, w: 3, h: 3 }, FileInput],

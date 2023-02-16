@@ -1,6 +1,10 @@
+import { useSearchParams } from 'next/navigation'
+import { useRef } from 'react'
 import * as React from 'react'
 
-import { Stack, Typography } from '@mui/material'
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
+import { Box, Button, Stack, Tooltip, Typography } from '@mui/material'
+import domtoimage from 'dom-to-image'
 import { useTranslation } from 'next-export-i18n'
 import { BadgePreviewV2 } from 'thebadge-ui-library'
 import { AnyZodObject, z } from 'zod'
@@ -8,11 +12,17 @@ import { AnyZodObject, z } from 'zod'
 import { DataGrid } from '@/src/components/form/customForms/type'
 import { FormWithSteps } from '@/src/components/form/formWithSteps/FormWithSteps'
 import { AgreementSchema } from '@/src/components/form/helpers/customSchemas'
+import { APP_URL } from '@/src/constants/common'
+import useS3Metadata from '@/src/hooks/useS3Metadata'
+import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+import enrichTextWithValues, { EnrichTextValues } from '@/src/utils/enrichTextWithValues'
+import { KlerosListStructure } from '@/src/utils/kleros/generateKlerosListMetaEvidence'
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 type MintStepsProps<SchemaType extends z.ZodEffects<any, any, any> | AnyZodObject = any> = {
   onSubmit: (data: z.TypeOf<SchemaType>) => void
   evidenceSchema: SchemaType
+  badgeMetadata: KlerosListStructure
   costs: {
     mintCost: string
     klerosCost: string
@@ -23,7 +33,7 @@ type MintStepsProps<SchemaType extends z.ZodEffects<any, any, any> | AnyZodObjec
 const steps = ['Help', 'Evidence form', 'Badge Preview']
 
 const formGridLayout: DataGrid[][] = [
-  [{ i: 'AgreementSchema', x: 0, y: 0, w: 12, h: 4, static: true }],
+  [{ i: 'AgreementSchema', x: 0, y: 0, w: 12, h: 6, static: true }],
   [],
 ]
 
@@ -31,34 +41,84 @@ export const MintSchemaStep1 = z.object({
   help: AgreementSchema.describe(`How it works // ??`),
 })
 
-export default function MintSteps({ costs, evidenceSchema, onSubmit }: MintStepsProps) {
+export default function MintSteps({
+  badgeMetadata,
+  costs,
+  evidenceSchema,
+  onSubmit,
+}: MintStepsProps) {
   const { t } = useTranslation()
+  const { address } = useWeb3Connection()
+  const searchParams = useSearchParams()
+  const typeId = searchParams.get('typeId')
+
+  const badgePreviewRef = useRef<HTMLDivElement>()
+
+  const badgeLogoUri = badgeMetadata.metadata.logoURI
+  const badgeLogoData = useS3Metadata<{ s3Url: string }>(badgeLogoUri as unknown as string)
+  const badgeLogoUrl = badgeLogoData.data?.s3Url
 
   const handleOnSubmit = (data: z.infer<typeof evidenceSchema>) => {
     onSubmit(data)
   }
 
+  const convertPreviewToImage = async () => {
+    if (!badgePreviewRef.current) return
+    let previewImageDataUrl
+    try {
+      previewImageDataUrl = await domtoimage.toPng(badgePreviewRef.current, {
+        cacheBust: true,
+      })
+      console.log(previewImageDataUrl)
+    } catch (e) {
+      console.log(e)
+      return
+    }
+    const link = document.createElement('a')
+    link.download = 'my-badge-preview.jpeg'
+    link.href = previewImageDataUrl
+    link.click()
+  }
+
   function handleFormPreview(data: z.infer<typeof evidenceSchema>) {
+    if (!address) {
+      throw Error('Please connect your wallet')
+    }
+    const enrichTextValues: EnrichTextValues = {
+      '{displayName}': '',
+      '{expirationTime}': '',
+      '{address}': address,
+    }
+
     return (
-      <Stack gap={2} margin={1}>
-        <Typography variant="h5">
-          <div>Mint cost: {costs.mintCost}.</div>
-          <div>
-            Deposit for Kleros: {costs.klerosCost}. (This will be returned if the evidence is valid)
-          </div>
-          <div>Total (Native token) need: {costs.totalMintCost}</div>
-        </Typography>
-        <Typography>This is how you Badge is going to look like</Typography>
-        <BadgePreviewV2
-          animationOnHover
-          badgeBackgroundUrl="https://images.unsplash.com/photo-1620421680010-0766ff230392?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=749&q=80"
-          badgeUrl="https://www.thebadge.xyz"
-          description="Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-          size="large"
-          subline="Subline Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-          textContrast="dark-withTextBackground"
-          title="TITLE xxx Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-        />
+      <Stack alignItems={'center'} gap={2} margin={1}>
+        <Typography>{t('badge.type.mint.previewTitle')}</Typography>
+        <Box ref={badgePreviewRef}>
+          <BadgePreviewV2
+            animationEffects={['wobble', 'grow', 'glare']}
+            animationOnHover
+            badgeBackgroundUrl="https://images.unsplash.com/photo-1512998844734-cd2cca565822?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTIyfHxhYnN0cmFjdHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
+            badgeUrl={`${APP_URL}/${typeId}/${address}`}
+            category="Badge for Testing"
+            description={enrichTextWithValues(badgeMetadata.description, enrichTextValues)}
+            imageUrl={badgeLogoUrl}
+            size="medium"
+            textContrast="light-withTextBackground"
+            title={badgeMetadata.name}
+          />
+        </Box>
+        <Stack>
+          <Typography>{t('badge.type.mint.mintCost', { cost: costs.mintCost })}</Typography>
+          <Box alignItems={'center'} display="flex">
+            {t('badge.type.mint.depositCost', { cost: costs.klerosCost })}
+            <Tooltip title={t('badge.type.mint.depositTooltip')}>
+              <InfoOutlinedIcon />
+            </Tooltip>
+          </Box>
+          <Typography>{t('badge.type.mint.totalCost', { cost: costs.totalMintCost })}</Typography>
+        </Stack>
+        {/* TODO Remove button, use the logic to send the image as mint data */}
+        <Button onClick={convertPreviewToImage}>Convert Preview to Image</Button>
       </Stack>
     )
   }
