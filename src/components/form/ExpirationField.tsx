@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import * as React from 'react'
 
-import InfoIcon from '@mui/icons-material/Info'
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import {
   Box,
   Select as MUISelect,
@@ -25,7 +25,7 @@ const Wrapper = styled(Box)(({ theme }) => ({
   display: 'flex',
   flex: 1,
   flexDirection: 'row',
-  justifyContent: 'end',
+  justifyContent: 'space-between',
   position: 'relative',
   rowGap: theme.spacing(1),
 }))
@@ -62,16 +62,16 @@ export default function ExpirationField() {
                   title={
                     placeholder +
                     `\n e.g. If you mint this badge today, It will expire on: ${validTo(
-                      unit,
                       field.value,
                     )}`
                   }
                 >
-                  <InfoIcon />
+                  <InfoOutlinedIcon />
                 </Tooltip>
               ),
             }}
             color="secondary"
+            label={label}
             onChange={onChange}
             sx={{ justifyContent: 'end' }}
             value={stringValue}
@@ -83,6 +83,7 @@ export default function ExpirationField() {
             size="small"
             sx={{ textTransform: 'capitalize', ml: 2 }}
             value={unit || ''}
+            variant="standard"
           >
             {options.map((op) => {
               return (
@@ -94,17 +95,16 @@ export default function ExpirationField() {
           </MUISelect>
         </Wrapper>
       }
-      label={label}
       labelPosition={'top'}
       status={error ? TextFieldStatus.error : TextFieldStatus.success}
-      statusText={error?.errorMessage}
+      statusText={error ? error?.errorMessage : ' '}
     />
   )
 }
 
-function validTo(unit: 'day' | 'month' | 'year', days?: z.infer<typeof ExpirationTypeSchema>) {
+function validTo(days?: z.infer<typeof ExpirationTypeSchema>) {
   if (!days || days === 0) return 'End of time.'
-  return dayjs().add(days, unit).format('DD/MM/YYYY')
+  return dayjs().add(days, 'seconds').format('DD/MM/YYYY')
 }
 
 function parseToSeconds(value: string, unit: 'day' | 'month' | 'year') {

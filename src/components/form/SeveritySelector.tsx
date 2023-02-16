@@ -1,15 +1,16 @@
 import * as React from 'react'
 import { useEffect, useState } from 'react'
 
-import InfoIcon from '@mui/icons-material/Info'
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import { Box, Slider, Tooltip, Typography, styled } from '@mui/material'
 import { useDescription, useTsController } from '@ts-react/form'
+import { gradients } from 'thebadge-ui-library'
 import { z } from 'zod'
 
 import { TextFieldStatus } from '@/src/components/form/TextField'
 import { FormField } from '@/src/components/form/helpers/FormField'
 import { SeverityTypeSchema } from '@/src/components/form/helpers/customSchemas'
-import { Severity } from '@/types/utils'
+import { Severity, Severity_Keys } from '@/types/utils'
 
 const Wrapper = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -18,6 +19,25 @@ const Wrapper = styled(Box)(({ theme }) => ({
   rowGap: theme.spacing(1),
   gridColumn: 'span 1 / span 2',
 }))
+
+const CustomSlider = styled(Slider)({
+  height: '5px',
+  '& .MuiSlider-track': {
+    background: gradients.gradientHeader,
+    border: 'none',
+  },
+})
+
+const marks = [
+  {
+    value: 1,
+    label: Severity_Keys[0],
+  },
+  {
+    value: 5,
+    label: Severity_Keys[2],
+  },
+]
 
 export default function SeveritySelector() {
   const { error, field } = useTsController<z.infer<typeof SeverityTypeSchema>>()
@@ -47,15 +67,16 @@ export default function SeveritySelector() {
   }
 
   return (
-    <Wrapper>
+    <Wrapper sx={{ px: 2 }}>
       <FormField
         formControl={
           <Box display="flex" flex={1} flexDirection="column">
-            <Slider
+            <CustomSlider
               aria-label="Severity-court"
-              color="primary"
+              color="secondary"
               defaultValue={30}
-              marks
+              getAriaValueText={valuetext}
+              marks={marks}
               max={5}
               min={1}
               onChange={handleChange}
@@ -65,15 +86,16 @@ export default function SeveritySelector() {
               valueLabelDisplay="auto"
               valueLabelFormat={valueLabelFormat}
             />
-            <Typography>
-              {valuetext(value)}
-              <Tooltip title={placeholder}>
-                <InfoIcon sx={{ ml: 1 }} />
-              </Tooltip>
-            </Typography>
           </Box>
         }
-        label={label}
+        label={
+          <Typography>
+            {label}
+            <Tooltip title={placeholder}>
+              <InfoOutlinedIcon sx={{ ml: 1 }} />
+            </Tooltip>
+          </Typography>
+        }
         labelPosition={'top'}
         status={error ? TextFieldStatus.error : TextFieldStatus.success}
         statusText={error?.errorMessage}

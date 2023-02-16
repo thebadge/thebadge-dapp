@@ -6,6 +6,7 @@ import { defaultTheme, gradients } from 'thebadge-ui-library'
 const mulishFont = Mulish({
   weight: ['300', '400', '500', '600', '700', '800', '900'],
   subsets: ['latin'],
+  display: 'swap', // 👈 The documentation seems to be wrong. 'swap' is not the default value, so we need to specify it
 })
 
 export const getTheme = (mode?: PaletteMode): ThemeOptions => ({

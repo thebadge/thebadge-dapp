@@ -1,8 +1,8 @@
-import { useRef } from 'react'
+import React, { useRef } from 'react'
 
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
-import DragIndicatorIcon from '@mui/icons-material/DragIndicator'
-import { Box, Stack, Typography, styled } from '@mui/material'
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined'
+import GridViewIcon from '@mui/icons-material/GridView'
+import { Box, Typography, styled } from '@mui/material'
 import { Identifier, XYCoord } from 'dnd-core'
 import { useDrag, useDrop } from 'react-dnd'
 import { z } from 'zod'
@@ -28,7 +28,8 @@ const Container = styled(Box, {
   isDragging: boolean
   isOver: boolean
 }>(({ isDragging, isOver, theme }) => ({
-  marginBottom: theme.spacing(2),
+  marginBottom: theme.spacing(4),
+  borderBottom: '0.5px solid white',
   columnGap: theme.spacing(2),
   display: 'flex',
   cursor: 'grab',
@@ -131,32 +132,31 @@ export default function FormFieldItem({ field, index, moveItem, removeItem }: Fo
 
   drag(drop(ref))
 
+  function truncate(str: string, n = 10) {
+    return str.length > n ? str.slice(0, n - 1) + '...' : str
+  }
+
   return (
     <Container data-handler-id={handlerId} isDragging={isDragging} isOver={isOver} ref={ref}>
-      <DragIndicatorIcon />
-      <Stack>
-        <Typography component={'div'} variant="title4">
-          Label
+      <GridViewIcon />
+      <Box sx={{ display: 'flex', flex: 1, justifyContent: 'space-evenly', mb: 3 }}>
+        <Typography sx={{ flex: 1 }} variant="subtitle1">
+          {truncate(field.label)}
         </Typography>
-        {field.label}
-      </Stack>
-      <Stack>
-        <Typography component={'div'} variant="title4">
-          Description
+
+        <Typography sx={{ flex: 2 }} variant="subtitle1">
+          {truncate(field.description, 25)}
         </Typography>
-        {field.description}
-      </Stack>
-      <Stack>
-        <Typography component={'div'} variant="title4">
-          Type
+
+        <Typography sx={{ flex: 1, textTransform: 'capitalize' }} variant="subtitle1">
+          {field.type}
         </Typography>
-        {field.type}
-      </Stack>
+      </Box>
       <Box
         onClick={removeItem}
         sx={{ ml: 'auto', cursor: 'pointer', justifyContent: 'center', display: 'flex' }}
       >
-        <DeleteForeverIcon />
+        <DeleteOutlineOutlinedIcon />
       </Box>
     </Container>
   )

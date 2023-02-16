@@ -15,10 +15,12 @@ export type CustomFormProps =
   | (BasicCustomFormProps & {
       layout?: 'flex' | 'grid'
       gridStructure?: never
+      draggable?: never
     })
   | (BasicCustomFormProps & {
       layout: 'gridResponsive'
       gridStructure: DataGrid[]
+      draggable?: boolean
     })
 
 export type FormLayoutType = 'flex' | 'grid' | 'gridResponsive'

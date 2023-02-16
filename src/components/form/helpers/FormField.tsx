@@ -17,7 +17,7 @@ const StyledBox = styled(Box)<{ status?: TextFieldStatus }>(({ theme }) => ({
 
 export const FormField: React.FC<{
   formControl: React.ReactElement
-  label?: string
+  label?: React.ReactElement | string
   labelPosition?: 'top' | 'left'
   status?: TextFieldStatus | undefined
   statusText?: string
@@ -32,7 +32,13 @@ export const FormField: React.FC<{
 
   return (
     <StyledBox status={status} {...restProps}>
-      <Box sx={{ display: 'flex', flexDirection: labelPosition === 'top' ? 'column' : 'row' }}>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: labelPosition === 'top' ? 'column' : 'row',
+          minWidth: '85%',
+        }}
+      >
         {label && <Label>{label}</Label>}
         {control}
       </Box>

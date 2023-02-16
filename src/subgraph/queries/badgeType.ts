@@ -34,16 +34,57 @@ export const BADGE_TYPE = gql`
       mintCost
       validFor
       paused
-      # TODO Add creator/emitter
-      #emitter {
-      #  metadata
-      #}
+      creator {
+        id
+        creatorMetadata
+      }
       klerosBadge {
         klerosMetadataURL
         klerosTCRList
         badgesMintedAmount
         submissionBaseDeposit
         challengePeriodDuration
+      }
+    }
+  }
+`
+
+export const MY_BADGE_TYPES = gql`
+  query userBadgesById($ownerAddress: ID!) {
+    user(id: $ownerAddress) {
+      badges {
+        id
+        status
+        reviewDueDate
+        badgeType {
+          validFor
+          paused
+          mintCost
+          metadataURL
+          id
+          controllerName
+          badgesMintedAmount
+        }
+      }
+    }
+  }
+`
+
+export const BADGE_BY_ID = gql`
+  query badgeById($id: ID!) {
+    badge(id: $id) {
+      id
+      status
+      reviewDueDate
+      evidenceMetadataUrl
+      badgeType {
+        validFor
+        paused
+        mintCost
+        metadataURL
+        id
+        controllerName
+        badgesMintedAmount
       }
     }
   }

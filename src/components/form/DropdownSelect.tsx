@@ -29,9 +29,10 @@ export default function DropdownSelect({
   }
 
   return (
-    <FormControl sx={{ mx: 1, minWidth: 200 }}>
+    <FormControl sx={{ mx: 1, minWidth: 200 }} variant="standard">
       <InputLabel id="select-helper-label">{label}</InputLabel>
       <MUISelect
+        error={!!error}
         id="simple-select"
         label={label}
         labelId="select-helper-label"
@@ -47,11 +48,9 @@ export default function DropdownSelect({
           )
         })}
       </MUISelect>
-      {error && (
-        <FormHelperText>
-          <FormStatus status={TextFieldStatus.error}>{error.errorMessage}</FormStatus>
-        </FormHelperText>
-      )}
+      <FormHelperText>
+        {error ? <FormStatus status={TextFieldStatus.error}>{error.errorMessage}</FormStatus> : ' '}
+      </FormHelperText>
     </FormControl>
   )
 }
