@@ -18,10 +18,6 @@ const HeaderContainer = styled(Box)(({ theme }) => ({
   paddingBottom: theme.spacing(2),
   paddingLeft: '5%',
   paddingRight: 'calc(5% - 16px)',
-  [theme.breakpoints.up('xl')]: {
-    paddingLeft: '10%',
-    paddingRight: 'calc(10% - 16px)',
-  },
   [theme.breakpoints.down('sm')]: {
     flex: 1,
   },

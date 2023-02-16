@@ -37,6 +37,11 @@ export const getTheme = (mode?: PaletteMode): ThemeOptions => ({
         main: mode === 'light' ? '#1C1B1F' : '#ffffff',
       },
     },
+    button: {
+      backgroundBlue: {
+        main: '#3F61EA',
+      },
+    },
   },
   typography: {
     ...overrideFontFamily(defaultTheme, mulishFont.style.fontFamily),

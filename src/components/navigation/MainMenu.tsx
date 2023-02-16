@@ -226,7 +226,9 @@ export default function MainMenu({ ...restProps }) {
 
   const onMenuItemClick = async (item: MenuItem, index: number) => {
     toggleSelectedElement(index)
-    await onItemClick(item)
+    if (!item.subItems || item.subItems.length === 0) {
+      await onItemClick(item)
+    }
   }
 
   const renderSubItemWithSubItems = (subItem: SubMenuItem): React.ReactNode => {

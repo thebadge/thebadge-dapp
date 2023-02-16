@@ -29,7 +29,7 @@ export default withBundleAnalyzerWrapper(
     compiler: {
       styledComponents: true,
     },
-    transpilePackages: ['@mui/material', 'thebadge-ui-library'],
+    transpilePackages: ['@mui/material', 'thebadge-ui-library', '@web3-onboard/*'],
     images: {
       domains: [
         "tokens.1inch.io",

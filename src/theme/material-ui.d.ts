@@ -17,6 +17,9 @@ export interface TheBadgeColors {
   deepPurple: true;
   darkGreen: true;
   darkBlue: true;
+  button: {
+    backgroundBlue: true;
+  }
 }
 
 declare module '@mui/material' {
@@ -85,6 +88,9 @@ declare module '@mui/material/styles' {
       boxShadow: SimplePaletteColorOptions;
       itemBorder: SimplePaletteColorOptions;
     }
+    button: {
+      backgroundBlue: SimplePaletteColorOptions
+    }
   }
 
   // allow configuration using `createTheme`
@@ -101,6 +107,9 @@ declare module '@mui/material/styles' {
     mainMenu: {
       boxShadow: PaletteColorOptions;
       itemBorder: PaletteColorOptions;
+    }
+    button: {
+      backgroundBlue: PaletteColorOptions
     }
   }
 
