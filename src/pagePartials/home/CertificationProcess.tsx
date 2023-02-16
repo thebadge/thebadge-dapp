@@ -1,7 +1,6 @@
 import { ReactNode } from 'react'
 
 import { Box, Typography } from '@mui/material'
-import { colors } from 'thebadge-ui-library'
 
 import { Choose } from './svg/choose'
 import { Complete } from './svg/complete'
@@ -34,8 +33,6 @@ export default function CertificationProcess() {
 
       <Typography
         alignItems={'center'}
-        color={colors.blue}
-        component="div"
         display={'flex'}
         fontSize={'12px !important'}
         fontWeight={900}

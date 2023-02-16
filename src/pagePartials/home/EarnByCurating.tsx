@@ -1,6 +1,6 @@
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
-import { Box, Typography } from '@mui/material'
+import { Box, Typography, keyframes, styled, useTheme } from '@mui/material'
 import { A11y, Navigation } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { ButtonV2, colors } from 'thebadge-ui-library'
@@ -17,39 +17,54 @@ import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 
+const LearnMoreButton = styled(ButtonV2)(({ theme }) => ({
+  borderRadius: '10px',
+  fontSize: '11px !important',
+  padding: '0.5rem 1rem !important',
+  height: 'fit-content !important',
+  lineHeight: '14px',
+  fontWeight: 700,
+  boxShadow: 'none',
+  border: `1px solid ${theme.palette.text.primary}`,
+  '&:hover': {
+    backgroundColor: colors.transparent,
+    border: `1px solid ${theme.palette.text.secondary}`,
+    color: theme.palette.text.secondary,
+  },
+}))
+
+const growEffect = keyframes`
+  0% {
+    transform: scale(0.85);
+  }
+  100% {
+    transform: scale(1);
+  }
+`
+
 export default function EarnByCurating() {
   const { earnByCuratingSection } = useSectionReferences()
+  const theme = useTheme()
+
   return (
     <SectionBox ref={earnByCuratingSection}>
       <SectionTitleBox>
         <Box>
           <Typography variant={'caption'}>Become a Curator</Typography>
-          <Typography fontSize={'25px'} fontWeight={700} lineHeight={'30px'} mb={2.5}>
+          <Typography
+            mb={2.5}
+            sx={{ fontSize: '25px !important', fontWeight: 700, lineHeight: '30px !important' }}
+          >
             Earn by Curating
           </Typography>
         </Box>
 
-        <ButtonV2
+        <LearnMoreButton
           backgroundColor={colors.transparent}
-          fontColor={colors.black}
-          sx={{
-            borderRadius: '10px',
-            fontSize: '11px !important',
-            padding: '0.5rem 1rem !important',
-            height: 'fit-content !important',
-            lineHeight: '14px',
-            fontWeight: 700,
-            boxShadow: 'none',
-            border: `1px solid ${colors.black}`,
-            '&:hover': {
-              backgroundColor: colors.transparent,
-              border: `1px solid ${colors.white}`,
-              color: colors.white,
-            },
-          }}
+          fontColor={theme.palette.text.primary}
         >
           LEARN MORE
-        </ButtonV2>
+        </LearnMoreButton>
       </SectionTitleBox>
 
       <Box sx={{ padding: 4, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -59,6 +74,7 @@ export default function EarnByCurating() {
             mr: '1rem',
             height: '35px',
             width: '35px',
+            animation: `${growEffect} 1s infinite alternate ${theme.transitions.easing.easeInOut}`,
           }}
         />
         <Swiper
@@ -81,6 +97,7 @@ export default function EarnByCurating() {
             ml: '1rem',
             height: '35px',
             width: '35px',
+            animation: `${growEffect} 1s infinite alternate ${theme.transitions.easing.easeInOut}`,
           }}
         />
       </Box>

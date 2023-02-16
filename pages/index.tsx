@@ -1,5 +1,5 @@
 import { Box, Typography, useTheme } from '@mui/material'
-import { SectionLayout, colors } from 'thebadge-ui-library'
+import { SectionLayout, colors, gradients } from 'thebadge-ui-library'
 
 import BadgeCreator from '@/src/pagePartials/home/BadgeCreator'
 import CertificationProcess from '@/src/pagePartials/home/CertificationProcess'
@@ -7,11 +7,14 @@ import ClaimBadges from '@/src/pagePartials/home/ClaimBadges'
 import EarnByCurating from '@/src/pagePartials/home/EarnByCurating'
 import ThirdParty from '@/src/pagePartials/home/ThirdParty'
 import { useSectionReferences } from '@/src/providers/referencesProvider'
+import { useColorMode } from '@/src/providers/themeProvider'
 import { NextPageWithLayout } from '@/types/next'
 
 const Home: NextPageWithLayout = () => {
   const { homeSection } = useSectionReferences()
   const theme = useTheme()
+  const { mode } = useColorMode()
+  const isDarkMode = mode === 'dark'
 
   return (
     <Box display="flex" flexDirection="column" ref={homeSection}>
@@ -40,13 +43,20 @@ const Home: NextPageWithLayout = () => {
 
       {/* Earn by curating */}
       <SectionLayout
-        backgroundColor={colors.greyBackground}
+        backgroundColor={isDarkMode ? colors.transparent : colors.greyBackground}
         components={[{ component: <EarnByCurating /> }]}
         sx={{
-          borderWidth: 'inherit !important',
+          borderWidth: `${isDarkMode ? '1px' : 'inherit'} !important`,
+          borderColor: colors.green,
+          borderTopWidth: '0 !important',
           borderTopLeftRadius: '0 !important',
           borderTopRightRadius: '0 !important',
           mb: '3rem',
+          '&::before': {
+            content: '""',
+            background: `${gradients.gradient0} border-box`,
+            border: `8px solid transparent`,
+          },
         }}
       />
 
@@ -64,10 +74,13 @@ const Home: NextPageWithLayout = () => {
           sx={{ borderRadius: '15px !important', borderWidth: '2px' }}
         />
         <SectionLayout
-          backgroundColor={colors.white}
+          backgroundColor={isDarkMode ? '#0D0D0D' : colors.transparent}
           borderColor={colors.transparent}
           components={[{ component: <ThirdParty /> }]}
-          sx={{ borderRadius: '15px !important', boxShadow: '0px 0px 6px rgba(0, 0, 0, 0.3)' }}
+          sx={{
+            borderRadius: '15px !important',
+            boxShadow: '0px 0px 6px rgba(0, 0, 0, 0.3)',
+          }}
         />
       </Box>
     </Box>
