@@ -2,6 +2,7 @@ import { Box, styled } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
 import { LogoTheBadgeWithText } from 'thebadge-ui-library'
 
+import { Notification as NotificationIcon } from '@/src/components/assets/Notification'
 import ConnectWalletButton from '@/src/components/header/ConnectWalletButton'
 import { UserDropdown } from '@/src/components/header/UserDropdown'
 import WrongNetwork from '@/src/components/utils/WrongNetwork'
@@ -43,7 +44,8 @@ const Header = () => {
       >
         <LogoTheBadgeWithText size={92} />
       </Box>
-      <Box display="flex">
+      <Box alignItems="center" display="flex" gap={2}>
+        <NotificationIcon />
         <WrongNetwork />
         {isWalletConnected && <UserDropdown />}
         {!isWalletConnected && (
