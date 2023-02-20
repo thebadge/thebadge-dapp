@@ -34,7 +34,7 @@ const MintSchemaStep2 = z.object({
   ),
   criteriaFileUri: FileSchema.describe('PDF with the requirements to mint a badge. // ??'),
   challengePeriodDuration: ChallengePeriodTypeSchema.describe(
-    'Challenge period duration // Challenge period duration in days. During this time the community can analyze the evidence and challenge it.',
+    'Challenge period duration (days) // Challenge period duration in days. During this time the community can analyze the evidence and challenge it.',
   ),
   rigorousness: SeverityTypeSchema.describe(
     'Rigorousness // How rigorous the emission of badges should be',
@@ -71,11 +71,11 @@ const formGridLayout: DataGrid[][] = [
     { i: 'TextField', x: 0, y: 0, w: 3, h: 1, static: true },
     { i: 'DescriptionTextSchema', x: 0, y: 1.5, w: 3, h: 3, static: true },
     { i: 'ImageInput', x: 3, y: 0, w: 3, h: 3.5, static: true },
-    { i: 'FileInput', x: 2, y: 4.5, w: 3, h: 3, static: true },
+    { i: 'FileInput', x: 0, y: 4.5, w: 3, h: 1, static: true },
+    { i: 'NumberField', x: 0, y: 6.5, w: 3, h: 1, static: true },
+    { i: 'SeveritySelector', x: 3, y: 6.5, w: 3, h: 1, static: true },
     { i: 'NumberField', x: 0, y: 7.5, w: 3, h: 1, static: true },
-    { i: 'SeveritySelector', x: 3, y: 7.5, w: 3, h: 1, static: true },
-    { i: 'NumberField', x: 0, y: 8.5, w: 3, h: 1, static: true },
-    { i: 'NumberField', x: 3, y: 8.5, w: 3, h: 1, static: true },
+    { i: 'NumberField', x: 3, y: 7.5, w: 3, h: 1, static: true },
   ],
   [{ i: 'KlerosDynamicFormField', x: 0, y: 0, w: 6, h: 10, static: true }],
 ]

@@ -2,7 +2,7 @@ import { styled } from '@mui/material'
 
 import { TextFieldStatus } from '../TextField'
 
-export const FormStatus = styled('span')<{ status?: TextFieldStatus }>`
+export const FormStatus = styled('p')<{ status?: TextFieldStatus }>`
   color: ${({ status, theme: { palette } }) =>
     status === TextFieldStatus.error
       ? palette.error.main

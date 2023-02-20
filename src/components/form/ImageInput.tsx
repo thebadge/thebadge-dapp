@@ -23,14 +23,16 @@ import { TextFieldStatus } from '@/src/components/form/TextField'
 import { FormField } from '@/src/components/form/helpers/FormField'
 import { ImageSchema } from '@/src/components/form/helpers/customSchemas'
 
-const Wrapper = styled(Box)(({ theme }) => ({
+const Wrapper = styled(Box, {
+  shouldForwardProp: (propName) => propName !== 'error',
+})<{ error?: boolean }>(({ error, theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   position: 'relative',
   rowGap: theme.spacing(1),
   width: '100%',
   gridColumn: 'span 1 / 4',
-  borderBottom: '1px solid white',
+  borderBottom: `1px solid ${error ? theme.palette.error.main : colors.white}`,
 }))
 
 const ImageDisplayer = styled(MUIAvatar, {
@@ -70,7 +72,7 @@ export default function ImageInput() {
   }
 
   return (
-    <Wrapper>
+    <Wrapper error={!!error}>
       <FormField
         formControl={
           <Container maxWidth="md" sx={{ display: 'flex', mt: 2, width: '100%' }}>
