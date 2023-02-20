@@ -21,7 +21,7 @@ export const mappingDataGridForComponents: DataGridMapping[] = [
   [{ i: 'DescriptionInputField', x: 0, y: 1, w: 3, h: 3 }, DescriptionInputField],
   [{ i: 'ImageInput', x: 0, y: 0, w: 3, h: 3 }, ImageInput],
   [{ i: 'AvatarInput', x: 0, y: 0, w: 3, h: 3 }, AvatarInput],
-  [{ i: 'FileInput', x: 0, y: 0, w: 3, h: 3 }, FileInput],
+  [{ i: 'FileInput', x: 0, y: 0, w: 3, h: 1 }, FileInput],
   [{ i: 'TokenInput', x: 0, y: 0, w: 3, h: 1 }, TokenInput],
   [{ i: 'DropdownSelect', x: 0, y: 0, w: 3, h: 1 }, DropdownSelect],
   [{ i: 'KlerosDynamicFieldsCreator', x: 0, y: 0, w: 4, h: 4 }, KlerosDynamicFieldsCreator],

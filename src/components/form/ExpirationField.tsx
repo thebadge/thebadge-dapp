@@ -1,14 +1,17 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import * as React from 'react'
 
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import {
   Box,
+  FormControlLabel,
+  Checkbox as MUICheckbox,
   Select as MUISelect,
   MenuItem,
   SelectChangeEvent,
   TextField,
   Tooltip,
+  Typography,
   styled,
 } from '@mui/material'
 import { useDescription, useTsController } from '@ts-react/form'
@@ -21,21 +24,27 @@ import { ExpirationTypeSchema } from '@/src/components/form/helpers/customSchema
 
 const options = ['day', 'month', 'year']
 
-const Wrapper = styled(Box)(({ theme }) => ({
+const Wrapper = styled(Box)(() => ({
   display: 'flex',
   flex: 1,
   flexDirection: 'row',
   justifyContent: 'space-between',
   position: 'relative',
-  rowGap: theme.spacing(1),
 }))
 
 export default function ExpirationField() {
   const { error, field } = useTsController<z.infer<typeof ExpirationTypeSchema>>()
   const { label, placeholder } = useDescription()
   const [stringValue, setStringValue] = useState<string>('')
+  const [enableExpiration, setEnableExpiration] = useState<boolean>(false)
 
   const [unit, setUnit] = useState<'day' | 'month' | 'year'>('day')
+
+  useEffect(() => {
+    // Easy way to set default value
+    field.onChange(0)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   function onChange(e: any) {
     const cleanValue = e.target.value.replace(/[^0-9.]/g, '') || '0'
@@ -55,44 +64,68 @@ export default function ExpirationField() {
     <FormField
       formControl={
         <Wrapper>
-          <TextField
-            InputProps={{
-              endAdornment: (
-                <Tooltip
-                  title={
-                    placeholder +
-                    `\n e.g. If you mint this badge today, It will expire on: ${validTo(
-                      field.value,
-                    )}`
-                  }
-                >
-                  <InfoOutlinedIcon />
-                </Tooltip>
-              ),
-            }}
-            color="secondary"
-            label={label}
-            onChange={onChange}
-            sx={{ justifyContent: 'end' }}
-            value={stringValue}
-            variant={'standard'}
-          />
-          <MUISelect
-            id="unit-select"
-            onChange={handleDropdownChange}
-            size="small"
-            sx={{ textTransform: 'capitalize', ml: 2 }}
-            value={unit || ''}
-            variant="standard"
-          >
-            {options.map((op) => {
-              return (
-                <MenuItem key={op} sx={{ textTransform: 'capitalize' }} value={op}>
-                  {op}s
-                </MenuItem>
-              )
-            })}
-          </MUISelect>
+          {enableExpiration && (
+            <>
+              <TextField
+                InputProps={{
+                  endAdornment: (
+                    <Tooltip
+                      title={
+                        placeholder +
+                        `\n e.g. If you mint this badge today, It will expire on: ${validTo(
+                          field.value,
+                        )}`
+                      }
+                    >
+                      <InfoOutlinedIcon />
+                    </Tooltip>
+                  ),
+                }}
+                color="secondary"
+                label={label}
+                onChange={onChange}
+                sx={{ justifyContent: 'end' }}
+                value={stringValue}
+                variant={'standard'}
+              />
+              <MUISelect
+                id="unit-select"
+                onChange={handleDropdownChange}
+                size="small"
+                sx={{ textTransform: 'capitalize', ml: 2 }}
+                value={unit || ''}
+                variant="standard"
+              >
+                {options.map((op) => {
+                  return (
+                    <MenuItem key={op} sx={{ textTransform: 'capitalize' }} value={op}>
+                      {op}s
+                    </MenuItem>
+                  )
+                })}
+              </MUISelect>
+            </>
+          )}
+          {!enableExpiration && (
+            <FormControlLabel
+              control={
+                <MUICheckbox
+                  checked={enableExpiration}
+                  onChange={() => setEnableExpiration(true)}
+                  sx={{ width: 'fit-content' }}
+                />
+              }
+              label={
+                <Typography>
+                  Enable expiration time
+                  <Tooltip title={placeholder}>
+                    <InfoOutlinedIcon sx={{ marginLeft: 1 }} />
+                  </Tooltip>
+                </Typography>
+              }
+              sx={{ marginTop: 2 }}
+            />
+          )}
         </Wrapper>
       }
       labelPosition={'top'}

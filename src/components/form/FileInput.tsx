@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 
+import FileUploadIcon from '@mui/icons-material/FileUpload'
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf'
-import { Box, Button, Container, Typography, styled } from '@mui/material'
+import { Box, IconButton, Typography, styled } from '@mui/material'
 import { useDescription, useTsController } from '@ts-react/form'
 import ImageUploading, { ImageListType } from 'react-images-uploading'
 import { colors } from 'thebadge-ui-library'
@@ -18,6 +19,25 @@ const Wrapper = styled(Box)(({ theme }) => ({
   rowGap: theme.spacing(1),
   width: '100%',
   gridColumn: 'span 1 / 4',
+}))
+
+const FileDrop = styled(Box, {
+  shouldForwardProp: (propName) => propName !== 'isDragging' && propName !== 'error',
+})<{
+  isDragging?: boolean
+  error?: boolean
+}>(({ error, isDragging, theme }) => ({
+  cursor: 'pointer',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  height: '50px',
+  borderBottomWidth: 1,
+  borderBottomColor: error ? theme.palette.error.main : isDragging ? colors.green : colors.grey,
+  borderBottomStyle: 'solid',
+  '&:hover': {
+    borderBottomColor: colors.green,
+  },
 }))
 
 /**
@@ -45,89 +65,68 @@ export default function FileInput() {
     <Wrapper>
       <FormField
         formControl={
-          <Container maxWidth="md" sx={{ display: 'flex', width: '100%' }}>
-            <ImageUploading
-              acceptType={['pdf']}
-              allowNonImageType={true}
-              dataURLKey="data_url"
-              maxNumber={maxNumber}
-              onChange={onChange}
-              value={files}
-            >
-              {({
-                dragProps,
-                errors,
-                imageList,
-                isDragging,
-                onImageRemove,
-                onImageUpdate,
-                onImageUpload,
-              }) => (
-                // write your building UI
-                <Box display="flex" flexDirection="column" sx={{ flex: 1 }}>
-                  {imageList.length === 0 && (
-                    <Button
-                      onClick={onImageUpload}
-                      sx={{
-                        height: '50px',
-                        borderWidth: 1,
-                        borderColor: isDragging ? colors.green : colors.grey,
-                        borderStyle: 'dashed',
-                      }}
-                      variant="text"
-                      {...dragProps}
-                    >
-                      Click or Drop here
-                    </Button>
-                  )}
-                  {imageList.map((image, index) => (
-                    <Box
-                      className="pdf-item"
-                      key={index}
-                      sx={{ display: 'flex', flexDirection: 'row' }}
-                    >
-                      <Box alignItems="center" display="flex" flexDirection="row">
-                        <PictureAsPdfIcon sx={{ mr: 1 }} />
-                        <Typography component={'div'}>{image.file?.name}</Typography>
-                      </Box>
-                      <Box
-                        display="flex"
-                        flexDirection="column"
-                        justifyContent="space-evenly"
-                        marginLeft={2}
+          <ImageUploading
+            acceptType={['pdf']}
+            allowNonImageType={true}
+            dataURLKey="data_url"
+            maxNumber={maxNumber}
+            onChange={onChange}
+            value={files}
+          >
+            {({ dragProps, errors, imageList, isDragging, onImageUpdate, onImageUpload }) => (
+              // write your building UI
+              <Box display="flex" flexDirection="column" sx={{ flex: 1 }}>
+                {imageList.length === 0 && (
+                  <FileDrop
+                    error={!!error}
+                    isDragging={isDragging}
+                    onClick={onImageUpload}
+                    {...dragProps}
+                  >
+                    <Typography color="text.disabled">Click or Drop here</Typography>
+                    <IconButton aria-label="upload file" color="secondary" component="label">
+                      <FileUploadIcon color="white" />
+                    </IconButton>
+                  </FileDrop>
+                )}
+                {imageList.map((image, index) => (
+                  <Box
+                    className="pdf-item"
+                    key={index}
+                    sx={{ display: 'flex', flexDirection: 'row' }}
+                  >
+                    <FileDrop onClick={onImageUpload} {...dragProps} error={!!error || !!errors}>
+                      <PictureAsPdfIcon sx={{ mr: 1 }} />
+                      <Typography
+                        sx={{
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          whiteSpace: 'nowrap',
+                          maxWidth: '330px',
+                        }}
                       >
-                        <Button
-                          color="info"
-                          onClick={() => onImageUpdate(index)}
-                          variant="outlined"
-                        >
-                          Update
-                        </Button>
-
-                        <Button
-                          color="error"
-                          onClick={() => onImageRemove(index)}
-                          variant="outlined"
-                        >
-                          Remove
-                        </Button>
-                      </Box>
-                    </Box>
-                  ))}
-                  {errors && (
-                    <div>
-                      {errors.maxNumber && <span>Number of selected files exceed maxNumber</span>}
-                      {errors.acceptType && <span>Your selected file type is not allow</span>}
-                      {errors.maxFileSize && <span>Selected file size exceed maxFileSize</span>}
-                      {errors.resolution && (
-                        <span>Selected file is not match your desired resolution</span>
-                      )}
-                    </div>
-                  )}
-                </Box>
-              )}
-            </ImageUploading>
-          </Container>
+                        {image.file?.name}
+                      </Typography>
+                      <IconButton
+                        aria-label="upload file"
+                        color="secondary"
+                        component="label"
+                        onClick={() => onImageUpdate(index)}
+                      >
+                        <FileUploadIcon color="white" />
+                      </IconButton>
+                    </FileDrop>
+                  </Box>
+                ))}
+                {errors && (
+                  <div>
+                    {errors.acceptType && <span>Your selected file type is not allow</span>}
+                    {errors.maxFileSize && <span>Selected file size exceed maxFileSize</span>}
+                  </div>
+                )}
+              </Box>
+            )}
+          </ImageUploading>
         }
         label={label}
         status={error ? TextFieldStatus.error : TextFieldStatus.success}

@@ -139,7 +139,8 @@ export const ChallengePeriodTypeSchema = createUniqueFieldSchema(
       required_error: 'Is required',
       invalid_type_error: 'Must enter an amount of days',
     })
-    .min(2, 'The challenge time must be greater than 1 day'),
+    .min(2, 'The challenge time must be greater than 1 day')
+    .max(15, 'The challenge cant be greater than 15 days'),
   'ChallengePeriodTypeSchema',
 )
 
