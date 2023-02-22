@@ -1,44 +1,30 @@
-import { useSearchParams } from 'next/navigation'
-import { useRouter } from 'next/router'
-
 import { Box, Stack, Typography } from '@mui/material'
 import dayjs from 'dayjs'
 import { useTranslation } from 'next-export-i18n'
+import Countdown from 'react-countdown'
 import { colors } from 'thebadge-ui-library'
 
-import LinkWithTranslation from '@/src/components/helpers/LinkWithTranslation'
-import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
+import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { SubgraphName, getSubgraphSdkByNetwork } from '@/src/subgraph/subgraph'
-import { NextPageWithLayout } from '@/types/next'
 
-const Profile: NextPageWithLayout = () => {
+type Props = {
+  address: string
+}
+
+const Profile = ({ address }: Props) => {
   const { t } = useTranslation()
-
-  const { address, appChainId } = useWeb3Connection()
-  const searchParams = useSearchParams()
-  const router = useRouter()
-
-  const addressOnUrl = searchParams.get('address')?.toLowerCase()
-
-  if (addressOnUrl === null) {
-    router.replace(`/profile/${address}`)
-    return null
-  }
+  const { appChainId } = useWeb3Connection()
 
   const gql = getSubgraphSdkByNetwork(appChainId, SubgraphName.TheBadge)
-  const userWithBadges = gql.useUserBadgesById({ ownerAddress: addressOnUrl as string })
+  const userWithBadges = gql.useUserBadgesById({ ownerAddress: address })
   const badges = userWithBadges.data?.user?.badges || []
 
-  console.log({ userWithBadges })
-
   return (
-    <>
+    <SafeSuspense>
       <Stack sx={{ mb: 6, gap: 4, alignItems: 'center' }}>
         <Typography textAlign="center" variant="subtitle2">
-          {address === addressOnUrl
-            ? t('profile.title')
-            : t('profile.titleOf', { address: addressOnUrl })}
+          {t('profile.titleOf', { address })}
         </Typography>
       </Stack>
       <Box>
@@ -59,13 +45,14 @@ const Profile: NextPageWithLayout = () => {
                 p: 2,
               }}
             >
-              <LinkWithTranslation pathname={`/badge/${bt.badgeType.id}/${addressOnUrl}`}>
-                Minted badge {bt.id}
-              </LinkWithTranslation>
+              {/* <LinkWithTranslation pathname={`/badge/${bt.badgeType.id}/${address}`}>
+              Minted badge {bt.id}
+              </LinkWithTranslation> */}
 
+              <Typography>Minted badge {bt.id}</Typography>
               <Typography>Status: {bt.status}</Typography>
               <Typography>
-                Review DueDate: {dayjs.unix(bt.reviewDueDate).format('dddd, MMMM D, YYYY h:mm A')}
+                Review ends in <Countdown date={dayjs.unix(bt.reviewDueDate).toDate()} />
               </Typography>
               <Typography>BadgeType Id: {bt.badgeType.id}</Typography>
               <Typography>BadgeType Minted Amount: {bt.badgeType.badgesMintedAmount}</Typography>
@@ -73,8 +60,8 @@ const Profile: NextPageWithLayout = () => {
           )
         })}
       </Box>
-    </>
+    </SafeSuspense>
   )
 }
 
-export default withPageGenericSuspense(Profile)
+export default Profile

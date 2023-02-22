@@ -17,7 +17,6 @@ export const BADGE_TYPES = gql`
       klerosBadge {
         klerosMetadataURL
         klerosTCRList
-        badgesMintedAmount
         submissionBaseDeposit
         challengePeriodDuration
       }
@@ -41,7 +40,6 @@ export const BADGE_TYPE = gql`
       klerosBadge {
         klerosMetadataURL
         klerosTCRList
-        badgesMintedAmount
         submissionBaseDeposit
         challengePeriodDuration
       }
