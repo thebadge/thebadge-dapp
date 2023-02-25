@@ -106,7 +106,6 @@ const CreateBadgeType: NextPageWithLayout = () => {
         metadata: `ipfs://${badgeTypeIPFSUploaded.result?.ipfsHash}`, // TODO: should we use a custom one? or the one for TCR is ok?
         controllerName: 'kleros',
         mintCost: parseUnits(data.mintCost.toString(), 18),
-        mintFee: 0, // TODO: remove
         validFor: data.validFor, // in seconds, 0 infinite
       },
       klerosControllerDataEncoded,

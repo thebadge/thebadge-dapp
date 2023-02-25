@@ -246,6 +246,12 @@
         "internalType": "string",
         "name": "metadata",
         "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "validFor",
+        "type": "uint256"
       }
     ],
     "name": "BadgeTypeCreated",
@@ -615,11 +621,6 @@
           {
             "internalType": "uint256",
             "name": "mintCost",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "mintFee",
             "type": "uint256"
           },
           {
