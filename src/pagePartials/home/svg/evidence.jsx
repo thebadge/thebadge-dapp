@@ -9,15 +9,15 @@ export const Evidence = () => {
     >
       <g id="evidence">
         <g filter="url(#filter0_f_3528_6340)" id="Rectangle 508">
-          <rect fill="#616161" fill-opacity="0.25" height="40" rx="20" width="97" x="22" y="34" />
+          <rect fill="#616161" fillOpacity="0.25" height="40" rx="20" width="97" x="22" y="34" />
         </g>
         <path
           d="M12.8504 34V29.545L19.9124 22.186C20.7704 21.306 21.3864 20.536 21.7604 19.876C22.1344 19.216 22.3214 18.545 22.3214 17.863C22.3214 17.027 22.0354 16.4 21.4634 15.982C20.9134 15.564 20.1104 15.355 19.0544 15.355C18.1744 15.355 17.2724 15.52 16.3484 15.85C15.4464 16.158 14.5334 16.664 13.6094 17.368L11.7284 12.946C12.7624 12.154 14.0054 11.527 15.4574 11.065C16.9094 10.603 18.4054 10.372 19.9454 10.372C22.6514 10.372 24.7084 10.955 26.1164 12.121C27.5464 13.287 28.2614 14.97 28.2614 17.17C28.2614 18.578 27.9314 19.931 27.2714 21.229C26.6334 22.505 25.5664 23.869 24.0704 25.321L18.6584 30.601V29.05H29.1194V34H12.8504Z"
           fill="#24F3D2"
-          fill-opacity="0.7"
+          fillOpacity="0.7"
           id="2"
         />
-        <g class="scaled2" opacity="0.6">
+        <g className="scaled2" opacity="0.6">
           <g id="Group">
             <g id="Group_2">
               <path
@@ -63,7 +63,7 @@ export const Evidence = () => {
       </g>
       <defs>
         <filter
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
           filterUnits="userSpaceOnUse"
           height="80"
           id="filter0_f_3528_6340"
@@ -71,7 +71,7 @@ export const Evidence = () => {
           x="2"
           y="14"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend in="SourceGraphic" in2="BackgroundImageFix" mode="normal" result="shape" />
           <feGaussianBlur result="effect1_foregroundBlur_3528_6340" stdDeviation="10" />
         </filter>

@@ -1,4 +1,4 @@
-import { Typography } from '@mui/material'
+import { Stack, Typography } from '@mui/material'
 
 import SafeSuspense, { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import { BadgeCuration } from '@/src/pagePartials/badge/curate/BadgeCuration'
@@ -13,7 +13,7 @@ const ExploreBadges: NextPageWithLayout = () => {
   const badgesInReview = gql.useBadgesInReview({ date: now })
 
   return (
-    <>
+    <Stack gap={4}>
       <Typography variant="h3">Badges in review</Typography>
 
       <div>
@@ -25,7 +25,7 @@ const ExploreBadges: NextPageWithLayout = () => {
           )
         })}
       </div>
-    </>
+    </Stack>
   )
 }
 

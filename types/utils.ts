@@ -84,7 +84,7 @@ export type BackendResponse<T> = {
   result: null | T
 }
 
-export type BackendFileUpload = { mimeType: string; base64File: string }
+export type BackendFileUpload = { mimeType: string; base64File: string; s3Url: string }
 
 export enum Severity {
   'Normal' = 1,

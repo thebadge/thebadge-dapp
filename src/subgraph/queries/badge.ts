@@ -15,3 +15,11 @@ export const MY_BADGES = gql`
     }
   }
 `
+
+export const BADGE_BY_ID = gql`
+  query badgeById($id: ID!) {
+    badge(id: $id) {
+      ...FullBadgeDetails
+    }
+  }
+`

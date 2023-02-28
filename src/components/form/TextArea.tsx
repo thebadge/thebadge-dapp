@@ -23,7 +23,7 @@ const StyledTextField = styled(MUITextField)(({ theme }) => ({
   margin: theme.spacing(0),
 }))
 
-export default function TextArea() {
+export default function TextArea({ rows = 3 }) {
   const { error, field } = useTsController<z.infer<typeof LongTextSchema>>()
   const { label, placeholder } = useDescription()
 
@@ -41,8 +41,8 @@ export default function TextArea() {
         multiline
         onChange={onChange}
         placeholder={placeholder}
-        rows={3}
-        sx={{ textTransform: 'capitalize' }}
+        rows={rows}
+        sx={{ textTransform: 'capitalize', flex: 1 }}
         value={field.value ? field.value : ''}
         variant={'standard'}
       />

@@ -51,6 +51,13 @@
       "issueBy": "Issued by: {{issuer}}",
       "claims": " # of claims",
       "checkHowElse": "Check who else claimed it. SEE ALL"
+    },
+    "challenge": {
+      "modal": {
+        "readCriteria": "Read the ",
+        "listingCriteria": "Listing Criteria",
+        "toAvoid": " to avoid wrong challenge requests."
+      }
     }
   },
   "footer": {

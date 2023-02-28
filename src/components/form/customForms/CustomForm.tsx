@@ -19,6 +19,7 @@ function MyCustomFormComponent({
   gridStructure,
   layout = 'flex',
   onSubmit,
+  rowHeight,
 }: CustomFormProps) {
   if (layout !== 'gridResponsive' && gridStructure) {
     throw new Error(`gridStructure must be provided only on layout = 'gridResponsive'`)
@@ -28,7 +29,7 @@ function MyCustomFormComponent({
     <Container maxWidth="md" sx={{ display: 'flex', width: '100%' }}>
       <form onSubmit={onSubmit} style={{ display: 'flex', flexDirection: 'column' }}>
         {/* children are you form field components */}
-        <Layout draggable={draggable} gridStructure={gridStructure}>
+        <Layout draggable={draggable} gridStructure={gridStructure} rowHeight={rowHeight}>
           {children}
         </Layout>
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
@@ -54,6 +55,7 @@ function MyCustomFormComponentWithoutSubmit({
   gridStructure,
   layout = 'flex',
   onSubmit,
+  rowHeight,
 }: CustomFormProps) {
   if (layout !== 'gridResponsive' && gridStructure) {
     throw new Error(`gridStructure must be provided only on layout = 'gridResponsive'`)
@@ -63,7 +65,7 @@ function MyCustomFormComponentWithoutSubmit({
     <Container maxWidth="md" sx={{ display: 'flex', width: '100%' }}>
       <Box style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
         {/* children are you form field components */}
-        <Layout draggable={draggable} gridStructure={gridStructure}>
+        <Layout draggable={draggable} gridStructure={gridStructure} rowHeight={rowHeight}>
           {children}
         </Layout>
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>

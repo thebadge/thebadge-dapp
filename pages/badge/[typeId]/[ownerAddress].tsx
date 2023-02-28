@@ -3,10 +3,11 @@ import { useSearchParams } from 'next/navigation'
 import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined'
 import { Box, Divider, Stack, Typography } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
-import { colors } from 'thebadge-ui-library'
+import { Button, colors } from 'thebadge-ui-library'
 
 import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import BadgeTypeMetadata from '@/src/pagePartials/badge/BadgeTypeMetadata'
+import { useChallengeProvider } from '@/src/providers/challengeProvider'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { SubgraphName, getSubgraphSdkByNetwork } from '@/src/subgraph/subgraph'
 import { NextPageWithLayout } from '@/types/next'
@@ -14,10 +15,16 @@ import { NextPageWithLayout } from '@/types/next'
 const ViewBadge: NextPageWithLayout = () => {
   const { t } = useTranslation()
   const { appChainId } = useWeb3Connection()
+  const { challenge } = useChallengeProvider()
 
   const searchParams = useSearchParams()
   const typeId = searchParams.get('typeId')
   const ownerAddress = searchParams.get('ownerAddress')
+
+  if (!typeId || !ownerAddress) {
+    throw `No typeId/ownerAddress provided us URL query param`
+  }
+
   const badgeId = `${ownerAddress}-${typeId}`
   const gql = getSubgraphSdkByNetwork(appChainId, SubgraphName.TheBadge)
   const badge = gql.useBadgeById({ id: badgeId })
@@ -74,6 +81,7 @@ const ViewBadge: NextPageWithLayout = () => {
             <ShareOutlinedIcon />
           </Box>
         </Stack>
+        <Button onClick={() => challenge(typeId, ownerAddress)}>Challenge</Button>
       </Box>
     </>
   )

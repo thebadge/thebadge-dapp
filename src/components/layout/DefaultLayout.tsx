@@ -5,6 +5,7 @@ import { BackgroundGradient } from 'thebadge-ui-library'
 
 import Header from '@/src/components/header/Header'
 import MainMenu from '@/src/components/navigation/MainMenu'
+import ChallengeContextProvider from '@/src/providers/challengeProvider'
 import { useColorMode } from '@/src/providers/themeProvider'
 
 const Content = styled(Box)(({ theme }) => ({
@@ -39,7 +40,7 @@ export default function DefaultLayout({ children }: DefaultLayoutProps) {
   const { mode } = useColorMode()
 
   return (
-    <>
+    <ChallengeContextProvider>
       <Content>
         <Headroom
           style={{
@@ -63,6 +64,6 @@ export default function DefaultLayout({ children }: DefaultLayoutProps) {
           </Container>
         </Box>
       </Content>
-    </>
+    </ChallengeContextProvider>
   )
 }

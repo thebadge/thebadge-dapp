@@ -30,8 +30,6 @@ const Profile: NextPageWithLayout = () => {
   const userWithBadges = gql.useUserBadgesById({ ownerAddress: addressOnUrl as string })
   const badges = userWithBadges.data?.user?.badges || []
 
-  console.log({ userWithBadges })
-
   return (
     <>
       <Stack sx={{ mb: 6, gap: 4, alignItems: 'center' }}>
