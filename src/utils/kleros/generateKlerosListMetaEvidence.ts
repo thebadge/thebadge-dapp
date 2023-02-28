@@ -1,5 +1,5 @@
 import { MetadataColumn } from '@/types/kleros/types'
-import { BackendFileUpload } from '@/types/utils'
+import { BackendFileResponse, BackendFileUpload } from '@/types/utils'
 
 export type KlerosListStructure = {
   name: string
@@ -11,7 +11,7 @@ export type KlerosListStructure = {
   }
   category: string
   question: string
-  fileURI: BackendFileUpload
+  fileURI: BackendFileUpload | BackendFileResponse
   evidenceDisplayInterfaceURI: string
   metadata: {
     tcrTitle: string
@@ -19,7 +19,7 @@ export type KlerosListStructure = {
     columns: MetadataColumn[]
     itemName: string
     itemNamePlural: string
-    logoURI: BackendFileUpload
+    logoURI: BackendFileUpload | BackendFileResponse
     requireRemovalEvidence: boolean
     isTCRofTCRs: boolean
     relTcrDisabled: boolean

@@ -67,4 +67,3 @@ export const MY_BADGE_TYPES = gql`
     }
   }
 `
-

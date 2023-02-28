@@ -23,7 +23,13 @@ export default function ListingCriteriaLink({ badgeTypeId }: { badgeTypeId: stri
   }
 
   const metadata = useS3Metadata<{ content: KlerosListStructure }>(klerosMetadataURL)
-  const criteriaUrl = metadata?.data?.content.fileURI.s3Url
+  const fileURI = metadata?.data?.content.fileURI
+
+  if (!fileURI) {
+    throw 'There was not possible to get the needed metadata. Try again in some minutes.'
+  }
+
+  const criteriaUrl = 's3url' in fileURI ? fileURI.s3url : ''
 
   return (
     <Typography variant="subtitle2">
