@@ -29,7 +29,7 @@ export default function ListingCriteriaLink({ badgeTypeId }: { badgeTypeId: stri
     throw 'There was not possible to get the needed metadata. Try again in some minutes.'
   }
 
-  const criteriaUrl = 's3url' in fileURI ? fileURI.s3url : ''
+  const criteriaUrl = 's3Url' in fileURI ? fileURI.s3Url : ''
 
   return (
     <Typography variant="subtitle2">

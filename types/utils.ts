@@ -87,7 +87,7 @@ export type BackendResponse<T> = {
 export type BackendFileUpload = { mimeType: string; base64File: string }
 export type BackendFileResponse = {
   mimeType: string
-  s3url: string
+  s3Url: string
   extension: string
   ipfs: string
 }

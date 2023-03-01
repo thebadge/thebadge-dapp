@@ -31,6 +31,7 @@ const ModalBody = styled(Box)(({ theme }) => ({
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: '70%',
+  maxWidth: '1050px',
   minHeight: '50%',
   background: theme.palette.background.paper,
   borderRadius: theme.spacing(1),
