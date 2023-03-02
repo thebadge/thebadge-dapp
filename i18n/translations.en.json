@@ -51,6 +51,16 @@
       "issueBy": "Issued by: {{issuer}}",
       "claims": " # of claims",
       "checkHowElse": "Check who else claimed it. SEE ALL"
+    },
+    "challenge": {
+      "modal": {
+        "challenge": "Challenge Badge",
+        "remove": "Remove Badge",
+        "explainWhy": "Explain de jurors why do you think this items should de removed.",
+        "readCriteria": "Read the ",
+        "listingCriteria": "Listing Criteria",
+        "toAvoid": " to avoid wrong challenge requests."
+      }
     }
   },
   "footer": {

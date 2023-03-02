@@ -125,6 +125,15 @@ export const FileSchema = createUniqueFieldSchema(
   'FileSchema',
 )
 
+export const OptionalFileSchema = createUniqueFieldSchema(
+  z
+    .any()
+    .refine((value) => !!value && !!value.file, 'Upload a file is required.')
+    .refine((value) => value?.file?.size <= MAX_FILE_SIZE, `Max file size is 5MB.`)
+    .optional(),
+  'OptionalFileSchema',
+)
+
 export const ExpirationTypeSchema = createUniqueFieldSchema(
   z.number({
     required_error: 'Is required',

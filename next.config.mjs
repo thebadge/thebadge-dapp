@@ -31,6 +31,7 @@ export default withBundleAnalyzerWrapper(
     },
     transpilePackages: ['@mui/material', 'thebadge-ui-library', '@web3-onboard/*'],
     images: {
+      unoptimized: true,
       domains: [
         "tokens.1inch.io",
         "ethereum-optimism.github.io",

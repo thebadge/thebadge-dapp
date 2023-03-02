@@ -1,7 +1,7 @@
 import { PaletteMode, ThemeOptions, Typography } from '@mui/material'
 import { TypographyOptions } from '@mui/material/styles/createTypography'
 import { Mulish } from '@next/font/google'
-import { defaultTheme, gradients } from 'thebadge-ui-library'
+import { darkTheme, lightTheme } from 'thebadge-ui-library'
 
 const mulishFont = Mulish({
   weight: ['300', '400', '500', '600', '700', '800', '900'],
@@ -10,25 +10,10 @@ const mulishFont = Mulish({
 })
 
 export const getTheme = (mode?: PaletteMode): ThemeOptions => ({
-  ...defaultTheme,
+  ...(mode === 'light' ? lightTheme : darkTheme),
   palette: {
     mode,
-    ...defaultTheme.palette,
-    text: {
-      primary: mode === 'light' ? '#000000' : '#ffffff',
-      secondary: mode === 'light' ? 'rgba(0,0,0,0.6)' : 'rgba(255,255,255,0.6)',
-      disabled: mode === 'light' ? 'rgba(0,0,0,0.38)' : 'rgba(255,255,255,0.38)',
-      dark: '#ffffff',
-      light: '#000000',
-    },
-    background: {
-      default: mode === 'light' ? '#F4F4F4' : '#000000',
-    },
-    backgroundGradient: {
-      main: gradients.gradientBackgroundLight,
-      light: gradients.gradientBackgroundLight,
-      dark: gradients.gradientBackgroundDark,
-    },
+    ...(mode === 'light' ? lightTheme.palette : darkTheme.palette),
     mainMenu: {
       boxShadow: {
         main: mode === 'light' ? 'rgba(0, 0, 0, 0.3)' : 'rgba(255, 255, 255, 0.25)',
@@ -44,7 +29,7 @@ export const getTheme = (mode?: PaletteMode): ThemeOptions => ({
     },
   },
   typography: {
-    ...overrideFontFamily(defaultTheme, mulishFont.style.fontFamily),
+    ...overrideFontFamily(mode === 'light' ? lightTheme : darkTheme, mulishFont.style.fontFamily),
   },
   customSizes: {
     avatar: 92,

@@ -9,16 +9,16 @@ export const Choose = () => {
     >
       <g id="choose">
         <g filter="url(#filter0_f_3528_6339)" id="Rectangle 507">
-          <rect fill="#616161" fill-opacity="0.25" height="40" rx="20" width="97" x="20" y="33" />
+          <rect fill="#616161" fillOpacity="0.25" height="40" rx="20" width="97" x="20" y="33" />
         </g>
         <g id="1">
           <path
             d="M14.6094 33V28.05H19.8234V14.784H22.5954L15.1704 19.008V13.398L21.5724 9.735H25.8954V28.05H30.7464V33H14.6094Z"
             fill="#24F3D2"
-            fill-opacity="0.7"
+            fillOpacity="0.7"
           />
         </g>
-        <g class="scaled" opacity="0.6">
+        <g className="scaled" opacity="0.6">
           <g id="cert1">
             <g id="Group">
               <path
@@ -92,7 +92,7 @@ export const Choose = () => {
       </g>
       <defs>
         <filter
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
           filterUnits="userSpaceOnUse"
           height="80"
           id="filter0_f_3528_6339"
@@ -100,7 +100,7 @@ export const Choose = () => {
           x="0"
           y="13"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend in="SourceGraphic" in2="BackgroundImageFix" mode="normal" result="shape" />
           <feGaussianBlur result="effect1_foregroundBlur_3528_6339" stdDeviation="10" />
         </filter>
