@@ -57,19 +57,45 @@ declare module '@mui/material/Typography' {
     title5: true;
     body3: true;
     body4: true;
+    dAppHeadline1: true
+    dAppHeadline2: true
+    dAppTitle1: true
+    dAppTitle2: true
+    dAppTitle3: true
+    dAppTitle4: true
+    dAppTitle5: true
+    dAppBody1: true
+    dAppBody3: true
+    dAppBody4: true
+    dAppNumber: true
+    dAppDaysHours: true
+    dAppButton: true
   }
 }
 
 declare module '@mui/material/styles/createTypography' {
   // allow configuration using `createTheme`
   export interface TypographyOptions {
-    title1: TypographyStyleOptions;
-    title2: TypographyStyleOptions;
-    title3: TypographyStyleOptions;
-    title4: TypographyStyleOptions;
-    title5: TypographyStyleOptions;
-    body3: TypographyStyleOptions;
-    body4: TypographyStyleOptions;
+    title1: TypographyStyleOptions
+    title2: TypographyStyleOptions
+    title3: TypographyStyleOptions
+    title4: TypographyStyleOptions
+    title5: TypographyStyleOptions
+    body3: TypographyStyleOptions
+    body4: TypographyStyleOptions
+    dAppHeadline1: TypographyStyleOptions
+    dAppHeadline2: TypographyStyleOptions
+    dAppTitle1: TypographyStyleOptions
+    dAppTitle2: TypographyStyleOptions
+    dAppTitle3: TypographyStyleOptions
+    dAppTitle4: TypographyStyleOptions
+    dAppTitle5: TypographyStyleOptions
+    dAppBody1: TypographyStyleOptions
+    dAppBody3: TypographyStyleOptions
+    dAppBody4: TypographyStyleOptions
+    dAppNumber: TypographyStyleOptions
+    dAppDaysHours: TypographyStyleOptions
+    dAppButton: TypographyStyleOptions
   }
 }
 

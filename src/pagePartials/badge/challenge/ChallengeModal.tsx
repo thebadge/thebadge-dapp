@@ -12,6 +12,7 @@ import {
   Typography,
   styled,
 } from '@mui/material'
+import { useTranslation } from 'next-export-i18n'
 import { z } from 'zod'
 
 import { CustomFormFromSchemaWithoutSubmit } from '@/src/components/form/customForms/CustomForm'
@@ -26,6 +27,8 @@ import ipfsUpload from '@/src/utils/ipfsUpload'
 import { KlerosBadgeTypeController__factory } from '@/types/generated/typechain'
 
 const ModalBody = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
   position: 'absolute',
   top: '50%',
   left: '50%',
@@ -86,11 +89,13 @@ export default function ChallengeModal({
           <CloseIcon color="white" />
         </IconButton>
 
-        <ChallengeModalContent
-          badgeTypeId={badgeTypeId}
-          onClose={onClose}
-          ownerAddress={ownerAddress}
-        />
+        <SafeSuspense>
+          <ChallengeModalContent
+            badgeTypeId={badgeTypeId}
+            onClose={onClose}
+            ownerAddress={ownerAddress}
+          />
+        </SafeSuspense>
       </ModalBody>
     </Modal>
   )
@@ -105,6 +110,8 @@ function ChallengeModalContent({
   ownerAddress: string
   onClose: () => void
 }) {
+  const { t } = useTranslation()
+
   const klerosController = useContractInstance(
     KlerosBadgeTypeController__factory,
     'KlerosBadgeTypeController',
@@ -156,15 +163,17 @@ function ChallengeModalContent({
         width: '100%',
       }}
     >
-      <Typography color={'#42FF00'} id="modal-modal-title" variant="h3">
-        Challenge Badge
+      <Typography color={'#42FF00'} id="modal-modal-title" variant="dAppHeadline2">
+        {t('badge.challenge.modal.challenge')}
       </Typography>
       <SafeSuspense fallback={<Skeleton variant={'text'} width={500} />}>
         <ListingCriteriaLink badgeTypeId={badgeTypeId} />
       </SafeSuspense>
-      <Container sx={{ flexDirection: 'row', display: 'flex', gap: 2 }}>
+      <Container sx={{ flexDirection: 'row', display: 'flex', alignItems: 'center', gap: 1 }}>
         <FindInPageOutlinedIcon />
-        <Typography>Explain de jurors why do you think this items should de removed.</Typography>
+        <Typography component="p" variant="dAppBody1">
+          {t('badge.challenge.modal.explainWhy')}
+        </Typography>
       </Container>
       <Stack
         sx={{

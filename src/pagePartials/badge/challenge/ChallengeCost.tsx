@@ -38,7 +38,7 @@ export default function ChallengeCost({
         gap={2}
         sx={{ borderBottom: '1px solid white', justifyContent: 'flex-end', pb: 2 }}
       >
-        <Typography variant="subtitle2">Total deposit required</Typography>
+        <Typography variant="dAppBody1">Total deposit required</Typography>
         <SafeSuspense>
           <Typography>
             {formatUnits(challengeCost?.toString(), 18)} {networkConfig.token}
@@ -47,9 +47,12 @@ export default function ChallengeCost({
       </Stack>
       <Box display="flex" flex={1} gap={2}>
         <ReportProblemOutlinedIcon sx={{ m: 'auto' }} />
-        <Typography component="p" sx={{ display: 'flex', alignItems: 'center' }} variant="caption">
-          {`Note that this is a deposit, not a fee and it will be reimbursed if the removal is
-                accepted. The challenge period last ${challengePeriodDuration} days.`}
+        <Typography
+          component="p"
+          sx={{ display: 'flex', alignItems: 'center' }}
+          variant="dAppBody1"
+        >
+          {`Note that this is a deposit, not a fee and it will be reimbursed if the removal is accepted. The challenge period last ${challengePeriodDuration} days.`}
         </Typography>
       </Box>
     </Box>
