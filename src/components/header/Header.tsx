@@ -1,3 +1,5 @@
+import { useRouter } from 'next/navigation'
+
 import { Box, styled } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
 import { LogoTheBadgeWithText } from 'thebadge-ui-library'
@@ -26,7 +28,7 @@ const HeaderContainer = styled(Box)(({ theme }) => ({
 
 const Header = () => {
   const { connectWallet, isWalletConnected } = useWeb3Connection()
-
+  const router = useRouter()
   const { t } = useTranslation()
 
   return (
@@ -37,7 +39,9 @@ const Header = () => {
           flex: 1,
         }}
       >
-        <LogoTheBadgeWithText size={92} />
+        <Box onClick={() => router.push('/')} sx={{ cursor: 'pointer', width: 'fit-content' }}>
+          <LogoTheBadgeWithText size={92} />
+        </Box>
       </Box>
       <Box display="flex">
         <WrongNetwork />
