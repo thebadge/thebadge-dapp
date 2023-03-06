@@ -5,7 +5,6 @@ import { Box, TextField as MUITextField, Tooltip, styled } from '@mui/material'
 import { useDescription, useTsController } from '@ts-react/form'
 import { FieldError } from 'react-hook-form'
 
-import { TextArea } from '@/src/components/form/TextArea'
 import { convertToFieldError } from '@/src/components/form/helpers/validators'
 
 export enum TextFieldStatus {
@@ -69,7 +68,7 @@ export default function TextFieldWithTSForm() {
   }
 
   return (
-    <TextArea
+    <TextField
       error={error ? convertToFieldError(error) : undefined}
       label={label}
       onChange={onChange}

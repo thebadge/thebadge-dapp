@@ -3,7 +3,7 @@ import { useRef } from 'react'
 import * as React from 'react'
 
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
-import { Box, Button, Stack, Tooltip, Typography } from '@mui/material'
+import { Box, Stack, Tooltip, Typography } from '@mui/material'
 import domtoimage from 'dom-to-image'
 import { useTranslation } from 'next-export-i18n'
 import { BadgePreviewV2 } from 'thebadge-ui-library'
@@ -20,7 +20,7 @@ import { KlerosListStructure } from '@/src/utils/kleros/generateKlerosListMetaEv
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 type MintStepsProps<SchemaType extends z.ZodEffects<any, any, any> | AnyZodObject = any> = {
-  onSubmit: (data: z.TypeOf<SchemaType>) => void
+  onSubmit: (data: z.TypeOf<SchemaType>, imageDataUrl: string) => void
   evidenceSchema: SchemaType
   badgeMetadata: KlerosListStructure
   costs: {
@@ -58,26 +58,24 @@ export default function MintSteps({
   const badgeLogoData = useS3Metadata<{ s3Url: string }>(badgeLogoUri as unknown as string)
   const badgeLogoUrl = badgeLogoData.data?.s3Url
 
-  const handleOnSubmit = (data: z.infer<typeof evidenceSchema>) => {
-    onSubmit(data)
-  }
-
-  const convertPreviewToImage = async () => {
-    if (!badgePreviewRef.current) return
+  const convertPreviewToImage = async (): Promise<string> => {
+    if (!badgePreviewRef.current) return ''
     let previewImageDataUrl
     try {
       previewImageDataUrl = await domtoimage.toPng(badgePreviewRef.current, {
         cacheBust: true,
       })
       console.log(previewImageDataUrl)
+      return previewImageDataUrl
     } catch (e) {
       console.log(e)
-      return
+      return ''
     }
-    const link = document.createElement('a')
-    link.download = 'my-badge-preview.jpeg'
-    link.href = previewImageDataUrl
-    link.click()
+  }
+
+  const handleOnSubmit = async (data: z.infer<typeof evidenceSchema>) => {
+    const imageDataUrl = await convertPreviewToImage()
+    onSubmit(data, imageDataUrl)
   }
 
   function handleFormPreview(data: z.infer<typeof evidenceSchema>) {
@@ -117,8 +115,6 @@ export default function MintSteps({
           </Box>
           <Typography>{t('badge.type.mint.totalCost', { cost: costs.totalMintCost })}</Typography>
         </Stack>
-        {/* TODO Remove button, use the logic to send the image as mint data */}
-        <Button onClick={convertPreviewToImage}>Convert Preview to Image</Button>
       </Stack>
     )
   }

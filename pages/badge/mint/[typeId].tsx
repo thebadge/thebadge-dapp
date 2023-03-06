@@ -27,7 +27,7 @@ const MintBadgeType: NextPageWithLayout = () => {
   const router = useRouter()
 
   const badgeTypeId = router.query.typeId as string
-  if (!badgeTypeId || typeof badgeTypeId != 'string') {
+  if (!badgeTypeId) {
     throw `No typeId provided us URL query param`
   }
 
@@ -56,16 +56,17 @@ const MintBadgeType: NextPageWithLayout = () => {
     klerosSchemaFactory(badgeTypeMetadata.data.content.metadata.columns),
   )
 
-  async function onSubmit(data: z.infer<typeof CreateBadgeSchema>) {
+  async function onSubmit(data: z.infer<typeof CreateBadgeSchema>, imageDataUrl: string) {
     const values: Record<string, unknown> = {}
     Object.keys(data).forEach((key) => (values[key] = data[key]))
 
     const evidenceIPFSUploaded = await ipfsUpload({
       attributes: {
         columns: badgeTypeMetadata.data?.content.metadata.columns,
+        image: { mimeType: 'image/png', base64File: imageDataUrl },
         values,
       },
-      filePaths: [],
+      filePaths: ['image'],
     })
 
     const klerosControllerDataEncoded = defaultAbiCoder.encode(
