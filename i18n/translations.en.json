@@ -50,7 +50,8 @@
     "viewBadge": {
       "issueBy": "Issued by: {{issuer}}",
       "claims": " # of claims",
-      "checkHowElse": "Check who else claimed it. SEE ALL"
+      "viewEvidence": "Check the provided evidence",
+      "checkHowElse": "Check who else claimed it. "
     },
     "challenge": {
       "modal": {

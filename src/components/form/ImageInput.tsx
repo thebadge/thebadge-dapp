@@ -15,13 +15,15 @@ import {
   styled,
 } from '@mui/material'
 import { useDescription, useTsController } from '@ts-react/form'
-import ImageUploading, { ImageListType } from 'react-images-uploading'
+import { FieldError } from 'react-hook-form'
+import ImageUploading, { ImageListType, ImageType } from 'react-images-uploading'
 import { colors } from 'thebadge-ui-library'
 import { z } from 'zod'
 
 import { TextFieldStatus } from '@/src/components/form/TextField'
 import { FormField } from '@/src/components/form/helpers/FormField'
 import { ImageSchema } from '@/src/components/form/helpers/customSchemas'
+import { convertToFieldError } from '@/src/components/form/helpers/validators'
 
 const Wrapper = styled(Box, {
   shouldForwardProp: (propName) => propName !== 'error',
@@ -54,19 +56,23 @@ const ImageDisplayer = styled(MUIAvatar, {
     width: '100% !important',
   },
 }))
-
-export default function ImageInput() {
-  const { error, field } = useTsController<z.infer<typeof ImageSchema>>()
-  const { label, placeholder } = useDescription()
-  const [images, setImages] = useState<ImageListType>(field.value ? [field.value] : [])
+type ImageInputProps = {
+  error?: FieldError
+  label?: string
+  onChange: (image: ImageType | null) => void
+  placeholder?: string
+  value: ImageType | undefined
+}
+export function ImageInput({ error, label, onChange, placeholder, value }: ImageInputProps) {
+  const [images, setImages] = useState<ImageListType>(value ? [value] : [])
   const maxNumber = 1
 
-  const onChange = (imageList: ImageListType) => {
+  const handleChange = (imageList: ImageListType) => {
     // data for submit
     if (imageList[0]) {
-      field.onChange(imageList[0])
+      onChange(imageList[0])
     } else {
-      field.onChange(null)
+      onChange(null)
     }
     setImages(imageList)
   }
@@ -79,7 +85,7 @@ export default function ImageInput() {
             <ImageUploading
               dataURLKey="data_url"
               maxNumber={maxNumber}
-              onChange={onChange}
+              onChange={handleChange}
               value={images}
             >
               {({
@@ -178,8 +184,27 @@ export default function ImageInput() {
           </Typography>
         }
         status={error ? TextFieldStatus.error : TextFieldStatus.success}
-        statusText={error?.errorMessage}
+        statusText={error?.message}
       />
     </Wrapper>
+  )
+}
+
+/**
+ * Component wrapped to be used with @ts-react/form
+ *
+ */
+export default function ImageInputTSForm() {
+  const { error, field } = useTsController<z.infer<typeof ImageSchema>>()
+  const { label, placeholder } = useDescription()
+
+  return (
+    <ImageInput
+      error={error ? convertToFieldError(error) : undefined}
+      label={label}
+      onChange={field.onChange}
+      placeholder={placeholder}
+      value={field.value}
+    />
   )
 }

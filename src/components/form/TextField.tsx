@@ -3,6 +3,10 @@ import * as React from 'react'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import { Box, TextField as MUITextField, Tooltip, styled } from '@mui/material'
 import { useDescription, useTsController } from '@ts-react/form'
+import { FieldError } from 'react-hook-form'
+
+import { TextArea } from '@/src/components/form/TextArea'
+import { convertToFieldError } from '@/src/components/form/helpers/validators'
 
 export enum TextFieldStatus {
   error = 'error',
@@ -20,14 +24,15 @@ const StyledTextField = styled(MUITextField)(({ theme }) => ({
   margin: theme.spacing(0),
 }))
 
-export default function TextField() {
-  const { error, field } = useTsController<string>()
-  const { label, placeholder } = useDescription()
+type TextFieldProps = {
+  error?: FieldError
+  label?: string
+  onChange: (event: any) => void
+  placeholder?: string
+  value: string | undefined
+}
 
-  function onChange(e: any) {
-    field.onChange(e.target.value)
-  }
-
+export function TextField({ error, label, onChange, placeholder, value }: TextFieldProps) {
   return (
     <Wrapper>
       <StyledTextField
@@ -40,13 +45,36 @@ export default function TextField() {
         }}
         color="secondary"
         error={!!error}
-        helperText={error?.errorMessage || ' '}
+        helperText={error?.message || ' '}
         label={label}
         onChange={onChange}
         sx={{ textTransform: 'capitalize' }}
-        value={field.value ? field.value : ''}
+        value={value ? value : ''}
         variant={'standard'}
       />
     </Wrapper>
+  )
+}
+
+/**
+ * Component wrapped to be used with @ts-react/form
+ *
+ */
+export default function TextFieldWithTSForm() {
+  const { error, field } = useTsController<string>()
+  const { label, placeholder } = useDescription()
+
+  function onChange(e: any) {
+    field.onChange(e.target.value)
+  }
+
+  return (
+    <TextArea
+      error={error ? convertToFieldError(error) : undefined}
+      label={label}
+      onChange={onChange}
+      placeholder={placeholder}
+      value={field.value}
+    />
   )
 }

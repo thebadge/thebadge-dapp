@@ -1,16 +1,20 @@
 import React, { useState } from 'react'
 
 import FileUploadIcon from '@mui/icons-material/FileUpload'
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf'
-import { Box, IconButton, Typography, styled } from '@mui/material'
+import { Box, IconButton, Tooltip, Typography, styled } from '@mui/material'
 import { useDescription, useTsController } from '@ts-react/form'
-import ImageUploading, { ImageListType } from 'react-images-uploading'
+import { FieldError } from 'react-hook-form'
+import ImageUploading, { ImageListType, ImageType } from 'react-images-uploading'
 import { colors } from 'thebadge-ui-library'
 import { z } from 'zod'
 
+import { ImageInput } from '@/src/components/form/ImageInput'
 import { TextFieldStatus } from '@/src/components/form/TextField'
 import { FormField } from '@/src/components/form/helpers/FormField'
 import { FileSchema } from '@/src/components/form/helpers/customSchemas'
+import { convertToFieldError } from '@/src/components/form/helpers/validators'
 
 const Wrapper = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -40,25 +44,31 @@ const FileDrop = styled(Box, {
   },
 }))
 
+type FileInputProps = {
+  error?: FieldError
+  label?: string
+  onChange: (image: ImageType | null) => void
+  placeholder?: string
+  value: ImageType | undefined
+}
+
 /**
  * File Input use the same library that ImageInput does, but it has custom
  * config on accepted files
  * @constructor
  */
-export default function FileInput() {
-  const { error, field } = useTsController<z.infer<typeof FileSchema>>()
-  const { label } = useDescription()
-  const [files, setFiles] = useState<ImageListType>(field.value ? [field.value] : [])
+export function FileInput({ error, label, onChange, placeholder, value }: FileInputProps) {
+  const [files, setFiles] = useState<ImageListType>(value ? [value] : [])
   const maxNumber = 1
 
-  const onChange = (fileList: ImageListType) => {
+  const handleChange = (imageList: ImageListType) => {
     // data for submit
-    if (fileList[0]) {
-      field.onChange(fileList[0])
+    if (imageList[0]) {
+      onChange(imageList[0])
     } else {
-      field.onChange(null)
+      onChange(null)
     }
-    setFiles(fileList)
+    setFiles(imageList)
   }
 
   return (
@@ -70,7 +80,7 @@ export default function FileInput() {
             allowNonImageType={true}
             dataURLKey="data_url"
             maxNumber={maxNumber}
-            onChange={onChange}
+            onChange={handleChange}
             value={files}
           >
             {({ dragProps, errors, imageList, isDragging, onImageUpdate, onImageUpload }) => (
@@ -128,10 +138,38 @@ export default function FileInput() {
             )}
           </ImageUploading>
         }
-        label={label}
+        label={
+          <Typography sx={{ textTransform: 'capitalize', color: 'text.secondary' }}>
+            {label}
+            {placeholder && (
+              <Tooltip title={placeholder}>
+                <InfoOutlinedIcon sx={{ ml: 1 }} />
+              </Tooltip>
+            )}
+          </Typography>
+        }
         status={error ? TextFieldStatus.error : TextFieldStatus.success}
-        statusText={error?.errorMessage}
+        statusText={error?.message}
       />
     </Wrapper>
+  )
+}
+
+/**
+ * Component wrapped to be used with @ts-react/form
+ *
+ */
+export default function FileInputTSForm() {
+  const { error, field } = useTsController<z.infer<typeof FileSchema>>()
+  const { label, placeholder } = useDescription()
+
+  return (
+    <ImageInput
+      error={error ? convertToFieldError(error) : undefined}
+      label={label}
+      onChange={field.onChange}
+      placeholder={placeholder}
+      value={field.value}
+    />
   )
 }

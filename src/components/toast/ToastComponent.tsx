@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
 
-import { Alert, AlertTitle, Button, Typography, styled } from '@mui/material'
+import { Alert, AlertTitle, IconButton, Typography, styled } from '@mui/material'
 import { Toast, toast } from 'react-hot-toast'
 
 import { Close } from '@/src/components/assets/Close'
@@ -27,13 +27,13 @@ export const ToastComponent: React.FC<{
 }> = ({ icon, link, message, t, title }) => (
   <Alert
     action={
-      <Button onClick={() => toast.remove(t.id)}>
+      <IconButton aria-label="Closes toast" component="label" onClick={() => toast.remove(t.id)}>
         <Close />
-      </Button>
+      </IconButton>
     }
     icon={icon}
     severity="info"
-    variant="outlined"
+    sx={{ background: 'background.default' }}
   >
     {title && <AlertTitle>{title}</AlertTitle>}
     {message && (
