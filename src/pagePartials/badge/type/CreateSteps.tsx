@@ -18,7 +18,7 @@ import {
   NumberSchema,
   SeverityTypeSchema,
 } from '@/src/components/form/helpers/customSchemas'
-import { APP_URL } from '@/src/constants/common'
+import { APP_URL, IS_DEVELOP } from '@/src/constants/common'
 
 const MintSchemaStep1 = z.object({
   help: AgreementSchema.describe(`How it works // ??`),
@@ -34,7 +34,9 @@ const MintSchemaStep2 = z.object({
   ),
   criteriaFileUri: FileSchema.describe('PDF with the requirements to mint a badge. // ??'),
   challengePeriodDuration: ChallengePeriodTypeSchema.describe(
-    'Challenge period duration (days) // Challenge period duration in days. During this time the community can analyze the evidence and challenge it.',
+    `Challenge period duration (${
+      IS_DEVELOP ? 'minutes' : 'days'
+    }) // Challenge period duration in days. During this time the community can analyze the evidence and challenge it.`,
   ),
   rigorousness: SeverityTypeSchema.describe(
     'Rigorousness // How rigorous the emission of badges should be',
