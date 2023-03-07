@@ -16,7 +16,7 @@ export default function CertificationProcess() {
           fontSize={'12px !important'}
           fontWeight={500}
           justifyContent={'center'}
-          lineHeight={'16px'}
+          variant="body4"
         >
           {text}
         </Typography>

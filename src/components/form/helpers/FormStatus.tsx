@@ -14,7 +14,9 @@ export const FormStatus = styled('p')<{ status?: TextFieldStatus }>`
   font-weight: 400;
   line-height: 1.2;
   white-space: nowrap;
-
+  margin-right: 0;
+  margin-bottom: 0;
+  margin-left: 0;
   &:empty {
     display: none;
   }

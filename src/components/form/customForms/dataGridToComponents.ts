@@ -17,7 +17,7 @@ export const mappingDataGridForComponents: DataGridMapping[] = [
   [{ i: 'TextField', x: 0, y: 0, w: 3, h: 1 }, TextField],
   [{ i: 'CheckBox', x: 0, y: 0, w: 1, h: 1 }, CheckBox],
   [{ i: 'NumberField', x: 0, y: 0, w: 3, h: 1 }, NumberField],
-  [{ i: 'TextArea', x: 0, y: 0, w: 3, h: 2 }, TextArea],
+  [{ i: 'TextArea', x: 0, y: 0, w: 3, h: 3 }, TextArea],
   [{ i: 'DescriptionInputField', x: 0, y: 1, w: 3, h: 3 }, DescriptionInputField],
   [{ i: 'ImageInput', x: 0, y: 0, w: 3, h: 3 }, ImageInput],
   [{ i: 'AvatarInput', x: 0, y: 0, w: 3, h: 3 }, AvatarInput],

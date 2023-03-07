@@ -7,6 +7,7 @@ import { z } from 'zod'
 
 import { isMetadataColumnArray } from '@/src/components/form/helpers/validators'
 import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
+import { IS_DEVELOP } from '@/src/constants/common'
 import { contracts } from '@/src/contracts/contracts'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
 import CreateSteps, { BadgeTypeCreateSchema } from '@/src/pagePartials/badge/type/CreateSteps'
@@ -89,7 +90,7 @@ const CreateBadgeType: NextPageWithLayout = () => {
           numberOfJurors, // numberOfJurors:
           `ipfs://${registrationIPFSUploaded.result?.ipfsHash}`, // registration file
           `ipfs://${clearingIPFSUploaded.result?.ipfsHash}`, // clearing file
-          data.challengePeriodDuration * 24 * 60 * 60, // challengePeriodDuration:
+          data.challengePeriodDuration * (IS_DEVELOP ? 1 : 24) * 60 * 60, // challengePeriodDuration // Dev = hours - Prod = Days
           [
             baseDeposit.add(klerosCourtInfo.feeForJuror.mul(numberOfJurors)).toString(), // jurors * fee per juror + rigorousness
             baseDeposit.add(klerosCourtInfo.feeForJuror.mul(numberOfJurors)).toString(), // The base deposit to remove an item.

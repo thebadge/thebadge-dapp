@@ -20,5 +20,7 @@ export default function LinkWithTranslation({
 }) {
   const [query] = useLanguageQuery()
 
-  return <StyledLink href={{ pathname: pathname, query: query }}>{children}</StyledLink>
+  const lang = query && query.lang ? query.lang : undefined
+
+  return <StyledLink href={{ pathname: pathname, query: { lang } }}>{children}</StyledLink>
 }

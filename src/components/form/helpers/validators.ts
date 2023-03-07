@@ -1,3 +1,4 @@
+import { FieldError } from 'react-hook-form'
 import { ErrorOption } from 'react-hook-form/dist/types/errors'
 import { ZodType, z } from 'zod'
 
@@ -35,6 +36,7 @@ export function isEmail(email: string) {
 }
 
 function getZValidator(fieldType: KLEROS_LIST_TYPES) {
+  console.log(fieldType)
   switch (fieldType) {
     case KLEROS_LIST_TYPES.ADDRESS:
       return AddressSchema
@@ -83,4 +85,10 @@ export default function klerosSchemaFactory(fields: MetadataColumn[]) {
   })
   return shape
   // return z.object(shape)
+}
+
+export function convertToFieldError(error: any): FieldError {
+  return {
+    message: error.errorMessage,
+  } as FieldError
 }

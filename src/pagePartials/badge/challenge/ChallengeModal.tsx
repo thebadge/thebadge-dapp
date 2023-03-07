@@ -1,9 +1,11 @@
 import React from 'react'
 
+import { zodResolver } from '@hookform/resolvers/zod'
 import CloseIcon from '@mui/icons-material/Close'
 import FindInPageOutlinedIcon from '@mui/icons-material/FindInPageOutlined'
 import {
   Box,
+  Button,
   Container,
   IconButton,
   Modal,
@@ -13,10 +15,13 @@ import {
   styled,
 } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
+import { Controller, useForm } from 'react-hook-form'
+import { colors } from 'thebadge-ui-library'
 import { z } from 'zod'
 
-import { CustomFormFromSchemaWithoutSubmit } from '@/src/components/form/customForms/CustomForm'
-import { DataGrid } from '@/src/components/form/customForms/type'
+import { FileInput } from '@/src/components/form/FileInput'
+import { TextArea } from '@/src/components/form/TextArea'
+import { TextField } from '@/src/components/form/TextField'
 import { LongTextSchema, OptionalFileSchema } from '@/src/components/form/helpers/customSchemas'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
@@ -34,22 +39,16 @@ const ModalBody = styled(Box)(({ theme }) => ({
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: '70%',
-  maxWidth: '1050px',
+  maxWidth: '850px',
   minHeight: '50%',
   background: theme.palette.background.paper,
   borderRadius: theme.spacing(1),
-  boxShadow: `0px 0px 20px rgba(255, 255, 255, 0.6);`,
+  boxShadow: `0px 0px 20px rgba(255, 255, 255, 0.6)`,
   padding: theme.spacing(4),
   '& .MuiContainer-root': {
     maxWidth: '100%',
   },
 }))
-
-const formGridLayout: DataGrid[] = [
-  { i: 'TextField', x: 0, y: 0, w: 7.5, h: 2, static: true },
-  { i: 'LongTextSchema', x: 0, y: 2, w: 4, h: 4, static: true },
-  { i: 'FileSchema', x: 4, y: 3.5, w: 4, h: 2, static: true },
-]
 
 export const ChallengeSchema = z.object({
   title: z.string().describe('Title // The title of the challenge'),
@@ -111,6 +110,10 @@ function ChallengeModalContent({
   onClose: () => void
 }) {
   const { t } = useTranslation()
+
+  const { control, handleSubmit, watch } = useForm<z.infer<typeof ChallengeSchema>>({
+    resolver: zodResolver(ChallengeSchema),
+  })
 
   const klerosController = useContractInstance(
     KlerosBadgeTypeController__factory,
@@ -180,23 +183,48 @@ function ChallengeModalContent({
           width: '100%',
         }}
       >
-        <CustomFormFromSchemaWithoutSubmit
-          formProps={{
-            rowHeight: 45,
-            layout: 'gridResponsive',
-            gridStructure: formGridLayout,
-            buttonLabel: 'Send',
-          }}
-          onSubmit={onSubmit}
-          props={{
-            description: { rows: 4 },
-          }}
-          schema={ChallengeSchema}
+        <Controller
+          control={control}
+          name={'title'}
+          render={({ field: { name, onChange, value }, fieldState: { error } }) => (
+            <TextField error={error} label={name} onChange={onChange} value={value} />
+          )}
         />
+        <Box display="flex" gap={3} mb={4}>
+          <Box display="flex" flex={1} sx={{ '& > *': { flex: 1 } }}>
+            <Controller
+              control={control}
+              name={'description'}
+              render={({ field: { name, onChange, value }, fieldState: { error } }) => (
+                <TextArea error={error} label={name} onChange={onChange} value={value} />
+              )}
+            />
+          </Box>
+          <Box display="flex" flex={1}>
+            <Controller
+              control={control}
+              name={'attachment'}
+              render={({ field: { name, onChange, value }, fieldState: { error } }) => (
+                <FileInput error={error} label={name} onChange={onChange} value={value} />
+              )}
+            />
+          </Box>
+        </Box>
+
+        <SafeSuspense>
+          <ChallengeCost badgeTypeId={badgeTypeId} ownerAddress={ownerAddress} />
+        </SafeSuspense>
+        <Box display="flex" mt={4}>
+          <Button
+            color="green"
+            onClick={handleSubmit(onSubmit)}
+            sx={{ borderRadius: 3, ml: 'auto', color: colors.black }}
+            variant="contained"
+          >
+            Send
+          </Button>
+        </Box>
       </Stack>
-      <SafeSuspense>
-        <ChallengeCost badgeTypeId={badgeTypeId} ownerAddress={ownerAddress} />
-      </SafeSuspense>
     </Stack>
   )
 }

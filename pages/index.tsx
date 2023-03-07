@@ -18,10 +18,10 @@ const Home: NextPageWithLayout = () => {
 
   return (
     <Box display="flex" flexDirection="column" ref={homeSection}>
-      <Typography component="h2" marginBottom={2} textAlign="center" variant="h2">
+      <Typography component="h1" marginBottom={2} textAlign="center" variant="dAppHeadline1">
         Welcome to TheBadge!
       </Typography>
-      <Typography component="div" marginBottom={10} textAlign="center" variant="h5">
+      <Typography component="h2" marginBottom={10} textAlign="center" variant="dAppTitle2">
         DECENTRALIZED CERTIFICATION PLATFORM
       </Typography>
 

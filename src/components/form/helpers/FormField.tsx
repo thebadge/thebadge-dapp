@@ -8,7 +8,7 @@ import { Label } from './Label'
 
 const StyledBox = styled(Box)<{ status?: TextFieldStatus }>(() => ({
   display: 'flex',
-  justifyContent: 'center',
+  justifyContent: 'flex-end',
   alignItems: 'center',
   flexDirection: 'column',
   position: 'relative',
@@ -36,7 +36,7 @@ export const FormField: React.FC<{
         sx={{
           display: 'flex',
           flexDirection: labelPosition === 'top' ? 'column' : 'row',
-          minWidth: '85%',
+          minWidth: '100%',
         }}
       >
         {label && <Label>{label}</Label>}
