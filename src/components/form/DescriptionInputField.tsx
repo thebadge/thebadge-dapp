@@ -100,7 +100,7 @@ export default function DescriptionInputFieldWithTSForm() {
   const { error, field } = useTsController<z.infer<typeof DescriptionTextSchema>>()
   const { label, placeholder } = useDescription()
 
-  function onChange(value: any) {
+  function onChange(value: string) {
     field.onChange(value)
   }
 

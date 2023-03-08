@@ -37,7 +37,7 @@ const Wrapper = styled(Box)(() => ({
 type ExpirationFieldProps = {
   error?: FieldError
   label?: string
-  onChange: (value: any) => void
+  onChange: (value: number) => void
   placeholder?: string
   value: z.infer<typeof ExpirationTypeSchema> | undefined
 }
@@ -155,7 +155,7 @@ export default function ExpirationFieldWithTSForm() {
   const { error, field } = useTsController<z.infer<typeof ExpirationTypeSchema>>()
   const { label, placeholder } = useDescription()
 
-  function onChange(value: any) {
+  function onChange(value: number) {
     field.onChange(value)
   }
 

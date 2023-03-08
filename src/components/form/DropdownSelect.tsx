@@ -21,7 +21,7 @@ import { convertToFieldError } from '@/src/components/form/helpers/validators'
 type DropdownSelectProps = {
   error?: FieldError
   label?: string
-  onChange: (value: any) => void
+  onChange: (value: string) => void
   placeholder?: string
   value: string | undefined
   options: string[]
@@ -86,7 +86,7 @@ export default function DropdownSelectWithTSForm({
   const { error, field } = useTsController<z.infer<typeof schema>>()
   const { label, placeholder } = useDescription()
 
-  function onChange(value: any) {
+  function onChange(value: z.infer<typeof schema>) {
     field.onChange(value)
   }
 

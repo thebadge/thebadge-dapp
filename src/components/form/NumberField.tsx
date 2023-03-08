@@ -14,7 +14,7 @@ type NumberFieldProps = {
   decimals?: number
   error?: FieldError
   label?: string
-  onChange: (value: any) => void
+  onChange: (value: number) => void
   placeholder?: string
   value: number | undefined
 }

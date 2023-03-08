@@ -52,8 +52,8 @@ export default function CheckBoxWithTSForm() {
   const { error, field } = useTsController<boolean>()
   const { label, placeholder } = useDescription()
 
-  function onChange(e: any) {
-    field.onChange(e.target.value)
+  function onChange(value: boolean) {
+    field.onChange(value)
   }
 
   return (
