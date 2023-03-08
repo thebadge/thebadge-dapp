@@ -87,10 +87,7 @@ export default function AvatarInput() {
     <Wrapper>
       <FormField
         formControl={
-          <Container
-            maxWidth="md"
-            sx={{ display: 'flex', background: 'rgba(0,0,0,0.4)', width: '100%' }}
-          >
+          <Container maxWidth="md" sx={{ display: 'flex', width: '100%' }}>
             <ImageUploading
               dataURLKey="data_url"
               maxNumber={maxNumber}

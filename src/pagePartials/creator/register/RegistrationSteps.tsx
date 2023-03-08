@@ -25,13 +25,13 @@ const formGridLayout: DataGrid[][] = [
   [
     { i: 'TextField', x: 0, y: 0, w: 3, h: 1, static: true },
     { i: 'TextArea', x: 0, y: 1, w: 3, h: 2, static: true },
-    { i: 'AvatarInput', x: 3, y: 0, w: 3, h: 3, static: true },
+    { i: 'AvatarInput', x: 4, y: 0, w: 3, h: 3, static: true },
   ],
   [
     { i: 'TextField', x: 0, y: 1, w: 3, h: 1, static: true },
-    { i: 'TextField', x: 3, y: 1, w: 3, h: 1, static: true },
+    { i: 'TextField', x: 4, y: 1, w: 3, h: 1, static: true },
     { i: 'TextField', x: 0, y: 1, w: 3, h: 1, static: true },
-    { i: 'TextField', x: 3, y: 1, w: 3, h: 1, static: true },
+    { i: 'TextField', x: 4, y: 1, w: 3, h: 1, static: true },
   ],
   [{ i: 'AgreementSchema', x: 0, y: 0, w: 12, h: 4, static: true }],
 ]

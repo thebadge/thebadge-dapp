@@ -2,9 +2,11 @@ import * as React from 'react'
 
 import { Box, TextField as MUITextField, Typography, styled } from '@mui/material'
 import { useDescription, useTsController } from '@ts-react/form'
+import { FieldError } from 'react-hook-form'
 import { z } from 'zod'
 
 import { DescriptionTextSchema } from '@/src/components/form/helpers/customSchemas'
+import { convertToFieldError } from '@/src/components/form/helpers/validators'
 import { ENRICH_TEXT_VARIABLES } from '@/src/utils/enrichTextWithValues'
 
 const Wrapper = styled(Box)(({ theme }) => ({
@@ -26,19 +28,30 @@ const VariableContainer = styled(Box)(({ theme }) => ({
   cursor: 'pointer',
 }))
 
-export default function DescriptionInputField() {
-  const { error, field } = useTsController<z.infer<typeof DescriptionTextSchema>>()
-  const { label, placeholder } = useDescription()
+type DescriptionInputFieldProps = {
+  error?: FieldError
+  label?: string
+  onChange: (event: string) => void
+  placeholder?: string
+  value: z.infer<typeof DescriptionTextSchema> | undefined
+}
 
-  function onChange(e: any) {
-    field.onChange(e.target.value)
+export function DescriptionInputField({
+  error,
+  label,
+  onChange,
+  placeholder,
+  value,
+}: DescriptionInputFieldProps) {
+  function handleOnChange(e: any) {
+    onChange(e.target.value)
   }
 
   function appendVariable(variable: string) {
-    if (field.value) {
-      field.onChange(field.value + ` ${variable} `)
+    if (value) {
+      onChange(value + ` ${variable} `)
     } else {
-      field.onChange(`${variable} `)
+      onChange(`${variable} `)
     }
   }
 
@@ -66,15 +79,38 @@ export default function DescriptionInputField() {
       <StyledTextField
         color="secondary"
         error={!!error}
-        helperText={error?.errorMessage || ' '}
+        helperText={error?.message || ' '}
         multiline
-        onChange={onChange}
+        onChange={handleOnChange}
         placeholder={placeholder}
         rows={3}
         sx={{ textTransform: 'capitalize' }}
-        value={field.value ? field.value : ''}
+        value={value ? value : ''}
         variant={'standard'}
       />
     </Wrapper>
+  )
+}
+
+/**
+ * Component wrapped to be used with @ts-react/form
+ *
+ */
+export default function DescriptionInputFieldWithTSForm() {
+  const { error, field } = useTsController<z.infer<typeof DescriptionTextSchema>>()
+  const { label, placeholder } = useDescription()
+
+  function onChange(value: any) {
+    field.onChange(value)
+  }
+
+  return (
+    <DescriptionInputField
+      error={error ? convertToFieldError(error) : undefined}
+      label={label}
+      onChange={onChange}
+      placeholder={placeholder}
+      value={field.value}
+    />
   )
 }
