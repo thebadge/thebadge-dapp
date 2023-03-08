@@ -76,7 +76,7 @@ export function NumberField({
  * Component wrapped to be used with @ts-react/form
  *
  */
-export default function NumberFieldWithTSForm({ decimals = 0 }: { decimals: number }) {
+export default function NumberFieldWithTSForm({ decimals = 0 }: { decimals?: number }) {
   const { error, field } = useTsController<number>()
   const { label, placeholder } = useDescription()
 
