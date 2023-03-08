@@ -3,8 +3,9 @@ import { useRouter } from 'next/navigation'
 
 import { Box, Button, Stack, Tooltip } from '@mui/material'
 
-import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
+import SafeSuspense, { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import BadgeOwnedPreview from '@/src/pagePartials/badge/preview/BadgeOwnedPreview'
+import ChallengeStatus from '@/src/pagePartials/badge/preview/ChallengeStatus'
 import { useChallengeProvider } from '@/src/providers/challengeProvider'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { NextPageWithLayout } from '@/types/next'
@@ -49,6 +50,9 @@ const ViewBadge: NextPageWithLayout = () => {
             Challenge
           </Button>
         </Box>
+        <SafeSuspense>
+          <ChallengeStatus />
+        </SafeSuspense>
       </Stack>
     </Box>
   )
