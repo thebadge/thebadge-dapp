@@ -9,7 +9,7 @@ import ImageUploading, { ImageListType, ImageType } from 'react-images-uploading
 import { colors } from 'thebadge-ui-library'
 import { z } from 'zod'
 
-import { TextField, TextFieldStatus } from '@/src/components/form/TextField'
+import { TextFieldStatus } from '@/src/components/form/TextField'
 import { FormField } from '@/src/components/form/helpers/FormField'
 import { Label } from '@/src/components/form/helpers/Label'
 import { ImageSchema } from '@/src/components/form/helpers/customSchemas'
@@ -190,7 +190,7 @@ export default function AvatarInputWithTSForm() {
   }
 
   return (
-    <TextField
+    <AvatarInput
       error={error ? convertToFieldError(error) : undefined}
       label={label}
       onChange={onChange}
