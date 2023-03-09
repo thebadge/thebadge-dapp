@@ -1,15 +1,9 @@
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
-import { Box, Typography, keyframes, styled, useTheme } from '@mui/material'
-import { A11y, Navigation } from 'swiper'
-import { Swiper, SwiperSlide } from 'swiper/react'
+import { Box, Typography, styled, useTheme } from '@mui/material'
 import { ButtonV2, colors } from 'thebadge-ui-library'
 
-import {
-  SectionBox,
-  SectionTitleBox,
-  badgesExampleList,
-} from '@/src/pagePartials/home/SectionBoxes'
+import SafeSuspense from '@/src/components/helpers/SafeSuspense'
+import BadgeListInReview from '@/src/pagePartials/home/BadgeListInReview'
+import { SectionBox, SectionTitleBox } from '@/src/pagePartials/home/SectionBoxes'
 import { useSectionReferences } from '@/src/providers/referencesProvider'
 
 // Import Swiper styles
@@ -32,15 +26,6 @@ const LearnMoreButton = styled(ButtonV2)(({ theme }) => ({
     color: theme.palette.text.secondary,
   },
 }))
-
-const growEffect = keyframes`
-  0% {
-    transform: scale(0.85);
-  }
-  100% {
-    transform: scale(1);
-  }
-`
 
 export default function EarnByCurating() {
   const { earnByCuratingSection } = useSectionReferences()
@@ -66,41 +51,9 @@ export default function EarnByCurating() {
           LEARN MORE
         </LearnMoreButton>
       </SectionTitleBox>
-
-      <Box sx={{ padding: 4, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <ArrowBackIosIcon
-          className={'badges-swiper-button-prev'}
-          sx={{
-            mr: '1rem',
-            height: '35px',
-            width: '35px',
-            animation: `${growEffect} 1s infinite alternate ${theme.transitions.easing.easeInOut}`,
-          }}
-        />
-        <Swiper
-          modules={[Navigation, A11y]}
-          navigation={{
-            nextEl: '.badges-swiper-button-next',
-            prevEl: '.badges-swiper-button-prev',
-          }}
-          pagination={{ clickable: true }}
-          slidesPerView={4}
-          spaceBetween={25}
-        >
-          {badgesExampleList.map((badge, index) => (
-            <SwiperSlide key={'swiper-badge-' + index}>{badge}</SwiperSlide>
-          ))}
-        </Swiper>
-        <ArrowForwardIosIcon
-          className={'badges-swiper-button-next'}
-          sx={{
-            ml: '1rem',
-            height: '35px',
-            width: '35px',
-            animation: `${growEffect} 1s infinite alternate ${theme.transitions.easing.easeInOut}`,
-          }}
-        />
-      </Box>
+      <SafeSuspense>
+        <BadgeListInReview />
+      </SafeSuspense>
     </SectionBox>
   )
 }

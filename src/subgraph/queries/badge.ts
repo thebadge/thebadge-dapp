@@ -1,6 +1,6 @@
 import gql from 'graphql-tag'
 
-export const BADGE_TYPES = gql`
+export const BADGES_IN_REVIEW = gql`
   query badgesInReview($date: BigInt!) {
     badges(where: { reviewDueDate_gt: $date }) {
       ...FullBadgeDetails

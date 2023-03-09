@@ -1,11 +1,9 @@
-import { Divider, Typography, useTheme } from '@mui/material'
-import { ButtonV2, ResizedBadgePreviewsList, colors } from 'thebadge-ui-library'
+import { Box, Divider, Typography, useTheme } from '@mui/material'
+import { ButtonV2, colors } from 'thebadge-ui-library'
 
-import {
-  SectionBox,
-  SectionTitleBox,
-  badgesExampleList,
-} from '@/src/pagePartials/home/SectionBoxes'
+import SafeSuspense from '@/src/components/helpers/SafeSuspense'
+import BadgeListTypeList from '@/src/pagePartials/home/BadgeListTypeList'
+import { SectionBox, SectionTitleBox } from '@/src/pagePartials/home/SectionBoxes'
 import { useSectionReferences } from '@/src/providers/referencesProvider'
 
 export default function ClaimBadges() {
@@ -40,10 +38,11 @@ export default function ClaimBadges() {
         </ButtonV2>
       </SectionTitleBox>
       <Divider color={'#BDBDBD'} />
-      <ResizedBadgePreviewsList
-        badges={badgesExampleList}
-        sx={{ mt: 3, padding: 0, scale: '0.9 !important' }}
-      />
+      <Box sx={{ mt: 3 }}>
+        <SafeSuspense>
+          <BadgeListTypeList />
+        </SafeSuspense>
+      </Box>
     </SectionBox>
   )
 }

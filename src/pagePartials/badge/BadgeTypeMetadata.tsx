@@ -1,15 +1,16 @@
 import * as React from 'react'
 
-import { BadgePreviewV2 } from 'thebadge-ui-library'
+import { BadgePreviewProps, BadgePreviewV2 } from 'thebadge-ui-library'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
 
 type Props = {
   metadata?: string
+  size?: BadgePreviewProps['size']
 }
 
-function BadgeTypeMetadata({ metadata }: Props) {
+function BadgeTypeMetadata({ metadata, size = 'medium' }: Props) {
   const res: any = useS3Metadata(metadata || '')
   const badgeMetadata = res.data.content
 
@@ -23,7 +24,7 @@ function BadgeTypeMetadata({ metadata }: Props) {
         category="Badge Category"
         description={badgeMetadata.description}
         imageUrl={badgeMetadata.image.s3Url}
-        size="medium"
+        size={size}
         textContrast="light-withTextBackground"
         title={badgeMetadata.name}
       />
