@@ -178,9 +178,11 @@ export function ImageInput({ error, label, onChange, placeholder, value }: Image
         label={
           <Typography>
             {label}
-            <Tooltip title={placeholder}>
-              <InfoOutlinedIcon sx={{ ml: 1 }} />
-            </Tooltip>
+            {placeholder && (
+              <Tooltip title={placeholder}>
+                <InfoOutlinedIcon sx={{ ml: 1 }} />
+              </Tooltip>
+            )}
           </Typography>
         }
         status={error ? TextFieldStatus.error : TextFieldStatus.success}
@@ -194,7 +196,7 @@ export function ImageInput({ error, label, onChange, placeholder, value }: Image
  * Component wrapped to be used with @ts-react/form
  *
  */
-export default function ImageInputTSForm() {
+export default function ImageInputWithTSForm() {
   const { error, field } = useTsController<z.infer<typeof ImageSchema>>()
   const { label, placeholder } = useDescription()
 

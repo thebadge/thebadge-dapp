@@ -16,11 +16,13 @@ import {
 } from '@mui/material'
 import { useDescription, useTsController } from '@ts-react/form'
 import dayjs from 'dayjs'
+import { FieldError } from 'react-hook-form'
 import { z } from 'zod'
 
 import { TextFieldStatus } from '@/src/components/form/TextField'
 import { FormField } from '@/src/components/form/helpers/FormField'
 import { ExpirationTypeSchema } from '@/src/components/form/helpers/customSchemas'
+import { convertToFieldError } from '@/src/components/form/helpers/validators'
 
 const options = ['day', 'month', 'year']
 
@@ -32,9 +34,21 @@ const Wrapper = styled(Box)(() => ({
   position: 'relative',
 }))
 
-export default function ExpirationField() {
-  const { error, field } = useTsController<z.infer<typeof ExpirationTypeSchema>>()
-  const { label, placeholder } = useDescription()
+type ExpirationFieldProps = {
+  error?: FieldError
+  label?: string
+  onChange: (value: number) => void
+  placeholder?: string
+  value: z.infer<typeof ExpirationTypeSchema> | undefined
+}
+
+export function ExpirationField({
+  error,
+  label,
+  onChange,
+  placeholder,
+  value,
+}: ExpirationFieldProps) {
   const [stringValue, setStringValue] = useState<string>('')
   const [enableExpiration, setEnableExpiration] = useState<boolean>(false)
 
@@ -42,15 +56,15 @@ export default function ExpirationField() {
 
   useEffect(() => {
     // Easy way to set default value
-    field.onChange(0)
+    onChange(0)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  function onChange(e: any) {
+  function handleOnChange(e: any) {
     const cleanValue = e.target.value.replace(/[^0-9.]/g, '') || '0'
     if (/^-?\d+(?:\.\d*)?$/.test(cleanValue)) {
       setStringValue(cleanValue)
-      field.onChange(parseToSeconds(cleanValue, unit))
+      onChange(parseToSeconds(cleanValue, unit))
     }
   }
 
@@ -72,9 +86,7 @@ export default function ExpirationField() {
                     <Tooltip
                       title={
                         placeholder +
-                        `\n e.g. If you mint this badge today, It will expire on: ${validTo(
-                          field.value,
-                        )}`
+                        `\n e.g. If you mint this badge today, It will expire on: ${validTo(value)}`
                       }
                     >
                       <InfoOutlinedIcon />
@@ -83,7 +95,7 @@ export default function ExpirationField() {
                 }}
                 color="secondary"
                 label={label}
-                onChange={onChange}
+                onChange={handleOnChange}
                 sx={{ justifyContent: 'end' }}
                 value={stringValue}
                 variant={'standard'}
@@ -130,12 +142,35 @@ export default function ExpirationField() {
       }
       labelPosition={'top'}
       status={error ? TextFieldStatus.error : TextFieldStatus.success}
-      statusText={error ? error?.errorMessage : ' '}
+      statusText={error ? error?.message : ' '}
     />
   )
 }
 
-function validTo(days?: z.infer<typeof ExpirationTypeSchema>) {
+/**
+ * Component wrapped to be used with @ts-react/form
+ *
+ */
+export default function ExpirationFieldWithTSForm() {
+  const { error, field } = useTsController<z.infer<typeof ExpirationTypeSchema>>()
+  const { label, placeholder } = useDescription()
+
+  function onChange(value: number) {
+    field.onChange(value)
+  }
+
+  return (
+    <ExpirationField
+      error={error ? convertToFieldError(error) : undefined}
+      label={label}
+      onChange={onChange}
+      placeholder={placeholder}
+      value={field.value}
+    />
+  )
+}
+
+function validTo(days?: z.infer<typeof ExpirationTypeSchema> | undefined) {
   if (!days || days === 0) return 'End of time.'
   return dayjs().add(days, 'seconds').format('DD/MM/YYYY')
 }

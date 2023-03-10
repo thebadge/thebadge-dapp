@@ -10,7 +10,6 @@ import ImageUploading, { ImageListType, ImageType } from 'react-images-uploading
 import { colors } from 'thebadge-ui-library'
 import { z } from 'zod'
 
-import { ImageInput } from '@/src/components/form/ImageInput'
 import { TextFieldStatus } from '@/src/components/form/TextField'
 import { FormField } from '@/src/components/form/helpers/FormField'
 import { FileSchema } from '@/src/components/form/helpers/customSchemas'
@@ -159,12 +158,12 @@ export function FileInput({ error, label, onChange, placeholder, value }: FileIn
  * Component wrapped to be used with @ts-react/form
  *
  */
-export default function FileInputTSForm() {
+export default function FileInputWithTSForm() {
   const { error, field } = useTsController<z.infer<typeof FileSchema>>()
   const { label, placeholder } = useDescription()
 
   return (
-    <ImageInput
+    <FileInput
       error={error ? convertToFieldError(error) : undefined}
       label={label}
       onChange={field.onChange}
