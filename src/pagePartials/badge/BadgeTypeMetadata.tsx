@@ -17,7 +17,7 @@ function BadgeTypeMetadata({ metadata, size = 'medium' }: Props) {
   return (
     <SafeSuspense>
       <BadgePreviewV2
-        animationEffects={['wobble', 'grow', 'glare']}
+        animationEffects={[]}
         animationOnHover
         badgeBackgroundUrl="https://images.unsplash.com/photo-1512998844734-cd2cca565822?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTIyfHxhYnN0cmFjdHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
         badgeUrl="https://www.thebadge.xyz"
