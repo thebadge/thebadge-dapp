@@ -1,7 +1,7 @@
 import { useRouter } from 'next/navigation'
 import { useMemo } from 'react'
 
-import { Box, keyframes } from '@mui/material'
+import { Box } from '@mui/material'
 import { A11y, Navigation } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/react'
 
@@ -15,15 +15,6 @@ import { SubgraphName, getSubgraphSdkByNetwork } from '@/src/subgraph/subgraph'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
-
-const growEffect = keyframes`
-  0% {
-    transform: scale(0.85);
-  }
-  100% {
-    transform: scale(1);
-  }
-`
 
 const now = Math.floor(Date.now() / 1000)
 export default function PendingList() {
