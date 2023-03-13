@@ -60,7 +60,7 @@ export const Evidence = () => {
       </g>
       <defs>
         <filter
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
           filterUnits="userSpaceOnUse"
           height="80"
           id="filter0_f_3528_6340"
