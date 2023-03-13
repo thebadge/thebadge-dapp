@@ -1,31 +1,31 @@
-import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined'
+import HistoryOutlinedIcon from '@mui/icons-material/HistoryOutlined'
 import { Box, Divider, Typography } from '@mui/material'
 import { colors } from 'thebadge-ui-library'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { SectionTitleBox } from '@/src/pagePartials/home/SectionBoxes'
-import PendingList from '@/src/pagePartials/profile/PendingList'
+import NearToExpireList from '@/src/pagePartials/profile/myProfile/NearToExpireList'
 
-export default function Pending() {
+export default function NearToExpire() {
   return (
     <Box sx={{ width: '100%', px: 4, py: 2 }}>
       <SectionTitleBox>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
-          <NotificationsNoneOutlinedIcon color="green" />
+          <HistoryOutlinedIcon color="purple" />
           <Typography
-            color={colors.green}
+            color={colors.purple}
             fontWeight={900}
             lineHeight={'30px'}
             textAlign="center"
             variant={'h5'}
           >
-            Pending
+            Near to expire
           </Typography>
         </Box>
       </SectionTitleBox>
-      <Divider color={colors.green} />
+      <Divider />
       <SafeSuspense>
-        <PendingList />
+        <NearToExpireList />
       </SafeSuspense>
     </Box>
   )

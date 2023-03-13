@@ -10,6 +10,8 @@
     "titleOf": "This is the profile of {{address}}",
     "badgesYouOwn": "Badges that you own",
     "exploreOtherBadges": "Explore other badges",
+    "badgesToCurate": "Browse other badges to curate",
+    "createdBadges": "Earn by creating new badges",
     "tab1": "MY PROFILE",
     "tab2": "BADGES IN REVIEW",
     "tab3": "CREATED BADGES"
