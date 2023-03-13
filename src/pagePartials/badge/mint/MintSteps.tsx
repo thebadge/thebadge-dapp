@@ -48,7 +48,7 @@ export default function MintSteps({
   onSubmit,
 }: MintStepsProps) {
   const { t } = useTranslation()
-  const { address, appChainId } = useWeb3Connection()
+  const { address } = useWeb3Connection()
   const searchParams = useSearchParams()
   const typeId = searchParams.get('typeId')
 
