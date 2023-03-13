@@ -69,10 +69,9 @@ export default function MintSteps({
       previewImageDataUrl = await domtoimage.toPng(badgePreviewRef.current, {
         cacheBust: true,
       })
-      console.log(previewImageDataUrl)
       return previewImageDataUrl
     } catch (e) {
-      console.log(e)
+      console.warn('convertPreviewToImage', e)
       return ''
     }
   }
@@ -93,7 +92,7 @@ export default function MintSteps({
     }
 
     return (
-      <Stack alignItems={'center'} gap={2} margin={1}>
+      <Stack alignItems={'center'} gap={3} margin={1}>
         <Typography>{t('badge.type.mint.previewTitle')}</Typography>
         <Box ref={badgePreviewRef}>
           <BadgePreviewV2

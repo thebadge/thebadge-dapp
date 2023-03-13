@@ -79,7 +79,7 @@ export default function MintCost({ costs }: Props) {
             sx={{ display: 'flex', alignItems: 'center' }}
             variant="subtitle2"
           >
-            {`Note that this is a deposit, not a fee and it will be reimbursed if the removal is accepted. The challenge period last ${challengePeriodDuration} days.`}
+            {`Note that this is a deposit, not a fee and it will be reimbursed if the request is accepted. The challenge period last ${challengePeriodDuration} days.`}
           </Typography>
         </Box>
       </Box>
@@ -95,12 +95,14 @@ export default function MintCost({ costs }: Props) {
         }}
       >
         <Typography variant="dAppTitle2">{t('badge.type.mint.mintCost')}</Typography>
-        <Typography sx={{ display: 'flex' }} variant="body2">
-          {costs.mintCost} {networkConfig.token}
+        <Box display="flex" justifyContent="space-between">
+          <Typography sx={{ display: 'flex' }} variant="body2">
+            {costs.mintCost} {networkConfig.token}
+          </Typography>
           <Tooltip title={t('badge.type.mint.mintCostTooltip')}>
-            <InfoOutlinedIcon />
+            <InfoOutlinedIcon fontSize="medium" />
           </Tooltip>
-        </Typography>
+        </Box>
       </Stack>
 
       <Typography textAlign="center" variant="subtitle2">
