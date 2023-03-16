@@ -36,7 +36,6 @@ export function isEmail(email: string) {
 }
 
 function getZValidator(fieldType: KLEROS_LIST_TYPES) {
-  console.log(fieldType)
   switch (fieldType) {
     case KLEROS_LIST_TYPES.ADDRESS:
       return AddressSchema

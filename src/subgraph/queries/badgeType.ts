@@ -46,24 +46,3 @@ export const BADGE_TYPE = gql`
     }
   }
 `
-
-export const MY_BADGE_TYPES = gql`
-  query userBadgesById($ownerAddress: ID!) {
-    user(id: $ownerAddress) {
-      badges {
-        id
-        status
-        reviewDueDate
-        badgeType {
-          validFor
-          paused
-          mintCost
-          metadataURL
-          id
-          controllerName
-          badgesMintedAmount
-        }
-      }
-    }
-  }
-`

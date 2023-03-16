@@ -10,11 +10,11 @@ import { FormWithSteps } from '@/src/components/form/formWithSteps/FormWithSteps
 import {
   AgreementSchema,
   ChallengePeriodTypeSchema,
-  DescriptionTextSchema,
   ExpirationTypeSchema,
   FileSchema,
   ImageSchema,
   KlerosDynamicFields,
+  LongTextSchema,
   NumberSchema,
   SeverityTypeSchema,
 } from '@/src/components/form/helpers/customSchemas'
@@ -26,7 +26,7 @@ const MintSchemaStep1 = z.object({
 
 const MintSchemaStep2 = z.object({
   name: z.string().describe('Name // ??'),
-  description: DescriptionTextSchema.describe(
+  description: LongTextSchema.describe(
     'Description // This description will be showed on the Badge itself, you can use some helpers to inject user information on it.',
   ),
   logoUri: ImageSchema.describe(

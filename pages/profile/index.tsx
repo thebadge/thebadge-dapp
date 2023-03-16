@@ -20,7 +20,7 @@ const ProfilePage: NextPageWithLayout = () => {
       </>
     )
   }
-  return <Profile address={address} />
+  return <Profile />
 }
 
 export default ProfilePage

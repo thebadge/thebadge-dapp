@@ -2,8 +2,7 @@ import { useSearchParams } from 'next/navigation'
 import { useRef } from 'react'
 import * as React from 'react'
 
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
-import { Box, Stack, Tooltip, Typography } from '@mui/material'
+import { Box, Stack, Typography } from '@mui/material'
 import domtoimage from 'dom-to-image'
 import { useTranslation } from 'next-export-i18n'
 import { BadgePreviewV2 } from 'thebadge-ui-library'
@@ -14,6 +13,7 @@ import { FormWithSteps } from '@/src/components/form/formWithSteps/FormWithSteps
 import { AgreementSchema } from '@/src/components/form/helpers/customSchemas'
 import { APP_URL } from '@/src/constants/common'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
+import MintCost from '@/src/pagePartials/badge/mint/MintCost'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import enrichTextWithValues, { EnrichTextValues } from '@/src/utils/enrichTextWithValues'
 import { KlerosListStructure } from '@/src/utils/kleros/generateKlerosListMetaEvidence'
@@ -52,6 +52,10 @@ export default function MintSteps({
   const searchParams = useSearchParams()
   const typeId = searchParams.get('typeId')
 
+  if (!typeId) {
+    throw `No typeId provided as URL query param`
+  }
+
   const badgePreviewRef = useRef<HTMLDivElement>()
 
   const badgeLogoUri = badgeMetadata.metadata.logoURI
@@ -65,10 +69,9 @@ export default function MintSteps({
       previewImageDataUrl = await domtoimage.toPng(badgePreviewRef.current, {
         cacheBust: true,
       })
-      console.log(previewImageDataUrl)
       return previewImageDataUrl
     } catch (e) {
-      console.log(e)
+      console.warn('convertPreviewToImage', e)
       return ''
     }
   }
@@ -89,7 +92,7 @@ export default function MintSteps({
     }
 
     return (
-      <Stack alignItems={'center'} gap={2} margin={1}>
+      <Stack alignItems={'center'} gap={3} margin={1}>
         <Typography>{t('badge.type.mint.previewTitle')}</Typography>
         <Box ref={badgePreviewRef}>
           <BadgePreviewV2
@@ -105,16 +108,7 @@ export default function MintSteps({
             title={badgeMetadata.name}
           />
         </Box>
-        <Stack>
-          <Typography>{t('badge.type.mint.mintCost', { cost: costs.mintCost })}</Typography>
-          <Box alignItems={'center'} display="flex">
-            {t('badge.type.mint.depositCost', { cost: costs.klerosCost })}
-            <Tooltip title={t('badge.type.mint.depositTooltip')}>
-              <InfoOutlinedIcon />
-            </Tooltip>
-          </Box>
-          <Typography>{t('badge.type.mint.totalCost', { cost: costs.totalMintCost })}</Typography>
-        </Stack>
+        <MintCost costs={costs} />
       </Stack>
     )
   }
