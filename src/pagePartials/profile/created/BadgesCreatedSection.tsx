@@ -1,5 +1,5 @@
 import VerifiedOutlinedIcon from '@mui/icons-material/VerifiedOutlined'
-import { Box, Button, Stack, Typography } from '@mui/material'
+import { Box, Stack, Typography } from '@mui/material'
 import dayjs from 'dayjs'
 import { useTranslation } from 'next-export-i18n'
 import Countdown from 'react-countdown'
