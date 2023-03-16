@@ -24,7 +24,7 @@ export default function BadgesYouOwnList({ address }: Props) {
     'KlerosBadgeTypeController',
   )
   const gql = getSubgraphSdkByNetwork(appChainId, SubgraphName.TheBadge)
-  const userWithBadges = gql.useUserBadgesById({ ownerAddress: address })
+  const userWithBadges = gql.useUserBadges({ ownerAddress: address })
   const badges = userWithBadges.data?.user?.badges || []
 
   function handleClaimIt(badgeId: string, address: string) {

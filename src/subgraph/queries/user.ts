@@ -26,3 +26,41 @@ export const USER_BY_ID = gql`
     }
   }
 `
+
+export const MY_BADGE_TYPES = gql`
+  query userBadges($ownerAddress: ID!) {
+    user(id: $ownerAddress) {
+      badges {
+        id
+        status
+        reviewDueDate
+        badgeType {
+          validFor
+          paused
+          mintCost
+          metadataURL
+          id
+          controllerName
+          badgesMintedAmount
+        }
+      }
+    }
+  }
+`
+
+export const MY_CREATED_BADGE_TYPES = gql`
+  query userCreatedBadges($ownerAddress: ID!) {
+    user(id: $ownerAddress) {
+      createdBadgeTypes {
+        validFor
+        paused
+        mintCost
+        metadataURL
+        id
+        controllerName
+        badgesMintedAmount
+      }
+      createdBadgesTypesAmount
+    }
+  }
+`

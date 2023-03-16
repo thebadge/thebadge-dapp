@@ -9,8 +9,8 @@ export const BADGES_IN_REVIEW = gql`
 `
 
 export const MY_BADGES = gql`
-  query myBadges($wallet: BigInt!) {
-    badges(where: { reviewDueDate_gt: $wallet }) {
+  query myBadges($wallet: String!) {
+    badges(where: { receiver: $wallet }) {
       ...FullBadgeDetails
     }
   }
