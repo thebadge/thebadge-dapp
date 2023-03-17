@@ -1,19 +1,60 @@
-import { Typography } from '@mui/material'
+import { useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 
-import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
+import { Box, Button, Stack, Tooltip } from '@mui/material'
+
+import SafeSuspense, { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
+import BadgeOwnedPreview from '@/src/pagePartials/badge/preview/BadgeOwnedPreview'
+import ChallengeStatus from '@/src/pagePartials/badge/preview/ChallengeStatus'
+import { useChallengeProvider } from '@/src/providers/challengeProvider'
+import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { NextPageWithLayout } from '@/types/next'
 
 const ViewBadge: NextPageWithLayout = () => {
-  return (
-    <>
-      <Typography component={'h3'} variant="h3">
-        Welcome to THE BADGE!
-      </Typography>
+  const { address } = useWeb3Connection()
+  const { challenge } = useChallengeProvider()
+  const router = useRouter()
 
-      <Typography component={'h5'} variant="h5">
-        Here you can view a Badge type for a given Address
-      </Typography>
-    </>
+  const searchParams = useSearchParams()
+  const typeId = searchParams.get('typeId')
+  const ownerAddress = searchParams.get('ownerAddress')
+
+  if (!typeId || !ownerAddress) {
+    throw `No typeId/ownerAddress provided us URL query param`
+  }
+
+  return (
+    <Box sx={{ position: 'relative' }}>
+      <Stack maxWidth={900} mx={'auto'}>
+        <BadgeOwnedPreview />
+        <Box display="flex" justifyContent="space-evenly" maxWidth={300}>
+          <Tooltip title={address === ownerAddress ? 'You already own this badge.' : ''}>
+            <span>
+              <Button
+                color="purple"
+                disabled={address === ownerAddress}
+                onClick={() => router.push(`/badge/mint/${typeId}`)}
+                sx={{ borderRadius: 3, fontSize: '11px !important' }}
+              >
+                Apply for it
+              </Button>
+            </span>
+          </Tooltip>
+
+          <Button
+            color="error"
+            onClick={() => challenge(typeId, ownerAddress)}
+            sx={{ borderRadius: 3, fontSize: '11px !important' }}
+            variant="contained"
+          >
+            Challenge
+          </Button>
+        </Box>
+        <SafeSuspense>
+          <ChallengeStatus />
+        </SafeSuspense>
+      </Stack>
+    </Box>
   )
 }
 

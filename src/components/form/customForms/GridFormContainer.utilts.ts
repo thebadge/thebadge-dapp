@@ -8,9 +8,13 @@ const availableFormFields = mappingDataGridForComponents.map((e) => e[1])
 const isOneFormTypeOfAvailableFormFields = (c: React.ReactElement) =>
   availableFormFields.find((formField) => formField === getElemType(c))
 
-export function getDataGridFromMapping(compType: any, mapping: DataGridMapping[]) {
+export function getDataGridFromMapping(
+  compType: any,
+  mapping: DataGridMapping[],
+  draggable: boolean,
+) {
   for (const mappingElement of mapping) {
-    if (compType === mappingElement[1]) return mappingElement[0]
+    if (compType === mappingElement[1]) return { ...mappingElement[0], static: !draggable }
   }
   return { i: 'Default', x: 0, y: 0, w: 2, h: 1 }
 }

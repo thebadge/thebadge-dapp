@@ -10,12 +10,14 @@ type ToastComponentProps = {
   t: Toast
   explorerUrl?: string
   message?: string
+  title?: string
 }
 
 type ToastTypes = {
   [ToastStates.waiting]: ({ explorerUrl, message, t }: ToastComponentProps) => JSX.Element
   [ToastStates.failed]: ({ explorerUrl, message, t }: ToastComponentProps) => JSX.Element
   [ToastStates.success]: ({ explorerUrl, message, t }: ToastComponentProps) => JSX.Element
+  [ToastStates.info]: ({ explorerUrl, message, t }: ToastComponentProps) => JSX.Element
 }
 
 const ToastTypes: ToastTypes = {
@@ -46,19 +48,29 @@ const ToastTypes: ToastTypes = {
       title="Transaction confirmed"
     />
   ),
+  [ToastStates.info]: ({ message, t, title }: ToastComponentProps) => (
+    <ToastComponent
+      icon={<SuccessIcon />}
+      message={message ? message : undefined}
+      t={t}
+      title={title}
+    />
+  ),
 }
 
 const notify = ({
   explorerUrl,
   id,
   message,
+  title,
   type,
 }: {
   explorerUrl?: string
   message?: string
+  title?: string
   type: ToastStates
   id?: string | undefined
-}) => toast.custom((t: Toast) => ToastTypes[type]({ t, explorerUrl, message }), { id })
+}) => toast.custom((t: Toast) => ToastTypes[type]({ t, explorerUrl, message, title }), { id })
 
 const Toast = () => (
   <Toaster

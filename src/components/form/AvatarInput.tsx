@@ -4,6 +4,7 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
 import FileUploadIcon from '@mui/icons-material/FileUpload'
 import { AvatarProps, Box, Container, IconButton, Avatar as MUIAvatar, styled } from '@mui/material'
 import { useDescription, useTsController } from '@ts-react/form'
+import { FieldError } from 'react-hook-form'
 import ImageUploading, { ImageListType, ImageType } from 'react-images-uploading'
 import { colors } from 'thebadge-ui-library'
 import { z } from 'zod'
@@ -12,6 +13,7 @@ import { TextFieldStatus } from '@/src/components/form/TextField'
 import { FormField } from '@/src/components/form/helpers/FormField'
 import { Label } from '@/src/components/form/helpers/Label'
 import { ImageSchema } from '@/src/components/form/helpers/customSchemas'
+import { convertToFieldError } from '@/src/components/form/helpers/validators'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 
 const Wrapper = styled(Box)(({ theme }) => ({
@@ -41,38 +43,44 @@ const Avatar = styled(MUIAvatar, { shouldForwardProp: (propName) => propName !==
   },
 }))
 
-export default function AvatarInput() {
+type AvatarInputProps = {
+  error?: FieldError
+  label?: string
+  onChange: (image: ImageType | null) => void
+  placeholder?: string
+  value: ImageListType | undefined
+}
+
+export function AvatarInput({ error, label, onChange, value }: AvatarInputProps) {
   const { blockiesAvatar } = useWeb3Connection()
 
-  const { error, field } = useTsController<z.infer<typeof ImageSchema>>()
-  const { label } = useDescription()
-  const [images, setImages] = useState<ImageListType>(field.value ? [field.value] : [])
+  const [images, setImages] = useState<ImageListType>(value ? [value] : [])
   const [isCustom, setIsCustom] = useState(false)
   const maxNumber = 1
   const avatarRef = useRef<any>()
 
-  const onChange = useCallback(
+  const handleOnChange = useCallback(
     (imageList: ImageListType) => {
       // data for submit
       if (imageList[0]) {
-        field.onChange(imageList[0])
+        onChange(imageList[0])
       } else {
-        field.onChange(null)
+        onChange(null)
       }
       setImages(imageList)
       setIsCustom(true)
     },
-    [field],
+    [onChange],
   )
 
   useEffect(() => {
-    if (!field.value) {
+    if (!value) {
       const image = convertCanvasToImageType()
-      field.onChange(image)
+      onChange(image)
       setImages([image])
       setIsCustom(false)
     }
-  }, [avatarRef, field, onChange])
+  }, [avatarRef, onChange, value])
 
   function convertCanvasToImageType(): ImageType {
     const canvas = document.getElementsByClassName('blockies-avatar')[0] as HTMLCanvasElement
@@ -87,14 +95,11 @@ export default function AvatarInput() {
     <Wrapper>
       <FormField
         formControl={
-          <Container
-            maxWidth="md"
-            sx={{ display: 'flex', background: 'rgba(0,0,0,0.4)', width: '100%' }}
-          >
+          <Container maxWidth="md" sx={{ display: 'flex', width: '100%' }}>
             <ImageUploading
               dataURLKey="data_url"
               maxNumber={maxNumber}
-              onChange={onChange}
+              onChange={handleOnChange}
               value={images}
             >
               {({ dragProps, errors, imageList, isDragging, onImageRemove, onImageUpdate }) => (
@@ -166,8 +171,31 @@ export default function AvatarInput() {
           </Container>
         }
         status={error ? TextFieldStatus.error : TextFieldStatus.success}
-        statusText={error?.errorMessage}
+        statusText={error?.message}
       />
     </Wrapper>
+  )
+}
+
+/**
+ * Component wrapped to be used with @ts-react/form
+ *
+ */
+export default function AvatarInputWithTSForm() {
+  const { error, field } = useTsController<z.infer<typeof ImageSchema>>()
+  const { label, placeholder } = useDescription()
+
+  function onChange(value: z.infer<typeof ImageSchema>) {
+    field.onChange(value)
+  }
+
+  return (
+    <AvatarInput
+      error={error ? convertToFieldError(error) : undefined}
+      label={label}
+      onChange={onChange}
+      placeholder={placeholder}
+      value={field.value}
+    />
   )
 }

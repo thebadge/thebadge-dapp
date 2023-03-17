@@ -17,7 +17,6 @@ export const BADGE_TYPES = gql`
       klerosBadge {
         klerosMetadataURL
         klerosTCRList
-        badgesMintedAmount
         submissionBaseDeposit
         challengePeriodDuration
       }
@@ -34,35 +33,16 @@ export const BADGE_TYPE = gql`
       mintCost
       validFor
       paused
-      # TODO Add creator/emitter
-      #emitter {
-      #  metadata
-      #}
+      creator {
+        id
+        creatorMetadata
+      }
       klerosBadge {
         klerosMetadataURL
         klerosTCRList
-        badgesMintedAmount
         submissionBaseDeposit
         challengePeriodDuration
       }
     }
   }
 `
-
-// export const EXAMPLE_QUERY_BY_ID = gql`
-//   query exampleById($id: ID!) {
-//     example(id: $id) {
-//       id
-//       proxyAddress
-//     }
-//   }
-// `
-// // where schema will be got from yarn schema script
-// export const EXAMPLE_QUERY_WHERE = gql`
-//   query exampleWhere($where: __Schema) {
-//     example(where: $where) {
-//       id
-//       proxyAddress
-//     }
-//   }
-// `

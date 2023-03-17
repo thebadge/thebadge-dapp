@@ -5,6 +5,21 @@
       "connect": "Connect wallet"
     }
   },
+  "profile": {
+    "title": "This is your profile",
+    "titleOf": "This is the profile of {{address}}",
+    "badgesYouOwn": "Badges that you own",
+    "badgesCreated": "Badges that you created",
+    "exploreOtherBadges": "Explore other badges",
+    "badgesToCurate": "Browse other badges to curate",
+    "createdBadges": "Earn by creating new badges",
+    "tab1": "MY PROFILE",
+    "tab2": "BADGES IN REVIEW",
+    "tab3": "CREATED BADGES"
+  },
+  "errors": {
+    "connectWallet": "Please, connect your wallet"
+  },
   "creator": {
     "register": {
       "title": "Became a Badge Creator",
@@ -24,12 +39,51 @@
     "type": {
       "create": {
         "title": "Create your Badge Type",
-        "sub-title": "Do you want to design and publish custom badges that other users can apply for to verify real-world information? Also, you could set the price for the badges you create and receive a share of the fee when users apply for them...So please, complete the form and let´s start creating!"
+        "sub-title": "Do you want to design and publish custom badges that other users can apply for to verify real-world information? Also, you could set the price for the badges you create and receive a share of the fee when users apply for them...So please, complete the form and let´s start creating!",
+        "help-steps": "Here you will see a good description about how the process works.... ",
+        "previewTitle": "This is how your Badge is going to look like"
       },
       "mint": {
-        "title": "Badge Mint",
-        "sub-title": "Do you want to design and publish custom badges that other users can apply for to verify real-world information? Also, you could set the price for the badges you create and receive a share of the fee when users apply for them...So please, complete the form and let´s start creating!",
-        "help-steps": "Here you will see a good description about how the process works.... "
+        "title": "Badge Mint - {{badgeName}}",
+        "sub-title": "Are you ready to get a your new web3 certification?. By pressing next you will start the certification process that will require you to provide certain evidences that proof that you are eligible to get the certificate and the peer-to-peer curation process will start.",
+        "help-steps": "Step 1:\n\"Read and agree the terms and conditions\"\n\nStep 2:\n\"Complete the evidence required in order to prove that you are eligible for obtaining the selected certificate\"\n\nStep 3:\n\"Review the data and submit the transaction\"\n\nStep 4:\n\"The curation process will start, you will be always able to check the curation status of your badge. Once the curation is over, your badge will be available on your profile\"\n\nStep 5:\n\"If the evidence you submitted is found wrong, our curators may raise challenges against your badge and an arbitration process will start. If you want to know more about this process read here (https://docs.thebadge.xyz)\"\n\nStep 6:\nDisclaimer: \"by accepting the terms and conditions.....",
+        "previewTitle": "This is how your Badge is going to look like",
+        "mintCostTooltip": "This is the cost that's goes to the creator.",
+        "depositCost": "Deposit for Kleros ",
+        "mintCost": "Mint cost ",
+        "totalCost": "Total need: {{cost}} ",
+        "makeSure": "Make sure your submission complies with the ",
+        "avoidChallenges": " to avoid challenges."
+      }
+    },
+    "viewBadge": {
+      "issueBy": "Issued by: {{issuer}}",
+      "claims": " # of claims",
+      "viewEvidence": "Check the provided evidence",
+      "checkHowElse": "Check who else claimed it. ",
+      "challengeStatus": {
+        "title" : "Challenge Status",
+        "challenged": "CHALLENGED",
+        "requestType": "Request type:",
+        "challenger": "Challenger:",
+        "requester":  "Requester:",
+        "arbitrator": "Arbitrator:",
+        "disputeId":  "Dispute ID:",
+        "badgeDetails": "BADGE DETAILS",
+        "user":  "User:",
+        "amount": "Amount",
+        "userAddress":  "User address:",
+        "file": "File:"
+      }
+    },
+    "challenge": {
+      "modal": {
+        "challenge": "Challenge Badge",
+        "remove": "Remove Badge",
+        "explainWhy": "Explain de jurors why do you think this items should de removed.",
+        "readCriteria": "Read the ",
+        "listingCriteria": "Listing Criteria",
+        "toAvoid": " to avoid wrong challenge requests."
       }
     }
   },

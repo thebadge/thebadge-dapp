@@ -1,3 +1,4 @@
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
 import {
@@ -48,9 +49,10 @@ const StyledBadge = styled(Badge)<{ state?: 'ok' | 'error' }>(({ state, theme })
 }))
 
 export const UserDropdown: React.FC = () => {
+  const router = useRouter()
   const { address, blockiesIcon, disconnectWallet, isWalletNetworkSupported } = useWeb3Connection()
-  const [showNetworkModal, setShowNetworkModal] = useState(false)
 
+  const [showNetworkModal, setShowNetworkModal] = useState(false)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -119,7 +121,7 @@ export const UserDropdown: React.FC = () => {
         <MenuItem>
           Connected {address ? <>{truncateStringInTheMiddle(address, 8, 4)}</> : 'Error'}
         </MenuItem>
-        <MenuItem>
+        <MenuItem onClick={() => router.push('/profile')}>
           <Avatar>{blockiesIcon} </Avatar> Profile
         </MenuItem>
         <Divider />

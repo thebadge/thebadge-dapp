@@ -79,6 +79,16 @@ export const LongTextSchema = createUniqueFieldSchema(
     .min(25, { message: 'Text field most have at least 25 characters.' }),
   'LongTextSchema',
 )
+export const DescriptionTextSchema = createUniqueFieldSchema(
+  z
+    .string({
+      required_error: 'Is required',
+      invalid_type_error: 'Must be an string',
+    })
+    .min(25, { message: 'Text field most have at least 25 characters.' }),
+  'DescriptionTextSchema',
+)
+
 // TODO Move to env variables
 const MAX_FILE_SIZE = 500000
 const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
@@ -115,12 +125,32 @@ export const FileSchema = createUniqueFieldSchema(
   'FileSchema',
 )
 
+export const OptionalFileSchema = createUniqueFieldSchema(
+  z
+    .any()
+    .refine((value) => !!value && !!value.file, 'Upload a file is required.')
+    .refine((value) => value?.file?.size <= MAX_FILE_SIZE, `Max file size is 5MB.`)
+    .optional(),
+  'OptionalFileSchema',
+)
+
 export const ExpirationTypeSchema = createUniqueFieldSchema(
   z.number({
     required_error: 'Is required',
     invalid_type_error: 'Must enter an amount of days',
   }),
   'ExpirationTypeSchema',
+)
+
+export const ChallengePeriodTypeSchema = createUniqueFieldSchema(
+  z
+    .number({
+      required_error: 'Is required',
+      invalid_type_error: 'Must enter an amount of days',
+    })
+    .min(2, 'The challenge time must be greater than 1 day')
+    .max(15, 'The challenge cant be greater than 15 days'),
+  'ChallengePeriodTypeSchema',
 )
 
 export const SeverityTypeSchema = createUniqueFieldSchema(
@@ -139,10 +169,10 @@ export const KlerosFormFieldSchema = z.object({
   label: z
     .string()
     .describe('Name // Field name that the user will be when they create the badge.'),
-  description: z
-    .string()
-    .describe('Description // Field description that explains what the field data is.'),
   type: KlerosFieldTypeSchema.describe('Field Type // Type of the required data.'),
+  description: LongTextSchema.describe(
+    'Description // Field description that explains what the field data is.',
+  ),
 })
 
 export const KlerosDynamicFields = createUniqueFieldSchema(

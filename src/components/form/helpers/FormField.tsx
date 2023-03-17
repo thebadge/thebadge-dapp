@@ -6,18 +6,18 @@ import { TextFieldStatus } from '../TextField'
 import { FormStatus } from './FormStatus'
 import { Label } from './Label'
 
-const StyledBox = styled(Box)<{ status?: TextFieldStatus }>(({ theme }) => ({
+const StyledBox = styled(Box)<{ status?: TextFieldStatus }>(() => ({
   display: 'flex',
-  justifyContent: 'center',
+  justifyContent: 'flex-end',
   alignItems: 'center',
   flexDirection: 'column',
   position: 'relative',
-  rowGap: theme.spacing(1),
+  height: '100%',
 }))
 
 export const FormField: React.FC<{
   formControl: React.ReactElement
-  label?: string
+  label?: React.ReactElement | string
   labelPosition?: 'top' | 'left'
   status?: TextFieldStatus | undefined
   statusText?: string
@@ -32,11 +32,17 @@ export const FormField: React.FC<{
 
   return (
     <StyledBox status={status} {...restProps}>
-      <Box sx={{ display: 'flex', flexDirection: labelPosition === 'top' ? 'column' : 'row' }}>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: labelPosition === 'top' ? 'column' : 'row',
+          minWidth: '100%',
+        }}
+      >
         {label && <Label>{label}</Label>}
         {control}
       </Box>
-      {statusText && <FormStatus status={status}>{statusText}</FormStatus>}
+      <FormStatus status={status}>{statusText}</FormStatus>
     </StyledBox>
   )
 }

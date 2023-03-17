@@ -12,7 +12,7 @@ const ResponsiveGridLayout = WidthProvider(Responsive)
 
 export const GridFormContainer = styled(Box, {
   shouldForwardProp: (propName: string) =>
-    propName !== 'gridColumns' && propName !== 'gridStructure',
+    propName !== 'gridColumns' && propName !== 'gridStructure' && propName !== 'rowHeight',
 })<{ gridColumns?: number; gridStructure?: DataGrid[] }>(({ gridColumns = 3, theme }) => ({
   display: 'grid',
   gridTemplateColumns: `repeat(${gridColumns}, 1fr)`,
@@ -28,16 +28,21 @@ export const GridFormContainer = styled(Box, {
 
 function ResponsiveGridFromContainer({
   children,
+  draggable = false,
   gridStructure,
+  rowHeight = 75,
 }: {
   children: ReactNode
   gridStructure?: DataGrid[]
+  rowHeight?: number
+  draggable?: boolean
 }) {
   const theme = useTheme()
   const childrenFromTypes = useMemo(() => getFormsFieldsTypes(children), [children])
   let prevXValue = -1
   return (
     <ResponsiveGridLayout
+      autoSize={true}
       breakpoints={{
         xl: theme.breakpoints.values.xl,
         lg: theme.breakpoints.values.lg,
@@ -45,11 +50,12 @@ function ResponsiveGridFromContainer({
         sm: theme.breakpoints.values.sm,
       }}
       className="layout"
-      cols={{ xl: 8, lg: 8, md: 8, sm: 6 }}
+      cols={{ xl: 8, lg: 8, md: 8, sm: 8 }}
       compactType={null}
       isBounded={true}
       isDraggable={true}
-      rowHeight={75}
+      margin={[0, 0]}
+      rowHeight={rowHeight}
     >
       {
         // children is a prop that passed to the component, second arg is a callback
@@ -67,6 +73,7 @@ function ResponsiveGridFromContainer({
             dataGridValue = getDataGridFromMapping(
               childrenFromTypes[index],
               mappingDataGridForComponents,
+              draggable,
             )
             // Trying to prevent collision in a naive way
             xValue = dataGridValue.x > prevXValue ? dataGridValue.x : prevXValue

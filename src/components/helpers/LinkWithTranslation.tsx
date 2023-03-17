@@ -8,17 +8,28 @@ const StyledLink = styled(Link)(({ theme }) => ({
   color: theme.palette.text.primary,
   '&:hover': {
     textDecoration: 'underline',
+    '& .MuiTypography-root': {
+      color: `${theme.palette.text.secondary} !important`,
+    },
   },
 }))
 
 export default function LinkWithTranslation({
   children,
   pathname,
+  queryParams,
 }: {
   children: React.ReactNode
   pathname: string
+  queryParams?: { [key: string]: string }
 }) {
   const [query] = useLanguageQuery()
 
-  return <StyledLink href={{ pathname: pathname, query: query }}>{children}</StyledLink>
+  const lang = query && query.lang ? query.lang : undefined
+
+  return (
+    <StyledLink href={{ pathname: pathname, query: { lang, ...queryParams } }}>
+      {children}
+    </StyledLink>
+  )
 }

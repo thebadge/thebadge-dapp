@@ -1,3 +1,4 @@
+import { FieldError } from 'react-hook-form'
 import { ErrorOption } from 'react-hook-form/dist/types/errors'
 import { ZodType, z } from 'zod'
 
@@ -83,4 +84,10 @@ export default function klerosSchemaFactory(fields: MetadataColumn[]) {
   })
   return shape
   // return z.object(shape)
+}
+
+export function convertToFieldError(error: any): FieldError {
+  return {
+    message: error.errorMessage,
+  } as FieldError
 }

@@ -13,7 +13,13 @@ import { ThemeType } from '@/src/theme/types'
 
 export const useMainMenuItems = () => {
   const { address } = useWeb3Connection()
-  const { homeSection } = useSectionReferences()
+  const {
+    becomeACreatorSection,
+    becomeAThirdPartySection,
+    claimBadgesSection,
+    earnByCuratingSection,
+    homeSection,
+  } = useSectionReferences()
   const { mode, toggleColorMode } = useColorMode()
 
   const topMenuItems: Array<MenuItem> = [
@@ -25,24 +31,38 @@ export const useMainMenuItems = () => {
       subItems: [
         {
           title: 'Get a certificate',
-          href: '#getCertificate',
+          href: claimBadgesSection?.current ? claimBadgesSection : '/badge/mint',
         },
         {
-          title: 'Protocol statistics',
-          href: '#statistics',
+          title: 'Earn by curating',
+          href: earnByCuratingSection?.current ? earnByCuratingSection : '/curator/register',
         },
         {
-          title: 'The Badge DAO',
-          href: '#',
+          title: 'Badge creator',
+          href: becomeACreatorSection?.current ? becomeACreatorSection : '/creator/register',
         },
         {
-          title: '$BADGE token',
-          href: '#',
+          title: 'Third-party entity',
+          href: becomeAThirdPartySection?.current
+            ? becomeAThirdPartySection
+            : '/third-party/register',
         },
-        {
-          title: 'FAQ',
-          href: '#',
-        },
+        // {
+        //   title: 'Protocol statistics',
+        //   href: '#statistics',
+        // },
+        // {
+        //   title: 'The Badge DAO',
+        //   href: '#',
+        // },
+        // {
+        //   title: '$BADGE token',
+        //   href: '#',
+        // },
+        // {
+        //   title: 'FAQ',
+        //   href: '#',
+        // },
       ],
     },
     {
@@ -61,7 +81,7 @@ export const useMainMenuItems = () => {
         },
         {
           title: 'Become a third-party entity',
-          href: '#',
+          href: '/third-party/register',
         },
       ],
     },
@@ -111,7 +131,7 @@ export const useMainMenuItems = () => {
         },
         {
           title: 'Created badges',
-          href: '#',
+          href: '',
         },
       ],
     },

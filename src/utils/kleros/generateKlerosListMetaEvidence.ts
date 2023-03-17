@@ -1,7 +1,7 @@
 import { MetadataColumn } from '@/types/kleros/types'
-import { BackendFileUpload } from '@/types/utils'
+import { BackendFileResponse, BackendFileUpload } from '@/types/utils'
 
-export type klerosListStructure = {
+export type KlerosListStructure = {
   name: string
   title: string
   description: string
@@ -11,7 +11,7 @@ export type klerosListStructure = {
   }
   category: string
   question: string
-  fileURI: BackendFileUpload
+  fileURI: BackendFileUpload | BackendFileResponse
   evidenceDisplayInterfaceURI: string
   metadata: {
     tcrTitle: string
@@ -19,7 +19,7 @@ export type klerosListStructure = {
     columns: MetadataColumn[]
     itemName: string
     itemNamePlural: string
-    logoURI: BackendFileUpload
+    logoURI: BackendFileUpload | BackendFileResponse
     requireRemovalEvidence: boolean
     isTCRofTCRs: boolean
     relTcrDisabled: boolean
@@ -40,13 +40,13 @@ export function generateKlerosListMetaEvidence(
   relTcrDisabled = true, // research about it
   category = 'Curated Lists',
   evidenceDisplayInterfaceURI = '/ipfs/QmQjJio59WkrQDzPC5kSP3EiGaqrWxjGfkvhmD2mWwm41M/index.html',
-): { registration: klerosListStructure; clearing: klerosListStructure } {
+): { registration: KlerosListStructure; clearing: KlerosListStructure } {
   // TODO
   // check max items indexed = 3
 
   const itemNamePlural = `${badgeName}s`
 
-  const registration: klerosListStructure = {
+  const registration: KlerosListStructure = {
     name: badgeTypeName,
     title: `${badgeTypeName} evidences.`,
     description: `Add the evidence of the badge ${badgeName} to the list of evidences of ${badgeTypeName}.`,
@@ -74,7 +74,7 @@ export function generateKlerosListMetaEvidence(
     },
   }
 
-  const clearing: klerosListStructure = {
+  const clearing: KlerosListStructure = {
     name: badgeTypeName,
     title: `Remove a ${badgeName} from ${itemNamePlural}`,
     description: `Someone requested to remove a ${badgeName} to ${itemNamePlural}`,

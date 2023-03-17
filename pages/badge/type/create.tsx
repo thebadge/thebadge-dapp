@@ -5,49 +5,18 @@ import { useTranslation } from 'next-export-i18n'
 import { colors } from 'thebadge-ui-library'
 import { z } from 'zod'
 
-import { CustomFormFromSchema } from '@/src/components/form/customForms/CustomForm'
-import {
-  ExpirationTypeSchema,
-  FileSchema,
-  ImageSchema,
-  KlerosDynamicFields,
-  LongTextSchema,
-  NumberSchema,
-  SeverityTypeSchema,
-} from '@/src/components/form/helpers/customSchemas'
 import { isMetadataColumnArray } from '@/src/components/form/helpers/validators'
 import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
+import { IS_DEVELOP } from '@/src/constants/common'
 import { contracts } from '@/src/contracts/contracts'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
+import CreateSteps, { BadgeTypeCreateSchema } from '@/src/pagePartials/badge/type/CreateSteps'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import ipfsUpload from '@/src/utils/ipfsUpload'
 import { generateKlerosListMetaEvidence } from '@/src/utils/kleros/generateKlerosListMetaEvidence'
 import { Kleros__factory, TheBadge__factory } from '@/types/generated/typechain'
 import { NextPageWithLayout } from '@/types/next'
 import { Severity } from '@/types/utils'
-
-export const BadgeTypeCreateSchema = z.object({
-  name: z.string().describe('name // ??'),
-  description: LongTextSchema.describe('description // ??'),
-  logoUri: ImageSchema.describe('The logo for your badge type // ??'),
-  criteriaFileUri: FileSchema.describe('PDF with the requirements to mint a badge. // ??'),
-  // TODO: make this input its own schema. Validate number required and > 1
-  challengePeriodDuration: NumberSchema.describe(
-    'Challenge period duration // Challenge period duration in days. During this time the community can analyze the evidence and challenge it.',
-  ),
-  rigorousness: SeverityTypeSchema.describe(
-    'Rigorousness // How rigorous the emission of badges should be',
-  ),
-  mintCost: NumberSchema.describe(
-    'Cost to mint in ETH // How much it will be necessary to deposit.',
-  ),
-  validFor: ExpirationTypeSchema.describe(
-    'Expiration time // The badge will valid for this amount of  (0 is forever)',
-  ),
-  badgeMetadataColumns: KlerosDynamicFields.describe(
-    'Evidence fields // List of fields that the user will need to provider to be able to mint this badge type.',
-  ),
-})
 
 const CreateBadgeType: NextPageWithLayout = () => {
   const { t } = useTranslation()
@@ -121,7 +90,7 @@ const CreateBadgeType: NextPageWithLayout = () => {
           numberOfJurors, // numberOfJurors:
           `ipfs://${registrationIPFSUploaded.result?.ipfsHash}`, // registration file
           `ipfs://${clearingIPFSUploaded.result?.ipfsHash}`, // clearing file
-          data.challengePeriodDuration * 24 * 60 * 60, // challengePeriodDuration:
+          data.challengePeriodDuration * (IS_DEVELOP ? 1 : 24) * 60 * 60, // challengePeriodDuration // Dev = hours - Prod = Days
           [
             baseDeposit.add(klerosCourtInfo.feeForJuror.mul(numberOfJurors)).toString(), // jurors * fee per juror + rigorousness
             baseDeposit.add(klerosCourtInfo.feeForJuror.mul(numberOfJurors)).toString(), // The base deposit to remove an item.
@@ -138,7 +107,6 @@ const CreateBadgeType: NextPageWithLayout = () => {
         metadata: `ipfs://${badgeTypeIPFSUploaded.result?.ipfsHash}`, // TODO: should we use a custom one? or the one for TCR is ok?
         controllerName: 'kleros',
         mintCost: parseUnits(data.mintCost.toString(), 18),
-        mintFee: 0, // TODO: remove
         validFor: data.validFor, // in seconds, 0 infinite
       },
       klerosControllerDataEncoded,
@@ -157,19 +125,7 @@ const CreateBadgeType: NextPageWithLayout = () => {
         </Typography>
       </Stack>
 
-      <CustomFormFromSchema
-        formProps={{
-          buttonDisabled: !address,
-          buttonLabel: address ? 'Register' : 'Connect wallet',
-        }}
-        onSubmit={onSubmit}
-        props={{
-          mintCost: {
-            decimals: 4,
-          },
-        }}
-        schema={BadgeTypeCreateSchema}
-      />
+      <CreateSteps onSubmit={onSubmit} />
     </>
   )
 }
