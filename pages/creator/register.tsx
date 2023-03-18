@@ -31,7 +31,7 @@ const Register: NextPageWithLayout = () => {
   const { t } = useTranslation()
   const { address, appChainId, isWalletConnected } = useWeb3Connection()
   const router = useRouter()
-  const sendTx = useTransaction()
+  const { sendTx } = useTransaction()
 
   const theBadge = useContractInstance(TheBadge__factory, 'TheBadge')
 
