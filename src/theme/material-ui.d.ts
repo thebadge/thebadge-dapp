@@ -46,6 +46,7 @@ declare module '@mui/material' {
   export interface SwitchPropsColorOverrides extends TheBadgeColors {}
   export interface TextFieldPropsColorOverrides extends TheBadgeColors {}
   export interface ToggleButtonPropsColorOverrides extends TheBadgeColors {}
+  export interface ChipPropsColorOverrides extends TheBadgeColors {}
 }
 
 declare module '@mui/material/Typography' {

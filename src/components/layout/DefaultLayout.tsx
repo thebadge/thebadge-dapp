@@ -31,8 +31,8 @@ type DefaultLayoutProps = {
 const NavigationRoom = styled(Box)(({ theme }) => ({
   position: 'absolute',
   height: '100%',
-  left: theme.spacing(6),
-  top: theme.spacing(12),
+  left: theme.spacing(0.25),
+  top: theme.spacing(-4),
 }))
 
 export default function DefaultLayout({ children }: DefaultLayoutProps) {
@@ -46,6 +46,7 @@ export default function DefaultLayout({ children }: DefaultLayoutProps) {
           style={{
             transition: 'all .5s cubic-bezier(0.83, 0, 0.17, 1)',
             background: '#000000',
+            zIndex: 999,
           }}
         >
           <Container sx={{ flex: 1 }}>
@@ -55,7 +56,7 @@ export default function DefaultLayout({ children }: DefaultLayoutProps) {
         <BackgroundGradient
           gradient={theme.palette?.backgroundGradient[mode as keyof PaletteColorOptions]}
         />
-        <Box sx={{ display: 'flex', flex: 1 }}>
+        <Box sx={{ display: 'flex', flex: 1, minHeight: '50rem' }}>
           <NavigationRoom>
             <MainMenu />
           </NavigationRoom>

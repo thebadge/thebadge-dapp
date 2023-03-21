@@ -2,7 +2,7 @@ import { Box, Typography, styled, useTheme } from '@mui/material'
 import { ButtonV2, colors } from 'thebadge-ui-library'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
-import BadgeListInReview from '@/src/pagePartials/home/BadgeListInReview'
+import BadgesInReviewSwiper from '@/src/pagePartials/home/BadgesInReviewSwiper'
 import { SectionBox, SectionTitleBox } from '@/src/pagePartials/home/SectionBoxes'
 import { useSectionReferences } from '@/src/providers/referencesProvider'
 
@@ -52,7 +52,7 @@ export default function EarnByCurating() {
         </LearnMoreButton>
       </SectionTitleBox>
       <SafeSuspense>
-        <BadgeListInReview />
+        <BadgesInReviewSwiper />
       </SafeSuspense>
     </SectionBox>
   )

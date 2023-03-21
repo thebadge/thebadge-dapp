@@ -16,7 +16,7 @@ import {
   PAPER_URL,
   TWITTER_URL,
 } from '@/src/constants/common'
-import useIsMobile from '@/src/hooks/useIsMobile'
+import {useSizeSM} from '@/src/hooks/useSize'
 import { useCookiesWarningContext } from '@/src/providers/cookiesWarningProvider'
 import { useColorMode } from '@/src/providers/themeProvider'
 
@@ -29,7 +29,7 @@ const SocialContainer = styled(Box)(({ theme }) => ({
 }))
 
 export const Footer: React.FC = () => {
-  const isMobile = useIsMobile()
+  const isMobile = useSizeSM()
 
   const { mode } = useColorMode()
   const { t } = useTranslation()
@@ -51,7 +51,7 @@ export const Footer: React.FC = () => {
                   {t('footer.about.title')}
                 </Typography>
                 <Typography
-                  color={colors.white}
+                  color={colors.white + ' !important'}
                   component={'a'}
                   href={EMAIL_URL}
                   sx={{ fontSize: '1rem !important' }}
@@ -60,7 +60,7 @@ export const Footer: React.FC = () => {
                   {t('footer.about.items.0.title')}
                 </Typography>
                 <Typography
-                  color={colors.white}
+                  color={colors.white + ' !important'}
                   component={'a'}
                   href={DISCORD_URL}
                   sx={{ fontSize: '1rem !important' }}
@@ -69,7 +69,7 @@ export const Footer: React.FC = () => {
                   {t('footer.about.items.1.title')}
                 </Typography>
                 <Typography
-                  color={colors.white}
+                  color={colors.white + ' !important'}
                   component={'a'}
                   href={PAPER_URL}
                   sx={{ fontSize: '1rem !important' }}
@@ -83,7 +83,7 @@ export const Footer: React.FC = () => {
                   {t('footer.help.title')}
                 </Typography>
                 <Typography
-                  color={colors.white}
+                  color={colors.white + ' !important'}
                   component={'a'}
                   href={DISCORD_URL}
                   sx={{ fontSize: '1rem !important' }}
@@ -92,7 +92,7 @@ export const Footer: React.FC = () => {
                   {t('footer.help.items.0.title')}
                 </Typography>
                 <Typography
-                  color={colors.white}
+                  color={colors.white + ' !important'}
                   component={'a'}
                   href={DOCS_URL}
                   sx={{ fontSize: '1rem !important' }}

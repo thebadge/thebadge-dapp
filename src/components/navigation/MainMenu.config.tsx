@@ -89,51 +89,51 @@ export const useMainMenuItems = () => {
       type: 'color',
       icon: <ProfileIcon />,
       title: 'Profile',
-      href: '#profile',
+      href: '/profile',
       validation: !!address,
-      subItems: [
-        {
-          title: 'My profile',
-          subItems: [
-            {
-              title: 'Owned badges',
-              href: '#',
-            },
-            {
-              title: 'Near to expire',
-              href: '#',
-            },
-            {
-              title: 'Promoted',
-              href: '#',
-            },
-            {
-              title: 'Close to obtain',
-              href: '#',
-            },
-            {
-              title: 'You may be interested in',
-              href: '#',
-            },
-          ],
-        },
-        {
-          title: 'Create badge type',
-          href: '/badge/type/create',
-        },
-        {
-          title: 'Mint badge',
-          href: '/badge/mint',
-        },
-        {
-          title: 'Badges in review',
-          href: '#',
-        },
-        {
-          title: 'Created badges',
-          href: '',
-        },
-      ],
+      // subItems: [
+      //   {
+      //     title: 'My profile',
+      //     subItems: [
+      //       {
+      //         title: 'Owned badges',
+      //         href: '#',
+      //       },
+      //       {
+      //         title: 'Near to expire',
+      //         href: '#',
+      //       },
+      //       {
+      //         title: 'Promoted',
+      //         href: '#',
+      //       },
+      //       {
+      //         title: 'Close to obtain',
+      //         href: '#',
+      //       },
+      //       {
+      //         title: 'You may be interested in',
+      //         href: '#',
+      //       },
+      //     ],
+      //   },
+      //   {
+      //     title: 'Create badge type',
+      //     href: '/badge/type/create',
+      //   },
+      //   {
+      //     title: 'Mint badge',
+      //     href: '/badge/mint',
+      //   },
+      //   {
+      //     title: 'Badges in review',
+      //     href: '#',
+      //   },
+      //   {
+      //     title: 'Created badges',
+      //     href: '',
+      //   },
+      // ],
     },
   ]
 

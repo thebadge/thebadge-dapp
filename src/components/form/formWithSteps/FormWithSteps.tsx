@@ -13,7 +13,7 @@ import { AnyZodObject, ZodEffects } from 'zod'
 import { CustomFormFromSchemaWithoutSubmit } from '@/src/components/form/customForms/CustomForm'
 import { DataGrid, FormLayoutType } from '@/src/components/form/customForms/type'
 import { useForceRender } from '@/src/hooks/useForceRender'
-import useIsMobile from '@/src/hooks/useIsMobile'
+import {useSizeSM} from '@/src/hooks/useSize'
 
 type FormWithStepsProps = {
   stepSchemas: (AnyZodObject | ZodEffects<any, any, any>)[]
@@ -35,7 +35,7 @@ export function FormWithSteps({
   stepSchemas,
 }: FormWithStepsProps) {
   const forceUpdate = useForceRender()
-  const isMobile = useIsMobile()
+  const isMobile = useSizeSM()
   const formButtonRef = useRef<HTMLButtonElement>()
 
   const [activeStep, setActiveStep] = React.useState(0)
