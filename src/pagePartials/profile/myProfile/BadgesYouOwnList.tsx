@@ -7,6 +7,7 @@ import { colors } from 'thebadge-ui-library'
 
 import LinkWithTranslation from '@/src/components/helpers/LinkWithTranslation'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
+import useTransaction from '@/src/hooks/useTransaction'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { SubgraphName, getSubgraphSdkByNetwork } from '@/src/subgraph/subgraph'
 import { KlerosBadgeTypeController__factory } from '@/types/generated/typechain'
@@ -16,6 +17,7 @@ type Props = {
 }
 export default function BadgesYouOwnList({ address }: Props) {
   const { t } = useTranslation()
+  const { sendTx } = useTransaction()
 
   const { appChainId } = useWeb3Connection()
 
@@ -27,8 +29,10 @@ export default function BadgesYouOwnList({ address }: Props) {
   const userWithBadges = gql.useUserBadges({ ownerAddress: address })
   const badges = userWithBadges.data?.user?.badges || []
 
-  function handleClaimIt(badgeId: string, address: string) {
-    klerosController.claimBadge(badgeId, address)
+  async function handleClaimIt(badgeId: string, address: string) {
+    const transaction = await sendTx(() => klerosController.claimBadge(badgeId, address))
+
+    await transaction.wait()
   }
   return (
     <Stack gap={2} mt={4}>

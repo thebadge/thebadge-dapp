@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 
 import { ContractTransaction } from '@ethersproject/contracts'
 
@@ -6,8 +6,17 @@ import { useTransactionNotification } from '@/src/providers/TransactionNotificat
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { TransactionError } from '@/src/utils/TransactionError'
 
+export enum TransactionStates {
+  none = 'NONE',
+  failed = 'FAILED',
+  success = 'SUCCESS',
+  waitingSignature = 'WAITING-SIGNATURE',
+  waitingMined = 'WAITING-MINED',
+}
+
 export default function useTransaction() {
   const { isAppConnected } = useWeb3Connection()
+  const [state, setTransactionState] = useState(TransactionStates.none)
   const {
     notifyRejectSignature,
     notifyTxMined,
@@ -18,8 +27,12 @@ export default function useTransaction() {
   const waitForTxExecution = useCallback(
     (tx: ContractTransaction) => {
       notifyWaitingForTxMined(tx.hash)
+      setTransactionState(TransactionStates.waitingMined)
       tx.wait()
-        .then((r) => notifyTxMined(r.transactionHash, true))
+        .then((r) => {
+          notifyTxMined(r.transactionHash, true)
+          setTransactionState(TransactionStates.success)
+        })
         .catch((e) => {
           const error = new TransactionError(
             e.data?.message || e.message || 'Unable to decode revert reason',
@@ -29,19 +42,21 @@ export default function useTransaction() {
 
           console.error(error)
 
+          setTransactionState(TransactionStates.failed)
           notifyTxMined(tx.hash)
         })
     },
     [notifyTxMined, notifyWaitingForTxMined],
   )
 
-  return useCallback(
+  const sendTx = useCallback(
     async (methodToCall: () => Promise<ContractTransaction>) => {
       if (!isAppConnected) {
         throw Error('App is not connected')
       }
       try {
         notifyWaitingForSignature()
+        setTransactionState(TransactionStates.waitingSignature)
         const receipt = await methodToCall()
         if (receipt) waitForTxExecution(receipt)
         return receipt
@@ -60,4 +75,5 @@ export default function useTransaction() {
     },
     [isAppConnected, notifyWaitingForSignature, waitForTxExecution, notifyRejectSignature],
   )
+  return { state, sendTx }
 }
