@@ -31,7 +31,7 @@ const Register: NextPageWithLayout = () => {
   const { t } = useTranslation()
   const { address, appChainId, isWalletConnected } = useWeb3Connection()
   const router = useRouter()
-  const { sendTx } = useTransaction()
+  const { sendTx, state } = useTransaction()
 
   const theBadge = useContractInstance(TheBadge__factory, 'TheBadge')
 
@@ -80,7 +80,7 @@ const Register: NextPageWithLayout = () => {
           {t('creator.register.sub-title')}
         </Typography>
       </Stack>
-      <RegistrationSteps onSubmit={onSubmit} />
+      <RegistrationSteps onSubmit={onSubmit} txState={state} />
     </>
   )
 }

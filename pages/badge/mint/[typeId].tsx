@@ -26,7 +26,7 @@ const MintBadgeType: NextPageWithLayout = () => {
   const { address, appChainId } = useWeb3Connection()
   const theBadge = useContractInstance(TheBadge__factory, 'TheBadge')
   const router = useRouter()
-  const { sendTx } = useTransaction()
+  const { sendTx, state } = useTransaction()
 
   const badgeTypeId = router.query.typeId as string
   if (!badgeTypeId) {
@@ -113,6 +113,7 @@ const MintBadgeType: NextPageWithLayout = () => {
         }}
         evidenceSchema={CreateBadgeSchema}
         onSubmit={onSubmit}
+        txState={state}
       />
     </>
   )

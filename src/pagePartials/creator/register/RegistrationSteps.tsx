@@ -14,8 +14,12 @@ import {
   LongTextSchema,
   TwitterSchema,
 } from '@/src/components/form/helpers/customSchemas'
+import { TransactionLoading } from '@/src/components/loading/TransactionLoading'
+import { TransactionStates } from '@/src/hooks/useTransaction'
 
 type RegistrationStepsProps = {
+  txState: TransactionStates
+
   onSubmit: (data: z.infer<typeof RegisterCuratorSchema>) => void
 }
 
@@ -55,7 +59,7 @@ export const RegisterCuratorSchemaStep3 = z.object({
   terms: AgreementSchema.describe(`Terms & Conditions // ??`),
 })
 
-export default function RegistrationSteps({ onSubmit }: RegistrationStepsProps) {
+export default function RegistrationSteps({ onSubmit, txState }: RegistrationStepsProps) {
   const { t } = useTranslation()
 
   const handleOnSubmit = (data: z.infer<typeof RegisterCuratorSchema>) => {
@@ -63,6 +67,10 @@ export default function RegistrationSteps({ onSubmit }: RegistrationStepsProps) 
   }
 
   function handleFormPreview(data: z.infer<typeof RegisterCuratorSchema>) {
+    if (txState !== TransactionStates.none) {
+      return <TransactionLoading state={txState} />
+    }
+
     return (
       <Stack gap={2} margin={1}>
         <Typography component={'div'} variant="title3">
