@@ -4,7 +4,6 @@ import { Box, Typography } from '@mui/material'
 import dayjs from 'dayjs'
 import { useTranslation } from 'next-export-i18n'
 import Countdown from 'react-countdown'
-import { colors } from 'thebadge-ui-library'
 
 import FilteredList, { ListFilter } from '@/src/components/helpers/FilteredList'
 import MiniBadgeTypeMetadata from '@/src/pagePartials/badge/MiniBadgeTypeMetadata'

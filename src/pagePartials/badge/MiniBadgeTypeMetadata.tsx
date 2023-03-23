@@ -1,10 +1,10 @@
-import { useColorMode } from "@/src/providers/themeProvider";
 import * as React from 'react'
 
-import { colors, MiniBadgePreview } from "thebadge-ui-library";
+import { MiniBadgePreview, colors } from 'thebadge-ui-library'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
+import { useColorMode } from '@/src/providers/themeProvider'
 
 type Props = {
   metadata?: string
@@ -13,7 +13,7 @@ type Props = {
 
 function MiniBadgeTypeMetadata({ highlightColor, metadata }: Props) {
   const res: any = useS3Metadata(metadata || '')
-  const {mode} = useColorMode()
+  const { mode } = useColorMode()
   const badgeMetadata = res.data.content
 
   return (

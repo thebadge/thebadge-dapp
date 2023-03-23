@@ -1,4 +1,3 @@
-import MiniBadgeTypeMetadata from "@/src/pagePartials/badge/MiniBadgeTypeMetadata";
 import Link from 'next/link'
 import React, { useState } from 'react'
 
@@ -8,8 +7,8 @@ import { useTranslation } from 'next-export-i18n'
 
 import FilteredList, { ListFilter } from '@/src/components/helpers/FilteredList'
 import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
-import BadgeTypeMetadata from '@/src/pagePartials/badge/BadgeTypeMetadata'
 import GetBadgeTypeChallengePeriodDuration from '@/src/pagePartials/badge/GetBadgeTypeReviewDueDate'
+import MiniBadgeTypeMetadata from '@/src/pagePartials/badge/MiniBadgeTypeMetadata'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { SubgraphName, getSubgraphSdkByNetwork } from '@/src/subgraph/subgraph'
 import { getTheme } from '@/src/theme/theme'
