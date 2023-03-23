@@ -67,7 +67,6 @@ export default function BadgesInReviewSection() {
         search={search}
         title={'Your badges in review'}
       ></FilteredList>
-      {/*<h2>BadgesInReviewSection</h2>*/}
     </>
   )
 }

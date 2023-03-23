@@ -4,6 +4,7 @@ import { Earn as EarnIcon } from '@/src/components/assets/Earn'
 import { Home as HomeIcon } from '@/src/components/assets/Home'
 import { LightMode as LightModeIcon } from '@/src/components/assets/LightMode'
 import { Profile as ProfileIcon } from '@/src/components/assets/Profile'
+import { Explore as ExploreIcon } from '@/src/components/assets/Explore'
 import { MenuItem } from '@/src/components/navigation/MainMenu.types'
 import { DISCORD_URL } from '@/src/constants/common'
 import { useSectionReferences } from '@/src/providers/referencesProvider'
@@ -64,6 +65,12 @@ export const useMainMenuItems = () => {
         //   href: '#',
         // },
       ],
+    },
+    {
+      type: 'color',
+      icon: <ExploreIcon />,
+      title: 'Explore',
+      href: '/badge/explorer',
     },
     {
       type: 'color',
@@ -141,12 +148,14 @@ export const useMainMenuItems = () => {
     {
       type: 'gray',
       icon: <DiscordIcon />,
+      title: 'Community',
       href: DISCORD_URL,
       openLinkInNewTab: true,
     },
     {
       type: 'small',
       icon: mode === ThemeType.dark ? <LightModeIcon /> : <DarkModeIcon />,
+      title: 'Change theme',
       customOnClickBehavior: () => toggleColorMode(), // change theme
     },
   ]
