@@ -1,6 +1,19 @@
 import React, { useEffect, useState } from 'react'
 
-import { Box, Chip, Divider, Typography, styled } from '@mui/material'
+import SearchIcon from '@mui/icons-material/Search'
+import {
+  Box,
+  Chip,
+  Divider,
+  FormControl,
+  InputAdornment,
+  InputLabel,
+  MenuItem,
+  OutlinedInput,
+  Select,
+  Typography,
+  styled,
+} from '@mui/material'
 import { ChipPropsColorOverrides } from '@mui/material/Chip/Chip'
 import { OverridableStringUnion } from '@mui/types'
 
@@ -22,7 +35,8 @@ type FilteredListProps = {
   color: string
   items?: Array<React.ReactNode>
   filters: Array<ListFilter>
-  search: (selectedFilters: Array<ListFilter>) => void
+  categories?: Array<string>
+  search: (selectedFilters: Array<ListFilter>, selectedCategory: string, textSearch: string) => void
   loading?: boolean
 }
 
@@ -38,20 +52,31 @@ const FilteredListHeaderBox = styled(Box)(({ theme }) => ({
   flexDirection: 'row',
   marginBottom: theme.spacing(2),
   justifyContent: 'space-between',
+  alignItems: 'center',
 }))
 
 export default function FilteredList(props: FilteredListProps) {
   const { mode } = useColorMode()
   const defaultSelectedFilters = props.filters.filter((f) => f.defaultSelected)
   const [selectedFilters, setSelectedFilters] = useState<ListFilter[]>(defaultSelectedFilters)
+  const [selectedCategory, setSelectedCategory] = useState<string>('')
+  const [textSearch, setTextSearch] = useState<string>('')
+  const [searchingText, setSearchingText] = useState<boolean>(false)
   const [initialLoadDone, setInitialLoadDone] = useState<boolean>(false)
 
   useEffect(() => {
     if (!initialLoadDone) {
-      props.search(defaultSelectedFilters)
+      props.search(defaultSelectedFilters, '', '')
       setInitialLoadDone(true)
     }
   }, [props, initialLoadDone, defaultSelectedFilters])
+
+  const search = () => {
+    const filters = selectedFilters
+    const category = selectedCategory
+    const text = textSearch
+    props.search(filters, category, text)
+  }
 
   const isFilterSelected = (filter: ListFilter) => {
     return !!selectedFilters.find((f) => f.title === filter.title)
@@ -61,15 +86,28 @@ export default function FilteredList(props: FilteredListProps) {
     if (!isFilterSelected(filter)) {
       const newSelectedFilters = selectedFilters.concat(filter)
       setSelectedFilters(() => newSelectedFilters)
-      props.search(newSelectedFilters)
+      search()
     }
   }
   const handleRemoveFilter = (filter: ListFilter) => {
     if (!filter.fixed) {
       const newSelectedFilters = selectedFilters.filter((f) => f.title !== filter.title)
       setSelectedFilters(newSelectedFilters)
-      props.search(newSelectedFilters)
+      search()
     }
+  }
+
+  const handleSearchFocus = () => {
+    setSearchingText(true)
+  }
+
+  const handleSearchBlur = () => {
+    setSearchingText(false)
+  }
+
+  const handleSelectCategory = (selectedCategory: string) => {
+    setSelectedCategory(selectedCategory)
+    search()
   }
 
   return (
@@ -84,8 +122,9 @@ export default function FilteredList(props: FilteredListProps) {
         >
           {props.title}
         </Typography>
-        {/* filters box */}
-        <Box display={'flex'} gap={1}>
+
+        <Box alignItems={'center'} display={'flex'} gap={1}>
+          {/* filters */}
           {props.filters.map((filter, index) => {
             return (
               <Chip
@@ -102,6 +141,67 @@ export default function FilteredList(props: FilteredListProps) {
               />
             )
           })}
+
+          {/* categories */}
+          {props.categories ? (
+            <FormControl size="small" sx={{ m: 1, minWidth: 120, height: 32, width: 'auto' }}>
+              <InputLabel
+                id="demo-simple-select-filled-label"
+                sx={{ height: 32, fontSize: '13px !important' }}
+              >
+                Category
+              </InputLabel>
+              <Select
+                label="c"
+                onChange={(e) => handleSelectCategory(e.target.value)}
+                sx={{
+                  height: 32,
+                  width: 'auto',
+                }}
+                value={selectedCategory}
+              >
+                {props.categories.map((category, index) => (
+                  <MenuItem key={'category-' + index} sx={{ height: 32 }} value={category}>
+                    {category}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          ) : null}
+
+          {/* text search */}
+          <FormControl size="small" sx={{ m: 1, minWidth: 120, height: 32, width: 'auto' }}>
+            <InputLabel
+              id="demo-simple-select-filled-label"
+              sx={{ height: 32, fontSize: '13px !important' }}
+            >
+              Text search
+            </InputLabel>
+            <OutlinedInput
+              endAdornment={
+                <InputAdornment position="end">
+                  <SearchIcon
+                    onClick={(e) => {
+                      textSearch.length > 0 ? search() : handleSearchFocus()
+                    }}
+                    sx={{
+                      cursor: 'pointer',
+                    }}
+                  />
+                </InputAdornment>
+              }
+              inputProps={{
+                onFocus: () => handleSearchFocus(),
+                onBlur: () => handleSearchBlur(),
+              }}
+              onChange={(e) => setTextSearch(e.target.value)}
+              sx={{
+                height: 32,
+                width: searchingText || textSearch.length > 0 ? 180 : 130,
+              }}
+              value={textSearch}
+            />
+          </FormControl>
         </Box>
       </FilteredListHeaderBox>
       <Divider color={mode === 'dark' ? 'white' : 'black'} sx={{ borderWidth: '1px' }} />

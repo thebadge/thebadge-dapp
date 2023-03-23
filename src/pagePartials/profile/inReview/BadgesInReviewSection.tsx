@@ -36,16 +36,20 @@ export default function BadgesInReviewSection() {
 
   const [badges, setBadges] = useState<React.ReactNode[]>([])
   const [loading, setLoading] = useState<boolean>(false)
-  const search = (selectedFilters: Array<ListFilter>) => {
+  const search = (
+    selectedFilters: Array<ListFilter>,
+    selectedCategory: string,
+    textSearch: string,
+  ) => {
     setLoading(true)
 
-    // TODO get real badges using selectedFilters
+    // TODO get real badges using filters, category, text
 
     setTimeout(() => {
-      console.log('searched with filters', selectedFilters)
+      console.log('searched with', selectedFilters, selectedCategory, textSearch)
       setLoading(false)
       setBadges([...badgesExampleList, ...badgesExampleList, ...badgesExampleList])
-    }, 5000)
+    }, 2000)
   }
 
   return (
@@ -55,6 +59,7 @@ export default function BadgesInReviewSection() {
       </Box>
 
       <FilteredList
+        categories={['Category 1', 'Category 2', 'Category 3']}
         color={colors.green}
         filters={filters}
         items={badges}
