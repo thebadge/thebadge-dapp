@@ -50,7 +50,8 @@ const ItemsGridBox = styled(Box)(({ theme }) => ({
 const FilteredListHeaderBox = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'row',
-  marginBottom: theme.spacing(2),
+  flexWrap: 'wrap',
+  marginBottom: theme.spacing(1),
   justifyContent: 'space-between',
   alignItems: 'center',
 }))
@@ -119,11 +120,12 @@ export default function FilteredList(props: FilteredListProps) {
           fontSize={'20px'}
           fontWeight="900"
           lineHeight={'30px'}
+          padding={[1, 1, 1, 0]}
         >
           {props.title}
         </Typography>
 
-        <Box alignItems={'center'} display={'flex'} gap={1}>
+        <Box alignItems={'center'} display={'flex'} flexWrap={'wrap'} gap={1}>
           {/* filters */}
           {props.filters.map((filter, index) => {
             return (
@@ -205,7 +207,7 @@ export default function FilteredList(props: FilteredListProps) {
         </Box>
       </FilteredListHeaderBox>
       <Divider color={mode === 'dark' ? 'white' : 'black'} sx={{ borderWidth: '1px' }} />
-      <Box mt={2}>
+      <Box mt={4}>
         {props.loading ? (
           <Loading />
         ) : (

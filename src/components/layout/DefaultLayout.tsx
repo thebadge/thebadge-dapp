@@ -32,7 +32,7 @@ const NavigationRoom = styled(Box)(({ theme }) => ({
   position: 'absolute',
   height: '100%',
   left: theme.spacing(0.25),
-  top: theme.spacing(-4),
+  top: theme.spacing(0),
 }))
 
 export default function DefaultLayout({ children }: DefaultLayoutProps) {

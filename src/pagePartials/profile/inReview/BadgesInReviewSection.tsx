@@ -7,15 +7,6 @@ import FilteredList, { ListFilter } from '@/src/components/helpers/FilteredList'
 import { badgesExampleList } from '@/src/pagePartials/home/SectionBoxes'
 import BadgesToCurate from '@/src/pagePartials/profile/inReview/BadgesToCurate'
 
-type MiniBadgePreviewProps = {
-  title: string
-  category?: string
-  description?: string
-}
-const MiniBadgePreview = (props: MiniBadgePreviewProps) => {
-  return <div>{props.title}</div>
-}
-
 export default function BadgesInReviewSection() {
   const filters: Array<ListFilter> = [
     {

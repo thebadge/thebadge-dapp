@@ -15,7 +15,7 @@ export default function BadgesToCurate() {
           {t('profile.badgesToCurate')}
         </Typography>
         <ButtonV2
-          backgroundColor={'#22dbbd'}
+          backgroundColor={colors.greenLogo}
           fontColor={colors.black}
           onClick={() => router.push('badge/explorer')}
           sx={{
