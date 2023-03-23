@@ -1,3 +1,4 @@
+import MiniBadgeTypeMetadata from "@/src/pagePartials/badge/MiniBadgeTypeMetadata";
 import Link from 'next/link'
 import React, { useState } from 'react'
 
@@ -54,8 +55,8 @@ const ExploreBadges: NextPageWithLayout = () => {
 
     const badgeLayouts = badges.map((bt) => {
       return (
-        <Box key={bt.id} maxWidth={'300px'}>
-          <BadgeTypeMetadata metadata={bt.metadataURL} />
+        <Box key={bt.id} maxWidth={'250px'}>
+          <MiniBadgeTypeMetadata metadata={bt.metadataURL} />
           <div>mintCost: {formatUnits(bt.mintCost, 18)} + Kleros deposit</div>
           <div>ValidFor: {bt.validFor / 60 / 60 / 24} </div>
           <div>paused: {bt.paused ? 'Yes' : 'No'}</div>

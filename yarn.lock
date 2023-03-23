@@ -9449,10 +9449,10 @@ text-table@^0.2.0:
   resolved "https://registry.yarnpkg.com/text-table/-/text-table-0.2.0.tgz#7f5ee823ae805207c00af2df4a84ec3fcfa570b4"
   integrity sha512-N+8UisAXDGk8PFXP4HAzVR9nbfmVJ3zYLAWiTIoqC5v5isinhr+r5uaO8+7r3BMfuNIufIsA7RdpVgacC2cSpw==
 
-thebadge-ui-library@^1.4.1:
-  version "1.4.1"
-  resolved "https://registry.yarnpkg.com/thebadge-ui-library/-/thebadge-ui-library-1.4.1.tgz#81676911898fddc608c5f93418a3087856177e43"
-  integrity sha512-hWlV3gQJT6ua+YgPHrw60tfO7H8NgLTK15s2sYPF956HcZkNUoF4Hoa7xY1s1SCkLZZNIhQTAb9SKJ84WNfetw==
+thebadge-ui-library@^1.4.3:
+  version "1.4.3"
+  resolved "https://registry.yarnpkg.com/thebadge-ui-library/-/thebadge-ui-library-1.4.3.tgz#68f30dcbce3aeeb7a37680152f6da6e4eb2e2754"
+  integrity sha512-HVBTRHCggA3L+6rthT+56IyfoyqQI4kCcMLoxFJ2hCexsmv0fGdQpcMoSjqwqPdlrQJuiSNmSnKGn0G6LlGtmg==
   dependencies:
     "@emotion/react" "^11.10.5"
     "@emotion/server" "^11.10.0"

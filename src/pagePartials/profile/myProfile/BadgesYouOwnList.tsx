@@ -6,7 +6,7 @@ import { colors } from 'thebadge-ui-library'
 
 import FilteredList, { ListFilter } from '@/src/components/helpers/FilteredList'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
-import BadgeTypeMetadata from '@/src/pagePartials/badge/BadgeTypeMetadata'
+import MiniBadgeTypeMetadata from '@/src/pagePartials/badge/MiniBadgeTypeMetadata'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { SubgraphName, getSubgraphSdkByNetwork } from '@/src/subgraph/subgraph'
 import { KlerosBadgeTypeController__factory } from '@/types/generated/typechain'
@@ -60,18 +60,11 @@ export default function BadgesYouOwnList({ address }: Props) {
 
     const badgesLayouts = badges.map((badge) => {
       return (
-        <Box
-          key={badge.id}
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 1,
-            border: `1px solid ${colors.green}`,
-            borderRadius: 2,
-            p: 2,
-          }}
-        >
-          <BadgeTypeMetadata metadata={badge.badgeType?.metadataURL} />
+        <Box key={badge.id}>
+          <MiniBadgeTypeMetadata
+            highlightColor={colors.blue}
+            metadata={badge.badgeType?.metadataURL}
+          />
           {/*const needClaim =*/}
           {/*bt.status === 'InReview' && dayjs().isAfter(dayjs.unix(bt.reviewDueDate).toDate())*/}
           {/*<Box*/}

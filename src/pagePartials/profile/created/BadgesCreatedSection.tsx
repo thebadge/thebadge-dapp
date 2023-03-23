@@ -7,7 +7,7 @@ import Countdown from 'react-countdown'
 import { colors } from 'thebadge-ui-library'
 
 import FilteredList, { ListFilter } from '@/src/components/helpers/FilteredList'
-import BadgeTypeMetadata from '@/src/pagePartials/badge/BadgeTypeMetadata'
+import MiniBadgeTypeMetadata from '@/src/pagePartials/badge/MiniBadgeTypeMetadata'
 import CreateNewBadge from '@/src/pagePartials/profile/created/CreateNewBadge'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { SubgraphName, getSubgraphSdkByNetwork } from '@/src/subgraph/subgraph'
@@ -48,18 +48,8 @@ export default function BadgesCreatedSection() {
 
     const badgesLayouts = badgeTypes.map((badgeType) => {
       return (
-        <Box
-          key={badgeType.id}
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 1,
-            border: `1px solid ${colors.green}`,
-            borderRadius: 2,
-            p: 2,
-          }}
-        >
-          <BadgeTypeMetadata metadata={badgeType?.metadataURL} />
+        <Box key={badgeType.id}>
+          <MiniBadgeTypeMetadata metadata={badgeType?.metadataURL} />
           <Typography>
             Review ends in <Countdown date={dayjs.unix(badgeType.validFor).toDate()} />
           </Typography>

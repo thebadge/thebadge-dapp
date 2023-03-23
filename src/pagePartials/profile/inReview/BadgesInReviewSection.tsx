@@ -4,7 +4,7 @@ import { Box } from '@mui/material'
 import { colors } from 'thebadge-ui-library'
 
 import FilteredList, { ListFilter } from '@/src/components/helpers/FilteredList'
-import BadgeTypeMetadata from '@/src/pagePartials/badge/BadgeTypeMetadata'
+import MiniBadgeTypeMetadata from '@/src/pagePartials/badge/MiniBadgeTypeMetadata'
 import BadgesToCurate from '@/src/pagePartials/profile/inReview/BadgesToCurate'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { SubgraphName, getSubgraphSdkByNetwork } from '@/src/subgraph/subgraph'
@@ -48,7 +48,7 @@ export default function BadgesInReviewSection() {
       const badgeType = badge.badgeType
       return (
         <Box key={badgeType.id}>
-          <BadgeTypeMetadata metadata={badgeType?.metadataURL} />
+          <MiniBadgeTypeMetadata highlightColor={colors.green} metadata={badgeType?.metadataURL} />
         </Box>
       )
     })
