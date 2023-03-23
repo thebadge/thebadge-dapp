@@ -1,8 +1,8 @@
 import { useRouter } from 'next/navigation'
 
-import { Box, Button, Typography } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
-import { BoxBorderGradient, gradients } from 'thebadge-ui-library'
+import { BoxBorderGradient, ButtonV2, colors, gradients } from 'thebadge-ui-library'
 
 export default function CreateNewBadge() {
   const { t } = useTranslation()
@@ -14,14 +14,22 @@ export default function CreateNewBadge() {
         <Typography textAlign="center" variant="title4">
           {t('profile.createdBadges')}
         </Typography>
-        <Button
-          color="green"
+        <ButtonV2
+          backgroundColor={colors.greenLogo}
+          fontColor={colors.black}
           onClick={() => router.push('badge/type/create')}
-          sx={{ borderRadius: '10px' }}
-          variant="contained"
+          sx={{
+            borderRadius: '10px',
+            fontSize: '12px !important',
+            padding: '0.5rem 1rem !important',
+            height: 'fit-content !important',
+            lineHeight: '14px',
+            fontWeight: 700,
+            boxShadow: 'none',
+          }}
         >
-          Create Certificates
-        </Button>
+          CREATE CERTIFICATES
+        </ButtonV2>
       </Box>
     </BoxBorderGradient>
   )

@@ -308,9 +308,8 @@ export default function MainMenu({ ...restProps }) {
   const renderMenuItem = (item: MenuItem, itemIndex: number): React.ReactNode => {
     return (
       (item.validation === undefined || item.validation) && (
-
-          <MenuItemContainer key={'menuItem-' + itemIndex} type={item.type}>
-            <Tooltip arrow placement="right" title={item.title}>
+        <MenuItemContainer key={'menuItem-' + itemIndex} type={item.type}>
+          <Tooltip arrow placement="right" title={item.title}>
             <MenuItemBox
               disableRipple={true}
               onClick={() => onMenuItemClick(item, itemIndex)}
@@ -320,7 +319,6 @@ export default function MainMenu({ ...restProps }) {
                 },
               }}
             >
-
               <MenuItem
                 disabled={!!item.disabled}
                 selected={selectedElement === itemIndex}
@@ -328,14 +326,10 @@ export default function MainMenu({ ...restProps }) {
               >
                 {item.icon}
               </MenuItem>
-
             </MenuItemBox>
-            </Tooltip>
-            {item.subItems && selectedElement === itemIndex
-              ? renderSubItems(item, itemIndex)
-              : null}
-          </MenuItemContainer>
-
+          </Tooltip>
+          {item.subItems && selectedElement === itemIndex ? renderSubItems(item, itemIndex) : null}
+        </MenuItemContainer>
       )
     )
   }

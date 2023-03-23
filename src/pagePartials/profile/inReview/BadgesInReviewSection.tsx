@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React, { useState } from 'react'
 
 import { Box } from '@mui/material'
 import { colors } from 'thebadge-ui-library'
 
 import FilteredList, { ListFilter } from '@/src/components/helpers/FilteredList'
-import { badgesExampleList } from '@/src/pagePartials/home/SectionBoxes'
 import BadgesToCurate from '@/src/pagePartials/profile/inReview/BadgesToCurate'
 
 export default function BadgesInReviewSection() {
@@ -39,7 +38,8 @@ export default function BadgesInReviewSection() {
     setTimeout(() => {
       console.log('searched with', selectedFilters, selectedCategory, textSearch)
       setLoading(false)
-      setBadges([...badgesExampleList, ...badgesExampleList, ...badgesExampleList])
+      // setBadges([...badgesExampleList, ...badgesExampleList, ...badgesExampleList])
+      setBadges([])
     }, 2000)
   }
 

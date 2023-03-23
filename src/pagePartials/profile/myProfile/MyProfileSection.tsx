@@ -1,4 +1,6 @@
+import CreateNewBadge from "@/src/pagePartials/profile/created/CreateNewBadge";
 import { Box, useTheme } from '@mui/material'
+import React from "react";
 import { SectionLayout, colors } from 'thebadge-ui-library'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
@@ -52,7 +54,10 @@ export default function MyProfileSection() {
         />
       </Box>
 
-      <ExploreOtherBadges />
+      <Box mb={5}>
+        <ExploreOtherBadges />
+      </Box>
+
       <SafeSuspense>
         <BadgesYouOwnList address={address} />
       </SafeSuspense>

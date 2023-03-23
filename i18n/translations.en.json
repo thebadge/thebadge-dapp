@@ -5,6 +5,9 @@
       "connect": "Connect wallet"
     }
   },
+  "explorer": {
+    "title": "Badges explorer"
+  },
   "profile": {
     "title": "This is your profile",
     "titleOf": "This is the profile of {{address}}",
