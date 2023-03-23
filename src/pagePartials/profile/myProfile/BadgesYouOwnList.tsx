@@ -26,7 +26,6 @@ export default function BadgesYouOwnList({ address }: Props) {
     'KlerosBadgeTypeController',
   )
   const gql = getSubgraphSdkByNetwork(appChainId, SubgraphName.TheBadge)
-  const userWithBadges = gql.useUserBadges({ ownerAddress: address })
 
   const filters: Array<ListFilter> = [
     {
@@ -49,15 +48,16 @@ export default function BadgesYouOwnList({ address }: Props) {
   //   klerosController.claimBadge(badgeId, address)
   // }
 
-  const search = (
+  const search = async (
     selectedFilters: Array<ListFilter>,
     selectedCategory: string,
     textSearch: string,
   ) => {
     setLoading(true)
     // TODO search with: selectedFilters, selectedCategory, textSearch
+    const userWithBadges = await gql.userBadges({ ownerAddress: address })
+    const badges = userWithBadges?.user?.badges || []
 
-    const badges = userWithBadges.data?.user?.badges || []
     const badgesLayouts = badges.map((badge) => {
       return (
         <Box
@@ -120,7 +120,6 @@ export default function BadgesYouOwnList({ address }: Props) {
   return (
     <FilteredList
       categories={['Category 1', 'Category 2', 'Category 3']}
-      color={colors.white}
       filters={filters}
       items={items}
       loading={loading}

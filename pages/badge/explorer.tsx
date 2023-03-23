@@ -4,7 +4,6 @@ import React, { useState } from 'react'
 import { Box } from '@mui/material'
 import { formatUnits } from 'ethers/lib/utils'
 import { useTranslation } from 'next-export-i18n'
-import { colors } from 'thebadge-ui-library'
 
 import FilteredList, { ListFilter } from '@/src/components/helpers/FilteredList'
 import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
@@ -12,6 +11,7 @@ import BadgeTypeMetadata from '@/src/pagePartials/badge/BadgeTypeMetadata'
 import GetBadgeTypeChallengePeriodDuration from '@/src/pagePartials/badge/GetBadgeTypeReviewDueDate'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { SubgraphName, getSubgraphSdkByNetwork } from '@/src/subgraph/subgraph'
+import { getTheme } from '@/src/theme/theme'
 import { NextPageWithLayout } from '@/types/next'
 
 const ExploreBadges: NextPageWithLayout = () => {
@@ -20,8 +20,8 @@ const ExploreBadges: NextPageWithLayout = () => {
   const [items, setItems] = useState<React.ReactNode[]>([])
   const [loading, setLoading] = useState<boolean>(false)
   const gql = getSubgraphSdkByNetwork(appChainId, SubgraphName.TheBadge)
-  const badgeTypes = gql.useBadgeTypes()
 
+  const theme = getTheme()
   const filters: Array<ListFilter> = [
     {
       title: 'Minted',
@@ -41,7 +41,7 @@ const ExploreBadges: NextPageWithLayout = () => {
     },
   ]
 
-  const search = (
+  const search = async (
     selectedFilters: Array<ListFilter>,
     selectedCategory: string,
     textSearch: string,
@@ -49,8 +49,9 @@ const ExploreBadges: NextPageWithLayout = () => {
     setLoading(true)
 
     // TODO filter badges using filters, category, text
+    const badgeTypes = await gql.badgeTypes()
+    const badges = badgeTypes.badgeTypes || []
 
-    const badges = badgeTypes.data?.badgeTypes || []
     const badgeLayouts = badges.map((bt) => {
       return (
         <Box key={bt.id} maxWidth={'300px'}>
@@ -84,7 +85,6 @@ const ExploreBadges: NextPageWithLayout = () => {
     <>
       <FilteredList
         categories={['Category 1', 'Category 2', 'Category 3']}
-        color={colors.white}
         filters={filters}
         items={items}
         loading={loading}

@@ -16,6 +16,7 @@ import {
 } from '@mui/material'
 import { ChipPropsColorOverrides } from '@mui/material/Chip/Chip'
 import { OverridableStringUnion } from '@mui/types'
+import { colors } from 'thebadge-ui-library'
 
 import { Loading } from '@/src/components/loading/Loading'
 import { useColorMode } from '@/src/providers/themeProvider'
@@ -32,7 +33,7 @@ export type ListFilter = {
 
 type FilteredListProps = {
   title: string
-  color: string
+  color?: string
   items?: Array<React.ReactNode>
   filters: Array<ListFilter>
   categories?: Array<string>
@@ -115,7 +116,7 @@ export default function FilteredList(props: FilteredListProps) {
     <Box>
       <FilteredListHeaderBox>
         <Typography
-          color={props.color}
+          color={props.color ?? (mode === 'light' ? colors.blackText : colors.white)}
           component="div"
           fontSize={'20px'}
           fontWeight="900"

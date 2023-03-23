@@ -4,7 +4,10 @@ import { Box } from '@mui/material'
 import { colors } from 'thebadge-ui-library'
 
 import FilteredList, { ListFilter } from '@/src/components/helpers/FilteredList'
+import BadgeTypeMetadata from '@/src/pagePartials/badge/BadgeTypeMetadata'
 import BadgesToCurate from '@/src/pagePartials/profile/inReview/BadgesToCurate'
+import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+import { SubgraphName, getSubgraphSdkByNetwork } from '@/src/subgraph/subgraph'
 
 export default function BadgesInReviewSection() {
   const filters: Array<ListFilter> = [
@@ -24,22 +27,35 @@ export default function BadgesInReviewSection() {
     },
   ]
 
-  const [badges, setBadges] = useState<React.ReactNode[]>([])
+  const [items, setItems] = useState<React.ReactNode[]>([])
   const [loading, setLoading] = useState<boolean>(false)
-  const search = (
+  const { address, appChainId } = useWeb3Connection()
+
+  if (!address) return null
+  const gql = getSubgraphSdkByNetwork(appChainId, SubgraphName.TheBadge)
+
+  const search = async (
     selectedFilters: Array<ListFilter>,
     selectedCategory: string,
     textSearch: string,
   ) => {
     setLoading(true)
+    // TODO filter badges with: selectedFilters, selectedCategory, textSearch
+    const badgesInReview = await gql.userBadgesInReview({ ownerAddress: address })
 
-    // TODO get real badges using filters, category, text
+    const badgeTypes = badgesInReview?.user?.badges || []
+    const badgesLayouts = badgeTypes.map((badge) => {
+      const badgeType = badge.badgeType
+      return (
+        <Box key={badgeType.id}>
+          <BadgeTypeMetadata metadata={badgeType?.metadataURL} />
+        </Box>
+      )
+    })
 
     setTimeout(() => {
-      console.log('searched with', selectedFilters, selectedCategory, textSearch)
+      setItems(badgesLayouts)
       setLoading(false)
-      // setBadges([...badgesExampleList, ...badgesExampleList, ...badgesExampleList])
-      setBadges([])
     }, 2000)
   }
 
@@ -53,7 +69,7 @@ export default function BadgesInReviewSection() {
         categories={['Category 1', 'Category 2', 'Category 3']}
         color={colors.green}
         filters={filters}
-        items={badges}
+        items={items}
         loading={loading}
         search={search}
         title={'Your badges in review'}

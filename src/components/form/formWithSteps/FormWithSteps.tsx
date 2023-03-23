@@ -13,7 +13,7 @@ import { AnyZodObject, ZodEffects } from 'zod'
 import { CustomFormFromSchemaWithoutSubmit } from '@/src/components/form/customForms/CustomForm'
 import { DataGrid, FormLayoutType } from '@/src/components/form/customForms/type'
 import { useForceRender } from '@/src/hooks/useForceRender'
-import {useSizeSM} from '@/src/hooks/useSize'
+import { useSizeSM } from '@/src/hooks/useSize'
 
 type FormWithStepsProps = {
   stepSchemas: (AnyZodObject | ZodEffects<any, any, any>)[]

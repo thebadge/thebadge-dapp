@@ -36,7 +36,7 @@ const Profile = () => {
               {t('profile.tab2')}
             </Typography>
           </LinkWithTranslation>
-          {(
+          {user?.isCreator && (
             <LinkWithTranslation pathname={`/profile`} queryParams={{ filter: 'createdBadges' }}>
               <Typography color={filterType === 'createdBadges' ? 'text.primary' : 'text.disabled'}>
                 {t('profile.tab3')}

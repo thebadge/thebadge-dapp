@@ -1,8 +1,8 @@
 import { useRouter } from 'next/navigation'
 
-import { Box, Button, Typography } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
-import { BoxBorderGradient, ButtonV2, colors, gradients } from "thebadge-ui-library";
+import { BoxBorderGradient, ButtonV2, colors, gradients } from 'thebadge-ui-library'
 
 export default function ExploreOtherBadges() {
   const { t } = useTranslation()

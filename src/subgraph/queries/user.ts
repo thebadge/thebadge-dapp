@@ -64,3 +64,24 @@ export const MY_CREATED_BADGE_TYPES = gql`
     }
   }
 `
+
+export const MY_BADGE_TYPES_IN_REVIEW = gql`
+  query userBadgesInReview($ownerAddress: ID!) {
+    user(id: $ownerAddress) {
+      badges(where: { status_in: InReview }) {
+        id
+        status
+        reviewDueDate
+        badgeType {
+          validFor
+          paused
+          mintCost
+          metadataURL
+          id
+          controllerName
+          badgesMintedAmount
+        }
+      }
+    }
+  }
+`

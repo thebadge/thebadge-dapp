@@ -31,6 +31,9 @@ export default function BadgesInReviewSwiper() {
   const { appChainId } = useWeb3Connection()
   const gql = getSubgraphSdkByNetwork(appChainId, SubgraphName.TheBadge)
   const badgesInReview = gql.useBadgesInReview({ date: now })
+  const sm = useSizeSM()
+  const md = useSizeMD()
+  const lg = useSizeLG()
 
   const badgesList = useMemo(() => {
     const badges = badgesInReview.data?.badges.map((badgeInReview) => {
@@ -57,9 +60,6 @@ export default function BadgesInReviewSwiper() {
   }, [badgesInReview.data?.badges, router])
 
   const amountItems = () => {
-    const sm = useSizeSM()
-    const md = useSizeMD()
-    const lg = useSizeLG()
     if (sm) {
       return 1
     } else if (md) {

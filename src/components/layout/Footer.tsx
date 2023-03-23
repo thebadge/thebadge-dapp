@@ -16,7 +16,7 @@ import {
   PAPER_URL,
   TWITTER_URL,
 } from '@/src/constants/common'
-import {useSizeSM} from '@/src/hooks/useSize'
+import { useSizeSM } from '@/src/hooks/useSize'
 import { useCookiesWarningContext } from '@/src/providers/cookiesWarningProvider'
 import { useColorMode } from '@/src/providers/themeProvider'
 

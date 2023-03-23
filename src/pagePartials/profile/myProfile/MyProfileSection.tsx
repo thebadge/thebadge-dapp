@@ -1,6 +1,6 @@
-import CreateNewBadge from "@/src/pagePartials/profile/created/CreateNewBadge";
+import React from 'react'
+
 import { Box, useTheme } from '@mui/material'
-import React from "react";
 import { SectionLayout, colors } from 'thebadge-ui-library'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'

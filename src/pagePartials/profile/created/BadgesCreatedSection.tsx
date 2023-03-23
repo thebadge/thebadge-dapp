@@ -20,7 +20,6 @@ export default function BadgesCreatedSection() {
 
   if (!address) return null
   const gql = getSubgraphSdkByNetwork(appChainId, SubgraphName.TheBadge)
-  const userCreatedBadges = gql.useUserCreatedBadges({ ownerAddress: address })
 
   const filters: Array<ListFilter> = [
     {
@@ -37,15 +36,16 @@ export default function BadgesCreatedSection() {
     },
   ]
 
-  const search = (
+  const search = async (
     selectedFilters: Array<ListFilter>,
     selectedCategory: string,
     textSearch: string,
   ) => {
     setLoading(true)
     // TODO filter badges with: selectedFilters, selectedCategory, textSearch
+    const userCreatedBadges = await gql.userCreatedBadges({ ownerAddress: address })
+    const badgeTypes = userCreatedBadges?.user?.createdBadgeTypes || []
 
-    const badgeTypes = userCreatedBadges.data?.user?.createdBadgeTypes || []
     const badgesLayouts = badgeTypes.map((badgeType) => {
       return (
         <Box
@@ -83,7 +83,6 @@ export default function BadgesCreatedSection() {
 
       <FilteredList
         categories={['Category 1', 'Category 2', 'Category 3']}
-        color={colors.white}
         filters={filters}
         items={items}
         loading={loading}
