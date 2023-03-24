@@ -18,7 +18,9 @@ import {
   NumberSchema,
   SeverityTypeSchema,
 } from '@/src/components/form/helpers/customSchemas'
+import { TransactionLoading } from '@/src/components/loading/TransactionLoading'
 import { APP_URL, IS_DEVELOP } from '@/src/constants/common'
+import { TransactionStates } from '@/src/hooks/useTransaction'
 
 const MintSchemaStep1 = z.object({
   help: AgreementSchema.describe(`How it works // ??`),
@@ -63,6 +65,7 @@ export const BadgeTypeCreateSchema = z
 
 type MintStepsProps = {
   onSubmit: (data: z.infer<typeof BadgeTypeCreateSchema>) => void
+  txState: TransactionStates
 }
 
 const steps = ['Help', 'Badge type basics', 'Evidence form', 'Badge Type Preview']
@@ -82,7 +85,7 @@ const formGridLayout: DataGrid[][] = [
   [{ i: 'KlerosDynamicFormField', x: 0, y: 0, w: 6, h: 10, static: true }],
 ]
 
-export default function CreateSteps({ onSubmit }: MintStepsProps) {
+export default function CreateSteps({ onSubmit, txState }: MintStepsProps) {
   const { t } = useTranslation()
 
   const handleOnSubmit = (data: z.infer<typeof BadgeTypeCreateSchema>) => {
@@ -90,6 +93,10 @@ export default function CreateSteps({ onSubmit }: MintStepsProps) {
   }
 
   function handleFormPreview(data: z.infer<typeof BadgeTypeCreateSchema>) {
+    if (txState !== TransactionStates.none) {
+      return <TransactionLoading state={txState} />
+    }
+
     return (
       <Stack alignItems="center" gap={3} margin={4}>
         <Typography>{t('badge.type.create.previewTitle')}</Typography>

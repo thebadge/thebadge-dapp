@@ -21,7 +21,7 @@ import { Severity } from '@/types/utils'
 
 const CreateBadgeType: NextPageWithLayout = () => {
   const { t } = useTranslation()
-  const { sendTx } = useTransaction()
+  const { sendTx, state } = useTransaction()
 
   const { address, appChainId, readOnlyAppProvider } = useWeb3Connection()
   const theBadge = useContractInstance(TheBadge__factory, 'TheBadge')
@@ -131,7 +131,7 @@ const CreateBadgeType: NextPageWithLayout = () => {
         </Typography>
       </Stack>
 
-      <CreateSteps onSubmit={onSubmit} />
+      <CreateSteps onSubmit={onSubmit} txState={state} />
     </>
   )
 }
