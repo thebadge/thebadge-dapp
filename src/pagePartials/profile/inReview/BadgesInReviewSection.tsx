@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 
-import { Box } from '@mui/material'
+import { Box, Stack, Typography } from '@mui/material'
 import { colors } from 'thebadge-ui-library'
 
+import { NoResultsAnimated } from '@/src/components/assets/NoResults'
 import FilteredList, { ListFilter } from '@/src/components/helpers/FilteredList'
 import MiniBadgeTypeMetadata from '@/src/pagePartials/badge/MiniBadgeTypeMetadata'
 import BadgesToCurate from '@/src/pagePartials/profile/inReview/BadgesToCurate'
@@ -73,7 +74,14 @@ export default function BadgesInReviewSection() {
         search={search}
         title={'Your badges in review'}
       >
-        {items}
+        {items.length > 0 ? (
+          items
+        ) : (
+          <Stack>
+            <Typography variant="body3">There are no badges in review...</Typography>
+            <NoResultsAnimated />
+          </Stack>
+        )}
       </FilteredList>
     </>
   )

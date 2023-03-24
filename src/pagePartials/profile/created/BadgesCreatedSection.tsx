@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 
-import { Box, Typography } from '@mui/material'
+import { Box, Stack, Typography } from '@mui/material'
 import dayjs from 'dayjs'
 import { useTranslation } from 'next-export-i18n'
 import Countdown from 'react-countdown'
 
+import { NoResultsAnimated } from '@/src/components/assets/NoResults'
 import FilteredList, { ListFilter } from '@/src/components/helpers/FilteredList'
 import MiniBadgeTypeMetadata from '@/src/pagePartials/badge/MiniBadgeTypeMetadata'
 import CreateNewBadge from '@/src/pagePartials/profile/created/CreateNewBadge'
@@ -38,7 +39,7 @@ export default function BadgesCreatedSection() {
   const search = async (
     selectedFilters: Array<ListFilter>,
     selectedCategory: string,
-    textSearch: string,
+    textSearch?: string,
   ) => {
     setLoading(true)
     // TODO filter badges with: selectedFilters, selectedCategory, textSearch
@@ -73,11 +74,21 @@ export default function BadgesCreatedSection() {
       <FilteredList
         categories={['Category 1', 'Category 2', 'Category 3']}
         filters={filters}
-        items={items}
         loading={loading}
         search={search}
         title={t('profile.badgesCreated')}
-      ></FilteredList>
+      >
+        {items.length > 0 ? (
+          items
+        ) : (
+          <Stack>
+            <Typography variant="body3">
+              You don't have any badges that match these filters...
+            </Typography>
+            <NoResultsAnimated />
+          </Stack>
+        )}
+      </FilteredList>
     </>
   )
 }
