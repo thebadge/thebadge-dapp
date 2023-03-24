@@ -11,6 +11,7 @@ import klerosSchemaFactory from '@/src/components/form/helpers/validators'
 import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
+import useTransaction from '@/src/hooks/useTransaction'
 import MintSteps from '@/src/pagePartials/badge/mint/MintSteps'
 import useKlerosDepositPrice from '@/src/pagePartials/badge/useKlerosDepositPrice'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
@@ -25,6 +26,7 @@ const MintBadgeType: NextPageWithLayout = () => {
   const { address, appChainId } = useWeb3Connection()
   const theBadge = useContractInstance(TheBadge__factory, 'TheBadge')
   const router = useRouter()
+  const { sendTx, state } = useTransaction()
 
   const badgeTypeId = router.query.typeId as string
   if (!badgeTypeId) {
@@ -78,9 +80,13 @@ const MintBadgeType: NextPageWithLayout = () => {
       ],
     )
 
-    return theBadge.requestBadge(badgeTypeId, address as string, klerosControllerDataEncoded, {
-      value: totalMintCost,
-    })
+    const transaction = await sendTx(() =>
+      theBadge.requestBadge(badgeTypeId, address as string, klerosControllerDataEncoded, {
+        value: totalMintCost,
+      }),
+    )
+
+    await transaction.wait()
   }
 
   const badgeMetadata = badgeTypeMetadata.data.content
@@ -107,6 +113,7 @@ const MintBadgeType: NextPageWithLayout = () => {
         }}
         evidenceSchema={CreateBadgeSchema}
         onSubmit={onSubmit}
+        txState={state}
       />
     </>
   )

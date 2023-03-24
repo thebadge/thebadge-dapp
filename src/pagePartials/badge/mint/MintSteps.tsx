@@ -11,8 +11,10 @@ import { AnyZodObject, z } from 'zod'
 import { DataGrid } from '@/src/components/form/customForms/type'
 import { FormWithSteps } from '@/src/components/form/formWithSteps/FormWithSteps'
 import { AgreementSchema } from '@/src/components/form/helpers/customSchemas'
+import { TransactionLoading } from '@/src/components/loading/TransactionLoading'
 import { APP_URL } from '@/src/constants/common'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
+import { TransactionStates } from '@/src/hooks/useTransaction'
 import MintCost from '@/src/pagePartials/badge/mint/MintCost'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import enrichTextWithValues, { EnrichTextValues } from '@/src/utils/enrichTextWithValues'
@@ -20,6 +22,7 @@ import { KlerosListStructure } from '@/src/utils/kleros/generateKlerosListMetaEv
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 type MintStepsProps<SchemaType extends z.ZodEffects<any, any, any> | AnyZodObject = any> = {
+  txState: TransactionStates
   onSubmit: (data: z.TypeOf<SchemaType>, imageDataUrl: string) => void
   evidenceSchema: SchemaType
   badgeMetadata: KlerosListStructure
@@ -46,6 +49,7 @@ export default function MintSteps({
   costs,
   evidenceSchema,
   onSubmit,
+  txState,
 }: MintStepsProps) {
   const { t } = useTranslation()
   const { address } = useWeb3Connection()
@@ -85,6 +89,10 @@ export default function MintSteps({
     if (!address) {
       throw Error('Please connect your wallet')
     }
+    if (txState !== TransactionStates.none) {
+      return <TransactionLoading state={txState} />
+    }
+
     const enrichTextValues: EnrichTextValues = {
       '{displayName}': '',
       '{expirationTime}': '',

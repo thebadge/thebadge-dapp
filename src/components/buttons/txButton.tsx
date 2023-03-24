@@ -20,7 +20,7 @@ const TxButton: React.FC<TxButtonProps> = ({
   tx,
   ...restProps
 }) => {
-  const sendTx = useTransaction()
+  const { sendTx } = useTransaction()
 
   const txHandler = useCallback(async () => {
     try {

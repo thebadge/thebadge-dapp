@@ -7,6 +7,7 @@ import { colors } from 'thebadge-ui-library'
 import FilteredList, { ListFilter } from '@/src/components/helpers/FilteredList'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
 import MiniBadgeTypeMetadata from '@/src/pagePartials/badge/MiniBadgeTypeMetadata'
+import useTransaction from '@/src/hooks/useTransaction'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { SubgraphName, getSubgraphSdkByNetwork } from '@/src/subgraph/subgraph'
 import { KlerosBadgeTypeController__factory } from '@/types/generated/typechain'
@@ -16,6 +17,7 @@ type Props = {
 }
 export default function BadgesYouOwnList({ address }: Props) {
   const { t } = useTranslation()
+  const { sendTx } = useTransaction()
 
   const { appChainId } = useWeb3Connection()
   const [items, setItems] = useState<React.ReactNode[]>([])
@@ -44,9 +46,11 @@ export default function BadgesYouOwnList({ address }: Props) {
     },
   ]
 
-  // function handleClaimIt(badgeId: string, address: string) {
-  //   klerosController.claimBadge(badgeId, address)
-  // }
+  async function handleClaimIt(badgeId: string, address: string) {
+    const transaction = await sendTx(() => klerosController.claimBadge(badgeId, address))
+
+    await transaction.wait()
+  }
 
   const search = async (
     selectedFilters: Array<ListFilter>,

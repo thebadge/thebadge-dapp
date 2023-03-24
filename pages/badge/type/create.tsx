@@ -10,6 +10,7 @@ import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import { IS_DEVELOP } from '@/src/constants/common'
 import { contracts } from '@/src/contracts/contracts'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
+import useTransaction from '@/src/hooks/useTransaction'
 import CreateSteps, { BadgeTypeCreateSchema } from '@/src/pagePartials/badge/type/CreateSteps'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import ipfsUpload from '@/src/utils/ipfsUpload'
@@ -20,6 +21,7 @@ import { Severity } from '@/types/utils'
 
 const CreateBadgeType: NextPageWithLayout = () => {
   const { t } = useTranslation()
+  const { sendTx, state } = useTransaction()
 
   const { address, appChainId, readOnlyAppProvider } = useWeb3Connection()
   const theBadge = useContractInstance(TheBadge__factory, 'TheBadge')
@@ -102,15 +104,19 @@ const CreateBadgeType: NextPageWithLayout = () => {
       ],
     )
 
-    return theBadge.createBadgeType(
-      {
-        metadata: `ipfs://${badgeTypeIPFSUploaded.result?.ipfsHash}`, // TODO: should we use a custom one? or the one for TCR is ok?
-        controllerName: 'kleros',
-        mintCost: parseUnits(data.mintCost.toString(), 18),
-        validFor: data.validFor, // in seconds, 0 infinite
-      },
-      klerosControllerDataEncoded,
+    const transaction = await sendTx(() =>
+      theBadge.createBadgeType(
+        {
+          metadata: `ipfs://${badgeTypeIPFSUploaded.result?.ipfsHash}`, // TODO: should we use a custom one? or the one for TCR is ok?
+          controllerName: 'kleros',
+          mintCost: parseUnits(data.mintCost.toString(), 18),
+          validFor: data.validFor, // in seconds, 0 infinite
+        },
+        klerosControllerDataEncoded,
+      ),
     )
+
+    await transaction.wait()
   }
 
   return (
@@ -125,7 +131,7 @@ const CreateBadgeType: NextPageWithLayout = () => {
         </Typography>
       </Stack>
 
-      <CreateSteps onSubmit={onSubmit} />
+      <CreateSteps onSubmit={onSubmit} txState={state} />
     </>
   )
 }

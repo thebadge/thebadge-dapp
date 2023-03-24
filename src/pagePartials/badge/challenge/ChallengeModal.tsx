@@ -25,6 +25,7 @@ import { TextField } from '@/src/components/form/TextField'
 import { LongTextSchema, OptionalFileSchema } from '@/src/components/form/helpers/customSchemas'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
+import useTransaction from '@/src/hooks/useTransaction'
 import ChallengeCost from '@/src/pagePartials/badge/challenge/ChallengeCost'
 import ListingCriteriaLink from '@/src/pagePartials/badge/challenge/ListingCriteriaLink'
 import { useBadgeCost } from '@/src/pagePartials/badge/curate/useBadgeCost'
@@ -110,8 +111,9 @@ function ChallengeModalContent({
   onClose: () => void
 }) {
   const { t } = useTranslation()
+  const { sendTx } = useTransaction()
 
-  const { control, handleSubmit, watch } = useForm<z.infer<typeof ChallengeSchema>>({
+  const { control, handleSubmit } = useForm<z.infer<typeof ChallengeSchema>>({
     resolver: zodResolver(ChallengeSchema),
   })
 
@@ -146,16 +148,19 @@ function ChallengeModalContent({
       throw 'There was no possible to upload evidence.'
     }
 
-    klerosController.challengeBadge(
-      badgeTypeId,
-      ownerAddress,
-      `ipfs://${evidenceIPFSUploaded.result?.ipfsHash}`,
-      {
-        value: challengeCost,
-      },
+    const transaction = await sendTx(() =>
+      klerosController.challengeBadge(
+        badgeTypeId,
+        ownerAddress,
+        `ipfs://${evidenceIPFSUploaded.result?.ipfsHash}`,
+        {
+          value: challengeCost,
+        },
+      ),
     )
 
     onClose()
+    await transaction.wait()
   }
 
   return (
