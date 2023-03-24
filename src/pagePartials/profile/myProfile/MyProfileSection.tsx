@@ -3,7 +3,6 @@ import React from 'react'
 import { Box, useTheme } from '@mui/material'
 import { SectionLayout, colors } from 'thebadge-ui-library'
 
-import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import BadgesYouOwnList from '@/src/pagePartials/profile/myProfile/BadgesYouOwnList'
 import ExploreOtherBadges from '@/src/pagePartials/profile/myProfile/ExploreOtherBadges'
 import NearToExpire from '@/src/pagePartials/profile/myProfile/NearToExpire'
@@ -58,9 +57,7 @@ export default function MyProfileSection() {
         <ExploreOtherBadges />
       </Box>
 
-      <SafeSuspense>
-        <BadgesYouOwnList address={address} />
-      </SafeSuspense>
+      <BadgesYouOwnList address={address} />
     </>
   )
 }

@@ -9,9 +9,10 @@ import { useColorMode } from '@/src/providers/themeProvider'
 type Props = {
   metadata?: string
   highlightColor?: string
+  disableAnimations?: boolean
 }
 
-function MiniBadgeTypeMetadata({ highlightColor, metadata }: Props) {
+function MiniBadgeTypeMetadata({ disableAnimations, highlightColor, metadata }: Props) {
   const res: any = useS3Metadata(metadata || '')
   const { mode } = useColorMode()
   const badgeMetadata = res.data.content
@@ -19,12 +20,13 @@ function MiniBadgeTypeMetadata({ highlightColor, metadata }: Props) {
   return (
     <SafeSuspense>
       <MiniBadgePreview
-        animationEffects={['wobble', 'grow', 'glare']}
+        animationEffects={!disableAnimations ? ['wobble', 'grow', 'glare'] : []}
         animationOnHover
         badgeBackgroundUrl="https://images.unsplash.com/photo-1512998844734-cd2cca565822?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTIyfHxhYnN0cmFjdHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
         category="Badge Category"
         description={badgeMetadata.description}
         highlightColor={highlightColor || (mode === 'light' ? colors.blackText : colors.white)}
+        imageUrl={badgeMetadata.image.s3Url}
         textContrast="light-withTextBackground"
         textContrastOutside={mode}
         title={badgeMetadata.name}

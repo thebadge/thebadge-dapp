@@ -1,18 +1,34 @@
 import Link from 'next/link'
 import React, { useState } from 'react'
 
-import { Box } from '@mui/material'
-import { formatUnits } from 'ethers/lib/utils'
+import { Box, Button, Stack, Typography, styled } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
 
+import { NoResultsAnimated } from '@/src/components/assets/NoResults'
 import FilteredList, { ListFilter } from '@/src/components/helpers/FilteredList'
 import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
-import GetBadgeTypeChallengePeriodDuration from '@/src/pagePartials/badge/GetBadgeTypeReviewDueDate'
 import MiniBadgeTypeMetadata from '@/src/pagePartials/badge/MiniBadgeTypeMetadata'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { SubgraphName, getSubgraphSdkByNetwork } from '@/src/subgraph/subgraph'
-import { getTheme } from '@/src/theme/theme'
 import { NextPageWithLayout } from '@/types/next'
+
+const StyledBadgeContainer = styled(Box)(() => ({
+  position: 'relative',
+  transition: 'all 2s',
+  overflow: 'hidden',
+  '& #mint-btn': {
+    transition: 'all .75s cubic-bezier(0.83, 0, 0.17, 1)',
+    position: 'absolute',
+    bottom: '-33px',
+    left: '50%',
+    transform: 'translate(-50%, 0%)',
+  },
+  '&:hover': {
+    '& #mint-btn': {
+      bottom: '3px',
+    },
+  },
+}))
 
 const ExploreBadges: NextPageWithLayout = () => {
   const { t } = useTranslation()
@@ -21,7 +37,6 @@ const ExploreBadges: NextPageWithLayout = () => {
   const [loading, setLoading] = useState<boolean>(false)
   const gql = getSubgraphSdkByNetwork(appChainId, SubgraphName.TheBadge)
 
-  const theme = getTheme()
   const filters: Array<ListFilter> = [
     {
       title: 'Minted',
@@ -44,7 +59,7 @@ const ExploreBadges: NextPageWithLayout = () => {
   const search = async (
     selectedFilters: Array<ListFilter>,
     selectedCategory: string,
-    textSearch: string,
+    textSearch?: string,
   ) => {
     setLoading(true)
 
@@ -54,8 +69,12 @@ const ExploreBadges: NextPageWithLayout = () => {
 
     const badgeLayouts = badges.map((bt) => {
       return (
-        <Box key={bt.id} maxWidth={'250px'}>
-          <MiniBadgeTypeMetadata metadata={bt.metadataURL} />
+        <StyledBadgeContainer key={bt.id} maxWidth={'250px'}>
+          <MiniBadgeTypeMetadata disableAnimations metadata={bt.metadataURL} />
+          <Button id="mint-btn" sx={{ borderRadius: '8px' }} variant="contained">
+            <Link href={`/badge/mint/${bt.id}`}>Mint</Link>
+          </Button>
+          {/*
           <div>mintCost: {formatUnits(bt.mintCost, 18)} + Kleros deposit</div>
           <div>ValidFor: {bt.validFor / 60 / 60 / 24} </div>
           <div>paused: {bt.paused ? 'Yes' : 'No'}</div>
@@ -65,12 +84,13 @@ const ExploreBadges: NextPageWithLayout = () => {
             <GetBadgeTypeChallengePeriodDuration tcrList={bt.klerosBadge?.klerosTCRList} /> days
           </div>
 
-          {/* TODO ADD Creator/Emitter Metadata*/}
-          {/*<div>Metadata: {bt.emitter.metadata}</div>*/}
-          {/* This is broken because the metadata is not linked on IPFS. */}
-          {/* <CreatorDetails metadata={bt.emitter.metadata} /> */}
-          <Link href={`/badge/mint/${bt.id}`}>Mint</Link>
-        </Box>
+
+           TODO ADD Creator/Emitter Metadata
+          <div>Metadata: {bt.emitter.metadata}</div>
+           This is broken because the metadata is not linked on IPFS.
+           <CreatorDetails metadata={bt.emitter.metadata} />
+          */}
+        </StyledBadgeContainer>
       )
     })
 
@@ -86,11 +106,19 @@ const ExploreBadges: NextPageWithLayout = () => {
       <FilteredList
         categories={['Category 1', 'Category 2', 'Category 3']}
         filters={filters}
-        items={items}
         loading={loading}
         search={search}
         title={t('explorer.title')}
-      ></FilteredList>
+      >
+        {items.length > 0 ? (
+          items
+        ) : (
+          <Stack>
+            <Typography variant="body3">There is no badges that match these filters...</Typography>
+            <NoResultsAnimated />
+          </Stack>
+        )}
+      </FilteredList>
     </>
   )
 }

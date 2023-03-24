@@ -1,24 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React, { PropsWithChildren, useEffect, useState } from 'react'
 
-import SearchIcon from '@mui/icons-material/Search'
-import {
-  Box,
-  Chip,
-  Divider,
-  FormControl,
-  InputAdornment,
-  InputLabel,
-  MenuItem,
-  OutlinedInput,
-  Select,
-  Typography,
-  styled,
-} from '@mui/material'
+import { Box, Chip, Divider, Typography, styled } from '@mui/material'
 import { ChipPropsColorOverrides } from '@mui/material/Chip/Chip'
 import { OverridableStringUnion } from '@mui/types'
 import { colors } from 'thebadge-ui-library'
 
+import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { Loading } from '@/src/components/loading/Loading'
+import TBSearchField from '@/src/components/select/SearchField'
+import TBadgeSelect from '@/src/components/select/Select'
 import { useColorMode } from '@/src/providers/themeProvider'
 
 export type ListFilter = {
@@ -31,14 +21,18 @@ export type ListFilter = {
   fixed?: boolean // if true, cannot be deselected, default is false
 }
 
-type FilteredListProps = {
+type FilteredListProps = PropsWithChildren & {
   title: string
   color?: string
-  items?: Array<React.ReactNode>
   filters: Array<ListFilter>
   categories?: Array<string>
-  search: (selectedFilters: Array<ListFilter>, selectedCategory: string, textSearch: string) => void
+  search: (
+    selectedFilters: Array<ListFilter>,
+    selectedCategory: string,
+    textSearch?: string,
+  ) => void
   loading?: boolean
+  disableEdit?: boolean
 }
 
 const ItemsGridBox = styled(Box)(({ theme }) => ({
@@ -62,8 +56,6 @@ export default function FilteredList(props: FilteredListProps) {
   const defaultSelectedFilters = props.filters.filter((f) => f.defaultSelected)
   const [selectedFilters, setSelectedFilters] = useState<ListFilter[]>(defaultSelectedFilters)
   const [selectedCategory, setSelectedCategory] = useState<string>('')
-  const [textSearch, setTextSearch] = useState<string>('')
-  const [searchingText, setSearchingText] = useState<boolean>(false)
   const [initialLoadDone, setInitialLoadDone] = useState<boolean>(false)
 
   useEffect(() => {
@@ -73,11 +65,8 @@ export default function FilteredList(props: FilteredListProps) {
     }
   }, [props, initialLoadDone, defaultSelectedFilters])
 
-  const search = () => {
-    const filters = selectedFilters
-    const category = selectedCategory
-    const text = textSearch
-    props.search(filters, category, text)
+  const search = (textSearch?: string) => {
+    props.search(selectedFilters, selectedCategory, textSearch)
   }
 
   const isFilterSelected = (filter: ListFilter) => {
@@ -88,28 +77,20 @@ export default function FilteredList(props: FilteredListProps) {
     if (!isFilterSelected(filter)) {
       const newSelectedFilters = selectedFilters.concat(filter)
       setSelectedFilters(() => newSelectedFilters)
-      search()
+      props.search(newSelectedFilters, selectedCategory)
     }
   }
   const handleRemoveFilter = (filter: ListFilter) => {
     if (!filter.fixed) {
       const newSelectedFilters = selectedFilters.filter((f) => f.title !== filter.title)
       setSelectedFilters(newSelectedFilters)
-      search()
+      props.search(newSelectedFilters, selectedCategory)
     }
-  }
-
-  const handleSearchFocus = () => {
-    setSearchingText(true)
-  }
-
-  const handleSearchBlur = () => {
-    setSearchingText(false)
   }
 
   const handleSelectCategory = (selectedCategory: string) => {
     setSelectedCategory(selectedCategory)
-    search()
+    props.search(selectedFilters, selectedCategory)
   }
 
   return (
@@ -132,6 +113,7 @@ export default function FilteredList(props: FilteredListProps) {
             return (
               <Chip
                 color={filter.color}
+                disabled={props.disableEdit && !isFilterSelected(filter)}
                 key={'filter-' + index}
                 label={filter.title}
                 onClick={() => handleSelectFilter(filter)}
@@ -147,64 +129,16 @@ export default function FilteredList(props: FilteredListProps) {
 
           {/* categories */}
           {props.categories ? (
-            <FormControl size="small" sx={{ m: 1, minWidth: 120, height: 32, width: 'auto' }}>
-              <InputLabel
-                id="demo-simple-select-filled-label"
-                sx={{ height: 32, fontSize: '13px !important' }}
-              >
-                Category
-              </InputLabel>
-              <Select
-                label="c"
-                onChange={(e) => handleSelectCategory(e.target.value)}
-                sx={{
-                  height: 32,
-                  width: 'auto',
-                }}
-                value={selectedCategory}
-              >
-                {props.categories.map((category, index) => (
-                  <MenuItem key={'category-' + index} sx={{ height: 32 }} value={category}>
-                    {category}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+            <TBadgeSelect
+              items={props.categories}
+              label={'Category'}
+              onChange={(e) => handleSelectCategory(e.target.value)}
+              selectedItem={selectedCategory}
+            />
           ) : null}
 
           {/* text search */}
-          <FormControl size="small" sx={{ m: 1, minWidth: 120, height: 32, width: 'auto' }}>
-            <InputLabel
-              id="demo-simple-select-filled-label"
-              sx={{ height: 32, fontSize: '13px !important' }}
-            >
-              Text search
-            </InputLabel>
-            <OutlinedInput
-              endAdornment={
-                <InputAdornment position="end">
-                  <SearchIcon
-                    onClick={(e) => {
-                      textSearch.length > 0 ? search() : handleSearchFocus()
-                    }}
-                    sx={{
-                      cursor: 'pointer',
-                    }}
-                  />
-                </InputAdornment>
-              }
-              inputProps={{
-                onFocus: () => handleSearchFocus(),
-                onBlur: () => handleSearchBlur(),
-              }}
-              onChange={(e) => setTextSearch(e.target.value)}
-              sx={{
-                height: 32,
-                width: searchingText || textSearch.length > 0 ? 180 : 130,
-              }}
-              value={textSearch}
-            />
-          </FormControl>
+          <TBSearchField label="Text Search" onSearch={(searchValue) => search(searchValue)} />
         </Box>
       </FilteredListHeaderBox>
       <Divider color={mode === 'dark' ? 'white' : 'black'} sx={{ borderWidth: '1px' }} />
@@ -212,7 +146,9 @@ export default function FilteredList(props: FilteredListProps) {
         {props.loading ? (
           <Loading />
         ) : (
-          <ItemsGridBox>{props.items?.map((item) => item)}</ItemsGridBox>
+          <ItemsGridBox>
+            <SafeSuspense>{props.children}</SafeSuspense>
+          </ItemsGridBox>
         )}
       </Box>
     </Box>

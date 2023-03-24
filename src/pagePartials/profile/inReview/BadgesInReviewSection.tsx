@@ -37,7 +37,7 @@ export default function BadgesInReviewSection() {
   const search = async (
     selectedFilters: Array<ListFilter>,
     selectedCategory: string,
-    textSearch: string,
+    textSearch?: string,
   ) => {
     setLoading(true)
     // TODO filter badges with: selectedFilters, selectedCategory, textSearch
@@ -66,14 +66,15 @@ export default function BadgesInReviewSection() {
       </Box>
 
       <FilteredList
-        categories={['Category 1', 'Category 2', 'Category 3']}
         color={colors.green}
+        disableEdit
         filters={filters}
-        items={items}
         loading={loading}
         search={search}
         title={'Your badges in review'}
-      ></FilteredList>
+      >
+        {items}
+      </FilteredList>
     </>
   )
 }
