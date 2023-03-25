@@ -40,6 +40,7 @@ function ResponsiveGridFromContainer({
   const theme = useTheme()
   const childrenFromTypes = useMemo(() => getFormsFieldsTypes(children), [children])
   let prevXValue = -1
+  let prevYValue = 1
   return (
     <ResponsiveGridLayout
       autoSize={true}
@@ -64,9 +65,11 @@ function ResponsiveGridFromContainer({
         Children.map(Children.toArray(children), (child, index) => {
           let dataGridValue
           let xValue
+          let yValue
           if (gridStructure && gridStructure.length > 0) {
             dataGridValue = gridStructure[index]
             xValue = dataGridValue.x
+            yValue = dataGridValue.y
           } else {
             // If a gridStructure was not provided, we get the formType of the
             // child, and we attach the dataGrid prop to it
@@ -77,12 +80,20 @@ function ResponsiveGridFromContainer({
             )
             // Trying to prevent collision in a naive way
             xValue = dataGridValue.x > prevXValue ? dataGridValue.x : prevXValue
-            prevXValue = xValue + dataGridValue.w
+            yValue = dataGridValue.y
+
+            // If xValue overpass the max x-axis length, we need to increase the yValue
+            if (xValue + dataGridValue.w > 8) {
+              xValue = 0
+              yValue = prevYValue
+              prevYValue = prevYValue + dataGridValue.h
+            }
+            prevXValue = xValue + dataGridValue.w + 0.5
           }
 
           return (
             <GridFormItem
-              data-grid={{ ...dataGridValue, x: xValue }}
+              data-grid={{ ...dataGridValue, x: xValue, y: yValue }}
               key={`${dataGridValue.i}${(child as React.ReactElement).key}`}
             >
               {child}

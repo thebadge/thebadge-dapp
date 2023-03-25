@@ -62,6 +62,7 @@ export default function useTransaction() {
         return receipt
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (e: any) {
+        setTransactionState(TransactionStates.failed)
         console.error(e)
         const error = new TransactionError(
           e.data?.message || e.message || 'Unable to decode revert reason',

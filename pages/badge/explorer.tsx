@@ -95,7 +95,6 @@ const ExploreBadges: NextPageWithLayout = () => {
     })
 
     setTimeout(() => {
-      console.log('searched with', selectedFilters, selectedCategory, textSearch)
       setLoading(false)
       setItems(badgeLayouts)
     }, 2000)

@@ -64,11 +64,15 @@ const Register: NextPageWithLayout = () => {
       filePaths: ['logo'],
     })
 
-    const transaction = await sendTx(() =>
-      theBadge.registerEmitter(address, `ipfs://${uploadedInfo.result?.ipfsHash}`),
-    )
+    try {
+      const transaction = await sendTx(() =>
+        theBadge.registerEmitter(address, `ipfs://${uploadedInfo.result?.ipfsHash}`),
+      )
 
-    await transaction.wait()
+      await transaction.wait()
+    } catch (e) {
+      // Do nothing
+    }
   }
 
   if (!isWalletConnected) {

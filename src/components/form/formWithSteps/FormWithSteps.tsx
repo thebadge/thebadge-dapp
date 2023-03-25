@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 
 import { Stack, StepContent } from '@mui/material'
 import Box from '@mui/material/Box'
@@ -36,6 +36,7 @@ export function FormWithSteps({
   stepNames,
   stepSchemas,
 }: FormWithStepsProps) {
+  const [disabledSubmit, setDisabledSubmit] = useState(false)
   const forceUpdate = useForceRender()
   const isMobile = useSizeSM()
   const formButtonRef = useRef<HTMLButtonElement>()
@@ -104,7 +105,8 @@ export function FormWithSteps({
     handleNext()
   }
 
-  const handleOnSubmit = () => {
+  const handleOnSubmit = async () => {
+    setDisabledSubmit(true)
     let formData = {}
     Object.values(stepsData).forEach((step) => {
       formData = {
@@ -112,7 +114,8 @@ export function FormWithSteps({
         ...step,
       }
     })
-    onSubmit(formData)
+    await onSubmit(formData)
+    setDisabledSubmit(false)
   }
 
   const handleFormSubmitReview = () => {
@@ -196,7 +199,7 @@ export function FormWithSteps({
                 <Box>{handleFormSubmitReview()}</Box>
                 {!hideSubmit && (
                   <Box display="flex" justifyContent="center">
-                    <Button onClick={handleOnSubmit} variant="contained">
+                    <Button disabled={disabledSubmit} onClick={handleOnSubmit} variant="contained">
                       {'Submit'}
                     </Button>
                   </Box>
