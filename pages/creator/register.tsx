@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router'
+import { useEffect } from 'react'
 
 import { Stack, Typography } from '@mui/material'
 import { ethers } from 'ethers'
@@ -8,7 +9,7 @@ import { z } from 'zod'
 
 import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
-import useTransaction from '@/src/hooks/useTransaction'
+import useTransaction, { TransactionStates } from '@/src/hooks/useTransaction'
 import RegistrationSteps, {
   RegisterCuratorSchemaStep1,
   RegisterCuratorSchemaStep2,
@@ -33,12 +34,23 @@ const Register: NextPageWithLayout = () => {
   const router = useRouter()
   const { sendTx, state } = useTransaction()
 
+  useEffect(() => {
+    // Redirect to the creator profile section
+    if (state === TransactionStates.success) {
+      router.push(`/profile?filter=createdBadges`)
+    }
+  }, [router, state])
+
   const theBadge = useContractInstance(TheBadge__factory, 'TheBadge')
 
   const gql = getSubgraphSdkByNetwork(appChainId, SubgraphName.TheBadge)
   const userProfile = gql.useUserById({
     id: address || ethers.constants.AddressZero,
   })
+
+  if (userProfile.data?.user?.isCreator) {
+    router.push('/profile?filter=createdBadges')
+  }
 
   async function onSubmit(data: z.infer<typeof RegisterCuratorSchema>) {
     if (!address) {
@@ -57,12 +69,6 @@ const Register: NextPageWithLayout = () => {
     )
 
     await transaction.wait()
-
-    router.push('/creator/profile')
-  }
-
-  if (userProfile.data?.user?.isCreator) {
-    router.push('/creator/profile')
   }
 
   if (!isWalletConnected) {

@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router'
+import { useEffect } from 'react'
 
 import { Stack, Typography } from '@mui/material'
 import { BigNumber } from 'ethers'
@@ -11,7 +12,7 @@ import klerosSchemaFactory from '@/src/components/form/helpers/validators'
 import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
-import useTransaction from '@/src/hooks/useTransaction'
+import useTransaction, { TransactionStates } from '@/src/hooks/useTransaction'
 import MintSteps from '@/src/pagePartials/badge/mint/MintSteps'
 import useKlerosDepositPrice from '@/src/pagePartials/badge/useKlerosDepositPrice'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
@@ -32,6 +33,13 @@ const MintBadgeType: NextPageWithLayout = () => {
   if (!badgeTypeId) {
     throw `No typeId provided us URL query param`
   }
+
+  useEffect(() => {
+    // Redirect to the profile
+    if (state === TransactionStates.success) {
+      router.push(`/profile?filter=badgesInReview`)
+    }
+  }, [router, state])
 
   const gql = getSubgraphSdkByNetwork(appChainId, SubgraphName.TheBadge)
   const badgeType = gql.useBadgeType({ id: badgeTypeId })

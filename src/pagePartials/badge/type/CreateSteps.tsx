@@ -133,6 +133,7 @@ export default function CreateSteps({ onSubmit, txState }: MintStepsProps) {
       formGridLayout={formGridLayout}
       formLayout={'gridResponsive'}
       formSubmitReview={handleFormPreview}
+      hideSubmit={txState !== TransactionStates.none}
       onSubmit={handleOnSubmit}
       stepNames={steps}
       stepSchemas={[MintSchemaStep1, MintSchemaStep2, MintSchemaStep3]}

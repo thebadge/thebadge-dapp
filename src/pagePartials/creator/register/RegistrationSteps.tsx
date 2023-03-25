@@ -136,6 +136,7 @@ export default function RegistrationSteps({ onSubmit, txState }: RegistrationSte
       formGridLayout={formGridLayout}
       formLayout={'gridResponsive'}
       formSubmitReview={handleFormPreview}
+      hideSubmit={txState !== TransactionStates.none}
       onSubmit={handleOnSubmit}
       stepNames={steps}
       stepSchemas={[

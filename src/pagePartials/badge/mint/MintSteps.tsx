@@ -1,6 +1,6 @@
 import { useSearchParams } from 'next/navigation'
-import { useRef } from 'react'
 import * as React from 'react'
+import { useRef } from 'react'
 
 import { Box, Stack, Typography } from '@mui/material'
 import domtoimage from 'dom-to-image'
@@ -133,6 +133,7 @@ export default function MintSteps({
       formGridLayout={formGridLayout}
       formLayout={'gridResponsive'}
       formSubmitReview={handleFormPreview}
+      hideSubmit={txState !== TransactionStates.none}
       onSubmit={handleOnSubmit}
       stepNames={steps}
       stepSchemas={[MintSchemaStep1, evidenceSchema]}

@@ -1,9 +1,8 @@
 import React, { useState } from 'react'
 
-import { Box, Stack, Typography } from '@mui/material'
-import dayjs from 'dayjs'
+import { Box, Stack, Typography, styled } from '@mui/material'
+import { formatUnits } from 'ethers/lib/utils'
 import { useTranslation } from 'next-export-i18n'
-import Countdown from 'react-countdown'
 
 import { NoResultsAnimated } from '@/src/components/assets/NoResults'
 import FilteredList, { ListFilter } from '@/src/components/helpers/FilteredList'
@@ -11,6 +10,32 @@ import MiniBadgeTypeMetadata from '@/src/pagePartials/badge/MiniBadgeTypeMetadat
 import CreateNewBadge from '@/src/pagePartials/profile/created/CreateNewBadge'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { SubgraphName, getSubgraphSdkByNetwork } from '@/src/subgraph/subgraph'
+
+const StyledBadgeContainer = styled(Box)(({ theme }) => ({
+  position: 'relative',
+  transition: 'all 2s',
+  overflow: 'hidden',
+  '& #badge-info': {
+    display: 'flex',
+    flexDirection: 'column',
+    background: theme.palette.text.primary,
+    color: theme.palette.background.default,
+    padding: '8px',
+    borderTopLeftRadius: '8px',
+    borderTopRightRadius: '8px',
+    transition: 'all .75s cubic-bezier(0.83, 0, 0.17, 1)',
+    position: 'absolute',
+    bottom: '-38px',
+    left: '50%',
+    transform: 'translate(-50%, 0%)',
+  },
+  '&:hover': {
+    overflow: 'none',
+    '& #badge-info': {
+      bottom: '2px',
+    },
+  },
+}))
 
 export default function BadgesCreatedSection() {
   const { t } = useTranslation()
@@ -20,21 +45,6 @@ export default function BadgesCreatedSection() {
 
   if (!address) return null
   const gql = getSubgraphSdkByNetwork(appChainId, SubgraphName.TheBadge)
-
-  const filters: Array<ListFilter> = [
-    {
-      title: 'In Review',
-      color: 'green',
-    },
-    {
-      title: 'Challenged',
-      color: 'pink',
-    },
-    {
-      title: 'Minted',
-      color: 'blue',
-    },
-  ]
 
   const search = async (
     selectedFilters: Array<ListFilter>,
@@ -48,14 +58,13 @@ export default function BadgesCreatedSection() {
 
     const badgesLayouts = badgeTypes.map((badgeType) => {
       return (
-        <Box key={badgeType.id}>
-          <MiniBadgeTypeMetadata metadata={badgeType?.metadataURL} />
-          <Typography>
-            Review ends in <Countdown date={dayjs.unix(badgeType.validFor).toDate()} />
-          </Typography>
-          <Typography>BadgeType Id: {badgeType.id}</Typography>
-          <Typography>BadgeType Minted Amount: {badgeType.badgesMintedAmount}</Typography>
-        </Box>
+        <StyledBadgeContainer key={badgeType.id}>
+          <MiniBadgeTypeMetadata disableAnimations metadata={badgeType?.metadataURL} />
+          <Box id="badge-info">
+            <Typography variant="body4">Const: {formatUnits(badgeType.mintCost, 18)}</Typography>
+            <Typography variant="body4">Minted: {badgeType.badgesMintedAmount}</Typography>
+          </Box>
+        </StyledBadgeContainer>
       )
     })
 
@@ -73,7 +82,7 @@ export default function BadgesCreatedSection() {
 
       <FilteredList
         categories={['Category 1', 'Category 2', 'Category 3']}
-        filters={filters}
+        filters={[]}
         loading={loading}
         search={search}
         title={t('profile.badgesCreated')}

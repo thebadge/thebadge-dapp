@@ -1,3 +1,6 @@
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
+
 import { Stack, Typography } from '@mui/material'
 import { constants } from 'ethers'
 import { defaultAbiCoder, parseUnits } from 'ethers/lib/utils'
@@ -10,7 +13,7 @@ import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import { IS_DEVELOP } from '@/src/constants/common'
 import { contracts } from '@/src/contracts/contracts'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
-import useTransaction from '@/src/hooks/useTransaction'
+import useTransaction, { TransactionStates } from '@/src/hooks/useTransaction'
 import CreateSteps, { BadgeTypeCreateSchema } from '@/src/pagePartials/badge/type/CreateSteps'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import ipfsUpload from '@/src/utils/ipfsUpload'
@@ -22,9 +25,17 @@ import { Severity } from '@/types/utils'
 const CreateBadgeType: NextPageWithLayout = () => {
   const { t } = useTranslation()
   const { sendTx, state } = useTransaction()
+  const router = useRouter()
 
   const { address, appChainId, readOnlyAppProvider } = useWeb3Connection()
   const theBadge = useContractInstance(TheBadge__factory, 'TheBadge')
+
+  useEffect(() => {
+    // Redirect to the creator profile section
+    if (state === TransactionStates.success) {
+      router.push(`/profile?filter=createdBadges`)
+    }
+  }, [router, state])
 
   const onSubmit = async (data: z.infer<typeof BadgeTypeCreateSchema>) => {
     const { badgeMetadataColumns, criteriaFileUri, description, logoUri, name } = data
