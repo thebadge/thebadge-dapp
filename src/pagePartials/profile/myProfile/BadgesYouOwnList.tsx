@@ -86,7 +86,7 @@ export default function BadgesYouOwnList({ address }: Props) {
         }
       }
     })
-    console.log(selectedFilters, where)
+
     const userWithBadges = await gql.userBadges({
       ownerAddress: address,
       where,

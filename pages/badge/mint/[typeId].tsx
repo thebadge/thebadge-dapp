@@ -1,10 +1,13 @@
 import { useRouter } from 'next/router'
+import * as React from 'react'
 import { useEffect } from 'react'
 
 import { Stack, Typography } from '@mui/material'
 import { BigNumber } from 'ethers'
 import { defaultAbiCoder, formatUnits } from 'ethers/lib/utils'
 import { useTranslation } from 'next-export-i18n'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 import { colors } from 'thebadge-ui-library'
 import { z } from 'zod'
 
@@ -49,6 +52,11 @@ const MintBadgeType: NextPageWithLayout = () => {
   const badgeTypeMetadata = useS3Metadata<{ content: KlerosListStructure }>(
     badgeType.data?.badgeType?.klerosBadge?.klerosMetadataURL || '',
   )
+  // TODO Add Creator type
+  const badgeCreatorMetadata = useS3Metadata<{ content: any }>(
+    badgeType.data?.badgeType?.creator.creatorMetadata || '',
+  )
+
   if (badgeTypeMetadata.error || !badgeTypeMetadata.data) {
     throw `There was an error trying to fetch the metadata for the badge type`
   }
@@ -101,18 +109,35 @@ const MintBadgeType: NextPageWithLayout = () => {
     }
   }
 
+  const creator = badgeCreatorMetadata.data?.content
   const badgeMetadata = badgeTypeMetadata.data.content
   const badgeName = badgeMetadata.name
 
+  // 👇	ReactMarkdown needs to have the children as a prop
+  /* eslint-disable react/no-children-prop */
   return (
     <>
       <Stack sx={{ mb: 6, gap: 4, alignItems: 'center' }}>
         <Typography color={colors.green} textAlign="center" variant="title2">
-          {t('badge.type.mint.title', { badgeName })}
+          {t('badge.type.mint.title')}
         </Typography>
 
-        <Typography textAlign="justify" variant="body4" width="85%">
-          {t('badge.type.mint.sub-title')}
+        <Typography component="div" textAlign="justify" variant="body3" width="85%">
+          {/* ReactMarkdown want it in this way  */}
+          <ReactMarkdown
+            children={t('badge.type.mint.sub-title', {
+              badgeName,
+              creatorContact: `(${creator.email})`,
+            })}
+            components={{
+              a: ({ node, ...props }) => (
+                <a {...props} target="_blank">
+                  here
+                </a>
+              ),
+            }}
+            remarkPlugins={[remarkGfm]}
+          />
         </Typography>
       </Stack>
 

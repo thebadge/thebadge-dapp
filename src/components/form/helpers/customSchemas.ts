@@ -18,10 +18,14 @@ export const CheckBoxSchema = createUniqueFieldSchema(
 )
 
 export const AgreementSchema = createUniqueFieldSchema(
-  z.boolean({
-    required_error: 'You need to agree to be able to continue.',
-    invalid_type_error: 'You must agree to continue.',
-  }),
+  z
+    .boolean({
+      required_error: 'You need to agree to be able to continue.',
+      invalid_type_error: 'You must agree to continue.',
+    })
+    .refine((value) => value, {
+      message: 'You need to agree to be able to continue.',
+    }),
   'AgreementSchema',
 )
 

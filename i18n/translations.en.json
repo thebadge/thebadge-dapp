@@ -34,7 +34,7 @@
   },
   "curator": {
     "register": {
-      "title": "Became a Badge Curator",
+      "title": "Become a badge creator",
       "sub-title": "Do you want to design and publish custom badges that other users can apply for to verify real-world information? Also, you could set the price for the badges you create and receive a share of the fee when users apply for them...So please, complete the form and let´s start creating!"
     }
   },
@@ -44,16 +44,16 @@
         "title": "Create your Badge Type",
         "sub-title": "Do you want to design and publish custom badges that other users can apply for to verify real-world information? Also, you could set the price for the badges you create and receive a share of the fee when users apply for them...So please, complete the form and let´s start creating!",
         "help-steps": "Here you will see a good description about how the process works.... ",
-        "previewTitle": "This is how your Badge is going to look like"
+        "previewTitle": "This is how your new badge type will look like"
       },
       "mint": {
-        "title": "Badge Mint - {{badgeName}}",
-        "sub-title": "Are you ready to get a your new web3 certification?. By pressing next you will start the certification process that will require you to provide certain evidences that proof that you are eligible to get the certificate and the peer-to-peer curation process will start.",
-        "help-steps": "Step 1:\n\"Read and agree the terms and conditions\"\n\nStep 2:\n\"Complete the evidence required in order to prove that you are eligible for obtaining the selected certificate\"\n\nStep 3:\n\"Review the data and submit the transaction\"\n\nStep 4:\n\"The curation process will start, you will be always able to check the curation status of your badge. Once the curation is over, your badge will be available on your profile\"\n\nStep 5:\n\"If the evidence you submitted is found wrong, our curators may raise challenges against your badge and an arbitration process will start. If you want to know more about this process read here (https://docs.thebadge.xyz)\"\n\nStep 6:\nDisclaimer: \"by accepting the terms and conditions.....",
+        "title": "Badge Mint",
+        "sub-title": "You are starting the certification process for obtaining a {{badgeName}}. Please read the following instructions carefully in order to be able to complete the process correctly, if you have any doubts please check the docs (https://docs.thebadge.xyz) or get in contact with the certificate creator {{creatorContact}}.",
+        "help-steps": "Step 1:\n\"Read and agree the terms and conditions\"\n\nStep 2:\n\"Complete the evidence required in order to prove that you are eligible for obtaining the selected certificate\"\n\nStep 3:\n\"Review the data and submit the transaction\"\n\nStep 4:\n\"The curation process will start, you will be always able to check the curation status of your badge. Once the curation is over, your badge will be available on your profile\"\n\nStep 5:\n\"If the evidence you submitted is found wrong, our curators may raise challenges against your badge and an arbitration process will start. If you want to know more about this process read here (https://docs.thebadge.xyz)\"\n\n",
         "previewTitle": "This is how your Badge is going to look like",
-        "mintCostTooltip": "This is the cost that's goes to the creator.",
-        "depositCost": "Deposit for Kleros ",
-        "mintCost": "Mint cost ",
+        "depositCost": "Curation deposit ",
+        "depositDisclaimer": "Note that this is a deposit, not a fee and it will be reimbursed if the request is accepted. The challenge period last *{{challengePeriodDuration}} {{timeUnit}}*. For more information check the docs {{docsUrl}}",
+        "mintCost": "Badge fee ",
         "totalCost": "Total need: {{cost}} ",
         "makeSure": "Make sure your submission complies with the ",
         "avoidChallenges": " to avoid challenges."

@@ -23,18 +23,20 @@ import { APP_URL, IS_DEVELOP } from '@/src/constants/common'
 import { TransactionStates } from '@/src/hooks/useTransaction'
 
 const MintSchemaStep1 = z.object({
-  help: AgreementSchema.describe(`How it works // ??`),
+  help: AgreementSchema.describe(`Badge creation quick tutorial.`),
 })
 
 const MintSchemaStep2 = z.object({
-  name: z.string().describe('Name // ??'),
+  name: z.string().describe('Name // This is the name that your badge type will have'),
   description: LongTextSchema.describe(
     'Description // This description will be showed on the Badge itself, you can use some helpers to inject user information on it.',
   ),
   logoUri: ImageSchema.describe(
-    'The logo for your badge type // This Logo will be on the center part of the Badge itself. Recommended images with aspect ratio of 1.',
+    'Your badge type logo // This Logo will be on the center part of the Badge itself. Recommended images with aspect ratio of 1.',
   ),
-  criteriaFileUri: FileSchema.describe('PDF with the requirements to mint a badge. // ??'),
+  criteriaFileUri: FileSchema.describe(
+    'Listing criteria (PDF format). // This is the document containing your badge listing criteria, an example of listing criteria can be found on the docs.',
+  ),
   challengePeriodDuration: ChallengePeriodTypeSchema.describe(
     `Challenge period duration (${
       IS_DEVELOP ? 'minutes' : 'days'
@@ -71,7 +73,7 @@ type MintStepsProps = {
 const steps = ['Help', 'Badge type basics', 'Evidence form', 'Badge Type Preview']
 
 const formGridLayout: DataGrid[][] = [
-  [{ i: 'AgreementSchema', x: 0, y: 0, w: 12, h: 4, static: true }],
+  [{ i: 'AgreementSchema', x: 0, y: 0, w: 12, h: 8, static: true }],
   [
     { i: 'TextField', x: 0, y: 0, w: 3, h: 1, static: true },
     { i: 'DescriptionTextSchema', x: 0, y: 1.5, w: 3, h: 4, static: true },

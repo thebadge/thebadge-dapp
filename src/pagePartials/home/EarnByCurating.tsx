@@ -2,6 +2,7 @@ import { Box, Typography, styled, useTheme } from '@mui/material'
 import { ButtonV2, colors } from 'thebadge-ui-library'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
+import { DOCS_URL } from '@/src/constants/common'
 import BadgesInReviewSwiper from '@/src/pagePartials/home/BadgesInReviewSwiper'
 import { SectionBox, SectionTitleBox } from '@/src/pagePartials/home/SectionBoxes'
 import { useSectionReferences } from '@/src/providers/referencesProvider'
@@ -31,6 +32,9 @@ export default function EarnByCurating() {
   const { earnByCuratingSection } = useSectionReferences()
   const theme = useTheme()
 
+  const openDocs = () =>
+    window.open(`${DOCS_URL}/thebadge-documentation/overview/how-it-works/curators`, '_blank')
+
   return (
     <SectionBox ref={earnByCuratingSection}>
       <SectionTitleBox>
@@ -47,6 +51,7 @@ export default function EarnByCurating() {
         <LearnMoreButton
           backgroundColor={colors.transparent}
           fontColor={theme.palette.text.primary}
+          onClick={openDocs}
         >
           LEARN MORE
         </LearnMoreButton>

@@ -36,12 +36,12 @@ type MintStepsProps<SchemaType extends z.ZodEffects<any, any, any> | AnyZodObjec
 const steps = ['Help', 'Evidence form', 'Badge Preview']
 
 const formGridLayout: DataGrid[][] = [
-  [{ i: 'AgreementSchema', x: 0, y: 0, w: 12, h: 6, static: true }],
+  [{ i: 'AgreementSchema', x: 0, y: 0, w: 12, h: 8, static: true }],
   [],
 ]
 
 export const MintSchemaStep1 = z.object({
-  help: AgreementSchema.describe(`How it works // ??`),
+  help: AgreementSchema.describe(`Mint badge quick tutorial.`),
 })
 
 export default function MintSteps({

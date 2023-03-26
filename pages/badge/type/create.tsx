@@ -140,7 +140,7 @@ const CreateBadgeType: NextPageWithLayout = () => {
           {t('badge.type.create.title')}
         </Typography>
 
-        <Typography color={colors.white} textAlign="justify" variant="body4" width="85%">
+        <Typography color={colors.white} textAlign="justify" variant="body3" width="85%">
           {t('badge.type.create.sub-title')}
         </Typography>
       </Stack>
