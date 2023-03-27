@@ -1,7 +1,9 @@
+import { useCallback, useState } from 'react'
 import * as React from 'react'
 
 import { Avatar, Box, Stack, Typography } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
+import { colors } from 'thebadge-ui-library'
 import { z } from 'zod'
 
 import { RegisterCuratorSchema } from '@/pages/creator/register'
@@ -66,89 +68,108 @@ export const RegisterCuratorSchemaStep3 = z.object({
 
 export default function RegistrationSteps({ onSubmit, txState }: RegistrationStepsProps) {
   const { t } = useTranslation()
+  const [currentStep, setCurrentStep] = useState(0)
 
-  const handleOnSubmit = (data: z.infer<typeof RegisterCuratorSchema>) => {
-    onSubmit(data)
-  }
+  const handleOnSubmit = useCallback(
+    (data: z.infer<typeof RegisterCuratorSchema>) => {
+      onSubmit(data)
+    },
+    [onSubmit],
+  )
 
-  function handleFormPreview(data: z.infer<typeof RegisterCuratorSchema>) {
-    if (txState !== TransactionStates.none) {
-      return <TransactionLoading state={txState} />
-    }
+  const handleFormPreview = useCallback(
+    (data: z.infer<typeof RegisterCuratorSchema>) => {
+      if (txState !== TransactionStates.none) {
+        return <TransactionLoading state={txState} />
+      }
 
-    return (
-      <Stack gap={2} margin={1}>
-        <Typography component={'div'} variant="title3">
-          Please review your data
-        </Typography>
-        <Stack>
-          <Typography component={'div'} variant="title2">
-            Creator Information
-          </Typography>
-          <Box display="flex" flexDirection="row">
-            <Stack>
-              <Typography component={'div'} variant="body1">
-                {data.name}
-              </Typography>
-              <Typography component={'div'} variant="body1">
-                {data.description}
-              </Typography>
-            </Stack>
-            <Avatar>
-              <img alt="" src={data.logo.data_url} width="150" />
-            </Avatar>
-          </Box>
-          <Typography component={'div'} variant="title2">
-            Creator Contact
+      return (
+        <Stack gap={2} margin={1}>
+          <Typography component={'div'} variant="title3">
+            Please review your data
           </Typography>
           <Stack>
-            <Typography component={'div'} variant="body1">
-              {data.email}
+            <Typography component={'div'} variant="title2">
+              Creator Information
             </Typography>
+            <Box display="flex" flexDirection="row">
+              <Stack>
+                <Typography component={'div'} variant="body1">
+                  {data.name}
+                </Typography>
+                <Typography component={'div'} variant="body1">
+                  {data.description}
+                </Typography>
+              </Stack>
+              <Avatar>
+                <img alt="" src={data.logo.data_url} width="150" />
+              </Avatar>
+            </Box>
+            <Typography component={'div'} variant="title2">
+              Creator Contact
+            </Typography>
+            <Stack>
+              <Typography component={'div'} variant="body1">
+                {data.email}
+              </Typography>
 
-            {data.discord && (
-              <Typography component={'div'} variant="body1">
-                {data.discord}
-              </Typography>
-            )}
-            {data.website && (
-              <Typography component={'div'} variant="body1">
-                {data.website}
-              </Typography>
-            )}
-            {data.twitter && (
-              <Typography component={'div'} variant="body1">
-                {data.twitter}
-              </Typography>
-            )}
+              {data.discord && (
+                <Typography component={'div'} variant="body1">
+                  {data.discord}
+                </Typography>
+              )}
+              {data.website && (
+                <Typography component={'div'} variant="body1">
+                  {data.website}
+                </Typography>
+              )}
+              {data.twitter && (
+                <Typography component={'div'} variant="body1">
+                  {data.twitter}
+                </Typography>
+              )}
+            </Stack>
           </Stack>
         </Stack>
-      </Stack>
-    )
-  }
+      )
+    },
+    [txState],
+  )
 
   return (
-    <FormWithSteps
-      formFieldProps={[
-        {}, // TODO Review this method of send props
-        {},
-        {
-          terms: {
-            agreementText: t('creator.register.form.terms-conditions'),
+    <>
+      <Stack sx={{ mb: 6, gap: 4, alignItems: 'center' }}>
+        <Typography color={colors.purple} textAlign="center" variant="title2">
+          {t('creator.register.title')}
+        </Typography>
+
+        <Typography textAlign="justify" variant="body4" width="85%">
+          {t(`creator.register.steps.${currentStep}.sub-title`)}
+        </Typography>
+      </Stack>
+      <FormWithSteps
+        formFieldProps={[
+          {}, // TODO Review this method of send props
+          {},
+          {
+            terms: {
+              agreementText: t('creator.register.form.terms-conditions'),
+            },
           },
-        },
-      ]}
-      formGridLayout={formGridLayout}
-      formLayout={'gridResponsive'}
-      formSubmitReview={handleFormPreview}
-      hideSubmit={txState !== TransactionStates.none}
-      onSubmit={handleOnSubmit}
-      stepNames={steps}
-      stepSchemas={[
-        RegisterCuratorSchemaStep1,
-        RegisterCuratorSchemaStep2,
-        RegisterCuratorSchemaStep3,
-      ]}
-    />
+        ]}
+        formGridLayout={formGridLayout}
+        formLayout={'gridResponsive'}
+        formSubmitReview={handleFormPreview}
+        hideSubmit={txState !== TransactionStates.none}
+        onStepChanged={(sn) => setCurrentStep(sn)}
+        onSubmit={handleOnSubmit}
+        stepNames={steps}
+        stepSchemas={[
+          RegisterCuratorSchemaStep1,
+          RegisterCuratorSchemaStep2,
+          RegisterCuratorSchemaStep3,
+        ]}
+      />
+    </>
   )
 }

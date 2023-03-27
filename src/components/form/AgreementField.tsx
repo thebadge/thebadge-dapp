@@ -4,9 +4,8 @@ import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import { Box, Divider, Checkbox as MUICheckbox, Stack, Tooltip, Typography } from '@mui/material'
 import { useDescription, useTsController } from '@ts-react/form'
 import { FieldError } from 'react-hook-form'
-import ReactMarkdown from 'react-markdown'
-import remarkGfm from 'remark-gfm'
 
+import MarkdownTypography from '@/src/components/common/MarkdownTypography'
 import { TextFieldStatus } from '@/src/components/form/TextField'
 import { FormField } from '@/src/components/form/helpers/FormField'
 import { convertToFieldError } from '@/src/components/form/helpers/validators'
@@ -32,8 +31,6 @@ export function AgreementField({
     onChange(!value)
   }
 
-  // 👇	ReactMarkdown needs to have the children as a prop
-  /* eslint-disable react/no-children-prop */
   return (
     <Stack sx={{ mb: 2, gap: 2 }}>
       <Typography fontWeight="bold" textAlign="center" variant={'h5'}>
@@ -45,20 +42,7 @@ export function AgreementField({
         )}
       </Typography>
       <Box maxHeight={'580px'} overflow="auto">
-        <Typography component={'div'}>
-          {/* ReactMarkdown want it in this way  */}
-          <ReactMarkdown
-            children={agreementText}
-            components={{
-              a: ({ node, ...props }) => (
-                <a {...props} target="_blank">
-                  {props.href?.replace(/^.*:\/\//i, '')}
-                </a>
-              ),
-            }}
-            remarkPlugins={[remarkGfm]}
-          />
-        </Typography>
+        <MarkdownTypography>{agreementText}</MarkdownTypography>
       </Box>
       <Stack flexDirection="row" flexWrap="wrap" justifyContent="center">
         <FormField

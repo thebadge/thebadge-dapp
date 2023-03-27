@@ -6,9 +6,9 @@ import { formatUnits } from 'ethers/lib/utils'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { getNetworkConfig } from '@/src/config/web3'
+import useBadgeType from '@/src/hooks/useBadgeType'
 import { useBadgeCost } from '@/src/pagePartials/badge/curate/useBadgeCost'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
-import { SubgraphName, getSubgraphSdkByNetwork } from '@/src/subgraph/subgraph'
 
 export default function ChallengeCost({
   badgeTypeId,
@@ -20,12 +20,19 @@ export default function ChallengeCost({
   const { appChainId } = useWeb3Connection()
   const networkConfig = getNetworkConfig(appChainId)
 
-  const gql = getSubgraphSdkByNetwork(appChainId, SubgraphName.TheBadge)
-  const badgeType = gql.useBadgeType({ id: badgeTypeId })
+  const badgeTypeData = useBadgeType(badgeTypeId)
+
+  if (
+    badgeTypeData.error ||
+    !badgeTypeData.data?.badgeType ||
+    !badgeTypeData.data?.badgeTypeMetadata
+  ) {
+    throw `There was an error trying to fetch the metadata for the badge type`
+  }
 
   const challengeCost = useBadgeCost(badgeTypeId, ownerAddress)
   const challengePeriodDuration =
-    badgeType.data?.badgeType?.klerosBadge?.challengePeriodDuration / 60 / 60 / 24
+    badgeTypeData.data?.badgeType.klerosBadge?.challengePeriodDuration / 60 / 60 / 24
 
   if (!challengeCost) {
     throw 'There was not possible to get challenge cost. Try again in some minutes.'
