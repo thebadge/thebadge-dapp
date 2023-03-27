@@ -39,6 +39,7 @@
     "graphql-tag": "^2.12.6",
     "immutability-helper": "^3.1.1",
     "lodash": "^4.17.21",
+    "lottie-web": "^5.10.2",
     "next": "^13.1.1",
     "next-export-i18n": "^2.1.0",
     "nextjs-google-analytics": "^2.2.2",
@@ -62,7 +63,7 @@
     "sanitize.css": "^13.0.0",
     "swiper": "^9.0.5",
     "swr": "^2.0.0",
-    "thebadge-ui-library": "^1.4.1",
+    "thebadge-ui-library": "^1.4.3",
     "wagmi": "^0.10.3",
     "zod": "^3.20.6"
   },

@@ -28,9 +28,9 @@ export const USER_BY_ID = gql`
 `
 
 export const MY_BADGE_TYPES = gql`
-  query userBadges($ownerAddress: ID!) {
+  query userBadges($ownerAddress: ID!, $where: Badge_filter) {
     user(id: $ownerAddress) {
-      badges {
+      badges(where: $where) {
         id
         status
         reviewDueDate
@@ -61,6 +61,27 @@ export const MY_CREATED_BADGE_TYPES = gql`
         badgesMintedAmount
       }
       createdBadgesTypesAmount
+    }
+  }
+`
+
+export const MY_BADGE_TYPES_IN_REVIEW = gql`
+  query userBadgesInReview($ownerAddress: ID!) {
+    user(id: $ownerAddress) {
+      badges(where: { status_in: [InReview] }) {
+        id
+        status
+        reviewDueDate
+        badgeType {
+          validFor
+          paused
+          mintCost
+          metadataURL
+          id
+          controllerName
+          badgesMintedAmount
+        }
+      }
     }
   }
 `

@@ -1,3 +1,5 @@
+import { useRouter } from 'next/router'
+
 import { Box, Divider, Typography, useTheme } from '@mui/material'
 import { ButtonV2, colors } from 'thebadge-ui-library'
 
@@ -9,6 +11,8 @@ import { useSectionReferences } from '@/src/providers/referencesProvider'
 export default function ClaimBadges() {
   const { claimBadgesSection } = useSectionReferences()
   const theme = useTheme()
+  const router = useRouter()
+
   return (
     <SectionBox ref={claimBadgesSection}>
       <SectionTitleBox>
@@ -24,6 +28,7 @@ export default function ClaimBadges() {
         <ButtonV2
           backgroundColor={theme.palette.button.backgroundBlue.main}
           fontColor={'#0D0D0D'}
+          onClick={() => router.push('/badge/explorer')}
           sx={{
             borderRadius: '10px',
             fontSize: '11px !important',

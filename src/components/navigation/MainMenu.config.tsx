@@ -1,6 +1,7 @@
 import { DarkMode as DarkModeIcon } from '@/src/components/assets/DarkMode'
 import { Discord as DiscordIcon } from '@/src/components/assets/Discord'
 import { Earn as EarnIcon } from '@/src/components/assets/Earn'
+import { Explore as ExploreIcon } from '@/src/components/assets/Explore'
 import { Home as HomeIcon } from '@/src/components/assets/Home'
 import { LightMode as LightModeIcon } from '@/src/components/assets/LightMode'
 import { Profile as ProfileIcon } from '@/src/components/assets/Profile'
@@ -67,6 +68,12 @@ export const useMainMenuItems = () => {
     },
     {
       type: 'color',
+      icon: <ExploreIcon />,
+      title: 'Explore',
+      href: '/badge/explorer',
+    },
+    {
+      type: 'color',
       icon: <EarnIcon />,
       title: 'Earn money',
       href: '#earn',
@@ -89,51 +96,51 @@ export const useMainMenuItems = () => {
       type: 'color',
       icon: <ProfileIcon />,
       title: 'Profile',
-      href: '#profile',
+      href: '/profile',
       validation: !!address,
-      subItems: [
-        {
-          title: 'My profile',
-          subItems: [
-            {
-              title: 'Owned badges',
-              href: '#',
-            },
-            {
-              title: 'Near to expire',
-              href: '#',
-            },
-            {
-              title: 'Promoted',
-              href: '#',
-            },
-            {
-              title: 'Close to obtain',
-              href: '#',
-            },
-            {
-              title: 'You may be interested in',
-              href: '#',
-            },
-          ],
-        },
-        {
-          title: 'Create badge type',
-          href: '/badge/type/create',
-        },
-        {
-          title: 'Mint badge',
-          href: '/badge/mint',
-        },
-        {
-          title: 'Badges in review',
-          href: '#',
-        },
-        {
-          title: 'Created badges',
-          href: '',
-        },
-      ],
+      // subItems: [
+      //   {
+      //     title: 'My profile',
+      //     subItems: [
+      //       {
+      //         title: 'Owned badges',
+      //         href: '#',
+      //       },
+      //       {
+      //         title: 'Near to expire',
+      //         href: '#',
+      //       },
+      //       {
+      //         title: 'Promoted',
+      //         href: '#',
+      //       },
+      //       {
+      //         title: 'Close to obtain',
+      //         href: '#',
+      //       },
+      //       {
+      //         title: 'You may be interested in',
+      //         href: '#',
+      //       },
+      //     ],
+      //   },
+      //   {
+      //     title: 'Create badge type',
+      //     href: '/badge/type/create',
+      //   },
+      //   {
+      //     title: 'Mint badge',
+      //     href: '/badge/mint',
+      //   },
+      //   {
+      //     title: 'Badges in review',
+      //     href: '#',
+      //   },
+      //   {
+      //     title: 'Created badges',
+      //     href: '',
+      //   },
+      // ],
     },
   ]
 
@@ -141,12 +148,14 @@ export const useMainMenuItems = () => {
     {
       type: 'gray',
       icon: <DiscordIcon />,
+      title: 'Community',
       href: DISCORD_URL,
       openLinkInNewTab: true,
     },
     {
       type: 'small',
       icon: mode === ThemeType.dark ? <LightModeIcon /> : <DarkModeIcon />,
+      title: 'Change theme',
       customOnClickBehavior: () => toggleColorMode(), // change theme
     },
   ]

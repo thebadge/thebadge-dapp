@@ -77,13 +77,14 @@ export function AvatarInput({ error, label, onChange, value }: AvatarInputProps)
     if (!value) {
       const image = convertCanvasToImageType()
       onChange(image)
-      setImages([image])
+      setImages(image ? [image] : [])
       setIsCustom(false)
     }
   }, [avatarRef, onChange, value])
 
-  function convertCanvasToImageType(): ImageType {
+  function convertCanvasToImageType(): ImageType | null {
     const canvas = document.getElementsByClassName('blockies-avatar')[0] as HTMLCanvasElement
+    if (!canvas) return null
     const canvasData = new Blob([canvas.toDataURL()], { type: 'image/png' })
     return {
       data_url: canvas.toDataURL(),

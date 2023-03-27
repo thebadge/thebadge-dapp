@@ -1,6 +1,6 @@
 import { useSearchParams } from 'next/navigation'
-import { useRef } from 'react'
 import * as React from 'react'
+import { useRef } from 'react'
 
 import { Box, Stack, Typography } from '@mui/material'
 import domtoimage from 'dom-to-image'
@@ -36,12 +36,12 @@ type MintStepsProps<SchemaType extends z.ZodEffects<any, any, any> | AnyZodObjec
 const steps = ['Help', 'Evidence form', 'Badge Preview']
 
 const formGridLayout: DataGrid[][] = [
-  [{ i: 'AgreementSchema', x: 0, y: 0, w: 12, h: 6, static: true }],
+  [{ i: 'AgreementSchema', x: 0, y: 0, w: 12, h: 8, static: true }],
   [],
 ]
 
 export const MintSchemaStep1 = z.object({
-  help: AgreementSchema.describe(`How it works // ??`),
+  help: AgreementSchema.describe(`Mint badge quick tutorial.`),
 })
 
 export default function MintSteps({
@@ -133,6 +133,7 @@ export default function MintSteps({
       formGridLayout={formGridLayout}
       formLayout={'gridResponsive'}
       formSubmitReview={handleFormPreview}
+      hideSubmit={txState !== TransactionStates.none}
       onSubmit={handleOnSubmit}
       stepNames={steps}
       stepSchemas={[MintSchemaStep1, evidenceSchema]}

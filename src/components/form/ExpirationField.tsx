@@ -119,24 +119,22 @@ export function ExpirationField({
             </>
           )}
           {!enableExpiration && (
-            <FormControlLabel
-              control={
-                <MUICheckbox
-                  checked={enableExpiration}
-                  onChange={() => setEnableExpiration(true)}
-                  sx={{ width: 'fit-content' }}
-                />
-              }
-              label={
-                <Typography>
-                  Enable expiration time
-                  <Tooltip title={placeholder}>
-                    <InfoOutlinedIcon sx={{ marginLeft: 1 }} />
-                  </Tooltip>
-                </Typography>
-              }
-              sx={{ marginTop: 2 }}
-            />
+            <Box alignItems="center" display="flex">
+              <FormControlLabel
+                control={
+                  <MUICheckbox
+                    checked={enableExpiration}
+                    onChange={() => setEnableExpiration(true)}
+                    sx={{ width: 'fit-content' }}
+                  />
+                }
+                label={<Typography>Enable expiration time</Typography>}
+                sx={{ marginTop: 2 }}
+              />
+              <Tooltip title={placeholder}>
+                <InfoOutlinedIcon sx={{ marginLeft: 1 }} />
+              </Tooltip>
+            </Box>
           )}
         </Wrapper>
       }

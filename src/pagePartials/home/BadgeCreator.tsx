@@ -1,11 +1,16 @@
+import { useRouter } from 'next/router'
+
 import TaskAltIcon from '@mui/icons-material/TaskAlt'
 import { Box, Typography } from '@mui/material'
 import { ButtonV2, colors } from 'thebadge-ui-library'
 
+import { DOCS_URL } from '@/src/constants/common'
 import { useSectionReferences } from '@/src/providers/referencesProvider'
 
 export default function BadgeCreator() {
   const { becomeACreatorSection } = useSectionReferences()
+  const router = useRouter()
+
   return (
     <Box
       alignItems={'center'}
@@ -57,9 +62,10 @@ export default function BadgeCreator() {
         </Typography>
       </Box>
       <Typography
-        component={'span'}
+        component={'a'}
         fontSize={'12px !important'}
         fontWeight={700}
+        href={`${DOCS_URL}/thebadge-documentation/overview/how-it-works/creators`}
         lineHeight={'14px'}
         mt={2}
       >
@@ -68,6 +74,7 @@ export default function BadgeCreator() {
       <ButtonV2
         backgroundColor={colors.pink}
         fontColor={colors.white}
+        onClick={() => router.push('/creator/register')}
         sx={{
           mt: 4,
           borderRadius: '10px',

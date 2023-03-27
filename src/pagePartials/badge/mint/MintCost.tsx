@@ -1,13 +1,15 @@
 import { useSearchParams } from 'next/navigation'
 import * as React from 'react'
 
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import ReportProblemOutlinedIcon from '@mui/icons-material/ReportProblemOutlined'
-import { Box, Divider, Stack, Tooltip, Typography } from '@mui/material'
+import { Box, Divider, Stack, Typography } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 import { colors } from 'thebadge-ui-library'
 
 import { getNetworkConfig } from '@/src/config/web3'
+import { DOCS_URL } from '@/src/constants/common'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { SubgraphName, getSubgraphSdkByNetwork } from '@/src/subgraph/subgraph'
@@ -50,6 +52,8 @@ export default function MintCost({ costs }: Props) {
 
   const criteriaUrl = 's3Url' in fileURI ? fileURI.s3Url : ''
 
+  // 👇	ReactMarkdown needs to have the children as a prop
+  /* eslint-disable react/no-children-prop */
   return (
     <Stack
       sx={{
@@ -62,11 +66,7 @@ export default function MintCost({ costs }: Props) {
     >
       <Typography variant="dAppTitle2">Total deposit required</Typography>
       <Box display="flex" flex={1} gap={4}>
-        <Stack
-          flex={1}
-          gap={1}
-          sx={{ borderBottom: '1px solid white', justifyContent: 'flex-end' }}
-        >
+        <Stack flex={1} gap={1} sx={{ borderBottom: '1px solid white', margin: 'auto' }}>
           <Typography variant="dAppTitle2">{t('badge.type.mint.depositCost')}</Typography>
           <Typography variant="body2">
             {costs.klerosCost} {networkConfig.token}
@@ -74,12 +74,31 @@ export default function MintCost({ costs }: Props) {
         </Stack>
         <Box display="flex" flex={1} gap={2}>
           <ReportProblemOutlinedIcon sx={{ m: 'auto' }} />
+          {/* ReactMarkdown want it in this way  */}
           <Typography
-            component="p"
-            sx={{ display: 'flex', alignItems: 'center' }}
+            component="div"
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              '& a': { textDecoration: 'underline !important' },
+            }}
             variant="subtitle2"
           >
-            {`Note that this is a deposit, not a fee and it will be reimbursed if the request is accepted. The challenge period last ${challengePeriodDuration} days.`}
+            <ReactMarkdown
+              children={t('badge.type.mint.depositDisclaimer', {
+                docsUrl: DOCS_URL + '/thebadge-documentation/overview/how-it-works/challenge',
+                challengePeriodDuration: challengePeriodDuration / 60 / 60,
+                timeUnit: 'days',
+              })}
+              components={{
+                a: ({ node, ...props }) => (
+                  <a {...props} target="_blank">
+                    here
+                  </a>
+                ),
+              }}
+              remarkPlugins={[remarkGfm]}
+            />
           </Typography>
         </Box>
       </Box>
@@ -99,9 +118,6 @@ export default function MintCost({ costs }: Props) {
           <Typography sx={{ display: 'flex' }} variant="body2">
             {costs.mintCost} {networkConfig.token}
           </Typography>
-          <Tooltip title={t('badge.type.mint.mintCostTooltip')}>
-            <InfoOutlinedIcon fontSize="medium" />
-          </Tooltip>
         </Box>
       </Stack>
 

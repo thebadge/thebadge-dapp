@@ -1,15 +1,17 @@
-import VerifiedOutlinedIcon from '@mui/icons-material/VerifiedOutlined'
-import { Box, Button, Stack, Typography } from '@mui/material'
-import dayjs from 'dayjs'
-import { useTranslation } from 'next-export-i18n'
-import Countdown from 'react-countdown'
-import { colors } from 'thebadge-ui-library'
+import React, { useState } from 'react'
 
-import LinkWithTranslation from '@/src/components/helpers/LinkWithTranslation'
+import { Box, Stack, Typography } from '@mui/material'
+import { useTranslation } from 'next-export-i18n'
+
+import { NoResultsAnimated } from '@/src/components/assets/NoResults'
+import FilteredList, { ListFilter } from '@/src/components/helpers/FilteredList'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
 import useTransaction from '@/src/hooks/useTransaction'
+import MiniBadgeTypeMetadata from '@/src/pagePartials/badge/MiniBadgeTypeMetadata'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { SubgraphName, getSubgraphSdkByNetwork } from '@/src/subgraph/subgraph'
+import getHighlightColorByStatus from '@/src/utils/badges/getHighlightColorByStatus'
+import { BadgeStatus, Badge_Filter } from '@/types/generated/subgraph'
 import { KlerosBadgeTypeController__factory } from '@/types/generated/typechain'
 
 type Props = {
@@ -20,69 +22,113 @@ export default function BadgesYouOwnList({ address }: Props) {
   const { sendTx } = useTransaction()
 
   const { appChainId } = useWeb3Connection()
+  const [items, setItems] = useState<React.ReactNode[]>([])
+  const [loading, setLoading] = useState<boolean>(false)
 
   const klerosController = useContractInstance(
     KlerosBadgeTypeController__factory,
     'KlerosBadgeTypeController',
   )
   const gql = getSubgraphSdkByNetwork(appChainId, SubgraphName.TheBadge)
-  const userWithBadges = gql.useUserBadges({ ownerAddress: address })
-  const badges = userWithBadges.data?.user?.badges || []
 
-  async function handleClaimIt(badgeId: string, address: string) {
-    const transaction = await sendTx(() => klerosController.claimBadge(badgeId, address))
+  const filters: Array<ListFilter> = [
+    {
+      title: 'Minted',
+      color: 'blue',
+      fixed: true,
+      defaultSelected: true,
+    },
+    {
+      title: 'Challenged',
+      color: 'pink',
+    },
+    {
+      title: 'In Review',
+      color: 'green',
+    },
+  ]
 
-    await transaction.wait()
+  //async function handleClaimIt(badgeId: string, address: string) {
+  //  const transaction = await sendTx(() => klerosController.claimBadge(badgeId, address))
+  //
+  //  await transaction.wait()
+  //}
+
+  const search = async (
+    selectedFilters: Array<ListFilter>,
+    selectedCategory: string,
+    textSearch?: string,
+  ) => {
+    setLoading(true)
+    // TODO search with: selectedFilters, selectedCategory, textSearch
+    let where: Badge_Filter = {}
+    selectedFilters.forEach((filter) => {
+      if (filter.title === 'Minted') {
+        where = {
+          ...where,
+          status_in: where.status_in
+            ? [...where.status_in, BadgeStatus.Approved]
+            : [BadgeStatus.Approved],
+        }
+      }
+      if (filter.title === 'Challenged') {
+        where = {
+          ...where,
+          isChallenged: true,
+        }
+      }
+      if (filter.title === 'In Review') {
+        where = {
+          ...where,
+          status_in: where.status_in
+            ? [...where.status_in, BadgeStatus.InReview]
+            : [BadgeStatus.InReview],
+        }
+      }
+    })
+
+    const userWithBadges = await gql.userBadges({
+      ownerAddress: address,
+      where,
+    })
+    const badges = userWithBadges?.user?.badges || []
+
+    const badgesLayouts = badges.map((badge) => {
+      // TODO Use badge status to add claim or change the highlight color
+      return (
+        <Box key={badge.id}>
+          <MiniBadgeTypeMetadata
+            highlightColor={getHighlightColorByStatus(badge.status)}
+            metadata={badge.badgeType?.metadataURL}
+          />
+        </Box>
+      )
+    })
+
+    setTimeout(() => {
+      setItems(badgesLayouts)
+      setLoading(false)
+    }, 2000)
   }
+
   return (
-    <Stack gap={2} mt={4}>
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-        <VerifiedOutlinedIcon />
-        <Typography textAlign="center" variant="title4">
-          {t('profile.badgesYouOwn')}
-        </Typography>
-      </Box>
-      {/*TODO Add the real display UI */}
-      {badges.map((bt) => {
-        const needClaim =
-          bt.status === 'InReview' && dayjs().isAfter(dayjs.unix(bt.reviewDueDate).toDate())
-
-        return (
-          <Box
-            key={bt.id}
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: 1,
-              border: `1px solid ${colors.green}`,
-              borderRadius: 2,
-              p: 2,
-            }}
-          >
-            {bt.status === 'Approved' ? (
-              <LinkWithTranslation pathname={`/badge/${bt.badgeType.id}/${address}`}>
-                Minted badge {bt.id}
-              </LinkWithTranslation>
-            ) : (
-              <Typography>Minted badge {bt.id}</Typography>
-            )}
-            <Typography>Status: {bt.status}</Typography>
-            <Typography>
-              Review ends in <Countdown date={dayjs.unix(bt.reviewDueDate).toDate()} />
-            </Typography>
-            <Typography>BadgeType Id: {bt.badgeType.id}</Typography>
-            <Typography>BadgeType Minted Amount: {bt.badgeType.badgesMintedAmount}</Typography>
-
-            {needClaim && (
-              <Box>
-                <Button onClick={() => handleClaimIt(bt.badgeType.id, address)} variant="contained">
-                  Claim It
-                </Button>
-              </Box>
-            )}
-          </Box>
-        )
-      })}
-    </Stack>
+    <FilteredList
+      categories={['Category 1', 'Category 2', 'Category 3']}
+      filters={filters}
+      loading={loading}
+      search={search}
+      title={t('profile.badgesYouOwn')}
+    >
+      {items.length > 0 ? (
+        items
+      ) : (
+        <Stack>
+          <Typography variant="body3">
+            You don't have any badges that match these filters...
+          </Typography>
+          <NoResultsAnimated />
+        </Stack>
+      )}
+    </FilteredList>
   )
 }

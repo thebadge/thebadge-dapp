@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 
 import FileUploadIcon from '@mui/icons-material/FileUpload'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
@@ -60,15 +60,18 @@ export function FileInput({ error, label, onChange, placeholder, value }: FileIn
   const [files, setFiles] = useState<ImageListType>(value ? [value] : [])
   const maxNumber = 1
 
-  const handleChange = (imageList: ImageListType) => {
-    // data for submit
-    if (imageList[0]) {
-      onChange(imageList[0])
-    } else {
-      onChange(null)
-    }
-    setFiles(imageList)
-  }
+  const handleOnChange = useCallback(
+    (imageList: ImageListType) => {
+      // data for submit
+      if (imageList[0]) {
+        onChange(imageList[0])
+      } else {
+        onChange(null)
+      }
+      setFiles(imageList)
+    },
+    [onChange],
+  )
 
   return (
     <Wrapper>
@@ -79,7 +82,7 @@ export function FileInput({ error, label, onChange, placeholder, value }: FileIn
             allowNonImageType={true}
             dataURLKey="data_url"
             maxNumber={maxNumber}
-            onChange={handleChange}
+            onChange={handleOnChange}
             value={files}
           >
             {({ dragProps, errors, imageList, isDragging, onImageUpdate, onImageUpload }) => (
@@ -104,7 +107,7 @@ export function FileInput({ error, label, onChange, placeholder, value }: FileIn
                     key={index}
                     sx={{ display: 'flex', flexDirection: 'row' }}
                   >
-                    <FileDrop onClick={onImageUpload} {...dragProps} error={!!error || !!errors}>
+                    <FileDrop {...dragProps} error={!!error || !!errors}>
                       <PictureAsPdfIcon sx={{ mr: 1 }} />
                       <Typography
                         sx={{

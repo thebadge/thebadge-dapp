@@ -12,9 +12,9 @@ export const Home: React.FC<HTMLAttributes<SVGElement>> = ({ className, ...restP
   <Wrapper
     className={`home ${className}`}
     fill="none"
-    height="18"
+    height="20"
     viewBox="0 0 16 18"
-    width="16"
+    width="20"
     xmlns="http://www.w3.org/2000/svg"
     {...restProps}
   >

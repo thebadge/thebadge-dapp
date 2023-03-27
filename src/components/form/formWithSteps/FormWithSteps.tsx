@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 
 import { Stack, StepContent } from '@mui/material'
 import Box from '@mui/material/Box'
@@ -13,7 +13,7 @@ import { AnyZodObject, ZodEffects } from 'zod'
 import { CustomFormFromSchemaWithoutSubmit } from '@/src/components/form/customForms/CustomForm'
 import { DataGrid, FormLayoutType } from '@/src/components/form/customForms/type'
 import { useForceRender } from '@/src/hooks/useForceRender'
-import useIsMobile from '@/src/hooks/useIsMobile'
+import { useSizeSM } from '@/src/hooks/useSize'
 
 type FormWithStepsProps = {
   stepSchemas: (AnyZodObject | ZodEffects<any, any, any>)[]
@@ -23,6 +23,7 @@ type FormWithStepsProps = {
   formFieldProps?: Record<string, any>[]
   onSubmit: (data: any) => void
   formSubmitReview: (data: any) => React.ReactNode
+  hideSubmit?: boolean
 }
 
 export function FormWithSteps({
@@ -30,12 +31,14 @@ export function FormWithSteps({
   formGridLayout,
   formLayout,
   formSubmitReview,
+  hideSubmit,
   onSubmit,
   stepNames,
   stepSchemas,
 }: FormWithStepsProps) {
+  const [disabledSubmit, setDisabledSubmit] = useState(false)
   const forceUpdate = useForceRender()
-  const isMobile = useIsMobile()
+  const isMobile = useSizeSM()
   const formButtonRef = useRef<HTMLButtonElement>()
 
   const [activeStep, setActiveStep] = React.useState(0)
@@ -102,7 +105,8 @@ export function FormWithSteps({
     handleNext()
   }
 
-  const handleOnSubmit = () => {
+  const handleOnSubmit = async () => {
+    setDisabledSubmit(true)
     let formData = {}
     Object.values(stepsData).forEach((step) => {
       formData = {
@@ -110,7 +114,8 @@ export function FormWithSteps({
         ...step,
       }
     })
-    onSubmit(formData)
+    await onSubmit(formData)
+    setDisabledSubmit(false)
   }
 
   const handleFormSubmitReview = () => {
@@ -192,11 +197,13 @@ export function FormWithSteps({
                   // Review pre submit
                 }
                 <Box>{handleFormSubmitReview()}</Box>
-                <Box display="flex" justifyContent="center">
-                  <Button onClick={handleOnSubmit} variant="contained">
-                    {'Submit'}
-                  </Button>
-                </Box>
+                {!hideSubmit && (
+                  <Box display="flex" justifyContent="center">
+                    <Button disabled={disabledSubmit} onClick={handleOnSubmit} variant="contained">
+                      {'Submit'}
+                    </Button>
+                  </Box>
+                )}
               </Stack>
             )}
           </>

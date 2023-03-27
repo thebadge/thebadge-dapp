@@ -19,7 +19,7 @@ export const mappingDataGridForComponents: DataGridMapping[] = [
   [{ i: 'NumberField', x: 0, y: 0, w: 3, h: 1 }, NumberField],
   [{ i: 'TextArea', x: 0, y: 0, w: 3, h: 3 }, TextArea],
   [{ i: 'DescriptionInputField', x: 0, y: 1, w: 3, h: 3 }, DescriptionInputField],
-  [{ i: 'ImageInput', x: 0, y: 0, w: 3, h: 3 }, ImageInput],
+  [{ i: 'ImageInput', x: 0, y: 0, w: 3, h: 4 }, ImageInput],
   [{ i: 'AvatarInput', x: 0, y: 0, w: 3, h: 3 }, AvatarInput],
   [{ i: 'FileInput', x: 0, y: 0, w: 3, h: 1 }, FileInput],
   [{ i: 'TokenInput', x: 0, y: 0, w: 3, h: 1 }, TokenInput],

@@ -36,7 +36,7 @@ export function AgreementField({
   /* eslint-disable react/no-children-prop */
   return (
     <Stack sx={{ mb: 2, gap: 2 }}>
-      <Typography fontWeight="bold" variant={'h5'}>
+      <Typography fontWeight="bold" textAlign="center" variant={'h5'}>
         {label}
         {placeholder && (
           <Tooltip title={placeholder}>
@@ -44,7 +44,7 @@ export function AgreementField({
           </Tooltip>
         )}
       </Typography>
-      <Box maxHeight={'350px'} overflow="auto">
+      <Box maxHeight={'580px'} overflow="auto">
         <Typography component={'div'}>
           {/* ReactMarkdown want it in this way  */}
           <ReactMarkdown
@@ -60,7 +60,7 @@ export function AgreementField({
           />
         </Typography>
       </Box>
-      <Stack>
+      <Stack flexDirection="row" flexWrap="wrap" justifyContent="center">
         <FormField
           formControl={
             <MUICheckbox checked={!!value} onChange={handleChange} sx={{ width: 'fit-content' }} />
@@ -70,8 +70,23 @@ export function AgreementField({
           status={error ? TextFieldStatus.error : TextFieldStatus.success}
           statusText={error?.message}
         />
-        <Divider sx={{ borderWidth: '1px' }} />
       </Stack>
+      <Typography
+        sx={{ '& a': { textDecoration: 'underline !important' } }}
+        textAlign="center"
+        variant="body4"
+      >
+        By continuing, you agree to our{' '}
+        <a href="/terms" target="_blank">
+          terms of use
+        </a>{' '}
+        and{' '}
+        <a href="/privacy" target="_blank">
+          privacy policy
+        </a>
+        .
+      </Typography>
+      <Divider sx={{ borderWidth: '1px' }} />
     </Stack>
   )
 }

@@ -9,6 +9,7 @@ import {
   Button,
   ClickAwayListener,
   Fade,
+  Tooltip,
   styled,
 } from '@mui/material'
 
@@ -57,17 +58,18 @@ const SubMenuContainer = styled(MenuContainer)<MenuItemElement>(({ type }) => ({
 }))
 
 const MenuItemContainer = styled('div')<MenuItemElement>(({ type }) => ({
-  height: '3rem',
   position: 'relative',
 
   ...(type === 'small'
     ? {
         left: '0.75rem',
         top: '0.75rem',
+        height: '1.5rem',
       }
     : {
         left: '0rem',
         top: '0rem',
+        height: '3rem',
       }),
 }))
 
@@ -307,23 +309,25 @@ export default function MainMenu({ ...restProps }) {
     return (
       (item.validation === undefined || item.validation) && (
         <MenuItemContainer key={'menuItem-' + itemIndex} type={item.type}>
-          <MenuItemBox
-            disableRipple={true}
-            onClick={() => onMenuItemClick(item, itemIndex)}
-            sx={{
-              '&.Mui-focusVisible': {
-                background: `${getMenuItemHoverBackgroundColor(item.type)}`,
-              },
-            }}
-          >
-            <MenuItem
-              disabled={!!item.disabled}
-              selected={selectedElement === itemIndex}
-              type={item.type}
+          <Tooltip arrow placement="right" title={item.title}>
+            <MenuItemBox
+              disableRipple={true}
+              onClick={() => onMenuItemClick(item, itemIndex)}
+              sx={{
+                '&.Mui-focusVisible': {
+                  background: `${getMenuItemHoverBackgroundColor(item.type)}`,
+                },
+              }}
             >
-              {item.icon}
-            </MenuItem>
-          </MenuItemBox>
+              <MenuItem
+                disabled={!!item.disabled}
+                selected={selectedElement === itemIndex}
+                type={item.type}
+              >
+                {item.icon}
+              </MenuItem>
+            </MenuItemBox>
+          </Tooltip>
           {item.subItems && selectedElement === itemIndex ? renderSubItems(item, itemIndex) : null}
         </MenuItemContainer>
       )

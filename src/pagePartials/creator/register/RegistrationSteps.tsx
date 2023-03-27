@@ -37,22 +37,27 @@ const formGridLayout: DataGrid[][] = [
     { i: 'TextField', x: 0, y: 1, w: 3, h: 1, static: true },
     { i: 'TextField', x: 4, y: 1, w: 3, h: 1, static: true },
   ],
-  [{ i: 'AgreementSchema', x: 0, y: 0, w: 12, h: 4, static: true }],
+  [{ i: 'AgreementSchema', x: 0, y: 0, w: 12, h: 8, static: true }],
 ]
 
 export const RegisterCuratorSchemaStep1 = z.object({
-  name: z.string().describe('Your name // ??'),
+  name: z
+    .string()
+    .length(2, 'You need to provide a display name.')
+    .describe(
+      'Display name // This is the name that will be displayed as the author of your badges.',
+    ),
   description: LongTextSchema.describe(
-    'Description // Tell us about you, share some of you background with the community.',
+    'Bio // Tell us about you, share some of your background with the community.',
   ),
   logo: AvatarSchema.describe('Profile photo // Upload a photo that identifies you.'), // Image Schema MUST BE the created one
 })
 
 export const RegisterCuratorSchemaStep2 = z.object({
-  website: z.string().describe(`Website // ??`).optional(),
-  twitter: TwitterSchema.describe(`Twitter // ??`).optional(),
-  discord: z.string().describe(`Discord // ??`).optional(),
-  email: EmailSchema.describe(`Email // ??`),
+  email: EmailSchema.describe(`Email`),
+  website: z.string().describe(`Website`).optional(),
+  twitter: TwitterSchema.describe(`Twitter`).optional(),
+  discord: z.string().describe(`Discord`).optional(),
 })
 
 export const RegisterCuratorSchemaStep3 = z.object({
@@ -136,6 +141,7 @@ export default function RegistrationSteps({ onSubmit, txState }: RegistrationSte
       formGridLayout={formGridLayout}
       formLayout={'gridResponsive'}
       formSubmitReview={handleFormPreview}
+      hideSubmit={txState !== TransactionStates.none}
       onSubmit={handleOnSubmit}
       stepNames={steps}
       stepSchemas={[

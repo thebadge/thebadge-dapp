@@ -8,6 +8,7 @@ import { A11y, Navigation } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/react'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
+import { useSizeLG, useSizeMD, useSizeSM } from '@/src/hooks/useSize'
 import BadgeTypeMetadata from '@/src/pagePartials/badge/BadgeTypeMetadata'
 import { badgesExampleList } from '@/src/pagePartials/home/SectionBoxes'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
@@ -23,13 +24,16 @@ const growEffect = keyframes`
 `
 
 const now = Math.floor(Date.now() / 1000)
-export default function BadgeListInReview() {
+export default function BadgesInReviewSwiper() {
   const theme = useTheme()
   const router = useRouter()
 
   const { appChainId } = useWeb3Connection()
   const gql = getSubgraphSdkByNetwork(appChainId, SubgraphName.TheBadge)
   const badgesInReview = gql.useBadgesInReview({ date: now })
+  const sm = useSizeSM()
+  const md = useSizeMD()
+  const lg = useSizeLG()
 
   const badgesList = useMemo(() => {
     const badges = badgesInReview.data?.badges.map((badgeInReview) => {
@@ -55,6 +59,18 @@ export default function BadgeListInReview() {
     return [...badges, ...badgesExampleList]
   }, [badgesInReview.data?.badges, router])
 
+  const amountItems = () => {
+    if (sm) {
+      return 1
+    } else if (md) {
+      return 2
+    } else if (lg) {
+      return 3
+    } else {
+      return 4
+    }
+  }
+
   return (
     <Box sx={{ padding: 4, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
       <ArrowBackIosIcon
@@ -73,7 +89,7 @@ export default function BadgeListInReview() {
           prevEl: '.badges-swiper-button-prev',
         }}
         pagination={{ clickable: true }}
-        slidesPerView={4}
+        slidesPerView={amountItems()}
         spaceBetween={25}
       >
         {badgesList.map((badge, index) => (
