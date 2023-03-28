@@ -1,9 +1,11 @@
-import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useRouter } from 'next/router'
+import React, { useState } from 'react'
 
 import {
   Avatar,
   Badge,
+  Box,
+  Button,
   Divider,
   IconButton,
   ListItemIcon,
@@ -12,6 +14,8 @@ import {
   Tooltip,
   styled,
 } from '@mui/material'
+import { useTranslation } from 'next-export-i18n'
+import { colors } from 'thebadge-ui-library'
 
 import { Logout } from '@/src/components/assets/Logout'
 import { SwitchNetwork } from '@/src/components/assets/SwitchNetwork'
@@ -50,6 +54,7 @@ const StyledBadge = styled(Badge)<{ state?: 'ok' | 'error' }>(({ state, theme })
 
 export const UserDropdown: React.FC = () => {
   const router = useRouter()
+  const { t } = useTranslation()
   const { address, blockiesIcon, disconnectWallet, isWalletNetworkSupported } = useWeb3Connection()
 
   const [showNetworkModal, setShowNetworkModal] = useState(false)
@@ -64,6 +69,68 @@ export const UserDropdown: React.FC = () => {
 
   return (
     <>
+      <Box
+        alignItems="center"
+        display="flex"
+        flex={1}
+        justifyContent="space-between"
+        sx={{ columnGap: '10px' }}
+      >
+        <Button
+          color={'white'}
+          onClick={() => {
+            router.push('/badge/explorer')
+          }}
+          sx={{
+            border: `2px solid ${colors.greenLogo}`,
+            borderRadius: '10px',
+            fontSize: '12px !important',
+            padding: '0.5rem 1rem !important',
+            height: 'fit-content !important',
+            lineHeight: '14px',
+            fontWeight: 700,
+            boxShadow: 'none',
+          }}
+        >
+          {t('header.buttons.explore')}
+        </Button>
+        <Button
+          color={'white'}
+          onClick={() => {
+            router.push('/badge/explorer')
+          }}
+          sx={{
+            border: `2px solid ${colors.blue}`,
+            borderRadius: '10px',
+            fontSize: '12px !important',
+            padding: '0.5rem 1rem !important',
+            height: 'fit-content !important',
+            lineHeight: '14px',
+            fontWeight: 700,
+            boxShadow: 'none',
+          }}
+        >
+          {t('header.buttons.curate')}
+        </Button>
+        <Button
+          color={'white'}
+          onClick={() => {
+            router.push('/badge/type/create')
+          }}
+          sx={{
+            border: `2px solid ${colors.pink}`,
+            borderRadius: '10px',
+            fontSize: '12px !important',
+            padding: '0.5rem 1rem !important',
+            height: 'fit-content !important',
+            lineHeight: '14px',
+            fontWeight: 700,
+            boxShadow: 'none',
+          }}
+        >
+          {t('header.buttons.create')}
+        </Button>
+      </Box>
       <Tooltip title="Account settings">
         <IconButton
           aria-controls={open ? 'account-menu' : undefined}
