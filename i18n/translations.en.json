@@ -3,6 +3,11 @@
     "home": "HOME",
     "wallet": {
       "connect": "Connect wallet"
+    },
+    "buttons": {
+      "explore": "EXPLORE",
+      "curate": "CURATE",
+      "create": "CREATE"
     }
   },
   "explorer": {
@@ -16,9 +21,9 @@
     "exploreOtherBadges": "Explore other badges",
     "badgesToCurate": "Browse other badges to curate",
     "createdBadges": "Earn by creating new badges",
-    "tab1": "MY PROFILE",
-    "tab2": "BADGES IN REVIEW",
-    "tab3": "CREATED BADGES"
+    "tab1": "BASIC PROFILE",
+    "tab2": "CURATOR PROFILE",
+    "tab3": "CREATOR PROFILE"
   },
   "errors": {
     "connectWallet": "Please, connect your wallet"
@@ -43,9 +48,8 @@
     }
   },
   "curator": {
-
   },
-  "badge" : {
+  "badge": {
     "type": {
       "create": {
         "title": "Create your Badge Type",
@@ -99,17 +103,17 @@
       "viewEvidence": "Check the provided evidence",
       "checkHowElse": "Check who else claimed it. ",
       "challengeStatus": {
-        "title" : "Challenge Status",
+        "title": "Challenge Status",
         "challenged": "CHALLENGED",
         "requestType": "Request type:",
         "challenger": "Challenger:",
-        "requester":  "Requester:",
+        "requester": "Requester:",
         "arbitrator": "Arbitrator:",
-        "disputeId":  "Dispute ID:",
+        "disputeId": "Dispute ID:",
         "badgeDetails": "BADGE DETAILS",
-        "user":  "User:",
+        "user": "User:",
         "amount": "Amount",
-        "userAddress":  "User address:",
+        "userAddress": "User address:",
         "file": "File:"
       }
     },
