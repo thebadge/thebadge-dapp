@@ -1,5 +1,5 @@
-import { useCallback, useState } from 'react'
 import * as React from 'react'
+import { useCallback, useState } from 'react'
 
 import { Avatar, Box, Stack, Typography } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
@@ -42,10 +42,20 @@ const formGridLayout: DataGrid[][] = [
   [{ i: 'AgreementSchema', x: 0, y: 0, w: 12, h: 8, static: true }],
 ]
 
+const MIN_DISPLAY_NAME_CHARACTERS = 2
+const MAX_DISPLAY_NAME_CHARACTERS = 10
+
 export const RegisterCuratorSchemaStep1 = z.object({
   name: z
     .string()
-    .length(2, 'You need to provide a display name.')
+    .min(
+      MIN_DISPLAY_NAME_CHARACTERS,
+      `The display name should be at least  ${MIN_DISPLAY_NAME_CHARACTERS} characters.`,
+    )
+    .max(
+      MAX_DISPLAY_NAME_CHARACTERS,
+      `The display name should be short than ${MAX_DISPLAY_NAME_CHARACTERS} characters.`,
+    )
     .describe(
       'Display name // This is the name that will be displayed as the author of your badges.',
     ),

@@ -6,7 +6,6 @@ import { colors } from 'thebadge-ui-library'
 import { NoResultsAnimated } from '@/src/components/assets/NoResults'
 import FilteredList, { ListFilter } from '@/src/components/helpers/FilteredList'
 import MiniBadgeTypeMetadata from '@/src/pagePartials/badge/MiniBadgeTypeMetadata'
-import BadgesToCurate from '@/src/pagePartials/profile/inReview/BadgesToCurate'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { SubgraphName, getSubgraphSdkByNetwork } from '@/src/subgraph/subgraph'
 
@@ -62,10 +61,6 @@ export default function BadgesInReviewSection() {
 
   return (
     <>
-      <Box mb={5}>
-        <BadgesToCurate />
-      </Box>
-
       <FilteredList
         color={colors.green}
         disableEdit

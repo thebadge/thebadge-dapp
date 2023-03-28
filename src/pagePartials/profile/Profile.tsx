@@ -5,22 +5,18 @@ import { useTranslation } from 'next-export-i18n'
 
 import LinkWithTranslation from '@/src/components/helpers/LinkWithTranslation'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
+import { useCurrentUser } from '@/src/hooks/useCurrentUser'
 import BadgesCreatedSection from '@/src/pagePartials/profile/created/BadgesCreatedSection'
 import BadgesInReviewSection from '@/src/pagePartials/profile/inReview/BadgesInReviewSection'
 import MyProfileSection from '@/src/pagePartials/profile/myProfile/MyProfileSection'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
-import { SubgraphName, getSubgraphSdkByNetwork } from '@/src/subgraph/subgraph'
 
 const Profile = () => {
   const { t } = useTranslation()
-  const { address, appChainId } = useWeb3Connection()
 
   const params = useSearchParams()
   const filterType = params.get('filter')
 
-  const gql = getSubgraphSdkByNetwork(appChainId, SubgraphName.TheBadge)
-  const userById = gql.useUserById({ id: address || '' })
-  const user = userById.data?.user
+  const user = useCurrentUser()
 
   return (
     <SafeSuspense>
