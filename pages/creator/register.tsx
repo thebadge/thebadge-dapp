@@ -3,7 +3,6 @@ import { useEffect } from 'react'
 
 import { Typography } from '@mui/material'
 import { ethers } from 'ethers'
-import { useTranslation } from 'next-export-i18n'
 import { z } from 'zod'
 
 import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
@@ -28,7 +27,6 @@ export const RegisterCuratorSchema = z
   .merge(RegisterCuratorSchemaStep3)
 
 const Register: NextPageWithLayout = () => {
-  const { t } = useTranslation()
   const { address, appChainId, isWalletConnected } = useWeb3Connection()
   const router = useRouter()
   const { sendTx, state } = useTransaction()
