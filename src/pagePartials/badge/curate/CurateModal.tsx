@@ -7,7 +7,6 @@ import { ButtonV2, colors } from 'thebadge-ui-library'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
-import ChallengeCost from '@/src/pagePartials/badge/challenge/ChallengeCost'
 import ListingCriteriaLink from '@/src/pagePartials/badge/challenge/ListingCriteriaLink'
 import { useChallengeProvider } from '@/src/providers/challengeProvider'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
@@ -171,7 +170,7 @@ function CurateModalContent({
               onClose()
             }}
           >
-            Challenge
+            {t('badge.curate.modal.challengeButton')}
           </ButtonV2>
         </Box>
       </Stack>

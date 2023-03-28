@@ -51,6 +51,8 @@
 
   },
   "badge": {
+    "mintButton": "Claim it",
+    "curateButton": "Curate",
     "type": {
       "create": {
         "title": "Create your Badge Type",
@@ -131,7 +133,8 @@
       "modal": {
         "evidence": "Badge evidence",
         "viewEvidence": "View evidence raw file",
-        "listingCriteria": "Listing Criteria"
+        "listingCriteria": "Listing Criteria",
+        "challengeButton": "Challenge"
       }
     }
   },
