@@ -1,10 +1,8 @@
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 
-import { Stack, Typography } from '@mui/material'
+import { Typography } from '@mui/material'
 import { ethers } from 'ethers'
-import { useTranslation } from 'next-export-i18n'
-import { colors } from 'thebadge-ui-library'
 import { z } from 'zod'
 
 import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
@@ -29,7 +27,6 @@ export const RegisterCuratorSchema = z
   .merge(RegisterCuratorSchemaStep3)
 
 const Register: NextPageWithLayout = () => {
-  const { t } = useTranslation()
   const { address, appChainId, isWalletConnected } = useWeb3Connection()
   const router = useRouter()
   const { sendTx, state } = useTransaction()
@@ -81,15 +78,6 @@ const Register: NextPageWithLayout = () => {
 
   return (
     <>
-      <Stack sx={{ mb: 6, gap: 4, alignItems: 'center' }}>
-        <Typography color={colors.purple} textAlign="center" variant="title2">
-          {t('creator.register.title')}
-        </Typography>
-
-        <Typography textAlign="justify" variant="body4" width="85%">
-          {t('creator.register.sub-title')}
-        </Typography>
-      </Stack>
       <RegistrationSteps onSubmit={onSubmit} txState={state} />
     </>
   )

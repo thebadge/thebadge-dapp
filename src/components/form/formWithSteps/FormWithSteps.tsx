@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { Stack, StepContent } from '@mui/material'
 import Box from '@mui/material/Box'
@@ -24,6 +24,7 @@ type FormWithStepsProps = {
   onSubmit: (data: any) => void
   formSubmitReview: (data: any) => React.ReactNode
   hideSubmit?: boolean
+  onStepChanged?: (stepNumber: number) => void
 }
 
 export function FormWithSteps({
@@ -32,6 +33,7 @@ export function FormWithSteps({
   formLayout,
   formSubmitReview,
   hideSubmit,
+  onStepChanged,
   onSubmit,
   stepNames,
   stepSchemas,
@@ -48,6 +50,11 @@ export function FormWithSteps({
   const [completed, setCompleted] = React.useState<{
     [k: number]: boolean
   }>({})
+
+  // Notify the parent component the change state
+  useEffect(() => {
+    if (onStepChanged) onStepChanged(activeStep)
+  }, [activeStep, onStepChanged])
 
   const totalSteps = () => {
     return stepSchemas.length

@@ -1,11 +1,8 @@
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 
-import { Stack, Typography } from '@mui/material'
 import { constants } from 'ethers'
 import { defaultAbiCoder, parseUnits } from 'ethers/lib/utils'
-import { useTranslation } from 'next-export-i18n'
-import { colors } from 'thebadge-ui-library'
 import { z } from 'zod'
 
 import { isMetadataColumnArray } from '@/src/components/form/helpers/validators'
@@ -23,7 +20,6 @@ import { NextPageWithLayout } from '@/types/next'
 import { Severity } from '@/types/utils'
 
 const CreateBadgeType: NextPageWithLayout = () => {
-  const { t } = useTranslation()
   const { sendTx, state } = useTransaction()
   const router = useRouter()
 
@@ -135,16 +131,6 @@ const CreateBadgeType: NextPageWithLayout = () => {
 
   return (
     <>
-      <Stack sx={{ mb: 6, gap: 4, alignItems: 'center' }}>
-        <Typography color={colors.purple} textAlign="center" variant="title2">
-          {t('badge.type.create.title')}
-        </Typography>
-
-        <Typography color={colors.white} textAlign="justify" variant="body3" width="85%">
-          {t('badge.type.create.sub-title')}
-        </Typography>
-      </Stack>
-
       <CreateSteps onSubmit={onSubmit} txState={state} />
     </>
   )

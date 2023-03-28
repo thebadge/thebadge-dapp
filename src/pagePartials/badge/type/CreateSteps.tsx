@@ -1,10 +1,12 @@
+import { useState } from 'react'
 import * as React from 'react'
 
 import { Stack, Typography } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
-import { BadgePreviewV2 } from 'thebadge-ui-library'
+import { BadgePreviewV2, colors } from 'thebadge-ui-library'
 import { z } from 'zod'
 
+import MarkdownTypography from '@/src/components/common/MarkdownTypography'
 import { DataGrid } from '@/src/components/form/customForms/type'
 import { FormWithSteps } from '@/src/components/form/formWithSteps/FormWithSteps'
 import {
@@ -19,7 +21,7 @@ import {
   SeverityTypeSchema,
 } from '@/src/components/form/helpers/customSchemas'
 import { TransactionLoading } from '@/src/components/loading/TransactionLoading'
-import { APP_URL, IS_DEVELOP } from '@/src/constants/common'
+import { APP_URL, DISCORD_URL, DOCS_URL, IS_DEVELOP } from '@/src/constants/common'
 import { TransactionStates } from '@/src/hooks/useTransaction'
 
 const MintSchemaStep1 = z.object({
@@ -73,7 +75,7 @@ type MintStepsProps = {
 const steps = ['Help', 'Badge type basics', 'Evidence form', 'Badge Type Preview']
 
 const formGridLayout: DataGrid[][] = [
-  [{ i: 'AgreementSchema', x: 0, y: 0, w: 12, h: 8, static: true }],
+  [{ i: 'AgreementSchema', x: 0, y: 0, w: 12, h: 7, static: true }],
   [
     { i: 'TextField', x: 0, y: 0, w: 3, h: 1, static: true },
     { i: 'DescriptionTextSchema', x: 0, y: 1.5, w: 3, h: 4, static: true },
@@ -89,6 +91,7 @@ const formGridLayout: DataGrid[][] = [
 
 export default function CreateSteps({ onSubmit, txState }: MintStepsProps) {
   const { t } = useTranslation()
+  const [currentStep, setCurrentStep] = useState(0)
 
   const handleOnSubmit = (data: z.infer<typeof BadgeTypeCreateSchema>) => {
     onSubmit(data)
@@ -119,26 +122,51 @@ export default function CreateSteps({ onSubmit, txState }: MintStepsProps) {
   }
 
   return (
-    <FormWithSteps
-      formFieldProps={[
-        {
-          help: {
-            agreementText: t('badge.type.create.help-steps'),
+    <>
+      <Stack sx={{ mb: 6, gap: 4, alignItems: 'center' }}>
+        <Typography color={colors.purple} textAlign="center" variant="title2">
+          {t('badge.type.create.title')}
+        </Typography>
+
+        <MarkdownTypography textAlign="justify" variant="body3" width="85%">
+          {t(`badge.type.create.steps.${currentStep}.sub-title`, {
+            docsUrl: DOCS_URL + '/thebadge-documentation/overview/how-it-works',
+            criteriaDocsUrl: DOCS_URL + '/thebadge-documentation/overview/how-it-works',
+            createBadgeTypeDocs: DOCS_URL + '/thebadge-documentation/overview/how-it-works',
+          })}
+        </MarkdownTypography>
+      </Stack>
+
+      <FormWithSteps
+        formFieldProps={[
+          {
+            help: {
+              agreementText: t('badge.type.create.help-steps', {
+                listingCriteriaDocsUrl:
+                  DOCS_URL + '/thebadge-documentation/overview/how-it-works/challenge',
+                listingCriteriaStandardDocsUrl:
+                  DOCS_URL + '/thebadge-documentation/overview/how-it-works/challenge',
+                termsUrls: '/terms',
+                docsUrl: DOCS_URL,
+                discordUrl: DISCORD_URL,
+              }),
+            },
           },
-        },
-        {
-          mintCost: {
-            decimals: 4,
+          {
+            mintCost: {
+              decimals: 4,
+            },
           },
-        },
-      ]}
-      formGridLayout={formGridLayout}
-      formLayout={'gridResponsive'}
-      formSubmitReview={handleFormPreview}
-      hideSubmit={txState !== TransactionStates.none}
-      onSubmit={handleOnSubmit}
-      stepNames={steps}
-      stepSchemas={[MintSchemaStep1, MintSchemaStep2, MintSchemaStep3]}
-    />
+        ]}
+        formGridLayout={formGridLayout}
+        formLayout={'gridResponsive'}
+        formSubmitReview={handleFormPreview}
+        hideSubmit={txState !== TransactionStates.none}
+        onStepChanged={(sn) => setCurrentStep(sn)}
+        onSubmit={handleOnSubmit}
+        stepNames={steps}
+        stepSchemas={[MintSchemaStep1, MintSchemaStep2, MintSchemaStep3]}
+      />
+    </>
   )
 }

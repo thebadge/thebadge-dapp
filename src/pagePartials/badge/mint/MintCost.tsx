@@ -4,16 +4,13 @@ import * as React from 'react'
 import ReportProblemOutlinedIcon from '@mui/icons-material/ReportProblemOutlined'
 import { Box, Divider, Stack, Typography } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
-import ReactMarkdown from 'react-markdown'
-import remarkGfm from 'remark-gfm'
 import { colors } from 'thebadge-ui-library'
 
+import MarkdownTypography from '@/src/components/common/MarkdownTypography'
 import { getNetworkConfig } from '@/src/config/web3'
 import { DOCS_URL } from '@/src/constants/common'
-import useS3Metadata from '@/src/hooks/useS3Metadata'
+import useBadgeType from '@/src/hooks/useBadgeType'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
-import { SubgraphName, getSubgraphSdkByNetwork } from '@/src/subgraph/subgraph'
-import { KlerosListStructure } from '@/src/utils/kleros/generateKlerosListMetaEvidence'
 
 type Props = {
   costs: {
@@ -32,19 +29,20 @@ export default function MintCost({ costs }: Props) {
   if (!typeId) {
     throw `No typeId provided as URL query param`
   }
+  const badgeTypeData = useBadgeType(typeId)
 
-  const gql = getSubgraphSdkByNetwork(appChainId, SubgraphName.TheBadge)
-  const badgeType = gql.useBadgeType({ id: typeId })
-  const challengePeriodDuration = badgeType.data?.badgeType?.klerosBadge?.challengePeriodDuration
-
-  const klerosMetadataURL = badgeType.data?.badgeType?.klerosBadge?.klerosMetadataURL
-
-  if (!klerosMetadataURL) {
-    throw 'There was not possible to get the needed metadata. Try again in some minutes.'
+  if (
+    badgeTypeData.error ||
+    !badgeTypeData.data?.badgeType ||
+    !badgeTypeData.data?.badgeTypeMetadata
+  ) {
+    throw `There was an error trying to fetch the metadata for the badge type`
   }
 
-  const metadata = useS3Metadata<{ content: KlerosListStructure }>(klerosMetadataURL)
-  const fileURI = metadata?.data?.content.fileURI
+  const challengePeriodDuration =
+    badgeTypeData.data?.badgeType?.klerosBadge?.challengePeriodDuration
+
+  const fileURI = badgeTypeData.data?.badgeTypeMetadata?.fileURI
 
   if (!fileURI) {
     throw 'There was not possible to get the needed metadata. Try again in some minutes.'
@@ -52,8 +50,6 @@ export default function MintCost({ costs }: Props) {
 
   const criteriaUrl = 's3Url' in fileURI ? fileURI.s3Url : ''
 
-  // 👇	ReactMarkdown needs to have the children as a prop
-  /* eslint-disable react/no-children-prop */
   return (
     <Stack
       sx={{
@@ -74,9 +70,7 @@ export default function MintCost({ costs }: Props) {
         </Stack>
         <Box display="flex" flex={1} gap={2}>
           <ReportProblemOutlinedIcon sx={{ m: 'auto' }} />
-          {/* ReactMarkdown want it in this way  */}
-          <Typography
-            component="div"
+          <MarkdownTypography
             sx={{
               display: 'flex',
               alignItems: 'center',
@@ -84,22 +78,12 @@ export default function MintCost({ costs }: Props) {
             }}
             variant="subtitle2"
           >
-            <ReactMarkdown
-              children={t('badge.type.mint.depositDisclaimer', {
-                docsUrl: DOCS_URL + '/thebadge-documentation/overview/how-it-works/challenge',
-                challengePeriodDuration: challengePeriodDuration / 60 / 60,
-                timeUnit: 'days',
-              })}
-              components={{
-                a: ({ node, ...props }) => (
-                  <a {...props} target="_blank">
-                    here
-                  </a>
-                ),
-              }}
-              remarkPlugins={[remarkGfm]}
-            />
-          </Typography>
+            {t('badge.type.mint.depositDisclaimer', {
+              docsUrl: DOCS_URL + '/thebadge-documentation/overview/how-it-works/challenge',
+              challengePeriodDuration: challengePeriodDuration / 60 / 60,
+              timeUnit: 'days',
+            })}
+          </MarkdownTypography>
         </Box>
       </Box>
       <Divider />
