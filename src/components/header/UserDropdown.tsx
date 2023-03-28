@@ -20,6 +20,7 @@ import { colors } from 'thebadge-ui-library'
 import { Logout } from '@/src/components/assets/Logout'
 import { SwitchNetwork } from '@/src/components/assets/SwitchNetwork'
 import { ModalSwitchNetwork } from '@/src/components/helpers/ModalSwitchNetwork'
+import { useCurrentUser } from '@/src/hooks/useCurrentUser'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { truncateStringInTheMiddle } from '@/src/utils/strings'
 
@@ -52,10 +53,23 @@ const StyledBadge = styled(Badge)<{ state?: 'ok' | 'error' }>(({ state, theme })
   },
 }))
 
+const StyledButton = styled(Button)<{ border?: string }>(({ border }) => ({
+  color: 'white',
+  border,
+  borderRadius: '10px',
+  fontSize: '12px !important',
+  padding: '0.5rem 1rem !important',
+  height: 'fit-content !important',
+  lineHeight: '14px',
+  fontWeight: 700,
+  boxShadow: 'none',
+}))
+
 export const UserDropdown: React.FC = () => {
   const router = useRouter()
   const { t } = useTranslation()
   const { address, blockiesIcon, disconnectWallet, isWalletNetworkSupported } = useWeb3Connection()
+  const user = useCurrentUser()
 
   const [showNetworkModal, setShowNetworkModal] = useState(false)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -76,60 +90,31 @@ export const UserDropdown: React.FC = () => {
         justifyContent="space-between"
         sx={{ columnGap: '10px' }}
       >
-        <Button
-          color={'white'}
+        <StyledButton
+          border={`2px solid ${colors.greenLogo}`}
           onClick={() => {
             router.push('/badge/explorer')
-          }}
-          sx={{
-            border: `2px solid ${colors.greenLogo}`,
-            borderRadius: '10px',
-            fontSize: '12px !important',
-            padding: '0.5rem 1rem !important',
-            height: 'fit-content !important',
-            lineHeight: '14px',
-            fontWeight: 700,
-            boxShadow: 'none',
           }}
         >
           {t('header.buttons.explore')}
-        </Button>
-        <Button
-          color={'white'}
+        </StyledButton>
+        <StyledButton
+          border={`2px solid ${colors.blue}`}
           onClick={() => {
             router.push('/badge/explorer')
           }}
-          sx={{
-            border: `2px solid ${colors.blue}`,
-            borderRadius: '10px',
-            fontSize: '12px !important',
-            padding: '0.5rem 1rem !important',
-            height: 'fit-content !important',
-            lineHeight: '14px',
-            fontWeight: 700,
-            boxShadow: 'none',
-          }}
         >
           {t('header.buttons.curate')}
-        </Button>
-        <Button
-          color={'white'}
+        </StyledButton>
+        <StyledButton
+          border={`2px solid ${colors.pink}`}
+          disabled={!user || !user?.isCreator}
           onClick={() => {
             router.push('/badge/type/create')
           }}
-          sx={{
-            border: `2px solid ${colors.pink}`,
-            borderRadius: '10px',
-            fontSize: '12px !important',
-            padding: '0.5rem 1rem !important',
-            height: 'fit-content !important',
-            lineHeight: '14px',
-            fontWeight: 700,
-            boxShadow: 'none',
-          }}
         >
           {t('header.buttons.create')}
-        </Button>
+        </StyledButton>
       </Box>
       <Tooltip title="Account settings">
         <IconButton
