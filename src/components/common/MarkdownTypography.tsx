@@ -1,5 +1,5 @@
-import { ReactNode } from 'react'
 import * as React from 'react'
+import { ReactNode } from 'react'
 
 import { Typography, TypographyProps } from '@mui/material'
 import ReactMarkdown from 'react-markdown'
@@ -28,11 +28,17 @@ export default function MarkdownTypography({ children, ...rest }: Props) {
               {props.children}
             </a>
           ),
-          li: ({ node, ...props }) => (
-            <li {...props} style={{ listStyleType: 'circle', marginLeft: '20px' }}>
-              {props.children}
-            </li>
-          ),
+          li: ({ node, ...props }) => {
+            const fixedProps = {
+              ...props,
+              ordered: props?.ordered?.toString(),
+            }
+            return (
+              <li {...fixedProps} style={{ listStyleType: 'circle', marginLeft: '20px' }}>
+                {props.children}
+              </li>
+            )
+          },
         }}
         remarkPlugins={[remarkGfm]}
       />
