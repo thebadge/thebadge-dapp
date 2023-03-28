@@ -1,18 +1,19 @@
 import { useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/navigation'
 
-import { Box, Button, Stack, Tooltip } from '@mui/material'
+import { Box, Stack, Tooltip } from '@mui/material'
+import { ButtonV2, colors } from 'thebadge-ui-library'
 
 import SafeSuspense, { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import BadgeOwnedPreview from '@/src/pagePartials/badge/preview/BadgeOwnedPreview'
 import ChallengeStatus from '@/src/pagePartials/badge/preview/ChallengeStatus'
-import { useChallengeProvider } from '@/src/providers/challengeProvider'
+import { useCurateProvider } from '@/src/providers/curateProvider'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { NextPageWithLayout } from '@/types/next'
 
 const ViewBadge: NextPageWithLayout = () => {
   const { address } = useWeb3Connection()
-  const { challenge } = useChallengeProvider()
+  const { curate } = useCurateProvider()
   const router = useRouter()
 
   const searchParams = useSearchParams()
@@ -27,28 +28,28 @@ const ViewBadge: NextPageWithLayout = () => {
     <Box sx={{ position: 'relative' }}>
       <Stack maxWidth={900} mx={'auto'}>
         <BadgeOwnedPreview />
-        <Box display="flex" justifyContent="space-evenly" maxWidth={300}>
+        <Box display="flex" justifyContent="space-between">
           <Tooltip title={address === ownerAddress ? 'You already own this badge.' : ''}>
             <span>
-              <Button
-                color="purple"
+              <ButtonV2
+                backgroundColor={colors.purple}
                 disabled={address === ownerAddress}
+                fontColor={colors.white}
                 onClick={() => router.push(`/badge/mint/${typeId}`)}
-                sx={{ borderRadius: 3, fontSize: '11px !important' }}
               >
                 Apply for it
-              </Button>
+              </ButtonV2>
             </span>
           </Tooltip>
 
-          <Button
-            color="error"
-            onClick={() => challenge(typeId, ownerAddress)}
-            sx={{ borderRadius: 3, fontSize: '11px !important' }}
-            variant="contained"
+          <ButtonV2
+            backgroundColor={colors.blue}
+            disabled={address === ownerAddress}
+            fontColor={colors.white}
+            onClick={() => curate(typeId, ownerAddress)}
           >
-            Challenge
-          </Button>
+            Curate
+          </ButtonV2>
         </Box>
         <SafeSuspense>
           <ChallengeStatus />

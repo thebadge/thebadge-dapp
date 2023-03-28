@@ -101,7 +101,6 @@
     "viewBadge": {
       "issueBy": "Issued by: {{issuer}}",
       "claims": " # of claims",
-      "viewEvidence": "Check the provided evidence",
       "checkHowElse": "Check who else claimed it. ",
       "challengeStatus": {
         "title": "Challenge Status",
@@ -126,6 +125,13 @@
         "readCriteria": "Read the ",
         "listingCriteria": "Listing Criteria",
         "toAvoid": " to avoid wrong challenge requests."
+      }
+    },
+    "curate": {
+      "modal": {
+        "evidence": "Badge evidence",
+        "viewEvidence": "View evidence raw file",
+        "listingCriteria": "Listing Criteria"
       }
     }
   },

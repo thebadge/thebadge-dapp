@@ -38,9 +38,6 @@ export default function BadgeOwnedPreview() {
   const res: any = useS3Metadata(badgeType?.metadataURL || '')
   const badgeMetadata = res.data.content
 
-  const evidenceRes: any = useS3Metadata(badge?.evidenceMetadataUrl || '')
-  const badgeEvidenceUrl = evidenceRes.data.s3Url
-
   function handleShare() {
     navigator.clipboard.writeText(window.location.href)
     notify({ message: 'URL Copied to clipboard', type: ToastStates.info })
@@ -54,7 +51,7 @@ export default function BadgeOwnedPreview() {
           <Image alt="Challenged badge" src={challengedLogo} />
         </Box>
       )}
-      <Box display="flex" flex={1} gap={4} justifyContent="space-evenly" my={4}>
+      <Box display="flex" flex={1} gap={4} justifyContent="space-between" my={4}>
         <Box display="flex">
           <BadgeTypeMetadata metadata={badgeType?.metadataURL} />
         </Box>
@@ -69,11 +66,8 @@ export default function BadgeOwnedPreview() {
             >
               {badgeMetadata.name}
             </Typography>
-            <Typography
-              sx={{ color: colors.green, fontSize: 10, fontWeight: 'bold' }}
-              variant="caption"
-            >
-              BadgeID: {typeId}
+            <Typography sx={{ color: colors.green, fontWeight: 'bold' }} variant="caption">
+              Badge type ID: {typeId}
             </Typography>
           </Stack>
           <Divider color={colors.white} />
@@ -82,13 +76,6 @@ export default function BadgeOwnedPreview() {
               {t('badge.viewBadge.issueBy', { issuer: 'TheBadge' })}
             </Typography>
             <Typography variant="dAppBody1">{badgeMetadata.description}</Typography>
-            <Box ml={'auto'} mt={'auto'}>
-              <Typography sx={{ textDecoration: 'underline !important' }} variant="body4">
-                <a href={badgeEvidenceUrl} rel="noreferrer" target="_blank">
-                  {t('badge.viewBadge.viewEvidence')}
-                </a>
-              </Typography>
-            </Box>
           </Stack>
           <Divider color={colors.white} />
           <Typography

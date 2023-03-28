@@ -27,7 +27,7 @@ export default function ListingCriteriaLink({ badgeTypeId }: { badgeTypeId: stri
   const badgeCriteria = 's3Url' in badgeTypeMetadata.fileURI ? badgeTypeMetadata.fileURI.s3Url : ''
 
   return (
-    <Typography variant="dAppBody1">
+    <Typography fontSize={14} variant="dAppBody1">
       {t('badge.challenge.modal.readCriteria')}
       <a
         href={badgeCriteria}
