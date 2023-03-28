@@ -20,21 +20,17 @@ import { TransactionStates } from '@/src/hooks/useTransaction'
 import MintCost from '@/src/pagePartials/badge/mint/MintCost'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import enrichTextWithValues, { EnrichTextValues } from '@/src/utils/enrichTextWithValues'
+import { Creator } from '@/types/badges/Creator'
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 type MintStepsProps<SchemaType extends z.ZodEffects<any, any, any> | AnyZodObject = any> = {
   txState: TransactionStates
   onSubmit: (data: z.TypeOf<SchemaType>, imageDataUrl: string) => void
   evidenceSchema: SchemaType
-
   costs: {
     mintCost: string
     klerosCost: string
     totalMintCost: string
-  }
-  creator: {
-    name: string
-    email: string
   }
 }
 
@@ -49,13 +45,7 @@ export const MintSchemaStep1 = z.object({
   help: AgreementSchema.describe(`Mint badge quick tutorial.`),
 })
 
-export default function MintSteps({
-  costs,
-  creator,
-  evidenceSchema,
-  onSubmit,
-  txState,
-}: MintStepsProps) {
+export default function MintSteps({ costs, evidenceSchema, onSubmit, txState }: MintStepsProps) {
   const { t } = useTranslation()
   const { address } = useWeb3Connection()
   const searchParams = useSearchParams()
@@ -82,6 +72,9 @@ export default function MintSteps({
 
   const badgeLogoData = useS3Metadata<{ s3Url: string }>(
     badgeMetadata.metadata.logoURI as unknown as string,
+  )
+  const badgeCreatorMetadata = useS3Metadata<{ content: Creator }>(
+    badgeTypeData.data?.badgeType?.creator.creatorMetadata || '',
   )
 
   const badgeCriteria = 's3Url' in badgeMetadata.fileURI ? badgeMetadata.fileURI.s3Url : ''
@@ -166,8 +159,8 @@ export default function MintSteps({
         <MarkdownTypography textAlign="justify" variant="body3" width="85%">
           {t(`badge.type.mint.steps.${currentStep}.sub-title`, {
             badgeName: badgeMetadata.name,
-            creatorContact: `mailto:${creator.email}`,
-            badgeCreatorName: creator.name,
+            creatorContact: `mailto:${badgeCreatorMetadata.data?.content?.email}`,
+            badgeCreatorName: badgeCreatorMetadata.data?.content?.name,
             curationDocsUrl: DOCS_URL + '/thebadge-documentation/overview/how-it-works/challenge',
             costDocsUrls: DOCS_URL + '/thebadge-documentation/overview/how-it-works/challenge',
           })}
@@ -179,7 +172,7 @@ export default function MintSteps({
           {
             help: {
               agreementText: t('badge.type.mint.help-steps', {
-                badgeCreatorName: '',
+                badgeCreatorName: badgeCreatorMetadata.data?.content?.name,
                 curationDocsUrl:
                   DOCS_URL + '/thebadge-documentation/overview/how-it-works/challenge',
                 listingCriteriaUrl: badgeCriteria,

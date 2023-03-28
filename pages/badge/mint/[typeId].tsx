@@ -10,7 +10,6 @@ import klerosSchemaFactory from '@/src/components/form/helpers/validators'
 import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import useBadgeType from '@/src/hooks/useBadgeType'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
-import useS3Metadata from '@/src/hooks/useS3Metadata'
 import useTransaction, { TransactionStates } from '@/src/hooks/useTransaction'
 import MintSteps from '@/src/pagePartials/badge/mint/MintSteps'
 import useKlerosDepositPrice from '@/src/pagePartials/badge/useKlerosDepositPrice'
@@ -22,8 +21,8 @@ import { NextPageWithLayout } from '@/types/next'
 const MintBadgeType: NextPageWithLayout = () => {
   const { address } = useWeb3Connection()
   const theBadge = useContractInstance(TheBadge__factory, 'TheBadge')
-  const router = useRouter()
   const { sendTx, state } = useTransaction()
+  const router = useRouter()
 
   const badgeTypeId = router.query.typeId as string
   if (!badgeTypeId) {
@@ -49,11 +48,6 @@ const MintBadgeType: NextPageWithLayout = () => {
 
   const badgeType = badgeTypeData.data?.badgeType
   const badgeTypeMetadata = badgeTypeData.data?.badgeTypeMetadata
-
-  // TODO Add Creator type
-  const badgeCreatorMetadata = useS3Metadata<{ content: any }>(
-    badgeType?.creator.creatorMetadata || '',
-  )
 
   // Get kleros deposit value for the badge type
   const klerosCost = useKlerosDepositPrice(badgeTypeId)
@@ -101,8 +95,6 @@ const MintBadgeType: NextPageWithLayout = () => {
     }
   }
 
-  const creator = badgeCreatorMetadata.data?.content
-
   return (
     <>
       <MintSteps
@@ -111,7 +103,6 @@ const MintBadgeType: NextPageWithLayout = () => {
           totalMintCost: formatUnits(totalMintCost, 18),
           klerosCost: formatUnits(klerosCost, 18),
         }}
-        creator={creator}
         evidenceSchema={CreateBadgeSchema}
         onSubmit={onSubmit}
         txState={state}
