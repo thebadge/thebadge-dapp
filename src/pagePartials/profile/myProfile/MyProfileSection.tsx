@@ -4,7 +4,6 @@ import { Box, useTheme } from '@mui/material'
 import { SectionLayout, colors } from 'thebadge-ui-library'
 
 import BadgesYouOwnList from '@/src/pagePartials/profile/myProfile/BadgesYouOwnList'
-import ExploreOtherBadges from '@/src/pagePartials/profile/myProfile/ExploreOtherBadges'
 import NearToExpire from '@/src/pagePartials/profile/myProfile/NearToExpire'
 import Pending from '@/src/pagePartials/profile/myProfile/Pending'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
@@ -51,10 +50,6 @@ export default function MyProfileSection() {
             borderRadius: '15px !important',
           }}
         />
-      </Box>
-
-      <Box mb={5}>
-        <ExploreOtherBadges />
       </Box>
 
       <BadgesYouOwnList address={address} />

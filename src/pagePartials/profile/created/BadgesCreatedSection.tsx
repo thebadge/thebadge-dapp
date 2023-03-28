@@ -7,7 +7,6 @@ import { useTranslation } from 'next-export-i18n'
 import { NoResultsAnimated } from '@/src/components/assets/NoResults'
 import FilteredList, { ListFilter } from '@/src/components/helpers/FilteredList'
 import MiniBadgeTypeMetadata from '@/src/pagePartials/badge/MiniBadgeTypeMetadata'
-import CreateNewBadge from '@/src/pagePartials/profile/created/CreateNewBadge'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { SubgraphName, getSubgraphSdkByNetwork } from '@/src/subgraph/subgraph'
 
@@ -76,10 +75,6 @@ export default function BadgesCreatedSection() {
 
   return (
     <>
-      <Box mb={5}>
-        <CreateNewBadge />
-      </Box>
-
       <FilteredList
         categories={['Category 1', 'Category 2', 'Category 3']}
         filters={[]}
