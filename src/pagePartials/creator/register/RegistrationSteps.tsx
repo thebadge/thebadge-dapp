@@ -42,12 +42,17 @@ const formGridLayout: DataGrid[][] = [
   [{ i: 'AgreementSchema', x: 0, y: 0, w: 12, h: 8, static: true }],
 ]
 
+const MIN_DISPLAY_NAME_CHARACTERS = 2
 const MAX_DISPLAY_NAME_CHARACTERS = 10
 
 export const RegisterCuratorSchemaStep1 = z.object({
   name: z
     .string()
-    .length(
+    .min(
+      MIN_DISPLAY_NAME_CHARACTERS,
+      `The display name should be at least  ${MIN_DISPLAY_NAME_CHARACTERS} characters.`,
+    )
+    .max(
       MAX_DISPLAY_NAME_CHARACTERS,
       `The display name should be short than ${MAX_DISPLAY_NAME_CHARACTERS} characters.`,
     )
