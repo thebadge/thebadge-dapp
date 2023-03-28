@@ -14,9 +14,9 @@ import { BackendResponse } from '@/types/utils'
  */
 export default function useBadgeType(typeId: string) {
   const { appChainId } = useWeb3Connection()
-  return useSWR(typeId.length ? `BadgeType:${typeId}` : null, async (_typeId) => {
+  return useSWR(typeId.length ? `BadgeType:${typeId}` : null, async (_typeId: string) => {
     const gql = getSubgraphSdkByNetwork(appChainId, SubgraphName.TheBadge)
-    const badgeType = await gql.badgeType({ id: _typeId })
+    const badgeType = await gql.badgeType({ id: typeId })
 
     const badgeTypeData = badgeType.badgeType
 
