@@ -97,7 +97,7 @@ export default function LogoInBeta() {
       />
       <defs>
         <filter
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
           filterUnits="userSpaceOnUse"
           height="44.498"
           id="filter0_d_4327_6856"
