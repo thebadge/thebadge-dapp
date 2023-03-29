@@ -39,7 +39,7 @@
           "sub-title": "Do you want to design and publish custom badges that other users can apply for to verify real-world information? Also, you could set the price for the badges you create and receive a share of the fee when users apply for them...So please, complete the form and let´s start creating!"
         },
         {
-          "sub-title": "Please complete at least one contact channel, it will be used to send you information about your badges and will be the main contact channel for your badge users in case they have questions about the listing criteria."
+          "sub-title": "Please complete at least one contact channel, it will be used to send you information about your badges and will be the main contact channel for your badge users in case they have questions about the curation criteria."
         },
         {
           "sub-title": ""
@@ -48,7 +48,6 @@
     }
   },
   "curator": {
-
   },
   "badge": {
     "mintButton": "Apply for it",
@@ -57,7 +56,7 @@
       "create": {
         "title": "Create your Badge Type",
         "sub-title": "Do you want to design and publish custom badges that other users can apply for to verify real-world information? Also, you could set the price for the badges you create and receive a share of the fee when users apply for them...So please, complete the form and let´s start creating!",
-        "help-steps": "- For creating a badge type you will have to set up the name, description, and logo that users will see when searching for badges\n\n - You also have to upload **listing criteria**. For guidelines and examples about how to define good listing criteria please check our [docs]({{listingCriteriaDocsUrl}})\n\n* Please note that in order for your badge type to be approved and listed, the listing criteria should be in compliance with the [listing criteria standards]({{listingCriteriaStandardDocsUrl}}) and the [terms and conditions]({{termsUrls}})\n\n* If you have any doubts please check the [docs]({{docsUrl}}) or ask for help in our [discord]({{discordUrl}}).\n",
+        "help-steps": "- For creating a badge type you will have to set up the name, description, and logo that users will see when searching for badges\n\n - You also have to upload **curation criteria**. For guidelines and examples about how to define good curation criteria please check our [docs]({{curationCriteriaDocsUrl}})\n\n* Please note that in order for your badge type to be approved and listed, the curation criteria should be in compliance with the [curation criteria standards]({{curationCriteriaStandardDocsUrl}}) and the [terms and conditions]({{termsUrls}})\n\n* If you have any doubts please check the [docs]({{docsUrl}}) or ask for help in our [discord]({{discordUrl}}).\n",
         "previewTitle": "This is how your new badge type will look like",
         "steps": [
           {
@@ -67,7 +66,7 @@
             "sub-title": "In order to create a new badge type you have to complete the following form containing the basic configuration of your badge. For examples or more details about how to create a good badge type, please check our [docs]({{docsUrl}})."
           },
           {
-            "sub-title": "You have to define the fields your badge minters will have to complete in order to accomplish your badge listing criteria. The listing criteria should match with the fields you are requesting for your users and should complain with TheBadge badge [type criteria]({{criteriaDocsUrl}}), otherwise, your badge type will be rejected. For examples or more details about how to create a good badge type, please check our [docs]({{createBadgeTypeDocs}})."
+            "sub-title": "You have to define the fields your badge minters will have to complete in order to accomplish your badge curation criteria. The curation criteria should match with the fields you are requesting for your users and should complain with TheBadge badge [type criteria]({{criteriaDocsUrl}}), otherwise, your badge type will be rejected. For examples or more details about how to create a good badge type, please check our [docs]({{createBadgeTypeDocs}})."
           },
           {
             "sub-title": "This is how your badge is going to look like when a user obtain it."
@@ -76,13 +75,14 @@
       },
       "mint": {
         "title": "Badge Mint",
-        "help-steps": "* Please be aware that you have to provide certain proofs defined by {{badgeCreatorName}} \n\n* These proofs will allow the community of curators to validate that you are eligible for obtaining the badge, for more details please check the [docs]({{curationDocsUrl}})\n\n* Please note that the proofs should complain to the [following guidelines]({{listingCriteriaUrl}}) in order to be approved.\n\n* After you submitted the request, the curation process will start and it would take up to *{{challengePeriodDuration}} {{timeUnit}}* to finish, meanwhile, your badge will be in review. Once the duration ends, it will be automatically available in your profile. For more information about this process, check the [docs]({{curationDocsUrl}})",
+        "help-steps": "* Please be aware that you have to provide certain proofs defined by {{badgeCreatorName}} \n\n* These proofs will allow the community of curators to validate that you are eligible for obtaining the badge, for more details please check the [docs]({{curationDocsUrl}})\n\n* Please note that the proofs should complain to the [following guidelines]({{curationCriteriaUrl}}) in order to be approved.\n\n* After you submitted the request, the curation process will start and it would take up to *{{challengePeriodDuration}} {{timeUnit}}* to finish, meanwhile, your badge will be in review. Once the duration ends, it will be automatically available in your profile. For more information about this process, check the [docs]({{curationDocsUrl}})",
         "previewTitle": "This is how your Badge is going to look like",
         "depositCost": "Curation deposit ",
         "depositDisclaimer": "Note that this is a deposit, not a fee and it will be reimbursed if the request is accepted. The challenge period last *{{challengePeriodDuration}} {{timeUnit}}*. For more information check the [docs]({{docsUrl}})",
         "mintCost": "Badge fee ",
         "totalCost": "Total need: {{cost}} ",
         "makeSure": "Make sure your submission complies with the ",
+        "curationCriteria": "Curation Criteria",
         "avoidChallenges": " to avoid challenges.",
         "steps": [
           {
@@ -125,7 +125,7 @@
         "remove": "Remove Badge",
         "explainWhy": "Explain de jurors why do you think this items should de removed.",
         "readCriteria": "Read the ",
-        "listingCriteria": "Listing Criteria",
+        "curationCriteria": "Curation Criteria",
         "toAvoid": " to avoid wrong challenge requests."
       }
     },
@@ -133,7 +133,7 @@
       "modal": {
         "evidence": "Badge evidence",
         "viewEvidence": "View evidence raw file",
-        "listingCriteria": "Listing Criteria",
+        "curationCriteria": "Curation Criteria",
         "challengeButton": "Challenge"
       }
     }

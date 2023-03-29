@@ -12,7 +12,6 @@ import BadgeTypeMetadata from '@/src/pagePartials/badge/BadgeTypeMetadata'
 import { badgesExampleList } from '@/src/pagePartials/home/SectionBoxes'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { SubgraphName, getSubgraphSdkByNetwork } from '@/src/subgraph/subgraph'
-
 // Import Swiper styles
 import 'swiper/css'
 import 'swiper/css/navigation'

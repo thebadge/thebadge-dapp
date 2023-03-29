@@ -5,7 +5,7 @@ import { useTranslation } from 'next-export-i18n'
 
 import useBadgeType from '@/src/hooks/useBadgeType'
 
-export default function ListingCriteriaLink({ badgeTypeId }: { badgeTypeId: string }) {
+export default function CurationCriteriaLink({ badgeTypeId }: { badgeTypeId: string }) {
   const { t } = useTranslation()
 
   const badgeTypeData = useBadgeType(badgeTypeId)
@@ -35,7 +35,7 @@ export default function ListingCriteriaLink({ badgeTypeId }: { badgeTypeId: stri
         style={{ textDecoration: 'underline' }}
         target={'_blank'}
       >
-        {t('badge.challenge.modal.listingCriteria')}
+        {t('badge.challenge.modal.curationCriteria')}
       </a>
       {t('badge.challenge.modal.toAvoid')}
     </Typography>
