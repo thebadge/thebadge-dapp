@@ -1,5 +1,3 @@
-import { useColorMode } from "@/src/providers/themeProvider";
-import { getTheme } from "@/src/theme/theme";
 import { useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/navigation'
 
@@ -10,6 +8,7 @@ import { ButtonV2, colors } from 'thebadge-ui-library'
 import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import BadgeOwnedPreview from '@/src/pagePartials/badge/preview/BadgeOwnedPreview'
 import { useCurateProvider } from '@/src/providers/curateProvider'
+import { useColorMode } from '@/src/providers/themeProvider'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { NextPageWithLayout } from '@/types/next'
 
