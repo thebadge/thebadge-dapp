@@ -45,7 +45,14 @@
     }
   },
   "explorer": {
-    "title": "Badges explorer"
+    "title": "Badges explorer",
+    "noBadgesFound": "There are no badges that match these filters...",
+    "button": "Mint"
+  },
+  "curateExplorer": {
+    "title": "Badges curation explorer",
+    "noBadgesFound": "There are no badges that match these filters...",
+    "button": "Curate"
   },
   "profile": {
     "title": "This is your profile",

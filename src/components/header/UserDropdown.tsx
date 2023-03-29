@@ -91,7 +91,7 @@ export const UserDropdown: React.FC = () => {
         sx={{ columnGap: '10px' }}
       >
         <StyledButton
-          border={`2px solid ${colors.greenLogo}`}
+          border={`2px solid ${colors.blue}`}
           onClick={() => {
             router.push('/badge/explorer')
           }}
@@ -99,7 +99,7 @@ export const UserDropdown: React.FC = () => {
           {t('header.buttons.explore')}
         </StyledButton>
         <StyledButton
-          border={`2px solid ${colors.blue}`}
+          border={`2px solid ${colors.greenLogo}`}
           onClick={() => {
             router.push('/badge/curate')
           }}

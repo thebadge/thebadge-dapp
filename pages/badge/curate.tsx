@@ -86,7 +86,7 @@ const CurateBadges: NextPageWithLayout = () => {
             sx={{ borderRadius: '8px' }}
             variant="contained"
           >
-            Curate
+            {t('curateExplorer.button')}
           </Button>
 
           {/*
@@ -112,13 +112,13 @@ const CurateBadges: NextPageWithLayout = () => {
         filters={filters}
         loading={loading}
         search={search}
-        title={t('explorer.title')}
+        title={t('curateExplorer.title')}
       >
         {items.length > 0 ? (
           items
         ) : (
           <Stack>
-            <Typography variant="body3">There is no badges that match these filters...</Typography>
+            <Typography variant="body3">{t('curateExplorer.noBadgesFound')}</Typography>
             <NoResultsAnimated />
           </Stack>
         )}
