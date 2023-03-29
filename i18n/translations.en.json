@@ -184,6 +184,7 @@
         "requester": "Requester address: ",
         "viewEvidence": "View evidence raw file",
         "curationCriteria": "Curation Criteria",
+        "ownBadgeChallenge": "You can't do a challenge to your own badge",
         "challengeButton": "CHALLENGE"
       }
     }

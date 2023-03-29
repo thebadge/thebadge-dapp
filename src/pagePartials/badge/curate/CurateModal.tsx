@@ -9,6 +9,7 @@ import {
   Modal,
   Skeleton,
   Stack,
+  Tooltip,
   Typography,
   keyframes,
   styled,
@@ -238,17 +239,24 @@ function CurateModalContent({
         </Box>
 
         <Box mt={2}>
-          <ButtonV2
-            backgroundColor={colors.redError}
-            disabled={address === ownerAddress}
-            fontColor={colors.white}
-            onClick={() => {
-              challenge(badgeTypeId, ownerAddress)
-              onClose()
-            }}
+          <Tooltip
+            title={address === ownerAddress ? t('badge.curate.modal.ownBadgeChallenge') : ''}
           >
-            <Typography>{t('badge.curate.modal.challengeButton')}</Typography>
-          </ButtonV2>
+            {/* A disabled element does not fire events. So we need a wrapper to use the tooltip, also ButtonV2 doesn't forward the ref */}
+            <Box>
+              <ButtonV2
+                backgroundColor={colors.redError}
+                disabled={address === ownerAddress}
+                fontColor={colors.white}
+                onClick={() => {
+                  challenge(badgeTypeId, ownerAddress)
+                  onClose()
+                }}
+              >
+                <Typography>{t('badge.curate.modal.challengeButton')}</Typography>
+              </ButtonV2>
+            </Box>
+          </Tooltip>
         </Box>
       </Stack>
     </Stack>
