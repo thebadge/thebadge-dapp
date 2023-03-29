@@ -57,14 +57,22 @@
   "profile": {
     "title": "This is your profile",
     "titleOf": "This is the profile of {{address}}",
-    "badgesYouOwn": "Badges that you own",
+    "badgesYouOwn": {
+      "title": "Badges that you own",
+      "noResults": "You don't have any badges that match these filters..."
+    },
     "badgesCreated": "Badges that you created",
+    "badgesCreatedNoResults": "You don't have any badges that match these filters...",
     "exploreOtherBadges": "Explore other badges",
     "badgesToCurate": "Browse other badges to curate",
     "createdBadges": "Earn by creating new badges",
     "tab1": "BASIC PROFILE",
     "tab2": "CURATOR PROFILE",
-    "tab3": "CREATOR PROFILE"
+    "tab3": "CREATOR PROFILE",
+    "badgesInReview": {
+      "title": "Your badges in review",
+      "noResults": "There are no badges in review..."
+    }
   },
   "errors": {
     "connectWallet": "Please, connect your wallet"

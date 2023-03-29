@@ -86,10 +86,7 @@ export default function BadgesCreatedSection() {
           items
         ) : (
           <Stack>
-            <Typography variant="body3">
-              You don't have any badges that match these filters...
-            </Typography>
-            <NoResultsAnimated />
+            <NoResultsAnimated errorText={t('profile.badgesCreatedNoResults')} />
           </Stack>
         )}
       </FilteredList>

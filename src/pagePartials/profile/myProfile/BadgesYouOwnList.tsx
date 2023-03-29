@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { Box, Stack, Typography } from '@mui/material'
+import { Box, Stack } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
 
 import { NoResultsAnimated } from '@/src/components/assets/NoResults'
@@ -117,16 +117,13 @@ export default function BadgesYouOwnList({ address }: Props) {
       filters={filters}
       loading={loading}
       search={search}
-      title={t('profile.badgesYouOwn')}
+      title={t('profile.badgesYouOwn.title')}
     >
       {items.length > 0 ? (
         items
       ) : (
         <Stack>
-          <Typography variant="body3">
-            You don't have any badges that match these filters...
-          </Typography>
-          <NoResultsAnimated />
+          <NoResultsAnimated errorText={t('profile.badgesYouOwn.noResults')} />
         </Stack>
       )}
     </FilteredList>
