@@ -1,7 +1,7 @@
 import { PaletteMode, ThemeOptions, Typography } from '@mui/material'
 import { TypographyOptions } from '@mui/material/styles/createTypography'
 import { Mulish } from '@next/font/google'
-import { darkTheme, lightTheme } from 'thebadge-ui-library'
+import { colors, darkTheme, lightTheme } from 'thebadge-ui-library'
 
 const mulishFont = Mulish({
   weight: ['300', '400', '500', '600', '700', '800', '900'],
@@ -14,6 +14,9 @@ export const getTheme = (mode?: PaletteMode): ThemeOptions => ({
   palette: {
     mode,
     ...(mode === 'light' ? lightTheme.palette : darkTheme.palette),
+    text: {
+      main: mode === 'light' ? colors.blackText : colors.white,
+    },
     mainMenu: {
       boxShadow: {
         main: mode === 'light' ? 'rgba(0, 0, 0, 0.3)' : 'rgba(255, 255, 255, 0.25)',

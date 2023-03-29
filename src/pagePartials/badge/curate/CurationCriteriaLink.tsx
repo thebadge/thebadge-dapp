@@ -5,7 +5,7 @@ import { useTranslation } from 'next-export-i18n'
 
 import useBadgeType from '@/src/hooks/useBadgeType'
 
-export default function ListingCriteriaLink({ badgeTypeId }: { badgeTypeId: string }) {
+export default function CurationCriteriaLink({ badgeTypeId }: { badgeTypeId: string }) {
   const { t } = useTranslation()
 
   const badgeTypeData = useBadgeType(badgeTypeId)
@@ -27,7 +27,7 @@ export default function ListingCriteriaLink({ badgeTypeId }: { badgeTypeId: stri
   const badgeCriteria = 's3Url' in badgeTypeMetadata.fileURI ? badgeTypeMetadata.fileURI.s3Url : ''
 
   return (
-    <Typography variant="dAppBody1">
+    <Typography fontSize={14} variant="dAppBody1">
       {t('badge.challenge.modal.readCriteria')}
       <a
         href={badgeCriteria}
@@ -35,7 +35,7 @@ export default function ListingCriteriaLink({ badgeTypeId }: { badgeTypeId: stri
         style={{ textDecoration: 'underline' }}
         target={'_blank'}
       >
-        {t('badge.challenge.modal.listingCriteria')}
+        {t('badge.challenge.modal.curationCriteria')}
       </a>
       {t('badge.challenge.modal.toAvoid')}
     </Typography>

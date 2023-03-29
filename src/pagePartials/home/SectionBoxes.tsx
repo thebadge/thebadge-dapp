@@ -1,12 +1,12 @@
 import { styled } from '@mui/material'
 import { BadgePreviewV2 } from 'thebadge-ui-library'
 
-const SectionBox = styled('div')(({ theme }) => ({
+const SectionBox = styled('div')(() => ({
   width: '100%',
   padding: '2.25rem 3.325rem',
 }))
 
-const SectionTitleBox = styled('div')(({ theme }) => ({
+const SectionTitleBox = styled('div')(() => ({
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',

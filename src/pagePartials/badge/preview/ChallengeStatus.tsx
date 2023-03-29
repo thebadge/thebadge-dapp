@@ -4,11 +4,11 @@ import { Box, Button, Divider, Stack, Typography } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
 import { colors } from 'thebadge-ui-library'
 
-import { useChallengeProvider } from '@/src/providers/challengeProvider'
+import { useCurateProvider } from '@/src/providers/curateProvider'
 
 export default function ChallengeStatus() {
   const { t } = useTranslation()
-  const { challenge } = useChallengeProvider()
+  const { challenge } = useCurateProvider()
 
   const searchParams = useSearchParams()
   const typeId = searchParams.get('typeId')

@@ -1,19 +1,23 @@
 import { useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/navigation'
 
-import { Box, Button, Stack, Tooltip } from '@mui/material'
+import { Box, Stack, Tooltip } from '@mui/material'
+import { useTranslation } from 'next-export-i18n'
+import { ButtonV2, colors } from 'thebadge-ui-library'
 
-import SafeSuspense, { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
+import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import BadgeOwnedPreview from '@/src/pagePartials/badge/preview/BadgeOwnedPreview'
-import ChallengeStatus from '@/src/pagePartials/badge/preview/ChallengeStatus'
-import { useChallengeProvider } from '@/src/providers/challengeProvider'
+import { useCurateProvider } from '@/src/providers/curateProvider'
+import { useColorMode } from '@/src/providers/themeProvider'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { NextPageWithLayout } from '@/types/next'
 
 const ViewBadge: NextPageWithLayout = () => {
+  const { t } = useTranslation()
   const { address } = useWeb3Connection()
-  const { challenge } = useChallengeProvider()
+  const { curate } = useCurateProvider()
   const router = useRouter()
+  const { mode } = useColorMode()
 
   const searchParams = useSearchParams()
   const typeId = searchParams.get('typeId')
@@ -29,30 +33,50 @@ const ViewBadge: NextPageWithLayout = () => {
         <BadgeOwnedPreview />
         <Box display="flex" justifyContent="space-evenly" maxWidth={300}>
           <Tooltip title={address === ownerAddress ? 'You already own this badge.' : ''}>
-            <span>
-              <Button
-                color="purple"
-                disabled={address === ownerAddress}
-                onClick={() => router.push(`/badge/mint/${typeId}`)}
-                sx={{ borderRadius: 3, fontSize: '11px !important' }}
-              >
-                Apply for it
-              </Button>
-            </span>
+            <ButtonV2
+              backgroundColor={colors.transparent}
+              disabled={address === ownerAddress}
+              fontColor={mode === 'light' ? colors.blackText : colors.white}
+              onClick={() => router.push(`/badge/mint/${typeId}`)}
+              sx={{
+                borderRadius: '10px',
+                fontSize: '11px !important',
+                padding: '0.5rem 1rem !important',
+                height: 'fit-content !important',
+                lineHeight: '14px',
+                fontWeight: 700,
+                boxShadow: 'none',
+                textTransform: 'uppercase',
+              }}
+            >
+              {t('badge.mintButton')}
+            </ButtonV2>
           </Tooltip>
-
-          <Button
-            color="error"
-            onClick={() => challenge(typeId, ownerAddress)}
-            sx={{ borderRadius: 3, fontSize: '11px !important' }}
+          <ButtonV2
+            backgroundColor={colors.greenLogo}
+            fontColor={colors.blackText}
+            onClick={() => curate(typeId, ownerAddress)}
+            sx={{
+              borderRadius: '10px',
+              fontSize: '11px !important',
+              padding: '0.5rem 1rem !important',
+              height: 'fit-content !important',
+              lineHeight: '14px',
+              fontWeight: 700,
+              boxShadow: 'none',
+              textTransform: 'uppercase',
+            }}
             variant="contained"
           >
-            Challenge
-          </Button>
+            {t('badge.curateButton')}
+          </ButtonV2>
         </Box>
+        {/*
+        // TODO Enable it when we have the required data to show
         <SafeSuspense>
           <ChallengeStatus />
         </SafeSuspense>
+        */}
       </Stack>
     </Box>
   )

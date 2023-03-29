@@ -1,4 +1,5 @@
 import { Box, Typography, useTheme } from '@mui/material'
+import { useTranslation } from 'next-export-i18n'
 import { SectionLayout, colors, gradients } from 'thebadge-ui-library'
 
 import BadgeCreator from '@/src/pagePartials/home/BadgeCreator'
@@ -12,6 +13,7 @@ import { NextPageWithLayout } from '@/types/next'
 
 const Home: NextPageWithLayout = () => {
   const { homeSection } = useSectionReferences()
+  const { t } = useTranslation()
   const theme = useTheme()
   const { mode } = useColorMode()
   const isDarkMode = mode === 'dark'
@@ -19,10 +21,10 @@ const Home: NextPageWithLayout = () => {
   return (
     <Box display="flex" flexDirection="column" ref={homeSection}>
       <Typography component="h1" marginBottom={2} textAlign="center" variant="dAppHeadline1">
-        Welcome to TheBadge!
+        {t('home.title')}
       </Typography>
       <Typography component="h2" marginBottom={10} textAlign="center" variant="dAppTitle2">
-        DECENTRALIZED CERTIFICATION PLATFORM
+        {t('home.subtitle')}
       </Typography>
 
       {/* Certification process */}

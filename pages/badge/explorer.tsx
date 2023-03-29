@@ -30,7 +30,7 @@ const StyledBadgeContainer = styled(Box)(() => ({
   },
 }))
 
-const ExploreBadges: NextPageWithLayout = () => {
+const ExploreBadgeTypes: NextPageWithLayout = () => {
   const { t } = useTranslation()
   const { appChainId } = useWeb3Connection()
   const [items, setItems] = useState<React.ReactNode[]>([])
@@ -71,8 +71,8 @@ const ExploreBadges: NextPageWithLayout = () => {
       return (
         <StyledBadgeContainer key={bt.id} maxWidth={'250px'}>
           <MiniBadgeTypeMetadata disableAnimations metadata={bt.metadataURL} />
-          <Button id="mint-btn" sx={{ borderRadius: '8px' }} variant="contained">
-            <Link href={`/badge/mint/${bt.id}`}>Mint</Link>
+          <Button color={'blue'} id="mint-btn" sx={{ borderRadius: '8px' }} variant="contained">
+            <Link href={`/badge/mint/${bt.id}`}>{t('explorer.button')}</Link>
           </Button>
           {/*
           <div>mintCost: {formatUnits(bt.mintCost, 18)} + Kleros deposit</div>
@@ -113,7 +113,7 @@ const ExploreBadges: NextPageWithLayout = () => {
           items
         ) : (
           <Stack>
-            <Typography variant="body3">There is no badges that match these filters...</Typography>
+            <Typography variant="body3">{t('explorer.noBadgesFound')}</Typography>
             <NoResultsAnimated />
           </Stack>
         )}
@@ -122,4 +122,4 @@ const ExploreBadges: NextPageWithLayout = () => {
   )
 }
 
-export default withPageGenericSuspense(ExploreBadges)
+export default withPageGenericSuspense(ExploreBadgeTypes)

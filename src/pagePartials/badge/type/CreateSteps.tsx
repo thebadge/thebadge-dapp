@@ -1,5 +1,5 @@
-import { useState } from 'react'
 import * as React from 'react'
+import { useState } from 'react'
 
 import { Stack, Typography } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
@@ -37,7 +37,7 @@ const MintSchemaStep2 = z.object({
     'Your badge type logo // This Logo will be on the center part of the Badge itself. Recommended images with aspect ratio of 1.',
   ),
   criteriaFileUri: FileSchema.describe(
-    'Listing criteria (PDF format). // This is the document containing your badge listing criteria, an example of listing criteria can be found on the docs.',
+    'Curation criteria (PDF format). // This is the document containing your badge curation criteria, an example of curation criteria can be found on the docs.',
   ),
   challengePeriodDuration: ChallengePeriodTypeSchema.describe(
     `Challenge period duration (${
@@ -142,9 +142,9 @@ export default function CreateSteps({ onSubmit, txState }: MintStepsProps) {
           {
             help: {
               agreementText: t('badge.type.create.help-steps', {
-                listingCriteriaDocsUrl:
+                curationCriteriaDocsUrl:
                   DOCS_URL + '/thebadge-documentation/overview/how-it-works/challenge',
-                listingCriteriaStandardDocsUrl:
+                curationCriteriaStandardDocsUrl:
                   DOCS_URL + '/thebadge-documentation/overview/how-it-works/challenge',
                 termsUrls: '/terms',
                 docsUrl: DOCS_URL,

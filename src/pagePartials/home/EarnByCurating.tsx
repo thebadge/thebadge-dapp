@@ -1,4 +1,5 @@
 import { Box, Typography, styled, useTheme } from '@mui/material'
+import { useTranslation } from 'next-export-i18n'
 import { ButtonV2, colors } from 'thebadge-ui-library'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
@@ -31,6 +32,7 @@ const LearnMoreButton = styled(ButtonV2)(({ theme }) => ({
 export default function EarnByCurating() {
   const { earnByCuratingSection } = useSectionReferences()
   const theme = useTheme()
+  const { t } = useTranslation()
 
   const openDocs = () =>
     window.open(`${DOCS_URL}/thebadge-documentation/overview/how-it-works/curators`, '_blank')
@@ -39,21 +41,20 @@ export default function EarnByCurating() {
     <SectionBox ref={earnByCuratingSection}>
       <SectionTitleBox>
         <Box>
-          <Typography variant={'caption'}>Become a Curator</Typography>
+          <Typography variant={'caption'}>{t('home.earnByCurating.subtitle')}</Typography>
           <Typography
             mb={2.5}
             sx={{ fontSize: '25px !important', fontWeight: 700, lineHeight: '30px !important' }}
           >
-            Earn by Curating
+            {t('home.earnByCurating.title')}
           </Typography>
         </Box>
-
         <LearnMoreButton
           backgroundColor={colors.transparent}
           fontColor={theme.palette.text.primary}
           onClick={openDocs}
         >
-          LEARN MORE
+          {t('home.earnByCurating.button')}
         </LearnMoreButton>
       </SectionTitleBox>
       <SafeSuspense>

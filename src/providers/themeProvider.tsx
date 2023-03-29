@@ -25,7 +25,7 @@ const ThemeContextProvider: React.FC<PropsWithChildren> = ({ children }) => {
     process.env.NEXT_PUBLIC_DEFAULT_THEME === ThemeType.dark ||
     process.env.NEXT_PUBLIC_DEFAULT_THEME === ThemeType.light
       ? process.env.NEXT_PUBLIC_DEFAULT_THEME
-      : ThemeType.light
+      : ThemeType.dark
 
   const [mode, setMode] = useState<PaletteMode>(DEFAULT_THEME)
   const colorMode = useMemo(

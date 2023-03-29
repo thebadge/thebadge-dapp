@@ -1,3 +1,5 @@
+import '/node_modules/react-grid-layout/css/styles.css'
+import '/node_modules/react-resizable/css/styles.css'
 import type { AppProps } from 'next/app'
 import dynamic from 'next/dynamic'
 
@@ -14,12 +16,9 @@ import Toast from '@/src/components/toast/Toast'
 import { Head } from '@/src/pagePartials/index/Head'
 import ThemeProvider from '@/src/providers/themeProvider'
 import { NextPageWithLayout } from '@/types/next'
-
 import 'node_modules/thebadge-ui-library/dist/index.css'
 import 'sanitize.css'
 import 'src/theme/global.css'
-import '/node_modules/react-grid-layout/css/styles.css'
-import '/node_modules/react-resizable/css/styles.css'
 import 'src/theme/icon-animation.css'
 
 const CookiesWarningProvider = dynamic(() => import('@/src/providers/cookiesWarningProvider'), {

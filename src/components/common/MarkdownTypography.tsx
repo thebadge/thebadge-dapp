@@ -23,12 +23,12 @@ export default function MarkdownTypography({ children, ...rest }: Props) {
       <ReactMarkdown
         children={children as string}
         components={{
-          a: ({ node, ...props }) => (
+          a: ({ ...props }) => (
             <a {...props} style={{ textDecoration: 'underline' }} target="_blank">
               {props.children}
             </a>
           ),
-          li: ({ node, ...props }) => {
+          li: ({ ...props }) => {
             const fixedProps = {
               ...props,
               ordered: props?.ordered?.toString(),

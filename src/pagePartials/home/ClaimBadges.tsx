@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router'
 
 import { Box, Divider, Typography, useTheme } from '@mui/material'
+import { useTranslation } from 'next-export-i18n'
 import { ButtonV2, colors } from 'thebadge-ui-library'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
@@ -12,6 +13,7 @@ export default function ClaimBadges() {
   const { claimBadgesSection } = useSectionReferences()
   const theme = useTheme()
   const router = useRouter()
+  const { t } = useTranslation()
 
   return (
     <SectionBox ref={claimBadgesSection}>
@@ -23,7 +25,7 @@ export default function ClaimBadges() {
           mb={2.5}
           variant={'h5'}
         >
-          Claim one of these badges
+          {t('home.claimBadges.title')}
         </Typography>
         <ButtonV2
           backgroundColor={theme.palette.button.backgroundBlue.main}
@@ -39,7 +41,7 @@ export default function ClaimBadges() {
             boxShadow: 'none',
           }}
         >
-          EXPLORE CERTIFICATES
+          {t('home.claimBadges.button')}
         </ButtonV2>
       </SectionTitleBox>
       <Divider color={'#BDBDBD'} />

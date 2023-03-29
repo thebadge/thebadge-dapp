@@ -38,6 +38,7 @@ export const FormField: React.FC<{
           flexDirection: labelPosition === 'top' ? 'column' : 'row',
           minWidth: '100%',
           justifyContent: 'center',
+          alignItems: 'center',
         }}
       >
         {label && <Label>{label}</Label>}
