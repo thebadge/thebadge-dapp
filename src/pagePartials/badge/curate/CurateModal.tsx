@@ -1,8 +1,22 @@
 import React from 'react'
 
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import CloseIcon from '@mui/icons-material/Close'
-import { Box, IconButton, Modal, Skeleton, Stack, Typography, styled } from '@mui/material'
+import {
+  Box,
+  IconButton,
+  Modal,
+  Skeleton,
+  Stack,
+  Typography,
+  keyframes,
+  styled,
+  useTheme,
+} from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
+import { A11y, Navigation, Pagination } from 'swiper'
+import { Swiper, SwiperSlide } from 'swiper/react'
 import { ButtonV2, colors } from 'thebadge-ui-library'
 
 import DisplayEvidenceField from '@/src/components/displayEvidence/DisplayEvidenceField'
@@ -11,6 +25,11 @@ import useBadgeById from '@/src/hooks/useBadgeById'
 import CurationCriteriaLink from '@/src/pagePartials/badge/curate/CurationCriteriaLink'
 import { useCurateProvider } from '@/src/providers/curateProvider'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+
+// Import Swiper styles
+import 'swiper/css'
+import 'swiper/css/navigation'
+import 'swiper/css/pagination'
 
 const ModalBody = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -73,6 +92,15 @@ export default function CurateModal({
   )
 }
 
+const growEffect = keyframes`
+  0% {
+    transform: scale(0.85);
+  }
+  100% {
+    transform: scale(1);
+  }
+`
+
 function CurateModalContent({
   badgeTypeId,
   onClose,
@@ -85,6 +113,7 @@ function CurateModalContent({
   const { t } = useTranslation()
   const { address } = useWeb3Connection()
   const { challenge } = useCurateProvider()
+  const theme = useTheme()
 
   const badgeById = useBadgeById(badgeTypeId, ownerAddress)
 
@@ -99,7 +128,6 @@ function CurateModalContent({
     <Stack
       sx={{
         alignItems: 'center',
-        gap: 4,
         width: '100%',
       }}
     >
@@ -115,25 +143,65 @@ function CurateModalContent({
         </Typography>
       </Box>
 
-      {badgeEvidence?.columns.map((column) => {
-        return (
-          <Box
-            display="flex"
-            gap={3}
-            justifyContent={'start'}
-            key={'evidence-' + column.label}
-            sx={{
-              width: '75%',
-              '& > *': {
-                display: 'flex',
-                flex: '1',
-              },
-            }}
-          >
-            <DisplayEvidenceField columnItem={column} value={badgeEvidence.values[column.label]} />
-          </Box>
-        )
-      })}
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
+        <ArrowBackIosIcon
+          className={'badges-swiper-button-prev'}
+          sx={{
+            mr: '1rem',
+            height: '35px',
+            width: '35px',
+            animation: `${growEffect} 1s infinite alternate ${theme.transitions.easing.easeInOut}`,
+          }}
+        />
+        <Swiper
+          modules={[Navigation, Pagination, A11y]}
+          navigation={{
+            nextEl: '.badges-swiper-button-next',
+            prevEl: '.badges-swiper-button-prev',
+          }}
+          pagination={{ clickable: true }}
+          slidesPerView={1}
+        >
+          {badgeEvidence?.columns.map((column) => {
+            return (
+              <SwiperSlide
+                key={'evidence-' + column.label}
+                style={{ height: 'auto', padding: '46px' }}
+              >
+                <Box
+                  alignItems={'center'}
+                  display="flex"
+                  gap={3}
+                  height={'100%'}
+                  justifyContent={'center'}
+                  sx={{
+                    '> *': {
+                      width: '90%',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                    },
+                  }}
+                >
+                  <DisplayEvidenceField
+                    columnItem={column}
+                    value={badgeEvidence.values[column.label]}
+                  />
+                </Box>
+              </SwiperSlide>
+            )
+          })}
+        </Swiper>
+        <ArrowForwardIosIcon
+          className={'badges-swiper-button-next'}
+          sx={{
+            ml: '1rem',
+            height: '35px',
+            width: '35px',
+            animation: `${growEffect} 1s infinite alternate ${theme.transitions.easing.easeInOut}`,
+          }}
+        />
+      </Box>
 
       <Stack
         alignItems={'center'}
@@ -159,7 +227,7 @@ function CurateModalContent({
               onClose()
             }}
           >
-            {t('badge.curate.modal.challengeButton')}
+            <Typography>{t('badge.curate.modal.challengeButton')}</Typography>
           </ButtonV2>
         </Box>
       </Stack>

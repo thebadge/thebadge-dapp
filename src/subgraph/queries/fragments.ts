@@ -7,6 +7,7 @@ gql`
     reviewDueDate
     reviewDueDate
     status
+    isChallenged
     receiver {
       id
     }

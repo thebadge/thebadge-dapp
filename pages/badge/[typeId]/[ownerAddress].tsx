@@ -1,12 +1,14 @@
+import { useColorMode } from "@/src/providers/themeProvider";
+import { getTheme } from "@/src/theme/theme";
 import { useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/navigation'
 
-import { Box, Button, Stack, Tooltip } from '@mui/material'
+import { Box, Stack, Tooltip } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
+import { ButtonV2, colors } from 'thebadge-ui-library'
 
-import SafeSuspense, { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
+import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import BadgeOwnedPreview from '@/src/pagePartials/badge/preview/BadgeOwnedPreview'
-import ChallengeStatus from '@/src/pagePartials/badge/preview/ChallengeStatus'
 import { useCurateProvider } from '@/src/providers/curateProvider'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { NextPageWithLayout } from '@/types/next'
@@ -16,6 +18,7 @@ const ViewBadge: NextPageWithLayout = () => {
   const { address } = useWeb3Connection()
   const { curate } = useCurateProvider()
   const router = useRouter()
+  const { mode } = useColorMode()
 
   const searchParams = useSearchParams()
   const typeId = searchParams.get('typeId')
@@ -31,27 +34,50 @@ const ViewBadge: NextPageWithLayout = () => {
         <BadgeOwnedPreview />
         <Box display="flex" justifyContent="space-evenly" maxWidth={300}>
           <Tooltip title={address === ownerAddress ? 'You already own this badge.' : ''}>
-            <Button
-              color="white"
+            <ButtonV2
+              backgroundColor={colors.transparent}
               disabled={address === ownerAddress}
+              fontColor={mode === 'light' ? colors.blackText : colors.white}
               onClick={() => router.push(`/badge/mint/${typeId}`)}
-              sx={{ borderRadius: 3, fontSize: '14px !important' }}
+              sx={{
+                borderRadius: '10px',
+                fontSize: '11px !important',
+                padding: '0.5rem 1rem !important',
+                height: 'fit-content !important',
+                lineHeight: '14px',
+                fontWeight: 700,
+                boxShadow: 'none',
+                textTransform: 'uppercase',
+              }}
             >
               {t('badge.mintButton')}
-            </Button>
+            </ButtonV2>
           </Tooltip>
-          <Button
-            color="green"
+          <ButtonV2
+            backgroundColor={colors.greenLogo}
+            fontColor={colors.blackText}
             onClick={() => curate(typeId, ownerAddress)}
-            sx={{ borderRadius: 3, fontSize: '14px !important', color: 'background.default' }}
+            sx={{
+              borderRadius: '10px',
+              fontSize: '11px !important',
+              padding: '0.5rem 1rem !important',
+              height: 'fit-content !important',
+              lineHeight: '14px',
+              fontWeight: 700,
+              boxShadow: 'none',
+              textTransform: 'uppercase',
+            }}
             variant="contained"
           >
             {t('badge.curateButton')}
-          </Button>
+          </ButtonV2>
         </Box>
+        {/*
+        // TODO Enable it when we have the required data to show
         <SafeSuspense>
           <ChallengeStatus />
         </SafeSuspense>
+        */}
       </Stack>
     </Box>
   )
