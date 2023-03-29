@@ -312,6 +312,7 @@ export default function MainMenu({ ...restProps }) {
           <Tooltip arrow placement="right" title={item.title}>
             <MenuItemBox
               disableRipple={true}
+              disabled={!!item.disabled}
               onClick={() => onMenuItemClick(item, itemIndex)}
               sx={{
                 '&.Mui-focusVisible': {

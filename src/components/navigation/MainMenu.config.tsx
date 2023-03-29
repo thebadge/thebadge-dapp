@@ -50,6 +50,7 @@ export const useMainMenuItems = () => {
       icon: mode === ThemeType.dark ? <LightModeIcon /> : <DarkModeIcon />,
       title: 'Change theme',
       customOnClickBehavior: () => toggleColorMode(), // change theme
+      disabled: true,
     },
   ]
 
