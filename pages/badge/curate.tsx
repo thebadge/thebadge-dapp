@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 
-import { Box, Button, Stack, styled } from '@mui/material'
+import { Box, Stack, styled } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
+import { colors } from 'thebadge-ui-library'
 
 import { NoResultsAnimated } from '@/src/components/assets/NoResults'
 import FilteredList, { ListFilter } from '@/src/components/helpers/FilteredList'
@@ -75,19 +76,12 @@ const CurateBadges: NextPageWithLayout = () => {
       return (
         <StyledBadgeContainer key={badge.id} maxWidth={'250px'}>
           <MiniBadgeTypeMetadata
+            buttonTitle={t('curateExplorer.button')}
             disableAnimations
-            highlightColor={'#24F3D2'}
+            highlightColor={colors.greenLogo}
             metadata={badge.badgeType.metadataURL}
-          />
-          <Button
-            color={'darkGreen'}
-            id="curate-btn"
             onClick={() => curate(badge.badgeType.id, badge.receiver.id)}
-            sx={{ borderRadius: '8px' }}
-            variant="contained"
-          >
-            {t('curateExplorer.button')}
-          </Button>
+          />
 
           {/*
            TODO ADD Creator/Emitter Metadata
@@ -101,11 +95,9 @@ const CurateBadges: NextPageWithLayout = () => {
 
     setTimeout(() => {
       setLoading(false)
-      //   setItems(badgeLayouts)
+      setItems(badgeLayouts)
     }, 2000)
   }
-
-  console.log('CURATE', items)
 
   return (
     <>

@@ -1,8 +1,9 @@
-import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 
-import { Box, Button, Stack, styled } from '@mui/material'
+import { Box, Stack, styled } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
+import { colors } from 'thebadge-ui-library'
 
 import { NoResultsAnimated } from '@/src/components/assets/NoResults'
 import FilteredList, { ListFilter } from '@/src/components/helpers/FilteredList'
@@ -36,6 +37,7 @@ const ExploreBadgeTypes: NextPageWithLayout = () => {
   const [items, setItems] = useState<React.ReactNode[]>([])
   const [loading, setLoading] = useState<boolean>(false)
   const gql = getSubgraphSdkByNetwork(appChainId, SubgraphName.TheBadge)
+  const router = useRouter()
 
   const filters: Array<ListFilter> = [
     {
@@ -70,10 +72,15 @@ const ExploreBadgeTypes: NextPageWithLayout = () => {
     const badgeLayouts = badges.map((bt) => {
       return (
         <StyledBadgeContainer key={bt.id} maxWidth={'250px'}>
-          <MiniBadgeTypeMetadata disableAnimations metadata={bt.metadataURL} />
-          <Button color={'blue'} id="mint-btn" sx={{ borderRadius: '8px' }} variant="contained">
-            <Link href={`/badge/mint/${bt.id}`}>{t('explorer.button')}</Link>
-          </Button>
+          <MiniBadgeTypeMetadata
+            buttonTitle={t('explorer.button')}
+            disableAnimations
+            highlightColor={colors.blue}
+            metadata={bt.metadataURL}
+            onClick={() => {
+              router.push(`/badge/mint/${bt.id}`)
+            }}
+          />
           {/*
           <div>mintCost: {formatUnits(bt.mintCost, 18)} + Kleros deposit</div>
           <div>ValidFor: {bt.validFor / 60 / 60 / 24} </div>
