@@ -11,7 +11,7 @@ type Props = {
   highlightColor?: string
   disableAnimations?: boolean
   onClick?: () => void
-  buttonTitle: string
+  buttonTitle?: string
 }
 
 function MiniBadgeTypeMetadata({
