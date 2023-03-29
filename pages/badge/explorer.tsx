@@ -30,7 +30,7 @@ const StyledBadgeContainer = styled(Box)(() => ({
   },
 }))
 
-const ExploreBadges: NextPageWithLayout = () => {
+const ExploreBadgeTypes: NextPageWithLayout = () => {
   const { t } = useTranslation()
   const { appChainId } = useWeb3Connection()
   const [items, setItems] = useState<React.ReactNode[]>([])
@@ -122,4 +122,4 @@ const ExploreBadges: NextPageWithLayout = () => {
   )
 }
 
-export default withPageGenericSuspense(ExploreBadges)
+export default withPageGenericSuspense(ExploreBadgeTypes)

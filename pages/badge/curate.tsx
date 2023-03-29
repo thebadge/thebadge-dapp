@@ -31,7 +31,7 @@ const StyledBadgeContainer = styled(Box)(() => ({
 }))
 
 const now = Math.floor(Date.now() / 1000)
-const ExploreBadges: NextPageWithLayout = () => {
+const CurateBadges: NextPageWithLayout = () => {
   const { t } = useTranslation()
   const { curate } = useCurateProvider()
   const { appChainId } = useWeb3Connection()
@@ -127,4 +127,4 @@ const ExploreBadges: NextPageWithLayout = () => {
   )
 }
 
-export default withPageGenericSuspense(ExploreBadges)
+export default withPageGenericSuspense(CurateBadges)
