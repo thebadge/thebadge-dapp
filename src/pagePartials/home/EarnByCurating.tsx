@@ -1,4 +1,5 @@
 import { Box, Typography, styled, useTheme } from '@mui/material'
+import { ButtonV2, colors } from 'thebadge-ui-library'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { DOCS_URL } from '@/src/constants/common'
@@ -10,7 +11,6 @@ import { useSectionReferences } from '@/src/providers/referencesProvider'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
-import { ButtonV2, colors } from 'thebadge-ui-library'
 
 const LearnMoreButton = styled(ButtonV2)(({ theme }) => ({
   borderRadius: '10px',
