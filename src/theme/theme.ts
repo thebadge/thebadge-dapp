@@ -16,7 +16,6 @@ export const getTheme = (mode?: PaletteMode): ThemeOptions => ({
     ...(mode === 'light' ? lightTheme.palette : darkTheme.palette),
     text: {
       main: mode === 'light' ? colors.blackText : colors.white,
-      primary: mode === 'light' ? colors.blackText : colors.white,
     },
     mainMenu: {
       boxShadow: {

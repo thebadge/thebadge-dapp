@@ -34,7 +34,7 @@ export function DisplayText({ label, placeholder, value }: DisplayTextProps) {
         color="secondary"
         contentEditable={false}
         label={label}
-        sx={{ textTransform: 'capitalize' }}
+        sx={{ width: '100%', textTransform: 'capitalize' }}
         value={value ? value : ''}
         variant={'standard'}
       />
