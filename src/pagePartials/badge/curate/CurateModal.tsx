@@ -12,6 +12,11 @@ import ListingCriteriaLink from '@/src/pagePartials/badge/curate/ListingCriteria
 import { useCurateProvider } from '@/src/providers/curateProvider'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 
+// Import Swiper styles
+import 'swiper/css'
+import 'swiper/css/navigation'
+import 'swiper/css/pagination'
+
 const ModalBody = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
@@ -159,7 +164,7 @@ function CurateModalContent({
               onClose()
             }}
           >
-            {t('badge.curate.modal.challengeButton')}
+            <Typography>{t('badge.curate.modal.challengeButton')}</Typography>
           </ButtonV2>
         </Box>
       </Stack>
