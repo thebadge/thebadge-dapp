@@ -1,8 +1,17 @@
-import { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
+import { Typography, styled } from '@mui/material'
 import type { LottiePlayer } from 'lottie-web'
 
-export const NoResultsAnimated = () => {
+const AnimationContainer = styled('div')(() => ({
+  display: 'flex',
+  flexDirection: 'column',
+  textAlign: 'center',
+  width: '300px',
+  height: '300px',
+}))
+
+export const NoResultsAnimated = (props: { errorText?: string }) => {
   const ref = useRef<HTMLDivElement>(null)
   const [lottie, setLottie] = useState<LottiePlayer | null>(null)
 
@@ -24,5 +33,10 @@ export const NoResultsAnimated = () => {
     }
   }, [lottie])
 
-  return <div ref={ref} />
+  return (
+    <AnimationContainer>
+      <Typography variant="body3">{props.errorText}</Typography>
+      <div ref={ref} />
+    </AnimationContainer>
+  )
 }

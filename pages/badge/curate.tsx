@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { Box, Button, Stack, Typography, styled } from '@mui/material'
+import { Box, Button, Stack, styled } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
 
 import { NoResultsAnimated } from '@/src/components/assets/NoResults'
@@ -101,9 +101,11 @@ const CurateBadges: NextPageWithLayout = () => {
 
     setTimeout(() => {
       setLoading(false)
-      setItems(badgeLayouts)
+      //   setItems(badgeLayouts)
     }, 2000)
   }
+
+  console.log('CURATE', items)
 
   return (
     <>
@@ -118,8 +120,7 @@ const CurateBadges: NextPageWithLayout = () => {
           items
         ) : (
           <Stack>
-            <Typography variant="body3">{t('curateExplorer.noBadgesFound')}</Typography>
-            <NoResultsAnimated />
+            <NoResultsAnimated errorText={t('curateExplorer.noBadgesFound')} />
           </Stack>
         )}
       </FilteredList>

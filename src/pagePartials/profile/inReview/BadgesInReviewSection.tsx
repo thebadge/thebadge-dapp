@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 
-import { Box, Stack, Typography } from '@mui/material'
+import { Box, Stack } from '@mui/material'
+import { useTranslation } from 'next-export-i18n'
 import { colors } from 'thebadge-ui-library'
 
 import { NoResultsAnimated } from '@/src/components/assets/NoResults'
@@ -10,6 +11,7 @@ import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { SubgraphName, getSubgraphSdkByNetwork } from '@/src/subgraph/subgraph'
 
 export default function BadgesInReviewSection() {
+  const { t } = useTranslation()
   const filters: Array<ListFilter> = [
     {
       title: 'In Review',
@@ -67,14 +69,13 @@ export default function BadgesInReviewSection() {
         filters={filters}
         loading={loading}
         search={search}
-        title={'Your badges in review'}
+        title={t('profile.badgesInReview.title')}
       >
         {items.length > 0 ? (
           items
         ) : (
           <Stack>
-            <Typography variant="body3">There are no badges in review...</Typography>
-            <NoResultsAnimated />
+            <NoResultsAnimated errorText={t('profile.badgesInReview.noResults')} />
           </Stack>
         )}
       </FilteredList>
