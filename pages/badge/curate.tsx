@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { Box, Stack, Typography, styled } from '@mui/material'
+import { Box, Stack, styled } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
 import { colors } from 'thebadge-ui-library'
 
@@ -112,8 +112,7 @@ const CurateBadges: NextPageWithLayout = () => {
           items
         ) : (
           <Stack>
-            <Typography variant="body3">{t('curateExplorer.noBadgesFound')}</Typography>
-            <NoResultsAnimated />
+            <NoResultsAnimated errorText={t('curateExplorer.noBadgesFound')} />
           </Stack>
         )}
       </FilteredList>

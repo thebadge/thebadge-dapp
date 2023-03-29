@@ -1,7 +1,7 @@
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 
-import { Box, Stack, Typography, styled } from '@mui/material'
+import { Box, Stack, styled } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
 import { colors } from 'thebadge-ui-library'
 
@@ -120,8 +120,7 @@ const ExploreBadgeTypes: NextPageWithLayout = () => {
           items
         ) : (
           <Stack>
-            <Typography variant="body3">{t('explorer.noBadgesFound')}</Typography>
-            <NoResultsAnimated />
+            <NoResultsAnimated errorText={t('explorer.noBadgesFound')} />
           </Stack>
         )}
       </FilteredList>
