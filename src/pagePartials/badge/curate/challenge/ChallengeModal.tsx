@@ -26,7 +26,7 @@ import { LongTextSchema, OptionalFileSchema } from '@/src/components/form/helper
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
 import useTransaction from '@/src/hooks/useTransaction'
-import ListingCriteriaLink from '@/src/pagePartials/badge/curate/ListingCriteriaLink'
+import CurationCriteriaLink from '@/src/pagePartials/badge/curate/CurationCriteriaLink'
 import ChallengeCost from '@/src/pagePartials/badge/curate/challenge/ChallengeCost'
 import { useBadgeCost } from '@/src/pagePartials/badge/curate/useBadgeCost'
 import ipfsUpload from '@/src/utils/ipfsUpload'
@@ -175,7 +175,7 @@ function ChallengeModalContent({
         {t('badge.challenge.modal.challenge')}
       </Typography>
       <SafeSuspense fallback={<Skeleton variant={'text'} width={500} />}>
-        <ListingCriteriaLink badgeTypeId={badgeTypeId} />
+        <CurationCriteriaLink badgeTypeId={badgeTypeId} />
       </SafeSuspense>
       <Container sx={{ flexDirection: 'row', display: 'flex', alignItems: 'center', gap: 1 }}>
         <FindInPageOutlinedIcon />

@@ -7,9 +7,8 @@ import { Box, Stack, Tooltip } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
 import { ButtonV2, colors } from 'thebadge-ui-library'
 
-import SafeSuspense, { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
+import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import BadgeOwnedPreview from '@/src/pagePartials/badge/preview/BadgeOwnedPreview'
-import ChallengeStatus from '@/src/pagePartials/badge/preview/ChallengeStatus'
 import { useCurateProvider } from '@/src/providers/curateProvider'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { NextPageWithLayout } from '@/types/next'
@@ -73,9 +72,12 @@ const ViewBadge: NextPageWithLayout = () => {
             {t('badge.curateButton')}
           </ButtonV2>
         </Box>
+        {/*
+        // TODO Enable it when we have the required data to show
         <SafeSuspense>
           <ChallengeStatus />
         </SafeSuspense>
+        */}
       </Stack>
     </Box>
   )

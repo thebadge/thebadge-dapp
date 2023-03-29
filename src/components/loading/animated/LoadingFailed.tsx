@@ -1,5 +1,6 @@
 import CloseIcon from '@mui/icons-material/Close'
 import { Box, styled } from '@mui/material'
+
 const Wrapper = styled(Box)`
   align-items: center;
   display: flex;

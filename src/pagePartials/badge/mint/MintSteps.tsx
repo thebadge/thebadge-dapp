@@ -175,7 +175,7 @@ export default function MintSteps({ costs, evidenceSchema, onSubmit, txState }: 
                 badgeCreatorName: badgeCreatorMetadata.data?.content?.name,
                 curationDocsUrl:
                   DOCS_URL + '/thebadge-documentation/overview/how-it-works/challenge',
-                listingCriteriaUrl: badgeCriteria,
+                curationCriteriaUrl: badgeCriteria,
                 challengePeriodDuration: klerosBadge?.challengePeriodDuration / 60 / 60,
                 timeUnit: 'days',
               }),

@@ -1,11 +1,11 @@
 import { DarkMode as DarkModeIcon } from '@/src/components/assets/DarkMode'
-import { Discord as DiscordIcon } from '@/src/components/assets/Discord'
 import { Explore as ExploreIcon } from '@/src/components/assets/Explore'
+import { Help } from '@/src/components/assets/Help'
 import { Home as HomeIcon } from '@/src/components/assets/Home'
 import { LightMode as LightModeIcon } from '@/src/components/assets/LightMode'
 import { Profile as ProfileIcon } from '@/src/components/assets/Profile'
 import { MenuItem } from '@/src/components/navigation/MainMenu.types'
-import { DISCORD_URL } from '@/src/constants/common'
+import { DOCS_URL } from '@/src/constants/common'
 import { useColorMode } from '@/src/providers/themeProvider'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { ThemeType } from '@/src/theme/types'
@@ -40,9 +40,9 @@ export const useMainMenuItems = () => {
   const bottomMenuItems: Array<MenuItem> = [
     {
       type: 'gray',
-      icon: <DiscordIcon />,
-      title: 'Community',
-      href: DISCORD_URL,
+      icon: <Help />,
+      title: 'Help',
+      href: DOCS_URL,
       openLinkInNewTab: true,
     },
     {
@@ -50,6 +50,7 @@ export const useMainMenuItems = () => {
       icon: mode === ThemeType.dark ? <LightModeIcon /> : <DarkModeIcon />,
       title: 'Change theme',
       customOnClickBehavior: () => toggleColorMode(), // change theme
+      disabled: true,
     },
   ]
 

@@ -108,7 +108,7 @@ export default function MintCost({ costs }: Props) {
       <Typography textAlign="center" variant="subtitle2">
         {t('badge.type.mint.makeSure')}
         <a href={criteriaUrl} rel="noreferrer" style={{ color: colors.green }} target={'_blank'}>
-          Listing Criteria
+          {t('badge.type.mint.curationCriteria')}
         </a>
         {t('badge.type.mint.avoidChallenges')}
       </Typography>

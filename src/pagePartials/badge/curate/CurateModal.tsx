@@ -22,7 +22,7 @@ import { ButtonV2, colors } from 'thebadge-ui-library'
 import DisplayEvidenceField from '@/src/components/displayEvidence/DisplayEvidenceField'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import useBadgeById from '@/src/hooks/useBadgeById'
-import ListingCriteriaLink from '@/src/pagePartials/badge/curate/ListingCriteriaLink'
+import CurationCriteriaLink from '@/src/pagePartials/badge/curate/CurationCriteriaLink'
 import { useCurateProvider } from '@/src/providers/curateProvider'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 
@@ -213,7 +213,7 @@ function CurateModalContent({
       >
         <Box mt={4}>
           <SafeSuspense fallback={<Skeleton variant={'text'} width={500} />}>
-            <ListingCriteriaLink badgeTypeId={badgeTypeId} />
+            <CurationCriteriaLink badgeTypeId={badgeTypeId} />
           </SafeSuspense>
         </Box>
 
