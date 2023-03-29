@@ -181,9 +181,10 @@
     "curate": {
       "modal": {
         "evidence": "Badge evidences",
+        "requester": "Requester address: ",
         "viewEvidence": "View evidence raw file",
         "curationCriteria": "Curation Criteria",
-        "challengeButton": "Challenge"
+        "challengeButton": "CHALLENGE"
       }
     }
   },
