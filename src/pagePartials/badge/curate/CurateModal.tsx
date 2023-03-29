@@ -5,12 +5,12 @@ import { Box, IconButton, Modal, Skeleton, Stack, Typography, styled } from '@mu
 import { useTranslation } from 'next-export-i18n'
 import { ButtonV2, colors } from 'thebadge-ui-library'
 
+import DisplayEvidenceField from '@/src/components/displayEvidence/DisplayEvidenceField'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
-import useS3Metadata from '@/src/hooks/useS3Metadata'
-import ListingCriteriaLink from '@/src/pagePartials/badge/challenge/ListingCriteriaLink'
-import { useChallengeProvider } from '@/src/providers/challengeProvider'
+import useBadgeById from '@/src/hooks/useBadgeById'
+import ListingCriteriaLink from '@/src/pagePartials/badge/curate/ListingCriteriaLink'
+import { useCurateProvider } from '@/src/providers/curateProvider'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
-import { SubgraphName, getSubgraphSdkByNetwork } from '@/src/subgraph/subgraph'
 
 const ModalBody = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -83,20 +83,16 @@ function CurateModalContent({
   onClose: () => void
 }) {
   const { t } = useTranslation()
-  const { address, appChainId } = useWeb3Connection()
-  const { challenge } = useChallengeProvider()
+  const { address } = useWeb3Connection()
+  const { challenge } = useCurateProvider()
 
-  const gql = getSubgraphSdkByNetwork(appChainId, SubgraphName.TheBadge)
-  const badgeId = `${ownerAddress}-${badgeTypeId}`
-  const response = gql.useBadgeById({ id: badgeId })
-  const badge = response.data?.badge || null
+  const badgeById = useBadgeById(badgeTypeId, ownerAddress)
 
-  const evidenceRes: any = useS3Metadata(badge?.evidenceMetadataUrl || '')
-  const badgeEvidence = evidenceRes.data.content
-  const badgeEvidenceUrl = evidenceRes.data.s3Url
+  const badge = badgeById.data?.badge
+  const badgeEvidence = badgeById.data?.badgeEvidence
 
   if (!badge) {
-    return <div></div>
+    return null
   }
 
   return (
@@ -107,41 +103,34 @@ function CurateModalContent({
         width: '100%',
       }}
     >
-      <Typography color={'#42FF00'} id="modal-modal-title" variant="dAppHeadline2">
+      <Typography color={'#24F3D2'} id="modal-modal-title" variant="dAppHeadline2">
         {t('badge.curate.modal.evidence')}
       </Typography>
 
       <Box ml={'auto'} mt={'auto'}>
         <Typography fontSize={14} sx={{ textDecoration: 'underline !important' }} variant="body4">
-          <a href={badgeEvidenceUrl} rel="noreferrer" target="_blank">
+          <a href={badgeById.data?.rawBadgeEvidenceUrl} rel="noreferrer" target="_blank">
             {t('badge.curate.modal.viewEvidence')}
           </a>
         </Typography>
       </Box>
 
-      {badgeEvidence.columns.map((column: any) => {
+      {badgeEvidence?.columns.map((column) => {
         return (
           <Box
             display="flex"
             gap={3}
             justifyContent={'start'}
             key={'evidence-' + column.label}
-            width={'100%'}
+            sx={{
+              width: '75%',
+              '& > *': {
+                display: 'flex',
+                flex: '1',
+              },
+            }}
           >
-            <Box>
-              <Typography variant={'h4'}>{column.label}</Typography>
-              {column.type === 'image' ? (
-                <img
-                  alt={'evidence-' + column.label + '-image'}
-                  src={badgeEvidence.values[column.label].data_url}
-                  width={'100px'}
-                />
-              ) : (
-                <Typography fontSize={12} variant={'inherit'}>
-                  {badgeEvidence.values[column.label].toString()}
-                </Typography>
-              )}
-            </Box>
+            <DisplayEvidenceField columnItem={column} value={badgeEvidence.values[column.label]} />
           </Box>
         )
       })}

@@ -9,15 +9,12 @@ import { colors } from 'thebadge-ui-library'
 import challengedLogo from '@/src/components/assets/challenged.webp'
 import LinkWithTranslation from '@/src/components/helpers/LinkWithTranslation'
 import { notify } from '@/src/components/toast/Toast'
-import useS3Metadata from '@/src/hooks/useS3Metadata'
+import useBadgeById from '@/src/hooks/useBadgeById'
 import BadgeTypeMetadata from '@/src/pagePartials/badge/BadgeTypeMetadata'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
-import { SubgraphName, getSubgraphSdkByNetwork } from '@/src/subgraph/subgraph'
 import { ToastStates } from '@/types/toast'
 
 export default function BadgeOwnedPreview() {
   const { t } = useTranslation()
-  const { appChainId } = useWeb3Connection()
 
   const searchParams = useSearchParams()
   const typeId = searchParams.get('typeId')
@@ -27,16 +24,11 @@ export default function BadgeOwnedPreview() {
     throw `No typeId/ownerAddress provided us URL query param`
   }
 
-  const badgeId = `${ownerAddress}-${typeId}`
+  const badgeById = useBadgeById(typeId, ownerAddress)
 
-  const gql = getSubgraphSdkByNetwork(appChainId, SubgraphName.TheBadge)
-  const badgeResponse = gql.useBadgeById({ id: badgeId })
-
-  const badge = badgeResponse.data?.badge
+  const badge = badgeById.data?.badge
   const badgeType = badge?.badgeType
-
-  const res: any = useS3Metadata(badgeType?.metadataURL || '')
-  const badgeMetadata = res.data.content
+  const badgeMetadata = badgeById.data?.badgeMetadata
 
   function handleShare() {
     navigator.clipboard.writeText(window.location.href)
@@ -51,11 +43,11 @@ export default function BadgeOwnedPreview() {
           <Image alt="Challenged badge" src={challengedLogo} />
         </Box>
       )}
-      <Box display="flex" flex={1} gap={4} justifyContent="space-between" my={4}>
-        <Box display="flex">
+      <Box display="flex" flex={1} gap={8} justifyContent="space-between" my={4}>
+        <Box display="flex" flex={1}>
           <BadgeTypeMetadata metadata={badgeType?.metadataURL} />
         </Box>
-        <Stack gap={2} justifyContent="space-between">
+        <Stack flex={2} gap={2} justifyContent="space-between">
           <Stack gap={3}>
             <Typography
               sx={{
@@ -64,7 +56,7 @@ export default function BadgeOwnedPreview() {
               }}
               variant="dAppTitle3"
             >
-              {badgeMetadata.name}
+              {badgeMetadata?.name}
             </Typography>
             <Typography sx={{ color: colors.green, fontWeight: 'bold' }} variant="caption">
               Badge type ID: {typeId}
@@ -75,7 +67,7 @@ export default function BadgeOwnedPreview() {
             <Typography variant="body2">
               {t('badge.viewBadge.issueBy', { issuer: 'TheBadge' })}
             </Typography>
-            <Typography variant="dAppBody1">{badgeMetadata.description}</Typography>
+            <Typography variant="dAppBody1">{badgeMetadata?.description}</Typography>
           </Stack>
           <Divider color={colors.white} />
           <Typography

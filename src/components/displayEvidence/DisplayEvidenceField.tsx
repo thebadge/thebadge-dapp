@@ -1,0 +1,71 @@
+import { Typography } from '@mui/material'
+
+import { DisplayBoolean } from '@/src/components/displayEvidence/DisplayBoolean'
+import { DisplayFile } from '@/src/components/displayEvidence/DisplayFile'
+import { DisplayImage } from '@/src/components/displayEvidence/DisplayImage'
+import { DisplayLink } from '@/src/components/displayEvidence/DisplayLink'
+import { DisplayLongText } from '@/src/components/displayEvidence/DisplayLongText'
+import { DisplayText } from '@/src/components/displayEvidence/DisplayText'
+import { KLEROS_LIST_TYPES, MetadataColumn } from '@/types/kleros/types'
+
+export default function DisplayEvidenceField({
+  columnItem,
+  value,
+}: {
+  columnItem: MetadataColumn
+  value: any
+}) {
+  switch (columnItem.type) {
+    case KLEROS_LIST_TYPES.GTCR_ADDRESS:
+    case KLEROS_LIST_TYPES.ADDRESS:
+    case KLEROS_LIST_TYPES.RICH_ADDRESS:
+      // TODO Update it to show something diff on address, maybe a redirect to ether-scan
+      return (
+        <DisplayText label={columnItem.label} placeholder={columnItem.description} value={value} />
+      )
+    case KLEROS_LIST_TYPES.TEXT:
+    case KLEROS_LIST_TYPES.NUMBER:
+      return (
+        <DisplayText label={columnItem.label} placeholder={columnItem.description} value={value} />
+      )
+    case KLEROS_LIST_TYPES.BOOLEAN:
+      return (
+        <DisplayBoolean
+          label={columnItem.label}
+          placeholder={columnItem.description}
+          value={value}
+        />
+      )
+    case KLEROS_LIST_TYPES.LONG_TEXT:
+      return (
+        <DisplayLongText
+          label={columnItem.label}
+          placeholder={columnItem.description}
+          value={value}
+        />
+      )
+    case KLEROS_LIST_TYPES.FILE: {
+      return (
+        <DisplayFile label={columnItem.label} placeholder={columnItem.description} value={value} />
+      )
+    }
+    case KLEROS_LIST_TYPES.IMAGE:
+      return (
+        <DisplayImage
+          label={columnItem.label}
+          placeholder={columnItem.description}
+          value={value.data_url}
+        />
+      )
+    case KLEROS_LIST_TYPES.LINK:
+      return (
+        <DisplayLink label={columnItem.label} placeholder={columnItem.description} value={value} />
+      )
+    default:
+      return (
+        <Typography>
+          Error: Unhandled Type {columnItem.type} for data {value}
+        </Typography>
+      )
+  }
+}

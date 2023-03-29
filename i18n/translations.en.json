@@ -51,7 +51,7 @@
 
   },
   "badge": {
-    "mintButton": "Claim it",
+    "mintButton": "Apply for it",
     "curateButton": "Curate",
     "type": {
       "create": {

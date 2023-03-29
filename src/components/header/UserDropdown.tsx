@@ -101,7 +101,7 @@ export const UserDropdown: React.FC = () => {
         <StyledButton
           border={`2px solid ${colors.blue}`}
           onClick={() => {
-            router.push('/badge/explorer')
+            router.push('/badge/curate')
           }}
         >
           {t('header.buttons.curate')}

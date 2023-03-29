@@ -1,9 +1,8 @@
 import { useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/navigation'
 
-import { Box, Stack, Tooltip, Typography } from '@mui/material'
+import { Box, Button, Stack, Tooltip } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
-import { ButtonV2, colors } from 'thebadge-ui-library'
 
 import SafeSuspense, { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import BadgeOwnedPreview from '@/src/pagePartials/badge/preview/BadgeOwnedPreview'
@@ -30,28 +29,25 @@ const ViewBadge: NextPageWithLayout = () => {
     <Box sx={{ position: 'relative' }}>
       <Stack maxWidth={900} mx={'auto'}>
         <BadgeOwnedPreview />
-        <Box display="flex" justifyContent="space-between">
+        <Box display="flex" justifyContent="space-evenly" maxWidth={300}>
           <Tooltip title={address === ownerAddress ? 'You already own this badge.' : ''}>
-            <ButtonV2
-              backgroundColor={colors.purple}
+            <Button
+              color="white"
               disabled={address === ownerAddress}
-              fontColor={colors.white}
               onClick={() => router.push(`/badge/mint/${typeId}`)}
-              width={'40%'}
+              sx={{ borderRadius: 3, fontSize: '14px !important' }}
             >
-              <Typography>{t('badge.mintButton')}</Typography>
-            </ButtonV2>
+              {t('badge.mintButton')}
+            </Button>
           </Tooltip>
-
-          <ButtonV2
-            backgroundColor={colors.blue}
-            disabled={address === ownerAddress}
-            fontColor={colors.white}
+          <Button
+            color="green"
             onClick={() => curate(typeId, ownerAddress)}
-            width={'40%'}
+            sx={{ borderRadius: 3, fontSize: '14px !important', color: 'background.default' }}
+            variant="contained"
           >
-            <Typography>{t('badge.curateButton')}</Typography>
-          </ButtonV2>
+            {t('badge.curateButton')}
+          </Button>
         </Box>
         <SafeSuspense>
           <ChallengeStatus />
