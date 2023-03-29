@@ -1,5 +1,6 @@
 import { Typography } from '@mui/material'
 
+import { DisplayAddress } from '@/src/components/displayEvidence/DisplayAddress'
 import { DisplayBoolean } from '@/src/components/displayEvidence/DisplayBoolean'
 import { DisplayFile } from '@/src/components/displayEvidence/DisplayFile'
 import { DisplayImage } from '@/src/components/displayEvidence/DisplayImage'
@@ -19,9 +20,12 @@ export default function DisplayEvidenceField({
     case KLEROS_LIST_TYPES.GTCR_ADDRESS:
     case KLEROS_LIST_TYPES.ADDRESS:
     case KLEROS_LIST_TYPES.RICH_ADDRESS:
-      // TODO Update it to show something diff on address, maybe a redirect to ether-scan
       return (
-        <DisplayText label={columnItem.label} placeholder={columnItem.description} value={value} />
+        <DisplayAddress
+          label={columnItem.label}
+          placeholder={columnItem.description}
+          value={value}
+        />
       )
     case KLEROS_LIST_TYPES.TEXT:
     case KLEROS_LIST_TYPES.NUMBER:

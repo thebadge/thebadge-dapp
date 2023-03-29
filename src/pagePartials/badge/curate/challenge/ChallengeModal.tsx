@@ -16,7 +16,7 @@ import {
 } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
 import { Controller, useForm } from 'react-hook-form'
-import { colors } from 'thebadge-ui-library'
+import { colors, gradients } from 'thebadge-ui-library'
 import { z } from 'zod'
 
 import { FileInput } from '@/src/components/form/FileInput'
@@ -42,7 +42,10 @@ const ModalBody = styled(Box)(({ theme }) => ({
   width: '70%',
   maxWidth: '850px',
   minHeight: '50%',
-  background: theme.palette.background.paper,
+  background:
+    theme.palette.mode === 'light'
+      ? gradients.gradientBackgroundLight
+      : gradients.gradientBackgroundDark,
   borderRadius: theme.spacing(1),
   boxShadow: `0px 0px 20px rgba(255, 255, 255, 0.6)`,
   padding: theme.spacing(4),

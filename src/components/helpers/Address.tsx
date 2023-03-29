@@ -17,6 +17,9 @@ const Wrapper = styled('span')`
 
 const ExternalLink = styled('a')`
   color: ${({ theme: { palette } }) => palette.text.primary};
+  font-weight: 400;
+  line-height: 133%;
+  font-size: 14px;
   text-decoration: underline;
 
   &:hover {
