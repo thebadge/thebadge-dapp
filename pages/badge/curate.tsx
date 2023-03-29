@@ -78,7 +78,7 @@ const CurateBadges: NextPageWithLayout = () => {
           <MiniBadgeTypeMetadata
             buttonTitle={t('curateExplorer.button')}
             disableAnimations
-            highlightColor={colors.darkGreen}
+            highlightColor={colors.greenLogo}
             metadata={badge.badgeType.metadataURL}
             onClick={() => curate(badge.badgeType.id, badge.receiver.id)}
           />
