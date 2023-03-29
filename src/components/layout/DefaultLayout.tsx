@@ -4,6 +4,7 @@ import Headroom from 'react-headroom'
 import { BackgroundGradient } from 'thebadge-ui-library'
 
 import Header from '@/src/components/header/Header'
+import { Footer } from '@/src/components/layout/Footer'
 import MainMenu from '@/src/components/navigation/MainMenu'
 import CurateContextProvider from '@/src/providers/curateProvider'
 import { useColorMode } from '@/src/providers/themeProvider'
@@ -40,31 +41,34 @@ export default function DefaultLayout({ children }: DefaultLayoutProps) {
   const { mode } = useColorMode()
 
   return (
-    <CurateContextProvider>
-      <Content>
-        <Headroom
-          style={{
-            transition: 'all .5s cubic-bezier(0.83, 0, 0.17, 1)',
-            background: '#000000',
-            zIndex: 999,
-          }}
-        >
-          <Container sx={{ flex: 1 }}>
-            <Header />
-          </Container>
-        </Headroom>
-        <BackgroundGradient
-          gradient={theme.palette?.backgroundGradient[mode as keyof PaletteColorOptions]}
-        />
-        <Box sx={{ display: 'flex', flex: 1, minHeight: '50rem' }}>
-          <NavigationRoom>
-            <MainMenu />
-          </NavigationRoom>
-          <Container maxWidth={'lg'} sx={{ margin: theme.spacing(6, 'auto', 12) }}>
-            {children}
-          </Container>
-        </Box>
-      </Content>
-    </CurateContextProvider>
+    <>
+      <CurateContextProvider>
+        <Content>
+          <Headroom
+            style={{
+              transition: 'all .5s cubic-bezier(0.83, 0, 0.17, 1)',
+              background: '#000000',
+              zIndex: 999,
+            }}
+          >
+            <Container sx={{ flex: 1 }}>
+              <Header />
+            </Container>
+          </Headroom>
+          <BackgroundGradient
+            gradient={theme.palette?.backgroundGradient[mode as keyof PaletteColorOptions]}
+          />
+          <Box sx={{ display: 'flex', flex: 1, minHeight: '50rem' }}>
+            <NavigationRoom>
+              <MainMenu />
+            </NavigationRoom>
+            <Container maxWidth={'lg'} sx={{ margin: theme.spacing(6, 'auto', 12) }}>
+              {children}
+            </Container>
+          </Box>
+        </Content>
+      </CurateContextProvider>
+      <Footer />
+    </>
   )
 }

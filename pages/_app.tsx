@@ -11,7 +11,6 @@ import { GoogleAnalytics } from 'nextjs-google-analytics'
 import { SWRConfig } from 'swr'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
-import { Footer } from '@/src/components/layout/Footer'
 import Toast from '@/src/components/toast/Toast'
 import { Head } from '@/src/pagePartials/index/Head'
 import ThemeProvider from '@/src/providers/themeProvider'
@@ -91,7 +90,6 @@ export default function App({
                     <TransactionNotificationProvider>
                       <CookiesWarningProvider>
                         <Container>{getLayout(<Component {...pageProps} />)}</Container>
-                        <Footer />
                       </CookiesWarningProvider>
                     </TransactionNotificationProvider>
                   </SectionReferencesProvider>
