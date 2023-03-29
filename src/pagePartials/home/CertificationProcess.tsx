@@ -1,12 +1,15 @@
 import { ReactNode } from 'react'
 
 import { Box, Typography } from '@mui/material'
+import { useTranslation } from 'next-export-i18n'
 
 import { Choose } from './svg/choose'
 import { Complete } from './svg/complete'
 import { Evidence } from './svg/evidence'
+import { DOCS_URL } from '@/src/constants/common'
 
 export default function CertificationProcess() {
+  const { t } = useTranslation()
   const processStep = (icon: ReactNode, text: string) => {
     return (
       <Box display={'flex'} flexDirection={'column'}>
@@ -26,24 +29,27 @@ export default function CertificationProcess() {
   return (
     <div>
       <Box display={'flex'} flexDirection={'row'} gap={8} justifyContent={'center'} mb={4}>
-        {processStep(<Choose />, 'Choose a certificate')}
-        {processStep(<Evidence />, 'Upload the evidence')}
-        {processStep(<Complete />, 'Complete!')}
+        {processStep(<Choose />, t('home.certificationProcess.step1'))}
+        {processStep(<Evidence />, t('home.certificationProcess.step2'))}
+        {processStep(<Complete />, t('home.certificationProcess.step3'))}
       </Box>
 
       <Typography
         alignItems={'center'}
+        component={'a'}
         display={'flex'}
         fontSize={'12px !important'}
         fontWeight={900}
+        href={`${DOCS_URL}/thebadge-documentation/overview/how-it-works`}
         justifyContent={'center'}
         lineHeight={'15px'}
         mb={10}
         sx={{
           cursor: 'pointer',
         }}
+        target={'_blank'}
       >
-        FULL CERTIFICATION PROCESS TUTORIAL{' '}
+        {t('home.certificationProcess.title')}{' '}
         <Typography color={'#22DBBD'} ml={1}>
           {' > '}
         </Typography>

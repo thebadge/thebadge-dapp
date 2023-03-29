@@ -1,4 +1,38 @@
 {
+  "home": {
+    "title": "Welcome to TheBadge!",
+    "subtitle": "DECENTRALIZED CERTIFICATION PLATFORM",
+    "certificationProcess": {
+      "title": "FULL CERTIFICATION PROCESS TUTORIAL",
+      "step1": "Choose a certificate",
+      "step2": "Upload the evidence",
+      "step3": "Complete!"
+    },
+    "claimBadges": {
+      "title": "Claim one of these badges",
+      "button": "EXPLORE CERTIFICATES"
+    },
+    "earnByCurating": {
+      "title": "Earn by Curating",
+      "subtitle": "Become a Curator",
+      "button": "LEARN MORE"
+    },
+    "badgeCreator": {
+      "title": "Badge Creator",
+      "step1": "You can design and publish custom badges that other users can apply for to verify\n real-world information.",
+      "step2": "Set the price for the badges you create and receive a share of the fee when users apply\n for and receive them.",
+      "learnMore": "Learn more",
+      "button": "BECOME A CREATOR"
+    },
+    "thirdParty": {
+      "title1": "Are you willing to emit on-chan certificates as a ",
+      "title2": "third-party entity?",
+      "step1": "Also known as \"Blockchain certifications as a service\". These are badges generated and\n        backed by a public or private entity. Entities that are willing to generate these badges\n have to be registered on the platform before they can start emitting them.",
+      "learnMore": "Learn more",
+      "button": "BECOME A THIRD PARTY",
+      "buttonTooltip": "Join to our discord, to be up to date with third party release."
+    }
+  },
   "header": {
     "home": "HOME",
     "wallet": {
