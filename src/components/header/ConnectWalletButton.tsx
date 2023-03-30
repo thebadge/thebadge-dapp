@@ -1,14 +1,26 @@
-import { Button, ButtonProps, styled } from '@mui/material'
+import ElectricBoltIcon from '@mui/icons-material/ElectricBolt'
+import { ButtonProps, Typography } from '@mui/material'
+import { ButtonV2, colors } from 'thebadge-ui-library'
 
-const StyledButton = styled(Button)(({ theme }) => ({
-  textTransform: 'none',
-  color: theme.palette.text.secondary,
-  borderRadius: theme.spacing(1),
-}))
 export default function ConnectWalletButton({ children, ...rest }: ButtonProps) {
   return (
-    <StyledButton {...rest} color="secondary" variant="contained">
-      {children}
-    </StyledButton>
+    <ButtonV2
+      {...rest}
+      backgroundColor={colors.greenLogo}
+      fontColor={colors.blackText}
+      sx={{
+        borderRadius: '10px',
+      }}
+    >
+      <ElectricBoltIcon sx={{ width: '14px' }} />
+      <Typography
+        fontSize={'12px !important'}
+        fontWeight={700}
+        lineHeight={'14px'}
+        textTransform={'uppercase'}
+      >
+        {children}
+      </Typography>
+    </ButtonV2>
   )
 }

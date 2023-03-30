@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { styled } from '@mui/material'
 
 import { ModalSwitchNetwork } from '@/src/components/helpers/ModalSwitchNetwork'
+import { useSizeMD } from '@/src/hooks/useSize'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 
 const ErrorSVG: React.FC = () => (
@@ -22,12 +23,18 @@ const Wrapper = styled('div')`
   display: flex;
   align-items: center;
   color: ${({ theme: { palette } }) => palette.error.main};
+  margin: 0 1rem;
 `
 
-const Underline = styled('div')`
+const TextWrapper = styled('div')`
+  margin: 0 0.5rem;
+`
+
+const Underline = styled('button')`
+  background: none;
+  border: none;
   cursor: pointer;
-  margin-left: 8px;
-  margin-right: 4px;
+  padding: 0;
   text-decoration: underline;
 
   &:hover {
@@ -38,17 +45,19 @@ const Underline = styled('div')`
 export const WrongNetwork: React.FC = ({ ...restProps }) => {
   const { isWalletConnected, isWalletNetworkSupported } = useWeb3Connection()
   const [showNetworkModal, setShowNetworkModal] = useState(false)
+  const isMobileOrTablet = useSizeMD()
 
   return isWalletConnected && !isWalletNetworkSupported ? (
-    <>
-      <Wrapper onClick={() => setShowNetworkModal(true)} {...restProps}>
-        <ErrorSVG />
-        <Underline>Switch to a valid network</Underline> to use the app!
-      </Wrapper>
+    <Wrapper {...restProps}>
+      <ErrorSVG />
+      <TextWrapper>
+        <Underline onClick={() => setShowNetworkModal(true)}>Switch to a valid network</Underline>
+        {!isMobileOrTablet ? <span> to use the app!</span> : null}
+      </TextWrapper>
       {showNetworkModal && (
         <ModalSwitchNetwork onClose={() => setShowNetworkModal(false)} open={showNetworkModal} />
       )}
-    </>
+    </Wrapper>
   ) : null
 }
 
