@@ -16,6 +16,15 @@
     }
   }
 
+  @keyframes jump {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform:translate(0, 3%);
+    }
+  }
+
   .scaled {
     transform-origin: center;
     animation: 0.7s ease-in-out infinite alternate 1s scale;
@@ -23,10 +32,10 @@
 
   .scaled2 {
     transform-origin: center;
-    animation: 0.7s ease-in-out infinite alternate 2s scale;
+    animation: 0.7s ease-in-out infinite alternate 5s scale;
   }
   
-  .rocket-movement {
+  .jump {
     transform-origin: center;
-    animation: 0.7s ease-in-out infinite alternate 4s rocketMovement;
+    animation: 0.7s ease-in-out infinite alternate 5s jump;
   }

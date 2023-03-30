@@ -1,9 +1,9 @@
-import { useSizeMD, useSizeSM } from "@/src/hooks/useSize";
 import React, { useState } from 'react'
 
 import { styled } from '@mui/material'
 
 import { ModalSwitchNetwork } from '@/src/components/helpers/ModalSwitchNetwork'
+import { useSizeMD } from '@/src/hooks/useSize'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 
 const ErrorSVG: React.FC = () => (
