@@ -61,8 +61,12 @@
       "title": "Badges that you own",
       "noResults": "You don't have any badges that match these filters..."
     },
-    "badgesCreated": "Badges that you created",
-    "badgesCreatedNoResults": "You don't have any badges that match these filters...",
+    "badgesCreated": {
+      "title": "Explore other badges",
+      "badgesCreatedNoResults": "You don't have any badges that match these filters...",
+      "explorerBadgeCost": "Cost:",
+      "explorerBadgeMinted": "Minted: "
+    },
     "exploreOtherBadges": "Explore other badges",
     "badgesToCurate": "Browse other badges to curate",
     "createdBadges": "Earn by creating new badges",
