@@ -182,8 +182,7 @@ export default function MintSteps({ costs, evidenceSchema, onSubmit, txState }: 
             },
           },
         ]}
-        formGridLayout={formGridLayout}
-        formLayout={'gridResponsive'}
+        formLayout={'flex'}
         formSubmitReview={handleFormPreview}
         hideSubmit={txState !== TransactionStates.none}
         onStepChanged={(sn) => setCurrentStep(sn)}

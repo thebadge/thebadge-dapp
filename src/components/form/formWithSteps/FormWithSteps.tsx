@@ -18,7 +18,7 @@ import { useSizeSM } from '@/src/hooks/useSize'
 type FormWithStepsProps = {
   stepSchemas: (AnyZodObject | ZodEffects<any, any, any>)[]
   stepNames: string[]
-  formGridLayout: DataGrid[][]
+  formGridLayout?: DataGrid[][]
   formLayout?: FormLayoutType
   formFieldProps?: Record<string, any>[]
   onSubmit: (data: any) => void
@@ -188,9 +188,13 @@ export function FormWithSteps({
                 <CustomFormFromSchemaWithoutSubmit
                   formProps={{
                     layout: formLayout,
-                    gridStructure: formGridLayout[activeStep],
                     buttonLabel: 'Next',
                     buttonRef: formButtonRef,
+                    ...(formLayout === 'gridResponsive' && formGridLayout
+                      ? {
+                          gridStructure: formGridLayout[activeStep],
+                        }
+                      : {}),
                   }}
                   onSubmit={handleSubmitNext}
                   props={formFieldProps ? formFieldProps[activeStep] : undefined}
