@@ -1,7 +1,7 @@
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 
-import { Box, Stack, styled } from '@mui/material'
+import { Box, Stack, alpha, styled } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
 import { colors } from 'thebadge-ui-library'
 
@@ -13,7 +13,7 @@ import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { SubgraphName, getSubgraphSdkByNetwork } from '@/src/subgraph/subgraph'
 import { NextPageWithLayout } from '@/types/next'
 
-const StyledBadgeContainer = styled(Box)(() => ({
+const StyledBadgeContainer = styled(Box)(({ highlightColor }: { highlightColor: string }) => ({
   position: 'relative',
   transition: 'all 2s',
   overflow: 'hidden',
@@ -25,6 +25,10 @@ const StyledBadgeContainer = styled(Box)(() => ({
     transform: 'translate(-50%, 0%)',
   },
   '&:hover': {
+    background: alpha(highlightColor, 0.85),
+    margin: '8px',
+    borderTopLeftRadius: '8px',
+    borderTopRightRadius: '8px',
     '& #mint-btn': {
       bottom: '3px',
     },
@@ -71,7 +75,7 @@ const ExploreBadgeTypes: NextPageWithLayout = () => {
 
     const badgeLayouts = badges.map((bt) => {
       return (
-        <StyledBadgeContainer key={bt.id} maxWidth={'250px'}>
+        <StyledBadgeContainer highlightColor={colors.blue} key={bt.id} maxWidth={'250px'}>
           <MiniBadgeTypeMetadata
             buttonTitle={t('explorer.button')}
             disableAnimations
