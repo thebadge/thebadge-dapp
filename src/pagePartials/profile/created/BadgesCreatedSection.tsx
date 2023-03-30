@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
 
-import { Box, Stack, Typography, styled } from '@mui/material'
+import { Box, Stack, Theme, Typography, styled } from '@mui/material'
+import { alpha } from '@mui/material'
 import { formatUnits } from 'ethers/lib/utils'
 import { useTranslation } from 'next-export-i18n'
+import { colors } from 'thebadge-ui-library'
 
 import { NoResultsAnimated } from '@/src/components/assets/NoResults'
 import FilteredList, { ListFilter } from '@/src/components/helpers/FilteredList'
@@ -10,31 +12,35 @@ import MiniBadgeTypeMetadata from '@/src/pagePartials/badge/MiniBadgeTypeMetadat
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { SubgraphName, getSubgraphSdkByNetwork } from '@/src/subgraph/subgraph'
 
-const StyledBadgeContainer = styled(Box)(({ theme }) => ({
-  position: 'relative',
-  transition: 'all 2s',
-  overflow: 'hidden',
-  '& #badge-info': {
-    display: 'flex',
-    flexDirection: 'column',
-    background: theme.palette.text.primary,
-    color: theme.palette.background.default,
-    padding: '8px',
-    borderTopLeftRadius: '8px',
-    borderTopRightRadius: '8px',
-    transition: 'all .75s cubic-bezier(0.83, 0, 0.17, 1)',
-    position: 'absolute',
-    bottom: '-38px',
-    left: '50%',
-    transform: 'translate(-50%, 0%)',
+const StyledBadgeContainer = styled(Box)(
+  ({ highlightColor, theme }: { theme?: Theme; highlightColor: string }) => {
+    return {
+      position: 'relative',
+      transition: 'all 2s',
+      overflow: 'hidden',
+      '& #badge-info': {
+        display: 'flex',
+        flexDirection: 'column',
+        background: theme?.palette.text.primary,
+        color: theme?.palette.background.default,
+        padding: '8px',
+        borderTopLeftRadius: '8px',
+        borderTopRightRadius: '8px',
+        transition: 'all .75s cubic-bezier(0.83, 0, 0.17, 1)',
+        position: 'absolute',
+        left: '50%',
+        transform: 'translate(-50%, 0%)',
+        bottom: '2px',
+      },
+      '&:hover': {
+        background: alpha(highlightColor, 0.85),
+        margin: '8px',
+        borderTopLeftRadius: '8px',
+        borderTopRightRadius: '8px',
+      },
+    }
   },
-  '&:hover': {
-    overflow: 'none',
-    '& #badge-info': {
-      bottom: '2px',
-    },
-  },
-}))
+)
 
 export default function BadgesCreatedSection() {
   const { t } = useTranslation()
@@ -57,11 +63,19 @@ export default function BadgesCreatedSection() {
 
     const badgesLayouts = badgeTypes.map((badgeType) => {
       return (
-        <StyledBadgeContainer key={badgeType.id}>
-          <MiniBadgeTypeMetadata disableAnimations metadata={badgeType?.metadataURL} />
+        <StyledBadgeContainer highlightColor={colors.pink} key={badgeType.id}>
+          <MiniBadgeTypeMetadata
+            disableAnimations
+            highlightColor={colors.pink}
+            metadata={badgeType?.metadataURL}
+          />
           <Box id="badge-info">
-            <Typography variant="body4">Const: {formatUnits(badgeType.mintCost, 18)}</Typography>
-            <Typography variant="body4">Minted: {badgeType.badgesMintedAmount}</Typography>
+            <Typography variant="body4">
+              {t('profile.badgesCreated.explorerBadgeCost')} {formatUnits(badgeType.mintCost, 18)}
+            </Typography>
+            <Typography variant="body4">
+              {t('profile.badgesCreated.explorerBadgeMinted')} {badgeType.badgesMintedAmount}
+            </Typography>
           </Box>
         </StyledBadgeContainer>
       )
@@ -80,13 +94,13 @@ export default function BadgesCreatedSection() {
         filters={[]}
         loading={loading}
         search={search}
-        title={t('profile.badgesCreated')}
+        title={t('profile.badgesCreated.title')}
       >
         {items.length > 0 ? (
           items
         ) : (
           <Stack>
-            <NoResultsAnimated errorText={t('profile.badgesCreatedNoResults')} />
+            <NoResultsAnimated errorText={t('profile.badgesCreated.badgesCreatedNoResults')} />
           </Stack>
         )}
       </FilteredList>

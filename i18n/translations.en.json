@@ -61,8 +61,12 @@
       "title": "Badges that you own",
       "noResults": "You don't have any badges that match these filters..."
     },
-    "badgesCreated": "Badges that you created",
-    "badgesCreatedNoResults": "You don't have any badges that match these filters...",
+    "badgesCreated": {
+      "title": "Explore other badges",
+      "badgesCreatedNoResults": "You don't have any badges that match these filters...",
+      "explorerBadgeCost": "Cost:",
+      "explorerBadgeMinted": "Minted: "
+    },
     "exploreOtherBadges": "Explore other badges",
     "badgesToCurate": "Browse other badges to curate",
     "createdBadges": "Earn by creating new badges",
@@ -79,7 +83,7 @@
   },
   "creator": {
     "register": {
-      "title": "Became a Badge Creator",
+      "title": "Become a Badge Creator",
       "form": {
         "terms-conditions": "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet. Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitationam consequat sunt nostrud amet.Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit.\n\nExercitation veniam consequat sunt nostrud ame.Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia cosequat duis enim velit mollit. Exercitation veniam consquat sunt nosrud amet. Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.Amet minim mollit non deserunt ullaco est sit aliqua dolor do amet sint. Velit icia conseuat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet."
       },
