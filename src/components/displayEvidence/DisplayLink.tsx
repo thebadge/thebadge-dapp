@@ -17,7 +17,11 @@ export function DisplayLink({ label, placeholder, value }: DisplayLinkProps) {
   return (
     <FormField
       formControl={
-        <Typography component={'a'} href={protocolRegex.test(value) ? value : `https://${value}`}>
+        <Typography
+          component={'a'}
+          href={protocolRegex.test(value) ? value : `https://${value}`}
+          target={'_blank'}
+        >
           {value}
         </Typography>
       }
