@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 
-import { Box, Stack, alpha, styled } from '@mui/material'
+import { Stack } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
 import { colors } from 'thebadge-ui-library'
 
 import { NoResultsAnimated } from '@/src/components/assets/NoResults'
+import { MiniBadgePreviewContainer } from '@/src/components/common/MiniBadgePreviewContainer'
 import FilteredList, { ListFilter } from '@/src/components/helpers/FilteredList'
 import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import MiniBadgeTypeMetadata from '@/src/pagePartials/badge/MiniBadgeTypeMetadata'
@@ -12,28 +13,6 @@ import { useCurateProvider } from '@/src/providers/curateProvider'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { SubgraphName, getSubgraphSdkByNetwork } from '@/src/subgraph/subgraph'
 import { NextPageWithLayout } from '@/types/next'
-
-const StyledBadgeContainer = styled(Box)(({ highlightColor }: { highlightColor: string }) => ({
-  position: 'relative',
-  transition: 'all 2s',
-  overflow: 'hidden',
-  '& #curate-btn': {
-    transition: 'all .75s cubic-bezier(0.83, 0, 0.17, 1)',
-    position: 'absolute',
-    bottom: '-33px',
-    left: '50%',
-    transform: 'translate(-50%, 0%)',
-  },
-  '&:hover': {
-    background: alpha(highlightColor, 0.85),
-    margin: '8px',
-    borderTopLeftRadius: '8px',
-    borderTopRightRadius: '8px',
-    '& #curate-btn': {
-      bottom: '3px',
-    },
-  },
-}))
 
 const now = Math.floor(Date.now() / 1000)
 const CurateBadges: NextPageWithLayout = () => {
@@ -78,7 +57,7 @@ const CurateBadges: NextPageWithLayout = () => {
 
     const badgeLayouts = badges.map((badge) => {
       return (
-        <StyledBadgeContainer highlightColor={colors.greenLogo} key={badge.id} maxWidth={'250px'}>
+        <MiniBadgePreviewContainer highlightColor={colors.greenLogo} key={badge.id}>
           <MiniBadgeTypeMetadata
             buttonTitle={t('curateExplorer.button')}
             disableAnimations
@@ -93,7 +72,7 @@ const CurateBadges: NextPageWithLayout = () => {
            This is broken because the metadata is not linked on IPFS.
            <CreatorDetails metadata={bt.emitter.metadata} />
           */}
-        </StyledBadgeContainer>
+        </MiniBadgePreviewContainer>
       )
     })
 

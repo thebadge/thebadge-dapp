@@ -19,7 +19,8 @@ type FormWithStepsProps = {
   stepSchemas: (AnyZodObject | ZodEffects<any, any, any>)[]
   stepNames: string[]
   formGridLayout?: DataGrid[][]
-  formLayout?: FormLayoutType
+  // Avoid the user of an array of FormLayoutType, is a temporary solution to support a better badge creation form
+  formLayout?: FormLayoutType | FormLayoutType[]
   formFieldProps?: Record<string, any>[]
   onSubmit: (data: any) => void
   formSubmitReview: (data: any) => React.ReactNode
@@ -187,10 +188,10 @@ export function FormWithSteps({
               {isFormStep && (
                 <CustomFormFromSchemaWithoutSubmit
                   formProps={{
-                    layout: formLayout,
+                    layout: getFormLayout(formLayout, activeStep),
                     buttonLabel: 'Next',
                     buttonRef: formButtonRef,
-                    ...(formLayout === 'gridResponsive' && formGridLayout
+                    ...(getFormLayout(formLayout, activeStep) === 'gridResponsive' && formGridLayout
                       ? {
                           gridStructure: formGridLayout[activeStep],
                         }
@@ -222,4 +223,11 @@ export function FormWithSteps({
       </Box>
     </Box>
   )
+}
+
+function getFormLayout(
+  formLayout: FormLayoutType | FormLayoutType[] | undefined,
+  activeStep: number,
+): FormLayoutType | undefined {
+  return Array.isArray(formLayout) ? formLayout[activeStep] : formLayout
 }
