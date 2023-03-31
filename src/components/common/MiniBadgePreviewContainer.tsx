@@ -6,10 +6,10 @@ export const MiniBadgePreviewContainer = styled(Box, {
   position: 'relative',
   maxWidth: '250px',
   overflow: 'hidden',
-  transition: 'all .5s cubic-bezier(0.83, 0, 0.17, 1)',
+  transition: 'all 2s',
   '&:hover': {
-    background: alpha(highlightColor, 0.35),
-    margin: '4px',
+    background: alpha(highlightColor, 0.85),
+    margin: '8px',
     borderRadius: '8px',
   },
 }))
