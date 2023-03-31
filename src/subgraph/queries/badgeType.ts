@@ -2,7 +2,7 @@ import gql from 'graphql-tag'
 
 export const BADGE_TYPES = gql`
   query badgeTypes {
-    badgeTypes {
+    badgeTypes(where: { id_not_in: [1, 2, 3, 4, 5] }) {
       id
       metadataURL
       controllerName
