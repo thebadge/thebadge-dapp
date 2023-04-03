@@ -25,7 +25,7 @@ type SearchFieldProps = {
   onSearch: (searchValue: string) => void
   disabled: boolean
 }
-export default function TBSearchField({ label, onSearch, disabled }: SearchFieldProps) {
+export default function TBSearchField({ disabled, label, onSearch }: SearchFieldProps) {
   const [searchingText, setSearchingText] = useState<boolean>(false)
   const [textSearch, setTextSearch] = useState<string>('')
 
