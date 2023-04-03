@@ -4,10 +4,12 @@ import { useEffect, useRef, useState } from 'react'
 import { Stack, StepContent } from '@mui/material'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
+import { ButtonPropsColorOverrides } from '@mui/material/Button/Button'
 import Step from '@mui/material/Step'
 import StepButton from '@mui/material/StepButton'
 import Stepper from '@mui/material/Stepper'
 import Typography from '@mui/material/Typography'
+import { OverridableStringUnion } from '@mui/types'
 import { AnyZodObject, ZodEffects } from 'zod'
 
 import { CustomFormFromSchemaWithoutSubmit } from '@/src/components/form/customForms/CustomForm'
@@ -26,9 +28,14 @@ type FormWithStepsProps = {
   formSubmitReview: (data: any) => React.ReactNode
   hideSubmit?: boolean
   onStepChanged?: (stepNumber: number) => void
+  color?: OverridableStringUnion<
+    'inherit' | 'primary' | 'secondary' | 'success' | 'error' | 'info' | 'warning',
+    ButtonPropsColorOverrides
+  >
 }
 
 export function FormWithSteps({
+  color,
   formFieldProps,
   formGridLayout,
   formLayout,
@@ -150,9 +157,13 @@ export function FormWithSteps({
         {stepNames.map((label, index) => (
           <Step completed={completed[index]} key={label}>
             <StepButton
-              color="inherit"
               onClick={handleStep(index)}
               sx={{
+                '.MuiStepLabel-iconContainer': {
+                  '.Mui-active, .Mui-completed': {
+                    color: `${color || 'ihnerit'} !important`,
+                  },
+                },
                 '& .MuiStepIcon-text': {
                   fontSize: '1rem',
                 },
@@ -168,6 +179,7 @@ export function FormWithSteps({
                       layout: 'grid',
                       buttonLabel: 'Next',
                       buttonRef: formButtonRef,
+                      color,
                     }}
                     onSubmit={handleSubmitNext}
                     props={formFieldProps ? formFieldProps[activeStep] : undefined}
@@ -190,6 +202,7 @@ export function FormWithSteps({
                   formProps={{
                     layout: getFormLayout(formLayout, activeStep),
                     buttonLabel: 'Next',
+                    color,
                     buttonRef: formButtonRef,
                     ...(getFormLayout(formLayout, activeStep) === 'gridResponsive' && formGridLayout
                       ? {

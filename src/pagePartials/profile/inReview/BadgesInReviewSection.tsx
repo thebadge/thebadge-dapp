@@ -23,10 +23,6 @@ export default function BadgesInReviewSection() {
       title: 'Challenged',
       color: 'pink',
     },
-    {
-      title: 'Minted',
-      color: 'blue',
-    },
   ]
 
   const [items, setItems] = useState<React.ReactNode[]>([])

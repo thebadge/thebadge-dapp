@@ -152,7 +152,7 @@ export default function MintSteps({ costs, evidenceSchema, onSubmit, txState }: 
   return (
     <>
       <Stack sx={{ mb: 6, gap: 4, alignItems: 'center' }}>
-        <Typography color={colors.green} textAlign="center" variant="title2">
+        <Typography color={colors.blue} textAlign="center" variant="title2">
           {t('badge.type.mint.title')}
         </Typography>
 
@@ -168,6 +168,7 @@ export default function MintSteps({ costs, evidenceSchema, onSubmit, txState }: 
       </Stack>
 
       <FormWithSteps
+        color={'blue'}
         formFieldProps={[
           {
             help: {
@@ -179,6 +180,7 @@ export default function MintSteps({ costs, evidenceSchema, onSubmit, txState }: 
                 challengePeriodDuration: klerosBadge?.challengePeriodDuration / 60 / 60,
                 timeUnit: 'days',
               }),
+              color: 'blue',
             },
           },
         ]}

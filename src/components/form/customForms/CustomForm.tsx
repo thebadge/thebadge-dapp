@@ -15,6 +15,7 @@ function MyCustomFormComponent({
   buttonDisabled,
   buttonLabel = 'Submit',
   children,
+  color,
   draggable,
   gridStructure,
   layout = 'flex',
@@ -33,7 +34,12 @@ function MyCustomFormComponent({
           {children}
         </Layout>
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-          <FormButton color="primary" disabled={buttonDisabled} type="submit" variant="contained">
+          <FormButton
+            color={color || 'primary'}
+            disabled={buttonDisabled}
+            type="submit"
+            variant="contained"
+          >
             {buttonLabel}
           </FormButton>
         </Box>
@@ -51,6 +57,7 @@ function MyCustomFormComponentWithoutSubmit({
   buttonLabel = 'Submit',
   buttonRef,
   children,
+  color,
   draggable,
   gridStructure,
   layout = 'flex',
@@ -70,7 +77,7 @@ function MyCustomFormComponentWithoutSubmit({
         </Layout>
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
           <FormButton
-            color="primary"
+            color={color || 'primary'}
             disabled={buttonDisabled}
             onClick={onSubmit}
             ref={buttonRef}

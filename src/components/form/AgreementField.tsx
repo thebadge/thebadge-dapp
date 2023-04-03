@@ -2,6 +2,8 @@ import * as React from 'react'
 
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import { Box, Divider, Checkbox as MUICheckbox, Stack, Tooltip, Typography } from '@mui/material'
+import { CheckboxPropsColorOverrides } from '@mui/material/Checkbox/Checkbox'
+import { OverridableStringUnion } from '@mui/types'
 import { useDescription, useTsController } from '@ts-react/form'
 import { FieldError } from 'react-hook-form'
 
@@ -17,10 +19,15 @@ type AgreementFieldProps = {
   placeholder?: string
   value: boolean | undefined
   agreementText: string
+  color?: OverridableStringUnion<
+    'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning' | 'default',
+    CheckboxPropsColorOverrides
+  >
 }
 
 export function AgreementField({
   agreementText,
+  color,
   error,
   label,
   onChange,
@@ -47,7 +54,12 @@ export function AgreementField({
       <Stack flexDirection="row" flexWrap="wrap" justifyContent="center">
         <FormField
           formControl={
-            <MUICheckbox checked={!!value} onChange={handleChange} sx={{ width: 'fit-content' }} />
+            <MUICheckbox
+              checked={!!value}
+              color={color || 'primary'}
+              onChange={handleChange}
+              sx={{ width: 'fit-content' }}
+            />
           }
           label={'I have read and agree'}
           labelPosition={'left'}
@@ -79,7 +91,16 @@ export function AgreementField({
  * Component wrapped to be used with @ts-react/form
  *
  */
-export default function AgreementFieldWithTSForm({ agreementText }: { agreementText: string }) {
+export default function AgreementFieldWithTSForm({
+  agreementText,
+  color,
+}: {
+  agreementText: string
+  color: OverridableStringUnion<
+    'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning' | 'default',
+    CheckboxPropsColorOverrides
+  >
+}) {
   const { error, field } = useTsController<boolean>()
   const { label, placeholder } = useDescription()
 
@@ -90,6 +111,7 @@ export default function AgreementFieldWithTSForm({ agreementText }: { agreementT
   return (
     <AgreementField
       agreementText={agreementText}
+      color={color}
       error={error ? convertToFieldError(error) : undefined}
       label={label}
       onChange={onChange}
