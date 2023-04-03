@@ -1,3 +1,5 @@
+import { ButtonPropsColorOverrides } from "@mui/material/Button/Button";
+import { OverridableStringUnion } from "@mui/types";
 import { ReactNode, RefObject } from 'react'
 
 import { ReactComponentWithRequiredProps } from '@ts-react/form/src/createSchemaForm'
@@ -17,12 +19,20 @@ export type CustomFormProps =
       gridStructure?: never
       draggable?: never
       rowHeight?: never
+      color?: OverridableStringUnion<
+        'inherit' | 'primary' | 'secondary' | 'success' | 'error' | 'info' | 'warning',
+        ButtonPropsColorOverrides
+      >
     })
   | (BasicCustomFormProps & {
       layout: 'gridResponsive'
       gridStructure: DataGrid[]
       draggable?: boolean
       rowHeight?: number
+      color?: OverridableStringUnion<
+        'inherit' | 'primary' | 'secondary' | 'success' | 'error' | 'info' | 'warning',
+        ButtonPropsColorOverrides
+      >
     })
 
 export type FormLayoutType = 'flex' | 'grid' | 'gridResponsive'

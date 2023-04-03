@@ -45,7 +45,7 @@
     }
   },
   "explorer": {
-    "title": "Badges explorer",
+    "title": "Badge types explorer",
     "noBadgesFound": "There are no badges that match these filters...",
     "button": "MINT"
   },

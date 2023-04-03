@@ -23,8 +23,9 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
 type SearchFieldProps = {
   label: string
   onSearch: (searchValue: string) => void
+  disabled: boolean
 }
-export default function TBSearchField({ label, onSearch }: SearchFieldProps) {
+export default function TBSearchField({ label, onSearch, disabled }: SearchFieldProps) {
   const [searchingText, setSearchingText] = useState<boolean>(false)
   const [textSearch, setTextSearch] = useState<string>('')
 
@@ -45,12 +46,13 @@ export default function TBSearchField({ label, onSearch }: SearchFieldProps) {
       InputProps={{
         onFocus: () => handleSearchFocus(),
         onBlur: () => handleSearchBlur(),
+        disabled,
         endAdornment: (
           <InputAdornment position="end">
             <SearchIcon
-              onClick={handleOnClick}
+              onClick={disabled ? undefined : () => handleOnClick}
               sx={{
-                cursor: 'pointer',
+                cursor: disabled ? 'inherit' : 'pointer',
               }}
             />
           </InputAdornment>

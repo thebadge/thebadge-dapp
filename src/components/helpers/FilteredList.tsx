@@ -138,7 +138,11 @@ export default function FilteredList(props: FilteredListProps) {
           ) : null}
 
           {/* text search */}
-          <TBSearchField label="Text Search" onSearch={(searchValue) => search(searchValue)} />
+          <TBSearchField
+            disabled={!!props.disableEdit}
+            label="Text Search"
+            onSearch={(searchValue) => search(searchValue)}
+          />
         </Box>
       </FilteredListHeaderBox>
       <Divider color={mode === 'dark' ? 'white' : 'black'} sx={{ borderWidth: '1px' }} />
