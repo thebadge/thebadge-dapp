@@ -17,6 +17,18 @@ export const CheckBoxSchema = createUniqueFieldSchema(
   'CheckBoxSchema',
 )
 
+export const LinkSchema = createUniqueFieldSchema(
+  z
+    .string({
+      required_error: 'Is required',
+      invalid_type_error: 'Must be a link',
+    })
+    .refine((value) => value.startsWith('http'), {
+      message: 'You need to add valid url.',
+    }),
+  'LinkSchema',
+)
+
 export const AgreementSchema = createUniqueFieldSchema(
   z
     .boolean({
