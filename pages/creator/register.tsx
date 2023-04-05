@@ -13,6 +13,7 @@ import RegistrationSteps, {
   RegisterCuratorSchemaStep2,
   RegisterCuratorSchemaStep3,
 } from '@/src/pagePartials/creator/register/RegistrationSteps'
+import { RequiredConnection } from '@/src/pagePartials/errors/requiredConnection'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { SubgraphName, getSubgraphSdkByNetwork } from '@/src/subgraph/subgraph'
 import ipfsUpload from '@/src/utils/ipfsUpload'
@@ -77,9 +78,9 @@ const Register: NextPageWithLayout = () => {
   }
 
   return (
-    <>
+    <RequiredConnection>
       <RegistrationSteps onSubmit={onSubmit} txState={state} />
-    </>
+    </RequiredConnection>
   )
 }
 

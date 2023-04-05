@@ -10,11 +10,11 @@ import klerosSchemaFactory from '@/src/components/form/helpers/validators'
 import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import useBadgeType from '@/src/hooks/useBadgeType'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
-import useIsBadgeOwner from '@/src/hooks/useIsBadgeOwner'
 import useTransaction, { TransactionStates } from '@/src/hooks/useTransaction'
 import MintSteps from '@/src/pagePartials/badge/mint/MintSteps'
 import useKlerosDepositPrice from '@/src/pagePartials/badge/useKlerosDepositPrice'
-import { useErrorsProvider } from '@/src/providers/useErrorsProvider'
+import { RequiredConnection } from '@/src/pagePartials/errors/requiredConnection'
+import { RequiredNotHaveBadge } from '@/src/pagePartials/errors/requiredNotHaveBadge'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import ipfsUpload from '@/src/utils/ipfsUpload'
 import { TheBadge__factory } from '@/types/generated/typechain'
@@ -24,23 +24,11 @@ const MintBadgeType: NextPageWithLayout = () => {
   const { address } = useWeb3Connection()
   const theBadge = useContractInstance(TheBadge__factory, 'TheBadge')
   const { sendTx, state } = useTransaction()
-  const { alreadyOwnBadgeError, connectWalletError } = useErrorsProvider()
   const router = useRouter()
 
   const badgeTypeId = router.query.typeId as string
   if (!badgeTypeId) {
     throw `No typeId provided us URL query param`
-  }
-  if (!address) {
-    connectWalletError()
-    throw `Please, to continue it is necessary that you connect your wallet.`
-  }
-
-  const isBadgeOwner = useIsBadgeOwner(badgeTypeId, address)
-
-  console.log(isBadgeOwner.data, address)
-  if (isBadgeOwner.data) {
-    alreadyOwnBadgeError()
   }
 
   useEffect(() => {
@@ -109,20 +97,21 @@ const MintBadgeType: NextPageWithLayout = () => {
     }
   }
 
-  if (isBadgeOwner.data) return null
   return (
-    <>
-      <MintSteps
-        costs={{
-          mintCost: formatUnits(mintCost, 18),
-          totalMintCost: formatUnits(totalMintCost, 18),
-          klerosCost: formatUnits(klerosCost, 18),
-        }}
-        evidenceSchema={CreateBadgeSchema}
-        onSubmit={onSubmit}
-        txState={state}
-      />
-    </>
+    <RequiredConnection>
+      <RequiredNotHaveBadge>
+        <MintSteps
+          costs={{
+            mintCost: formatUnits(mintCost, 18),
+            totalMintCost: formatUnits(totalMintCost, 18),
+            klerosCost: formatUnits(klerosCost, 18),
+          }}
+          evidenceSchema={CreateBadgeSchema}
+          onSubmit={onSubmit}
+          txState={state}
+        />
+      </RequiredNotHaveBadge>
+    </RequiredConnection>
   )
 }
 

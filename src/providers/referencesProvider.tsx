@@ -7,7 +7,7 @@ type SectionReferencesContextType = {
   earnByCuratingSection: RefObject<HTMLDivElement> | null
   becomeACreatorSection: RefObject<HTMLDivElement> | null
   becomeAThirdPartySection: RefObject<HTMLDivElement> | null
-  scrollTo: (path: string, ref: RefObject<HTMLDivElement> | null) => void
+  scrollTo: (path: string, ref: RefObject<HTMLDivElement> | null) => Promise<void>
 }
 
 const SectionReferencesContext = React.createContext<SectionReferencesContextType>({
@@ -16,7 +16,7 @@ const SectionReferencesContext = React.createContext<SectionReferencesContextTyp
   earnByCuratingSection: null,
   becomeACreatorSection: null,
   becomeAThirdPartySection: null,
-  scrollTo: () => {
+  scrollTo: async () => {
     // Empty function
   },
 })

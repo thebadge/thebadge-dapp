@@ -26,6 +26,7 @@ import { Address } from '@/src/components/helpers/Address'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import useBadgeById from '@/src/hooks/useBadgeById'
 import CurationCriteriaLink from '@/src/pagePartials/badge/curate/CurationCriteriaLink'
+import { RequiredConnection } from '@/src/pagePartials/errors/requiredConnection'
 import { useCurateProvider } from '@/src/providers/curateProvider'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 
@@ -75,25 +76,27 @@ export default function CurateModal({
       onClose={onClose}
       open={open}
     >
-      <ModalBody>
-        <IconButton
-          aria-label="close curate modal"
-          color="secondary"
-          component="label"
-          onClick={onClose}
-          sx={{ position: 'absolute', right: 8, top: 8 }}
-        >
-          <CloseIcon color="white" />
-        </IconButton>
+      <RequiredConnection noCloseButton>
+        <ModalBody>
+          <IconButton
+            aria-label="close curate modal"
+            color="secondary"
+            component="label"
+            onClick={onClose}
+            sx={{ position: 'absolute', right: 8, top: 8 }}
+          >
+            <CloseIcon color="white" />
+          </IconButton>
 
-        <SafeSuspense>
-          <CurateModalContent
-            badgeTypeId={badgeTypeId}
-            onClose={onClose}
-            ownerAddress={ownerAddress}
-          />
-        </SafeSuspense>
-      </ModalBody>
+          <SafeSuspense>
+            <CurateModalContent
+              badgeTypeId={badgeTypeId}
+              onClose={onClose}
+              ownerAddress={ownerAddress}
+            />
+          </SafeSuspense>
+        </ModalBody>
+      </RequiredConnection>
     </Modal>
   )
 }

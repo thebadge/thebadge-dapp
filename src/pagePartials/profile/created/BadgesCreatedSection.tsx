@@ -9,6 +9,7 @@ import { NoResultsAnimated } from '@/src/components/assets/NoResults'
 import { MiniBadgePreviewContainer } from '@/src/components/common/MiniBadgePreviewContainer'
 import FilteredList, { ListFilter } from '@/src/components/helpers/FilteredList'
 import MiniBadgeTypeMetadata from '@/src/pagePartials/badge/MiniBadgeTypeMetadata'
+import { RequiredCreatorAccess } from '@/src/pagePartials/errors/requiresCreatorAccess'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { SubgraphName, getSubgraphSdkByNetwork } from '@/src/subgraph/subgraph'
 
@@ -77,7 +78,7 @@ export default function BadgesCreatedSection() {
   }
 
   return (
-    <>
+    <RequiredCreatorAccess>
       <FilteredList
         categories={['Category 1', 'Category 2', 'Category 3']}
         filters={[]}
@@ -95,6 +96,6 @@ export default function BadgesCreatedSection() {
           </Stack>
         )}
       </FilteredList>
-    </>
+    </RequiredCreatorAccess>
   )
 }
