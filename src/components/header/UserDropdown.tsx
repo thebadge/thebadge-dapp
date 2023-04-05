@@ -127,7 +127,7 @@ export const UserDropdown: React.FC = () => {
     t('header.buttons.create'),
     colors.pink,
     !user || !user?.isCreator,
-    '/badge/create',
+    '/badge/type/create',
   )
 
   return (

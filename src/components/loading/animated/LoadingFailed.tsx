@@ -6,7 +6,7 @@ const Wrapper = styled(Box)`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin: auto;
+  margin: 1rem;
   height: 65px;
   width: 65px;
   border: 4px solid #fff;
