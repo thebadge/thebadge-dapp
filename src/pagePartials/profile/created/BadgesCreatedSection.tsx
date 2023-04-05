@@ -84,6 +84,8 @@ export default function BadgesCreatedSection() {
         loading={loading}
         search={search}
         title={t('profile.badgesCreated.title')}
+        titleColor={colors.pink}
+        loadingColor={'primary'}
       >
         {items.length > 0 ? (
           items

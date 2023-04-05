@@ -1,3 +1,4 @@
+import { SpinnerColors } from "@/src/components/loading/Spinner";
 import React, { PropsWithChildren, useEffect, useState } from 'react'
 
 import { Box, Chip, Divider, Typography, styled } from '@mui/material'
@@ -23,7 +24,7 @@ export type ListFilter = {
 
 type FilteredListProps = PropsWithChildren & {
   title: string
-  color?: string
+  titleColor?: string
   filters: Array<ListFilter>
   categories?: Array<string>
   search: (
@@ -32,6 +33,7 @@ type FilteredListProps = PropsWithChildren & {
     textSearch?: string,
   ) => void
   loading?: boolean
+  loadingColor?: SpinnerColors
   disableEdit?: boolean
 }
 
@@ -97,7 +99,7 @@ export default function FilteredList(props: FilteredListProps) {
     <Box>
       <FilteredListHeaderBox>
         <Typography
-          color={props.color ?? (mode === 'light' ? colors.blackText : colors.white)}
+          color={props.titleColor ?? (mode === 'light' ? colors.blackText : colors.white)}
           component="div"
           fontSize={'20px'}
           fontWeight="900"
@@ -148,7 +150,7 @@ export default function FilteredList(props: FilteredListProps) {
       <Divider color={mode === 'dark' ? 'white' : 'black'} sx={{ borderWidth: '1px' }} />
       <Box mt={4}>
         {props.loading ? (
-          <Loading />
+          <Loading color={props.loadingColor} />
         ) : (
           <ItemsGridBox>
             <SafeSuspense>{props.children}</SafeSuspense>

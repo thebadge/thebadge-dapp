@@ -5,6 +5,7 @@ import { ErrorBoundary } from 'react-error-boundary'
 
 import { GeneralError, GeneralPageError } from '@/src/components/helpers/GeneralError'
 import { Loading } from '@/src/components/loading/Loading'
+import { SpinnerProps } from '@/src/components/loading/Spinner'
 import isDev from '@/src/utils/isDev'
 import { NextPageWithLayout } from '@/types/next'
 import { IntrinsicElements } from '@/types/utils'
@@ -14,22 +15,23 @@ type Props = {
   fallback?: JSX.Element
 }
 
-function DefaultFallback(): JSX.Element {
-  return <Loading />
+const DefaultFallback: React.FC<SpinnerProps> = ({ color }: SpinnerProps) => {
+  return <Loading color={color} />
 }
 
-function DefaultPageFallback(): JSX.Element {
+const DefaultPageFallback: React.FC<SpinnerProps> = ({ color }: SpinnerProps) => {
   return (
     <Box display="flex" height="50vh">
-      <Loading />
+      <Loading color={color} />
     </Box>
   )
 }
 
 export default function SafeSuspense({
   children,
-  fallback = <DefaultFallback />,
-}: PropsWithChildren<Props>): JSX.Element {
+  color,
+  fallback = <DefaultFallback color={color} />,
+}: PropsWithChildren<Props & SpinnerProps>): JSX.Element {
   return (
     <ErrorBoundary
       fallbackRender={({ error, resetErrorBoundary }) => (
@@ -42,7 +44,11 @@ export default function SafeSuspense({
   )
 }
 
-export function withPageGenericSuspense<TProps>(Page: NextPageWithLayout, fallback?: FC<TProps>) {
+export function withPageGenericSuspense<TProps>(
+  Page: NextPageWithLayout,
+  fallback?: FC<TProps>,
+  spinner?: SpinnerProps,
+) {
   const displayName = Page.displayName || Page.name || 'Page'
 
   const PageWithGenericSuspense = (props: IntrinsicElements & TProps) => (
@@ -52,7 +58,11 @@ export function withPageGenericSuspense<TProps>(Page: NextPageWithLayout, fallba
       )}
       onError={(error, info) => isDev && console.error(error, info)}
     >
-      <Suspense fallback={fallback ? fallback(props) : <DefaultPageFallback />}>
+      <Suspense
+        fallback={
+          fallback ? fallback(props) : <DefaultPageFallback color={spinner?.color} />
+        }
+      >
         <Page {...props} />
       </Suspense>
     </ErrorBoundary>

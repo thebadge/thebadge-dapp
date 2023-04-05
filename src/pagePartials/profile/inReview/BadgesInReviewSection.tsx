@@ -60,12 +60,13 @@ export default function BadgesInReviewSection() {
   return (
     <>
       <FilteredList
-        color={colors.green}
         disableEdit
         filters={filters}
         loading={loading}
+        loadingColor={'green'}
         search={search}
         title={t('profile.badgesInReview.title')}
+        titleColor={colors.green}
       >
         {items.length > 0 ? (
           items
