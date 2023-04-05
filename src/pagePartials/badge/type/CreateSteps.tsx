@@ -123,7 +123,7 @@ export default function CreateSteps({ onSubmit, txState }: MintStepsProps) {
 
   return (
     <>
-      <Stack sx={{ mb: 6, gap: 4, alignItems: 'center' }}>
+      <Stack sx={{ display: 'flex', flexDirection: 'column', mb: 6, gap: 4, alignItems: 'center' }}>
         <Typography color={colors.purple} textAlign="center" variant="title2">
           {t('badge.type.create.title')}
         </Typography>

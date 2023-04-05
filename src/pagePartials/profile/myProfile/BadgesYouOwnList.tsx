@@ -116,8 +116,10 @@ export default function BadgesYouOwnList({ address }: Props) {
       categories={['Category 1', 'Category 2', 'Category 3']}
       filters={filters}
       loading={loading}
+      loadingColor={'blue'}
       search={search}
       title={t('profile.badgesYouOwn.title')}
+      titleColor={'blue'}
     >
       {items.length > 0 ? (
         items

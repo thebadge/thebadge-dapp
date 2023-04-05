@@ -240,6 +240,7 @@ function CurateModalContent({
 
         <Box mt={2}>
           <Tooltip
+            arrow
             title={address === ownerAddress ? t('badge.curate.modal.ownBadgeChallenge') : ''}
           >
             {/* A disabled element does not fire events. So we need a wrapper to use the tooltip, also ButtonV2 doesn't forward the ref */}

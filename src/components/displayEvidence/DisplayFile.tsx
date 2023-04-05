@@ -23,7 +23,7 @@ export function DisplayFile({ label, placeholder, value }: DisplayFileProps) {
         <Typography>
           {label}
           {placeholder && (
-            <Tooltip title={placeholder}>
+            <Tooltip arrow title={placeholder}>
               <InfoOutlinedIcon sx={{ ml: 1 }} />
             </Tooltip>
           )}

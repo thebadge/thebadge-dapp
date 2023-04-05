@@ -26,7 +26,7 @@ export function DisplayBoolean({ label, placeholder, value }: DisplayBooleanProp
         <Typography>
           {label}
           {placeholder && (
-            <Tooltip title={placeholder}>
+            <Tooltip arrow title={placeholder}>
               <InfoOutlinedIcon sx={{ ml: 1 }} />
             </Tooltip>
           )}

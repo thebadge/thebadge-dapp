@@ -28,7 +28,7 @@ export function DisplayImage({ label, placeholder, value }: DisplayImageProps) {
         <Typography>
           {label}
           {placeholder && (
-            <Tooltip title={placeholder}>
+            <Tooltip arrow title={placeholder}>
               <InfoOutlinedIcon sx={{ ml: 1 }} />
             </Tooltip>
           )}

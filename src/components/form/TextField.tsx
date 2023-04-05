@@ -37,7 +37,7 @@ export function TextField({ error, label, onChange, placeholder, value }: TextFi
       <StyledTextField
         InputProps={{
           endAdornment: (
-            <Tooltip title={placeholder}>
+            <Tooltip arrow title={placeholder}>
               <InfoOutlinedIcon />
             </Tooltip>
           ),

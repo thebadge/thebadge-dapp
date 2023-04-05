@@ -82,8 +82,10 @@ export default function BadgesCreatedSection() {
         categories={['Category 1', 'Category 2', 'Category 3']}
         filters={[]}
         loading={loading}
+        loadingColor={'primary'}
         search={search}
         title={t('profile.badgesCreated.title')}
+        titleColor={colors.pink}
       >
         {items.length > 0 ? (
           items

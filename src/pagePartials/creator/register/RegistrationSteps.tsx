@@ -153,7 +153,7 @@ export default function RegistrationSteps({ onSubmit, txState }: RegistrationSte
           {t('creator.register.title')}
         </Typography>
 
-        <Typography textAlign="justify" variant="body4" width="85%">
+        <Typography textAlign="justify" variant="body3" width="85%">
           {t(`creator.register.steps.${currentStep}.sub-title`)}
         </Typography>
       </Stack>

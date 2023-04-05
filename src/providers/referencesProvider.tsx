@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router'
 import React, { RefObject, useContext, useRef } from 'react'
 
 type SectionReferencesContextType = {
@@ -6,7 +7,7 @@ type SectionReferencesContextType = {
   earnByCuratingSection: RefObject<HTMLDivElement> | null
   becomeACreatorSection: RefObject<HTMLDivElement> | null
   becomeAThirdPartySection: RefObject<HTMLDivElement> | null
-  scrollTo: (ref: RefObject<HTMLDivElement>) => void
+  scrollTo: (path: string, ref: RefObject<HTMLDivElement> | null) => void
 }
 
 const SectionReferencesContext = React.createContext<SectionReferencesContextType>({
@@ -21,13 +22,16 @@ const SectionReferencesContext = React.createContext<SectionReferencesContextTyp
 })
 
 export default function SectionReferencesProvider({ children }: { children: React.ReactNode }) {
+  const router = useRouter()
+
   const homeSection = useRef(null)
   const claimBadgesSection = useRef(null)
   const earnByCuratingSection = useRef(null)
   const becomeACreatorSection = useRef(null)
   const becomeAThirdPartySection = useRef(null)
 
-  const scrollTo = (sectionRef: RefObject<HTMLDivElement> | null) => {
+  const scrollTo = async (path: string, sectionRef: RefObject<HTMLDivElement> | null) => {
+    await router.push(path)
     if (!sectionRef) return
     window.scrollTo({
       top: (sectionRef.current?.offsetTop || 0) - 75,

@@ -51,7 +51,7 @@ export function NumberField({
           <MUITextField
             InputProps={{
               endAdornment: placeholder ? (
-                <Tooltip title={placeholder}>
+                <Tooltip arrow title={placeholder}>
                   <InfoOutlinedIcon sx={{ ml: 1 }} />
                 </Tooltip>
               ) : null,

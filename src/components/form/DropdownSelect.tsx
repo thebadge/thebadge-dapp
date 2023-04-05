@@ -43,7 +43,7 @@ export function DropdownSelect({
       <InputLabel id="select-helper-label">
         {label}
         {placeholder && (
-          <Tooltip title={placeholder}>
+          <Tooltip arrow title={placeholder}>
             <InfoOutlinedIcon />
           </Tooltip>
         )}

@@ -60,7 +60,7 @@ export function RatingSelector({ error, label, onChange, placeholder }: RatingSe
         <Typography>
           {label}
           {placeholder && (
-            <Tooltip title={placeholder}>
+            <Tooltip arrow title={placeholder}>
               <InfoOutlinedIcon sx={{ ml: 1 }} />
             </Tooltip>
           )}

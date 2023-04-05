@@ -11,10 +11,11 @@ import { TransactionStates } from '@/src/hooks/useTransaction'
 const Wrapper = styled(Box)`
   align-items: center;
   display: flex;
+  flex: 1;
   flex-direction: column;
   justify-content: center;
-  margin: auto;
-  gap: 16px;
+  margin: 1rem;
+  gap: 1rem;
 `
 
 interface Props extends DOMAttributes<HTMLDivElement>, HTMLAttributes<HTMLDivElement> {

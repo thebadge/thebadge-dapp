@@ -144,7 +144,7 @@ export function FileInput({ error, label, onChange, placeholder, value }: FileIn
           <Typography sx={{ textTransform: 'capitalize', color: 'text.secondary' }}>
             {label}
             {placeholder && (
-              <Tooltip title={placeholder}>
+              <Tooltip arrow title={placeholder}>
                 <InfoOutlinedIcon sx={{ ml: 1 }} />
               </Tooltip>
             )}
