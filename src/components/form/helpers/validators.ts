@@ -7,6 +7,7 @@ import {
   CheckBoxSchema,
   FileSchema,
   ImageSchema,
+  LinkSchema,
   LongTextSchema,
   NumberSchema,
   TwitterSchema,
@@ -19,13 +20,6 @@ const zText = z
     invalid_type_error: 'Must be an string',
   })
   .min(2, { message: 'Text field most have at least 2 characters.' })
-
-const zLink = z
-  .string({
-    required_error: 'Is required',
-    invalid_type_error: 'Must be a link',
-  })
-  .startsWith('http')
 
 export function isEmail(email: string) {
   return String(email)
@@ -44,7 +38,7 @@ function getZValidator(fieldType: KLEROS_LIST_TYPES) {
     case KLEROS_LIST_TYPES.TWITTER_USER_ID:
       return TwitterSchema
     case KLEROS_LIST_TYPES.LINK:
-      return zLink
+      return LinkSchema
     case KLEROS_LIST_TYPES.LONG_TEXT:
       return LongTextSchema
     case KLEROS_LIST_TYPES.TEXT:
@@ -76,8 +70,8 @@ export function isMetadataColumnArray(obj: any): obj is MetadataColumn[] {
 
 export default function klerosSchemaFactory(fields: MetadataColumn[]) {
   const shape: { [key: string]: ZodType } = {}
-  fields.forEach((field) => {
-    shape[field.label] = getZValidator(field.type).describe(
+  fields.forEach((field, i) => {
+    shape[`${field.type}-${i}`] = getZValidator(field.type).describe(
       `${field.label} // ${field.description}`,
     )
     //Magic explained here: https://github.com/iway1/react-ts-form#qol
