@@ -46,8 +46,10 @@ export default function SafeSuspense({
 
 export function withPageGenericSuspense<TProps>(
   Page: NextPageWithLayout,
-  fallback?: FC<TProps>,
-  spinner?: SpinnerProps,
+  options?: {
+    fallback?: FC<TProps>
+    spinner?: SpinnerProps
+  },
 ) {
   const displayName = Page.displayName || Page.name || 'Page'
 
@@ -59,7 +61,13 @@ export function withPageGenericSuspense<TProps>(
       onError={(error, info) => isDev && console.error(error, info)}
     >
       <Suspense
-        fallback={fallback ? fallback(props) : <DefaultPageFallback color={spinner?.color} />}
+        fallback={
+          options?.fallback ? (
+            options.fallback(props)
+          ) : (
+            <DefaultPageFallback color={options?.spinner?.color} />
+          )
+        }
       >
         <Page {...props} />
       </Suspense>

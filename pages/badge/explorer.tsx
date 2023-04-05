@@ -112,4 +112,4 @@ const ExploreBadgeTypes: NextPageWithLayout = () => {
   )
 }
 
-export default withPageGenericSuspense(ExploreBadgeTypes, undefined, { color: 'blue' })
+export default withPageGenericSuspense(ExploreBadgeTypes, { spinner: { color: 'blue' } })
