@@ -1,6 +1,14 @@
-import MarkdownTypography from "@/src/components/common/MarkdownTypography";
-import { DataGrid } from "@/src/components/form/customForms/type";
-import { FormWithSteps } from "@/src/components/form/formWithSteps/FormWithSteps";
+import * as React from 'react'
+import { useState } from 'react'
+
+import { Stack, Typography } from '@mui/material'
+import { useTranslation } from 'next-export-i18n'
+import { BadgePreviewV2, colors } from 'thebadge-ui-library'
+import { z } from 'zod'
+
+import MarkdownTypography from '@/src/components/common/MarkdownTypography'
+import { DataGrid } from '@/src/components/form/customForms/type'
+import { FormWithSteps } from '@/src/components/form/formWithSteps/FormWithSteps'
 import {
   AgreementSchema,
   ChallengePeriodTypeSchema,
@@ -10,18 +18,11 @@ import {
   KlerosDynamicFields,
   LongTextSchema,
   NumberSchema,
-  SeverityTypeSchema
-} from "@/src/components/form/helpers/customSchemas";
-import { TransactionLoading } from "@/src/components/loading/TransactionLoading";
-import { APP_URL, DISCORD_URL, DOCS_URL, IS_DEVELOP } from "@/src/constants/common";
-import { TransactionStates } from "@/src/hooks/useTransaction";
-
-import { Stack, Typography } from "@mui/material";
-import { useTranslation } from "next-export-i18n";
-import * as React from "react";
-import { useState } from "react";
-import { BadgePreviewV2, colors } from "thebadge-ui-library";
-import { z } from "zod";
+  SeverityTypeSchema,
+} from '@/src/components/form/helpers/customSchemas'
+import { TransactionLoading } from '@/src/components/loading/TransactionLoading'
+import { APP_URL, DISCORD_URL, DOCS_URL, IS_DEVELOP } from '@/src/constants/common'
+import { TransactionStates } from '@/src/hooks/useTransaction'
 
 const MintSchemaStep1 = z.object({
   help: AgreementSchema.describe(`Badge creation quick tutorial.`),

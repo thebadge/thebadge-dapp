@@ -59,9 +59,7 @@ export function withPageGenericSuspense<TProps>(
       onError={(error, info) => isDev && console.error(error, info)}
     >
       <Suspense
-        fallback={
-          fallback ? fallback(props) : <DefaultPageFallback color={spinner?.color} />
-        }
+        fallback={fallback ? fallback(props) : <DefaultPageFallback color={spinner?.color} />}
       >
         <Page {...props} />
       </Suspense>

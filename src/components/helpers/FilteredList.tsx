@@ -1,4 +1,3 @@
-import { SpinnerColors } from "@/src/components/loading/Spinner";
 import React, { PropsWithChildren, useEffect, useState } from 'react'
 
 import { Box, Chip, Divider, Typography, styled } from '@mui/material'
@@ -8,6 +7,7 @@ import { colors } from 'thebadge-ui-library'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { Loading } from '@/src/components/loading/Loading'
+import { SpinnerColors } from '@/src/components/loading/Spinner'
 import TBSearchField from '@/src/components/select/SearchField'
 import TBadgeSelect from '@/src/components/select/Select'
 import { useColorMode } from '@/src/providers/themeProvider'
