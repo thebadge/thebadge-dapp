@@ -100,7 +100,7 @@ export function SeveritySelector({ error, label, onChange, placeholder }: Severi
           <Typography>
             {label}
             {placeholder && (
-              <Tooltip title={placeholder}>
+              <Tooltip arrow title={placeholder}>
                 <InfoOutlinedIcon sx={{ ml: 1 }} />
               </Tooltip>
             )}

@@ -179,7 +179,7 @@ export function ImageInput({ error, label, onChange, placeholder, value }: Image
           <Typography>
             {label}
             {placeholder && (
-              <Tooltip title={placeholder}>
+              <Tooltip arrow title={placeholder}>
                 <InfoOutlinedIcon sx={{ ml: 1 }} />
               </Tooltip>
             )}

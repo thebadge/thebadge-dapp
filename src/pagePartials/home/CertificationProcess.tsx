@@ -16,7 +16,7 @@ export default function CertificationProcess() {
         {icon}
         <Typography
           display={'flex'}
-          fontSize={'12px !important'}
+          fontSize={'14px !important'}
           fontWeight={500}
           justifyContent={'center'}
           variant="body4"
@@ -38,7 +38,7 @@ export default function CertificationProcess() {
         alignItems={'center'}
         component={'a'}
         display={'flex'}
-        fontSize={'12px !important'}
+        fontSize={'14px !important'}
         fontWeight={900}
         href={`${DOCS_URL}/thebadge-documentation/overview/how-it-works`}
         justifyContent={'center'}

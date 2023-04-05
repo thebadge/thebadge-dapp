@@ -27,7 +27,7 @@ export function DisplayAddress({ label, placeholder, value }: DisplayAddressProp
           <Typography>
             {label}
             {placeholder && (
-              <Tooltip title={placeholder}>
+              <Tooltip arrow title={placeholder}>
                 <InfoOutlinedIcon sx={{ ml: 1 }} />
               </Tooltip>
             )}

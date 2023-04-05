@@ -29,7 +29,7 @@ export function DisplayLink({ label, placeholder, value }: DisplayLinkProps) {
         <Typography>
           {label}
           {placeholder && (
-            <Tooltip title={placeholder}>
+            <Tooltip arrow title={placeholder}>
               <InfoOutlinedIcon sx={{ ml: 1 }} />
             </Tooltip>
           )}

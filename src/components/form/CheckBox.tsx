@@ -31,7 +31,7 @@ export function CheckBox({ error, label, onChange, placeholder, value }: CheckBo
         <Typography>
           {label}
           {placeholder && (
-            <Tooltip title={placeholder}>
+            <Tooltip arrow title={placeholder}>
               <InfoOutlinedIcon sx={{ ml: 1 }} />
             </Tooltip>
           )}

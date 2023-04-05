@@ -58,7 +58,7 @@ export function DescriptionInputField({
   return (
     <Wrapper>
       <Typography>{label}</Typography>
-      <Typography fontWeight={300} sx={{ fontSize: '12px !important' }}>
+      <Typography fontWeight={300} sx={{ fontSize: '14px !important' }}>
         Personalize the description with any of this variables:
       </Typography>
       <Box display="flex">
@@ -68,7 +68,7 @@ export function DescriptionInputField({
               color="blue"
               fontWeight="bold"
               onClick={() => appendVariable(it)}
-              sx={{ fontSize: '12px !important' }}
+              sx={{ fontSize: '14px !important' }}
               variant="body2"
             >
               {it}

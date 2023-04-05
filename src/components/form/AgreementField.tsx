@@ -43,7 +43,7 @@ export function AgreementField({
       <Typography fontWeight="bold" textAlign="center" variant={'h5'}>
         {label}
         {placeholder && (
-          <Tooltip title={placeholder}>
+          <Tooltip arrow title={placeholder}>
             <InfoOutlinedIcon sx={{ ml: 1 }} />
           </Tooltip>
         )}

@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import React, { useState } from 'react'
+import React, { RefObject, useState } from 'react'
 
 import {
   Avatar,
@@ -20,7 +20,9 @@ import { colors } from 'thebadge-ui-library'
 import { Logout } from '@/src/components/assets/Logout'
 import { SwitchNetwork } from '@/src/components/assets/SwitchNetwork'
 import { ModalSwitchNetwork } from '@/src/components/helpers/ModalSwitchNetwork'
+import { NavLink } from '@/src/components/navigation/NavLink'
 import { useCurrentUser } from '@/src/hooks/useCurrentUser'
+import { useSectionReferences } from '@/src/providers/referencesProvider'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { truncateStringInTheMiddle } from '@/src/utils/strings'
 
@@ -57,7 +59,7 @@ const StyledButton = styled(Button)<{ border?: string }>(({ border }) => ({
   color: 'white',
   border,
   borderRadius: '10px',
-  fontSize: '12px !important',
+  fontSize: '14px !important',
   padding: '0.5rem 1rem !important',
   height: 'fit-content !important',
   lineHeight: '14px',
@@ -65,11 +67,20 @@ const StyledButton = styled(Button)<{ border?: string }>(({ border }) => ({
   boxShadow: 'none',
 }))
 
+const Link = styled(NavLink)`
+  text-decoration: underline;
+
+  &:hover {
+    text-decoration: none;
+  }
+`
+
 export const UserDropdown: React.FC = () => {
   const router = useRouter()
   const { t } = useTranslation()
   const { address, blockiesIcon, disconnectWallet, isWalletNetworkSupported } = useWeb3Connection()
   const user = useCurrentUser()
+  const { becomeACreatorSection, scrollTo } = useSectionReferences()
 
   const [showNetworkModal, setShowNetworkModal] = useState(false)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -81,6 +92,44 @@ export const UserDropdown: React.FC = () => {
     setAnchorEl(null)
   }
 
+  const menuButton = (
+    title: string,
+    color: string,
+    disabled: boolean,
+    path: string,
+    ref?: RefObject<HTMLDivElement> | null,
+  ) => {
+    return (
+      <StyledButton
+        border={`2px solid ${color}`}
+        disabled={disabled}
+        onClick={() => {
+          scrollTo(path, ref || null)
+        }}
+      >
+        {title}
+      </StyledButton>
+    )
+  }
+  const exploreButton = menuButton(
+    t('header.buttons.explore'),
+    colors.blue,
+    false,
+    '/badge/explorer',
+  )
+  const curateButton = menuButton(
+    t('header.buttons.curate'),
+    colors.greenLogo,
+    false,
+    '/badge/curate',
+  )
+  const createButton = menuButton(
+    t('header.buttons.create'),
+    colors.pink,
+    !user || !user?.isCreator,
+    '/badge/create',
+  )
+
   return (
     <>
       <Box
@@ -90,33 +139,31 @@ export const UserDropdown: React.FC = () => {
         justifyContent="space-between"
         sx={{ columnGap: '10px' }}
       >
-        <StyledButton
-          border={`2px solid ${colors.blue}`}
-          onClick={() => {
-            router.push('/badge/explorer')
-          }}
-        >
-          {t('header.buttons.explore')}
-        </StyledButton>
-        <StyledButton
-          border={`2px solid ${colors.greenLogo}`}
-          onClick={() => {
-            router.push('/badge/curate')
-          }}
-        >
-          {t('header.buttons.curate')}
-        </StyledButton>
-        <StyledButton
-          border={`2px solid ${colors.pink}`}
-          disabled={!user || !user?.isCreator}
-          onClick={() => {
-            router.push('/badge/type/create')
-          }}
-        >
-          {t('header.buttons.create')}
-        </StyledButton>
+        {exploreButton}
+        {curateButton}
+
+        {!user || !user?.isCreator ? (
+          <Tooltip
+            arrow
+            title={
+              <>
+                {t('header.tooltips.becomeACreator.prefixText')}
+                <Box
+                  onClick={() => scrollTo('/', becomeACreatorSection)}
+                  style={{ cursor: 'pointer', textDecoration: 'underline' }}
+                >
+                  {t('header.tooltips.becomeACreator.link')}
+                </Box>
+              </>
+            }
+          >
+            <span>{createButton}</span>
+          </Tooltip>
+        ) : (
+          createButton
+        )}
       </Box>
-      <Tooltip title="Account settings">
+      <Tooltip arrow title="Account settings">
         <IconButton
           aria-controls={open ? 'account-menu' : undefined}
           aria-expanded={open ? 'true' : undefined}
