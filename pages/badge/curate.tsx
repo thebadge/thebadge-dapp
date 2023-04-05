@@ -88,6 +88,7 @@ const CurateBadges: NextPageWithLayout = () => {
         disableEdit
         filters={filters}
         loading={loading}
+        loadingColor={'green'}
         search={search}
         title={t('curateExplorer.title')}
       >

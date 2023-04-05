@@ -26,6 +26,7 @@ import {
   ImageSchema,
   KlerosDynamicFields,
   KlerosFieldTypeSchema,
+  LinkSchema,
   LongTextSchema,
   NumberSchema,
   OptionalFileSchema,
@@ -38,6 +39,7 @@ import KlerosDynamicFieldsCreator from '@/src/components/form/klerosDynamicFormF
 // Create the mapping btw each schema type to the React component used for it
 export const mappingSchemaToComponents = [
   [z.string(), TextField],
+  [LinkSchema, TextField],
   [CheckBoxSchema, CheckBox],
   [NumberSchema, NumberField],
   [AddressSchema, TextField],

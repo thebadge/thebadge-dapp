@@ -42,6 +42,12 @@
       "explore": "EXPLORE",
       "curate": "CURATE",
       "create": "CREATE"
+    },
+    "tooltips": {
+      "becomeACreator": {
+        "prefixText": "To start creating your own badges, you have to ",
+        "link": "become a creator"
+      }
     }
   },
   "explorer": {
@@ -89,7 +95,7 @@
       },
       "steps": [
         {
-          "sub-title": "Do you want to design and publish custom badges that other users can apply for to verify real-world information? Also, you could set the price for the badges you create and receive a share of the fee when users apply for them...So please, complete the form and let´s start creating!"
+          "sub-title": "Do you want to design and publish custom badges that other users can apply for to verify real-world information? Also, you could set the price for the badges you create and receive a share of the fee when users apply for them... So please, complete the form and let´s start creating!"
         },
         {
           "sub-title": "Please complete at least one contact channel, it will be used to send you information about your badges and will be the main contact channel for your badge users in case they have questions about the curation criteria."
@@ -108,7 +114,7 @@
     "type": {
       "create": {
         "title": "Create your Badge Type",
-        "sub-title": "Do you want to design and publish custom badges that other users can apply for to verify real-world information? Also, you could set the price for the badges you create and receive a share of the fee when users apply for them...So please, complete the form and let´s start creating!",
+        "sub-title": "Do you want to design and publish custom badges that other users can apply for to verify real-world information? Also, you could set the price for the badges you create and receive a share of the fee when users apply for them... So please, complete the form and let´s start creating!",
         "help-steps": "- For creating a badge type you will have to set up the name, description, and logo that users will see when searching for badges\n\n - You also have to upload **curation criteria**. For guidelines and examples about how to define good curation criteria please check our [docs]({{curationCriteriaDocsUrl}})\n\n* Please note that in order for your badge type to be approved and listed, the curation criteria should be in compliance with the [curation criteria standards]({{curationCriteriaStandardDocsUrl}}) and the [terms and conditions]({{termsUrls}})\n\n* If you have any doubts please check the [docs]({{docsUrl}}) or ask for help in our [discord]({{discordUrl}}).\n",
         "previewTitle": "This is how your new badge type will look like",
         "steps": [
@@ -219,6 +225,17 @@
         }
       ]
     },
+    "legal": {
+      "title": "LEGAL",
+      "items": [
+        {
+          "title": "PRIVACY POLICY"
+        }
+      ]
+    },
     "copyright": "Copyright © {{year}} • TheBadge.xyz"
+  },
+  "privacy-policy":{
+    "terms": ""
   }
 }

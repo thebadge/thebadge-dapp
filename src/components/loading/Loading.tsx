@@ -2,7 +2,7 @@ import { DOMAttributes, HTMLAttributes } from 'react'
 
 import { Box, styled } from '@mui/material'
 
-import { Spinner } from '@/src/components/loading/Spinner'
+import { Spinner, SpinnerProps } from '@/src/components/loading/Spinner'
 
 const Wrapper = styled(Box)`
   align-items: center;
@@ -26,9 +26,13 @@ interface Props extends DOMAttributes<HTMLDivElement>, HTMLAttributes<HTMLDivEle
   text?: string
 }
 
-export const Loading: React.FC<Props> = ({ text = 'Loading...', ...restProps }) => (
+export const Loading: React.FC<Props & SpinnerProps> = ({
+  color = 'primary',
+  text = 'Loading...',
+  ...restProps
+}) => (
   <Wrapper {...restProps}>
-    <Spinner />
+    <Spinner color={color} />
     <Text> {text}</Text>
   </Wrapper>
 )

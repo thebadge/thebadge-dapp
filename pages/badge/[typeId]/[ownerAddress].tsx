@@ -32,7 +32,7 @@ const ViewBadge: NextPageWithLayout = () => {
       <Stack maxWidth={900} mx={'auto'}>
         <BadgeOwnedPreview />
         <Box display="flex" justifyContent="space-evenly" maxWidth={300}>
-          <Tooltip title={address === ownerAddress ? 'You already own this badge.' : ''}>
+          <Tooltip arrow title={address === ownerAddress ? 'You already own this badge.' : ''}>
             <ButtonV2
               backgroundColor={colors.transparent}
               disabled={address === ownerAddress}

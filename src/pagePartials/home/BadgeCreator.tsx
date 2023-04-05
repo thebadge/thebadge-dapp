@@ -37,7 +37,7 @@ export default function BadgeCreator() {
         <TaskAltIcon color={'pink'} sx={{ mr: 2 }} />
         <Typography
           component={'div'}
-          fontSize={'12px !important'}
+          fontSize={'14px !important'}
           fontWeight={600}
           lineHeight={'16px'}
         >
@@ -54,7 +54,7 @@ export default function BadgeCreator() {
         <TaskAltIcon color={'pink'} sx={{ mr: 2 }} />
         <Typography
           component={'div'}
-          fontSize={'12px !important'}
+          fontSize={'14px !important'}
           fontWeight={600}
           lineHeight={'16px'}
         >
@@ -63,7 +63,7 @@ export default function BadgeCreator() {
       </Box>
       <Typography
         component={'a'}
-        fontSize={'12px !important'}
+        fontSize={'14px !important'}
         fontWeight={700}
         href={`${DOCS_URL}/thebadge-documentation/overview/how-it-works/creators`}
         lineHeight={'14px'}
@@ -79,7 +79,7 @@ export default function BadgeCreator() {
         sx={{
           mt: 4,
           borderRadius: '10px',
-          fontSize: '12px !important',
+          fontSize: '14px !important',
           padding: '0.5rem 1rem !important',
           height: 'fit-content !important',
           lineHeight: '14px',

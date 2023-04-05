@@ -96,6 +96,7 @@ const ExploreBadgeTypes: NextPageWithLayout = () => {
         categories={['Category 1', 'Category 2', 'Category 3']}
         filters={filters}
         loading={loading}
+        loadingColor={'blue'}
         search={search}
         title={t('explorer.title')}
       >
@@ -111,4 +112,4 @@ const ExploreBadgeTypes: NextPageWithLayout = () => {
   )
 }
 
-export default withPageGenericSuspense(ExploreBadgeTypes)
+export default withPageGenericSuspense(ExploreBadgeTypes, { spinner: { color: 'blue' } })

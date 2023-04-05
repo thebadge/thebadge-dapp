@@ -189,7 +189,7 @@ export default function MainMenu({ ...restProps }) {
   const navigateTo = async (link: any, openInNewTab?: boolean) => {
     if (link) {
       if (link.current) {
-        scrollTo(link)
+        scrollTo('/', link)
       } else {
         if (openInNewTab) {
           window.open(link)

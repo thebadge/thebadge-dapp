@@ -1,5 +1,6 @@
 import withBundleAnalyzer from '@next/bundle-analyzer';
-
+import mdx from '@next/mdx'
+import remarkGfm from 'remark-gfm'
 /**
  * Don't be scared of the generics here.
  * All they do is to give us autocompletion when using this.
@@ -14,8 +15,15 @@ function defineNextConfig(config) {
 const withBundleAnalyzerWrapper = withBundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
 });
+const withMDX = mdx({
+  extension: /\.(md|mdx)$/,
+  options: {
+    remarkPlugins: [remarkGfm],
+    rehypePlugins: [],
+  },
+})
 
-export default withBundleAnalyzerWrapper(
+export default withMDX(withBundleAnalyzerWrapper(
   defineNextConfig({
     reactStrictMode: true,
     swcMinify: false,
@@ -39,4 +47,4 @@ export default withBundleAnalyzerWrapper(
       ]
     }
   }),
-);
+));

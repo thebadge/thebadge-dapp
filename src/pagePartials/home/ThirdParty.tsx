@@ -25,7 +25,7 @@ export default function ThirdParty() {
       </Typography>
       <Typography
         component={'div'}
-        fontSize={'12px !important'}
+        fontSize={'14px !important'}
         fontWeight={600}
         lineHeight={'16px'}
         mt={2}
@@ -35,7 +35,7 @@ export default function ThirdParty() {
 
       <Typography
         component={'a'}
-        fontSize={'12px !important'}
+        fontSize={'14px !important'}
         fontWeight={700}
         href={`${DOCS_URL}/thebadge-documentation/overview/categories/third-party-badges`}
         lineHeight={'14px'}
@@ -45,7 +45,7 @@ export default function ThirdParty() {
         {t('home.thirdParty.learnMore')}
       </Typography>
 
-      <Tooltip title={t('home.thirdParty.buttonTooltip')}>
+      <Tooltip arrow title={t('home.thirdParty.buttonTooltip')}>
         <ButtonV2
           backgroundColor={'#22dbbd'}
           disabled={true}
@@ -53,7 +53,7 @@ export default function ThirdParty() {
           sx={{
             mt: 4,
             borderRadius: '10px',
-            fontSize: '12px !important',
+            fontSize: '14px !important',
             padding: '0.5rem 1rem !important',
             height: 'fit-content !important',
             lineHeight: '14px',

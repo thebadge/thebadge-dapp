@@ -84,6 +84,7 @@ export function ExpirationField({
                 InputProps={{
                   endAdornment: (
                     <Tooltip
+                      arrow
                       title={
                         placeholder +
                         `\n e.g. If you mint this badge today, It will expire on: ${validTo(value)}`
@@ -131,7 +132,7 @@ export function ExpirationField({
                 label={<Typography>Enable expiration time</Typography>}
                 sx={{ marginTop: 2 }}
               />
-              <Tooltip title={placeholder}>
+              <Tooltip arrow title={placeholder}>
                 <InfoOutlinedIcon sx={{ marginLeft: 1 }} />
               </Tooltip>
             </Box>

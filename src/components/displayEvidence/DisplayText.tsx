@@ -26,7 +26,7 @@ export function DisplayText({ label, placeholder, value }: DisplayTextProps) {
       <StyledTextField
         InputProps={{
           endAdornment: (
-            <Tooltip title={placeholder}>
+            <Tooltip arrow title={placeholder}>
               <InfoOutlinedIcon />
             </Tooltip>
           ),

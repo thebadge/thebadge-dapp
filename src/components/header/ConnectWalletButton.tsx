@@ -14,7 +14,7 @@ export default function ConnectWalletButton({ children, ...rest }: ButtonProps) 
     >
       <ElectricBoltIcon sx={{ width: '14px' }} />
       <Typography
-        fontSize={'12px !important'}
+        fontSize={'14px !important'}
         fontWeight={700}
         lineHeight={'14px'}
         textTransform={'uppercase'}
