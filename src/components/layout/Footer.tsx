@@ -101,6 +101,20 @@ export const Footer: React.FC = () => {
                   {t('footer.help.items.1.title')}
                 </Typography>
               </Stack>
+              <Stack gap={1.5}>
+                <Typography color={colors.white} fontWeight="800" variant="h6">
+                  {t('footer.legal.title')}
+                </Typography>
+                <Typography
+                  color={colors.white + ' !important'}
+                  component={'a'}
+                  href={'/legal/privacy-policy'}
+                  sx={{ fontSize: '1rem !important' }}
+                >
+                  {/* Privacy Police */}
+                  {t('footer.legal.items.0.title')}
+                </Typography>
+              </Stack>
             </Box>
             {!isMobile && <LogoTheBadgeWithText fill={iconColor} size={120} />}
           </Box>

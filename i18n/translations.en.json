@@ -219,6 +219,17 @@
         }
       ]
     },
+    "legal": {
+      "title": "LEGAL",
+      "items": [
+        {
+          "title": "PRIVACY POLICE"
+        }
+      ]
+    },
     "copyright": "Copyright © {{year}} • TheBadge.xyz"
+  },
+  "privacy-policy":{
+    "terms": ""
   }
 }
