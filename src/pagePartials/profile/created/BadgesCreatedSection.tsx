@@ -8,10 +8,10 @@ import { colors } from 'thebadge-ui-library'
 import { NoResultsAnimated } from '@/src/components/assets/NoResults'
 import { MiniBadgePreviewContainer } from '@/src/components/common/MiniBadgePreviewContainer'
 import FilteredList, { ListFilter } from '@/src/components/helpers/FilteredList'
+import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import MiniBadgeTypeMetadata from '@/src/pagePartials/badge/MiniBadgeTypeMetadata'
 import { RequiredCreatorAccess } from '@/src/pagePartials/errors/requiresCreatorAccess'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
-import { SubgraphName, getSubgraphSdkByNetwork } from '@/src/subgraph/subgraph'
 
 const StyledBadgeContainer = styled(MiniBadgePreviewContainer)(({ theme }) => {
   return {
@@ -34,12 +34,11 @@ const StyledBadgeContainer = styled(MiniBadgePreviewContainer)(({ theme }) => {
 
 export default function BadgesCreatedSection() {
   const { t } = useTranslation()
-  const { address, appChainId } = useWeb3Connection()
+  const { address } = useWeb3Connection()
   const [items, setItems] = useState<React.ReactNode[]>([])
   const [loading, setLoading] = useState<boolean>(false)
-
+  const gql = useSubgraph()
   if (!address) return null
-  const gql = getSubgraphSdkByNetwork(appChainId, SubgraphName.TheBadge)
 
   const search = async (
     selectedFilters: Array<ListFilter>,

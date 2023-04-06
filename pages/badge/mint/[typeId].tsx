@@ -8,7 +8,7 @@ import { z } from 'zod'
 
 import klerosSchemaFactory from '@/src/components/form/helpers/validators'
 import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
-import useBadgeType from '@/src/hooks/useBadgeType'
+import useBadgeType from '@/src/hooks/subgraph/useBadgeType'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
 import useTransaction, { TransactionStates } from '@/src/hooks/useTransaction'
 import MintSteps from '@/src/pagePartials/badge/mint/MintSteps'

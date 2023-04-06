@@ -9,17 +9,15 @@ import { NoResultsAnimated } from '@/src/components/assets/NoResults'
 import { MiniBadgePreviewContainer } from '@/src/components/common/MiniBadgePreviewContainer'
 import FilteredList, { ListFilter } from '@/src/components/helpers/FilteredList'
 import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
+import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import MiniBadgeTypeMetadata from '@/src/pagePartials/badge/MiniBadgeTypeMetadata'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
-import { SubgraphName, getSubgraphSdkByNetwork } from '@/src/subgraph/subgraph'
 import { NextPageWithLayout } from '@/types/next'
 
 const ExploreBadgeTypes: NextPageWithLayout = () => {
   const { t } = useTranslation()
-  const { appChainId } = useWeb3Connection()
   const [items, setItems] = useState<React.ReactNode[]>([])
   const [loading, setLoading] = useState<boolean>(false)
-  const gql = getSubgraphSdkByNetwork(appChainId, SubgraphName.TheBadge)
+  const gql = useSubgraph()
   const router = useRouter()
 
   const filters: Array<ListFilter> = [

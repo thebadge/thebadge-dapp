@@ -5,14 +5,12 @@ import { Box } from '@mui/material'
 import { ResizedBadgePreviewsList } from 'thebadge-ui-library'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
+import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import BadgeTypeMetadata from '@/src/pagePartials/badge/BadgeTypeMetadata'
 import { badgesExampleList } from '@/src/pagePartials/home/SectionBoxes'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
-import { SubgraphName, getSubgraphSdkByNetwork } from '@/src/subgraph/subgraph'
 
 export default function BadgeListTypeList() {
-  const { appChainId } = useWeb3Connection()
-  const gql = getSubgraphSdkByNetwork(appChainId, SubgraphName.TheBadge)
+  const gql = useSubgraph()
   const badgeTypes = gql.useBadgeTypes()
   const router = useRouter()
 

@@ -6,6 +6,7 @@ import { ethers } from 'ethers'
 import { z } from 'zod'
 
 import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
+import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
 import useTransaction, { TransactionStates } from '@/src/hooks/useTransaction'
 import RegistrationSteps, {
@@ -15,7 +16,6 @@ import RegistrationSteps, {
 } from '@/src/pagePartials/creator/register/RegistrationSteps'
 import { RequiredConnection } from '@/src/pagePartials/errors/requiredConnection'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
-import { SubgraphName, getSubgraphSdkByNetwork } from '@/src/subgraph/subgraph'
 import ipfsUpload from '@/src/utils/ipfsUpload'
 import { TheBadge__factory } from '@/types/generated/typechain'
 import { NextPageWithLayout } from '@/types/next'
@@ -41,7 +41,7 @@ const Register: NextPageWithLayout = () => {
 
   const theBadge = useContractInstance(TheBadge__factory, 'TheBadge')
 
-  const gql = getSubgraphSdkByNetwork(appChainId, SubgraphName.TheBadge)
+  const gql = useSubgraph()
   const userProfile = gql.useUserById({
     id: address || ethers.constants.AddressZero,
   })

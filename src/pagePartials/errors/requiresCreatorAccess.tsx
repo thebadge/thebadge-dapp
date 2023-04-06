@@ -3,7 +3,7 @@ import React, { ReactElement } from 'react'
 import { styled } from '@mui/material'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
-import useIsCreator from '@/src/hooks/useIsCreator'
+import useIsCreator from '@/src/hooks/subgraph/useIsCreator'
 import NotACreatorError from '@/src/pagePartials/errors/displays/NotACreatorError'
 import { ChainsValues } from '@/types/chains'
 

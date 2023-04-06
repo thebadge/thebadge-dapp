@@ -2,8 +2,7 @@ import axios from 'axios'
 import useSWR from 'swr'
 
 import { BACKEND_URL } from '@/src/constants/common'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
-import { SubgraphName, getSubgraphSdkByNetwork } from '@/src/subgraph/subgraph'
+import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import { KlerosListStructure } from '@/src/utils/kleros/generateKlerosListMetaEvidence'
 import { BackendResponse } from '@/types/utils'
 
@@ -13,9 +12,8 @@ import { BackendResponse } from '@/types/utils'
  * @param typeId
  */
 export default function useBadgeType(typeId: string) {
-  const { appChainId } = useWeb3Connection()
+  const gql = useSubgraph()
   return useSWR(typeId.length ? `BadgeType:${typeId}` : null, async (_typeId: string) => {
-    const gql = getSubgraphSdkByNetwork(appChainId, SubgraphName.TheBadge)
     const badgeType = await gql.badgeType({ id: typeId })
 
     const badgeTypeData = badgeType.badgeType
