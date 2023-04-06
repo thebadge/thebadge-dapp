@@ -4,6 +4,7 @@ import React from 'react'
 import CloseIcon from '@mui/icons-material/Close'
 import ReportProblemOutlinedIcon from '@mui/icons-material/ReportProblemOutlined'
 import { Box, IconButton, Stack, Typography, styled } from '@mui/material'
+import { useTranslation } from 'next-export-i18n'
 import { ButtonV2, colors, gradients } from 'thebadge-ui-library'
 
 import { useColorMode } from '@/src/providers/themeProvider'
@@ -32,6 +33,7 @@ const ModalBody = styled(Box)(({ theme }) => ({
 }))
 
 export default function AlreadyOwnThisBadgeError() {
+  const { t } = useTranslation()
   const { mode } = useColorMode()
   const router = useRouter()
   const { address } = useWeb3Connection()
@@ -54,7 +56,7 @@ export default function AlreadyOwnThisBadgeError() {
         <Stack alignItems="center" gap={1} justifyContent="center" m="auto">
           <Typography color={colors.green} variant="dAppHeadline2">
             <ReportProblemOutlinedIcon />
-            You already own this badge
+            {t('errors.alreadyOwnedBadge')}
           </Typography>
         </Stack>
         <ButtonV2

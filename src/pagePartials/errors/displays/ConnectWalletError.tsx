@@ -4,6 +4,7 @@ import React from 'react'
 import CloseIcon from '@mui/icons-material/Close'
 import ReportProblemOutlinedIcon from '@mui/icons-material/ReportProblemOutlined'
 import { Box, IconButton, Stack, Typography, styled } from '@mui/material'
+import { useTranslation } from 'next-export-i18n'
 import { colors, gradients } from 'thebadge-ui-library'
 
 import ConnectWalletButton from '@/src/components/header/ConnectWalletButton'
@@ -33,6 +34,7 @@ const ModalBody = styled(Box)(({ theme }) => ({
 }))
 
 export default function ConnectWalletError({ noCloseButton }: { noCloseButton?: boolean }) {
+  const { t } = useTranslation()
   const { connectWallet } = useWeb3Connection()
   const router = useRouter()
 
@@ -57,13 +59,13 @@ export default function ConnectWalletError({ noCloseButton }: { noCloseButton?: 
           <Wallet sx={{ width: '118px', height: '118px' }} />
           <Typography color={colors.green} variant="dAppHeadline2">
             <ReportProblemOutlinedIcon />
-            Connect your wallet
+            {t('errors.connectWallet')}
           </Typography>
-          <Typography variant="body4">
-            Please, to continue it is necessary that you connect your wallet.
-          </Typography>
+          <Typography variant="body4">{t('errors.connectWalletSubtitle')}</Typography>
         </Stack>
-        <ConnectWalletButton onClick={connectWallet}>Connect wallet</ConnectWalletButton>
+        <ConnectWalletButton onClick={connectWallet}>
+          {t('header.wallet.connect')}
+        </ConnectWalletButton>
       </Stack>
     </ModalBody>
   )

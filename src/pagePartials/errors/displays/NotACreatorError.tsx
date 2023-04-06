@@ -50,10 +50,10 @@ export default function NotACreatorError() {
       <Stack alignItems="center" gap={1} justifyContent="center" m="auto">
         <BadgeAnimatedLogo />
         <Typography color={colors.purple} variant="dAppHeadline2">
-          You are not a creator yet
+          {t('errors.notACreator')}
         </Typography>
         <Typography variant="body4">
-          Please, to continue it is necessary that you have registered as a creator,{' '}
+          {t('errors.notACreatorSubtitle')}
           <Box
             component="span"
             onClick={() => scrollTo('/', becomeACreatorSection)}
