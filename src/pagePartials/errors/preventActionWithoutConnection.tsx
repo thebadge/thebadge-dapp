@@ -15,6 +15,7 @@ const Wrapper = styled('div')`
 `
 
 const DisableWrapper = styled('div')`
+  position: relative;
   display: flex;
   opacity: 0.6;
   flex-direction: column;
@@ -22,6 +23,13 @@ const DisableWrapper = styled('div')`
   justify-content: center;
   flex-grow: 0;
   margin-top: 16px;
+`
+
+const DisableOverlay = styled('div')`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  cursor: not-allowed;
 `
 
 type RequiredConnectionProps = {
@@ -42,7 +50,10 @@ const PreventActionWithoutConnection: React.FC<RequiredConnectionProps> = ({
     return (
       <Wrapper style={{ minHeight }} {...restProps}>
         <ConnectWalletActionError />
-        <DisableWrapper onClick={(e) => e.stopPropagation()}>{children}</DisableWrapper>
+        <DisableWrapper onClick={(e) => e.stopPropagation()}>
+          {children}
+          <DisableOverlay />
+        </DisableWrapper>
       </Wrapper>
     )
   }
