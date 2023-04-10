@@ -16,12 +16,12 @@ const Wrapper = styled('div')`
 
 const DisableWrapper = styled('div')`
   display: flex;
-  opacity: 0.8;
+  opacity: 0.6;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   flex-grow: 0;
-  margin-top: 8px;
+  margin-top: 16px;
 `
 
 type RequiredConnectionProps = {
