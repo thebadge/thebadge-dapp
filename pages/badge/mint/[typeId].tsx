@@ -13,8 +13,6 @@ import { useContractInstance } from '@/src/hooks/useContractInstance'
 import useTransaction, { TransactionStates } from '@/src/hooks/useTransaction'
 import MintSteps from '@/src/pagePartials/badge/mint/MintSteps'
 import useKlerosDepositPrice from '@/src/pagePartials/badge/useKlerosDepositPrice'
-import { RequiredConnection } from '@/src/pagePartials/errors/requiredConnection'
-import { RequiredNotHaveBadge } from '@/src/pagePartials/errors/requiredNotHaveBadge'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import ipfsUpload from '@/src/utils/ipfsUpload'
 import { TheBadge__factory } from '@/types/generated/typechain'
@@ -98,20 +96,16 @@ const MintBadgeType: NextPageWithLayout = () => {
   }
 
   return (
-    <RequiredConnection>
-      <RequiredNotHaveBadge>
-        <MintSteps
-          costs={{
-            mintCost: formatUnits(mintCost, 18),
-            totalMintCost: formatUnits(totalMintCost, 18),
-            klerosCost: formatUnits(klerosCost, 18),
-          }}
-          evidenceSchema={CreateBadgeSchema}
-          onSubmit={onSubmit}
-          txState={state}
-        />
-      </RequiredNotHaveBadge>
-    </RequiredConnection>
+    <MintSteps
+      costs={{
+        mintCost: formatUnits(mintCost, 18),
+        totalMintCost: formatUnits(totalMintCost, 18),
+        klerosCost: formatUnits(klerosCost, 18),
+      }}
+      evidenceSchema={CreateBadgeSchema}
+      onSubmit={onSubmit}
+      txState={state}
+    />
   )
 }
 

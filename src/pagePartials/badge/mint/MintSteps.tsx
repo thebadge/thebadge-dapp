@@ -103,9 +103,6 @@ export default function MintSteps({ costs, evidenceSchema, onSubmit, txState }: 
 
   const handleFormPreview = useCallback(
     (data: z.infer<typeof evidenceSchema>) => {
-      if (!address) {
-        throw Error('Please connect your wallet')
-      }
       if (txState !== TransactionStates.none) {
         return <TransactionLoading state={txState} />
       }
@@ -113,7 +110,7 @@ export default function MintSteps({ costs, evidenceSchema, onSubmit, txState }: 
       const enrichTextValues: EnrichTextValues = {
         '{displayName}': '',
         '{expirationTime}': '',
-        '{address}': address,
+        '{address}': address as string,
       }
 
       return (
