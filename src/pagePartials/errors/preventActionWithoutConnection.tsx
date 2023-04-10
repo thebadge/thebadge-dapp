@@ -64,6 +64,10 @@ const PreventActionWithoutConnection: React.FC<RequiredConnectionProps> = ({
         <Button onClick={() => pushNetwork({ chainId: chainsConfig[appChainId].chainIdHex })}>
           Switch to {chainsConfig[appChainId].name}
         </Button>
+        <DisableWrapper onClick={(e) => e.stopPropagation()}>
+          {children}
+          <DisableOverlay />
+        </DisableWrapper>
       </Wrapper>
     )
   }
