@@ -9,7 +9,7 @@ import { colors } from 'thebadge-ui-library'
 import MarkdownTypography from '@/src/components/common/MarkdownTypography'
 import { getNetworkConfig } from '@/src/config/web3'
 import { DOCS_URL } from '@/src/constants/common'
-import useBadgeType from '@/src/hooks/useBadgeType'
+import useBadgeType from '@/src/hooks/subgraph/useBadgeType'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 
 type Props = {

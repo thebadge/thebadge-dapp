@@ -5,11 +5,10 @@ import { useTranslation } from 'next-export-i18n'
 
 import { NoResultsAnimated } from '@/src/components/assets/NoResults'
 import FilteredList, { ListFilter } from '@/src/components/helpers/FilteredList'
+import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
 import useTransaction from '@/src/hooks/useTransaction'
 import MiniBadgeTypeMetadata from '@/src/pagePartials/badge/MiniBadgeTypeMetadata'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
-import { SubgraphName, getSubgraphSdkByNetwork } from '@/src/subgraph/subgraph'
 import getHighlightColorByStatus from '@/src/utils/badges/getHighlightColorByStatus'
 import { BadgeStatus, Badge_Filter } from '@/types/generated/subgraph'
 import { KlerosBadgeTypeController__factory } from '@/types/generated/typechain'
@@ -21,7 +20,6 @@ export default function BadgesYouOwnList({ address }: Props) {
   const { t } = useTranslation()
   const { sendTx } = useTransaction()
 
-  const { appChainId } = useWeb3Connection()
   const [items, setItems] = useState<React.ReactNode[]>([])
   const [loading, setLoading] = useState<boolean>(false)
 
@@ -29,7 +27,7 @@ export default function BadgesYouOwnList({ address }: Props) {
     KlerosBadgeTypeController__factory,
     'KlerosBadgeTypeController',
   )
-  const gql = getSubgraphSdkByNetwork(appChainId, SubgraphName.TheBadge)
+  const gql = useSubgraph()
 
   const filters: Array<ListFilter> = [
     {
@@ -48,11 +46,11 @@ export default function BadgesYouOwnList({ address }: Props) {
     },
   ]
 
-  //async function handleClaimIt(badgeId: string, address: string) {
-  //  const transaction = await sendTx(() => klerosController.claimBadge(badgeId, address))
-  //
-  //  await transaction.wait()
-  //}
+  async function handleClaimIt(badgeId: string, address: string) {
+    const transaction = await sendTx(() => klerosController.claimBadge(badgeId, address))
+
+    await transaction.wait()
+  }
 
   const search = async (
     selectedFilters: Array<ListFilter>,

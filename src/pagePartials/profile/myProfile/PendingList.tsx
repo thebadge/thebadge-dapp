@@ -6,10 +6,9 @@ import { A11y, Navigation } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/react'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
+import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import BadgeTypeMetadata from '@/src/pagePartials/badge/BadgeTypeMetadata'
 import { badgesExampleList } from '@/src/pagePartials/home/SectionBoxes'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
-import { SubgraphName, getSubgraphSdkByNetwork } from '@/src/subgraph/subgraph'
 
 // Import Swiper styles
 import 'swiper/css'
@@ -19,9 +18,8 @@ import 'swiper/css/pagination'
 const now = Math.floor(Date.now() / 1000)
 export default function PendingList() {
   const router = useRouter()
+  const gql = useSubgraph()
 
-  const { appChainId } = useWeb3Connection()
-  const gql = getSubgraphSdkByNetwork(appChainId, SubgraphName.TheBadge)
   const badgesInReview = gql.useBadgesInReview({ date: now })
 
   const badgesList = useMemo(() => {

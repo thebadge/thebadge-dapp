@@ -5,7 +5,7 @@ import { useTranslation } from 'next-export-i18n'
 
 import LinkWithTranslation from '@/src/components/helpers/LinkWithTranslation'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
-import { useCurrentUser } from '@/src/hooks/useCurrentUser'
+import { useCurrentUser } from '@/src/hooks/subgraph/useCurrentUser'
 import BadgesCreatedSection from '@/src/pagePartials/profile/created/BadgesCreatedSection'
 import BadgesInReviewSection from '@/src/pagePartials/profile/inReview/BadgesInReviewSection'
 import MyProfileSection from '@/src/pagePartials/profile/myProfile/MyProfileSection'
@@ -16,7 +16,8 @@ const Profile = () => {
   const params = useSearchParams()
   const filterType = params.get('filter')
 
-  const user = useCurrentUser()
+  const userData = useCurrentUser()
+  const user = userData.data
 
   return (
     <SafeSuspense>

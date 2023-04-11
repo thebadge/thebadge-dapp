@@ -16,6 +16,7 @@ import { CustomFormFromSchemaWithoutSubmit } from '@/src/components/form/customF
 import { DataGrid, FormLayoutType } from '@/src/components/form/customForms/type'
 import { useForceRender } from '@/src/hooks/useForceRender'
 import { useSizeSM } from '@/src/hooks/useSize'
+import { PreventActionWithoutConnection } from '@/src/pagePartials/errors/preventActionWithoutConnection'
 
 type FormWithStepsProps = {
   stepSchemas: (AnyZodObject | ZodEffects<any, any, any>)[]
@@ -222,13 +223,19 @@ export function FormWithSteps({
                   // Review pre submit
                 }
                 <Box>{handleFormSubmitReview()}</Box>
-                {!hideSubmit && (
-                  <Box display="flex" justifyContent="center">
-                    <Button disabled={disabledSubmit} onClick={handleOnSubmit} variant="contained">
-                      {'Submit'}
-                    </Button>
-                  </Box>
-                )}
+                <PreventActionWithoutConnection>
+                  {!hideSubmit && (
+                    <Box display="flex" justifyContent="center">
+                      <Button
+                        disabled={disabledSubmit}
+                        onClick={handleOnSubmit}
+                        variant="contained"
+                      >
+                        {'Submit'}
+                      </Button>
+                    </Box>
+                  )}
+                </PreventActionWithoutConnection>
               </Stack>
             )}
           </>

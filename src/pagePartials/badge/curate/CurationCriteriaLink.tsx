@@ -3,7 +3,7 @@ import React from 'react'
 import { Typography } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
 
-import useBadgeType from '@/src/hooks/useBadgeType'
+import useBadgeType from '@/src/hooks/subgraph/useBadgeType'
 
 export default function CurationCriteriaLink({ badgeTypeId }: { badgeTypeId: string }) {
   const { t } = useTranslation()

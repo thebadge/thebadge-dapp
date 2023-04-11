@@ -2,8 +2,7 @@ import axios from 'axios'
 import useSWR from 'swr'
 
 import { BACKEND_URL } from '@/src/constants/common'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
-import { SubgraphName, getSubgraphSdkByNetwork } from '@/src/subgraph/subgraph'
+import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import { BadgeMetadata, BadgeTypeMetadata } from '@/types/badges/BadgeMetadata'
 import { BackendFileResponse, BackendResponse } from '@/types/utils'
 
@@ -14,11 +13,10 @@ import { BackendFileResponse, BackendResponse } from '@/types/utils'
  * @param ownerAddress
  */
 export default function useBadgeById(typeId: string, ownerAddress: string) {
-  const { appChainId } = useWeb3Connection()
+  const gql = useSubgraph()
   const badgeId = `${ownerAddress}-${typeId}`
 
   return useSWR(badgeId.length ? `Badge:${badgeId}` : null, async (_badgeId: string) => {
-    const gql = getSubgraphSdkByNetwork(appChainId, SubgraphName.TheBadge)
     const badgeResponse = await gql.badgeById({ id: badgeId })
 
     const badge = badgeResponse.badge

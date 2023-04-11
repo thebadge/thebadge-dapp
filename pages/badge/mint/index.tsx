@@ -2,13 +2,11 @@ import { Box, Typography } from '@mui/material'
 
 import LinkWithTranslation from '@/src/components/helpers/LinkWithTranslation'
 import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
-import { SubgraphName, getSubgraphSdkByNetwork } from '@/src/subgraph/subgraph'
+import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import { NextPageWithLayout } from '@/types/next'
 
 const MintBadge: NextPageWithLayout = () => {
-  const { appChainId } = useWeb3Connection()
-  const gql = getSubgraphSdkByNetwork(appChainId, SubgraphName.TheBadge)
+  const gql = useSubgraph()
   const badgeTypes = gql.useBadgeTypes()
 
   return (

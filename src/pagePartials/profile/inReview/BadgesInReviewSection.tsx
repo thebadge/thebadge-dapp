@@ -6,9 +6,9 @@ import { colors } from 'thebadge-ui-library'
 
 import { NoResultsAnimated } from '@/src/components/assets/NoResults'
 import FilteredList, { ListFilter } from '@/src/components/helpers/FilteredList'
+import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import MiniBadgeTypeMetadata from '@/src/pagePartials/badge/MiniBadgeTypeMetadata'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
-import { SubgraphName, getSubgraphSdkByNetwork } from '@/src/subgraph/subgraph'
 
 export default function BadgesInReviewSection() {
   const { t } = useTranslation()
@@ -27,10 +27,10 @@ export default function BadgesInReviewSection() {
 
   const [items, setItems] = useState<React.ReactNode[]>([])
   const [loading, setLoading] = useState<boolean>(false)
-  const { address, appChainId } = useWeb3Connection()
+  const { address } = useWeb3Connection()
+  const gql = useSubgraph()
 
   if (!address) return null
-  const gql = getSubgraphSdkByNetwork(appChainId, SubgraphName.TheBadge)
 
   const search = async (
     selectedFilters: Array<ListFilter>,

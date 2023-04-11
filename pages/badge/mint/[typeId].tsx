@@ -8,11 +8,12 @@ import { z } from 'zod'
 
 import klerosSchemaFactory from '@/src/components/form/helpers/validators'
 import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
-import useBadgeType from '@/src/hooks/useBadgeType'
+import useBadgeType from '@/src/hooks/subgraph/useBadgeType'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
 import useTransaction, { TransactionStates } from '@/src/hooks/useTransaction'
 import MintSteps from '@/src/pagePartials/badge/mint/MintSteps'
 import useKlerosDepositPrice from '@/src/pagePartials/badge/useKlerosDepositPrice'
+import { RequiredNotHaveBadge } from '@/src/pagePartials/errors/requiredNotHaveBadge'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import ipfsUpload from '@/src/utils/ipfsUpload'
 import { TheBadge__factory } from '@/types/generated/typechain'
@@ -96,7 +97,7 @@ const MintBadgeType: NextPageWithLayout = () => {
   }
 
   return (
-    <>
+    <RequiredNotHaveBadge>
       <MintSteps
         costs={{
           mintCost: formatUnits(mintCost, 18),
@@ -107,7 +108,7 @@ const MintBadgeType: NextPageWithLayout = () => {
         onSubmit={onSubmit}
         txState={state}
       />
-    </>
+    </RequiredNotHaveBadge>
   )
 }
 
