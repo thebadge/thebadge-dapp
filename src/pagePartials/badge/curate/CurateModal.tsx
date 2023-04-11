@@ -1,7 +1,5 @@
 import React from 'react'
 
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import CloseIcon from '@mui/icons-material/Close'
 import {
   Box,
@@ -16,14 +14,13 @@ import {
   useTheme,
 } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
-import { A11y, Navigation, Pagination } from 'swiper'
-import { Swiper, SwiperSlide } from 'swiper/react'
 import { ButtonV2, colors } from 'thebadge-ui-library'
 import { gradients } from 'thebadge-ui-library'
 
 import DisplayEvidenceField from '@/src/components/displayEvidence/DisplayEvidenceField'
 import { Address } from '@/src/components/helpers/Address'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
+import TBSwiper from '@/src/components/helpers/TBSwiper'
 import useBadgeById from '@/src/hooks/useBadgeById'
 import CurationCriteriaLink from '@/src/pagePartials/badge/curate/CurationCriteriaLink'
 import { useCurateProvider } from '@/src/providers/curateProvider'
@@ -130,6 +127,28 @@ function CurateModalContent({
     return null
   }
 
+  const evidenceItems: React.ReactNode[] =
+    badgeEvidence?.columns.map((column, index) => (
+      <Box
+        alignItems={'center'}
+        display="flex"
+        gap={3}
+        height={'100%'}
+        justifyContent={'center'}
+        key={'evidence-' + index}
+        sx={{
+          '> *': {
+            width: '90%',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          },
+        }}
+      >
+        <DisplayEvidenceField columnItem={column} value={badgeEvidence.values[column.label]} />
+      </Box>
+    )) || []
+
   return (
     <Stack
       sx={{
@@ -164,65 +183,7 @@ function CurateModalContent({
         </Box>
       </Box>
 
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
-        <ArrowBackIosIcon
-          className={'badges-swiper-button-prev'}
-          sx={{
-            mr: '1rem',
-            height: '35px',
-            width: '35px',
-            animation: `${growEffect} 1s infinite alternate ${theme.transitions.easing.easeInOut}`,
-          }}
-        />
-        <Swiper
-          modules={[Navigation, Pagination, A11y]}
-          navigation={{
-            nextEl: '.badges-swiper-button-next',
-            prevEl: '.badges-swiper-button-prev',
-          }}
-          pagination={{ clickable: true }}
-          slidesPerView={1}
-        >
-          {badgeEvidence?.columns.map((column) => {
-            return (
-              <SwiperSlide
-                key={'evidence-' + column.label}
-                style={{ height: 'auto', padding: '46px' }}
-              >
-                <Box
-                  alignItems={'center'}
-                  display="flex"
-                  gap={3}
-                  height={'100%'}
-                  justifyContent={'center'}
-                  sx={{
-                    '> *': {
-                      width: '90%',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                    },
-                  }}
-                >
-                  <DisplayEvidenceField
-                    columnItem={column}
-                    value={badgeEvidence.values[column.label]}
-                  />
-                </Box>
-              </SwiperSlide>
-            )
-          })}
-        </Swiper>
-        <ArrowForwardIosIcon
-          className={'badges-swiper-button-next'}
-          sx={{
-            ml: '1rem',
-            height: '35px',
-            width: '35px',
-            animation: `${growEffect} 1s infinite alternate ${theme.transitions.easing.easeInOut}`,
-          }}
-        />
-      </Box>
+      <TBSwiper items={evidenceItems} />
 
       <Stack
         alignItems={'center'}

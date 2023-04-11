@@ -39,7 +39,7 @@ export default function EarnByCurating() {
 
   return (
     <SectionBox ref={earnByCuratingSection}>
-      <SectionTitleBox>
+      <SectionTitleBox sx={{ mb: 2 }}>
         <Box>
           <Typography variant={'caption'}>{t('home.earnByCurating.subtitle')}</Typography>
           <Typography
