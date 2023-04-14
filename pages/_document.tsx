@@ -4,6 +4,8 @@ import createCache from '@emotion/cache'
 import { EmotionCache } from '@emotion/react'
 import createEmotionServer from '@emotion/server/create-instance'
 
+import { APP_URL } from '@/src/constants/common'
+
 export default class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
     // Resolution order
@@ -84,12 +86,9 @@ export default class MyDocument extends Document {
           <meta content="website" property="og:type" />
           <meta content={this.description} name="description" />
           <meta content={this.title} property="og:title" />
-          <meta content="https://staging-dapp.thebadge.xyz" property="og:url" />
+          <meta content={`${APP_URL}`} property="og:url" />
 
-          <meta
-            content={`https://staging-dapp.thebadge.xyz/shareable/the_badge_banner.webp`}
-            property="og:image"
-          />
+          <meta content={`${APP_URL}/shareable/the_badge_banner.webp`} property="og:image" />
           <meta content="image/webp" property="og:image:type" />
           <meta content="1404" property="og:image:width" />
           <meta content="459" property="og:image:height" />
@@ -101,10 +100,7 @@ export default class MyDocument extends Document {
 
           <meta content="summary_large_image" name="twitter:card" />
           <meta content={this.twitterHandle} name="twitter:site" />
-          <meta
-            content={`https://staging-dapp.thebadge.xyz/shareable/the_badge_banner.webp`}
-            name="twitter:image"
-          />
+          <meta content={`${APP_URL}/shareable/the_badge_banner.webp`} name="twitter:image" />
 
           <link href="/favicon/favicon.svg" rel="icon" type="image/svg+xml" />
           <link href="/favicon/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180" />
