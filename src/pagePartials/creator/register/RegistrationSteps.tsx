@@ -43,7 +43,7 @@ const formGridLayout: DataGrid[][] = [
 ]
 
 const MIN_DISPLAY_NAME_CHARACTERS = 2
-const MAX_DISPLAY_NAME_CHARACTERS = 10
+const MAX_DISPLAY_NAME_CHARACTERS = 30
 
 export const RegisterCuratorSchemaStep1 = z.object({
   name: z

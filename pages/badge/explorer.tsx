@@ -1,24 +1,31 @@
-import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 
-import { Stack } from '@mui/material'
+import ArrowBackIosOutlinedIcon from '@mui/icons-material/ArrowBackIosOutlined'
+import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined'
+import { Box, IconButton, Stack, Typography } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
 import { colors } from 'thebadge-ui-library'
 
 import { NoResultsAnimated } from '@/src/components/assets/NoResults'
-import { MiniBadgePreviewContainer } from '@/src/components/common/MiniBadgePreviewContainer'
+import {
+  MiniBadgePreviewContainer,
+  MiniBadgePreviewLoading,
+} from '@/src/components/common/MiniBadgePreviewContainer'
 import FilteredList, { ListFilter } from '@/src/components/helpers/FilteredList'
-import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
+import SafeSuspense, { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import MiniBadgeTypeMetadata from '@/src/pagePartials/badge/MiniBadgeTypeMetadata'
+import BadgeInfoPreview from '@/src/pagePartials/badge/explorer/BadgeInfoPreview'
+import { BadgeType } from '@/types/generated/subgraph'
 import { NextPageWithLayout } from '@/types/next'
 
 const ExploreBadgeTypes: NextPageWithLayout = () => {
   const { t } = useTranslation()
-  const [items, setItems] = useState<React.ReactNode[]>([])
+  const [badgeTypes, setBadgeTypes] = useState<BadgeType[]>([])
   const [loading, setLoading] = useState<boolean>(false)
+  const [selectedBadgeType, setSelectedBadgeType] = useState<number>(0)
+
   const gql = useSubgraph()
-  const router = useRouter()
 
   const filters: Array<ListFilter> = [
     {
@@ -48,44 +55,26 @@ const ExploreBadgeTypes: NextPageWithLayout = () => {
 
     // TODO filter badges using filters, category, text
     const badgeTypes = await gql.badgeTypes()
-    const badges = badgeTypes.badgeTypes || []
-
-    const badgeLayouts = badges.map((bt) => {
-      return (
-        <MiniBadgePreviewContainer highlightColor={colors.blue} key={bt.id}>
-          <MiniBadgeTypeMetadata
-            buttonTitle={t('explorer.button')}
-            disableAnimations
-            highlightColor={colors.blue}
-            metadata={bt.metadataURL}
-            onClick={() => {
-              router.push(`/badge/mint/${bt.id}`)
-            }}
-          />
-          {/*
-          <div>mintCost: {formatUnits(bt.mintCost, 18)} + Kleros deposit</div>
-          <div>ValidFor: {bt.validFor / 60 / 60 / 24} </div>
-          <div>paused: {bt.paused ? 'Yes' : 'No'}</div>
-          <div>Controller: {bt.controllerName}</div>
-          <div>
-            <span>Challenge period duration: </span>
-            <GetBadgeTypeChallengePeriodDuration tcrList={bt.klerosBadge?.klerosTCRList} /> days
-          </div>
-
-
-           TODO ADD Creator/Emitter Metadata
-          <div>Metadata: {bt.emitter.metadata}</div>
-           This is broken because the metadata is not linked on IPFS.
-           <CreatorDetails metadata={bt.emitter.metadata} />
-          */}
-        </MiniBadgePreviewContainer>
-      )
-    })
+    const badges = (badgeTypes.badgeTypes as BadgeType[]) || []
 
     setTimeout(() => {
       setLoading(false)
-      setItems(badgeLayouts)
+      setBadgeTypes(badges)
+      setSelectedBadgeType(0)
     }, 2000)
+  }
+
+  function selectPreviousBadgeType() {
+    setSelectedBadgeType((prevIndex) => {
+      if (prevIndex === 0) return badgeTypes.length - 1
+      return prevIndex - 1
+    })
+  }
+  function selectNextBadgeType() {
+    setSelectedBadgeType((prevIndex) => {
+      if (prevIndex === badgeTypes.length - 1) return 0
+      return prevIndex + 1
+    })
   }
 
   return (
@@ -95,11 +84,51 @@ const ExploreBadgeTypes: NextPageWithLayout = () => {
         filters={filters}
         loading={loading}
         loadingColor={'blue'}
+        preview={
+          badgeTypes[selectedBadgeType] && (
+            <SafeSuspense>
+              <Box display="flex" justifyContent="space-between">
+                <Typography color={colors.blue} mb={4} variant="dAppHeadline2">
+                  BadgeType Info
+                </Typography>
+                <Box>
+                  <IconButton onClick={selectPreviousBadgeType}>
+                    <ArrowBackIosOutlinedIcon color="blue" />
+                  </IconButton>
+                  <IconButton onClick={selectNextBadgeType}>
+                    <ArrowForwardIosOutlinedIcon color="blue" />
+                  </IconButton>
+                </Box>
+              </Box>
+              <BadgeInfoPreview badgeType={badgeTypes[selectedBadgeType]} />
+            </SafeSuspense>
+          )
+        }
         search={search}
         title={t('explorer.title')}
       >
-        {items.length > 0 ? (
-          items
+        {badgeTypes.length > 0 ? (
+          badgeTypes.map((bt, i) => {
+            return (
+              <SafeSuspense fallback={<MiniBadgePreviewLoading />} key={bt.id}>
+                <MiniBadgePreviewContainer
+                  highlightColor={colors.blue}
+                  onClick={() => setSelectedBadgeType(i)}
+                  selected={bt.id === badgeTypes[selectedBadgeType]?.id}
+                >
+                  <MiniBadgeTypeMetadata
+                    buttonTitle={t('explorer.button')}
+                    disableAnimations
+                    highlightColor={colors.blue}
+                    metadata={bt.metadataURL}
+                    onClick={() => {
+                      // router.push(`/badge/mint/${bt.id}`)
+                    }}
+                  />
+                </MiniBadgePreviewContainer>
+              </SafeSuspense>
+            )
+          })
         ) : (
           <Stack>
             <NoResultsAnimated errorText={t('explorer.noBadgesFound')} />

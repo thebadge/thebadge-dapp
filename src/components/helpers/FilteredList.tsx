@@ -1,6 +1,6 @@
-import React, { PropsWithChildren, useEffect, useState } from 'react'
+import React, { PropsWithChildren, ReactNode, useEffect, useState } from 'react'
 
-import { Box, Chip, Divider, Typography, styled } from '@mui/material'
+import { Box, Chip, Divider, Stack, Typography, styled } from '@mui/material'
 import { ChipPropsColorOverrides } from '@mui/material/Chip/Chip'
 import { OverridableStringUnion } from '@mui/types'
 import { colors } from 'thebadge-ui-library'
@@ -35,13 +35,13 @@ type FilteredListProps = PropsWithChildren & {
   loading?: boolean
   loadingColor?: SpinnerColors
   disableEdit?: boolean
+  preview?: ReactNode | undefined
 }
 
 const ItemsGridBox = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexWrap: 'wrap',
   gap: theme.spacing(3),
-  justifyContent: 'center',
 }))
 
 const FilteredListHeaderBox = styled(Box)(({ theme }) => ({
@@ -148,13 +148,20 @@ export default function FilteredList(props: FilteredListProps) {
         </Box>
       </FilteredListHeaderBox>
       <Divider color={mode === 'dark' ? 'white' : 'black'} sx={{ borderWidth: '1px' }} />
-      <Box mt={4}>
-        {props.loading ? (
-          <Loading color={props.loadingColor} />
-        ) : (
-          <ItemsGridBox>
-            <SafeSuspense>{props.children}</SafeSuspense>
-          </ItemsGridBox>
+      <Box display="flex" mt={4}>
+        <Box flex="3">
+          {props.loading ? (
+            <Loading color={props.loadingColor} />
+          ) : (
+            <ItemsGridBox sx={{ justifyContent: props.preview ? 'left' : 'center' }}>
+              <SafeSuspense>{props.children}</SafeSuspense>
+            </ItemsGridBox>
+          )}
+        </Box>
+        {props.preview && (
+          <Stack flex="2" overflow="auto">
+            {props.preview}
+          </Stack>
         )}
       </Box>
     </Box>
