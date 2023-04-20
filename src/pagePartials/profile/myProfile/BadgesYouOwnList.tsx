@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { Box, Stack } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
 
-import { NoResultsAnimated } from '@/src/components/assets/NoResults'
+import { NoResultsAnimated } from '@/src/components/assets/animated/NoResults'
 import FilteredList, { ListFilter } from '@/src/components/helpers/FilteredList'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import { useContractInstance } from '@/src/hooks/useContractInstance'

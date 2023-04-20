@@ -4,21 +4,19 @@ import { Stack } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
 import { colors } from 'thebadge-ui-library'
 
-import { NoResultsAnimated } from '@/src/components/assets/NoResults'
+import { NoResultsAnimated } from '@/src/components/assets/animated/NoResults'
 import { MiniBadgePreviewContainer } from '@/src/components/common/MiniBadgePreviewContainer'
 import FilteredList, { ListFilter } from '@/src/components/helpers/FilteredList'
 import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import MiniBadgeTypeMetadata from '@/src/pagePartials/badge/MiniBadgeTypeMetadata'
 import { useCurateProvider } from '@/src/providers/curateProvider'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { NextPageWithLayout } from '@/types/next'
 
 const now = Math.floor(Date.now() / 1000)
 const CurateBadges: NextPageWithLayout = () => {
   const { t } = useTranslation()
   const { curate } = useCurateProvider()
-  const { appChainId } = useWeb3Connection()
   const [items, setItems] = useState<React.ReactNode[]>([])
   const [loading, setLoading] = useState<boolean>(false)
   const gql = useSubgraph()

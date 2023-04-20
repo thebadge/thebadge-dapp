@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import ArrowBackIosOutlinedIcon from '@mui/icons-material/ArrowBackIosOutlined'
 import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined'
@@ -6,7 +6,7 @@ import { Box, IconButton, Stack, Typography } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
 import { colors } from 'thebadge-ui-library'
 
-import { NoResultsAnimated } from '@/src/components/assets/NoResults'
+import { NoResultsAnimated } from '@/src/components/assets/animated/NoResults'
 import {
   MiniBadgePreviewContainer,
   MiniBadgePreviewLoading,
@@ -14,6 +14,7 @@ import {
 import FilteredList, { ListFilter } from '@/src/components/helpers/FilteredList'
 import SafeSuspense, { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
+import { useKeyPress } from '@/src/hooks/useKeypress'
 import MiniBadgeTypeMetadata from '@/src/pagePartials/badge/MiniBadgeTypeMetadata'
 import BadgeInfoPreview from '@/src/pagePartials/badge/explorer/BadgeInfoPreview'
 import { BadgeType } from '@/types/generated/subgraph'
@@ -26,6 +27,23 @@ const ExploreBadgeTypes: NextPageWithLayout = () => {
   const [selectedBadgeType, setSelectedBadgeType] = useState<number>(0)
 
   const gql = useSubgraph()
+
+  const rightPress = useKeyPress('ArrowLeft')
+  const leftPress = useKeyPress('ArrowRight')
+
+  useEffect(() => {
+    if (badgeTypes.length && rightPress) {
+      selectNextBadgeType()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [rightPress])
+
+  useEffect(() => {
+    if (badgeTypes.length && leftPress) {
+      selectPreviousBadgeType()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [leftPress])
 
   const filters: Array<ListFilter> = [
     {
