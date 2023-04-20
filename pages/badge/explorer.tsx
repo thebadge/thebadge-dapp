@@ -28,8 +28,8 @@ const ExploreBadgeTypes: NextPageWithLayout = () => {
 
   const gql = useSubgraph()
 
-  const rightPress = useKeyPress('ArrowLeft')
-  const leftPress = useKeyPress('ArrowRight')
+  const leftPress = useKeyPress('ArrowLeft')
+  const rightPress = useKeyPress('ArrowRight')
 
   useEffect(() => {
     if (badgeTypes.length && rightPress) {
