@@ -1,3 +1,4 @@
+import TBSwiper from "@/src/components/helpers/TBSwiper";
 import { useRouter } from 'next/navigation'
 import { useMemo } from 'react'
 
@@ -39,6 +40,6 @@ export default function BadgeListTypeList() {
   }, [badgeTypes.data?.badgeTypes, router])
 
   return (
-    <ResizedBadgePreviewsList badges={badgesList} sx={{ padding: 0, scale: '0.9 !important' }} />
+    <TBSwiper items={badgesList} />
   )
 }
