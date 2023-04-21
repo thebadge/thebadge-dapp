@@ -12,6 +12,8 @@ import { contracts } from '@/src/contracts/contracts'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
 import useTransaction, { TransactionStates } from '@/src/hooks/useTransaction'
 import CreateSteps, { BadgeTypeCreateSchema } from '@/src/pagePartials/badge/type/CreateSteps'
+import { RequiredConnection } from '@/src/pagePartials/errors/requiredConnection'
+import { RequiredCreatorAccess } from '@/src/pagePartials/errors/requiresCreatorAccess'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import ipfsUpload from '@/src/utils/ipfsUpload'
 import { generateKlerosListMetaEvidence } from '@/src/utils/kleros/generateKlerosListMetaEvidence'
@@ -130,9 +132,11 @@ const CreateBadgeType: NextPageWithLayout = () => {
   }
 
   return (
-    <>
-      <CreateSteps onSubmit={onSubmit} txState={state} />
-    </>
+    <RequiredConnection>
+      <RequiredCreatorAccess>
+        <CreateSteps onSubmit={onSubmit} txState={state} />
+      </RequiredCreatorAccess>
+    </RequiredConnection>
   )
 }
 

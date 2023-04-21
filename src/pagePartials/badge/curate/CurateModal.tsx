@@ -1,18 +1,7 @@
 import React from 'react'
 
 import CloseIcon from '@mui/icons-material/Close'
-import {
-  Box,
-  IconButton,
-  Modal,
-  Skeleton,
-  Stack,
-  Tooltip,
-  Typography,
-  keyframes,
-  styled,
-  useTheme,
-} from '@mui/material'
+import { Box, IconButton, Modal, Skeleton, Stack, Tooltip, Typography, styled } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
 import { ButtonV2, colors } from 'thebadge-ui-library'
 import { gradients } from 'thebadge-ui-library'
@@ -21,15 +10,11 @@ import DisplayEvidenceField from '@/src/components/displayEvidence/DisplayEviden
 import { Address } from '@/src/components/helpers/Address'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import TBSwiper from '@/src/components/helpers/TBSwiper'
-import useBadgeById from '@/src/hooks/useBadgeById'
+import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
 import CurationCriteriaLink from '@/src/pagePartials/badge/curate/CurationCriteriaLink'
+import { RequiredConnection } from '@/src/pagePartials/errors/requiredConnection'
 import { useCurateProvider } from '@/src/providers/curateProvider'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
-
-// Import Swiper styles
-import 'swiper/css'
-import 'swiper/css/navigation'
-import 'swiper/css/pagination'
 
 const ModalBody = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -72,37 +57,30 @@ export default function CurateModal({
       onClose={onClose}
       open={open}
     >
-      <ModalBody>
-        <IconButton
-          aria-label="close curate modal"
-          color="secondary"
-          component="label"
-          onClick={onClose}
-          sx={{ position: 'absolute', right: 8, top: 8 }}
-        >
-          <CloseIcon color="white" />
-        </IconButton>
+      <RequiredConnection noCloseButton>
+        <ModalBody>
+          <IconButton
+            aria-label="close curate modal"
+            color="secondary"
+            component="label"
+            onClick={onClose}
+            sx={{ position: 'absolute', right: 8, top: 8 }}
+          >
+            <CloseIcon color="white" />
+          </IconButton>
 
-        <SafeSuspense>
-          <CurateModalContent
-            badgeTypeId={badgeTypeId}
-            onClose={onClose}
-            ownerAddress={ownerAddress}
-          />
-        </SafeSuspense>
-      </ModalBody>
+          <SafeSuspense>
+            <CurateModalContent
+              badgeTypeId={badgeTypeId}
+              onClose={onClose}
+              ownerAddress={ownerAddress}
+            />
+          </SafeSuspense>
+        </ModalBody>
+      </RequiredConnection>
     </Modal>
   )
 }
-
-const growEffect = keyframes`
-  0% {
-    transform: scale(0.85);
-  }
-  100% {
-    transform: scale(1);
-  }
-`
 
 function CurateModalContent({
   badgeTypeId,
@@ -116,7 +94,6 @@ function CurateModalContent({
   const { t } = useTranslation()
   const { address } = useWeb3Connection()
   const { challenge } = useCurateProvider()
-  const theme = useTheme()
 
   const badgeById = useBadgeById(badgeTypeId, ownerAddress)
 

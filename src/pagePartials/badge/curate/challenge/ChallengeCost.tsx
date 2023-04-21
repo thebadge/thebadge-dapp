@@ -6,7 +6,7 @@ import { formatUnits } from 'ethers/lib/utils'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { getNetworkConfig } from '@/src/config/web3'
-import useBadgeType from '@/src/hooks/useBadgeType'
+import useBadgeType from '@/src/hooks/subgraph/useBadgeType'
 import { useBadgeCost } from '@/src/pagePartials/badge/curate/useBadgeCost'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 

@@ -21,7 +21,7 @@ import { Logout } from '@/src/components/assets/Logout'
 import { SwitchNetwork } from '@/src/components/assets/SwitchNetwork'
 import { ModalSwitchNetwork } from '@/src/components/helpers/ModalSwitchNetwork'
 import { NavLink } from '@/src/components/navigation/NavLink'
-import { useCurrentUser } from '@/src/hooks/useCurrentUser'
+import { useCurrentUser } from '@/src/hooks/subgraph/useCurrentUser'
 import { useSectionReferences } from '@/src/providers/referencesProvider'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { truncateStringInTheMiddle } from '@/src/utils/strings'
@@ -79,7 +79,7 @@ export const UserDropdown: React.FC = () => {
   const router = useRouter()
   const { t } = useTranslation()
   const { address, blockiesIcon, disconnectWallet, isWalletNetworkSupported } = useWeb3Connection()
-  const user = useCurrentUser()
+  const { data: user } = useCurrentUser()
   const { becomeACreatorSection, scrollTo } = useSectionReferences()
 
   const [showNetworkModal, setShowNetworkModal] = useState(false)

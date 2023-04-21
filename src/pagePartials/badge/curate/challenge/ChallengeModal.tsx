@@ -29,6 +29,7 @@ import useTransaction from '@/src/hooks/useTransaction'
 import CurationCriteriaLink from '@/src/pagePartials/badge/curate/CurationCriteriaLink'
 import ChallengeCost from '@/src/pagePartials/badge/curate/challenge/ChallengeCost'
 import { useBadgeCost } from '@/src/pagePartials/badge/curate/useBadgeCost'
+import { RequiredConnection } from '@/src/pagePartials/errors/requiredConnection'
 import ipfsUpload from '@/src/utils/ipfsUpload'
 import { KlerosBadgeTypeController__factory } from '@/types/generated/typechain'
 
@@ -81,25 +82,27 @@ export default function ChallengeModal({
       onClose={onClose}
       open={open}
     >
-      <ModalBody>
-        <IconButton
-          aria-label="close challenge modal"
-          color="secondary"
-          component="label"
-          onClick={onClose}
-          sx={{ position: 'absolute', right: 8, top: 8 }}
-        >
-          <CloseIcon color="white" />
-        </IconButton>
+      <RequiredConnection noCloseButton>
+        <ModalBody>
+          <IconButton
+            aria-label="close challenge modal"
+            color="secondary"
+            component="label"
+            onClick={onClose}
+            sx={{ position: 'absolute', right: 8, top: 8 }}
+          >
+            <CloseIcon color="white" />
+          </IconButton>
 
-        <SafeSuspense>
-          <ChallengeModalContent
-            badgeTypeId={badgeTypeId}
-            onClose={onClose}
-            ownerAddress={ownerAddress}
-          />
-        </SafeSuspense>
-      </ModalBody>
+          <SafeSuspense>
+            <ChallengeModalContent
+              badgeTypeId={badgeTypeId}
+              onClose={onClose}
+              ownerAddress={ownerAddress}
+            />
+          </SafeSuspense>
+        </ModalBody>
+      </RequiredConnection>
     </Modal>
   )
 }

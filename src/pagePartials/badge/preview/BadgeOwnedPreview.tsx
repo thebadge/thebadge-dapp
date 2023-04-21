@@ -9,7 +9,7 @@ import { colors } from 'thebadge-ui-library'
 import challengedLogo from '@/src/components/assets/challenged.webp'
 import LinkWithTranslation from '@/src/components/helpers/LinkWithTranslation'
 import { notify } from '@/src/components/toast/Toast'
-import useBadgeById from '@/src/hooks/useBadgeById'
+import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
 import BadgeTypeMetadata from '@/src/pagePartials/badge/BadgeTypeMetadata'
 import { ToastStates } from '@/types/toast'
 

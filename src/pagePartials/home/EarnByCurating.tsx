@@ -8,11 +8,6 @@ import BadgesInReviewSwiper from '@/src/pagePartials/home/BadgesInReviewSwiper'
 import { SectionBox, SectionTitleBox } from '@/src/pagePartials/home/SectionBoxes'
 import { useSectionReferences } from '@/src/providers/referencesProvider'
 
-// Import Swiper styles
-import 'swiper/css'
-import 'swiper/css/navigation'
-import 'swiper/css/pagination'
-
 const LearnMoreButton = styled(ButtonV2)(({ theme }) => ({
   borderRadius: '10px',
   fontSize: '11px !important',
