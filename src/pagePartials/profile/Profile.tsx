@@ -9,6 +9,8 @@ import { useCurrentUser } from '@/src/hooks/subgraph/useCurrentUser'
 import BadgesCreatedSection from '@/src/pagePartials/profile/created/BadgesCreatedSection'
 import BadgesInReviewSection from '@/src/pagePartials/profile/inReview/BadgesInReviewSection'
 import MyProfileSection from '@/src/pagePartials/profile/myProfile/MyProfileSection'
+import InfoPreview from '@/src/pagePartials/profile/userInfo/InfoPreview'
+import { InfoPreviewSkeleton } from '@/src/pagePartials/profile/userInfo/InfoPreview.skeleton'
 
 const Profile = () => {
   const { t } = useTranslation()
@@ -42,6 +44,11 @@ const Profile = () => {
           )}
         </Box>
       </Stack>
+
+      <SafeSuspense fallback={<InfoPreviewSkeleton />}>
+        <InfoPreview address={user?.id || ''} />
+      </SafeSuspense>
+      <InfoPreviewSkeleton />
       {!filterType && <MyProfileSection />}
       {filterType === 'badgesInReview' && <BadgesInReviewSection />}
       {filterType === 'createdBadges' && <BadgesCreatedSection />}

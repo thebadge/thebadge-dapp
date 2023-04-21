@@ -65,6 +65,7 @@
     "titleOf": "This is the profile of {{address}}",
     "badgesYouOwn": {
       "title": "Badges that you own",
+      "shared_title": "Badges that the user own",
       "noResults": "You don't have any badges that match these filters..."
     },
     "badgesCreated": {
