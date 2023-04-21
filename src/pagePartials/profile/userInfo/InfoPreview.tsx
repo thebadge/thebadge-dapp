@@ -50,7 +50,7 @@ export default function InfoPreview({ address }: Props) {
           <Address address={user?.id || ''} showCopyButton={false} showExternalLink={false} />
         </Stack>
         <Box display="flex">
-          <Stack flex="1" gap={2} justifyContent="space-evenly" overflow="auto">
+          <Stack flex="1" gap={2} height="100%" justifyContent="space-evenly" overflow="auto">
             <Typography variant="dAppTitle2">
               <EmailOutlinedIcon sx={{ mr: 1 }} />
               {creatorMetadata?.email}
@@ -71,11 +71,12 @@ export default function InfoPreview({ address }: Props) {
           <Stack
             borderLeft="1px solid white"
             flex="1"
+            height="100%"
             justifyContent="flex-end"
             overflow="auto"
             p={2}
           >
-            <Typography variant="dAppTitle2">{creatorMetadata?.description}</Typography>
+            <Typography variant="body4">{creatorMetadata?.description}</Typography>
           </Stack>
         </Box>
       </Stack>
