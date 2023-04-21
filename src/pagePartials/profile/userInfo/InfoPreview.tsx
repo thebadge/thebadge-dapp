@@ -45,7 +45,7 @@ export default function InfoPreview({ address }: Props) {
         <Avatar src={creatorMetadata?.logo?.s3Url} sx={{ width: 170, height: 170 }} />
       </Badge>
       <Stack flex="5" justifyContent="space-between" overflow="auto">
-        <Stack>
+        <Stack gap={1}>
           <Typography variant="dAppHeadline2">{creatorMetadata?.name}</Typography>
           <Address address={user?.id || ''} showCopyButton={false} showExternalLink={false} />
         </Stack>
