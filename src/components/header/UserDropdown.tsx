@@ -67,14 +67,6 @@ const StyledButton = styled(Button)<{ border?: string }>(({ border }) => ({
   boxShadow: 'none',
 }))
 
-const Link = styled(NavLink)`
-  text-decoration: underline;
-
-  &:hover {
-    text-decoration: none;
-  }
-`
-
 export const UserDropdown: React.FC = () => {
   const router = useRouter()
   const { t } = useTranslation()

@@ -1,8 +1,9 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useEffect, useState } from 'react'
 
 import { styled } from '@mui/material'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
+import { Loading } from '@/src/components/loading/Loading'
 import useIsCreator from '@/src/hooks/subgraph/useIsCreator'
 import NotACreatorError from '@/src/pagePartials/errors/displays/NotACreatorError'
 import { ChainsValues } from '@/types/chains'
@@ -26,15 +27,34 @@ export const RequiredCreatorAccess: React.FC<RequiredConnectionProps> = ({
   minHeight,
   ...restProps
 }) => {
-  const isCreator = useIsCreator()
+  const [isUserCreator, setUserIsCreator] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
-  if (!isCreator.data) {
-    return (
-      <Wrapper style={{ minHeight }} {...restProps}>
-        <NotACreatorError />
-      </Wrapper>
-    )
-  }
+  const { isCreator } = useIsCreator()
+  useEffect(() => {
+    setIsLoading(true)
+    isCreator()
+      .then((isCreator) => setUserIsCreator(isCreator))
+      .finally(() => setIsLoading(false))
+  }, [isCreator])
 
-  return <SafeSuspense>{children}</SafeSuspense>
+  return (
+    <>
+      {isUserCreator ? (
+        <SafeSuspense>{children}</SafeSuspense>
+      ) : (
+        <>
+          {isLoading ? (
+            <SafeSuspense>
+              <Loading />
+            </SafeSuspense>
+          ) : (
+            <Wrapper style={{ minHeight }} {...restProps}>
+              <NotACreatorError />
+            </Wrapper>
+          )}
+        </>
+      )}
+    </>
+  )
 }

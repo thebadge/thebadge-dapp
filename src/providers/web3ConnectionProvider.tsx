@@ -208,7 +208,7 @@ export default function Web3ConnectionProvider({ children }: Props) {
   const value = {
     address: address ? address.toLowerCase() : null,
     appChainId,
-    balance: wallet?.accounts[0].balance,
+    balance: wallet?.accounts[0]?.balance,
     connectWallet: handleConnectWallet,
     connectedChain,
     connectingWallet,

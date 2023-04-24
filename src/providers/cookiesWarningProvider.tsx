@@ -9,7 +9,7 @@ import {
 
 import { Button as MUIButton, styled } from '@mui/material'
 
-import { NavLink } from '@/src/components/navigation/NavLink'
+import { TextLink } from '@/src/components/navigation/TextLink'
 import {
   cookiesWarningEnabled as cookiesWarningEnabledConfig,
   gaMeasurementId,
@@ -48,15 +48,6 @@ const Text = styled('p')`
   z-index: 1;
 `
 
-const Link = styled(NavLink)`
-  color: ${({ theme }) => theme.palette.text.primary};
-  text-decoration: underline;
-
-  &:hover {
-    text-decoration: none;
-  }
-`
-
 const ButtonContainer = styled('div')`
   column-gap: 20px;
   display: flex;
@@ -87,9 +78,9 @@ const CookiesWarning: React.FC<{
       <Content>
         <Text>
           We use cookies to give you the best experience and to help improve our website. Please
-          read our <Link href={'/cookie-policy'}>Cookie Policy</Link> for more information. By
-          clicking <strong>&quot;Accept&quot;</strong>, you agree to the storing of cookies on your
-          device to enhance site navigation, analyze site usage and provide customer support.
+          read our <TextLink href={'/cookie-policy'}>Cookie Policy</TextLink> for more information.
+          By clicking <strong>&quot;Accept&quot;</strong>, you agree to the storing of cookies on
+          your device to enhance site navigation, analyze site usage and provide customer support.
         </Text>
         <ButtonContainer>
           <Button onClick={hideCookiesWarning}>Accept</Button>
