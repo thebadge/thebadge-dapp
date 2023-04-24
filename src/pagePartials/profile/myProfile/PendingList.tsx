@@ -45,7 +45,7 @@ export default function PendingList() {
       items={badgesList}
       itemsScale={'0.7'}
       leftPadding={'0'}
-      slidesPerView={2}
+      maxSlidesPerView={2}
       spaceBetween={8}
     />
   )

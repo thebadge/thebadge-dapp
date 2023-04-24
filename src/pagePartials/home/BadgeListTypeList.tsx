@@ -2,12 +2,18 @@ import { useRouter } from 'next/navigation'
 import { useMemo } from 'react'
 
 import { Box } from '@mui/material'
+import { EffectCoverflow } from 'swiper'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import TBSwiper from '@/src/components/helpers/TBSwiper'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import BadgeTypeMetadata from '@/src/pagePartials/badge/BadgeTypeMetadata'
 import { badgesExampleList } from '@/src/pagePartials/home/SectionBoxes'
+
+import 'swiper/css'
+import 'swiper/css/navigation'
+import 'swiper/css/pagination'
+import 'swiper/css/effect-coverflow'
 
 export default function BadgeListTypeList() {
   const gql = useSubgraph()
@@ -36,5 +42,24 @@ export default function BadgeListTypeList() {
     return [...badges, ...badgesExampleList].slice(0, 5)
   }, [badgeTypes.data?.badgeTypes, router])
 
-  return <TBSwiper items={badgesList} />
+  return (
+    <TBSwiper
+      centeredSlides={true}
+      coverflowEffect={{
+        rotate: 0,
+        stretch: 0,
+        depth: 100,
+        modifier: 1,
+        scale: 1,
+        slideShadows: true,
+      }}
+      effect={'coverflow'}
+      grabCursor={true}
+      items={badgesList}
+      maxSlidesPerView={4}
+      modules={[EffectCoverflow]}
+      noArrows
+      style={{ paddingLeft: '35px' }}
+    />
+  )
 }

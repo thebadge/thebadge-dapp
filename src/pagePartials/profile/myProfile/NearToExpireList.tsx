@@ -45,7 +45,7 @@ export default function NearToExpireList() {
       items={badgesList}
       itemsScale={'0.7'}
       leftPadding={'0'}
-      slidesPerView={3}
+      maxSlidesPerView={3}
       spaceBetween={8}
     />
   )

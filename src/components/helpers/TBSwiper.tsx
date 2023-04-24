@@ -2,7 +2,7 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import { Box, keyframes, useTheme } from '@mui/material'
 import { A11y, Navigation } from 'swiper'
-import { Swiper, SwiperSlide } from 'swiper/react'
+import { Swiper, SwiperProps, SwiperSlide } from 'swiper/react'
 
 import { useSizeLG, useSizeMD, useSizeSM } from '@/src/hooks/useSize'
 
@@ -22,12 +22,13 @@ const growEffect = keyframes`
 
 type TBSwiperProps = {
   items: React.ReactNode[]
-  slidesPerView?: number
+  maxSlidesPerView?: number
   spaceBetween?: number
   itemsScale?: string
   leftPadding?: string
   rightPadding?: string
-}
+  noArrows?: boolean
+} & SwiperProps
 
 export default function TBSwiper(props: TBSwiperProps) {
   const swiperId = 'id' + Math.random().toString(16).slice(2)
@@ -37,14 +38,15 @@ export default function TBSwiper(props: TBSwiperProps) {
   const lg = useSizeLG()
 
   const amountItems = () => {
+    const maxItems = props.maxSlidesPerView || 4
     if (sm) {
       return 1
     } else if (md) {
-      return 2
+      return maxItems < 2 ? maxItems : 2
     } else if (lg) {
-      return 3
+      return maxItems < 3 ? maxItems : 3
     } else {
-      return 4
+      return maxItems
     }
   }
 
@@ -57,25 +59,29 @@ export default function TBSwiper(props: TBSwiperProps) {
         width: '100%',
       }}
     >
-      <ArrowBackIosIcon
-        className={'tb-swiper-button-prev-' + swiperId}
-        sx={{
-          mr: props.leftPadding || '0.5rem',
-          height: '35px',
-          width: '35px',
-          animation: `${growEffect} 1s infinite alternate ${theme.transitions.easing.easeInOut}`,
-        }}
-      />
+      {!props.noArrows && (
+        <ArrowBackIosIcon
+          className={'tb-swiper-button-prev-' + swiperId}
+          sx={{
+            mr: props.leftPadding || '0.5rem',
+            height: '35px',
+            width: '35px',
+            animation: `${growEffect} 1s infinite alternate ${theme.transitions.easing.easeInOut}`,
+          }}
+        />
+      )}
+
       <Swiper
         loop={true}
-        modules={[Navigation, A11y]}
+        modules={props.modules ? [Navigation, A11y, ...props.modules] : [Navigation, A11y]}
         navigation={{
           nextEl: '.tb-swiper-button-next-' + swiperId,
           prevEl: '.tb-swiper-button-prev-' + swiperId,
         }}
         pagination={{ clickable: true }}
-        slidesPerView={props.slidesPerView || amountItems()}
+        slidesPerView={amountItems()}
         spaceBetween={props.spaceBetween || 25}
+        {...props}
       >
         {props.items.map((item, index) => (
           <SwiperSlide key={'swiper-slide-' + swiperId + '-' + index}>
@@ -83,15 +89,17 @@ export default function TBSwiper(props: TBSwiperProps) {
           </SwiperSlide>
         ))}
       </Swiper>
-      <ArrowForwardIosIcon
-        className={'tb-swiper-button-next-' + swiperId}
-        sx={{
-          ml: props.rightPadding || '0.5rem',
-          height: '35px',
-          width: '35px',
-          animation: `${growEffect} 1s infinite alternate ${theme.transitions.easing.easeInOut}`,
-        }}
-      />
+      {!props.noArrows && (
+        <ArrowForwardIosIcon
+          className={'tb-swiper-button-next-' + swiperId}
+          sx={{
+            ml: props.rightPadding || '0.5rem',
+            height: '35px',
+            width: '35px',
+            animation: `${growEffect} 1s infinite alternate ${theme.transitions.easing.easeInOut}`,
+          }}
+        />
+      )}
     </Box>
   )
 }
