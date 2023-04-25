@@ -39,7 +39,7 @@
       "connect": "Connect wallet"
     },
     "buttons": {
-      "explore": "EXPLORE",
+      "mint": "MINT",
       "curate": "CURATE",
       "create": "CREATE"
     },
@@ -53,7 +53,20 @@
   "explorer": {
     "title": "Badge types explorer",
     "noBadgesFound": "There are no badges that match these filters...",
-    "button": "MINT"
+    "button": "MINT",
+    "preview": {
+      "title": "BadgeType Info",
+      "badge": {
+        "name": "Name",
+        "description": "Description",
+        "mintCost": "Mint cost:",
+        "totalMinted": "Total minted amount:",
+        "mint": "Mint"
+      },
+      "creator": {
+        "createdBy": "Crated By"
+      }
+    }
   },
   "curateExplorer": {
     "title": "Badges curation explorer",
@@ -83,7 +96,8 @@
     "badgesInReview": {
       "title": "Your badges in review",
       "noResults": "There are no badges in review..."
-    }
+    },
+    "verified": "Verified user"
   },
   "errors": {
     "connectWallet": "Connect your wallet",

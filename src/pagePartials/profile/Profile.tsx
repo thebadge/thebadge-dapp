@@ -48,7 +48,6 @@ const Profile = () => {
       <SafeSuspense fallback={<InfoPreviewSkeleton />}>
         <InfoPreview address={user?.id || ''} />
       </SafeSuspense>
-      <InfoPreviewSkeleton />
       {!filterType && <MyProfileSection />}
       {filterType === 'badgesInReview' && <BadgesInReviewSection />}
       {filterType === 'createdBadges' && <BadgesCreatedSection />}

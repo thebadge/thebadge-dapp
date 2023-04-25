@@ -1,3 +1,4 @@
+import { useTranslation } from "next-export-i18n";
 import React from 'react'
 
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined'
@@ -14,6 +15,8 @@ import { CreatorMetadata } from '@/types/badges/Creator'
 import { User } from '@/types/generated/subgraph'
 
 export default function CreatorInfoSmallPreview({ creator }: { creator: User }) {
+  const { t } = useTranslation()
+
   const resCreatorMetadata = useS3Metadata<{ content: CreatorMetadata }>(
     creator.creatorMetadata || '',
   )
@@ -23,7 +26,7 @@ export default function CreatorInfoSmallPreview({ creator }: { creator: User }) 
   return (
     <Stack gap={2} mt={6}>
       <Typography color={colors.pink} textTransform="uppercase" variant="dAppTitle2">
-        Crated By
+        {t('explorer.preview.creator.createdBy')}
       </Typography>
 
       <Stack>

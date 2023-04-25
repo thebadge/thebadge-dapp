@@ -111,12 +111,7 @@ export const UserDropdown: React.FC = () => {
       </StyledButton>
     )
   }
-  const exploreButton = menuButton(
-    t('header.buttons.explore'),
-    colors.blue,
-    false,
-    '/badge/explorer',
-  )
+  const exploreButton = menuButton(t('header.buttons.mint'), colors.blue, false, '/badge/explorer')
   const curateButton = menuButton(
     t('header.buttons.curate'),
     colors.greenLogo,

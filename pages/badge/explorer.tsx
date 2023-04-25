@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { RefObject, createRef, useEffect, useState } from 'react'
 
 import ArrowBackIosOutlinedIcon from '@mui/icons-material/ArrowBackIosOutlined'
 import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined'
@@ -26,10 +26,25 @@ const ExploreBadgeTypes: NextPageWithLayout = () => {
   const [loading, setLoading] = useState<boolean>(false)
   const [selectedBadgeType, setSelectedBadgeType] = useState<number>(0)
 
+  const badgeTypesElementRefs: RefObject<HTMLLIElement>[] = badgeTypes.map(() =>
+    createRef<HTMLLIElement>(),
+  )
   const gql = useSubgraph()
 
   const leftPress = useKeyPress('ArrowLeft')
   const rightPress = useKeyPress('ArrowRight')
+
+  useEffect(() => {
+    // Each time that a new item is selected, we scroll to it
+    if (badgeTypesElementRefs[selectedBadgeType]?.current) {
+      window.scrollTo({
+        top:
+          (badgeTypesElementRefs[selectedBadgeType].current?.offsetTop || 0) -
+          (badgeTypesElementRefs[selectedBadgeType].current?.offsetHeight || 0),
+        behavior: 'smooth',
+      })
+    }
+  }, [badgeTypesElementRefs, selectedBadgeType])
 
   useEffect(() => {
     if (badgeTypes.length && rightPress) {
@@ -44,25 +59,6 @@ const ExploreBadgeTypes: NextPageWithLayout = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [leftPress])
-
-  const filters: Array<ListFilter> = [
-    {
-      title: 'Minted',
-      color: 'blue',
-    },
-    {
-      title: 'In Review',
-      color: 'green',
-    },
-    {
-      title: 'Approved',
-      color: 'darkGreen',
-    },
-    {
-      title: 'Challenged',
-      color: 'pink',
-    },
-  ]
 
   const search = async (
     selectedFilters: Array<ListFilter>,
@@ -95,53 +91,53 @@ const ExploreBadgeTypes: NextPageWithLayout = () => {
     })
   }
 
+  function renderSelectedBadgePreview() {
+    if (!badgeTypes[selectedBadgeType]) return null
+    return (
+      <SafeSuspense>
+        <Box display="flex" justifyContent="space-between">
+          <Typography color={colors.blue} mb={4} variant="dAppHeadline2">
+            {t('explorer.preview.title')}
+          </Typography>
+          <Box>
+            <IconButton onClick={selectPreviousBadgeType}>
+              <ArrowBackIosOutlinedIcon color="blue" />
+            </IconButton>
+            <IconButton onClick={selectNextBadgeType}>
+              <ArrowForwardIosOutlinedIcon color="blue" />
+            </IconButton>
+          </Box>
+        </Box>
+        <BadgeInfoPreview badgeType={badgeTypes[selectedBadgeType]} />
+      </SafeSuspense>
+    )
+  }
+
   return (
     <>
       <FilteredList
-        categories={['Category 1', 'Category 2', 'Category 3']}
-        filters={filters}
         loading={loading}
         loadingColor={'blue'}
-        preview={
-          badgeTypes[selectedBadgeType] && (
-            <SafeSuspense>
-              <Box display="flex" justifyContent="space-between">
-                <Typography color={colors.blue} mb={4} variant="dAppHeadline2">
-                  BadgeType Info
-                </Typography>
-                <Box>
-                  <IconButton onClick={selectPreviousBadgeType}>
-                    <ArrowBackIosOutlinedIcon color="blue" />
-                  </IconButton>
-                  <IconButton onClick={selectNextBadgeType}>
-                    <ArrowForwardIosOutlinedIcon color="blue" />
-                  </IconButton>
-                </Box>
-              </Box>
-              <BadgeInfoPreview badgeType={badgeTypes[selectedBadgeType]} />
-            </SafeSuspense>
-          )
-        }
+        preview={renderSelectedBadgePreview()}
         search={search}
         title={t('explorer.title')}
       >
         {badgeTypes.length > 0 ? (
           badgeTypes.map((bt, i) => {
+            const isSelected = bt.id === badgeTypes[selectedBadgeType]?.id
             return (
               <SafeSuspense fallback={<MiniBadgePreviewLoading />} key={bt.id}>
                 <MiniBadgePreviewContainer
                   highlightColor={colors.blue}
                   onClick={() => setSelectedBadgeType(i)}
-                  selected={bt.id === badgeTypes[selectedBadgeType]?.id}
+                  ref={badgeTypesElementRefs[i]}
+                  selected={isSelected}
                 >
                   <MiniBadgeTypeMetadata
                     buttonTitle={t('explorer.button')}
                     disableAnimations
                     highlightColor={colors.blue}
                     metadata={bt.metadataURL}
-                    onClick={() => {
-                      // router.push(`/badge/mint/${bt.id}`)
-                    }}
                   />
                 </MiniBadgePreviewContainer>
               </SafeSuspense>

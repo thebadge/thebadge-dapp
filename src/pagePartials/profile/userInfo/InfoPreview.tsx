@@ -4,6 +4,7 @@ import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined'
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined'
 import TwitterIcon from '@mui/icons-material/Twitter'
 import { Avatar, Badge, Box, IconButton, Stack, Tooltip, Typography } from '@mui/material'
+import { useTranslation } from 'next-export-i18n'
 import { IconDiscord } from 'thebadge-ui-library'
 
 import { Address } from '@/src/components/helpers/Address'
@@ -18,6 +19,7 @@ type Props = {
   address: string
 }
 export default function InfoPreview({ address }: Props) {
+  const { t } = useTranslation()
   const { address: connectedWalletAddress } = useWeb3Connection()
 
   const isLoggedInUser = connectedWalletAddress === address
@@ -33,7 +35,7 @@ export default function InfoPreview({ address }: Props) {
     <InfoPreviewContainer>
       <Badge
         badgeContent={
-          <Tooltip title={'Verified user'}>
+          <Tooltip title={t('profile.verified')}>
             <Box>
               <VerifiedCreator sx={{ width: '26px', height: '26px' }} />
             </Box>

@@ -1,7 +1,9 @@
+import { useRouter } from 'next/navigation'
 import React from 'react'
 
 import { Divider, Stack, Typography } from '@mui/material'
 import { formatUnits } from 'ethers/lib/utils'
+import { useTranslation } from 'next-export-i18n'
 import { ButtonV2, colors } from 'thebadge-ui-library'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
@@ -12,6 +14,8 @@ import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { BadgeTypeMetadata } from '@/types/badges/BadgeMetadata'
 import { BadgeType } from '@/types/generated/subgraph'
 export default function BadgeInfoPreview({ badgeType }: { badgeType: BadgeType }) {
+  const { t } = useTranslation()
+  const router = useRouter()
   const { appChainId } = useWeb3Connection()
   const networkConfig = getNetworkConfig(appChainId)
   const resBadgeTypeMetadata = useS3Metadata<{ content: BadgeTypeMetadata }>(
@@ -25,14 +29,14 @@ export default function BadgeInfoPreview({ badgeType }: { badgeType: BadgeType }
       <Stack gap={2}>
         <Stack gap={1}>
           <Typography fontWeight="normal" variant="dAppTitle1">
-            Name
+            {t('explorer.preview.badge.name')}
           </Typography>
           <Typography variant="dAppTitle2">{badgeMetadata?.name}</Typography>
           <Divider color={colors.white} />
         </Stack>
         <Stack gap={1}>
           <Typography fontWeight="normal" variant="dAppTitle1">
-            Description
+            {t('explorer.preview.badge.description')}
           </Typography>
           <Typography variant="dAppTitle2">{badgeMetadata?.description}</Typography>
           <Divider color={colors.white} />
@@ -42,14 +46,14 @@ export default function BadgeInfoPreview({ badgeType }: { badgeType: BadgeType }
       {/* Mint info */}
       <Stack gap={1}>
         <Typography fontWeight="bold" variant="dAppTitle2">
-          Mint cost:
+          {t('explorer.preview.badge.mintCost')}
           <Typography component="span" sx={{ ml: 1 }} variant="dAppTitle2">
             {formatUnits(badgeType.mintCost, 18)} {networkConfig.token}
           </Typography>
         </Typography>
 
         <Typography fontWeight="bold" variant="dAppTitle2">
-          Total minted amount:
+          {t('explorer.preview.badge.totalMinted')}
           <Typography component="span" sx={{ ml: 1 }} variant="dAppTitle2">
             {badgeType.badgesMintedAmount}
           </Typography>
@@ -59,11 +63,11 @@ export default function BadgeInfoPreview({ badgeType }: { badgeType: BadgeType }
 
       <ButtonV2
         backgroundColor={colors.blue}
-        onClick={() => console.log('MINT')}
+        onClick={() => router.push(`/badge/mint/${badgeType.id}`)}
         sx={{ ml: 'auto' }}
         variant="contained"
       >
-        Mint
+        {t('explorer.preview.badge.mint')}
       </ButtonV2>
 
       {/* Creator info */}
