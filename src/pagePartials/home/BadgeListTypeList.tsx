@@ -2,7 +2,7 @@ import { useRouter } from 'next/navigation'
 import { useMemo } from 'react'
 
 import { Box } from '@mui/material'
-import { EffectCoverflow } from 'swiper'
+import { EffectCoverflow, Pagination } from 'swiper'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import TBSwiper from '@/src/components/helpers/TBSwiper'
@@ -51,15 +51,18 @@ export default function BadgeListTypeList() {
         depth: 100,
         modifier: 1,
         scale: 1,
-        slideShadows: true,
+        slideShadows: false,
       }}
       effect={'coverflow'}
       grabCursor={true}
       items={badgesList}
       maxSlidesPerView={4}
-      modules={[EffectCoverflow]}
+      modules={[EffectCoverflow, Pagination]}
       noArrows
-      style={{ paddingLeft: '35px' }}
+      pagination={{ type: 'bullets', clickable: true }}
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      style={{ padding: '0 0 56px 35px', '--swiper-pagination-bullet-inactive-color': '#ffffff' }}
     />
   )
 }

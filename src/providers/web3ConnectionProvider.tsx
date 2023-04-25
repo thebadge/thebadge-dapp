@@ -18,6 +18,7 @@ import walletConnectModule from '@web3-onboard/walletconnect'
 import nullthrows from 'nullthrows'
 import Blockies from 'react-blockies'
 
+import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { Chains, INITIAL_APP_CHAIN_ID, chainsConfig, getNetworkConfig } from '@/src/config/web3'
 import { appName } from '@/src/constants/common'
 import {
@@ -125,6 +126,8 @@ export default function Web3ConnectionProvider({ children }: Props) {
 
   const [appChainId, setAppChainId] = useState(INITIAL_APP_CHAIN_ID)
   const [address, setAddress] = useState<string | null>(null)
+  const [blockiesIcon, setBlockiesIcon] = useState<JSX.Element | null>(null)
+  const [blockiesAvatar, setBlockiesAvatar] = useState<JSX.Element | null>(null)
 
   const web3Provider = wallet?.provider != null ? new Web3Provider(wallet.provider) : null
 
@@ -157,10 +160,23 @@ export default function Web3ConnectionProvider({ children }: Props) {
 
   // Set user address when connect wallet
   useEffect(() => {
-    if (wallet) {
-      setAddress(wallet.accounts[0].address)
+    if (wallet && wallet.accounts[0]?.address) {
+      const address = wallet.accounts[0]?.address
+      setAddress(address)
+      setBlockiesIcon(
+        <SafeSuspense>
+          <Blockies scale={3.2} seed={address || ''} size={10} />
+        </SafeSuspense>,
+      ) // Icon version is a canvas of 10 x 3.2 = 32px to display it entirely
+      setBlockiesAvatar(
+        <SafeSuspense>
+          <Blockies className="blockies-avatar" scale={10} seed={address || ''} size={10} />
+        </SafeSuspense>,
+      ) // Avatar version is a canvas of 10 x 10 = 100px to display it entirely
     } else {
       setAddress(null)
+      setBlockiesIcon(null)
+      setBlockiesAvatar(null)
     }
   }, [wallet])
 
@@ -197,13 +213,6 @@ export default function Web3ConnectionProvider({ children }: Props) {
       connect()
     }
   }
-
-  // Icon version is a canvas of 10 x 3.2 = 32px to display it entirely
-  const blockiesIcon = address ? <Blockies scale={3.2} seed={address} size={10} /> : null
-  // Avatar version is a canvas of 10 x 10 = 100px to display it entirely
-  const blockiesAvatar = address ? (
-    <Blockies className="blockies-avatar" scale={10} seed={address} size={10} />
-  ) : null
 
   const value = {
     address: address ? address.toLowerCase() : null,
