@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useState } from 'react'
+import React, { ReactElement } from 'react'
 
 import { styled } from '@mui/material'
 
@@ -27,27 +27,17 @@ export const RequiredCreatorAccess: React.FC<RequiredConnectionProps> = ({
   minHeight,
   ...restProps
 }) => {
-  const [isUserCreator, setUserIsCreator] = useState<boolean>(false)
-  const [isLoading, setIsLoading] = useState<boolean>(false)
-
-  const { isCreator } = useIsCreator()
-  useEffect(() => {
-    setIsLoading(true)
-    isCreator()
-      .then((isCreator) => setUserIsCreator(isCreator))
-      .finally(() => setIsLoading(false))
-  }, [isCreator])
-
+  const { data: isCreator, isLoading } = useIsCreator()
   return (
     <>
-      {isUserCreator ? (
-        <SafeSuspense>{children}</SafeSuspense>
+      {isLoading ? (
+        <SafeSuspense>
+          <Loading />
+        </SafeSuspense>
       ) : (
         <>
-          {isLoading ? (
-            <SafeSuspense>
-              <Loading />
-            </SafeSuspense>
+          {isCreator ? (
+            <SafeSuspense>{children}</SafeSuspense>
           ) : (
             <Wrapper style={{ minHeight }} {...restProps}>
               <NotACreatorError />
