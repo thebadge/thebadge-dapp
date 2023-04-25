@@ -8,12 +8,11 @@ import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import TBSwiper from '@/src/components/helpers/TBSwiper'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import BadgeTypeMetadata from '@/src/pagePartials/badge/BadgeTypeMetadata'
-import { badgesExampleList } from '@/src/pagePartials/home/SectionBoxes'
 
 import 'swiper/css'
+import 'swiper/css/effect-coverflow'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
-import 'swiper/css/effect-coverflow'
 
 export default function BadgeListTypeList() {
   const gql = useSubgraph()
@@ -21,7 +20,7 @@ export default function BadgeListTypeList() {
   const router = useRouter()
 
   const badgesList = useMemo(() => {
-    const badges = badgeTypes.data?.badgeTypes.map((badgeType) => {
+    const badges = badgeTypes.data?.badgeTypes?.map((badgeType) => {
       return (
         <Box
           key={badgeType.id}
@@ -34,12 +33,7 @@ export default function BadgeListTypeList() {
         </Box>
       )
     })
-    // TODO Remove badgesExampleList when we have more volumen to complete the list
-    if (!badges) return badgesExampleList
-    if (badges.length >= 5) {
-      return badges
-    }
-    return [...badges, ...badgesExampleList].slice(0, 5)
+    return badges || []
   }, [badgeTypes.data?.badgeTypes, router])
 
   return (
