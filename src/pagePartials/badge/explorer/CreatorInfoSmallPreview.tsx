@@ -1,10 +1,10 @@
-import { useTranslation } from "next-export-i18n";
 import React from 'react'
 
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined'
 import OpenInNewOutlinedIcon from '@mui/icons-material/OpenInNewOutlined'
 import TwitterIcon from '@mui/icons-material/Twitter'
 import { Avatar, Badge, Box, Divider, IconButton, Stack, Tooltip, Typography } from '@mui/material'
+import { useTranslation } from 'next-export-i18n'
 import { IconDiscord, colors } from 'thebadge-ui-library'
 
 import { Address } from '@/src/components/helpers/Address'
