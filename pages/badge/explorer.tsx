@@ -16,7 +16,7 @@ import SafeSuspense, { withPageGenericSuspense } from '@/src/components/helpers/
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import { useKeyPress } from '@/src/hooks/useKeypress'
 import MiniBadgeTypeMetadata from '@/src/pagePartials/badge/MiniBadgeTypeMetadata'
-import BadgeInfoPreview from '@/src/pagePartials/badge/explorer/BadgeInfoPreview'
+import BadgeTypeInfoPreview from '@/src/pagePartials/badge/explorer/BadgeTypeInfoPreview'
 import { BadgeType } from '@/types/generated/subgraph'
 import { NextPageWithLayout } from '@/types/next'
 
@@ -108,7 +108,7 @@ const ExploreBadgeTypes: NextPageWithLayout = () => {
             </IconButton>
           </Box>
         </Box>
-        <BadgeInfoPreview badgeType={badgeTypes[selectedBadgeType]} />
+        <BadgeTypeInfoPreview badgeType={badgeTypes[selectedBadgeType]} />
       </SafeSuspense>
     )
   }

@@ -16,8 +16,7 @@ import FilteredList, { ListFilter } from '@/src/components/helpers/FilteredList'
 import SafeSuspense, { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import { useKeyPress } from '@/src/hooks/useKeypress'
-import MiniBadgeTypeMetadata from '@/src/pagePartials/badge/MiniBadgeTypeMetadata'
-import BadgeInfoPreview from '@/src/pagePartials/badge/explorer/BadgeInfoPreview'
+import BadgeTypeMetadata from '@/src/pagePartials/badge/BadgeTypeMetadata'
 import { Badge } from '@/types/generated/subgraph'
 import { NextPageWithLayout } from '@/types/next'
 
@@ -101,7 +100,7 @@ const ViewListOfBadgesByType: NextPageWithLayout = () => {
       <SafeSuspense>
         <Box display="flex" justifyContent="space-between">
           <Typography color={colors.blue} mb={4} variant="dAppHeadline2">
-            {t('explorer.preview.title')}
+            {t('explorer.minted.subtitle')}
           </Typography>
           <Box>
             <IconButton onClick={selectPreviousBadgeType}>
@@ -112,7 +111,7 @@ const ViewListOfBadgesByType: NextPageWithLayout = () => {
             </IconButton>
           </Box>
         </Box>
-        <BadgeInfoPreview badgeType={badges[selectedBadge]} />
+        <Box>TODO</Box>
       </SafeSuspense>
     )
   }
@@ -124,7 +123,9 @@ const ViewListOfBadgesByType: NextPageWithLayout = () => {
         loadingColor={'blue'}
         preview={renderSelectedBadgePreview()}
         search={search}
-        title={t('explorer.title')}
+        title={t('explorer.minted.title', {
+          badgeTypeName: badges[selectedBadge]?.badgeType?.id,
+        })}
       >
         {badges.length > 0 ? (
           badges.map((bt, i) => {
@@ -132,16 +133,14 @@ const ViewListOfBadgesByType: NextPageWithLayout = () => {
             return (
               <SafeSuspense fallback={<MiniBadgePreviewLoading />} key={bt.id}>
                 <MiniBadgePreviewContainer
-                  highlightColor={colors.blue}
+                  highlightColor={colors.purple}
                   onClick={() => setSelectedBadge(i)}
                   ref={badgeTypesElementRefs[i]}
                   selected={isSelected}
                 >
-                  <MiniBadgeTypeMetadata
-                    buttonTitle={t('explorer.button')}
-                    disableAnimations
-                    highlightColor={colors.blue}
-                    metadata={bt.metadataURL}
+                  <BadgeTypeMetadata
+                    metadata={badges[selectedBadge].badgeType.metadataURL}
+                    size="small"
                   />
                 </MiniBadgePreviewContainer>
               </SafeSuspense>

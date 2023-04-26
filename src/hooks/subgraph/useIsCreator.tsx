@@ -7,7 +7,7 @@ export default function useIsCreator(address?: string) {
   const gql = useSubgraph()
   const { address: connectedAddress } = useWeb3Connection()
   return useSWR(
-    address || connectedAddress ? `user:${address || connectedAddress}` : null,
+    address || connectedAddress ? `isCreator:${address || connectedAddress}` : null,
     async (_userAddress: string) => {
       const userById = await gql.userById({ id: address || connectedAddress || '' })
       return !!userById.user?.isCreator

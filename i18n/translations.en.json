@@ -61,11 +61,16 @@
         "description": "Description",
         "mintCost": "Mint cost:",
         "totalMinted": "Total minted amount:",
-        "mint": "Mint"
+        "mint": "Mint",
+        "showOthers": "See minted badges"
       },
       "creator": {
         "createdBy": "Crated By"
       }
+    },
+    "minted": {
+      "title": "Minted badges - {{badgeTypeName}}",
+      "subtitle": "Badge Info"
     }
   },
   "curateExplorer": {
