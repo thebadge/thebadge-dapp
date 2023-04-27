@@ -29,6 +29,7 @@ import CurationCriteriaLink from '@/src/pagePartials/badge/curate/CurationCriter
 import { RequiredConnection } from '@/src/pagePartials/errors/requiredConnection'
 import { useCurateProvider } from '@/src/providers/curateProvider'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+import { getEvidenceValue } from '@/src/utils/kleros/getEvidenceValue'
 
 // Import Swiper styles
 import 'swiper/css'
@@ -209,7 +210,12 @@ function CurateModalContent({
                 >
                   <DisplayEvidenceField
                     columnItem={column}
-                    value={badgeEvidence.values[column.label]}
+                    value={getEvidenceValue(
+                      badgeEvidence?.values,
+                      badgeEvidence?.columns,
+                      column.label,
+                      column.type,
+                    )}
                   />
                 </Box>
               </SwiperSlide>

@@ -71,6 +71,13 @@
     "minted": {
       "title": "Minted badges - {{badgeTypeName}}",
       "subtitle": "Badge Info"
+    },
+    "curate": {
+      "title": "Badge Evidence",
+      "challenge": "Challenge",
+      "requester": "Requester address: ",
+      "viewEvidence": "View raw evidence",
+      "listingCriteria": "Listing Criteria"
     }
   },
   "curateExplorer": {
