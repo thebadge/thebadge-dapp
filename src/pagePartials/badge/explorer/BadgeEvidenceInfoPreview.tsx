@@ -6,7 +6,9 @@ import { ButtonV2, colors } from 'thebadge-ui-library'
 
 import DisplayEvidenceField from '@/src/components/displayEvidence/DisplayEvidenceField'
 import { Address } from '@/src/components/helpers/Address'
+import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
+import { ListingCriteriaPreview } from '@/src/pagePartials/badge/explorer/ListingCriteriaPreview'
 import { useCurateProvider } from '@/src/providers/curateProvider'
 import { getEvidenceValue } from '@/src/utils/kleros/getEvidenceValue'
 import { Badge } from '@/types/generated/subgraph'
@@ -63,6 +65,9 @@ export default function BadgeEvidenceInfoPreview({ badge }: { badge: Badge }) {
         <Typography fontSize={14} variant="body3">
           {t('explorer.curate.listingCriteria')}
         </Typography>
+        <SafeSuspense>
+          <ListingCriteriaPreview badgeTypeId={badge?.badgeType.id} />
+        </SafeSuspense>
         <Divider color={colors.white} />
       </Stack>
 

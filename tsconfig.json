@@ -13,6 +13,9 @@
     "skipLibCheck": true,
     "strict": true,
     "paths": {
+      "@/pdf-worker": [
+        "./pdf-worker.js"
+      ],
       "@/*": [
         "*"
       ]

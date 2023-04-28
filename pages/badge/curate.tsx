@@ -114,7 +114,7 @@ const CurateBadges: NextPageWithLayout = () => {
   function renderSelectedBadgePreview() {
     if (!badges[selectedBadge]) return null
     return (
-      <SafeSuspense>
+      <>
         <Box display="flex" justifyContent="space-between">
           <Typography color={colors.green} mb={4} variant="dAppHeadline2">
             {t('explorer.curate.title')}
@@ -128,8 +128,10 @@ const CurateBadges: NextPageWithLayout = () => {
             </IconButton>
           </Box>
         </Box>
-        <BadgeEvidenceInfoPreview badge={badges[selectedBadge]} />
-      </SafeSuspense>
+        <SafeSuspense>
+          <BadgeEvidenceInfoPreview badge={badges[selectedBadge]} />
+        </SafeSuspense>
+      </>
     )
   }
 
