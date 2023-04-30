@@ -9,3 +9,13 @@ export type Creator = {
   twitter?: string
   logo?: BackendFileResponse
 }
+
+export type CreatorMetadata = {
+  name: string
+  description: string
+  email: string
+  logo?: BackendFileResponse
+  discord?: string
+  twitter?: string
+  terms: boolean
+}

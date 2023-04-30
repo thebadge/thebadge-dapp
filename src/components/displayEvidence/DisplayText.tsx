@@ -25,11 +25,11 @@ export function DisplayText({ label, placeholder, value }: DisplayTextProps) {
     <Wrapper>
       <StyledTextField
         InputProps={{
-          endAdornment: (
+          endAdornment: placeholder ? (
             <Tooltip arrow title={placeholder}>
               <InfoOutlinedIcon />
             </Tooltip>
-          ),
+          ) : undefined,
         }}
         color="secondary"
         contentEditable={false}
