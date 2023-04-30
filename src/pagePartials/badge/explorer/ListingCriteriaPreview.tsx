@@ -1,11 +1,11 @@
-import dynamic from 'next/dynamic'
 import React, { useEffect, useState } from 'react'
 
+import OpenInNewOutlinedIcon from '@mui/icons-material/OpenInNewOutlined'
+import { Box, IconButton } from '@mui/material'
+
+import PDFViewer from '@/src/components/common/PDFViewer'
 import useBadgeType from '@/src/hooks/subgraph/useBadgeType'
 
-const PDFViewer = dynamic(() => import('@/src/components/common/PDFViewer'), {
-  ssr: false,
-})
 export function ListingCriteriaPreview({ badgeTypeId }: { badgeTypeId: string }) {
   const [badgeCriteriaUrl, setBadgeCriteriaUrl] = useState<string | undefined>(undefined)
 
@@ -26,5 +26,14 @@ export function ListingCriteriaPreview({ badgeTypeId }: { badgeTypeId: string })
     if (badgeCriteriaUrl) setBadgeCriteriaUrl(badgeCriteriaUrl)
   }, [badgeTypeMetadata])
 
-  return <PDFViewer url={badgeCriteriaUrl} />
+  return (
+    <>
+      <Box sx={{ position: 'absolute', right: 0, top: -8 }}>
+        <IconButton onClick={() => window.open(`${badgeCriteriaUrl}`, '_ blank')}>
+          <OpenInNewOutlinedIcon />
+        </IconButton>
+      </Box>
+      <PDFViewer url={badgeCriteriaUrl} />
+    </>
+  )
 }

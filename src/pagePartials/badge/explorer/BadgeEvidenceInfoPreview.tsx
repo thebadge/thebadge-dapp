@@ -61,7 +61,7 @@ export default function BadgeEvidenceInfoPreview({ badge }: { badge: Badge }) {
       </Stack>
 
       {/* Listing Criteria info */}
-      <Stack gap={1}>
+      <Stack gap={1} position="relative">
         <Typography fontSize={14} variant="body3">
           {t('explorer.curate.listingCriteria')}
         </Typography>
