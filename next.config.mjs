@@ -25,7 +25,7 @@ const withMDX = mdx({
 
 export default withMDX(withBundleAnalyzerWrapper(
   defineNextConfig({
-    reactStrictMode: true,
+    reactStrictMode: false,
     swcMinify: false,
     typescript: {
       // !! WARN !!

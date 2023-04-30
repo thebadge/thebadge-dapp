@@ -1,7 +1,6 @@
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 
-import { Typography } from '@mui/material'
 import { ethers } from 'ethers'
 import { z } from 'zod'
 
@@ -28,7 +27,7 @@ export const RegisterCuratorSchema = z
   .merge(RegisterCuratorSchemaStep3)
 
 const Register: NextPageWithLayout = () => {
-  const { address, appChainId, isWalletConnected } = useWeb3Connection()
+  const { address } = useWeb3Connection()
   const router = useRouter()
   const { sendTx, state } = useTransaction()
 
@@ -71,10 +70,6 @@ const Register: NextPageWithLayout = () => {
     } catch (e) {
       // Do nothing
     }
-  }
-
-  if (!isWalletConnected) {
-    return <Typography>Please connect your wallet to continue</Typography>
   }
 
   return (
