@@ -3,10 +3,8 @@ import { ReactNode } from 'react'
 import { Box, Typography } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
 
-import { Choose } from './svg/choose'
-import { Complete } from './svg/complete'
-import { Evidence } from './svg/evidence'
 import { DOCS_URL } from '@/src/constants/common'
+import BadgeRender from '@/src/pagePartials/home/BadgeRender'
 
 export default function CertificationProcess() {
   const { t } = useTranslation()
@@ -28,10 +26,9 @@ export default function CertificationProcess() {
   }
   return (
     <div>
-      <Box display={'flex'} flexDirection={'row'} gap={8} justifyContent={'center'} mb={4}>
-        {processStep(<Choose />, t('home.certificationProcess.step1'))}
-        {processStep(<Evidence />, t('home.certificationProcess.step2'))}
-        {processStep(<Complete />, t('home.certificationProcess.step3'))}
+      <Box display="flex" flex="1">
+        <Box display={'flex'} flexDirection={'row'} gap={8} justifyContent={'center'} mb={4}></Box>
+        <BadgeRender />
       </Box>
 
       <Typography
