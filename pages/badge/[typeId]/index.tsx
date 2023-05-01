@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import React, { RefObject, createRef, useEffect, useState } from 'react'
+import React, { RefObject, Suspense, createRef, useEffect, useState } from 'react'
 
 import ArrowBackIosOutlinedIcon from '@mui/icons-material/ArrowBackIosOutlined'
 import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined'
@@ -17,6 +17,7 @@ import SafeSuspense, { withPageGenericSuspense } from '@/src/components/helpers/
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import { useKeyPress } from '@/src/hooks/useKeypress'
 import BadgeTypeMetadata from '@/src/pagePartials/badge/BadgeTypeMetadata'
+import BadgeEvidenceInfoPreview from '@/src/pagePartials/badge/explorer/BadgeEvidenceInfoPreview'
 import { Badge } from '@/types/generated/subgraph'
 import { NextPageWithLayout } from '@/types/next'
 
@@ -111,7 +112,9 @@ const ViewListOfBadgesByType: NextPageWithLayout = () => {
             </IconButton>
           </Box>
         </Box>
-        <Box>TODO</Box>
+        <Suspense>
+          <BadgeEvidenceInfoPreview badge={badges[selectedBadge]} />
+        </Suspense>
       </SafeSuspense>
     )
   }
