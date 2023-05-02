@@ -13,6 +13,7 @@ import RegistrationSteps, {
   RegisterCuratorSchemaStep2,
   RegisterCuratorSchemaStep3,
 } from '@/src/pagePartials/creator/register/RegistrationSteps'
+import { PreventActionIfRegisterPaused } from '@/src/pagePartials/errors/preventActionIfPaused'
 import { RequiredConnection } from '@/src/pagePartials/errors/requiredConnection'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import ipfsUpload from '@/src/utils/ipfsUpload'
@@ -46,7 +47,7 @@ const Register: NextPageWithLayout = () => {
   })
 
   if (userProfile.data?.user?.isCreator) {
-    router.push('/profile?filter=createdBadges')
+    // router.push('/profile?filter=createdBadges')
   }
 
   async function onSubmit(data: z.infer<typeof RegisterCuratorSchema>) {
@@ -73,9 +74,11 @@ const Register: NextPageWithLayout = () => {
   }
 
   return (
-    <RequiredConnection>
-      <RegistrationSteps onSubmit={onSubmit} txState={state} />
-    </RequiredConnection>
+    <PreventActionIfRegisterPaused>
+      <RequiredConnection>
+        <RegistrationSteps onSubmit={onSubmit} txState={state} />
+      </RequiredConnection>
+    </PreventActionIfRegisterPaused>
   )
 }
 
