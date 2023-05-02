@@ -7,6 +7,7 @@ import { ButtonV2, colors } from 'thebadge-ui-library'
 
 import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import BadgeOwnedPreview from '@/src/pagePartials/badge/preview/BadgeOwnedPreview'
+import BadgeOwnerPreview from '@/src/pagePartials/badge/preview/BadgeOwnerPreview'
 import { useCurateProvider } from '@/src/providers/curateProvider'
 import { useColorMode } from '@/src/providers/themeProvider'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
@@ -31,7 +32,7 @@ const ViewBadge: NextPageWithLayout = () => {
     <Box sx={{ position: 'relative' }}>
       <Stack maxWidth={900} mx={'auto'}>
         <BadgeOwnedPreview />
-        <Box display="flex" justifyContent="space-evenly" maxWidth={300}>
+        <Box display="flex" id="btns" justifyContent="space-evenly" maxWidth={300}>
           <Tooltip arrow title={address === ownerAddress ? 'You already own this badge.' : ''}>
             <ButtonV2
               backgroundColor={colors.transparent}
@@ -70,6 +71,7 @@ const ViewBadge: NextPageWithLayout = () => {
           >
             {t('badge.curateButton')}
           </ButtonV2>
+          <BadgeOwnerPreview />
         </Box>
         {/*
         // TODO Enable it when we have the required data to show
