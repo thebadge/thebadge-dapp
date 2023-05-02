@@ -207,6 +207,11 @@
         "amount": "Amount",
         "userAddress": "User address:",
         "file": "File:"
+      },
+      "owner": {
+        "address" : "OWNER ADDRESS:",
+        "profile": "VISIT PROFILE",
+        "verified": "Verified user"
       }
     },
     "challenge": {

@@ -32,13 +32,38 @@ const ViewBadge: NextPageWithLayout = () => {
     <Box sx={{ position: 'relative' }}>
       <Stack maxWidth={900} mx={'auto'}>
         <BadgeOwnedPreview />
-        <Box display="flex" id="btns" justifyContent="space-evenly" maxWidth={300}>
-          <Tooltip arrow title={address === ownerAddress ? 'You already own this badge.' : ''}>
+        <Box display="flex" gap={8}>
+          <Box
+            alignItems="center"
+            display="flex"
+            flex="1"
+            justifyContent="space-evenly"
+            maxWidth={300}
+          >
+            <Tooltip arrow title={address === ownerAddress ? 'You already own this badge.' : ''}>
+              <ButtonV2
+                backgroundColor={colors.transparent}
+                disabled={address === ownerAddress}
+                fontColor={mode === 'light' ? colors.blackText : colors.white}
+                onClick={() => router.push(`/badge/mint/${typeId}`)}
+                sx={{
+                  borderRadius: '10px',
+                  fontSize: '11px !important',
+                  padding: '0.5rem 1rem !important',
+                  height: 'fit-content !important',
+                  lineHeight: '14px',
+                  fontWeight: 700,
+                  boxShadow: 'none',
+                  textTransform: 'uppercase',
+                }}
+              >
+                {t('badge.mintButton')}
+              </ButtonV2>
+            </Tooltip>
             <ButtonV2
-              backgroundColor={colors.transparent}
-              disabled={address === ownerAddress}
-              fontColor={mode === 'light' ? colors.blackText : colors.white}
-              onClick={() => router.push(`/badge/mint/${typeId}`)}
+              backgroundColor={colors.greenLogo}
+              fontColor={colors.blackText}
+              onClick={() => curate(typeId, ownerAddress)}
               sx={{
                 borderRadius: '10px',
                 fontSize: '11px !important',
@@ -49,28 +74,11 @@ const ViewBadge: NextPageWithLayout = () => {
                 boxShadow: 'none',
                 textTransform: 'uppercase',
               }}
+              variant="contained"
             >
-              {t('badge.mintButton')}
+              {t('badge.curateButton')}
             </ButtonV2>
-          </Tooltip>
-          <ButtonV2
-            backgroundColor={colors.greenLogo}
-            fontColor={colors.blackText}
-            onClick={() => curate(typeId, ownerAddress)}
-            sx={{
-              borderRadius: '10px',
-              fontSize: '11px !important',
-              padding: '0.5rem 1rem !important',
-              height: 'fit-content !important',
-              lineHeight: '14px',
-              fontWeight: 700,
-              boxShadow: 'none',
-              textTransform: 'uppercase',
-            }}
-            variant="contained"
-          >
-            {t('badge.curateButton')}
-          </ButtonV2>
+          </Box>
           <BadgeOwnerPreview />
         </Box>
         {/*
