@@ -38,6 +38,7 @@ export const PreventActionIfBadgeTypePaused: React.FC<Props> = ({ children, minH
 }
 
 export const PreventActionIfRegisterPaused: React.FC<Props> = ({ children, minHeight }) => {
+  // TODO, Need to check with Nico where is this flag, maybe is coming with the next SC update
   const isRegisterPaused = false
   if (isRegisterPaused) {
     return (
