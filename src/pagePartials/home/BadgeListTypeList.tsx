@@ -2,12 +2,17 @@ import { useRouter } from 'next/navigation'
 import { useMemo } from 'react'
 
 import { Box } from '@mui/material'
-import { ResizedBadgePreviewsList } from 'thebadge-ui-library'
+import { EffectCoverflow, Pagination } from 'swiper'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
+import TBSwiper from '@/src/components/helpers/TBSwiper'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import BadgeTypeMetadata from '@/src/pagePartials/badge/BadgeTypeMetadata'
-import { badgesExampleList } from '@/src/pagePartials/home/SectionBoxes'
+
+import 'swiper/css'
+import 'swiper/css/effect-coverflow'
+import 'swiper/css/navigation'
+import 'swiper/css/pagination'
 
 export default function BadgeListTypeList() {
   const gql = useSubgraph()
@@ -15,7 +20,7 @@ export default function BadgeListTypeList() {
   const router = useRouter()
 
   const badgesList = useMemo(() => {
-    const badges = badgeTypes.data?.badgeTypes.map((badgeType) => {
+    const badges = badgeTypes.data?.badgeTypes?.map((badgeType) => {
       return (
         <Box
           key={badgeType.id}
@@ -28,15 +33,30 @@ export default function BadgeListTypeList() {
         </Box>
       )
     })
-    // TODO Remove badgesExampleList when we have more volumen to complete the list
-    if (!badges) return badgesExampleList
-    if (badges.length >= 5) {
-      return badges
-    }
-    return [...badges, ...badgesExampleList].slice(0, 5)
+    return badges || []
   }, [badgeTypes.data?.badgeTypes, router])
 
   return (
-    <ResizedBadgePreviewsList badges={badgesList} sx={{ padding: 0, scale: '0.9 !important' }} />
+    <TBSwiper
+      centeredSlides={true}
+      coverflowEffect={{
+        rotate: 0,
+        stretch: 0,
+        depth: 100,
+        modifier: 1,
+        scale: 1,
+        slideShadows: false,
+      }}
+      effect={'coverflow'}
+      grabCursor={true}
+      items={badgesList}
+      maxSlidesPerView={4}
+      modules={[EffectCoverflow, Pagination]}
+      noArrows
+      pagination={{ type: 'bullets', clickable: true }}
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      style={{ padding: '0 0 56px 35px', '--swiper-pagination-bullet-inactive-color': '#ffffff' }}
+    />
   )
 }
