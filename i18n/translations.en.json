@@ -65,7 +65,7 @@
         "showOthers": "See minted badges"
       },
       "creator": {
-        "createdBy": "Created By"
+        "createdBy": "Crated By"
       }
     },
     "minted": {
@@ -207,6 +207,11 @@
         "amount": "Amount",
         "userAddress": "User address:",
         "file": "File:"
+      },
+      "owner": {
+        "address" : "OWNER ADDRESS:",
+        "profile": "VISIT PROFILE",
+        "verified": "Verified user"
       }
     },
     "challenge": {
