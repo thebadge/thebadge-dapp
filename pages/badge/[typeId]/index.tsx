@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import React, { RefObject, Suspense, createRef, useEffect, useState } from 'react'
+import React, { RefObject, Suspense, createRef, useCallback, useEffect, useState } from 'react'
 
 import ArrowBackIosOutlinedIcon from '@mui/icons-material/ArrowBackIosOutlined'
 import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined'
@@ -31,9 +31,6 @@ const ViewListOfBadgesByType: NextPageWithLayout = () => {
   const [loading, setLoading] = useState<boolean>(false)
   const [selectedBadge, setSelectedBadge] = useState<number>(0)
 
-  const leftPress = useKeyPress('ArrowLeft')
-  const rightPress = useKeyPress('ArrowRight')
-
   const badgeTypesElementRefs: RefObject<HTMLLIElement>[] = badges.map(() =>
     createRef<HTMLLIElement>(),
   )
@@ -50,19 +47,24 @@ const ViewListOfBadgesByType: NextPageWithLayout = () => {
     }
   }, [badgeTypesElementRefs, selectedBadge])
 
-  useEffect(() => {
-    if (badges.length && rightPress) {
-      selectNextBadgeType()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [rightPress])
+  const selectPreviousBadgeType = useCallback(() => {
+    if (!badges.length) return
+    setSelectedBadge((prevIndex) => {
+      if (prevIndex === 0) return badges.length - 1
+      return prevIndex - 1
+    })
+  }, [badges.length])
 
-  useEffect(() => {
-    if (badges.length && leftPress) {
-      selectPreviousBadgeType()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [leftPress])
+  const selectNextBadgeType = useCallback(() => {
+    if (!badges.length) return
+    setSelectedBadge((prevIndex) => {
+      if (prevIndex === badges.length - 1) return 0
+      return prevIndex + 1
+    })
+  }, [badges.length])
+
+  useKeyPress('ArrowLeft', selectPreviousBadgeType)
+  useKeyPress('ArrowRight', selectNextBadgeType)
 
   const search = async (
     selectedFilters: Array<ListFilter>,
@@ -80,19 +82,6 @@ const ViewListOfBadgesByType: NextPageWithLayout = () => {
       setBadges(badges)
       setSelectedBadge(0)
     }, 2000)
-  }
-
-  function selectPreviousBadgeType() {
-    setSelectedBadge((prevIndex) => {
-      if (prevIndex === 0) return badges.length - 1
-      return prevIndex - 1
-    })
-  }
-  function selectNextBadgeType() {
-    setSelectedBadge((prevIndex) => {
-      if (prevIndex === badges.length - 1) return 0
-      return prevIndex + 1
-    })
   }
 
   function renderSelectedBadgePreview() {
