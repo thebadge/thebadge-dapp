@@ -2,18 +2,12 @@ import { useRouter } from 'next/navigation'
 import { useMemo } from 'react'
 
 import { Box } from '@mui/material'
-import { A11y, Navigation } from 'swiper'
-import { Swiper, SwiperSlide } from 'swiper/react'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
+import TBSwiper from '@/src/components/helpers/TBSwiper'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import BadgeTypeMetadata from '@/src/pagePartials/badge/BadgeTypeMetadata'
 import { badgesExampleList } from '@/src/pagePartials/home/SectionBoxes'
-
-// Import Swiper styles
-import 'swiper/css'
-import 'swiper/css/navigation'
-import 'swiper/css/pagination'
 
 const now = Math.floor(Date.now() / 1000)
 export default function PendingList() {
@@ -47,26 +41,12 @@ export default function PendingList() {
   }, [badgesInReview.data?.badges, router])
 
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', py: 2 }}>
-      <Swiper
-        modules={[Navigation, A11y]}
-        navigation={{
-          nextEl: '.badges-swiper-pending-button-next',
-          prevEl: '.badges-swiper-pending-button-prev',
-        }}
-        pagination={{ clickable: true }}
-        slidesPerView={2}
-        spaceBetween={8}
-      >
-        {badgesList.map((badge, index) => (
-          <SwiperSlide
-            key={'swiper-badge-' + index}
-            style={{ display: 'flex', justifyContent: 'center' }}
-          >
-            <Box sx={{ scale: '0.75' }}>{badge}</Box>
-          </SwiperSlide>
-        ))}
-      </Swiper>
-    </Box>
+    <TBSwiper
+      items={badgesList}
+      itemsScale={'0.7'}
+      leftPadding={'0'}
+      maxSlidesPerView={2}
+      spaceBetween={8}
+    />
   )
 }

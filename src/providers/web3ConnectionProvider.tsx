@@ -157,8 +157,9 @@ export default function Web3ConnectionProvider({ children }: Props) {
 
   // Set user address when connect wallet
   useEffect(() => {
-    if (wallet) {
-      setAddress(wallet.accounts[0].address)
+    const address = wallet?.accounts[0]?.address
+    if (wallet && address) {
+      setAddress(address)
     } else {
       setAddress(null)
     }
@@ -199,16 +200,16 @@ export default function Web3ConnectionProvider({ children }: Props) {
   }
 
   // Icon version is a canvas of 10 x 3.2 = 32px to display it entirely
-  const blockiesIcon = address ? <Blockies scale={3.2} seed={address} size={10} /> : null
+  const blockiesIcon = <Blockies scale={3.2} seed={address || 'default'} size={10} />
   // Avatar version is a canvas of 10 x 10 = 100px to display it entirely
-  const blockiesAvatar = address ? (
-    <Blockies className="blockies-avatar" scale={10} seed={address} size={10} />
-  ) : null
+  const blockiesAvatar = (
+    <Blockies className="blockies-avatar" scale={10} seed={address || 'default'} size={10} />
+  )
 
   const value = {
     address: address ? address.toLowerCase() : null,
     appChainId,
-    balance: wallet?.accounts[0].balance,
+    balance: wallet?.accounts[0]?.balance,
     connectWallet: handleConnectWallet,
     connectedChain,
     connectingWallet,

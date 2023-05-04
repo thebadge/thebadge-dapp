@@ -45,7 +45,7 @@ export default function ClaimBadges() {
         </ButtonV2>
       </SectionTitleBox>
       <Divider color={'#BDBDBD'} />
-      <Box sx={{ mt: 3 }}>
+      <Box sx={{ mt: 3, mb: -2 }}>
         <SafeSuspense>
           <BadgeListTypeList />
         </SafeSuspense>
