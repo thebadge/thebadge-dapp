@@ -43,7 +43,7 @@ export default function CertificationProcess() {
         href={`${DOCS_URL}/thebadge-documentation/overview/how-it-works`}
         justifyContent={'center'}
         lineHeight={'15px'}
-        mb={10}
+        mb={8}
         sx={{
           cursor: 'pointer',
         }}

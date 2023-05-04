@@ -26,15 +26,16 @@ export const RequiredCreatorAccess: React.FC<RequiredConnectionProps> = ({
   minHeight,
   ...restProps
 }) => {
-  const isCreator = useIsCreator()
-
-  if (!isCreator.data) {
-    return (
-      <Wrapper style={{ minHeight }} {...restProps}>
-        <NotACreatorError />
-      </Wrapper>
-    )
-  }
-
-  return <SafeSuspense>{children}</SafeSuspense>
+  const { data: isCreator } = useIsCreator()
+  return (
+    <>
+      {isCreator ? (
+        <SafeSuspense>{children}</SafeSuspense>
+      ) : (
+        <Wrapper style={{ minHeight }} {...restProps}>
+          <NotACreatorError />
+        </Wrapper>
+      )}
+    </>
+  )
 }

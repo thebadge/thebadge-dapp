@@ -1,33 +1,16 @@
 import { useRouter } from 'next/navigation'
 import { useMemo } from 'react'
 
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
-import { Box, keyframes, useTheme } from '@mui/material'
-import { A11y, Navigation } from 'swiper'
-import { Swiper, SwiperSlide } from 'swiper/react'
+import { Box } from '@mui/material'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
+import TBSwiper from '@/src/components/helpers/TBSwiper'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import BadgeTypeMetadata from '@/src/pagePartials/badge/BadgeTypeMetadata'
 import { badgesExampleList } from '@/src/pagePartials/home/SectionBoxes'
-// Import Swiper styles
-import 'swiper/css'
-import 'swiper/css/navigation'
-import 'swiper/css/pagination'
-
-const growEffect = keyframes`
-  0% {
-    transform: scale(0.85);
-  }
-  100% {
-    transform: scale(1);
-  }
-`
 
 const now = Math.floor(Date.now() / 1000)
 export default function NearToExpireList() {
-  const theme = useTheme()
   const router = useRouter()
   const gql = useSubgraph()
 
@@ -58,44 +41,12 @@ export default function NearToExpireList() {
   }, [badgesInReview.data?.badges, router])
 
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', py: 2 }}>
-      <ArrowBackIosIcon
-        className={'badges-swiper-expire-button-prev'}
-        sx={{
-          mr: '1rem',
-          height: '35px',
-          width: '35px',
-          animation: `${growEffect} 1s infinite alternate ${theme.transitions.easing.easeInOut}`,
-        }}
-      />
-      <Swiper
-        modules={[Navigation, A11y]}
-        navigation={{
-          nextEl: '.badges-swiper-expire-button-next',
-          prevEl: '.badges-swiper-expire-button-prev',
-        }}
-        pagination={{ clickable: true }}
-        slidesPerView={3}
-        spaceBetween={8}
-      >
-        {badgesList.map((badge, index) => (
-          <SwiperSlide
-            key={'swiper-badge-' + index}
-            style={{ display: 'flex', justifyContent: 'center' }}
-          >
-            <Box sx={{ scale: '0.75' }}>{badge}</Box>
-          </SwiperSlide>
-        ))}
-      </Swiper>
-      <ArrowForwardIosIcon
-        className={'badges-swiper-expire-button-next'}
-        sx={{
-          ml: '1rem',
-          height: '35px',
-          width: '35px',
-          animation: `${growEffect} 1s infinite alternate ${theme.transitions.easing.easeInOut}`,
-        }}
-      />
-    </Box>
+    <TBSwiper
+      items={badgesList}
+      itemsScale={'0.7'}
+      leftPadding={'0'}
+      maxSlidesPerView={3}
+      spaceBetween={8}
+    />
   )
 }
