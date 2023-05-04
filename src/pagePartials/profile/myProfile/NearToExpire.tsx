@@ -8,9 +8,9 @@ import NearToExpireList from '@/src/pagePartials/profile/myProfile/NearToExpireL
 
 export default function NearToExpire() {
   return (
-    <Box sx={{ width: '100%', px: 4, py: 2 }}>
+    <Box sx={{ width: '100%', px: 2, py: 1, mr: 1 }}>
       <SectionTitleBox>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, my: 2 }}>
           <HistoryOutlinedIcon color="purple" />
           <Typography
             color={colors.purple}

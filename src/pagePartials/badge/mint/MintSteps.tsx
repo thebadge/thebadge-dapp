@@ -171,6 +171,7 @@ export default function MintSteps({ costs, evidenceSchema, onSubmit, txState }: 
             help: {
               agreementText: t('badge.type.mint.help-steps', {
                 badgeCreatorName: badgeCreatorMetadata.data?.content?.name,
+                badgeCreatorProfileLink: '/profile/' + badgeTypeData.data?.badgeType?.creator.id,
                 curationDocsUrl:
                   DOCS_URL + '/thebadge-documentation/overview/how-it-works/challenge',
                 curationCriteriaUrl: badgeCriteria,
