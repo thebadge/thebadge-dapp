@@ -123,12 +123,15 @@ function CurateModalContent({
           },
         }}
       >
-        <DisplayEvidenceField columnItem={column} value={getEvidenceValue(
-          badgeEvidence?.values,
-          badgeEvidence?.columns,
-          column.label,
-          column.type,
-        )} />
+        <DisplayEvidenceField
+          columnItem={column}
+          value={getEvidenceValue(
+            badgeEvidence?.values,
+            badgeEvidence?.columns,
+            column.label,
+            column.type,
+          )}
+        />
       </Box>
     )) || []
 
