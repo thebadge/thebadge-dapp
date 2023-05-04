@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import React, { RefObject, createRef, useEffect, useState } from 'react'
+import React, { RefObject, Suspense, createRef, useCallback, useEffect, useState } from 'react'
 
 import ArrowBackIosOutlinedIcon from '@mui/icons-material/ArrowBackIosOutlined'
 import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined'
@@ -17,6 +17,7 @@ import SafeSuspense, { withPageGenericSuspense } from '@/src/components/helpers/
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import { useKeyPress } from '@/src/hooks/useKeypress'
 import BadgeTypeMetadata from '@/src/pagePartials/badge/BadgeTypeMetadata'
+import BadgeEvidenceInfoPreview from '@/src/pagePartials/badge/explorer/BadgeEvidenceInfoPreview'
 import { Badge } from '@/types/generated/subgraph'
 import { NextPageWithLayout } from '@/types/next'
 
@@ -29,9 +30,6 @@ const ViewListOfBadgesByType: NextPageWithLayout = () => {
   const [badges, setBadges] = useState<Badge[]>([])
   const [loading, setLoading] = useState<boolean>(false)
   const [selectedBadge, setSelectedBadge] = useState<number>(0)
-
-  const leftPress = useKeyPress('ArrowLeft')
-  const rightPress = useKeyPress('ArrowRight')
 
   const badgeTypesElementRefs: RefObject<HTMLLIElement>[] = badges.map(() =>
     createRef<HTMLLIElement>(),
@@ -49,19 +47,32 @@ const ViewListOfBadgesByType: NextPageWithLayout = () => {
     }
   }, [badgeTypesElementRefs, selectedBadge])
 
-  useEffect(() => {
-    if (badges.length && rightPress) {
-      selectNextBadgeType()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [rightPress])
+  const selectPreviousBadgeType = useCallback(() => {
+    if (!badges.length) return
+    setSelectedBadge((prevIndex) => {
+      if (prevIndex === 0) return badges.length - 1
+      return prevIndex - 1
+    })
+  }, [badges.length])
+
+  const selectNextBadgeType = useCallback(() => {
+    if (!badges.length) return
+    setSelectedBadge((prevIndex) => {
+      if (prevIndex === badges.length - 1) return 0
+      return prevIndex + 1
+    })
+  }, [badges.length])
+
+  const leftPress = useKeyPress('ArrowLeft')
+  const rightPress = useKeyPress('ArrowRight')
 
   useEffect(() => {
-    if (badges.length && leftPress) {
-      selectPreviousBadgeType()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [leftPress])
+    if (leftPress) selectPreviousBadgeType()
+  }, [leftPress, selectPreviousBadgeType])
+
+  useEffect(() => {
+    if (rightPress) selectNextBadgeType()
+  }, [rightPress, selectNextBadgeType])
 
   const search = async (
     selectedFilters: Array<ListFilter>,
@@ -81,19 +92,6 @@ const ViewListOfBadgesByType: NextPageWithLayout = () => {
     }, 2000)
   }
 
-  function selectPreviousBadgeType() {
-    setSelectedBadge((prevIndex) => {
-      if (prevIndex === 0) return badges.length - 1
-      return prevIndex - 1
-    })
-  }
-  function selectNextBadgeType() {
-    setSelectedBadge((prevIndex) => {
-      if (prevIndex === badges.length - 1) return 0
-      return prevIndex + 1
-    })
-  }
-
   function renderSelectedBadgePreview() {
     if (!badges[selectedBadge]) return null
     return (
@@ -111,7 +109,9 @@ const ViewListOfBadgesByType: NextPageWithLayout = () => {
             </IconButton>
           </Box>
         </Box>
-        <Box>TODO</Box>
+        <Suspense>
+          <BadgeEvidenceInfoPreview badge={badges[selectedBadge]} />
+        </Suspense>
       </SafeSuspense>
     )
   }

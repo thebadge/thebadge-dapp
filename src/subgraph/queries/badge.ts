@@ -8,6 +8,14 @@ export const BADGES_IN_REVIEW = gql`
   }
 `
 
+export const BADGES_IN_REVIEW_SMALL_SET = gql`
+  query badgesInReviewSmallSet($date: BigInt!) {
+    badges(where: { reviewDueDate_gt: $date }) {
+      ...BadgeWithJustIds
+    }
+  }
+`
+
 export const MY_BADGES = gql`
   query myBadges($wallet: String!) {
     badges(where: { receiver: $wallet }) {

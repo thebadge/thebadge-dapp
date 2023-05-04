@@ -1,17 +1,15 @@
 import * as React from 'react'
 
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
-import { Box, TextField as MUITextField, Tooltip, styled } from '@mui/material'
+import { Box, Divider, Tooltip, Typography, styled } from '@mui/material'
+import { colors } from 'thebadge-ui-library'
 
-const Wrapper = styled(Box)(({ theme }) => ({
+import { FormField } from '@/src/components/form/helpers/FormField'
+
+const Wrapper = styled(Box)(() => ({
   display: 'flex',
   flexDirection: 'column',
   position: 'relative',
-  rowGap: theme.spacing(1),
-}))
-
-const StyledTextField = styled(MUITextField)(({ theme }) => ({
-  margin: theme.spacing(0),
 }))
 
 type DisplayTextProps = {
@@ -23,21 +21,30 @@ type DisplayTextProps = {
 export function DisplayText({ label, placeholder, value }: DisplayTextProps) {
   return (
     <Wrapper>
-      <StyledTextField
-        InputProps={{
-          endAdornment: placeholder ? (
-            <Tooltip arrow title={placeholder}>
-              <InfoOutlinedIcon />
-            </Tooltip>
-          ) : undefined,
-        }}
-        color="secondary"
-        contentEditable={false}
-        label={label}
-        sx={{ width: '100%', textTransform: 'capitalize' }}
-        value={value ? value : ''}
-        variant={'standard'}
+      <FormField
+        formControl={
+          <Typography
+            sx={{
+              alignItems: 'flex-end',
+              justifyContent: 'space-between',
+              overflowWrap: 'anywhere',
+              wordBreak: 'break-all',
+              width: '100%',
+              display: 'flex',
+            }}
+          >
+            {value ? value : 'Undefined value'}
+            {placeholder && (
+              <Tooltip arrow title={placeholder}>
+                <InfoOutlinedIcon sx={{ ml: 1 }} />
+              </Tooltip>
+            )}
+          </Typography>
+        }
+        label={<Typography>{label}</Typography>}
+        labelPosition={'top-left'}
       />
+      <Divider color={colors.white} sx={{ mt: -1 }} />
     </Wrapper>
   )
 }

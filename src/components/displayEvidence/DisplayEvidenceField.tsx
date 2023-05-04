@@ -29,6 +29,7 @@ export default function DisplayEvidenceField({
       )
     case KLEROS_LIST_TYPES.TEXT:
     case KLEROS_LIST_TYPES.NUMBER:
+    case KLEROS_LIST_TYPES.TWITTER_USER_ID:
       return (
         <DisplayText label={columnItem.label} placeholder={columnItem.description} value={value} />
       )

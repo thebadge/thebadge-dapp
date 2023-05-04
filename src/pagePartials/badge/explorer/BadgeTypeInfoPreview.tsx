@@ -19,6 +19,7 @@ export default function BadgeTypeInfoPreview({ badgeType }: { badgeType: BadgeTy
   const router = useRouter()
   const { appChainId } = useWeb3Connection()
   const networkConfig = getNetworkConfig(appChainId)
+
   const resBadgeTypeMetadata = useS3Metadata<{ content: BadgeTypeMetadata }>(
     badgeType.metadataURL || '',
   )

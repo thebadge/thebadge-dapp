@@ -1,17 +1,18 @@
 import * as React from 'react'
 
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
-import { Box, Tooltip, Typography, styled } from '@mui/material'
+import { Box, Divider, Tooltip, Typography, styled } from '@mui/material'
+import { colors } from 'thebadge-ui-library'
 
 import { FormField } from '@/src/components/form/helpers/FormField'
 import { Address } from '@/src/components/helpers/Address'
 
-const Wrapper = styled(Box)(({ theme }) => ({
+const Wrapper = styled(Box)(() => ({
   display: 'flex',
   flexDirection: 'column',
   position: 'relative',
-  rowGap: theme.spacing(1),
 }))
+
 type DisplayAddressProps = {
   label?: string
   placeholder?: string
@@ -22,19 +23,20 @@ export function DisplayAddress({ label, placeholder, value }: DisplayAddressProp
   return (
     <Wrapper>
       <FormField
-        formControl={<Address address={value} />}
-        label={
-          <Typography>
-            {label}
+        formControl={
+          <Box display="flex" justifyContent="space-between" width="100%">
+            <Address address={value} />
             {placeholder && (
               <Tooltip arrow title={placeholder}>
                 <InfoOutlinedIcon sx={{ ml: 1 }} />
               </Tooltip>
             )}
-          </Typography>
+          </Box>
         }
-        labelPosition={'top'}
+        label={<Typography>{label}</Typography>}
+        labelPosition={'top-left'}
       />
+      <Divider color={colors.white} sx={{ mt: -1 }} />
     </Wrapper>
   )
 }
