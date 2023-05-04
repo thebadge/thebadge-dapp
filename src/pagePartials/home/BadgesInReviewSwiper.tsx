@@ -5,9 +5,9 @@ import { Box } from '@mui/material'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import TBSwiper from '@/src/components/helpers/TBSwiper'
+import emptyBadges from '@/src/components/utils/emptyBadges'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import BadgeTypeMetadata from '@/src/pagePartials/badge/BadgeTypeMetadata'
-import { badgesExampleList } from '@/src/pagePartials/home/SectionBoxes'
 
 const now = Math.floor(Date.now() / 1000)
 export default function BadgesInReviewSwiper() {
@@ -32,12 +32,12 @@ export default function BadgesInReviewSwiper() {
         </Box>
       )
     })
-    // TODO Remove badgesExampleList when we have more volumen to complete the list
-    if (!badges) return badgesExampleList
+    // If there is no badges to show, we list 5 placeholders
+    if (!badges) return emptyBadges(5)
     if (badges.length >= 5) {
       return badges
     }
-    return [...badges, ...badgesExampleList]
+    return [...badges, ...emptyBadges(5 - badges.length)]
   }, [badgesInReview.data?.badges, router])
 
   return <TBSwiper items={badgesList} />
