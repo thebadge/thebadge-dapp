@@ -79,8 +79,16 @@ const CurateBadges: NextPageWithLayout = () => {
     })
   }, [badges.length])
 
-  useKeyPress('ArrowLeft', selectPreviousBadge)
-  useKeyPress('ArrowRight', selectNextBadge)
+  const leftPress = useKeyPress('ArrowLeft')
+  const rightPress = useKeyPress('ArrowRight')
+
+  useEffect(() => {
+    if (leftPress) selectPreviousBadge()
+  }, [leftPress, selectPreviousBadge])
+
+  useEffect(() => {
+    if (rightPress) selectNextBadge()
+  }, [rightPress, selectNextBadge])
 
   const search = async (
     selectedFilters: Array<ListFilter>,

@@ -63,8 +63,16 @@ const ViewListOfBadgesByType: NextPageWithLayout = () => {
     })
   }, [badges.length])
 
-  useKeyPress('ArrowLeft', selectPreviousBadgeType)
-  useKeyPress('ArrowRight', selectNextBadgeType)
+  const leftPress = useKeyPress('ArrowLeft')
+  const rightPress = useKeyPress('ArrowRight')
+
+  useEffect(() => {
+    if (leftPress) selectPreviousBadgeType()
+  }, [leftPress, selectPreviousBadgeType])
+
+  useEffect(() => {
+    if (rightPress) selectNextBadgeType()
+  }, [rightPress, selectNextBadgeType])
 
   const search = async (
     selectedFilters: Array<ListFilter>,
