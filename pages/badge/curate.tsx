@@ -1,4 +1,4 @@
-import React, { RefObject, createRef, useEffect, useState } from 'react'
+import React, { RefObject, createRef, useCallback, useEffect, useState } from 'react'
 
 import ArrowBackIosOutlinedIcon from '@mui/icons-material/ArrowBackIosOutlined'
 import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined'
@@ -51,9 +51,6 @@ const CurateBadges: NextPageWithLayout = () => {
 
   const gql = useSubgraph()
 
-  const leftPress = useKeyPress('ArrowLeft')
-  const rightPress = useKeyPress('ArrowRight')
-
   useEffect(() => {
     // Each time that a new item is selected, we scroll to it
     if (badgesElementRefs[selectedBadge]?.current) {
@@ -66,32 +63,32 @@ const CurateBadges: NextPageWithLayout = () => {
     }
   }, [badgesElementRefs, selectedBadge])
 
-  useEffect(() => {
-    if (badges.length && rightPress) {
-      selectNextBadge()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [rightPress])
-
-  useEffect(() => {
-    if (badges.length && leftPress) {
-      selectPreviousBadge()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [leftPress])
-
-  function selectPreviousBadge() {
+  const selectPreviousBadge = useCallback(() => {
+    if (!badges.length) return
     setSelectedBadge((prevIndex) => {
       if (prevIndex === 0) return badges.length - 1
       return prevIndex - 1
     })
-  }
-  function selectNextBadge() {
+  }, [badges.length])
+
+  const selectNextBadge = useCallback(() => {
+    if (!badges.length) return
     setSelectedBadge((prevIndex) => {
       if (prevIndex === badges.length - 1) return 0
       return prevIndex + 1
     })
-  }
+  }, [badges.length])
+
+  const leftPress = useKeyPress('ArrowLeft')
+  const rightPress = useKeyPress('ArrowRight')
+
+  useEffect(() => {
+    if (leftPress) selectPreviousBadge()
+  }, [leftPress, selectPreviousBadge])
+
+  useEffect(() => {
+    if (rightPress) selectNextBadge()
+  }, [rightPress, selectNextBadge])
 
   const search = async (
     selectedFilters: Array<ListFilter>,
