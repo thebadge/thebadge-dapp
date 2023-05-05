@@ -39,7 +39,7 @@
       "connect": "Connect wallet"
     },
     "buttons": {
-      "explore": "EXPLORE",
+      "mint": "MINT",
       "curate": "CURATE",
       "create": "CREATE"
     },
@@ -53,7 +53,32 @@
   "explorer": {
     "title": "Badge types explorer",
     "noBadgesFound": "There are no badges that match these filters...",
-    "button": "MINT"
+    "button": "MINT",
+    "preview": {
+      "title": "BadgeType Info",
+      "badge": {
+        "name": "Name",
+        "description": "Description",
+        "mintCost": "Mint cost:",
+        "totalMinted": "Total minted amount:",
+        "mint": "Mint",
+        "showOthers": "See minted badges"
+      },
+      "creator": {
+        "createdBy": "Crated By"
+      }
+    },
+    "minted": {
+      "title": "Minted badges - {{badgeTypeName}}",
+      "subtitle": "Badge Info"
+    },
+    "curate": {
+      "title": "Badge Evidence",
+      "challenge": "Challenge",
+      "requester": "Requester address: ",
+      "viewEvidence": "View raw evidence",
+      "listingCriteria": "Listing Criteria"
+    }
   },
   "curateExplorer": {
     "title": "Badges curation explorer",
@@ -65,6 +90,7 @@
     "titleOf": "This is the profile of {{address}}",
     "badgesYouOwn": {
       "title": "Badges that you own",
+      "shared_title": "Badges that the user own",
       "noResults": "You don't have any badges that match these filters..."
     },
     "badgesCreated": {
@@ -82,14 +108,18 @@
     "badgesInReview": {
       "title": "Your badges in review",
       "noResults": "There are no badges in review..."
-    }
+    },
+    "verified": "Verified user"
   },
   "errors": {
     "connectWallet": "Connect your wallet",
     "connectWalletSubtitle": "Please, to continue it is necessary that you connect your wallet",
     "notACreator": "You are not a creator yet.",
     "notACreatorSubtitle": "Please, to continue it is necessary that you have registered as a creator, ",
-    "alreadyOwnedBadge": "You already own this badge"
+    "alreadyOwnedBadge": "You already own this badge",
+    "pausedAction": "This action has been temporarily paused.",
+    "pausedActionSubtitle": "Please, head over to our Discord channel for more information."
+
   },
   "creator": {
     "register": {
@@ -180,6 +210,11 @@
         "amount": "Amount",
         "userAddress": "User address:",
         "file": "File:"
+      },
+      "owner": {
+        "address" : "OWNER ADDRESS:",
+        "profile": "VISIT PROFILE",
+        "verified": "Verified user"
       }
     },
     "challenge": {

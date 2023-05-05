@@ -1,21 +1,18 @@
-import { Stack, Typography } from '@mui/material'
-import { useTranslation } from 'next-export-i18n'
-
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import BadgesYouOwnList from '@/src/pagePartials/profile/myProfile/BadgesYouOwnList'
+import InfoPreview from '@/src/pagePartials/profile/userInfo/InfoPreview'
+import { InfoPreviewSkeleton } from '@/src/pagePartials/profile/userInfo/InfoPreview.skeleton'
 
 type Props = {
   address: string
 }
 
 const SharedProfile = ({ address }: Props) => {
-  const { t } = useTranslation()
-
   return (
     <SafeSuspense>
-      <Stack sx={{ mb: 6, gap: 4, alignItems: 'center' }}>
-        <Typography color={'text.primary'}>{t('profile.titleOf', address)}</Typography>
-      </Stack>
+      <SafeSuspense fallback={<InfoPreviewSkeleton />}>
+        <InfoPreview address={address} />
+      </SafeSuspense>
       <BadgesYouOwnList address={address} />
     </SafeSuspense>
   )

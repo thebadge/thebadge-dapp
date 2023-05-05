@@ -7,8 +7,8 @@ import { Box, IconButton, Stack, Typography, styled } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
 import { colors, gradients } from 'thebadge-ui-library'
 
+import { WalletAnimated } from '@/src/components/assets/animated/WalletAnimated'
 import ConnectWalletButton from '@/src/components/header/ConnectWalletButton'
-import Wallet from '@/src/components/icons/Wallet'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 
 const ModalBody = styled(Box)(({ theme }) => ({
@@ -56,7 +56,7 @@ export default function ConnectWalletError({ noCloseButton }: { noCloseButton?: 
 
       <Stack alignItems="center" gap={3} justifyContent="center" m="auto">
         <Stack alignItems="center" gap={1} justifyContent="center" m="auto">
-          <Wallet sx={{ width: '118px', height: '118px' }} />
+          <WalletAnimated sx={{ width: '135px', height: '135px' }} />
           <Typography color={colors.green} variant="dAppHeadline2">
             <ReportProblemOutlinedIcon />
             {t('errors.connectWallet')}

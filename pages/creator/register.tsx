@@ -1,7 +1,6 @@
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 
-import { Typography } from '@mui/material'
 import { ethers } from 'ethers'
 import { z } from 'zod'
 
@@ -14,6 +13,7 @@ import RegistrationSteps, {
   RegisterCuratorSchemaStep2,
   RegisterCuratorSchemaStep3,
 } from '@/src/pagePartials/creator/register/RegistrationSteps'
+import { PreventActionIfRegisterPaused } from '@/src/pagePartials/errors/preventActionIfPaused'
 import { RequiredConnection } from '@/src/pagePartials/errors/requiredConnection'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import ipfsUpload from '@/src/utils/ipfsUpload'
@@ -28,7 +28,7 @@ export const RegisterCuratorSchema = z
   .merge(RegisterCuratorSchemaStep3)
 
 const Register: NextPageWithLayout = () => {
-  const { address, appChainId, isWalletConnected } = useWeb3Connection()
+  const { address } = useWeb3Connection()
   const router = useRouter()
   const { sendTx, state } = useTransaction()
 
@@ -47,7 +47,7 @@ const Register: NextPageWithLayout = () => {
   })
 
   if (userProfile.data?.user?.isCreator) {
-    router.push('/profile?filter=createdBadges')
+    // router.push('/profile?filter=createdBadges')
   }
 
   async function onSubmit(data: z.infer<typeof RegisterCuratorSchema>) {
@@ -73,14 +73,12 @@ const Register: NextPageWithLayout = () => {
     }
   }
 
-  if (!isWalletConnected) {
-    return <Typography>Please connect your wallet to continue</Typography>
-  }
-
   return (
-    <RequiredConnection>
-      <RegistrationSteps onSubmit={onSubmit} txState={state} />
-    </RequiredConnection>
+    <PreventActionIfRegisterPaused>
+      <RequiredConnection>
+        <RegistrationSteps onSubmit={onSubmit} txState={state} />
+      </RequiredConnection>
+    </PreventActionIfRegisterPaused>
   )
 }
 
