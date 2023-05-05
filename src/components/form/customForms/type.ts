@@ -4,13 +4,19 @@ import { ButtonPropsColorOverrides } from '@mui/material/Button/Button'
 import { OverridableStringUnion } from '@mui/types'
 import { ReactComponentWithRequiredProps } from '@ts-react/form/src/createSchemaForm'
 
+type CustomFormButtonType = {
+  label?: string
+  disabled?: boolean
+  ref?: RefObject<any>
+}
+
 type BasicCustomFormProps = {
   children: ReactNode
   onSubmit: () => void
+  onBack?: () => void
   layout?: FormLayoutType
-  buttonLabel?: string
-  buttonDisabled?: boolean
-  buttonRef?: RefObject<any>
+  submitButton: CustomFormButtonType
+  backButton?: CustomFormButtonType
 }
 
 export type CustomFormProps =
