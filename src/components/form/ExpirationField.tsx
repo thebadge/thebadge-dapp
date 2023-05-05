@@ -118,7 +118,9 @@ export function ExpirationField({
                         arrow
                         title={
                           placeholder +
-                          `\n e.g. If you mint this badge today, It will expire on: ${validTo(value)}`
+                          `\n e.g. If you mint this badge today, It will expire on: ${validTo(
+                            value,
+                          )}`
                         }
                       >
                         <InfoOutlinedIcon />
