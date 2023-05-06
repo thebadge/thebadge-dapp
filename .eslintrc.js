@@ -1,3 +1,6 @@
+
+
+
 module.exports = {
   env: {
     browser: true,
@@ -62,7 +65,12 @@ module.exports = {
       },
     ],
     'no-use-before-define': 'off',
-    'prettier/prettier': 'error',
+    'prettier/prettier': [
+      'error',
+      {
+        'endOfLine': 'auto',
+      }
+    ],
     'react/jsx-filename-extension': [
       1,
       {
@@ -94,3 +102,4 @@ module.exports = {
     "React": "writable"
   }
 }
+

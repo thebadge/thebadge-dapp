@@ -31,6 +31,28 @@
       "learnMore": "Learn more",
       "button": "BECOME A THIRD PARTY",
       "buttonTooltip": "Join to our discord, to be up to date with third party release."
+    },
+    "FAQs": {
+      "FAQ1": {
+        "title": "What is The Badge?",
+        "description": "The Badge is a decentralized certification platform powered by Ethereum. It provides users the opportunity to tokenize information from the real world in the form of certifications (badges) by giving a peer-to-peer certification mechanism. "
+      },
+      "FAQ2": {
+        "title": "What are Curators?",
+        "description": "Curators will be in charge of verifying and validating the proof submitted by potential badge receivers. They will be able to generate a challenge if they have discovered that the evidence submitted by the potential badge receiver is fake or inaccurate.Their profit will come from a percentage of the deposit left by the potential badge receiver."
+      },
+      "FAQ3": {
+        "title": "What are Creators?",
+        "description": "Creators design and publish badges (web3 certificates) with their own certification criteria for others to apply for and receive it. They will determine what information/proof potential badge holders need to provide in order to receive their badge. They will also set the price of their badge, and their profit comes whenever a person has claimed their badge. In order to become a creator, the user will have to go through a registration process in The Badge."
+      },
+      "FAQ4": {
+        "title": "Community Badges",
+        "description": "Community Badges are a special type of badge that goes through TheBadge's decentralized certification process. The community verifies the evidence provided by the applicant, and the badge is granted accordingly. These badges are only created by registered creators. A community curator verifies the evidence submitted, and the badges are subject to challenge and follow a decentralized arbitration system for dispute resolution. The innovative certification process of Community Badges provides a reliable and trustworthy way for individuals to demonstrate their abilities and accomplishments to the wider community."
+      },
+      "FAQ5": {
+        "title": "Third-party Badges",
+        "description": "Third-party Badges are a blockchain certification service that leverages TheBadge's platform, allowing third-party entities to issue their own certificates. These badges are backed by the issuing entity, providing added legitimacy to the certification. By utilizing TheBadge's platform, these entities can ensure secure storage and verification of their certification data, providing a reliable certification process. Third-party Badges allow individuals to showcase their achievements in a trusted ecosystem, enhancing their credibility in the wider community."
+      }
     }
   },
   "header": {
@@ -110,8 +132,7 @@
       ]
     }
   },
-  "curator": {
-  },
+  "curator": {},
   "badge": {
     "mintButton": "Apply for it",
     "curateButton": "Curate",
@@ -239,7 +260,7 @@
     },
     "copyright": "Copyright © {{year}} • TheBadge.xyz"
   },
-  "privacy-policy":{
+  "privacy-policy": {
     "terms": ""
   }
 }

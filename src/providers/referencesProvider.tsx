@@ -7,6 +7,7 @@ type SectionReferencesContextType = {
   earnByCuratingSection: RefObject<HTMLDivElement> | null
   becomeACreatorSection: RefObject<HTMLDivElement> | null
   becomeAThirdPartySection: RefObject<HTMLDivElement> | null
+  frecuentQuestionsSection: RefObject<HTMLDivElement> | null
   scrollTo: (path: string, ref: RefObject<HTMLDivElement> | null) => Promise<void>
 }
 
@@ -16,6 +17,7 @@ const SectionReferencesContext = React.createContext<SectionReferencesContextTyp
   earnByCuratingSection: null,
   becomeACreatorSection: null,
   becomeAThirdPartySection: null,
+  frecuentQuestionsSection: null,
   scrollTo: async () => {
     // Empty function
   },
@@ -29,6 +31,7 @@ export default function SectionReferencesProvider({ children }: { children: Reac
   const earnByCuratingSection = useRef(null)
   const becomeACreatorSection = useRef(null)
   const becomeAThirdPartySection = useRef(null)
+  const frecuentQuestionsSection = useRef(null)
 
   const scrollTo = async (path: string, sectionRef: RefObject<HTMLDivElement> | null) => {
     await router.push(path)
@@ -47,6 +50,7 @@ export default function SectionReferencesProvider({ children }: { children: Reac
         earnByCuratingSection,
         becomeACreatorSection,
         becomeAThirdPartySection,
+        frecuentQuestionsSection,
         scrollTo,
       }}
     >
