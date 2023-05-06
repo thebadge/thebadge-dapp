@@ -9,6 +9,9 @@ import MainMenu from '@/src/components/navigation/MainMenu'
 import CurateContextProvider from '@/src/providers/curateProvider'
 import { useColorMode } from '@/src/providers/themeProvider'
 
+const HEADER_HEIGHT = 54
+const FOOTER_HEIGHT = 280
+
 const Content = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
@@ -23,6 +26,12 @@ const Content = styled(Box)(({ theme }) => ({
       },
     },
   },
+}))
+
+const StyledBody = styled(Box)(() => ({
+  display: 'flex',
+  flex: 1,
+  minHeight: `calc(100vh - ${HEADER_HEIGHT}px - ${FOOTER_HEIGHT}px)`,
 }))
 
 type DefaultLayoutProps = {
@@ -58,7 +67,7 @@ export default function DefaultLayout({ children }: DefaultLayoutProps) {
           <BackgroundGradient
             gradient={theme.palette?.backgroundGradient[mode as keyof PaletteColorOptions]}
           />
-          <Box sx={{ display: 'flex', flex: 1, minHeight: '50rem' }}>
+          <StyledBody>
             <NavigationRoom>
               <MainMenu />
             </NavigationRoom>
@@ -72,7 +81,7 @@ export default function DefaultLayout({ children }: DefaultLayoutProps) {
             >
               {children}
             </Container>
-          </Box>
+          </StyledBody>
         </Content>
       </CurateContextProvider>
       <Footer />

@@ -1,17 +1,16 @@
 import * as React from 'react'
 
-import { Box, TextField as MUITextField, styled } from '@mui/material'
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
+import { Box, Divider, Tooltip, Typography, styled } from '@mui/material'
+import { colors } from 'thebadge-ui-library'
 
-const Wrapper = styled(Box)(({ theme }) => ({
+import { FormField } from '@/src/components/form/helpers/FormField'
+
+const Wrapper = styled(Box)(() => ({
   display: 'flex',
   flexDirection: 'column',
   position: 'relative',
-  rowGap: theme.spacing(1),
   gridColumn: 'auto',
-}))
-
-const StyledTextField = styled(MUITextField)(({ theme }) => ({
-  margin: theme.spacing(0),
 }))
 
 type DisplayLongTextProps = {
@@ -22,17 +21,30 @@ type DisplayLongTextProps = {
 export function DisplayLongText({ label, placeholder, value }: DisplayLongTextProps) {
   return (
     <Wrapper>
-      <StyledTextField
-        color="secondary"
-        contentEditable={false}
-        label={label}
-        multiline
-        placeholder={placeholder}
-        rows={3}
-        sx={{ textTransform: 'capitalize', flex: 1 }}
-        value={value ? value : ''}
-        variant={'standard'}
+      <FormField
+        formControl={
+          <Typography
+            sx={{
+              alignItems: 'flex-end',
+              justifyContent: 'space-between',
+              overflowWrap: 'anywhere',
+              wordBreak: 'break-all',
+              width: '100%',
+              display: 'flex',
+            }}
+          >
+            {value ? value : 'Undefined value'}
+            {placeholder && (
+              <Tooltip arrow title={placeholder}>
+                <InfoOutlinedIcon sx={{ ml: 1 }} />
+              </Tooltip>
+            )}
+          </Typography>
+        }
+        label={<Typography>{label}</Typography>}
+        labelPosition={'top-left'}
       />
+      <Divider color={colors.white} sx={{ mt: -1 }} />
     </Wrapper>
   )
 }

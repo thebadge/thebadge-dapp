@@ -20,7 +20,6 @@ import { colors } from 'thebadge-ui-library'
 import { Logout } from '@/src/components/assets/Logout'
 import { SwitchNetwork } from '@/src/components/assets/SwitchNetwork'
 import { ModalSwitchNetwork } from '@/src/components/helpers/ModalSwitchNetwork'
-import { NavLink } from '@/src/components/navigation/NavLink'
 import { useCurrentUser } from '@/src/hooks/subgraph/useCurrentUser'
 import { useSectionReferences } from '@/src/providers/referencesProvider'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
@@ -67,14 +66,6 @@ const StyledButton = styled(Button)<{ border?: string }>(({ border }) => ({
   boxShadow: 'none',
 }))
 
-const Link = styled(NavLink)`
-  text-decoration: underline;
-
-  &:hover {
-    text-decoration: none;
-  }
-`
-
 export const UserDropdown: React.FC = () => {
   const router = useRouter()
   const { t } = useTranslation()
@@ -111,12 +102,7 @@ export const UserDropdown: React.FC = () => {
       </StyledButton>
     )
   }
-  const exploreButton = menuButton(
-    t('header.buttons.explore'),
-    colors.blue,
-    false,
-    '/badge/explorer',
-  )
+  const exploreButton = menuButton(t('header.buttons.mint'), colors.blue, false, '/badge/explorer')
   const curateButton = menuButton(
     t('header.buttons.curate'),
     colors.greenLogo,

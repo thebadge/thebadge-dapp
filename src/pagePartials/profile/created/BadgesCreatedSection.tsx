@@ -5,7 +5,7 @@ import { formatUnits } from 'ethers/lib/utils'
 import { useTranslation } from 'next-export-i18n'
 import { colors } from 'thebadge-ui-library'
 
-import { NoResultsAnimated } from '@/src/components/assets/NoResults'
+import { NoResultsAnimated } from '@/src/components/assets/animated/NoResults'
 import { MiniBadgePreviewContainer } from '@/src/components/common/MiniBadgePreviewContainer'
 import FilteredList, { ListFilter } from '@/src/components/helpers/FilteredList'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'

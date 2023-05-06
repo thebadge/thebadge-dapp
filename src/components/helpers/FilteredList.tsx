@@ -1,8 +1,9 @@
-import React, { PropsWithChildren, useEffect, useState } from 'react'
+import React, { PropsWithChildren, ReactNode, useEffect, useState } from 'react'
 
-import { Box, Chip, Divider, Typography, styled } from '@mui/material'
+import { Box, Chip, Divider, Stack, Typography, styled } from '@mui/material'
 import { ChipPropsColorOverrides } from '@mui/material/Chip/Chip'
 import { OverridableStringUnion } from '@mui/types'
+import Sticky from 'react-sticky-el'
 import { colors } from 'thebadge-ui-library'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
@@ -25,7 +26,7 @@ export type ListFilter = {
 type FilteredListProps = PropsWithChildren & {
   title: string
   titleColor?: string
-  filters: Array<ListFilter>
+  filters?: Array<ListFilter>
   categories?: Array<string>
   search: (
     selectedFilters: Array<ListFilter>,
@@ -35,13 +36,13 @@ type FilteredListProps = PropsWithChildren & {
   loading?: boolean
   loadingColor?: SpinnerColors
   disableEdit?: boolean
+  preview?: ReactNode | undefined
 }
 
 const ItemsGridBox = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexWrap: 'wrap',
   gap: theme.spacing(3),
-  justifyContent: 'center',
 }))
 
 const FilteredListHeaderBox = styled(Box)(({ theme }) => ({
@@ -53,9 +54,9 @@ const FilteredListHeaderBox = styled(Box)(({ theme }) => ({
   alignItems: 'center',
 }))
 
-export default function FilteredList(props: FilteredListProps) {
+export default function FilteredList({ filters = [], ...props }: FilteredListProps) {
   const { mode } = useColorMode()
-  const defaultSelectedFilters = props.filters.filter((f) => f.defaultSelected)
+  const defaultSelectedFilters = filters.filter((f) => f.defaultSelected)
   const [selectedFilters, setSelectedFilters] = useState<ListFilter[]>(defaultSelectedFilters)
   const [selectedCategory, setSelectedCategory] = useState<string>('')
   const [initialLoadDone, setInitialLoadDone] = useState<boolean>(false)
@@ -111,7 +112,7 @@ export default function FilteredList(props: FilteredListProps) {
 
         <Box alignItems={'center'} display={'flex'} flexWrap={'wrap'} gap={1}>
           {/* filters */}
-          {props.filters.map((filter, index) => {
+          {filters.map((filter, index) => {
             return (
               <Chip
                 color={filter.color}
@@ -148,13 +149,20 @@ export default function FilteredList(props: FilteredListProps) {
         </Box>
       </FilteredListHeaderBox>
       <Divider color={mode === 'dark' ? 'white' : 'black'} sx={{ borderWidth: '1px' }} />
-      <Box mt={4}>
-        {props.loading ? (
-          <Loading color={props.loadingColor} />
-        ) : (
-          <ItemsGridBox>
-            <SafeSuspense>{props.children}</SafeSuspense>
-          </ItemsGridBox>
+      <Box display="flex" id="preview" mt={4}>
+        <Box flex="3">
+          {props.loading ? (
+            <Loading color={props.loadingColor} />
+          ) : (
+            <ItemsGridBox sx={{ justifyContent: props.preview ? 'left' : 'center' }}>
+              <SafeSuspense>{props.children}</SafeSuspense>
+            </ItemsGridBox>
+          )}
+        </Box>
+        {props.preview && (
+          <Stack flex="2" overflow="hidden">
+            <Sticky boundaryElement="#preview">{props.preview}</Sticky>
+          </Stack>
         )}
       </Box>
     </Box>

@@ -4,7 +4,7 @@ import { Box, Stack } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
 import { colors } from 'thebadge-ui-library'
 
-import { NoResultsAnimated } from '@/src/components/assets/NoResults'
+import { NoResultsAnimated } from '@/src/components/assets/animated/NoResults'
 import FilteredList, { ListFilter } from '@/src/components/helpers/FilteredList'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import MiniBadgeTypeMetadata from '@/src/pagePartials/badge/MiniBadgeTypeMetadata'

@@ -1,15 +1,28 @@
-import { Box, alpha, styled } from '@mui/material'
+import React from 'react'
+
+import { Box, Skeleton, alpha, styled } from '@mui/material'
 
 export const MiniBadgePreviewContainer = styled(Box, {
-  shouldForwardProp: (pN) => pN !== 'highlightColor',
-})(({ highlightColor }: { highlightColor: string }) => ({
+  shouldForwardProp: (pN) => pN !== 'highlightColor' && pN !== 'selected',
+})(({ highlightColor, selected }: { highlightColor: string; selected?: boolean }) => ({
   position: 'relative',
   maxWidth: '250px',
   overflow: 'hidden',
-  transition: 'all 2s',
+  transition: 'all 0.5s',
   '&:hover': {
-    background: alpha(highlightColor, 0.85),
-    margin: '8px',
+    background: alpha(highlightColor, 0.2),
+    scale: '0.98',
     borderRadius: '8px',
   },
+  ...(selected
+    ? {
+        background: alpha(highlightColor, 0.25),
+        scale: '0.98',
+        transition: 'all 1s cubic-bezier(0.65, 0, 0.35, 1)',
+      }
+    : {}),
 }))
+
+export const MiniBadgePreviewLoading = () => (
+  <Skeleton animation="wave" height={300} variant="rounded" width={180} />
+)

@@ -3,12 +3,13 @@ import React, { useState } from 'react'
 import { Box, Stack } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
 
-import { NoResultsAnimated } from '@/src/components/assets/NoResults'
+import { NoResultsAnimated } from '@/src/components/assets/animated/NoResults'
 import FilteredList, { ListFilter } from '@/src/components/helpers/FilteredList'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
 import useTransaction from '@/src/hooks/useTransaction'
 import MiniBadgeTypeMetadata from '@/src/pagePartials/badge/MiniBadgeTypeMetadata'
+import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import getHighlightColorByStatus from '@/src/utils/badges/getHighlightColorByStatus'
 import { BadgeStatus, Badge_Filter } from '@/types/generated/subgraph'
 import { KlerosBadgeTypeController__factory } from '@/types/generated/typechain'
@@ -19,6 +20,9 @@ type Props = {
 export default function BadgesYouOwnList({ address }: Props) {
   const { t } = useTranslation()
   const { sendTx } = useTransaction()
+  const { address: connectedWalletAddress } = useWeb3Connection()
+
+  const isLoggedInUser = connectedWalletAddress === address
 
   const [items, setItems] = useState<React.ReactNode[]>([])
   const [loading, setLoading] = useState<boolean>(false)
@@ -116,7 +120,9 @@ export default function BadgesYouOwnList({ address }: Props) {
       loading={loading}
       loadingColor={'blue'}
       search={search}
-      title={t('profile.badgesYouOwn.title')}
+      title={
+        isLoggedInUser ? t('profile.badgesYouOwn.title') : t('profile.badgesYouOwn.shared_title')
+      }
       titleColor={'blue'}
     >
       {items.length > 0 ? (

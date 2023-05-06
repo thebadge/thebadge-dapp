@@ -32,6 +32,7 @@ export default function MyProfileSection() {
             mb: '3rem',
             flex: 3,
             borderRadius: '15px !important',
+            marginRight: 2,
           }}
         />
 
