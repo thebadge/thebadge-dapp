@@ -64,17 +64,9 @@ gql`
     validFor
     paused
     badgesMintedAmount
-  }
-`
-
-gql`
-  fragment BadgeType on BadgeType {
-    id
-    metadataURL
-    controllerName
-    mintCost
-    validFor
-    paused
-    badgesMintedAmount
+    creator {
+      id
+      creatorMetadata
+    }
   }
 `
