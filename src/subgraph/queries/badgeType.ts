@@ -3,23 +3,7 @@ import gql from 'graphql-tag'
 export const BADGE_TYPES = gql`
   query badgeTypes {
     badgeTypes(where: { id_not_in: [1, 2, 3, 4, 5, 6, 7] }) {
-      id
-      metadataURL
-      controllerName
-      mintCost
-      validFor
-      paused
-      badgesMintedAmount
-      creator {
-        id
-        creatorMetadata
-      }
-      klerosBadge {
-        klerosMetadataURL
-        klerosTCRList
-        submissionBaseDeposit
-        challengePeriodDuration
-      }
+      ...BadgeType
     }
   }
 `
