@@ -13,6 +13,7 @@ import {
   MiniBadgePreviewLoading,
 } from '@/src/components/common/MiniBadgePreviewContainer'
 import FilteredList, { ListFilter } from '@/src/components/helpers/FilteredList'
+import InViewPort from '@/src/components/helpers/InViewPort'
 import SafeSuspense, { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import { useKeyPress } from '@/src/hooks/useKeypress'
@@ -131,19 +132,21 @@ const ViewListOfBadgesByType: NextPageWithLayout = () => {
           badges.map((bt, i) => {
             const isSelected = bt.id === badges[selectedBadge]?.id
             return (
-              <SafeSuspense fallback={<MiniBadgePreviewLoading />} key={bt.id}>
-                <MiniBadgePreviewContainer
-                  highlightColor={colors.purple}
-                  onClick={() => setSelectedBadge(i)}
-                  ref={badgeTypesElementRefs[i]}
-                  selected={isSelected}
-                >
-                  <BadgeTypeMetadata
-                    metadata={badges[selectedBadge].badgeType.metadataURL}
-                    size="small"
-                  />
-                </MiniBadgePreviewContainer>
-              </SafeSuspense>
+              <InViewPort key={bt.id} minHeight={300} minWidth={180}>
+                <SafeSuspense fallback={<MiniBadgePreviewLoading />}>
+                  <MiniBadgePreviewContainer
+                    highlightColor={colors.purple}
+                    onClick={() => setSelectedBadge(i)}
+                    ref={badgeTypesElementRefs[i]}
+                    selected={isSelected}
+                  >
+                    <BadgeTypeMetadata
+                      metadata={badges[selectedBadge].badgeType.metadataURL}
+                      size="small"
+                    />
+                  </MiniBadgePreviewContainer>
+                </SafeSuspense>
+              </InViewPort>
             )
           })
         ) : (

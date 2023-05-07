@@ -35,7 +35,7 @@ export const BADGE_BY_ID = gql`
 export const BADGE_BY_TYPE = gql`
   query badgeByTypeId($id: String!) {
     badges(where: { badgeType: $id }) {
-      ...FullBadgeDetails
+      ...BadgeWithJustIds
     }
   }
 `

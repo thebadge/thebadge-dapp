@@ -10,18 +10,20 @@ type Props = {
   children: React.ReactNode
   fallback?: JSX.Element
   minHeight?: number
+  minWidth?: number
 }
 export default function InViewPort({
   children,
   color,
   minHeight,
+  minWidth,
   fallback = <Loading color={color} />,
 }: PropsWithChildren<Props & SpinnerProps>) {
   const elemRef = useRef<HTMLDivElement>(null)
   const { inViewport } = useInViewport(elemRef)
-
+  console.log(inViewport)
   return (
-    <Stack minHeight={minHeight} ref={elemRef}>
+    <Stack minHeight={minHeight} minWidth={minWidth} ref={elemRef}>
       {inViewport ? children : fallback}
     </Stack>
   )
