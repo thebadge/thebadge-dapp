@@ -2,10 +2,11 @@ import { useRouter } from 'next/navigation'
 import { useMemo } from 'react'
 
 import { Box } from '@mui/material'
+import { EmptyBadgePreview } from 'thebadge-ui-library'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import TBSwiper from '@/src/components/helpers/TBSwiper'
-import emptyBadges from '@/src/components/utils/emptyBadges'
+import { fillListWithPlaceholders } from '@/src/components/utils/emptyBadges'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import BadgeTypeMetadata from '@/src/pagePartials/badge/BadgeTypeMetadata'
 
@@ -33,11 +34,7 @@ export default function BadgesInReviewSwiper() {
       )
     })
     // If there is no badges to show, we list 5 placeholders
-    if (!badges) return emptyBadges(5)
-    if (badges.length >= 5) {
-      return badges
-    }
-    return [...badges, ...emptyBadges(5 - badges.length)]
+    return fillListWithPlaceholders(badges, <EmptyBadgePreview size="small" />, 5)
   }, [badgesInReview.data?.badges, router])
 
   return <TBSwiper items={badgesList} />
