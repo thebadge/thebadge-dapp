@@ -21,7 +21,7 @@ export default function InViewPort({
 }: PropsWithChildren<Props & SpinnerProps>) {
   const elemRef = useRef<HTMLDivElement>(null)
   const { inViewport } = useInViewport(elemRef)
-  console.log(inViewport)
+
   return (
     <Stack minHeight={minHeight} minWidth={minWidth} ref={elemRef}>
       {inViewport ? children : fallback}
