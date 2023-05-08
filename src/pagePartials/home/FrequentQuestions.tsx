@@ -3,9 +3,10 @@ import { Accordion, AccordionDetails, AccordionSummary, Box, Typography } from '
 import { useTranslation } from 'next-export-i18n'
 import { colors } from 'thebadge-ui-library'
 
+import { DOCS_URL } from '@/src/constants/common'
 import { useSectionReferences } from '@/src/providers/referencesProvider'
 
-const options = ['FAQ1', 'FAQ2', 'FAQ3', 'FAQ4', 'FAQ5']
+const options = ['faq1', 'faq2', 'faq3', 'faq4', 'faq5']
 
 export default function FrequentQuestions() {
   const { frecuentQuestionsSection } = useSectionReferences()
@@ -21,7 +22,7 @@ export default function FrequentQuestions() {
       ref={frecuentQuestionsSection}
     >
       <Typography color={colors.pink} fontSize={'20px !important'} lineHeight={'26px'}>
-        FAQs
+        {t(`home.faqs.title`)}
       </Typography>
       {options.map((data) => {
         return (
@@ -31,12 +32,19 @@ export default function FrequentQuestions() {
           >
             <AccordionSummary expandIcon={<AddIcon />}>
               <Typography fontSize={'15px !important'} fontWeight={500} lineHeight={'20px'}>
-                {t(`home.FAQs.${data}.title`)}
+                {t(`home.faqs.${data}.title`)}
               </Typography>
             </AccordionSummary>
             <AccordionDetails>
               <Typography fontSize={'14px !important'} fontWeight={400} lineHeight={'16px'}>
-                {t(`home.FAQs.${data}.description`)}
+                {t(`home.faqs.${data}.description`)}
+                <a
+                  href={`${DOCS_URL}/${t(`home.faqs.${data}.documentation`)}`}
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  {t(`home.faqs.moreInfo`)}
+                </a>
               </Typography>
             </AccordionDetails>
           </Accordion>
