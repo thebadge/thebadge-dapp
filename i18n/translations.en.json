@@ -34,7 +34,7 @@
     },
     "faqs": {
       "title": "FAQs",
-      "moreInfo": "See more ...",
+      "moreInfo": "Read more...",
       "faq1": {
         "title": "What is The Badge?",
         "description": "The Badge is a decentralized certification platform powered by Ethereum. It provides users the opportunity to tokenize information from the real world in the form of certifications (badges) by giving a peer-to-peer certification mechanism. ",
