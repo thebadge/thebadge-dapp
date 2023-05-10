@@ -2,12 +2,13 @@ import { useRouter } from 'next/navigation'
 import { useMemo } from 'react'
 
 import { Box } from '@mui/material'
+import { EmptyBadgePreview } from 'thebadge-ui-library'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import TBSwiper from '@/src/components/helpers/TBSwiper'
+import { fillListWithPlaceholders } from '@/src/components/utils/emptyBadges'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import BadgeTypeMetadata from '@/src/pagePartials/badge/BadgeTypeMetadata'
-import { badgesExampleList } from '@/src/pagePartials/home/SectionBoxes'
 
 const now = Math.floor(Date.now() / 1000)
 export default function NearToExpireList() {
@@ -32,12 +33,8 @@ export default function NearToExpireList() {
         </Box>
       )
     })
-    // TODO Remove badgesExampleList when we have more volumen to complete the list
-    if (!badges) return badgesExampleList
-    if (badges.length >= 5) {
-      return badges
-    }
-    return [...badges, ...badgesExampleList]
+    // If there is no badges to show, we list 5 placeholders
+    return fillListWithPlaceholders(badges, <EmptyBadgePreview size="small" />, 5)
   }, [badgesInReview.data?.badges, router])
 
   return (
