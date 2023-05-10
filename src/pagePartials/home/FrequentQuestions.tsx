@@ -24,18 +24,23 @@ export default function FrequentQuestions() {
       <Typography color={colors.pink} fontSize={'20px !important'} lineHeight={'26px'}>
         {t(`home.faqs.title`)}
       </Typography>
-      {options.map((data) => {
+      {options.map((data, i) => {
         return (
           <Accordion
             key={data}
-            style={{ width: '70%', background: 'transparent', boxShadow: 'none' }}
+            sx={{
+              width: '70%',
+              background: 'transparent',
+              boxShadow: 'none',
+              borderTop: `${i === 0 ? 'none' : '1px solid #828282'}`,
+            }}
           >
-            <AccordionSummary expandIcon={<AddIcon />}>
-              <Typography fontSize={'15px !important'} fontWeight={500} lineHeight={'20px'}>
+            <AccordionSummary expandIcon={<AddIcon />} sx={{ padding: '0' }}>
+              <Typography fontSize={'15px !important'} fontWeight={500} lineHeight={'30px'}>
                 {t(`home.faqs.${data}.title`)}
               </Typography>
             </AccordionSummary>
-            <AccordionDetails>
+            <AccordionDetails sx={{ paddingLeft: '0' }}>
               <Typography fontSize={'14px !important'} fontWeight={400} lineHeight={'16px'}>
                 {t(`home.faqs.${data}.description`)}
                 <a
