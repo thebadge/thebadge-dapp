@@ -162,7 +162,7 @@ export default function CreateSteps({ onSubmit, txState }: MintStepsProps) {
           },
         ]}
         formGridLayout={formGridLayout}
-        formLayout={['gridResponsive', 'gridResponsive', 'flex', 'gridResponsive']}
+        formLayout={['flex', 'flex', 'flex', 'gridResponsive']}
         formSubmitReview={handleFormPreview}
         hideSubmit={txState !== TransactionStates.none}
         onStepChanged={(sn) => setCurrentStep(sn)}
