@@ -97,7 +97,9 @@ export default function KlerosDynamicFieldsCreator() {
         <CustomFormFromSchemaWithoutSubmit
           form={form}
           formProps={{
-            buttonLabel: '+ Add Field',
+            submitButton: {
+              label: '+ Add Field',
+            },
           }}
           onSubmit={submitHandler}
           props={{

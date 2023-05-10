@@ -51,7 +51,7 @@ const MintSchemaStep2 = z.object({
     'Cost to mint in ETH // How much it will be necessary to deposit.',
   ),
   validFor: ExpirationTypeSchema.describe(
-    'Expiration time // The badge will valid for this amount of  (0 is forever)',
+    'Expiration time // The badge will be valid for this amount of time (0 is forever)',
   ),
 })
 

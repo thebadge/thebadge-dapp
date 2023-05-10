@@ -3,7 +3,6 @@ import { useEffect, useRef, useState } from 'react'
 
 import { Stack, StepContent } from '@mui/material'
 import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
 import { ButtonPropsColorOverrides } from '@mui/material/Button/Button'
 import Step from '@mui/material/Step'
 import StepButton from '@mui/material/StepButton'
@@ -12,7 +11,10 @@ import Typography from '@mui/material/Typography'
 import { OverridableStringUnion } from '@mui/types'
 import { AnyZodObject, ZodEffects } from 'zod'
 
-import { CustomFormFromSchemaWithoutSubmit } from '@/src/components/form/customForms/CustomForm'
+import {
+  CustomFormFromSchemaWithoutSubmit,
+  FormButton,
+} from '@/src/components/form/customForms/CustomForm'
 import { DataGrid, FormLayoutType } from '@/src/components/form/customForms/type'
 import { useForceRender } from '@/src/hooks/useForceRender'
 import { useSizeSM } from '@/src/hooks/useSize'
@@ -178,8 +180,15 @@ export function FormWithSteps({
                   <CustomFormFromSchemaWithoutSubmit
                     formProps={{
                       layout: 'grid',
-                      buttonLabel: 'Next',
-                      buttonRef: formButtonRef,
+                      submitButton: {
+                        label: 'Next',
+                        ref: formButtonRef,
+                      },
+                      backButton: {
+                        label: 'Back',
+                        disabled: activeStep < 1,
+                      },
+                      onBack: () => handleBack(activeStep - 1),
                       color,
                     }}
                     onSubmit={handleSubmitNext}
@@ -202,14 +211,22 @@ export function FormWithSteps({
                 <CustomFormFromSchemaWithoutSubmit
                   formProps={{
                     layout: getFormLayout(formLayout, activeStep),
-                    buttonLabel: 'Next',
+                    submitButton: {
+                      label: 'Next',
+                      ref: formButtonRef,
+                      ...(getFormLayout(formLayout, activeStep) === 'gridResponsive' &&
+                      formGridLayout
+                        ? {
+                            gridStructure: formGridLayout[activeStep],
+                          }
+                        : {}),
+                    },
+                    backButton: {
+                      label: 'Back',
+                      disabled: activeStep < 1,
+                    },
+                    onBack: () => handleBack(activeStep - 1),
                     color,
-                    buttonRef: formButtonRef,
-                    ...(getFormLayout(formLayout, activeStep) === 'gridResponsive' && formGridLayout
-                      ? {
-                          gridStructure: formGridLayout[activeStep],
-                        }
-                      : {}),
                   }}
                   onSubmit={handleSubmitNext}
                   props={formFieldProps ? formFieldProps[activeStep] : undefined}
@@ -225,14 +242,29 @@ export function FormWithSteps({
                 <Box>{handleFormSubmitReview()}</Box>
                 <PreventActionWithoutConnection>
                   {!hideSubmit && (
-                    <Box display="flex" justifyContent="center">
-                      <Button
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        justifyContent: 'space-evenly',
+                        m: 2,
+                        width: '100%',
+                      }}
+                    >
+                      <FormButton
+                        color={color || 'primary'}
+                        onClick={() => handleBack(activeStep - 1)}
+                        variant="contained"
+                      >
+                        {'Back'}
+                      </FormButton>
+                      <FormButton
+                        color={color || 'primary'}
                         disabled={disabledSubmit}
                         onClick={handleOnSubmit}
                         variant="contained"
                       >
                         {'Submit'}
-                      </Button>
+                      </FormButton>
                     </Box>
                   )}
                 </PreventActionWithoutConnection>
