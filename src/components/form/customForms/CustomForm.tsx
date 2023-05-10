@@ -5,20 +5,21 @@ import { getFormLayout } from '@/src/components/form/customForms/getFormLayout'
 import { CustomFormProps } from '@/src/components/form/customForms/type'
 import { mappingSchemaToComponents } from '@/src/components/form/helpers/schemaToComponent'
 
-const FormButton = styled(Button)(({ theme }) => ({
+export const FormButton = styled(Button)(({ theme }) => ({
   borderRadius: theme.spacing(1.25),
   fontSize: '14px !important',
   minHeight: '30px',
 }))
 
 function MyCustomFormComponent({
-  buttonDisabled,
-  buttonLabel = 'Submit',
+  submitButton = { disabled: false, label: 'Submit', ref: undefined },
+  backButton = { disabled: false, label: 'Back', ref: undefined },
   children,
   color,
   draggable,
   gridStructure,
   layout = 'flex',
+  onBack,
   onSubmit,
   rowHeight,
 }: CustomFormProps) {
@@ -33,14 +34,22 @@ function MyCustomFormComponent({
         <Layout draggable={draggable} gridStructure={gridStructure} rowHeight={rowHeight}>
           {children}
         </Layout>
-        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
           <FormButton
             color={color || 'primary'}
-            disabled={buttonDisabled}
+            disabled={backButton.disabled}
+            onClick={onBack}
+            variant="contained"
+          >
+            {backButton.label}
+          </FormButton>
+          <FormButton
+            color={color || 'primary'}
+            disabled={submitButton.disabled}
             type="submit"
             variant="contained"
           >
-            {buttonLabel}
+            {submitButton.label}
           </FormButton>
         </Box>
       </form>
@@ -53,14 +62,14 @@ function MyCustomFormComponent({
  * want to avoid the use of type=submit and also the user of another Form Tag
  */
 function MyCustomFormComponentWithoutSubmit({
-  buttonDisabled,
-  buttonLabel = 'Submit',
-  buttonRef,
+  submitButton = { disabled: false, label: 'Submit', ref: undefined },
+  backButton = { disabled: false, label: 'Back', ref: undefined },
   children,
   color,
   draggable,
   gridStructure,
   layout = 'flex',
+  onBack,
   onSubmit,
   rowHeight,
 }: CustomFormProps) {
@@ -75,15 +84,24 @@ function MyCustomFormComponentWithoutSubmit({
         <Layout draggable={draggable} gridStructure={gridStructure} rowHeight={rowHeight}>
           {children}
         </Layout>
-        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
           <FormButton
             color={color || 'primary'}
-            disabled={buttonDisabled}
-            onClick={onSubmit}
-            ref={buttonRef}
+            disabled={backButton.disabled}
+            onClick={onBack}
+            ref={backButton.ref}
             variant="contained"
           >
-            {buttonLabel}
+            {backButton.label}
+          </FormButton>
+          <FormButton
+            color={color || 'primary'}
+            disabled={submitButton.disabled}
+            onClick={onSubmit}
+            ref={submitButton.ref}
+            variant="contained"
+          >
+            {submitButton.label}
           </FormButton>
         </Box>
       </Box>
