@@ -4,6 +4,7 @@ import { useMemo } from 'react'
 import { Box } from '@mui/material'
 import { EmptyBadgePreview } from 'thebadge-ui-library'
 
+import InViewPort from '@/src/components/helpers/InViewPort'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import TBSwiper from '@/src/components/helpers/TBSwiper'
 import { fillListWithPlaceholders } from '@/src/components/utils/emptyBadges'
@@ -27,9 +28,11 @@ export default function BadgesInReviewSwiper() {
           }
           sx={{ height: '100%', display: 'flex' }}
         >
-          <SafeSuspense>
-            <BadgeTypeMetadata metadata={badgeInReview?.badgeType.metadataURL} size="small" />
-          </SafeSuspense>
+          <InViewPort minHeight={300}>
+            <SafeSuspense>
+              <BadgeTypeMetadata metadata={badgeInReview?.badgeType.metadataURL} size="small" />
+            </SafeSuspense>
+          </InViewPort>
         </Box>
       )
     })

@@ -49,3 +49,24 @@ gql`
     }
   }
 `
+
+/**
+ * Small fragment to use on the explorer, to search and list all the badges types,
+ * Fetching an small amount of data speed up a little bit the time to render the list
+ */
+
+gql`
+  fragment BadgeType on BadgeType {
+    id
+    metadataURL
+    controllerName
+    mintCost
+    validFor
+    paused
+    badgesMintedAmount
+    creator {
+      id
+      creatorMetadata
+    }
+  }
+`

@@ -7,8 +7,12 @@ import { useTranslation } from 'next-export-i18n'
 import { colors } from 'thebadge-ui-library'
 
 import { NoResultsAnimated } from '@/src/components/assets/animated/NoResults'
-import { MiniBadgePreviewContainer } from '@/src/components/common/MiniBadgePreviewContainer'
+import {
+  MiniBadgePreviewContainer,
+  MiniBadgePreviewLoading,
+} from '@/src/components/common/MiniBadgePreviewContainer'
 import FilteredList, { ListFilter } from '@/src/components/helpers/FilteredList'
+import InViewPort from '@/src/components/helpers/InViewPort'
 import SafeSuspense, { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import { useKeyPress } from '@/src/hooks/useKeypress'
@@ -148,20 +152,23 @@ const CurateBadges: NextPageWithLayout = () => {
             const isSelected = badge.id === badges[selectedBadge]?.id
 
             return (
-              <MiniBadgePreviewContainer
-                highlightColor={colors.greenLogo}
-                key={badge.id}
-                ref={badgesElementRefs[i]}
-                selected={isSelected}
-              >
-                <MiniBadgeTypeMetadata
-                  buttonTitle={t('curateExplorer.button')}
-                  disableAnimations
-                  highlightColor={colors.greenLogo}
-                  metadata={badge.badgeType.metadataURL}
-                  onClick={() => setSelectedBadge(i)}
-                />
-              </MiniBadgePreviewContainer>
+              <InViewPort key={badge.id} minHeight={300} minWidth={180}>
+                <SafeSuspense fallback={<MiniBadgePreviewLoading />}>
+                  <MiniBadgePreviewContainer
+                    highlightColor={colors.greenLogo}
+                    ref={badgesElementRefs[i]}
+                    selected={isSelected}
+                  >
+                    <MiniBadgeTypeMetadata
+                      buttonTitle={t('curateExplorer.button')}
+                      disableAnimations
+                      highlightColor={colors.greenLogo}
+                      metadata={badge.badgeType.metadataURL}
+                      onClick={() => setSelectedBadge(i)}
+                    />
+                  </MiniBadgePreviewContainer>
+                </SafeSuspense>
+              </InViewPort>
             )
           })
         ) : (

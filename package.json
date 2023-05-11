@@ -61,6 +61,7 @@
     "react-hook-form": "^7.43.2",
     "react-hot-toast": "^2.4.0",
     "react-images-uploading": "^3.1.7",
+    "react-in-viewport": "^1.0.0-alpha.30",
     "react-markdown": "^8.0.5",
     "react-sticky-el": "^2.0.9",
     "remark-gfm": "^3.0.1",

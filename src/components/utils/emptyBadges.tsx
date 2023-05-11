@@ -1,11 +1,5 @@
 import React from 'react'
 
-import { EmptyBadgePreview } from 'thebadge-ui-library'
-
-export default function emptyBadges(amount: number) {
-  return Array.from({ length: amount }).map((v, i) => <EmptyBadgePreview key={i} size="small" />)
-}
-
 export function fillListWithPlaceholders(
   list: JSX.Element[] | undefined,
   placeholder: JSX.Element,

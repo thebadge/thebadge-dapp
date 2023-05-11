@@ -149,6 +149,7 @@ export default function FilteredList({ filters = [], ...props }: FilteredListPro
         </Box>
       </FilteredListHeaderBox>
       <Divider color={mode === 'dark' ? 'white' : 'black'} sx={{ borderWidth: '1px' }} />
+
       <Box display="flex" id="preview" mt={4}>
         <Box flex="3">
           {props.loading ? (

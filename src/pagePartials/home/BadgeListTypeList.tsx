@@ -4,6 +4,7 @@ import { useMemo } from 'react'
 import { Box } from '@mui/material'
 import { EffectCoverflow, Pagination } from 'swiper'
 
+import InViewPort from '@/src/components/helpers/InViewPort'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import TBSwiper from '@/src/components/helpers/TBSwiper'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
@@ -27,9 +28,11 @@ export default function BadgeListTypeList() {
           onClick={() => router.push(`/badge/mint/${badgeType.id}`)}
           sx={{ height: '100%', display: 'flex' }}
         >
-          <SafeSuspense>
-            <BadgeTypeMetadata metadata={badgeType?.metadataURL} size="small" />
-          </SafeSuspense>
+          <InViewPort minHeight={300}>
+            <SafeSuspense>
+              <BadgeTypeMetadata metadata={badgeType?.metadataURL} size="small" />
+            </SafeSuspense>
+          </InViewPort>
         </Box>
       )
     })

@@ -1,4 +1,4 @@
-import React, { RefObject, createRef, useEffect, useState } from 'react'
+import React, { RefObject, createRef, useCallback, useEffect, useState } from 'react'
 
 import ArrowBackIosOutlinedIcon from '@mui/icons-material/ArrowBackIosOutlined'
 import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined'
@@ -12,6 +12,7 @@ import {
   MiniBadgePreviewLoading,
 } from '@/src/components/common/MiniBadgePreviewContainer'
 import FilteredList, { ListFilter } from '@/src/components/helpers/FilteredList'
+import InViewPort from '@/src/components/helpers/InViewPort'
 import SafeSuspense, { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import { useKeyPress } from '@/src/hooks/useKeypress'
@@ -46,19 +47,33 @@ const ExploreBadgeTypes: NextPageWithLayout = () => {
     }
   }, [badgeTypesElementRefs, selectedBadgeType])
 
-  useEffect(() => {
-    if (badgeTypes.length && rightPress) {
-      selectNextBadgeType()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [rightPress])
+  const selectPreviousBadgeType = useCallback(() => {
+    if (!badgeTypes.length) return
+    setSelectedBadgeType((prevIndex) => {
+      if (prevIndex === 0) return badgeTypes.length - 1
+      return prevIndex - 1
+    })
+  }, [badgeTypes.length])
+
+  const selectNextBadgeType = useCallback(() => {
+    if (!badgeTypes.length) return
+    setSelectedBadgeType((prevIndex) => {
+      if (prevIndex === badgeTypes.length - 1) return 0
+      return prevIndex + 1
+    })
+  }, [badgeTypes.length])
 
   useEffect(() => {
-    if (badgeTypes.length && leftPress) {
+    if (rightPress) {
+      selectNextBadgeType()
+    }
+  }, [rightPress, selectNextBadgeType])
+
+  useEffect(() => {
+    if (leftPress) {
       selectPreviousBadgeType()
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [leftPress])
+  }, [leftPress, selectPreviousBadgeType])
 
   const search = async (
     selectedFilters: Array<ListFilter>,
@@ -76,19 +91,6 @@ const ExploreBadgeTypes: NextPageWithLayout = () => {
       setBadgeTypes(badges)
       setSelectedBadgeType(0)
     }, 2000)
-  }
-
-  function selectPreviousBadgeType() {
-    setSelectedBadgeType((prevIndex) => {
-      if (prevIndex === 0) return badgeTypes.length - 1
-      return prevIndex - 1
-    })
-  }
-  function selectNextBadgeType() {
-    setSelectedBadgeType((prevIndex) => {
-      if (prevIndex === badgeTypes.length - 1) return 0
-      return prevIndex + 1
-    })
   }
 
   function renderSelectedBadgePreview() {
@@ -126,21 +128,23 @@ const ExploreBadgeTypes: NextPageWithLayout = () => {
           badgeTypes.map((bt, i) => {
             const isSelected = bt.id === badgeTypes[selectedBadgeType]?.id
             return (
-              <SafeSuspense fallback={<MiniBadgePreviewLoading />} key={bt.id}>
-                <MiniBadgePreviewContainer
-                  highlightColor={colors.blue}
-                  onClick={() => setSelectedBadgeType(i)}
-                  ref={badgeTypesElementRefs[i]}
-                  selected={isSelected}
-                >
-                  <MiniBadgeTypeMetadata
-                    buttonTitle={t('explorer.button')}
-                    disableAnimations
+              <InViewPort key={bt.id} minHeight={300} minWidth={180}>
+                <SafeSuspense fallback={<MiniBadgePreviewLoading />}>
+                  <MiniBadgePreviewContainer
                     highlightColor={colors.blue}
-                    metadata={bt.metadataURL}
-                  />
-                </MiniBadgePreviewContainer>
-              </SafeSuspense>
+                    onClick={() => setSelectedBadgeType(i)}
+                    ref={badgeTypesElementRefs[i]}
+                    selected={isSelected}
+                  >
+                    <MiniBadgeTypeMetadata
+                      buttonTitle={t('explorer.button')}
+                      disableAnimations
+                      highlightColor={colors.blue}
+                      metadata={bt.metadataURL}
+                    />
+                  </MiniBadgePreviewContainer>
+                </SafeSuspense>
+              </InViewPort>
             )
           })
         ) : (
