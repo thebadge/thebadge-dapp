@@ -1,6 +1,5 @@
 import {
   Dispatch,
-  ReactElement,
   ReactNode,
   SetStateAction,
   createContext,
@@ -16,7 +15,6 @@ import injectedModule from '@web3-onboard/injected-wallets'
 import { init, useConnectWallet, useSetChain, useWallets } from '@web3-onboard/react'
 import walletConnectModule from '@web3-onboard/walletconnect'
 import nullthrows from 'nullthrows'
-import Blockies from 'react-blockies'
 
 import { Chains, INITIAL_APP_CHAIN_ID, chainsConfig, getNetworkConfig } from '@/src/config/web3'
 import { appName } from '@/src/constants/common'
@@ -103,8 +101,6 @@ export type Web3Context = {
   wallet: WalletState | null
   walletChainId: number | null
   web3Provider: Web3Provider | null
-  blockiesIcon: ReactElement | null
-  blockiesAvatar: ReactElement | null
 }
 
 export type Web3Connected = RequiredNonNull<Web3Context>
@@ -199,13 +195,6 @@ export default function Web3ConnectionProvider({ children }: Props) {
     }
   }
 
-  // Icon version is a canvas of 10 x 3.2 = 32px to display it entirely
-  const blockiesIcon = <Blockies scale={3.2} seed={address || 'default'} size={10} />
-  // Avatar version is a canvas of 10 x 10 = 100px to display it entirely
-  const blockiesAvatar = (
-    <Blockies className="blockies-avatar" scale={10} seed={address || 'default'} size={10} />
-  )
-
   const value = {
     address: address ? address.toLowerCase() : null,
     appChainId,
@@ -226,8 +215,6 @@ export default function Web3ConnectionProvider({ children }: Props) {
     wallet,
     walletChainId,
     web3Provider,
-    blockiesIcon,
-    blockiesAvatar,
   }
 
   return <Web3ContextConnection.Provider value={value}>{children}</Web3ContextConnection.Provider>

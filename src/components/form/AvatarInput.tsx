@@ -4,6 +4,7 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
 import FileUploadIcon from '@mui/icons-material/FileUpload'
 import { AvatarProps, Box, Container, IconButton, Avatar as MUIAvatar, styled } from '@mui/material'
 import { useDescription, useTsController } from '@ts-react/form'
+import Blockies from 'react-18-blockies'
 import { FieldError } from 'react-hook-form'
 import ImageUploading, { ImageListType, ImageType } from 'react-images-uploading'
 import { colors } from 'thebadge-ui-library'
@@ -52,7 +53,7 @@ type AvatarInputProps = {
 }
 
 export function AvatarInput({ error, label, onChange, value }: AvatarInputProps) {
-  const { blockiesAvatar } = useWeb3Connection()
+  const { address } = useWeb3Connection()
 
   const [images, setImages] = useState<ImageListType>(value ? [value] : [])
   const [isCustom, setIsCustom] = useState(false)
@@ -91,6 +92,10 @@ export function AvatarInput({ error, label, onChange, value }: AvatarInputProps)
       file: new File([canvasData], 'profile.png', { type: 'image/png' }),
     }
   }
+
+  const blockiesAvatar = (
+    <Blockies className="blockies-avatar" scale={10} seed={address || 'default'} size={10} />
+  )
 
   return (
     <Wrapper>
