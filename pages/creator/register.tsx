@@ -64,7 +64,7 @@ const Register: NextPageWithLayout = () => {
 
     try {
       const transaction = await sendTx(() =>
-        theBadge.registerEmitter(address, `ipfs://${uploadedInfo.result?.ipfsHash}`),
+        theBadge.registerBadgeModelCreator(`ipfs://${uploadedInfo.result?.ipfsHash}`),
       )
 
       await transaction.wait()

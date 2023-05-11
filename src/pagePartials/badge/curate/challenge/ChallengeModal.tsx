@@ -31,7 +31,7 @@ import ChallengeCost from '@/src/pagePartials/badge/curate/challenge/ChallengeCo
 import { useBadgeCost } from '@/src/pagePartials/badge/curate/useBadgeCost'
 import { RequiredConnection } from '@/src/pagePartials/errors/requiredConnection'
 import ipfsUpload from '@/src/utils/ipfsUpload'
-import { KlerosBadgeTypeController__factory } from '@/types/generated/typechain'
+import { KlerosController__factory } from '@/types/generated/typechain'
 
 const ModalBody = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -123,10 +123,7 @@ function ChallengeModalContent({
     resolver: zodResolver(ChallengeSchema),
   })
 
-  const klerosController = useContractInstance(
-    KlerosBadgeTypeController__factory,
-    'KlerosBadgeTypeController',
-  )
+  const klerosController = useContractInstance(KlerosController__factory, 'KlerosController')
   const challengeCost = useBadgeCost(badgeTypeId, ownerAddress)
 
   async function onSubmit(data: z.infer<typeof ChallengeSchema>) {
@@ -154,19 +151,20 @@ function ChallengeModalContent({
       throw 'There was no possible to upload evidence.'
     }
 
-    const transaction = await sendTx(() =>
-      klerosController.challengeBadge(
-        badgeTypeId,
-        ownerAddress,
-        `ipfs://${evidenceIPFSUploaded.result?.ipfsHash}`,
-        {
-          value: challengeCost,
-        },
-      ),
-    )
+    // TODO: challenge has to be done calling the TCR contract
+    // const transaction = await sendTx(() =>
+    //   klerosController.challengeBadge(
+    //     badgeTypeId,
+    //     ownerAddress,
+    //     `ipfs://${evidenceIPFSUploaded.result?.ipfsHash}`,
+    //     {
+    //       value: challengeCost,
+    //     },
+    //   ),
+    // )
 
-    onClose()
-    await transaction.wait()
+    // onClose()
+    // await transaction.wait()
   }
 
   return (

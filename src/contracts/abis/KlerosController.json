@@ -1,42 +1,42 @@
 [
   {
     "inputs": [],
-    "name": "KlerosBadgeTypeController__claimBadge_insufficientBalance",
+    "name": "KlerosBadgeModelController__claimBadge_insufficientBalance",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "KlerosBadgeTypeController__createBadgeType_TCRListAddressZero",
+    "name": "KlerosBadgeModelController__createBadgeModel_TCRListAddressZero",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "KlerosBadgeTypeController__createBadgeType_badgeTypeAlreadyCreated",
+    "name": "KlerosBadgeModelController__createBadgeModel_badgeModelAlreadyCreated",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "KlerosBadgeTypeController__mintBadge_alreadyMinted",
+    "name": "KlerosBadgeModelController__mintBadge_alreadyMinted",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "KlerosBadgeTypeController__mintBadge_isPaused",
+    "name": "KlerosBadgeModelController__mintBadge_isPaused",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "KlerosBadgeTypeController__mintBadge_wrongBadgeType",
+    "name": "KlerosBadgeModelController__mintBadge_wrongBadgeModel",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "KlerosBadgeTypeController__mintBadge_wrongValue",
+    "name": "KlerosBadgeModelController__mintBadge_wrongValue",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "KlerosBadgeTypeController__onlyTheBadge_senderNotTheBadge",
+    "name": "KlerosBadgeModelController__onlyTheBadge_senderNotTheBadge",
     "type": "error"
   },
   {
@@ -64,17 +64,23 @@
       {
         "indexed": true,
         "internalType": "address",
-        "name": "klerosTCRAddress",
+        "name": "wallet",
         "type": "address"
       },
       {
         "indexed": false,
         "internalType": "string",
-        "name": "registrationMetadata",
+        "name": "evidence",
         "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "sender",
+        "type": "address"
       }
     ],
-    "name": "NewKlerosBadgeType",
+    "name": "KlerosBadgeChallenged",
     "type": "event"
   },
   {
@@ -82,27 +88,34 @@
     "inputs": [
       {
         "indexed": true,
-        "internalType": "address",
-        "name": "callee",
-        "type": "address"
-      },
-      {
-        "indexed": true,
         "internalType": "uint256",
-        "name": "badgeTypeId",
+        "name": "badgeModelId",
         "type": "uint256"
       },
       {
-        "indexed": false,
-        "internalType": "bytes32",
-        "name": "klerosItemID",
-        "type": "bytes32"
-      },
-      {
         "indexed": true,
         "internalType": "address",
-        "name": "to",
+        "name": "tcrAddress",
         "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "metadataUri",
+        "type": "string"
+      }
+    ],
+    "name": "NewKlerosBadgeModel",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "badgeId",
+        "type": "uint256"
       },
       {
         "indexed": false,
@@ -111,7 +124,7 @@
         "type": "string"
       }
     ],
-    "name": "RequestKlerosBadge",
+    "name": "mintKlerosBadge",
     "type": "event"
   },
   {
@@ -131,59 +144,16 @@
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "badgeId",
-        "type": "uint256"
-      }
-    ],
-    "name": "badgeRequestValue",
-    "outputs": [
-      {
-        "internalType": "uint256",
         "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "badgeId",
         "type": "uint256"
       },
       {
         "internalType": "address",
-        "name": "account",
-        "type": "address"
-      }
-    ],
-    "name": "balanceOf",
-    "outputs": [
-      {
-        "internalType": "uint256",
         "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_badgeId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "_account",
         "type": "address"
       }
     ],
-    "name": "canRequestBadge",
+    "name": "canMint",
     "outputs": [
       {
         "internalType": "bool",
@@ -191,7 +161,7 @@
         "type": "bool"
       }
     ],
-    "stateMutability": "view",
+    "stateMutability": "pure",
     "type": "function"
   },
   {
@@ -200,19 +170,9 @@
         "internalType": "uint256",
         "name": "badgeId",
         "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "account",
-        "type": "address"
-      },
-      {
-        "internalType": "string",
-        "name": "evidence",
-        "type": "string"
       }
     ],
-    "name": "challengeBadge",
+    "name": "claim",
     "outputs": [],
     "stateMutability": "payable",
     "type": "function"
@@ -221,25 +181,7 @@
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "badgeId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "account",
-        "type": "address"
-      }
-    ],
-    "name": "claimBadge",
-    "outputs": [],
-    "stateMutability": "payable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "badgeId",
+        "name": "badgeModelId",
         "type": "uint256"
       },
       {
@@ -248,9 +190,9 @@
         "type": "bytes"
       }
     ],
-    "name": "createBadgeType",
+    "name": "createBadgeModel",
     "outputs": [],
-    "stateMutability": "payable",
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -259,11 +201,6 @@
         "internalType": "uint256",
         "name": "badgeId",
         "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "account",
-        "type": "address"
       }
     ],
     "name": "getChallengeValue",
@@ -304,13 +241,27 @@
     "inputs": [
       {
         "internalType": "uint256",
+        "name": "badgeId",
+        "type": "uint256"
+      }
+    ],
+    "name": "isAssetActive",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
         "name": "",
         "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
       }
     ],
     "name": "klerosBadge",
@@ -342,7 +293,7 @@
         "type": "uint256"
       }
     ],
-    "name": "klerosBadgeType",
+    "name": "klerosBadgeModel",
     "outputs": [
       {
         "internalType": "address",
@@ -362,13 +313,13 @@
       },
       {
         "internalType": "uint256",
-        "name": "badgeId",
+        "name": "badgeModelId",
         "type": "uint256"
       },
       {
-        "internalType": "address",
-        "name": "account",
-        "type": "address"
+        "internalType": "uint256",
+        "name": "badgeId",
+        "type": "uint256"
       },
       {
         "internalType": "bytes",
@@ -376,9 +327,28 @@
         "type": "bytes"
       }
     ],
-    "name": "requestBadge",
+    "name": "mint",
     "outputs": [],
     "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "badgeModelId",
+        "type": "uint256"
+      }
+    ],
+    "name": "mintValue",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -399,7 +369,7 @@
     "name": "theBadge",
     "outputs": [
       {
-        "internalType": "contract ITheBadge",
+        "internalType": "contract TheBadge",
         "name": "",
         "type": "address"
       }
