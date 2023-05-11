@@ -1,25 +1,43 @@
 import * as React from 'react'
 
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
-import { Tooltip, Typography } from '@mui/material'
+import OpenInNewOutlinedIcon from '@mui/icons-material/OpenInNewOutlined'
+import { Box, Divider, IconButton, Tooltip, Typography, styled } from '@mui/material'
+import { colors } from 'thebadge-ui-library'
 
-import { FormField } from '@/src/components/form/helpers/FormField'
+const Wrapper = styled(Box)(() => ({
+  gap: 1,
+  display: 'flex',
+  flexDirection: 'row',
+  minWidth: '100%',
+  maxWidth: '100%',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+}))
 
 type DisplayFileProps = {
   label?: string
   placeholder?: string
-  value: string | undefined
+  value: { data_url: string }
 }
 
 export function DisplayFile({ label, placeholder, value }: DisplayFileProps) {
-  return (
-    <FormField
-      formControl={
-        <Typography component={'a'} href={value}>
-          {value}
-        </Typography>
+  console.log(value)
+  function openTabWithFile() {
+    const openedTab = window.open('about:blank')
+
+    setTimeout(function () {
+      if (openedTab) {
+        //FireFox seems to require a setTimeout for this to work.
+        const frame = openedTab.document.createElement('iframe')
+        openedTab.document.body.appendChild(frame).src = `${value.data_url}`
+        frame.setAttribute('style', 'height: 100%; width: 100%')
       }
-      label={
+    }, 0)
+  }
+  return (
+    <>
+      <Wrapper>
         <Typography>
           {label}
           {placeholder && (
@@ -28,8 +46,11 @@ export function DisplayFile({ label, placeholder, value }: DisplayFileProps) {
             </Tooltip>
           )}
         </Typography>
-      }
-      labelPosition={'top'}
-    />
+        <IconButton onClick={openTabWithFile}>
+          <OpenInNewOutlinedIcon />
+        </IconButton>
+      </Wrapper>
+      <Divider color={colors.white} />
+    </>
   )
 }

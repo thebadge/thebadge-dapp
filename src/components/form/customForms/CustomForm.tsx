@@ -35,17 +35,20 @@ function MyCustomFormComponent({
           {children}
         </Layout>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
-          <FormButton
-            color={color || 'primary'}
-            disabled={backButton.disabled}
-            onClick={onBack}
-            variant="contained"
-          >
-            {backButton.label}
-          </FormButton>
+          {onBack && (
+            <FormButton
+              color={color || 'primary'}
+              disabled={backButton.disabled}
+              onClick={onBack}
+              variant="contained"
+            >
+              {backButton.label}
+            </FormButton>
+          )}
           <FormButton
             color={color || 'primary'}
             disabled={submitButton.disabled}
+            sx={{ ml: !onBack ? 'auto' : 'none' }}
             type="submit"
             variant="contained"
           >
@@ -85,20 +88,23 @@ function MyCustomFormComponentWithoutSubmit({
           {children}
         </Layout>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
-          <FormButton
-            color={color || 'primary'}
-            disabled={backButton.disabled}
-            onClick={onBack}
-            ref={backButton.ref}
-            variant="contained"
-          >
-            {backButton.label}
-          </FormButton>
+          {onBack && (
+            <FormButton
+              color={color || 'primary'}
+              disabled={backButton.disabled}
+              onClick={onBack}
+              ref={backButton.ref}
+              variant="contained"
+            >
+              {backButton.label}
+            </FormButton>
+          )}
           <FormButton
             color={color || 'primary'}
             disabled={submitButton.disabled}
             onClick={onSubmit}
             ref={submitButton.ref}
+            sx={{ ml: !onBack ? 'auto' : 'none' }}
             variant="contained"
           >
             {submitButton.label}

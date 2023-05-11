@@ -65,7 +65,7 @@
         "showOthers": "See minted badges"
       },
       "creator": {
-        "createdBy": "Crated By"
+        "createdBy": "Created By"
       }
     },
     "minted": {
@@ -102,7 +102,7 @@
     "exploreOtherBadges": "Explore other badges",
     "badgesToCurate": "Browse other badges to curate",
     "createdBadges": "Earn by creating new badges",
-    "tab1": "BASIC PROFILE",
+    "tab1": "MY PROFILE",
     "tab2": "CURATOR PROFILE",
     "tab3": "CREATOR PROFILE",
     "badgesInReview": {

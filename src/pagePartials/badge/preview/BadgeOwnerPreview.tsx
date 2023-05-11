@@ -19,12 +19,14 @@ import {
   styled,
 } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
+import Blockies from 'react-18-blockies'
 import { ButtonV2, IconDiscord, colors } from 'thebadge-ui-library'
 
 import { Address } from '@/src/components/helpers/Address'
 import VerifiedCreator from '@/src/components/icons/VerifiedCreator'
 import { useUserById } from '@/src/hooks/subgraph/useUserById'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
+import { truncateStringInTheMiddle } from '@/src/utils/strings'
 import { CreatorMetadata } from '@/types/badges/Creator'
 
 const Wrapper = styled(Box)(({ theme }) => ({
@@ -43,7 +45,7 @@ const OwnerDisplay = styled(Menu)<OwnerDisplayProps>(({ theme, width }) => ({
     backgroundColor: '#000',
     backgroundImage: 'none',
     boxShadow: `0px 0px 4px ${alpha(colors.purple, 0.6)}`,
-    padding: theme.spacing(0.1, 2, 0.1, 2),
+    padding: theme.spacing(1, 2, 1, 2),
     borderRadius: theme.spacing(0, 0, 1, 1),
     width: `${width}px`,
     maxWidth: `${width}px`,
@@ -104,18 +106,33 @@ export default function BadgeOwnerPreview() {
             invisible={!owner.data?.isVerified}
             overlap="circular"
           >
-            <Avatar
-              src={ownerMetadata?.logo?.s3Url}
-              sx={{ width: 90, height: 90, border: '1px solid white' }}
-            />
+            {ownerMetadata?.logo ? (
+              <Avatar
+                src={ownerMetadata?.logo?.s3Url}
+                sx={{ width: 90, height: 90, border: '1px solid white' }}
+              />
+            ) : (
+              <Avatar sx={{ width: 90, height: 90, border: '1px solid white' }}>
+                <Blockies
+                  className="blockies-avatar"
+                  scale={10}
+                  seed={ownerAddress || 'default'}
+                  size={10}
+                />
+              </Avatar>
+            )}
           </Badge>
           <Stack gap={1}>
-            <Typography variant="dAppHeadline2">{ownerMetadata?.name || ownerAddress}</Typography>
+            <Typography variant="dAppHeadline2">
+              {ownerMetadata?.name || truncateStringInTheMiddle(ownerAddress, 8, 6)}
+            </Typography>
             <Stack flex="1" justifyContent="space-evenly">
-              <Typography variant="dAppTitle2">
-                <EmailOutlinedIcon sx={{ mr: 1 }} />
-                {ownerMetadata?.email}
-              </Typography>
+              {ownerMetadata?.email && (
+                <Typography variant="dAppTitle2">
+                  <EmailOutlinedIcon sx={{ mr: 1 }} />
+                  {ownerMetadata?.email}
+                </Typography>
+              )}
               {ownerMetadata?.twitter && (
                 <Typography variant="dAppTitle2">
                   <TwitterIcon sx={{ mr: 1 }} />

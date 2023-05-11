@@ -17,6 +17,7 @@ import {
 import { useDescription, useTsController } from '@ts-react/form'
 import dayjs from 'dayjs'
 import { FieldError } from 'react-hook-form'
+import { colors } from 'thebadge-ui-library'
 import { z } from 'zod'
 
 import { TextFieldStatus } from '@/src/components/form/TextField'
@@ -29,7 +30,13 @@ const options = ['day', 'month', 'year']
 
 const Wrapper = styled(Box)(() => ({
   display: 'flex',
-  flex: 1,
+  flexDirection: 'row',
+  justifyContent: 'center',
+  position: 'relative',
+}))
+
+const InputWrapper = styled(Box)(() => ({
+  display: 'flex',
   flexDirection: 'row',
   justifyContent: 'space-between',
   position: 'relative',
@@ -91,26 +98,26 @@ export function ExpirationField({
   }
 
   return (
-    <FormField
-      formControl={
-        <div>
-          <Box alignItems="center" display="flex">
-            <FormControlLabel
-              control={
-                <MUICheckbox
-                  checked={enableExpiration}
-                  onChange={() => toggleExpiration(!enableExpiration)}
-                  sx={{ width: 'fit-content' }}
-                />
-              }
-              label={<Typography>Enable expiration time</Typography>}
-              sx={{ my: 1 }}
-            />
-          </Box>
+    <Wrapper>
+      <FormField
+        formControl={
+          <>
+            <Box alignItems="center" display="flex">
+              <FormControlLabel
+                control={
+                  <MUICheckbox
+                    checked={enableExpiration}
+                    onChange={() => toggleExpiration(!enableExpiration)}
+                    sx={{ width: 'fit-content' }}
+                  />
+                }
+                label={<Typography>Enable expiration time</Typography>}
+                sx={{ my: 1 }}
+              />
+            </Box>
 
-          <Wrapper>
             {enableExpiration && (
-              <>
+              <InputWrapper>
                 <TextField
                   InputProps={{
                     endAdornment: (
@@ -138,7 +145,7 @@ export function ExpirationField({
                   id="unit-select"
                   onChange={handleDropdownChange}
                   size="small"
-                  sx={{ textTransform: 'capitalize', ml: 2 }}
+                  sx={{ textTransform: 'capitalize', ml: 2, background: colors.transparent }}
                   value={unit || ''}
                   variant="filled"
                 >
@@ -150,15 +157,15 @@ export function ExpirationField({
                     )
                   })}
                 </MUISelect>
-              </>
+              </InputWrapper>
             )}
-          </Wrapper>
-        </div>
-      }
-      labelPosition={'top'}
-      status={error ? TextFieldStatus.error : TextFieldStatus.success}
-      statusText={error ? error?.message : ' '}
-    />
+          </>
+        }
+        labelPosition={'top'}
+        status={error ? TextFieldStatus.error : TextFieldStatus.success}
+        statusText={error ? error?.message : ' '}
+      />
+    </Wrapper>
   )
 }
 

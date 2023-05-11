@@ -12,8 +12,8 @@ type CustomFormButtonType = {
 
 type BasicCustomFormProps = {
   children: ReactNode
-  onSubmit: () => void
-  onBack?: () => void
+  onSubmit: VoidFunction
+  onBack?: VoidFunction
   layout?: FormLayoutType
   submitButton: CustomFormButtonType
   backButton?: CustomFormButtonType
