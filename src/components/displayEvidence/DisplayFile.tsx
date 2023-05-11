@@ -23,6 +23,18 @@ type DisplayFileProps = {
 
 export function DisplayFile({ label, placeholder, value }: DisplayFileProps) {
   console.log(value)
+  function openTabWithFile() {
+    const openedTab = window.open('about:blank')
+
+    setTimeout(function () {
+      if (openedTab) {
+        //FireFox seems to require a setTimeout for this to work.
+        const frame = openedTab.document.createElement('iframe')
+        openedTab.document.body.appendChild(frame).src = `${value.data_url}`
+        frame.setAttribute('style', 'height: 100%; width: 100%')
+      }
+    }, 0)
+  }
   return (
     <>
       <Wrapper>
@@ -34,7 +46,7 @@ export function DisplayFile({ label, placeholder, value }: DisplayFileProps) {
             </Tooltip>
           )}
         </Typography>
-        <IconButton onClick={() => window.open(`${value.data_url}`, '_ blank')}>
+        <IconButton onClick={openTabWithFile}>
           <OpenInNewOutlinedIcon />
         </IconButton>
       </Wrapper>
