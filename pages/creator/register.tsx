@@ -47,7 +47,7 @@ const Register: NextPageWithLayout = () => {
   })
 
   if (userProfile.data?.user?.isCreator) {
-    // router.push('/profile?filter=createdBadges')
+    router.push('/profile?filter=createdBadges')
   }
 
   async function onSubmit(data: z.infer<typeof RegisterCuratorSchema>) {
