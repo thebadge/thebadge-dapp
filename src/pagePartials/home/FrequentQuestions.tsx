@@ -9,7 +9,7 @@ import { useSectionReferences } from '@/src/providers/referencesProvider'
 const options = ['faq1', 'faq2', 'faq3', 'faq4', 'faq5']
 
 export default function FrequentQuestions() {
-  const { frecuentQuestionsSection } = useSectionReferences()
+  const { frequentQuestionsSection } = useSectionReferences()
   const { t } = useTranslation()
 
   return (
@@ -19,7 +19,7 @@ export default function FrequentQuestions() {
       flex={1}
       flexDirection={'column'}
       paddingY={6}
-      ref={frecuentQuestionsSection}
+      ref={frequentQuestionsSection}
     >
       <Typography color={colors.pink} fontSize={'20px !important'} lineHeight={'26px'}>
         {t(`home.faqs.title`)}
@@ -46,6 +46,7 @@ export default function FrequentQuestions() {
                 <a
                   href={`${DOCS_URL}/${t(`home.faqs.${data}.documentation`)}`}
                   rel="noreferrer"
+                  style={{ textDecoration: 'underline' }}
                   target="_blank"
                 >
                   {t(`home.faqs.moreInfo`)}
