@@ -6,6 +6,7 @@ import BadgeCreator from '@/src/pagePartials/home/BadgeCreator'
 import CertificationProcess from '@/src/pagePartials/home/CertificationProcess'
 import ClaimBadges from '@/src/pagePartials/home/ClaimBadges'
 import EarnByCurating from '@/src/pagePartials/home/EarnByCurating'
+import FrequentlyQuestions from '@/src/pagePartials/home/FrequentQuestions'
 import ThirdParty from '@/src/pagePartials/home/ThirdParty'
 import { useSectionReferences } from '@/src/providers/referencesProvider'
 import { useColorMode } from '@/src/providers/themeProvider'
@@ -85,6 +86,9 @@ const Home: NextPageWithLayout = () => {
           }}
         />
       </Box>
+
+      {/* FAQs */}
+      <FrequentlyQuestions />
     </Box>
   )
 }

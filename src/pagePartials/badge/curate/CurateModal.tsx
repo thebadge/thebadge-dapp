@@ -108,18 +108,15 @@ function CurateModalContent({
   const evidenceItems: React.ReactNode[] =
     badgeEvidence?.columns.map((column, index) => (
       <Box
-        alignItems={'center'}
-        display="flex"
-        gap={3}
-        height={'100%'}
-        justifyContent={'center'}
         key={'evidence-' + index}
         sx={{
+          display: 'flex',
+          alignItems: 'center',
+          margin: 4,
+          width: '100%',
           '> *': {
             width: '90%',
             display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
           },
         }}
       >
@@ -169,7 +166,7 @@ function CurateModalContent({
         </Box>
       </Box>
 
-      <TBSwiper items={evidenceItems} />
+      <TBSwiper items={evidenceItems} maxSlidesPerView={1} spaceBetween={8} />
 
       <Stack
         alignItems={'center'}
