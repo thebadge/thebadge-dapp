@@ -3,23 +3,24 @@ import gql from 'graphql-tag'
 gql`
   fragment FullBadgeDetails on Badge {
     id
-    evidenceMetadataUrl
-    reviewDueDate
-    reviewDueDate
+    # evidenceMetadataUrl
+    # reviewDueDate
     status
-    isChallenged
-    receiver {
+    # isChallenged
+    account {
       id
     }
-    badgeType {
+    badgeModel {
       id
-      metadataURL
-      mintCost
+      uri
+      controllerType
+      creatorFee
       validFor
       badgesMintedAmount
-      klerosBadge {
-        klerosMetadataURL
-        klerosTCRList
+      badgeModelKleros {
+        registrationUri
+        removalUri
+        tcrList
         submissionBaseDeposit
         challengePeriodDuration
       }
@@ -35,16 +36,16 @@ gql`
 gql`
   fragment BadgeWithJustIds on Badge {
     id
-    isChallenged
-    evidenceMetadataUrl
-    receiver {
+    status
+    uri
+    account {
       id
     }
-    badgeType {
+    badgeModel {
       id
-      metadataURL
-      klerosBadge {
-        klerosMetadataURL
+      uri
+      badgeModelKleros {
+        registrationUri
       }
     }
   }
@@ -56,17 +57,16 @@ gql`
  */
 
 gql`
-  fragment BadgeType on BadgeType {
+  fragment BadgeModel on BadgeModel {
     id
-    metadataURL
-    controllerName
-    mintCost
+    uri
+    controllerType
     validFor
     paused
     badgesMintedAmount
     creator {
       id
-      creatorMetadata
+      creatorUri
     }
   }
 `

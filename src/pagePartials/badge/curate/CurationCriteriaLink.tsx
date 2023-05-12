@@ -3,16 +3,16 @@ import React from 'react'
 import { Typography } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
 
-import useBadgeType from '@/src/hooks/subgraph/useBadgeType'
+import useBadgeModel from '@/src/hooks/subgraph/useBadgeType'
 
 export default function CurationCriteriaLink({ badgeTypeId }: { badgeTypeId: string }) {
   const { t } = useTranslation()
 
-  const badgeTypeData = useBadgeType(badgeTypeId)
+  const badgeTypeData = useBadgeModel(badgeTypeId)
 
   if (
     badgeTypeData.error ||
-    !badgeTypeData.data?.badgeType ||
+    !badgeTypeData.data?.badgeModel ||
     !badgeTypeData.data?.badgeTypeMetadata
   ) {
     throw `There was an error trying to fetch the metadata for the badge type`

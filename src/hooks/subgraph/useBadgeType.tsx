@@ -9,30 +9,30 @@ import { BackendResponse } from '@/types/utils'
 /**
  * Hooks to wrap the getBadgeType graphql query, to take advantage of the SWR cache
  * and reduce the number of queries and also reduce the repeated code
- * @param typeId
+ * @param id
  */
-export default function useBadgeType(typeId: string) {
+export default function useBadgeModel(id: string) {
   const gql = useSubgraph()
-  return useSWR(typeId.length ? `BadgeType:${typeId}` : null, async (_typeId: string) => {
-    const badgeType = await gql.badgeType({ id: typeId })
+  return useSWR(id.length ? [`BadgeModel:${id}`, id] : null, async ([, _id]) => {
+    const badgeType = await gql.badgeModel({ id: _id })
 
-    const badgeTypeData = badgeType.badgeType
+    const badgeModelData = badgeType.badgeModel
 
-    if (!badgeTypeData?.klerosBadge?.klerosMetadataURL) {
+    if (!badgeModelData?.badgeModelKleros?.registrationUri) {
       throw 'There was not possible to get the needed metadata. Try again in some minutes.'
     }
 
-    const cleanedHash = badgeTypeData?.klerosBadge?.klerosMetadataURL.replace(/^ipfs?:\/\//, '')
+    const cleanedHash = badgeModelData?.badgeModelKleros?.registrationUri.replace(/^ipfs?:\/\//, '')
 
     // TODO: hardcoded for now, as we only support Kleros.
     const res = await axios.get<BackendResponse<{ content: KlerosListStructure }>>(
       `${BACKEND_URL}/api/ipfs/${cleanedHash}`,
     )
-    const badgeTypeMetadata = res.data.result?.content
+    const badgeModelMetadata = res.data.result?.content
 
     return {
-      badgeType: badgeTypeData,
-      badgeTypeMetadata,
+      badgeModel: badgeModelData,
+      badgeModelMetadata,
     }
   })
 }

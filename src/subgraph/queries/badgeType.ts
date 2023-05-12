@@ -1,29 +1,30 @@
 import gql from 'graphql-tag'
 
-export const BADGE_TYPES = gql`
-  query badgeTypes {
-    badgeTypes(where: { id_not_in: [1, 2, 3, 4, 5, 6, 7] }) {
-      ...BadgeType
+export const BADGE_MODELS = gql`
+  query badgeModels {
+    badgeModels {
+      ...BadgeModel
     }
   }
 `
 
-export const BADGE_TYPE = gql`
-  query badgeType($id: ID!) {
-    badgeType(id: $id) {
+export const BADGE_Model = gql`
+  query badgeModel($id: ID!) {
+    badgeModel(id: $id) {
       id
-      metadataURL
-      controllerName
-      mintCost
+      uri
+      controllerType
       validFor
+      creatorFee
       paused
       creator {
         id
-        creatorMetadata
+        creatorUri
       }
-      klerosBadge {
-        klerosMetadataURL
-        klerosTCRList
+      badgeModelKleros {
+        registrationUri
+        removalUri
+        tcrList
         submissionBaseDeposit
         challengePeriodDuration
       }

@@ -14,7 +14,7 @@ import { FormWithSteps } from '@/src/components/form/formWithSteps/FormWithSteps
 import { AgreementSchema } from '@/src/components/form/helpers/customSchemas'
 import { TransactionLoading } from '@/src/components/loading/TransactionLoading'
 import { APP_URL, DOCS_URL } from '@/src/constants/common'
-import useBadgeType from '@/src/hooks/subgraph/useBadgeType'
+import useBadgeModel from '@/src/hooks/subgraph/useBadgeType'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { TransactionStates } from '@/src/hooks/useTransaction'
 import MintCost from '@/src/pagePartials/badge/mint/MintCost'
@@ -57,27 +57,24 @@ export default function MintSteps({ costs, evidenceSchema, onSubmit, txState }: 
   }
   const badgePreviewRef = useRef<HTMLDivElement>()
 
-  const badgeTypeData = useBadgeType(typeId)
+  const badgeTypeData = useBadgeModel(typeId)
 
-  if (
-    badgeTypeData.error ||
-    !badgeTypeData.data?.badgeType ||
-    !badgeTypeData.data?.badgeTypeMetadata
-  ) {
+  const klerosBadgeModel = badgeTypeData.data?.badgeModel.badgeModelKleros
+  const klerosBadgeMetadata = badgeTypeData.data?.badgeModelMetadata
+
+  if (badgeTypeData.error || !klerosBadgeModel || !klerosBadgeMetadata) {
     throw `There was an error trying to fetch the metadata for the badge type`
   }
 
-  const klerosBadge = badgeTypeData.data?.badgeType.klerosBadge
-  const badgeMetadata = badgeTypeData.data?.badgeTypeMetadata
-
   const badgeLogoData = useS3Metadata<{ s3Url: string }>(
-    badgeMetadata.metadata.logoURI as unknown as string,
+    klerosBadgeMetadata.metadata.logoURI as unknown as string,
   )
   const badgeCreatorMetadata = useS3Metadata<{ content: Creator }>(
-    badgeTypeData.data?.badgeType?.creator.creatorMetadata || '',
+    badgeTypeData.data?.badgeModel?.creator.creatorUri || '',
   )
 
-  const badgeCriteria = 's3Url' in badgeMetadata.fileURI ? badgeMetadata.fileURI.s3Url : ''
+  const badgeCriteria =
+    's3Url' in klerosBadgeMetadata.fileURI ? klerosBadgeMetadata.fileURI.s3Url : ''
 
   const convertPreviewToImage = useCallback(async (): Promise<string> => {
     if (!badgePreviewRef.current) return ''
@@ -123,11 +120,11 @@ export default function MintSteps({ costs, evidenceSchema, onSubmit, txState }: 
               badgeBackgroundUrl="https://images.unsplash.com/photo-1512998844734-cd2cca565822?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTIyfHxhYnN0cmFjdHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
               badgeUrl={`${APP_URL}/${typeId}/${address}`}
               category="Badge for Testing"
-              description={enrichTextWithValues(badgeMetadata.description, enrichTextValues)}
+              description={enrichTextWithValues(klerosBadgeMetadata.description, enrichTextValues)}
               imageUrl={badgeLogoData.data?.s3Url}
               size="medium"
               textContrast="light-withTextBackground"
-              title={badgeMetadata.name}
+              title={klerosBadgeMetadata.name}
             />
           </Box>
           <MintCost costs={costs} />
@@ -137,8 +134,8 @@ export default function MintSteps({ costs, evidenceSchema, onSubmit, txState }: 
     [
       address,
       badgeLogoData.data?.s3Url,
-      badgeMetadata.description,
-      badgeMetadata.name,
+      klerosBadgeMetadata.description,
+      klerosBadgeMetadata.name,
       costs,
       t,
       txState,
@@ -155,7 +152,7 @@ export default function MintSteps({ costs, evidenceSchema, onSubmit, txState }: 
 
         <MarkdownTypography textAlign="justify" variant="body3" width="85%">
           {t(`badge.type.mint.steps.${currentStep}.sub-title`, {
-            badgeName: badgeMetadata.name,
+            badgeName: klerosBadgeMetadata.name,
             creatorContact: `mailto:${badgeCreatorMetadata.data?.content?.email}`,
             badgeCreatorName: badgeCreatorMetadata.data?.content?.name,
             curationDocsUrl: DOCS_URL + '/thebadge-documentation/overview/how-it-works/challenge',
@@ -171,11 +168,11 @@ export default function MintSteps({ costs, evidenceSchema, onSubmit, txState }: 
             help: {
               agreementText: t('badge.type.mint.help-steps', {
                 badgeCreatorName: badgeCreatorMetadata.data?.content?.name,
-                badgeCreatorProfileLink: '/profile/' + badgeTypeData.data?.badgeType?.creator.id,
+                badgeCreatorProfileLink: '/profile/' + badgeTypeData.data?.badgeModel?.creator.id,
                 curationDocsUrl:
                   DOCS_URL + '/thebadge-documentation/overview/how-it-works/challenge',
                 curationCriteriaUrl: badgeCriteria,
-                challengePeriodDuration: klerosBadge?.challengePeriodDuration / 60 / 60,
+                challengePeriodDuration: klerosBadgeModel?.challengePeriodDuration / 60 / 60,
                 timeUnit: 'days',
               }),
               color: 'blue',
