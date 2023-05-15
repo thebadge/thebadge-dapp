@@ -13,7 +13,6 @@
 
 For questions or request information reach out via [Discord](https://discord.gg/tVP75NqVuC).
 
-
 # Deployed environments
 
 - Production: https://app.thebadge.xyz
