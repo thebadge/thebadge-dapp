@@ -4,10 +4,10 @@ import OpenInNewOutlinedIcon from '@mui/icons-material/OpenInNewOutlined'
 import { Box, IconButton } from '@mui/material'
 
 import PDFViewer from '@/src/components/common/PDFViewer'
-import useBadgeType from '@/src/hooks/subgraph/useBadgeType'
+import useBadgeModel from '@/src/hooks/subgraph/useBadgeType'
 
 export function ListingCriteriaPreview({ badgeTypeId }: { badgeTypeId: string }) {
-  const badgeTypeData = useBadgeType(badgeTypeId)
+  const badgeTypeData = useBadgeModel(badgeTypeId)
   const badgeTypeMetadata = badgeTypeData.data?.badgeTypeMetadata
 
   if (!badgeTypeMetadata) {

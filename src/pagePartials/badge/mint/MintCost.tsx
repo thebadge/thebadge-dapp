@@ -9,7 +9,7 @@ import { colors } from 'thebadge-ui-library'
 import MarkdownTypography from '@/src/components/common/MarkdownTypography'
 import { getNetworkConfig } from '@/src/config/web3'
 import { DOCS_URL } from '@/src/constants/common'
-import useBadgeType from '@/src/hooks/subgraph/useBadgeType'
+import useBadgeModel from '@/src/hooks/subgraph/useBadgeType'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 
 type Props = {
@@ -29,20 +29,20 @@ export default function MintCost({ costs }: Props) {
   if (!typeId) {
     throw `No typeId provided as URL query param`
   }
-  const badgeTypeData = useBadgeType(typeId)
+  const badgeModelData = useBadgeModel(typeId)
 
   if (
-    badgeTypeData.error ||
-    !badgeTypeData.data?.badgeType ||
-    !badgeTypeData.data?.badgeTypeMetadata
+    badgeModelData.error ||
+    !badgeModelData.data?.badgeModel ||
+    !badgeModelData.data?.badgeModelMetadata
   ) {
     throw `There was an error trying to fetch the metadata for the badge type`
   }
 
   const challengePeriodDuration =
-    badgeTypeData.data?.badgeType?.klerosBadge?.challengePeriodDuration
+    badgeModelData.data?.badgeModel?.badgeModelKleros?.challengePeriodDuration
 
-  const fileURI = badgeTypeData.data?.badgeTypeMetadata?.fileURI
+  const fileURI = badgeModelData.data.badgeModelMetadata
 
   if (!fileURI) {
     throw 'There was not possible to get the needed metadata. Try again in some minutes.'
@@ -107,7 +107,12 @@ export default function MintCost({ costs }: Props) {
 
       <Typography textAlign="center" variant="subtitle2">
         {t('badge.type.mint.makeSure')}
-        <a href={criteriaUrl} rel="noreferrer" style={{ color: colors.green }} target={'_blank'}>
+        <a
+          href={criteriaUrl as string}
+          rel="noreferrer"
+          style={{ color: colors.green }}
+          target={'_blank'}
+        >
           {t('badge.type.mint.curationCriteria')}
         </a>
         {t('badge.type.mint.avoidChallenges')}

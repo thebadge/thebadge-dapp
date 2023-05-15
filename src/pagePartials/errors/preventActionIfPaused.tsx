@@ -4,7 +4,7 @@ import React, { ReactElement } from 'react'
 import { styled } from '@mui/material'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
-import useBadgeType from '@/src/hooks/subgraph/useBadgeType'
+import useBadgeModel from '@/src/hooks/subgraph/useBadgeType'
 import ActionIsPaused from '@/src/pagePartials/errors/displays/AcctionIsPaused'
 
 const Wrapper = styled('div')`
@@ -24,9 +24,9 @@ export const PreventActionIfBadgeTypePaused: React.FC<Props> = ({ children, minH
   const router = useRouter()
 
   const badgeTypeId = router.query.typeId as string
-  const badgeType = useBadgeType(badgeTypeId)
+  const badgeType = useBadgeModel(badgeTypeId)
 
-  if (badgeType.data?.badgeType.paused) {
+  if (badgeType.data?.badgeModel.paused) {
     return (
       <Wrapper style={{ minHeight }}>
         <ActionIsPaused />

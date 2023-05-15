@@ -73,7 +73,7 @@ export default function BadgeOwnerPreview() {
   }
 
   const owner = useUserById(ownerAddress)
-  const resMetadata = useS3Metadata<{ content: CreatorMetadata }>(owner.data?.creatorMetadata || '')
+  const resMetadata = useS3Metadata<{ content: CreatorMetadata }>(owner.data?.creatorUri || '')
   const ownerMetadata = resMetadata.data?.content
 
   return (

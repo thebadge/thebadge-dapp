@@ -7,21 +7,24 @@ export const USER_BY_ID = gql`
       mintedBadgesAmount
       isVerified
       isCreator
-      creatorMetadata
+      creatorUri
       badges {
         id
-        badgeType {
+        badgeModel {
           id
-          klerosBadge {
-            klerosMetadataURL
-            klerosTCRList
+          badgeModelKleros {
+            registrationUri
+            removalUri
+            tcrList
             submissionBaseDeposit
             challengePeriodDuration
           }
         }
-        evidenceMetadataUrl
+        badgeKlerosMetadata {
+          reviewDueDate
+        }
+        uri
         status
-        reviewDueDate
       }
     }
   }
@@ -33,14 +36,17 @@ export const MY_BADGE_TYPES = gql`
       badges(where: $where) {
         id
         status
-        reviewDueDate
-        badgeType {
+        badgeKlerosMetadata {
+          reviewDueDate
+        }
+        badgeModel {
+          id
           validFor
           paused
-          mintCost
-          metadataURL
-          id
-          controllerName
+          badgeModelKleros {
+            registrationUri
+          }
+          controllerType
           badgesMintedAmount
         }
       }
@@ -51,16 +57,15 @@ export const MY_BADGE_TYPES = gql`
 export const MY_CREATED_BADGE_TYPES = gql`
   query userCreatedBadges($ownerAddress: ID!) {
     user(id: $ownerAddress) {
-      createdBadgeTypes {
+      createdBadgeModels {
         validFor
         paused
-        mintCost
-        metadataURL
+        uri
         id
-        controllerName
+        controllerType
         badgesMintedAmount
       }
-      createdBadgesTypesAmount
+      createdBadgesModelAmount
     }
   }
 `
@@ -68,17 +73,20 @@ export const MY_CREATED_BADGE_TYPES = gql`
 export const MY_BADGE_TYPES_IN_REVIEW = gql`
   query userBadgesInReview($ownerAddress: ID!) {
     user(id: $ownerAddress) {
-      badges(where: { status_in: [InReview] }) {
+      badges(where: { status_in: [Requested] }) {
         id
         status
-        reviewDueDate
-        badgeType {
+        badgeKlerosMetadata {
+          reviewDueDate
+        }
+        badgeModel {
           validFor
           paused
-          mintCost
-          metadataURL
+          badgeModelKleros {
+            registrationUri
+          }
           id
-          controllerName
+          controllerType
           badgesMintedAmount
         }
       }
