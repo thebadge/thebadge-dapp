@@ -13,18 +13,19 @@ export default function CurationCriteriaLink({ badgeTypeId }: { badgeTypeId: str
   if (
     badgeTypeData.error ||
     !badgeTypeData.data?.badgeModel ||
-    !badgeTypeData.data?.badgeTypeMetadata
+    !badgeTypeData.data?.badgeModelMetadata
   ) {
     throw `There was an error trying to fetch the metadata for the badge type`
   }
 
-  const badgeTypeMetadata = badgeTypeData.data?.badgeTypeMetadata
+  const badgeModelMetadata = badgeTypeData.data?.badgeModelMetadata
 
-  if (!badgeTypeMetadata) {
+  if (!badgeModelMetadata) {
     throw 'There was not possible to get the needed metadata. Try again in some minutes.'
   }
 
-  const badgeCriteria = 's3Url' in badgeTypeMetadata.fileURI ? badgeTypeMetadata.fileURI.s3Url : ''
+  const badgeCriteria =
+    's3Url' in badgeModelMetadata.fileURI ? badgeModelMetadata.fileURI.s3Url : ''
 
   return (
     <Typography fontSize={14} variant="dAppBody1">

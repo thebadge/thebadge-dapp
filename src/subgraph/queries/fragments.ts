@@ -62,11 +62,23 @@ gql`
     uri
     controllerType
     validFor
+    creatorFee
     paused
     badgesMintedAmount
     creator {
       id
       creatorUri
     }
+  }
+`
+
+gql`
+  fragment KlerosBadgeModel on BadgeModelKlerosMetadata {
+    id
+    registrationUri
+    removalUri
+    tcrList
+    submissionBaseDeposit
+    challengePeriodDuration
   }
 `

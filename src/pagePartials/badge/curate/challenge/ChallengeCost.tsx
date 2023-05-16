@@ -25,14 +25,14 @@ export default function ChallengeCost({
   if (
     badgeTypeData.error ||
     !badgeTypeData.data?.badgeModel ||
-    !badgeTypeData.data?.badgeTypeMetadata
+    !badgeTypeData.data?.badgeModelMetadata
   ) {
     throw `There was an error trying to fetch the metadata for the badge type`
   }
 
   const challengeCost = useBadgeCost(badgeTypeId, ownerAddress)
   const challengePeriodDuration =
-    badgeTypeData.data?.badgeModel.klerosBadge?.challengePeriodDuration / 60 / 60 / 24
+    badgeTypeData.data?.badgeModel.badgeModelKleros?.challengePeriodDuration / 60 / 60 / 24
 
   if (!challengeCost) {
     throw 'There was not possible to get challenge cost. Try again in some minutes.'

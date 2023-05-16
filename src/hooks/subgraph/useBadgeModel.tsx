@@ -3,7 +3,7 @@ import useSWR from 'swr'
 
 import { BACKEND_URL } from '@/src/constants/common'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
-import { KlerosListStructure } from '@/src/utils/kleros/generateKlerosListMetaEvidence'
+import { BadgeModelMetadata } from '@/types/badges/BadgeMetadata'
 import { BackendResponse } from '@/types/utils'
 
 /**
@@ -14,19 +14,18 @@ import { BackendResponse } from '@/types/utils'
 export default function useBadgeModel(id: string) {
   const gql = useSubgraph()
   return useSWR(id.length ? [`BadgeModel:${id}`, id] : null, async ([, _id]) => {
-    const badgeType = await gql.badgeModel({ id: _id })
+    const badgeType = await gql.badgeModelById({ id: _id })
 
     const badgeModelData = badgeType.badgeModel
 
-    if (!badgeModelData?.badgeModelKleros?.registrationUri) {
+    if (!badgeModelData?.uri) {
       throw 'There was not possible to get the needed metadata. Try again in some minutes.'
     }
 
-    const cleanedHash = badgeModelData?.badgeModelKleros?.registrationUri.replace(/^ipfs?:\/\//, '')
+    const metadataHash = badgeModelData?.uri.replace(/^ipfs?:\/\//, '')
 
-    // TODO: hardcoded for now, as we only support Kleros.
-    const res = await axios.get<BackendResponse<{ content: KlerosListStructure }>>(
-      `${BACKEND_URL}/api/ipfs/${cleanedHash}`,
+    const res = await axios.get<BackendResponse<{ content: BadgeModelMetadata }>>(
+      `${BACKEND_URL}/api/ipfs/${metadataHash}`,
     )
     const badgeModelMetadata = res.data.result?.content
 

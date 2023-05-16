@@ -99,7 +99,8 @@ function CurateModalContent({
   const badgeById = useBadgeById(badgeTypeId, ownerAddress)
 
   const badge = badgeById.data?.badge
-  const badgeEvidence = badgeById.data?.badgeEvidence
+  // TODO Add evidence
+  const badgeEvidence = badgeById.data?.badgeEvidence as { columns: any[]; values: any[] }
 
   if (!badge) {
     return null
