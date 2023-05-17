@@ -17,7 +17,7 @@ import SafeSuspense, { withPageGenericSuspense } from '@/src/components/helpers/
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import { useKeyPress } from '@/src/hooks/useKeypress'
 import MiniBadgeTypeMetadata from '@/src/pagePartials/badge/MiniBadgeTypeMetadata'
-import BadgeTypeInfoPreview from '@/src/pagePartials/badge/explorer/BadgeTypeInfoPreview'
+import BadgeModelInfoPreview from '@/src/pagePartials/badge/explorer/BadgeModelInfoPreview'
 import { BadgeModel } from '@/types/generated/subgraph'
 import { NextPageWithLayout } from '@/types/next'
 
@@ -25,7 +25,7 @@ const ExploreBadgeTypes: NextPageWithLayout = () => {
   const { t } = useTranslation()
   const [badgeModels, setBadgeModels] = useState<BadgeModel[]>([])
   const [loading, setLoading] = useState<boolean>(false)
-  const [selectedBadgeType, setSelectedBadgeType] = useState<number>(0)
+  const [selectedBadgeModel, setSelectedBadgeType] = useState<number>(0)
 
   const badgeModelsElementRefs: RefObject<HTMLLIElement>[] = badgeModels.map(() =>
     createRef<HTMLLIElement>(),
@@ -37,15 +37,15 @@ const ExploreBadgeTypes: NextPageWithLayout = () => {
 
   useEffect(() => {
     // Each time that a new item is selected, we scroll to it
-    if (badgeModelsElementRefs[selectedBadgeType]?.current) {
+    if (badgeModelsElementRefs[selectedBadgeModel]?.current) {
       window.scrollTo({
         top:
-          (badgeModelsElementRefs[selectedBadgeType].current?.offsetTop || 0) -
-          (badgeModelsElementRefs[selectedBadgeType].current?.offsetHeight || 0),
+          (badgeModelsElementRefs[selectedBadgeModel].current?.offsetTop || 0) -
+          (badgeModelsElementRefs[selectedBadgeModel].current?.offsetHeight || 0),
         behavior: 'smooth',
       })
     }
-  }, [badgeModelsElementRefs, selectedBadgeType])
+  }, [badgeModelsElementRefs, selectedBadgeModel])
 
   const selectPreviousBadgeType = useCallback(() => {
     if (!badgeModels.length) return
@@ -94,7 +94,7 @@ const ExploreBadgeTypes: NextPageWithLayout = () => {
   }
 
   function renderSelectedBadgePreview() {
-    if (!badgeModels[selectedBadgeType]) return null
+    if (!badgeModels[selectedBadgeModel]) return null
     return (
       <SafeSuspense>
         <Box display="flex" justifyContent="space-between">
@@ -110,7 +110,7 @@ const ExploreBadgeTypes: NextPageWithLayout = () => {
             </IconButton>
           </Box>
         </Box>
-        <BadgeTypeInfoPreview badgeType={badgeModels[selectedBadgeType]} />
+        <BadgeModelInfoPreview badgeModel={badgeModels[selectedBadgeModel]} />
       </SafeSuspense>
     )
   }
@@ -126,7 +126,7 @@ const ExploreBadgeTypes: NextPageWithLayout = () => {
       >
         {badgeModels.length > 0 ? (
           badgeModels.map((bt, i) => {
-            const isSelected = bt.id === badgeModels[selectedBadgeType]?.id
+            const isSelected = bt.id === badgeModels[selectedBadgeModel]?.id
             return (
               <InViewPort key={bt.id} minHeight={300} minWidth={180}>
                 <SafeSuspense fallback={<MiniBadgePreviewLoading />}>

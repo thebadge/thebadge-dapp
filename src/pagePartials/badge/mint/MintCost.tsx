@@ -9,7 +9,7 @@ import { colors } from 'thebadge-ui-library'
 import MarkdownTypography from '@/src/components/common/MarkdownTypography'
 import { getNetworkConfig } from '@/src/config/web3'
 import { DOCS_URL } from '@/src/constants/common'
-import useBadgeModel from '@/src/hooks/subgraph/useBadgeType'
+import { useRegistrationBadgeModelKlerosMetadata } from '@/src/hooks/subgraph/useBadgeModelKlerosMetadata'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 
 type Props = {
@@ -24,31 +24,27 @@ export default function MintCost({ costs }: Props) {
   const { appChainId } = useWeb3Connection()
   const networkConfig = getNetworkConfig(appChainId)
   const searchParams = useSearchParams()
-  const typeId = searchParams.get('typeId')
+  const modelId = searchParams.get('modelId')
 
-  if (!typeId) {
-    throw `No typeId provided as URL query param`
+  if (!modelId) {
+    throw `No modelId provided as URL query param`
   }
-  const badgeModelData = useBadgeModel(typeId)
+  const badgeModelKlerosData = useRegistrationBadgeModelKlerosMetadata(modelId)
 
-  if (
-    badgeModelData.error ||
-    !badgeModelData.data?.badgeModel ||
-    !badgeModelData.data?.badgeModelMetadata
-  ) {
+  if (badgeModelKlerosData.error || !badgeModelKlerosData.data) {
     throw `There was an error trying to fetch the metadata for the badge type`
   }
 
-  const challengePeriodDuration =
-    badgeModelData.data?.badgeModel?.badgeModelKleros?.challengePeriodDuration
+  const challengePeriodDuration = badgeModelKlerosData.data?.challengePeriodDuration
 
-  const fileURI = badgeModelData.data.badgeModelMetadata
+  const badgeModelMetadata = badgeModelKlerosData.data?.badgeModelKlerosRegistrationMetadata
 
-  if (!fileURI) {
+  if (!badgeModelMetadata) {
     throw 'There was not possible to get the needed metadata. Try again in some minutes.'
   }
 
-  const criteriaUrl = 's3Url' in fileURI ? fileURI.s3Url : ''
+  const badgeCriteria =
+    's3Url' in badgeModelMetadata.fileURI ? badgeModelMetadata.fileURI.s3Url : ''
 
   return (
     <Stack
@@ -108,7 +104,7 @@ export default function MintCost({ costs }: Props) {
       <Typography textAlign="center" variant="subtitle2">
         {t('badge.type.mint.makeSure')}
         <a
-          href={criteriaUrl as string}
+          href={badgeCriteria as string}
           rel="noreferrer"
           style={{ color: colors.green }}
           target={'_blank'}

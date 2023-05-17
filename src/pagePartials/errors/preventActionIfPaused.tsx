@@ -4,7 +4,7 @@ import React, { ReactElement } from 'react'
 import { styled } from '@mui/material'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
-import useBadgeModel from '@/src/hooks/subgraph/useBadgeType'
+import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
 import ActionIsPaused from '@/src/pagePartials/errors/displays/AcctionIsPaused'
 
 const Wrapper = styled('div')`

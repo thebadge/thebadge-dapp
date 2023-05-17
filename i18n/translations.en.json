@@ -80,7 +80,7 @@
     }
   },
   "explorer": {
-    "title": "Badge types explorer",
+    "title": "Badge models explorer",
     "noBadgesFound": "There are no badges that match these filters...",
     "button": "MINT",
     "preview": {

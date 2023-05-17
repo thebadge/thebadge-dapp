@@ -17,7 +17,7 @@ export default function BadgeEvidenceInfoPreview({ badge }: { badge: Badge }) {
   const { t } = useTranslation()
   const { challenge } = useCurateProvider()
 
-  const badgeById = useBadgeById(badge?.badgeType.id, badge?.receiver.id)
+  const badgeById = useBadgeById(badge?.badgeModel.id, badge?.account.id)
 
   const badgeEvidence = badgeById.data?.badgeEvidence
 
@@ -30,7 +30,7 @@ export default function BadgeEvidenceInfoPreview({ badge }: { badge: Badge }) {
           <Typography fontSize={14} variant="body4">
             {t('explorer.curate.requester')}
           </Typography>
-          <Address address={badge?.receiver.id} />
+          <Address address={badge?.account.id} />
         </Stack>
         <Box alignItems="flex-end" display="flex">
           <Typography fontSize={14} sx={{ textDecoration: 'underline !important' }} variant="body4">
@@ -66,7 +66,7 @@ export default function BadgeEvidenceInfoPreview({ badge }: { badge: Badge }) {
           {t('explorer.curate.listingCriteria')}
         </Typography>
         <SafeSuspense>
-          <ListingCriteriaPreview badgeTypeId={badge?.badgeType.id} />
+          <ListingCriteriaPreview badgeModelId={badge?.badgeModel.id} />
         </SafeSuspense>
         <Divider color={colors.white} />
       </Stack>
@@ -75,7 +75,7 @@ export default function BadgeEvidenceInfoPreview({ badge }: { badge: Badge }) {
         <ButtonV2
           backgroundColor={colors.redError}
           fontColor={colors.white}
-          onClick={() => challenge(badge?.badgeType.id, badge?.receiver.id)}
+          onClick={() => challenge(badge?.badgeModel.id, badge?.account.id)}
           sx={{ ml: 'auto' }}
           variant="contained"
         >

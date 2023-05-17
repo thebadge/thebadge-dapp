@@ -20,7 +20,7 @@ export const USER_BY_ID = gql`
             challengePeriodDuration
           }
         }
-        badgeKlerosMetadata {
+        badgeKlerosMetaData {
           reviewDueDate
         }
         uri
@@ -36,7 +36,7 @@ export const MY_BADGE_TYPES = gql`
       badges(where: $where) {
         id
         status
-        badgeKlerosMetadata {
+        badgeKlerosMetaData {
           reviewDueDate
         }
         badgeModel {
@@ -76,7 +76,7 @@ export const MY_BADGE_TYPES_IN_REVIEW = gql`
       badges(where: { status_in: [Requested] }) {
         id
         status
-        badgeKlerosMetadata {
+        badgeKlerosMetaData {
           reviewDueDate
         }
         badgeModel {
