@@ -83,7 +83,7 @@ const ViewListOfBadgesByType: NextPageWithLayout = () => {
     setLoading(true)
 
     // TODO filter badges using filters, category, text
-    const badgesByType = await gql.badgeByTypeId({ id: badgeTypeId })
+    const badgesByType = await gql.badgeByModelId({ id: badgeTypeId })
     const badges = (badgesByType.badges as Badge[]) || []
 
     setTimeout(() => {

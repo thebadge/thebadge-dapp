@@ -41,12 +41,12 @@ export default function BadgesInReviewSection() {
     // TODO filter badges with: selectedFilters, selectedCategory, textSearch
     const badgesInReview = await gql.userBadgesInReview({ ownerAddress: address })
 
-    const badgeTypes = badgesInReview?.user?.badges || []
-    const badgesLayouts = badgeTypes.map((badge) => {
-      const badgeType = badge.badgeType
+    const badgeModels = badgesInReview?.user?.badges || []
+    const badgesLayouts = badgeModels.map((badge) => {
+      const badgeModel = badge.badgeModel
       return (
-        <Box key={badgeType.id}>
-          <MiniBadgeTypeMetadata highlightColor={colors.green} metadata={badgeType?.metadataURL} />
+        <Box key={badgeModel.id}>
+          <MiniBadgeTypeMetadata highlightColor={colors.green} metadata={badgeModel?.uri} />
         </Box>
       )
     })

@@ -48,22 +48,24 @@ export default function BadgesCreatedSection() {
     setLoading(true)
     // TODO filter badges with: selectedFilters, selectedCategory, textSearch
     const userCreatedBadges = await gql.userCreatedBadges({ ownerAddress: address })
-    const badgeTypes = userCreatedBadges?.user?.createdBadgeTypes || []
+    const badgeModels = userCreatedBadges?.user?.createdBadgeModels || []
 
-    const badgesLayouts = badgeTypes.map((badgeType) => {
+    const badgesLayouts = badgeModels.map((badgeModel) => {
+      // TODO Add mintcost
+      const mintCost = '100000000000000' //badgeModel.mintCost;
       return (
-        <StyledBadgeContainer highlightColor={colors.pink} key={badgeType.id}>
+        <StyledBadgeContainer highlightColor={colors.pink} key={badgeModel.id}>
           <MiniBadgeTypeMetadata
             disableAnimations
             highlightColor={colors.pink}
-            metadata={badgeType?.metadataURL}
+            metadata={badgeModel?.uri}
           />
           <Box id="badge-info">
             <Typography variant="body4">
-              {t('profile.badgesCreated.explorerBadgeCost')} {formatUnits(badgeType.mintCost, 18)}
+              {t('profile.badgesCreated.explorerBadgeCost')} {formatUnits(mintCost, 18)}
             </Typography>
             <Typography variant="body4">
-              {t('profile.badgesCreated.explorerBadgeMinted')} {badgeType.badgesMintedAmount}
+              {t('profile.badgesCreated.explorerBadgeMinted')} {badgeModel.badgesMintedAmount}
             </Typography>
           </Box>
         </StyledBadgeContainer>

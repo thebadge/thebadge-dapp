@@ -5,7 +5,7 @@ import { IconBadge, MiniBadgePreview, colors } from 'thebadge-ui-library'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { useColorMode } from '@/src/providers/themeProvider'
-import { BadgeTypeMetadata } from '@/types/badges/BadgeMetadata'
+import { BadgeModelMetadata } from '@/types/badges/BadgeMetadata'
 
 type Props = {
   metadata?: string
@@ -22,7 +22,7 @@ function MiniBadgeTypeMetadata({
   metadata,
   onClick,
 }: Props) {
-  const res = useS3Metadata<{ content: BadgeTypeMetadata }>(metadata || '')
+  const res = useS3Metadata<{ content: BadgeModelMetadata }>(metadata || '')
   const { mode } = useColorMode()
   const badgeMetadata = res.data?.content
 

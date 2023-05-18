@@ -23,14 +23,12 @@ export default function BadgesInReviewSwiper() {
       return (
         <Box
           key={badgeInReview.id}
-          onClick={() =>
-            router.push(`/badge/${badgeInReview.badgeType.id}/${badgeInReview.receiver.id}`)
-          }
+          onClick={() => router.push(`/badge/preview/${badgeInReview.id}`)}
           sx={{ height: '100%', display: 'flex' }}
         >
           <InViewPort minHeight={300}>
             <SafeSuspense>
-              <BadgeTypeMetadata metadata={badgeInReview?.badgeType.metadataURL} size="small" />
+              <BadgeTypeMetadata metadata={badgeInReview?.badgeModel.uri} size="small" />
             </SafeSuspense>
           </InViewPort>
         </Box>

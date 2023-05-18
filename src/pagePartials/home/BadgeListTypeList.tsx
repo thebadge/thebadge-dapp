@@ -1,23 +1,21 @@
-import { fillListWithPlaceholders } from '@/src/components/utils/emptyBadges'
-
 import { useRouter } from 'next/navigation'
 import React, { useCallback } from 'react'
 
 import { Box } from '@mui/material'
 import { EffectCoverflow, Pagination } from 'swiper'
-
-import 'swiper/css'
-import 'swiper/css/effect-coverflow'
-import 'swiper/css/navigation'
-import 'swiper/css/pagination'
-
 import { EmptyBadgePreview } from 'thebadge-ui-library'
 
 import InViewPort from '@/src/components/helpers/InViewPort'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import TBSwiper from '@/src/components/helpers/TBSwiper'
+import { fillListWithPlaceholders } from '@/src/components/utils/emptyBadges'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import BadgeTypeMetadata from '@/src/pagePartials/badge/BadgeTypeMetadata'
+
+import 'swiper/css'
+import 'swiper/css/effect-coverflow'
+import 'swiper/css/navigation'
+import 'swiper/css/pagination'
 
 export default function BadgeListTypeList() {
   const gql = useSubgraph()

@@ -73,15 +73,15 @@ export default function BadgesYouOwnList({ address }: Props) {
       if (filter.title === 'Challenged') {
         where = {
           ...where,
-          isChallenged: true,
+          status: BadgeStatus.Challenged,
         }
       }
       if (filter.title === 'In Review') {
         where = {
           ...where,
           status_in: where.status_in
-            ? [...where.status_in, BadgeStatus.InReview]
-            : [BadgeStatus.InReview],
+            ? [...where.status_in, BadgeStatus.Requested]
+            : [BadgeStatus.Requested],
         }
       }
     })
@@ -98,7 +98,7 @@ export default function BadgesYouOwnList({ address }: Props) {
         <Box key={badge.id}>
           <MiniBadgeTypeMetadata
             highlightColor={getHighlightColorByStatus(badge.status)}
-            metadata={badge.badgeType?.metadataURL}
+            metadata={badge.badgeModel?.uri}
           />
         </Box>
       )
