@@ -7,6 +7,11 @@ export type BadgeMetadata = {
   values: Record<string, any>
 }
 
+export type BadgeEvidenceMetadata = {
+  columns: MetadataColumn[]
+  values: Record<string, any>
+}
+
 export type BadgeModelMetadata = {
   name: string
   image: BackendFileResponse

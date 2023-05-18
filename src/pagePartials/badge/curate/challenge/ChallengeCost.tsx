@@ -10,23 +10,17 @@ import { useRegistrationBadgeModelKlerosMetadata } from '@/src/hooks/subgraph/us
 import { useBadgeCost } from '@/src/pagePartials/badge/curate/useBadgeCost'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 
-export default function ChallengeCost({
-  badgeTypeId,
-  ownerAddress,
-}: {
-  badgeTypeId: string
-  ownerAddress: string
-}) {
+export default function ChallengeCost({ badgeModelId }: { badgeModelId: string }) {
   const { appChainId } = useWeb3Connection()
   const networkConfig = getNetworkConfig(appChainId)
 
-  const badgeModelKlerosData = useRegistrationBadgeModelKlerosMetadata(badgeTypeId)
+  const badgeModelKlerosData = useRegistrationBadgeModelKlerosMetadata(badgeModelId)
 
   if (badgeModelKlerosData.error || !badgeModelKlerosData.data) {
     throw `There was an error trying to fetch the metadata for the badge type`
   }
 
-  const challengeCost = useBadgeCost(badgeTypeId, ownerAddress)
+  const challengeCost = useBadgeCost(badgeModelId)
   const challengePeriodDuration = badgeModelKlerosData.data?.challengePeriodDuration / 60 / 60 / 24
 
   if (!challengeCost) {

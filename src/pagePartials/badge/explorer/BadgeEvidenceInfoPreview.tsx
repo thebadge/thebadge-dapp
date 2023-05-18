@@ -7,7 +7,7 @@ import { ButtonV2, colors } from 'thebadge-ui-library'
 import DisplayEvidenceField from '@/src/components/displayEvidence/DisplayEvidenceField'
 import { Address } from '@/src/components/helpers/Address'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
-import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
+import { useEvidenceBadgeKlerosMetadata } from '@/src/hooks/subgraph/useBadgeKlerosMetadata'
 import { ListingCriteriaPreview } from '@/src/pagePartials/badge/explorer/ListingCriteriaPreview'
 import { useCurateProvider } from '@/src/providers/curateProvider'
 import { getEvidenceValue } from '@/src/utils/kleros/getEvidenceValue'
@@ -17,9 +17,8 @@ export default function BadgeEvidenceInfoPreview({ badge }: { badge: Badge }) {
   const { t } = useTranslation()
   const { challenge } = useCurateProvider()
 
-  const badgeById = useBadgeById(badge?.badgeModel.id, badge?.account.id)
-
-  const badgeEvidence = badgeById.data?.badgeEvidence
+  const badgeKlerosMetadata = useEvidenceBadgeKlerosMetadata(badge?.id)
+  const badgeEvidence = badgeKlerosMetadata.data?.requestBadgeEvidence
 
   return (
     <Stack gap={4}>
@@ -34,7 +33,11 @@ export default function BadgeEvidenceInfoPreview({ badge }: { badge: Badge }) {
         </Stack>
         <Box alignItems="flex-end" display="flex">
           <Typography fontSize={14} sx={{ textDecoration: 'underline !important' }} variant="body4">
-            <a href={badgeById.data?.rawBadgeEvidenceUrl} rel="noreferrer" target="_blank">
+            <a
+              href={badgeKlerosMetadata.data?.requestBadgeEvidenceRawUrl}
+              rel="noreferrer"
+              target="_blank"
+            >
               {t('explorer.curate.viewEvidence')}
             </a>
           </Typography>
@@ -75,7 +78,7 @@ export default function BadgeEvidenceInfoPreview({ badge }: { badge: Badge }) {
         <ButtonV2
           backgroundColor={colors.redError}
           fontColor={colors.white}
-          onClick={() => challenge(badge?.badgeModel.id, badge?.account.id)}
+          onClick={() => challenge(badge?.id)}
           sx={{ ml: 'auto' }}
           variant="contained"
         >

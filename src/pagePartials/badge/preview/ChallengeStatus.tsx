@@ -11,11 +11,10 @@ export default function ChallengeStatus() {
   const { challenge } = useCurateProvider()
 
   const searchParams = useSearchParams()
-  const typeId = searchParams.get('typeId')
-  const ownerAddress = searchParams.get('ownerAddress')
+  const badgeId = searchParams.get('badgeId')
 
-  if (!typeId || !ownerAddress) {
-    throw `No typeId/ownerAddress provided us URL query param`
+  if (!badgeId) {
+    throw `No badgeId provided us URL query param`
   }
 
   return (
@@ -27,7 +26,7 @@ export default function ChallengeStatus() {
         </Typography>
         <Button
           color="error"
-          onClick={() => challenge(typeId, ownerAddress)}
+          onClick={() => challenge(badgeId)}
           size="medium"
           sx={{ fontSize: '11px !important', borderRadius: 2 }}
           variant="outlined"

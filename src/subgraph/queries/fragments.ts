@@ -4,6 +4,7 @@ gql`
   fragment FullBadgeDetails on Badge {
     id
     status
+    uri
     account {
       id
     }
@@ -14,13 +15,17 @@ gql`
       creatorFee
       validFor
       badgesMintedAmount
-      badgeModelKleros {
-        registrationUri
-        removalUri
-        tcrList
-        submissionBaseDeposit
-        challengePeriodDuration
-      }
+    }
+  }
+`
+
+gql`
+  fragment BadgeKlerosMetadata on BadgeKlerosMetaData {
+    id
+    itemID
+    reviewDueDate
+    requests {
+      ...Request
     }
   }
 `

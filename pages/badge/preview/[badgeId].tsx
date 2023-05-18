@@ -5,12 +5,15 @@ import { Box, Stack, Tooltip } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
 import { ButtonV2, colors } from 'thebadge-ui-library'
 
-import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
+import SafeSuspense, { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
+import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
 import BadgeOwnedPreview from '@/src/pagePartials/badge/preview/BadgeOwnedPreview'
 import BadgeOwnerPreview from '@/src/pagePartials/badge/preview/BadgeOwnerPreview'
+import ChallengeStatus from '@/src/pagePartials/badge/preview/ChallengeStatus'
 import { useCurateProvider } from '@/src/providers/curateProvider'
 import { useColorMode } from '@/src/providers/themeProvider'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+import { BadgeStatus } from '@/types/generated/subgraph'
 import { NextPageWithLayout } from '@/types/next'
 
 const ViewBadge: NextPageWithLayout = () => {
@@ -21,12 +24,18 @@ const ViewBadge: NextPageWithLayout = () => {
   const { mode } = useColorMode()
 
   const searchParams = useSearchParams()
-  const typeId = searchParams.get('typeId')
-  const ownerAddress = searchParams.get('ownerAddress')
-
-  if (!typeId || !ownerAddress) {
-    throw `No typeId/ownerAddress provided us URL query param`
+  const badgeId = searchParams.get('badgeId')
+  if (!badgeId) {
+    throw `No badgeId provided us URL query param`
   }
+  const badgeById = useBadgeById(badgeId)
+  const badge = badgeById.data?.badge
+
+  if (!badge) {
+    throw 'There was not possible to get the needed data. Try again in some minutes.'
+  }
+  const badgeModelId = badge.badgeModel.id
+  const ownerAddress = badge.account.id
 
   return (
     <Box sx={{ position: 'relative' }}>
@@ -41,29 +50,31 @@ const ViewBadge: NextPageWithLayout = () => {
             maxWidth={300}
           >
             <Tooltip arrow title={address === ownerAddress ? 'You already own this badge.' : ''}>
-              <ButtonV2
-                backgroundColor={colors.transparent}
-                disabled={address === ownerAddress}
-                fontColor={mode === 'light' ? colors.blackText : colors.white}
-                onClick={() => router.push(`/badge/mint/${typeId}`)}
-                sx={{
-                  borderRadius: '10px',
-                  fontSize: '11px !important',
-                  padding: '0.5rem 1rem !important',
-                  height: 'fit-content !important',
-                  lineHeight: '14px',
-                  fontWeight: 700,
-                  boxShadow: 'none',
-                  textTransform: 'uppercase',
-                }}
-              >
-                {t('badge.mintButton')}
-              </ButtonV2>
+              <div>
+                <ButtonV2
+                  backgroundColor={colors.transparent}
+                  disabled={address === ownerAddress}
+                  fontColor={mode === 'light' ? colors.blackText : colors.white}
+                  onClick={() => router.push(`/badge/mint/${badgeModelId}`)}
+                  sx={{
+                    borderRadius: '10px',
+                    fontSize: '11px !important',
+                    padding: '0.5rem 1rem !important',
+                    height: 'fit-content !important',
+                    lineHeight: '14px',
+                    fontWeight: 700,
+                    boxShadow: 'none',
+                    textTransform: 'uppercase',
+                  }}
+                >
+                  {t('badge.mintButton')}
+                </ButtonV2>
+              </div>
             </Tooltip>
             <ButtonV2
               backgroundColor={colors.greenLogo}
               fontColor={colors.blackText}
-              onClick={() => curate(typeId, ownerAddress)}
+              onClick={() => curate(badgeId)}
               sx={{
                 borderRadius: '10px',
                 fontSize: '11px !important',
@@ -79,14 +90,15 @@ const ViewBadge: NextPageWithLayout = () => {
               {t('badge.curateButton')}
             </ButtonV2>
           </Box>
-          <BadgeOwnerPreview />
+          <SafeSuspense>
+            <BadgeOwnerPreview ownerAddress={ownerAddress} />
+          </SafeSuspense>
         </Box>
-        {/*
-        // TODO Enable it when we have the required data to show
-        <SafeSuspense>
-          <ChallengeStatus />
-        </SafeSuspense>
-        */}
+        {badge.status === BadgeStatus.Challenged && (
+          <SafeSuspense>
+            <ChallengeStatus />
+          </SafeSuspense>
+        )}
       </Stack>
     </Box>
   )

@@ -5,10 +5,10 @@ import { useTranslation } from 'next-export-i18n'
 
 import { useRegistrationBadgeModelKlerosMetadata } from '@/src/hooks/subgraph/useBadgeModelKlerosMetadata'
 
-export default function CurationCriteriaLink({ badgeTypeId }: { badgeTypeId: string }) {
+export default function CurationCriteriaLink({ badgeModelId }: { badgeModelId: string }) {
   const { t } = useTranslation()
 
-  const badgeModelKlerosData = useRegistrationBadgeModelKlerosMetadata(badgeTypeId)
+  const badgeModelKlerosData = useRegistrationBadgeModelKlerosMetadata(badgeModelId)
 
   if (!badgeModelKlerosData.data) {
     throw `There was an error trying to fetch the metadata for the badge type`
