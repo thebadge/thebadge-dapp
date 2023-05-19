@@ -1,8 +1,9 @@
+import { getFormattedTimeLeft, timestampToDate } from "@/src/utils/date";
 import { useRouter } from 'next/navigation'
 import { useMemo } from 'react'
 
 import { Box } from '@mui/material'
-import { EmptyBadgePreview } from 'thebadge-ui-library'
+import { EmptyBadgePreview, PendingBadgeOverlay } from 'thebadge-ui-library'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import TBSwiper from '@/src/components/helpers/TBSwiper'
@@ -19,6 +20,9 @@ export default function PendingList() {
 
   const badgesList = useMemo(() => {
     const badges = badgesInReview.data?.badges.map((badgeInReview) => {
+      console.log('badgeInReview', badgeInReview)
+      const timeLeft = getFormattedTimeLeft(timestampToDate(badgeInReview.reviewDueDate))
+
       return (
         <Box
           key={badgeInReview.id}
@@ -28,7 +32,12 @@ export default function PendingList() {
           sx={{ height: '100%', display: 'flex' }}
         >
           <SafeSuspense>
-            <BadgeTypeMetadata metadata={badgeInReview?.badgeType.metadataURL} size="small" />
+            <PendingBadgeOverlay
+              badge={
+                <BadgeTypeMetadata metadata={badgeInReview?.badgeType.metadataURL} size="small" />
+              }
+              timeLeft={timeLeft}
+            />
           </SafeSuspense>
         </Box>
       )
