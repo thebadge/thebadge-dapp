@@ -26,7 +26,7 @@ const ViewListOfBadgesByType: NextPageWithLayout = () => {
   const { t } = useTranslation()
   const gql = useSubgraph()
   const router = useRouter()
-  const badgeTypeId = router.query.typeId as string
+  const badgeTypeId = router.query.modelId as string
 
   const [badges, setBadges] = useState<Badge[]>([])
   const [loading, setLoading] = useState<boolean>(false)
