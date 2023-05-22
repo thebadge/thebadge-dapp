@@ -8,22 +8,22 @@ import { ButtonV2, colors } from 'thebadge-ui-library'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { getNetworkConfig } from '@/src/config/web3'
+import { useBadgeModelKlerosMetadata } from '@/src/hooks/subgraph/useBadgeModelKlerosMetadata'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
 import CreatorInfoSmallPreview from '@/src/pagePartials/badge/explorer/CreatorInfoSmallPreview'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
-import { BadgeTypeMetadata } from '@/types/badges/BadgeMetadata'
-import { BadgeType } from '@/types/generated/subgraph'
+import { BadgeModelMetadata } from '@/types/badges/BadgeMetadata'
+import { BadgeModel } from '@/types/generated/subgraph'
 
-export default function BadgeTypeInfoPreview({ badgeType }: { badgeType: BadgeType }) {
+export default function BadgeModelInfoPreview({ badgeModel }: { badgeModel: BadgeModel }) {
   const { t } = useTranslation()
   const router = useRouter()
   const { appChainId } = useWeb3Connection()
   const networkConfig = getNetworkConfig(appChainId)
 
-  const resBadgeTypeMetadata = useS3Metadata<{ content: BadgeTypeMetadata }>(
-    badgeType.metadataURL || '',
-  )
-  const badgeMetadata = resBadgeTypeMetadata.data?.content
+  const resBadgeModelMetadata = useS3Metadata<{ content: BadgeModelMetadata }>(badgeModel.uri || '')
+  const badgeModelKlerosMetadata = useBadgeModelKlerosMetadata(badgeModel.id)
+  const badgeMetadata = resBadgeModelMetadata.data?.content
 
   return (
     <Stack gap={4}>
@@ -50,14 +50,15 @@ export default function BadgeTypeInfoPreview({ badgeType }: { badgeType: BadgeTy
         <Typography fontWeight="bold" variant="dAppTitle2">
           {t('explorer.preview.badge.mintCost')}
           <Typography component="span" sx={{ ml: 1 }} variant="dAppTitle2">
-            {formatUnits(badgeType.mintCost, 18)} {networkConfig.token}
+            {formatUnits(badgeModelKlerosMetadata.data?.submissionBaseDeposit, 18)}{' '}
+            {networkConfig.token}
           </Typography>
         </Typography>
 
         <Typography fontWeight="bold" variant="dAppTitle2">
           {t('explorer.preview.badge.totalMinted')}
           <Typography component="span" sx={{ ml: 1 }} variant="dAppTitle2">
-            {badgeType.badgesMintedAmount}
+            {badgeModel.badgesMintedAmount}
           </Typography>
         </Typography>
         <Divider color={colors.white} />
@@ -66,7 +67,7 @@ export default function BadgeTypeInfoPreview({ badgeType }: { badgeType: BadgeTy
       <Box display="flex" flex="1" justifyContent="space-between">
         <ButtonV2
           backgroundColor={colors.transparent}
-          onClick={() => router.push(`/badge/${badgeType.id}`)}
+          onClick={() => router.push(`/badge/${badgeModel.id}`)}
           variant="outlined"
         >
           {t('explorer.preview.badge.showOthers')}
@@ -74,7 +75,7 @@ export default function BadgeTypeInfoPreview({ badgeType }: { badgeType: BadgeTy
 
         <ButtonV2
           backgroundColor={colors.blue}
-          onClick={() => router.push(`/badge/mint/${badgeType.id}`)}
+          onClick={() => router.push(`/badge/mint/${badgeModel.id}`)}
           sx={{ ml: 'auto' }}
           variant="contained"
         >
@@ -84,7 +85,7 @@ export default function BadgeTypeInfoPreview({ badgeType }: { badgeType: BadgeTy
 
       {/* Creator info */}
       <SafeSuspense>
-        <CreatorInfoSmallPreview creator={badgeType.creator} />
+        <CreatorInfoSmallPreview creator={badgeModel.creator} />
       </SafeSuspense>
     </Stack>
   )

@@ -8,7 +8,8 @@ import { z } from 'zod'
 
 import klerosSchemaFactory from '@/src/components/form/helpers/validators'
 import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
-import useBadgeModel from '@/src/hooks/subgraph/useBadgeType'
+import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
+import { useRegistrationBadgeModelKlerosMetadata } from '@/src/hooks/subgraph/useBadgeModelKlerosMetadata'
 import useMintValue from '@/src/hooks/theBadge/useMintValue'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
 import useTransaction, { TransactionStates } from '@/src/hooks/useTransaction'
@@ -26,9 +27,9 @@ const MintBadgeType: NextPageWithLayout = () => {
   const { sendTx, state } = useTransaction()
   const router = useRouter()
 
-  const badgeTypeId = router.query.typeId as string
-  if (!badgeTypeId) {
-    throw `No typeId provided us URL query param`
+  const badgeModelId = router.query.modelId as string
+  if (!badgeModelId) {
+    throw `No modelId provided us URL query param`
   }
 
   useEffect(() => {
@@ -38,21 +39,22 @@ const MintBadgeType: NextPageWithLayout = () => {
     }
   }, [router, state])
 
-  const badgeTypeData = useBadgeModel(badgeTypeId)
-  const klerosBadgeModel = badgeTypeData.data?.badgeModel.badgeModelKleros
-  const klerosBadgeMetadata = badgeTypeData.data?.badgeModelMetadata
+  const badgeModel = useBadgeModel(badgeModelId)
+  const badgeModelKleros = useRegistrationBadgeModelKlerosMetadata(badgeModelId)
 
-  if (badgeTypeData.error || !klerosBadgeModel || !klerosBadgeMetadata) {
+  const klerosBadgeMetadata = badgeModelKleros.data?.badgeModelKlerosRegistrationMetadata
+
+  if (badgeModel.error || !klerosBadgeMetadata) {
     throw `There was an error trying to fetch the metadata for the badge type`
   }
 
   // Get kleros deposit value for the badge type
-  const { data: mintValue } = useMintValue(badgeTypeId)
+  const { data: mintValue } = useMintValue(badgeModelId)
   if (!mintValue) {
-    throw `There was not possible to get the value to mint a badge for badgeModel ${badgeTypeId}`
+    throw `There was not possible to get the value to mint a badge for badgeModel ${badgeModelId}`
   }
 
-  const creatorFee = BigNumber.from(badgeTypeData.data?.badgeModel.creatorFee || 0)
+  const creatorFee = BigNumber.from(badgeModel.data?.badgeModel.creatorFee || 0)
 
   const CreateBadgeSchema = z.object(klerosSchemaFactory(klerosBadgeMetadata.metadata.columns))
 
@@ -62,7 +64,7 @@ const MintBadgeType: NextPageWithLayout = () => {
 
     const evidenceIPFSUploaded = await ipfsUpload({
       attributes: {
-        columns: klerosBadgeMetadata!.metadata.columns,
+        columns: klerosBadgeMetadata?.metadata.columns,
         image: { mimeType: 'image/png', base64File: imageDataUrl },
         values,
       },
@@ -81,7 +83,7 @@ const MintBadgeType: NextPageWithLayout = () => {
     try {
       const transaction = await sendTx(() =>
         theBadge.mint(
-          badgeTypeId, // badgeModelId
+          badgeModelId, // badgeModelId
           address as string, // wallet
           'ipfs://', // metadata para el badge //TODO
           klerosControllerDataEncoded,

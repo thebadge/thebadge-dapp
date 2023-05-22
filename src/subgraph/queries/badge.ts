@@ -3,7 +3,7 @@ import gql from 'graphql-tag'
 // TODO: hardcoded for kleros, fix it.
 export const BADGES_IN_REVIEW = gql`
   query badgesInReview($date: BigInt!) {
-    badges(where: { badgeKlerosMetadata_: { reviewDueDate_gt: $date } }) {
+    badges(where: { badgeKlerosMetaData_: { reviewDueDate_gt: $date } }) {
       ...FullBadgeDetails
     }
   }
@@ -11,7 +11,7 @@ export const BADGES_IN_REVIEW = gql`
 
 export const BADGES_IN_REVIEW_SMALL_SET = gql`
   query badgesInReviewSmallSet($date: BigInt!) {
-    badges(where: { badgeKlerosMetadata_: { reviewDueDate_gt: $date } }) {
+    badges(where: { badgeKlerosMetaData_: { reviewDueDate_gt: $date } }) {
       ...BadgeWithJustIds
     }
   }

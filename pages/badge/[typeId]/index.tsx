@@ -125,7 +125,7 @@ const ViewListOfBadgesByType: NextPageWithLayout = () => {
         preview={renderSelectedBadgePreview()}
         search={search}
         title={t('explorer.minted.title', {
-          badgeTypeName: badges[selectedBadge]?.badgeType?.id,
+          badgeTypeName: badges[selectedBadge]?.badgeModel?.id,
         })}
       >
         {badges.length > 0 ? (
@@ -141,7 +141,7 @@ const ViewListOfBadgesByType: NextPageWithLayout = () => {
                     selected={isSelected}
                   >
                     <BadgeTypeMetadata
-                      metadata={badges[selectedBadge].badgeType.metadataURL}
+                      metadata={badges[selectedBadge].badgeModel.uri}
                       size="small"
                     />
                   </MiniBadgePreviewContainer>

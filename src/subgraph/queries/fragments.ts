@@ -3,10 +3,7 @@ import gql from 'graphql-tag'
 gql`
   fragment FullBadgeDetails on Badge {
     id
-    # evidenceMetadataUrl
-    # reviewDueDate
     status
-    # isChallenged
     account {
       id
     }
@@ -62,11 +59,37 @@ gql`
     uri
     controllerType
     validFor
+    creatorFee
     paused
     badgesMintedAmount
     creator {
       id
       creatorUri
     }
+  }
+`
+
+gql`
+  fragment BadgeModelKlerosMetadata on BadgeModelKlerosMetaData {
+    id
+    registrationUri
+    removalUri
+    tcrList
+    submissionBaseDeposit
+    challengePeriodDuration
+  }
+`
+
+gql`
+  fragment Request on KlerosBadgeRequest {
+    id
+    requestIndex
+    submissionTime
+    arbitrationParamsIndex
+    type
+    requestBadgeEvidenceUri
+    removeOrChallengeEvidenceUri
+    extraEvidenceUris
+    challenger
   }
 `

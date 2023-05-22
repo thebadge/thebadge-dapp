@@ -7,7 +7,7 @@ export type BadgeMetadata = {
   values: Record<string, any>
 }
 
-export type BadgeTypeMetadata = {
+export type BadgeModelMetadata = {
   name: string
   image: BackendFileResponse
   description: string
