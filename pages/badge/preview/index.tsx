@@ -17,7 +17,7 @@ import InViewPort from '@/src/components/helpers/InViewPort'
 import SafeSuspense, { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import { useKeyPress } from '@/src/hooks/useKeypress'
-import BadgeTypeMetadata from '@/src/pagePartials/badge/BadgeTypeMetadata'
+import BadgeModelPreview from '@/src/pagePartials/badge/BadgeModelPreview'
 import BadgeEvidenceInfoPreview from '@/src/pagePartials/badge/explorer/BadgeEvidenceInfoPreview'
 import { Badge } from '@/types/generated/subgraph'
 import { NextPageWithLayout } from '@/types/next'
@@ -140,7 +140,7 @@ const ViewListOfBadgesByType: NextPageWithLayout = () => {
                     ref={badgeTypesElementRefs[i]}
                     selected={isSelected}
                   >
-                    <BadgeTypeMetadata
+                    <BadgeModelPreview
                       metadata={badges[selectedBadge].badgeModel.uri}
                       size="small"
                     />

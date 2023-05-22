@@ -23,28 +23,22 @@ export default function useBadgeById(badgeId: string) {
       throw 'There was not possible to get the needed metadata. Try again in some minutes.'
     }
 
-    // TODO Add it when there is something in return
     const cleanedBadgeMetadataHash = badge?.uri.replace(/^ipfs?:\/\//, '')
     const cleanedModelMetadataHash = badgeModel?.uri.replace(/^ipfs?:\/\//, '')
 
     const res = await Promise.all([
-      getFromIPFS<BadgeMetadata<BackendFileResponse>>(cleanedModelMetadataHash),
+      getFromIPFS<BadgeMetadata<BackendFileResponse>>(cleanedBadgeMetadataHash),
       getFromIPFS<BadgeModelMetadata<BackendFileResponse>>(cleanedModelMetadataHash),
     ])
-    if (!res[0].data.result || !res[1].data.result) {
-      throw 'There was not possible to get the needed metadata. Try again in some minutes.'
-    }
 
-    const badgeMetadata = res[0].data.result?.content
-    const badgeModelMetadata = res[1].data.result?.content
+    const badgeMetadata = res[0] ? res[0].data.result?.content : null
+    const badgeModelMetadata = res[1] ? res[1].data.result?.content : null
 
     return {
-      badge: {
-        ...badge,
-        badgeModel: {
-          ...badge.badgeModel,
-          badgeModelMetadata,
-        },
+      ...badge,
+      badgeModel: {
+        ...badge.badgeModel,
+        badgeModelMetadata,
       },
       badgeMetadata,
     }

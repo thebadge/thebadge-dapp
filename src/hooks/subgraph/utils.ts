@@ -11,7 +11,9 @@ import { BackendResponse } from '@/types/utils'
  * @param {string} hash - The IPFS hash representing the content to retrieve.
  */
 // eslint-disable-next-line @typescript-eslint/ban-types
-export async function getFromIPFS<T, X = {}>(hash: string) {
+export async function getFromIPFS<T, X = {}>(hash?: string) {
+  if (!hash) return
   const cleanedHash = hash.replace(/^ipfs?:\/\//, '')
+  if (!cleanedHash) return
   return axios.get<BackendResponse<{ content: T } & X>>(`${BACKEND_URL}/api/ipfs/${cleanedHash}`)
 }

@@ -8,7 +8,7 @@ import FilteredList, { ListFilter } from '@/src/components/helpers/FilteredList'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
 import useTransaction from '@/src/hooks/useTransaction'
-import MiniBadgeTypeMetadata from '@/src/pagePartials/badge/MiniBadgeTypeMetadata'
+import MiniBadgeModelPreview from '@/src/pagePartials/badge/MiniBadgeModelPreview'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import getHighlightColorByStatus from '@/src/utils/badges/getHighlightColorByStatus'
 import { BadgeStatus, Badge_Filter } from '@/types/generated/subgraph'
@@ -96,7 +96,7 @@ export default function BadgesYouOwnList({ address }: Props) {
       // TODO Use badge status to add claim or change the highlight color
       return (
         <Box key={badge.id}>
-          <MiniBadgeTypeMetadata
+          <MiniBadgeModelPreview
             highlightColor={getHighlightColorByStatus(badge.status)}
             metadata={badge.badgeModel?.uri}
           />

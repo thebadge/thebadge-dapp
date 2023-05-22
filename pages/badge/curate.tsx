@@ -16,12 +16,12 @@ import InViewPort from '@/src/components/helpers/InViewPort'
 import SafeSuspense, { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import { useKeyPress } from '@/src/hooks/useKeypress'
-import MiniBadgeTypeMetadata from '@/src/pagePartials/badge/MiniBadgeTypeMetadata'
+import MiniBadgeModelPreview from '@/src/pagePartials/badge/MiniBadgeModelPreview'
 import BadgeEvidenceInfoPreview from '@/src/pagePartials/badge/explorer/BadgeEvidenceInfoPreview'
 import { Badge } from '@/types/generated/subgraph'
 import { NextPageWithLayout } from '@/types/next'
 
-const now = Math.floor(Date.now() / 1000) - 30 * 24 * 60 * 60
+const now = Math.floor(Date.now() / 1000)
 
 const filters: Array<ListFilter> = [
   {
@@ -159,7 +159,7 @@ const CurateBadges: NextPageWithLayout = () => {
                     ref={badgesElementRefs[i]}
                     selected={isSelected}
                   >
-                    <MiniBadgeTypeMetadata
+                    <MiniBadgeModelPreview
                       buttonTitle={t('curateExplorer.button')}
                       disableAnimations
                       highlightColor={colors.greenLogo}

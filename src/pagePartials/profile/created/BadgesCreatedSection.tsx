@@ -9,7 +9,7 @@ import { NoResultsAnimated } from '@/src/components/assets/animated/NoResults'
 import { MiniBadgePreviewContainer } from '@/src/components/common/MiniBadgePreviewContainer'
 import FilteredList, { ListFilter } from '@/src/components/helpers/FilteredList'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
-import MiniBadgeTypeMetadata from '@/src/pagePartials/badge/MiniBadgeTypeMetadata'
+import MiniBadgeModelPreview from '@/src/pagePartials/badge/MiniBadgeModelPreview'
 import { RequiredCreatorAccess } from '@/src/pagePartials/errors/requiresCreatorAccess'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 
@@ -55,7 +55,7 @@ export default function BadgesCreatedSection() {
       const mintCost = '100000000000000' //badgeModel.mintCost;
       return (
         <StyledBadgeContainer highlightColor={colors.pink} key={badgeModel.id}>
-          <MiniBadgeTypeMetadata
+          <MiniBadgeModelPreview
             disableAnimations
             highlightColor={colors.pink}
             metadata={badgeModel?.uri}

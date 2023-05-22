@@ -80,7 +80,7 @@ function CurateModalContent({ badgeId, onClose }: { badgeId: string; onClose: ()
   const { challenge } = useCurateProvider()
 
   const badgeById = useBadgeById(badgeId)
-  const badge = badgeById.data?.badge
+  const badge = badgeById.data
 
   if (!badge) {
     throw 'There was an error fetching the badge, try again in some minutes.'
@@ -91,6 +91,10 @@ function CurateModalContent({ badgeId, onClose }: { badgeId: string; onClose: ()
 
   const badgeKlerosMetadata = useEvidenceBadgeKlerosMetadata(badgeId)
   const badgeEvidence = badgeKlerosMetadata.data?.requestBadgeEvidence
+
+  if (!badgeEvidence || !badgeKlerosMetadata.data?.requestBadgeEvidenceRawUrl) {
+    throw 'There was an error fetching the badge evidence, try again in some minutes.'
+  }
 
   const evidenceItems: React.ReactNode[] =
     badgeEvidence?.columns.map((column, index) => (

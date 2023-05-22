@@ -10,7 +10,7 @@ import challengedLogo from '@/src/components/assets/challenged.webp'
 import LinkWithTranslation from '@/src/components/helpers/LinkWithTranslation'
 import { notify } from '@/src/components/toast/Toast'
 import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
-import BadgeTypeMetadata from '@/src/pagePartials/badge/BadgeTypeMetadata'
+import BadgeModelPreview from '@/src/pagePartials/badge/BadgeModelPreview'
 import { BadgeStatus } from '@/types/generated/subgraph'
 import { ToastStates } from '@/types/toast'
 
@@ -26,9 +26,9 @@ export default function BadgeOwnedPreview() {
 
   const badgeById = useBadgeById(badgeId)
 
-  const badge = badgeById.data?.badge
+  const badge = badgeById.data
   const badgeModel = badge?.badgeModel
-  // const badgeMetadata = badgeById.data?.badgeMetadata
+  const badgeMetadata = badge?.badgeMetadata
   const badgeModelMetadata = badgeModel?.badgeModelMetadata
 
   function handleShare() {
@@ -45,7 +45,7 @@ export default function BadgeOwnedPreview() {
       )}
       <Box display="flex" flex={1} gap={8} justifyContent="space-between" my={4}>
         <Box display="flex" flex={1}>
-          <BadgeTypeMetadata metadata={badgeModel?.uri} />
+          <BadgeModelPreview metadata={badgeModel?.uri} />
         </Box>
         <Stack flex={2} gap={2} justifyContent="space-between">
           <Stack gap={3}>

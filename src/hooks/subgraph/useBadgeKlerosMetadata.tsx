@@ -1,9 +1,11 @@
 import useSWR from 'swr'
 
 import { BadgeModelHooksOptions } from '@/src/hooks/subgraph/types'
+import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import { getFromIPFS } from '@/src/hooks/subgraph/utils'
 import { BadgeEvidenceMetadata } from '@/types/badges/BadgeMetadata'
+import { KlerosRequestType } from '@/types/generated/subgraph'
 
 export function useBadgeKlerosMetadata(badgeId: string, options?: BadgeModelHooksOptions) {
   // It's going to do the fetch if it has ID and skip option on false
@@ -17,6 +19,7 @@ export function useBadgeKlerosMetadata(badgeId: string, options?: BadgeModelHook
 }
 
 export function useEvidenceBadgeKlerosMetadata(badgeId: string, options?: BadgeModelHooksOptions) {
+  const badge = useBadgeById(badgeId)
   const badgeKlerosMetadata = useBadgeKlerosMetadata(badgeId, options)
   // It's going to do the fetch if it has ID and skip option on false
   const fetchIt = !options?.skip && badgeId.length
@@ -27,15 +30,18 @@ export function useEvidenceBadgeKlerosMetadata(badgeId: string, options?: BadgeM
         throw 'There was not possible to get the needed metadata. Try again in some minutes.'
       }
 
-      const metadataHash = badgeKlerosMetadata.data.requests.requestBadgeEvidenceUri?.replace(
-        /^ipfs?:\/\//,
-        '',
+      const registrationRequest = badgeKlerosMetadata.data.requests.find(
+        (r) => r.type === KlerosRequestType.Registration,
       )
+      const registrationEvidence = registrationRequest?.evidences.find(
+        (e) => e.sender === badge.data?.account.id,
+      )
+      const metadataHash = registrationEvidence?.uri?.replace(/^ipfs?:\/\//, '')
 
       const res = await getFromIPFS<BadgeEvidenceMetadata, { s3Url: string }>(metadataHash)
 
-      const requestBadgeEvidence = res.data.result?.content
-      const requestBadgeEvidenceRawUrl = res.data.result?.s3Url
+      const requestBadgeEvidence = res ? res.data.result?.content : null
+      const requestBadgeEvidenceRawUrl = res ? res.data.result?.s3Url : null
 
       return {
         ...badgeKlerosMetadata.data,

@@ -3,29 +3,15 @@ import gql from 'graphql-tag'
 export const USER_BY_ID = gql`
   query userById($id: ID!) {
     user(id: $id) {
-      id
-      mintedBadgesAmount
-      isVerified
-      isCreator
-      creatorUri
-      badges {
-        id
-        badgeModel {
-          id
-          badgeModelKleros {
-            registrationUri
-            removalUri
-            tcrList
-            submissionBaseDeposit
-            challengePeriodDuration
-          }
-        }
-        badgeKlerosMetaData {
-          reviewDueDate
-        }
-        uri
-        status
-      }
+      ...User
+    }
+  }
+`
+
+export const USER_BY_ID_WITH_BADGES = gql`
+  query userByIdWithBadges($id: ID!) {
+    user(id: $id) {
+      ...UserWithBadges
     }
   }
 `

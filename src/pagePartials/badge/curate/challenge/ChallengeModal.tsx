@@ -109,7 +109,7 @@ function ChallengeModalContent({ badgeId, onClose }: { badgeId: string; onClose:
   const klerosController = useContractInstance(KlerosController__factory, 'KlerosController')
   const challengeCost = useBadgeCost(badgeId)
   const badgeById = useBadgeById(badgeId)
-  const badge = badgeById.data?.badge
+  const badge = badgeById.data
 
   if (!badge) {
     throw 'There was an error fetching the badge, try again in some minutes.'

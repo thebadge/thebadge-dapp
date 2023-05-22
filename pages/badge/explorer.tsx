@@ -16,7 +16,7 @@ import InViewPort from '@/src/components/helpers/InViewPort'
 import SafeSuspense, { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import { useKeyPress } from '@/src/hooks/useKeypress'
-import MiniBadgeTypeMetadata from '@/src/pagePartials/badge/MiniBadgeTypeMetadata'
+import MiniBadgeModelPreview from '@/src/pagePartials/badge/MiniBadgeModelPreview'
 import BadgeModelInfoPreview from '@/src/pagePartials/badge/explorer/BadgeModelInfoPreview'
 import { BadgeModel } from '@/types/generated/subgraph'
 import { NextPageWithLayout } from '@/types/next'
@@ -136,7 +136,7 @@ const ExploreBadgeTypes: NextPageWithLayout = () => {
                     ref={badgeModelsElementRefs[i]}
                     selected={isSelected}
                   >
-                    <MiniBadgeTypeMetadata
+                    <MiniBadgeModelPreview
                       buttonTitle={t('explorer.button')}
                       disableAnimations
                       highlightColor={colors.blue}

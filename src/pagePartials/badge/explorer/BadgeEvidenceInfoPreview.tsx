@@ -20,6 +20,10 @@ export default function BadgeEvidenceInfoPreview({ badge }: { badge: Badge }) {
   const badgeKlerosMetadata = useEvidenceBadgeKlerosMetadata(badge?.id)
   const badgeEvidence = badgeKlerosMetadata.data?.requestBadgeEvidence
 
+  if (!badgeEvidence || !badgeKlerosMetadata.data?.requestBadgeEvidenceRawUrl) {
+    throw 'There was an error fetching the badge evidence, try again in some minutes.'
+  }
+
   return (
     <Stack gap={4}>
       {/* Badge Receiver Address + Raw evidence info */}

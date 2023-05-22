@@ -9,7 +9,7 @@ import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import TBSwiper from '@/src/components/helpers/TBSwiper'
 import { fillListWithPlaceholders } from '@/src/components/utils/emptyBadges'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
-import BadgeTypeMetadata from '@/src/pagePartials/badge/BadgeTypeMetadata'
+import BadgeModelPreview from '@/src/pagePartials/badge/BadgeModelPreview'
 
 const now = Math.floor(Date.now() / 1000)
 export default function BadgesInReviewSwiper() {
@@ -28,7 +28,7 @@ export default function BadgesInReviewSwiper() {
         >
           <InViewPort minHeight={300}>
             <SafeSuspense>
-              <BadgeTypeMetadata metadata={badgeInReview?.badgeModel.uri} size="small" />
+              <BadgeModelPreview metadata={badgeInReview?.badgeModel.uri} size="small" />
             </SafeSuspense>
           </InViewPort>
         </Box>

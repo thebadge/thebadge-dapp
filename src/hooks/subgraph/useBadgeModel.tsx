@@ -25,7 +25,7 @@ export default function useBadgeModel(id: string) {
 
     const res = await getFromIPFS<BadgeModelMetadata<BackendFileResponse>>(metadataHash)
 
-    const badgeModelMetadata = res.data.result?.content
+    const badgeModelMetadata = res ? res.data.result?.content : null
 
     return {
       badgeModel: badgeModelData,
