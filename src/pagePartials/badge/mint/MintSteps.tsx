@@ -154,7 +154,7 @@ export default function MintSteps({ costs, evidenceSchema, onSubmit, txState }: 
         </Typography>
 
         <MarkdownTypography textAlign="justify" variant="body3" width="85%">
-          {t(`badge.type.mint.steps.${currentStep}.sub-title`, {
+          {t(`badge.type.mint.steps.${currentStep}.subTitle`, {
             badgeName: badgeMetadata.name,
             creatorContact: `mailto:${badgeCreatorMetadata.data?.content?.email}`,
             badgeCreatorName: badgeCreatorMetadata.data?.content?.name,
@@ -169,7 +169,7 @@ export default function MintSteps({ costs, evidenceSchema, onSubmit, txState }: 
         formFieldProps={[
           {
             help: {
-              agreementText: t('badge.type.mint.help-steps', {
+              agreementText: t('badge.type.mint.helpSteps', {
                 badgeCreatorName: badgeCreatorMetadata.data?.content?.name,
                 badgeCreatorProfileLink: '/profile/' + badgeTypeData.data?.badgeType?.creator.id,
                 curationDocsUrl:

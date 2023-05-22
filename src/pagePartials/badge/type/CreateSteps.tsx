@@ -129,7 +129,7 @@ export default function CreateSteps({ onSubmit, txState }: MintStepsProps) {
         </Typography>
 
         <MarkdownTypography textAlign="justify" variant="body3" width="85%">
-          {t(`badge.type.create.steps.${currentStep}.sub-title`, {
+          {t(`badge.type.create.steps.${currentStep}.subTitle`, {
             docsUrl: DOCS_URL + '/thebadge-documentation/overview/how-it-works',
             criteriaDocsUrl: DOCS_URL + '/thebadge-documentation/overview/how-it-works',
             createBadgeTypeDocs: DOCS_URL + '/thebadge-documentation/overview/how-it-works',
@@ -141,7 +141,7 @@ export default function CreateSteps({ onSubmit, txState }: MintStepsProps) {
         formFieldProps={[
           {
             help: {
-              agreementText: t('badge.type.create.help-steps', {
+              agreementText: t('badge.type.create.helpSteps', {
                 curationCriteriaDocsUrl:
                   DOCS_URL + '/thebadge-documentation/overview/how-it-works/challenge',
                 curationCriteriaStandardDocsUrl:
