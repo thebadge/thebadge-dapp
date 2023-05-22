@@ -68,7 +68,7 @@
     "sanitize.css": "^13.0.0",
     "swiper": "^9.0.5",
     "swr": "^2.0.0",
-    "thebadge-ui-library": "^1.6.0",
+    "thebadge-ui-library": "^1.6.1",
     "wagmi": "^0.10.3",
     "zod": "^3.20.6"
   },

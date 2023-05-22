@@ -1,4 +1,3 @@
-import { getFormattedTimeLeft, timestampToDate } from "@/src/utils/date";
 import { useRouter } from 'next/navigation'
 import { useMemo } from 'react'
 
@@ -10,6 +9,7 @@ import TBSwiper from '@/src/components/helpers/TBSwiper'
 import { fillListWithPlaceholders } from '@/src/components/utils/emptyBadges'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import BadgeTypeMetadata from '@/src/pagePartials/badge/BadgeTypeMetadata'
+import { TimeLeft, getPendingTimeProgressPercentage, getTimeLeft, timestampToDate } from '@/src/utils/date'
 
 const now = Math.floor(Date.now() / 1000)
 export default function PendingList() {
@@ -20,8 +20,14 @@ export default function PendingList() {
 
   const badgesList = useMemo(() => {
     const badges = badgesInReview.data?.badges.map((badgeInReview) => {
-      console.log('badgeInReview', badgeInReview)
-      const timeLeft = getFormattedTimeLeft(timestampToDate(badgeInReview.reviewDueDate))
+      const dueDate: Date = timestampToDate(badgeInReview.reviewDueDate)
+      const pendingTimeDurationSeconds: number =
+        badgeInReview.badgeType.klerosBadge?.challengePeriodDuration
+      const timeLeft: TimeLeft = getTimeLeft(dueDate)
+      const progressPercentage = getPendingTimeProgressPercentage(
+        dueDate,
+        pendingTimeDurationSeconds,
+      )
 
       return (
         <Box
@@ -36,6 +42,7 @@ export default function PendingList() {
               badge={
                 <BadgeTypeMetadata metadata={badgeInReview?.badgeType.metadataURL} size="small" />
               }
+              percentage={progressPercentage}
               timeLeft={timeLeft}
             />
           </SafeSuspense>

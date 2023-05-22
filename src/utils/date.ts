@@ -7,7 +7,7 @@ export const timestampToDate = (timestamp: number): Date => {
   return new Date(timestamp * 1000)
 }
 
-export const getFormattedTimeLeft = (date: Date): TimeLeft => {
+export const getTimeLeft = (date: Date): TimeLeft => {
   const now = new Date().getTime()
   const timeLeft = date.getTime() - now
 
@@ -49,4 +49,14 @@ export const getFormattedTimeLeft = (date: Date): TimeLeft => {
       unitText: 'time left',
     }
   }
+}
+
+export const getPendingTimeProgressPercentage = (
+  dueDate: Date,
+  pendingTimeDurationSeconds: number,
+): number => {
+  const now = new Date().getTime()
+  const timeLeftInSeconds = (dueDate.getTime() - now) / 1000
+  const secondsOfProgressDone = pendingTimeDurationSeconds - timeLeftInSeconds
+  return (100 / pendingTimeDurationSeconds) * secondsOfProgressDone
 }
