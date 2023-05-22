@@ -99,3 +99,11 @@ export enum Severity {
 }
 
 export const Severity_Keys = ['Normal', 'Above average', 'Heavy'] as const
+
+export type IPFSHash = string
+
+export type NFTAttribute = {
+  trait_type: string
+  value: string | number
+  display_type: undefined | 'date'
+}

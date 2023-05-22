@@ -3,6 +3,7 @@ import useSWR from 'swr'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import { getFromIPFS } from '@/src/hooks/subgraph/utils'
 import { BadgeMetadata, BadgeModelMetadata } from '@/types/badges/BadgeMetadata'
+import { BackendFileResponse } from '@/types/utils'
 
 /**
  * Hooks to wrap the getBadgeById graphql query, to take advantage of the SWR cache
@@ -27,8 +28,8 @@ export default function useBadgeById(badgeId: string) {
     const cleanedModelMetadataHash = badgeModel?.uri.replace(/^ipfs?:\/\//, '')
 
     const res = await Promise.all([
-      getFromIPFS<BadgeMetadata>(cleanedModelMetadataHash),
-      getFromIPFS<BadgeModelMetadata>(cleanedModelMetadataHash),
+      getFromIPFS<BadgeMetadata<BackendFileResponse>>(cleanedModelMetadataHash),
+      getFromIPFS<BadgeModelMetadata<BackendFileResponse>>(cleanedModelMetadataHash),
     ])
     if (!res[0].data.result || !res[1].data.result) {
       throw 'There was not possible to get the needed metadata. Try again in some minutes.'

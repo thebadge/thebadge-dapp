@@ -3,6 +3,7 @@ import useSWR from 'swr'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import { getFromIPFS } from '@/src/hooks/subgraph/utils'
 import { BadgeModelMetadata } from '@/types/badges/BadgeMetadata'
+import { BackendFileResponse } from '@/types/utils'
 
 /**
  * Hooks to wrap the getBadgeType graphql query, to take advantage of the SWR cache
@@ -22,7 +23,7 @@ export default function useBadgeModel(id: string) {
 
     const metadataHash = badgeModelData?.uri.replace(/^ipfs?:\/\//, '')
 
-    const res = await getFromIPFS<BadgeModelMetadata>(metadataHash)
+    const res = await getFromIPFS<BadgeModelMetadata<BackendFileResponse>>(metadataHash)
 
     const badgeModelMetadata = res.data.result?.content
 

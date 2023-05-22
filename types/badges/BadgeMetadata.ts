@@ -1,19 +1,23 @@
 import { MetadataColumn } from '@/types/kleros/types'
-import { BackendFileResponse } from '@/types/utils'
-
-export type BadgeMetadata = {
-  columns: MetadataColumn[]
-  image: BackendFileResponse
-  values: Record<string, any>
-}
+import { BackendFileResponse, IPFSHash, NFTAttribute } from '@/types/utils'
 
 export type BadgeEvidenceMetadata = {
   columns: MetadataColumn[]
   values: Record<string, any>
 }
 
-export type BadgeModelMetadata = {
+export type BadgeModelMetadata<T = IPFSHash | BackendFileResponse> = {
   name: string
-  image: BackendFileResponse
   description: string
+  image: T
+  external_link: string
+}
+
+// This type follows the https://docs.opensea.io/docs/metadata-standards
+export type BadgeMetadata<T = IPFSHash | BackendFileResponse> = {
+  name: string
+  description: string
+  external_link: string
+  image: T
+  attributes: NFTAttribute[]
 }
