@@ -88,13 +88,22 @@ gql`
 gql`
   fragment Request on KlerosBadgeRequest {
     id
-    requestIndex
-    submissionTime
-    arbitrationParamsIndex
     type
-    requestBadgeEvidenceUri
-    removeOrChallengeEvidenceUri
-    extraEvidenceUris
+    createdAt
+    requestIndex
+    arbitrationParamsIndex
+    requester
     challenger
+    evidences {
+      ...Evidence
+    }
+  }
+`
+
+gql`
+  fragment Evidence on Evidence {
+    id
+    uri
+    sender
   }
 `

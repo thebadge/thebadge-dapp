@@ -21,7 +21,7 @@ import BadgeEvidenceInfoPreview from '@/src/pagePartials/badge/explorer/BadgeEvi
 import { Badge } from '@/types/generated/subgraph'
 import { NextPageWithLayout } from '@/types/next'
 
-const now = Math.floor(Date.now() / 1000)
+const now = Math.floor(Date.now() / 1000) - 30 * 24 * 60 * 60
 
 const filters: Array<ListFilter> = [
   {

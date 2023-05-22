@@ -1,10 +1,8 @@
-import axios from 'axios'
 import useSWR from 'swr'
 
-import { BACKEND_URL } from '@/src/constants/common'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
+import { getFromIPFS } from '@/src/hooks/subgraph/utils'
 import { BadgeMetadata, BadgeModelMetadata } from '@/types/badges/BadgeMetadata'
-import { BackendFileResponse, BackendResponse } from '@/types/utils'
 
 /**
  * Hooks to wrap the getBadgeById graphql query, to take advantage of the SWR cache
@@ -29,12 +27,8 @@ export default function useBadgeById(badgeId: string) {
     const cleanedModelMetadataHash = badgeModel?.uri.replace(/^ipfs?:\/\//, '')
 
     const res = await Promise.all([
-      axios.get<BackendResponse<{ content: BadgeMetadata }>>(
-        `${BACKEND_URL}/api/ipfs/${cleanedModelMetadataHash}`,
-      ),
-      axios.get<BackendResponse<BackendFileResponse & { content: BadgeModelMetadata }>>(
-        `${BACKEND_URL}/api/ipfs/${cleanedModelMetadataHash}`,
-      ),
+      getFromIPFS<BadgeMetadata>(cleanedModelMetadataHash),
+      getFromIPFS<BadgeModelMetadata>(cleanedModelMetadataHash),
     ])
     if (!res[0].data.result || !res[1].data.result) {
       throw 'There was not possible to get the needed metadata. Try again in some minutes.'
