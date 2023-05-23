@@ -5,7 +5,7 @@ import { useCallback, useRef, useState } from 'react'
 import { Box, Stack, Typography } from '@mui/material'
 import domtoimage from 'dom-to-image'
 import { useTranslation } from 'next-export-i18n'
-import { BadgePreviewV2, colors } from 'thebadge-ui-library'
+import { BadgePreview, colors } from 'thebadge-ui-library'
 import { AnyZodObject, z } from 'zod'
 
 import MarkdownTypography from '@/src/components/common/MarkdownTypography'
@@ -117,7 +117,7 @@ export default function MintSteps({ costs, evidenceSchema, onSubmit, txState }: 
         <Stack alignItems={'center'} gap={3} margin={1}>
           <Typography>{t('badge.type.mint.previewTitle')}</Typography>
           <Box ref={badgePreviewRef}>
-            <BadgePreviewV2
+            <BadgePreview
               animationEffects={['wobble', 'grow', 'glare']}
               animationOnHover
               badgeBackgroundUrl="https://images.unsplash.com/photo-1512998844734-cd2cca565822?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTIyfHxhYnN0cmFjdHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
@@ -154,7 +154,7 @@ export default function MintSteps({ costs, evidenceSchema, onSubmit, txState }: 
         </Typography>
 
         <MarkdownTypography textAlign="justify" variant="body3" width="85%">
-          {t(`badge.type.mint.steps.${currentStep}.sub-title`, {
+          {t(`badge.type.mint.steps.${currentStep}.subTitle`, {
             badgeName: badgeMetadata.name,
             creatorContact: `mailto:${badgeCreatorMetadata.data?.content?.email}`,
             badgeCreatorName: badgeCreatorMetadata.data?.content?.name,
@@ -169,7 +169,7 @@ export default function MintSteps({ costs, evidenceSchema, onSubmit, txState }: 
         formFieldProps={[
           {
             help: {
-              agreementText: t('badge.type.mint.help-steps', {
+              agreementText: t('badge.type.mint.helpSteps', {
                 badgeCreatorName: badgeCreatorMetadata.data?.content?.name,
                 badgeCreatorProfileLink: '/profile/' + badgeTypeData.data?.badgeType?.creator.id,
                 curationDocsUrl:
