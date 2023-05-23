@@ -116,7 +116,7 @@ const CreateBadgeType: NextPageWithLayout = () => {
       const transaction = await sendTx(() =>
         theBadge.createBadgeModel(
           {
-            metadata: `ipfs://${badgeModelIPFSUploaded.result?.ipfsHash}`, // TODO: should we use a custom one? or the one for TCR is ok?
+            metadata: `ipfs://${badgeModelIPFSUploaded.result?.ipfsHash}`,
             controllerName: 'kleros',
             mintCreatorFee: parseUnits(data.mintCost.toString(), 18),
             validFor: data.validFor, // in seconds, 0 infinite

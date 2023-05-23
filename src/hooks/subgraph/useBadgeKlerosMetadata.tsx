@@ -36,9 +36,10 @@ export function useEvidenceBadgeKlerosMetadata(badgeId: string, options?: BadgeM
       const registrationEvidence = registrationRequest?.evidences.find(
         (e) => e.sender === badge.data?.account.id,
       )
-      const metadataHash = registrationEvidence?.uri?.replace(/^ipfs?:\/\//, '')
 
-      const res = await getFromIPFS<BadgeEvidenceMetadata, { s3Url: string }>(metadataHash)
+      const res = await getFromIPFS<BadgeEvidenceMetadata, { s3Url: string }>(
+        registrationEvidence?.uri,
+      )
 
       const requestBadgeEvidence = res ? res.data.result?.content : null
       const requestBadgeEvidenceRawUrl = res ? res.data.result?.s3Url : null

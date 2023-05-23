@@ -40,13 +40,7 @@ export function useRegistrationBadgeModelKlerosMetadata(
     async ([,]) => {
       const badgeModelKlerosData = badgeModelKlerosMetadata.data
 
-      if (!badgeModelKlerosData?.registrationUri) {
-        throw 'There was not possible to get the needed metadata. Try again in some minutes.'
-      }
-
-      const metadataHash = badgeModelKlerosData.registrationUri.replace(/^ipfs?:\/\//, '')
-
-      const res = await getFromIPFS<KlerosListStructure>(metadataHash)
+      const res = await getFromIPFS<KlerosListStructure>(badgeModelKlerosData?.registrationUri)
 
       const badgeModelKlerosRegistrationMetadata = res ? res.data.result?.content : null
 

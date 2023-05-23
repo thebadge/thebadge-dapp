@@ -21,9 +21,7 @@ export default function useBadgeModel(id: string) {
       throw 'There was not possible to get the needed metadata. Try again in some minutes.'
     }
 
-    const metadataHash = badgeModelData?.uri.replace(/^ipfs?:\/\//, '')
-
-    const res = await getFromIPFS<BadgeModelMetadata<BackendFileResponse>>(metadataHash)
+    const res = await getFromIPFS<BadgeModelMetadata<BackendFileResponse>>(badgeModelData?.uri)
 
     const badgeModelMetadata = res ? res.data.result?.content : null
 
