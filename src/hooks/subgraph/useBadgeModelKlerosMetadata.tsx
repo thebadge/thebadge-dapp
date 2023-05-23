@@ -30,7 +30,13 @@ export function useRegistrationBadgeModelKlerosMetadata(
   // It's going to do the fetch if it has ID and skip option on false
   const fetchIt = !options?.skip && badgeModelId.length
   return useSWR(
-    fetchIt ? [`RegistrationBadgeModelKlerosMetadata:${badgeModelId}`, badgeModelId] : null,
+    fetchIt
+      ? [
+          `RegistrationBadgeModelKlerosMetadata:${badgeModelId}`,
+          badgeModelId,
+          badgeModelKlerosMetadata.data?.id,
+        ]
+      : null,
     async ([,]) => {
       const badgeModelKlerosData = badgeModelKlerosMetadata.data
 
@@ -60,7 +66,13 @@ export function useRemovalBadgeModelKlerosMetadata(
   // It's going to do the fetch if it has ID and skip option on false
   const fetchIt = !options?.skip && badgeModelId.length
   return useSWR(
-    fetchIt ? [`RemovalBadgeModelKlerosMetadata:${badgeModelId}`, badgeModelId] : null,
+    fetchIt
+      ? [
+          `RemovalBadgeModelKlerosMetadata:${badgeModelId}`,
+          badgeModelId,
+          badgeModelKlerosMetadata.data?.id,
+        ]
+      : null,
     async ([,]) => {
       const badgeModelKlerosData = badgeModelKlerosMetadata.data
 

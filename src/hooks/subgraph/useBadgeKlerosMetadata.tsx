@@ -24,7 +24,7 @@ export function useEvidenceBadgeKlerosMetadata(badgeId: string, options?: BadgeM
   // It's going to do the fetch if it has ID and skip option on false
   const fetchIt = !options?.skip && badgeId.length
   return useSWR(
-    fetchIt ? [`EvidenceBadgeKlerosMetadata:${badgeId}`, badgeId] : null,
+    fetchIt ? [`EvidenceBadgeKlerosMetadata:${badgeId}`, badgeId, badge.data?.id] : null,
     async ([,]) => {
       if (!badgeKlerosMetadata.data?.requests) {
         throw 'There was not possible to get the needed metadata. Try again in some minutes.'
