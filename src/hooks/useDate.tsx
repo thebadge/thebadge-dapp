@@ -5,6 +5,12 @@ export interface TimeLeft {
   unitText: string
 }
 
+// convert milliseconds to seconds / minutes / hours etc.
+export const MS_PER_SECOND = 1000
+export const MS_PER_MINUTE = MS_PER_SECOND * 60
+export const MS_PER_HOUR = MS_PER_MINUTE * 60
+export const MS_PER_DAY = MS_PER_HOUR * 24
+
 export const useDate = () => {
   const { t } = useTranslation()
 
@@ -16,17 +22,11 @@ export const useDate = () => {
     const now = new Date().getTime()
     const timeLeft = date.getTime() - now
 
-    // convert milliseconds to seconds / minutes / hours etc.
-    const msPerSecond = 1000
-    const msPerMinute = msPerSecond * 60
-    const msPerHour = msPerMinute * 60
-    const msPerDay = msPerHour * 24
-
     // calculate remaining time
-    const days = Math.floor(timeLeft / msPerDay)
-    const hours = Math.floor((timeLeft % msPerDay) / msPerHour)
-    const minutes = Math.floor((timeLeft % msPerHour) / msPerMinute)
-    const seconds = Math.floor((timeLeft % msPerMinute) / msPerSecond)
+    const days = Math.floor(timeLeft / MS_PER_DAY)
+    const hours = Math.floor((timeLeft % MS_PER_DAY) / MS_PER_HOUR)
+    const minutes = Math.floor((timeLeft % MS_PER_HOUR) / MS_PER_MINUTE)
+    const seconds = Math.floor((timeLeft % MS_PER_MINUTE) / MS_PER_SECOND)
 
     if (days > 0) {
       return {
@@ -61,7 +61,7 @@ export const useDate = () => {
     pendingTimeDurationSeconds: number,
   ): number => {
     const now = new Date().getTime()
-    const timeLeftInSeconds = (dueDate.getTime() - now) / 1000
+    const timeLeftInSeconds = (dueDate.getTime() - now) / MS_PER_SECOND
     const secondsOfProgressDone = pendingTimeDurationSeconds - timeLeftInSeconds
     return Math.floor((100 / pendingTimeDurationSeconds) * secondsOfProgressDone)
   }
