@@ -48,3 +48,15 @@ export const BADGE_BY_TYPE = gql`
     }
   }
 `
+
+export const BADGE_BY_USER_BY_MODEL_ID = gql`
+  query userBadgeByModelId($userId: ID!, $modelId: String!) {
+    user(id: $userId) {
+      badges(where: { badgeModel: $modelId }) {
+        id
+        status
+        createdAt
+      }
+    }
+  }
+`

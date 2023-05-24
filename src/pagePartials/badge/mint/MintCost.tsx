@@ -1,4 +1,3 @@
-import { useSearchParams } from 'next/navigation'
 import * as React from 'react'
 
 import ReportProblemOutlinedIcon from '@mui/icons-material/ReportProblemOutlined'
@@ -9,6 +8,7 @@ import { colors } from 'thebadge-ui-library'
 import MarkdownTypography from '@/src/components/common/MarkdownTypography'
 import { getNetworkConfig } from '@/src/config/web3'
 import { DOCS_URL } from '@/src/constants/common'
+import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import { useRegistrationBadgeModelKlerosMetadata } from '@/src/hooks/subgraph/useBadgeModelKlerosMetadata'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 
@@ -23,8 +23,7 @@ export default function MintCost({ costs }: Props) {
   const { t } = useTranslation()
   const { appChainId } = useWeb3Connection()
   const networkConfig = getNetworkConfig(appChainId)
-  const searchParams = useSearchParams()
-  const modelId = searchParams.get('modelId')
+  const modelId = useModelIdParam()
 
   if (!modelId) {
     throw `No modelId provided as URL query param`

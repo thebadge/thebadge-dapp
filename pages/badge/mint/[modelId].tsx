@@ -8,6 +8,7 @@ import { z } from 'zod'
 
 import klerosSchemaFactory from '@/src/components/form/helpers/validators'
 import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
+import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
 import { useRegistrationBadgeModelKlerosMetadata } from '@/src/hooks/subgraph/useBadgeModelKlerosMetadata'
 import useMintValue from '@/src/hooks/theBadge/useMintValue'
@@ -17,8 +18,13 @@ import MintSteps from '@/src/pagePartials/badge/mint/MintSteps'
 import { PreventActionIfBadgeTypePaused } from '@/src/pagePartials/errors/preventActionIfPaused'
 import { RequiredNotHaveBadge } from '@/src/pagePartials/errors/requiredNotHaveBadge'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
-import ipfsUpload from '@/src/utils/ipfsUpload'
+import {
+  createAndUploadBadgeEvidence,
+  createAndUploadBadgeMetadata,
+} from '@/src/utils/badges/mintHelpers'
+import { BadgeModelMetadata } from '@/types/badges/BadgeMetadata'
 import { TheBadge__factory } from '@/types/generated/typechain'
+import { MetadataColumn } from '@/types/kleros/types'
 import { NextPageWithLayout } from '@/types/next'
 
 const MintBadgeType: NextPageWithLayout = () => {
@@ -26,8 +32,8 @@ const MintBadgeType: NextPageWithLayout = () => {
   const theBadge = useContractInstance(TheBadge__factory, 'TheBadge')
   const { sendTx, state } = useTransaction()
   const router = useRouter()
+  const badgeModelId = useModelIdParam()
 
-  const badgeModelId = router.query.modelId as string
   if (!badgeModelId) {
     throw `No modelId provided us URL query param`
   }
@@ -44,7 +50,7 @@ const MintBadgeType: NextPageWithLayout = () => {
 
   const klerosBadgeMetadata = badgeModelKleros.data?.badgeModelKlerosRegistrationMetadata
 
-  if (badgeModel.error || !klerosBadgeMetadata) {
+  if (badgeModel.error || !klerosBadgeMetadata || !badgeModel.data) {
     throw `There was an error trying to fetch the metadata for the badge type`
   }
 
@@ -62,22 +68,20 @@ const MintBadgeType: NextPageWithLayout = () => {
     const values: Record<string, unknown> = {}
     Object.keys(data).forEach((key) => (values[key] = data[key]))
 
-    const evidenceIPFSUploaded = await ipfsUpload({
-      attributes: {
-        columns: klerosBadgeMetadata?.metadata.columns,
-        image: { mimeType: 'image/png', base64File: imageDataUrl },
-        values,
-      },
-      filePaths: ['image'],
-    })
+    const evidenceIPFSHash = await createAndUploadBadgeEvidence(
+      klerosBadgeMetadata?.metadata.columns as MetadataColumn[],
+      values,
+    )
+
+    const badgeMetadataIPFSHash = await createAndUploadBadgeMetadata(
+      badgeModel.data?.badgeModelMetadata as BadgeModelMetadata,
+      address as string,
+      { imageBase64File: imageDataUrl },
+    )
 
     const klerosControllerDataEncoded = defaultAbiCoder.encode(
       [`tuple(string)`],
-      [
-        [
-          `ipfs://${evidenceIPFSUploaded.result?.ipfsHash}`, // evidence
-        ],
-      ],
+      [[evidenceIPFSHash]],
     )
 
     try {
@@ -85,7 +89,7 @@ const MintBadgeType: NextPageWithLayout = () => {
         theBadge.mint(
           badgeModelId, // badgeModelId
           address as string, // wallet
-          'ipfs://', // metadata para el badge //TODO
+          badgeMetadataIPFSHash, // metadata para el badge
           klerosControllerDataEncoded,
           {
             value: mintValue,

@@ -45,7 +45,7 @@ export default function BadgesInReviewSection() {
     const badgesLayouts = badgeModels.map((badge) => {
       const badgeModel = badge.badgeModel
       return (
-        <Box key={badgeModel.id}>
+        <Box key={badge.id}>
           <MiniBadgeModelPreview highlightColor={colors.green} metadata={badgeModel?.uri} />
         </Box>
       )

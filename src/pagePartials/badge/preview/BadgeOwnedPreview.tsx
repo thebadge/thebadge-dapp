@@ -1,5 +1,4 @@
 import Image from 'next/image'
-import { useSearchParams } from 'next/navigation'
 
 import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined'
 import { Box, Divider, IconButton, Stack, Typography } from '@mui/material'
@@ -9,6 +8,7 @@ import { colors } from 'thebadge-ui-library'
 import challengedLogo from '@/src/components/assets/challenged.webp'
 import LinkWithTranslation from '@/src/components/helpers/LinkWithTranslation'
 import { notify } from '@/src/components/toast/Toast'
+import useBadgeIdParam from '@/src/hooks/nextjs/useBadgeIdParam'
 import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
 import BadgeModelPreview from '@/src/pagePartials/badge/BadgeModelPreview'
 import { BadgeStatus } from '@/types/generated/subgraph'
@@ -17,8 +17,7 @@ import { ToastStates } from '@/types/toast'
 export default function BadgeOwnedPreview() {
   const { t } = useTranslation()
 
-  const searchParams = useSearchParams()
-  const badgeId = searchParams.get('badgeId')
+  const badgeId = useBadgeIdParam()
 
   if (!badgeId) {
     throw `No badgeId provided us URL query param`
