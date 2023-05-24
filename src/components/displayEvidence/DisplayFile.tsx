@@ -22,7 +22,6 @@ type DisplayFileProps = {
 }
 
 export function DisplayFile({ label, placeholder, value }: DisplayFileProps) {
-  console.log(value)
   function openTabWithFile() {
     const openedTab = window.open('about:blank')
 

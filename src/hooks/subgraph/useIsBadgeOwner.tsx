@@ -1,13 +1,13 @@
 import useSWR from 'swr'
 
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
+import isSameAddress from '@/src/utils/addressValidations'
 
-export default function useIsBadgeOwner(typeId: string, ownerAddress: string) {
+export default function useIsBadgeOwner(badgeId: string, ownerAddress: string) {
   const gql = useSubgraph()
-  const badgeId = `${ownerAddress}-${typeId}`
-  return useSWR(badgeId.length ? `isOwnerBadge:${badgeId}` : null, async (_badgeId: string) => {
+  return useSWR(badgeId.length ? [`isOwnerBadge:${badgeId}`, ownerAddress] : null, async ([,]) => {
     const badgeResponse = await gql.badgeById({ id: badgeId })
     const badge = badgeResponse.badge
-    return !!badge
+    return isSameAddress(badge?.account.id, ownerAddress)
   })
 }

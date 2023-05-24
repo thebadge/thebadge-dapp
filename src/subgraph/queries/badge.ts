@@ -33,8 +33,16 @@ export const BADGE_BY_ID = gql`
   }
 `
 
+export const BADGE_KLEROS_METADATA_BY_ID = gql`
+  query badgeKlerosMetadataById($id: ID!) {
+    badgeKlerosMetaData(id: $id) {
+      ...BadgeKlerosMetadata
+    }
+  }
+`
+
 export const BADGE_BY_TYPE = gql`
-  query badgeByTypeId($id: String!) {
+  query badgeByModelId($id: String!) {
     badges(where: { badgeModel: $id }) {
       ...BadgeWithJustIds
     }

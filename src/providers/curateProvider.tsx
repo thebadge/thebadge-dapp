@@ -4,8 +4,8 @@ import CurateModal from '@/src/pagePartials/badge/curate/CurateModal'
 import ChallengeModal from '@/src/pagePartials/badge/curate/challenge/ChallengeModal'
 
 type CurateContextType = {
-  curate: (typeId: string, address: string) => void
-  challenge: (typeId: string, address: string) => void
+  curate: (badgeId: string) => void
+  challenge: (badgeId: string) => void
 }
 
 const CurateContext = React.createContext<CurateContextType>({
@@ -19,24 +19,21 @@ const CurateContext = React.createContext<CurateContextType>({
 
 export default function CurateContextProvider({ children }: { children: React.ReactNode }) {
   const [curateModalOpen, setCurateModalOpen] = useState(false)
-  const [badgeTypeId, setBadgeTypeId] = useState('')
-  const [ownerAddress, setOwnerAddress] = useState('')
+  const [badgeId, setBadgeId] = useState('')
 
   const [challengeModalOpen, setChallengeModalOpen] = useState(false)
-  function challenge(typeId: string, address: string) {
+  function challenge(badgeId: string) {
     setChallengeModalOpen(true)
-    setOwnerAddress(address)
-    setBadgeTypeId(typeId)
+    setBadgeId(badgeId)
   }
 
   function handleCloseChallenge() {
     setChallengeModalOpen(false)
   }
 
-  function curate(typeId: string, address: string) {
+  function curate(badgeId: string) {
     setCurateModalOpen(true)
-    setOwnerAddress(address)
-    setBadgeTypeId(typeId)
+    setBadgeId(badgeId)
   }
 
   function handleCloseCurate() {
@@ -47,19 +44,13 @@ export default function CurateContextProvider({ children }: { children: React.Re
     <CurateContext.Provider value={{ curate, challenge }}>
       {challengeModalOpen && (
         <ChallengeModal
-          badgeTypeId={badgeTypeId}
+          badgeId={badgeId}
           onClose={handleCloseChallenge}
           open={challengeModalOpen}
-          ownerAddress={ownerAddress}
         />
       )}
       {curateModalOpen && (
-        <CurateModal
-          badgeTypeId={badgeTypeId}
-          onClose={handleCloseCurate}
-          open={curateModalOpen}
-          ownerAddress={ownerAddress}
-        />
+        <CurateModal badgeId={badgeId} onClose={handleCloseCurate} open={curateModalOpen} />
       )}
       {children}
     </CurateContext.Provider>

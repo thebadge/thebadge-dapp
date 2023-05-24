@@ -8,7 +8,7 @@ import FilteredList, { ListFilter } from '@/src/components/helpers/FilteredList'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
 import useTransaction from '@/src/hooks/useTransaction'
-import MiniBadgeTypeMetadata from '@/src/pagePartials/badge/MiniBadgeTypeMetadata'
+import MiniBadgeModelPreview from '@/src/pagePartials/badge/MiniBadgeModelPreview'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import getHighlightColorByStatus from '@/src/utils/badges/getHighlightColorByStatus'
 import { BadgeStatus, Badge_Filter } from '@/types/generated/subgraph'
@@ -73,15 +73,15 @@ export default function BadgesYouOwnList({ address }: Props) {
       if (filter.title === 'Challenged') {
         where = {
           ...where,
-          isChallenged: true,
+          status: BadgeStatus.Challenged,
         }
       }
       if (filter.title === 'In Review') {
         where = {
           ...where,
           status_in: where.status_in
-            ? [...where.status_in, BadgeStatus.InReview]
-            : [BadgeStatus.InReview],
+            ? [...where.status_in, BadgeStatus.Requested]
+            : [BadgeStatus.Requested],
         }
       }
     })
@@ -96,9 +96,9 @@ export default function BadgesYouOwnList({ address }: Props) {
       // TODO Use badge status to add claim or change the highlight color
       return (
         <Box key={badge.id}>
-          <MiniBadgeTypeMetadata
+          <MiniBadgeModelPreview
             highlightColor={getHighlightColorByStatus(badge.status)}
-            metadata={badge.badgeType?.metadataURL}
+            metadata={badge.badgeModel?.uri}
           />
         </Box>
       )

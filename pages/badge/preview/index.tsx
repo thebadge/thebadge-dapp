@@ -17,7 +17,7 @@ import InViewPort from '@/src/components/helpers/InViewPort'
 import SafeSuspense, { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import { useKeyPress } from '@/src/hooks/useKeypress'
-import BadgeTypeMetadata from '@/src/pagePartials/badge/BadgeTypeMetadata'
+import BadgeModelPreview from '@/src/pagePartials/badge/BadgeModelPreview'
 import BadgeEvidenceInfoPreview from '@/src/pagePartials/badge/explorer/BadgeEvidenceInfoPreview'
 import { Badge } from '@/types/generated/subgraph'
 import { NextPageWithLayout } from '@/types/next'
@@ -26,7 +26,7 @@ const ViewListOfBadgesByType: NextPageWithLayout = () => {
   const { t } = useTranslation()
   const gql = useSubgraph()
   const router = useRouter()
-  const badgeTypeId = router.query.typeId as string
+  const badgeTypeId = router.query.modelId as string
 
   const [badges, setBadges] = useState<Badge[]>([])
   const [loading, setLoading] = useState<boolean>(false)
@@ -83,7 +83,7 @@ const ViewListOfBadgesByType: NextPageWithLayout = () => {
     setLoading(true)
 
     // TODO filter badges using filters, category, text
-    const badgesByType = await gql.badgeByTypeId({ id: badgeTypeId })
+    const badgesByType = await gql.badgeByModelId({ id: badgeTypeId })
     const badges = (badgesByType.badges as Badge[]) || []
 
     setTimeout(() => {
@@ -140,7 +140,7 @@ const ViewListOfBadgesByType: NextPageWithLayout = () => {
                     ref={badgeTypesElementRefs[i]}
                     selected={isSelected}
                   >
-                    <BadgeTypeMetadata
+                    <BadgeModelPreview
                       metadata={badges[selectedBadge].badgeModel.uri}
                       size="small"
                     />

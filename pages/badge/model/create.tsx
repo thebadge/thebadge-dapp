@@ -41,16 +41,17 @@ const CreateBadgeType: NextPageWithLayout = () => {
     // Safe-ward to infer MetadataColumn[], It will never go throw the return
     if (!isMetadataColumnArray(badgeMetadataColumns)) return
 
+    // TODO refactor this to accept a typed file and remove the comments
     const { clearing, registration } = generateKlerosListMetaEvidence(
       name, //badgeName
       {
         mimeType: criteriaFileUri?.file.type,
         base64File: criteriaFileUri?.data_url,
       }, //criteriaFileUri
-      name, //badgeTypeName
-      description, //badgeTypeDescription
+      name, //badgeModelName
+      description, //badgeModelDescription
       badgeMetadataColumns, //badgeMetadataColumns
-      { mimeType: logoUri?.file.type, base64File: logoUri?.data_url }, //badgeTypeLogoUri
+      { mimeType: logoUri?.file.type, base64File: logoUri?.data_url }, //badgeModelLogoUri
     )
     const registrationIPFSUploaded = await ipfsUpload({
       attributes: registration,
@@ -62,7 +63,7 @@ const CreateBadgeType: NextPageWithLayout = () => {
       filePaths: ['fileURI', 'metadata.logoURI'],
     })
 
-    const badgeTypeIPFSUploaded = await ipfsUpload({
+    const badgeModelIPFSUploaded = await ipfsUpload({
       attributes: {
         description: data.description,
         image: { mimeType: logoUri?.file.type, base64File: logoUri?.data_url },
@@ -116,7 +117,7 @@ const CreateBadgeType: NextPageWithLayout = () => {
       const transaction = await sendTx(() =>
         theBadge.createBadgeModel(
           {
-            metadata: `ipfs://${badgeTypeIPFSUploaded.result?.ipfsHash}`, // TODO: should we use a custom one? or the one for TCR is ok?
+            metadata: `ipfs://${badgeModelIPFSUploaded.result?.ipfsHash}`,
             controllerName: 'kleros',
             mintCreatorFee: parseUnits(data.mintCost.toString(), 18),
             validFor: data.validFor, // in seconds, 0 infinite

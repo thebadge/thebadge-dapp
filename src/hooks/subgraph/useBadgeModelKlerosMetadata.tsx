@@ -1,12 +1,16 @@
-import axios from 'axios'
 import useSWR from 'swr'
 
-import { BACKEND_URL } from '@/src/constants/common'
 import { BadgeModelHooksOptions } from '@/src/hooks/subgraph/types'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
+import { getFromIPFS } from '@/src/hooks/subgraph/utils'
 import { KlerosListStructure } from '@/src/utils/kleros/generateKlerosListMetaEvidence'
-import { BackendResponse } from '@/types/utils'
 
+/**
+ * The BadgeModelKlerosMetadata provides additional information about a BadgeModel within the Kleros system.
+ * @param badgeModelId
+ * @param options
+ * @return SWRResponse<BadgeModelKlerosMetaData>
+ */
 export function useBadgeModelKlerosMetadata(
   badgeModelId: string,
   options?: BadgeModelHooksOptions,
@@ -24,30 +28,33 @@ export function useBadgeModelKlerosMetadata(
   )
 }
 
+/**
+ * Returns the BadgeModelKlerosMetaData and the KlerosListStructure for the Badge "registration"(mint) process
+ * @param badgeModelId
+ * @param options
+ * @return SWRResponse<BadgeModelKlerosMetaData>
+ */
 export function useRegistrationBadgeModelKlerosMetadata(
   badgeModelId: string,
   options?: BadgeModelHooksOptions,
 ) {
+  const badgeModelKlerosMetadata = useBadgeModelKlerosMetadata(badgeModelId, options)
   // It's going to do the fetch if it has ID and skip option on false
   const fetchIt = !options?.skip && badgeModelId.length
-  const gql = useSubgraph()
   return useSWR(
-    fetchIt ? [`RegistrationBadgeModelKlerosMetadata:${badgeModelId}`, badgeModelId] : null,
-    async ([, _id]) => {
-      const badgeModelKleros = await gql.badgeModelKlerosMetadataById({ id: _id })
+    fetchIt
+      ? [
+          `RegistrationBadgeModelKlerosMetadata:${badgeModelId}`,
+          badgeModelId,
+          badgeModelKlerosMetadata.data?.id,
+        ]
+      : null,
+    async ([,]) => {
+      const badgeModelKlerosData = badgeModelKlerosMetadata.data
 
-      const badgeModelKlerosData = badgeModelKleros?.badgeModelKlerosMetaData
+      const res = await getFromIPFS<KlerosListStructure>(badgeModelKlerosData?.registrationUri)
 
-      if (!badgeModelKlerosData?.registrationUri) {
-        throw 'There was not possible to get the needed metadata. Try again in some minutes.'
-      }
-
-      const metadataHash = badgeModelKlerosData.registrationUri.replace(/^ipfs?:\/\//, '')
-
-      const res = await axios.get<BackendResponse<{ content: KlerosListStructure }>>(
-        `${BACKEND_URL}/api/ipfs/${metadataHash}`,
-      )
-      const badgeModelKlerosRegistrationMetadata = res.data.result?.content
+      const badgeModelKlerosRegistrationMetadata = res ? res.data.result?.content : null
 
       return {
         ...badgeModelKlerosData,
@@ -57,19 +64,29 @@ export function useRegistrationBadgeModelKlerosMetadata(
   )
 }
 
+/**
+ * Returns the BadgeModelKlerosMetaData and the KlerosListStructure for the Badge "removal"(challenge to remove it) process
+ * @param badgeModelId
+ * @param options
+ * @return SWRResponse<BadgeModelKlerosMetaData>
+ */
 export function useRemovalBadgeModelKlerosMetadata(
   badgeModelId: string,
   options?: BadgeModelHooksOptions,
 ) {
+  const badgeModelKlerosMetadata = useBadgeModelKlerosMetadata(badgeModelId, options)
   // It's going to do the fetch if it has ID and skip option on false
   const fetchIt = !options?.skip && badgeModelId.length
-  const gql = useSubgraph()
   return useSWR(
-    fetchIt ? [`RemovalBadgeModelKlerosMetadata:${badgeModelId}`, badgeModelId] : null,
-    async ([, _id]) => {
-      const badgeModelKleros = await gql.badgeModelKlerosMetadataById({ id: _id })
-
-      const badgeModelKlerosData = badgeModelKleros?.badgeModelKlerosMetaData
+    fetchIt
+      ? [
+          `RemovalBadgeModelKlerosMetadata:${badgeModelId}`,
+          badgeModelId,
+          badgeModelKlerosMetadata.data?.id,
+        ]
+      : null,
+    async ([,]) => {
+      const badgeModelKlerosData = badgeModelKlerosMetadata.data
 
       if (!badgeModelKlerosData?.removalUri) {
         throw 'There was not possible to get the needed metadata. Try again in some minutes.'
@@ -77,10 +94,9 @@ export function useRemovalBadgeModelKlerosMetadata(
 
       const removalHash = badgeModelKlerosData.removalUri.replace(/^ipfs?:\/\//, '')
 
-      const res = await axios.get<BackendResponse<{ content: KlerosListStructure }>>(
-        `${BACKEND_URL}/api/ipfs/${removalHash}`,
-      )
-      const badgeModelKlerosRemovalMetadata = res.data.result?.content
+      const res = await getFromIPFS<KlerosListStructure>(removalHash)
+
+      const badgeModelKlerosRemovalMetadata = res ? res.data.result?.content : null
 
       return {
         ...badgeModelKlerosData,

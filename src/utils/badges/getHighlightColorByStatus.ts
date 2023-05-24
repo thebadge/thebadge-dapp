@@ -6,12 +6,12 @@ export default function getHighlightColorByStatus(badgeStatus?: BadgeStatus) {
   switch (badgeStatus) {
     case BadgeStatus.Approved:
       return colors.blue
-    case BadgeStatus.InReview:
+    case BadgeStatus.Requested:
       return colors.green
-    case BadgeStatus.Rejected:
+    case BadgeStatus.RequestRemoval:
       return colors.pink
-    case BadgeStatus.Revoked:
-      return colors.black
+    case BadgeStatus.Challenged:
+      return colors.reredError
     default:
       return colors.white
   }

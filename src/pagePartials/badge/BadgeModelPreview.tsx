@@ -5,14 +5,15 @@ import { BadgePreviewProps, BadgePreviewV2 } from 'thebadge-ui-library'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { BadgeModelMetadata } from '@/types/badges/BadgeMetadata'
+import { BackendFileResponse } from '@/types/utils'
 
 type Props = {
   metadata?: string
   size?: BadgePreviewProps['size']
 }
 
-function BadgeTypeMetadata({ metadata, size = 'medium' }: Props) {
-  const res = useS3Metadata<{ content: BadgeModelMetadata }>(metadata || '')
+function BadgeModelPreview({ metadata, size = 'medium' }: Props) {
+  const res = useS3Metadata<{ content: BadgeModelMetadata<BackendFileResponse> }>(metadata || '')
   const badgeMetadata = res.data?.content
   return (
     <SafeSuspense>
@@ -31,4 +32,4 @@ function BadgeTypeMetadata({ metadata, size = 'medium' }: Props) {
   )
 }
 
-export default BadgeTypeMetadata
+export default BadgeModelPreview

@@ -1,4 +1,3 @@
-import { useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/router'
 import React, { useRef, useState } from 'react'
 
@@ -52,18 +51,16 @@ const OwnerDisplay = styled(Menu)<OwnerDisplayProps>(({ theme, width }) => ({
   },
 }))
 
-export default function BadgeOwnerPreview() {
+export default function BadgeOwnerPreview({ ownerAddress }: { ownerAddress: string }) {
   const router = useRouter()
   const { t } = useTranslation()
-  const searchParams = useSearchParams()
-  const ownerAddress = searchParams.get('ownerAddress')
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLDivElement>(null)
   const wrapperRef = useRef<HTMLDivElement>()
   const open = Boolean(anchorEl)
 
   if (!ownerAddress) {
-    throw `No ownerAddress provided us URL query param`
+    throw `No ownerAddress provided`
   }
   const handleClick = () => {
     if (wrapperRef?.current) setAnchorEl(wrapperRef.current)

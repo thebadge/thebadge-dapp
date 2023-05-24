@@ -7,10 +7,11 @@ import { EmptyBadgePreview } from 'thebadge-ui-library'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import TBSwiper from '@/src/components/helpers/TBSwiper'
 import { fillListWithPlaceholders } from '@/src/components/utils/emptyBadges'
+import { nowInSeconds } from '@/src/constants/helpers'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
-import BadgeTypeMetadata from '@/src/pagePartials/badge/BadgeTypeMetadata'
+import BadgeModelPreview from '@/src/pagePartials/badge/BadgeModelPreview'
 
-const now = Math.floor(Date.now() / 1000)
+const now = nowInSeconds()
 export default function NearToExpireList() {
   const router = useRouter()
   const gql = useSubgraph()
@@ -22,13 +23,11 @@ export default function NearToExpireList() {
       return (
         <Box
           key={badgeInReview.id}
-          onClick={() =>
-            router.push(`/badge/${badgeInReview.badgeType.id}/${badgeInReview.receiver.id}`)
-          }
+          onClick={() => router.push(`/badge/preview/${badgeInReview.id}`)}
           sx={{ height: '100%', display: 'flex' }}
         >
           <SafeSuspense>
-            <BadgeTypeMetadata metadata={badgeInReview?.badgeType.metadataURL} size="small" />
+            <BadgeModelPreview metadata={badgeInReview?.badgeModel.uri} size="small" />
           </SafeSuspense>
         </Box>
       )
