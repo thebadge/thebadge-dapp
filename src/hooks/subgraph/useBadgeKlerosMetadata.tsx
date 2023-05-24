@@ -7,6 +7,12 @@ import { getFromIPFS } from '@/src/hooks/subgraph/utils'
 import { BadgeEvidenceMetadata } from '@/types/badges/BadgeMetadata'
 import { KlerosRequestType } from '@/types/generated/subgraph'
 
+/**
+ * The BadgeKlerosMetadata provides additional information about a Badge within the Kleros system.
+ * @param badgeId
+ * @param options
+ * @return SWRResponse<BadgeKlerosMetaData>
+ */
 export function useBadgeKlerosMetadata(badgeId: string, options?: BadgeModelHooksOptions) {
   // It's going to do the fetch if it has ID and skip option on false
   const fetchIt = !options?.skip && badgeId.length
@@ -18,6 +24,12 @@ export function useBadgeKlerosMetadata(badgeId: string, options?: BadgeModelHook
   })
 }
 
+/**
+ * Returns the request evidence for the given Badge within the Kleros system. Returns the URL and the
+ * Evidence as an object.
+ * @param badgeId
+ * @param options
+ */
 export function useEvidenceBadgeKlerosMetadata(badgeId: string, options?: BadgeModelHooksOptions) {
   const badge = useBadgeById(badgeId)
   const badgeKlerosMetadata = useBadgeKlerosMetadata(badgeId, options)

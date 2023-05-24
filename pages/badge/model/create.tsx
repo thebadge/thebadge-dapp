@@ -41,6 +41,7 @@ const CreateBadgeType: NextPageWithLayout = () => {
     // Safe-ward to infer MetadataColumn[], It will never go throw the return
     if (!isMetadataColumnArray(badgeMetadataColumns)) return
 
+    // TODO refactor this to accept a typed file and remove the comments
     const { clearing, registration } = generateKlerosListMetaEvidence(
       name, //badgeName
       {

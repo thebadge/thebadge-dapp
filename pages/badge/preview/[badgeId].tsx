@@ -28,6 +28,7 @@ const ViewBadge: NextPageWithLayout = () => {
   if (!badgeId) {
     throw `No badgeId provided us URL query param`
   }
+
   const badgeById = useBadgeById(badgeId)
   const badge = badgeById.data
 

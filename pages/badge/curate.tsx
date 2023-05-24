@@ -14,6 +14,7 @@ import {
 import FilteredList, { ListFilter } from '@/src/components/helpers/FilteredList'
 import InViewPort from '@/src/components/helpers/InViewPort'
 import SafeSuspense, { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
+import { nowInSeconds } from '@/src/constants/helpers'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import { useKeyPress } from '@/src/hooks/useKeypress'
 import MiniBadgeModelPreview from '@/src/pagePartials/badge/MiniBadgeModelPreview'
@@ -21,7 +22,7 @@ import BadgeEvidenceInfoPreview from '@/src/pagePartials/badge/explorer/BadgeEvi
 import { Badge } from '@/types/generated/subgraph'
 import { NextPageWithLayout } from '@/types/next'
 
-const now = Math.floor(Date.now() / 1000)
+const now = nowInSeconds()
 
 const filters: Array<ListFilter> = [
   {

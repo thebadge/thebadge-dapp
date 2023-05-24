@@ -5,6 +5,12 @@ import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import { getFromIPFS } from '@/src/hooks/subgraph/utils'
 import { KlerosListStructure } from '@/src/utils/kleros/generateKlerosListMetaEvidence'
 
+/**
+ * The BadgeModelKlerosMetadata provides additional information about a BadgeModel within the Kleros system.
+ * @param badgeModelId
+ * @param options
+ * @return SWRResponse<BadgeModelKlerosMetaData>
+ */
 export function useBadgeModelKlerosMetadata(
   badgeModelId: string,
   options?: BadgeModelHooksOptions,
@@ -22,6 +28,12 @@ export function useBadgeModelKlerosMetadata(
   )
 }
 
+/**
+ * Returns the BadgeModelKlerosMetaData and the KlerosListStructure for the Badge "registration"(mint) process
+ * @param badgeModelId
+ * @param options
+ * @return SWRResponse<BadgeModelKlerosMetaData>
+ */
 export function useRegistrationBadgeModelKlerosMetadata(
   badgeModelId: string,
   options?: BadgeModelHooksOptions,
@@ -52,6 +64,12 @@ export function useRegistrationBadgeModelKlerosMetadata(
   )
 }
 
+/**
+ * Returns the BadgeModelKlerosMetaData and the KlerosListStructure for the Badge "removal"(challenge to remove it) process
+ * @param badgeModelId
+ * @param options
+ * @return SWRResponse<BadgeModelKlerosMetaData>
+ */
 export function useRemovalBadgeModelKlerosMetadata(
   badgeModelId: string,
   options?: BadgeModelHooksOptions,

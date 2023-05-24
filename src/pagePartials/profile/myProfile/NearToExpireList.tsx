@@ -7,10 +7,11 @@ import { EmptyBadgePreview } from 'thebadge-ui-library'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import TBSwiper from '@/src/components/helpers/TBSwiper'
 import { fillListWithPlaceholders } from '@/src/components/utils/emptyBadges'
+import { nowInSeconds } from '@/src/constants/helpers'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import BadgeModelPreview from '@/src/pagePartials/badge/BadgeModelPreview'
 
-const now = Math.floor(Date.now() / 1000)
+const now = nowInSeconds()
 export default function NearToExpireList() {
   const router = useRouter()
   const gql = useSubgraph()
