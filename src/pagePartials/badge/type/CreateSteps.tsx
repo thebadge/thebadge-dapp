@@ -33,7 +33,7 @@ const MintSchemaStep2 = z.object({
   description: LongTextSchema.describe(
     'Description // This description will be showed on the Badge itself, you can use some helpers to inject user information on it.',
   ),
-  logoUri: ImageSchema.describe(
+  badgeModelLogoUri: ImageSchema.describe(
     'Your badge type logo // This Logo will be on the center part of the Badge itself. Recommended images with aspect ratio of 1.',
   ),
   criteriaFileUri: FileSchema.describe(
@@ -112,7 +112,7 @@ export default function CreateSteps({ onSubmit, txState }: MintStepsProps) {
           badgeUrl={APP_URL}
           category={data.name}
           description={data.description}
-          imageUrl={data.logoUri.data_url}
+          imageUrl={data.badgeModelLogoUri.base64File}
           size="medium"
           textContrast="light-withTextBackground"
           title={data.name}
