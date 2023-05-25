@@ -42,9 +42,8 @@ export default function AlreadyOwnThisBadgeError({ onClose }: { onClose: VoidFun
   const badgeModelId = useModelIdParam()
 
   const ownedBadges = useBadgeOwnershipData(badgeModelId, address as string)
-  const hasJustOne = ownedBadges && ownedBadges?.length === 1
 
-  if (!ownedBadges) {
+  if (!ownedBadges || !ownedBadges.length) {
     // This case it would never happen, but it's the safest way to proceed
     onClose()
     return null

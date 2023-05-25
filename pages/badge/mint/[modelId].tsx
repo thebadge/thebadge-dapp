@@ -87,9 +87,9 @@ const MintBadgeType: NextPageWithLayout = () => {
     try {
       const transaction = await sendTx(() =>
         theBadge.mint(
-          badgeModelId, // badgeModelId
-          address as string, // wallet
-          badgeMetadataIPFSHash, // metadata para el badge
+          badgeModelId,
+          address as string,
+          badgeMetadataIPFSHash,
           klerosControllerDataEncoded,
           {
             value: mintValue,

@@ -25,11 +25,10 @@ type DisplayFileProps = {
 }
 
 export function DisplayFile({ label, placeholder, value }: DisplayFileProps) {
-  console.log(value)
   async function openTabWithFile() {
     if (typeof value === 'string') {
       const fileToShow = await getFromIPFS<undefined, BackendFileResponse>(value)
-      window.open(fileToShow?.data.result?.s3Url)
+      window.open(fileToShow?.data?.result?.s3Url)
     } else {
       const openedTab = window.open('about:blank')
 

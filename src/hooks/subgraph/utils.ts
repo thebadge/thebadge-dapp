@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios'
 
 import { BACKEND_URL } from '@/src/constants/common'
 import { BackendResponse } from '@/types/utils'
@@ -15,15 +15,17 @@ export async function getFromIPFS<T, X = {}>(hash?: string) {
   if (!hash) return
   const cleanedHash = hash.replace(/^ipfs?:\/\//, '')
   if (!cleanedHash) return
-  if (checkIfExistOnCache(`${BACKEND_URL}/api/ipfs/${cleanedHash}`)) {
-    return getCacheResponse<BackendResponse<{ content: T } & X>>(
-      `${BACKEND_URL}/api/ipfs/${cleanedHash}`,
-    )
-  }
+
+  const cachedResponse = getCacheResponse<BackendResponse<{ content: T } & X>>(
+    `${BACKEND_URL}/api/ipfs/${cleanedHash}`,
+  )
+  if (cachedResponse) return cachedResponse
+
   const backendResponse = await axios.get<BackendResponse<{ content: T } & X>>(
     `${BACKEND_URL}/api/ipfs/${cleanedHash}`,
   )
   if (!backendResponse.data) return backendResponse
+
   // If the response has something on it, we store it on cache
   saveResponseOnCache(`${BACKEND_URL}/api/ipfs/${cleanedHash}`, backendResponse)
   return backendResponse
@@ -46,10 +48,10 @@ function checkIfExistOnCache(key: string) {
 function getCacheResponse<T>(key: string) {
   if (checkIfExistOnCache(key)) {
     const item = JSON.parse(sessionStorage.getItem(key) as string)
-    if ('response' in item) return item.response as T
-    else return {} as T
+    if ('response' in item) return item.response as AxiosResponse<T>
+    else return null
   }
-  return {} as T
+  return null
 }
 
 function saveResponseOnCache(key: string, response: any) {
