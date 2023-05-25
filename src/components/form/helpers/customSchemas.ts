@@ -113,10 +113,13 @@ const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/web
 export const ImageSchema = createUniqueFieldSchema(
   z
     .any()
-    .refine((value) => !!value?.file, 'Upload an image is required.')
-    .refine((value) => value?.file?.size <= MAX_FILE_SIZE, `Max file size is 5MB.`)
+    .refine((value) => !!value?.base64File, 'Upload an image is required.')
     .refine(
-      (value) => ACCEPTED_IMAGE_TYPES.includes(value?.file?.type),
+      (value) => (value?.base64File?.length / 4) * 3 <= MAX_FILE_SIZE,
+      `Max file size is 5MB.`,
+    )
+    .refine(
+      (value) => ACCEPTED_IMAGE_TYPES.includes(value?.mimeType),
       '.jpg, .jpeg, .png and .webp files are accepted.',
     ),
   'ImageSchema',
@@ -125,10 +128,13 @@ export const ImageSchema = createUniqueFieldSchema(
 export const AvatarSchema = createUniqueFieldSchema(
   z
     .any()
-    .refine((value) => !!value?.file, 'Upload an image is required.')
-    .refine((value) => value?.file?.size <= MAX_FILE_SIZE, `Max file size is 5MB.`)
+    .refine((value) => !!value?.base64File, 'Upload an image is required.')
     .refine(
-      (value) => ACCEPTED_IMAGE_TYPES.includes(value?.file?.type),
+      (value) => (value?.base64File?.length / 4) * 3 <= MAX_FILE_SIZE,
+      `Max file size is 5MB.`,
+    )
+    .refine(
+      (value) => ACCEPTED_IMAGE_TYPES.includes(value?.mimeType),
       '.jpg, .jpeg, .png and .webp files are accepted.',
     ),
   'AvatarSchema',
@@ -137,16 +143,22 @@ export const AvatarSchema = createUniqueFieldSchema(
 export const FileSchema = createUniqueFieldSchema(
   z
     .any()
-    .refine((value) => !!value && !!value.file, 'Upload a file is required.')
-    .refine((value) => value?.file?.size <= MAX_FILE_SIZE, `Max file size is 5MB.`),
+    .refine((value) => !!value && !!value.base64File, 'Upload a file is required.')
+    .refine(
+      (value) => (value?.base64File?.length / 4) * 3 <= MAX_FILE_SIZE,
+      `Max file size is 5MB.`,
+    ),
   'FileSchema',
 )
 
 export const OptionalFileSchema = createUniqueFieldSchema(
   z
     .any()
-    .refine((value) => !!value && !!value.file, 'Upload a file is required.')
-    .refine((value) => value?.file?.size <= MAX_FILE_SIZE, `Max file size is 5MB.`)
+    .refine((value) => !!value && !!value.base64File, 'Upload a file is required.')
+    .refine(
+      (value) => (value?.base64File?.length / 4) * 3 <= MAX_FILE_SIZE,
+      `Max file size is 5MB.`,
+    )
     .optional(),
   'OptionalFileSchema',
 )

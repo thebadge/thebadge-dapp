@@ -1,13 +1,43 @@
 import useSWR from 'swr'
 
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
-import isSameAddress from '@/src/utils/addressValidations'
 
-export default function useIsBadgeOwner(badgeId: string, ownerAddress: string) {
+/**
+ * Hook to determine badge ownership, we utilize the potential Owner Address and the badgeModelId. By querying the SG,
+ * we retrieve all badges associated with the provided address that belong to the model of the given modelId.
+ * @param badgeModelId
+ * @param ownerAddress
+ */
+export default function useIsBadgeOwner(badgeModelId: string, ownerAddress: string) {
+  const userWithOwnerBadges = useBadgesOwnedByModelId(badgeModelId, ownerAddress)
+  return !!userWithOwnerBadges.data?.user?.badges?.length
+}
+
+/**
+ * Hook to get the Status and Creation date of each already owned badge under the given modelId
+ * @param badgeModelId
+ * @param ownerAddress
+ */
+export function useBadgeOwnershipData(badgeModelId: string, ownerAddress: string) {
+  const userWithOwnerBadges = useBadgesOwnedByModelId(badgeModelId, ownerAddress)
+  return userWithOwnerBadges.data?.user?.badges
+}
+
+/**
+ * Private hook to simplify the logic and also use just one call to the SG
+ * @param badgeModelId
+ * @param ownerAddress
+ */
+function useBadgesOwnedByModelId(badgeModelId: string, ownerAddress: string) {
   const gql = useSubgraph()
-  return useSWR(badgeId.length ? [`isOwnerBadge:${badgeId}`, ownerAddress] : null, async ([,]) => {
-    const badgeResponse = await gql.badgeById({ id: badgeId })
-    const badge = badgeResponse.badge
-    return isSameAddress(badge?.account.id, ownerAddress)
-  })
+  return useSWR(
+    badgeModelId.length ? [`OwnedBadges:${badgeModelId}:${ownerAddress}`, ownerAddress] : null,
+    async ([,]) => {
+      const badgeResponse = await gql.userBadgeByModelId({
+        userId: ownerAddress,
+        modelId: badgeModelId,
+      })
+      return badgeResponse ? badgeResponse : {}
+    },
+  )
 }

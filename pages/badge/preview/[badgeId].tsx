@@ -1,4 +1,3 @@
-import { useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/navigation'
 
 import { Box, Stack, Tooltip } from '@mui/material'
@@ -6,6 +5,7 @@ import { useTranslation } from 'next-export-i18n'
 import { ButtonV2, colors } from 'thebadge-ui-library'
 
 import SafeSuspense, { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
+import useBadgeIdParam from '@/src/hooks/nextjs/useBadgeIdParam'
 import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
 import BadgeOwnedPreview from '@/src/pagePartials/badge/preview/BadgeOwnedPreview'
 import BadgeOwnerPreview from '@/src/pagePartials/badge/preview/BadgeOwnerPreview'
@@ -23,8 +23,7 @@ const ViewBadge: NextPageWithLayout = () => {
   const router = useRouter()
   const { mode } = useColorMode()
 
-  const searchParams = useSearchParams()
-  const badgeId = searchParams.get('badgeId')
+  const badgeId = useBadgeIdParam()
   if (!badgeId) {
     throw `No badgeId provided us URL query param`
   }

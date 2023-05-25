@@ -1,4 +1,3 @@
-import { useSearchParams } from 'next/navigation'
 import * as React from 'react'
 import { useCallback, useRef, useState } from 'react'
 
@@ -14,6 +13,7 @@ import { FormWithSteps } from '@/src/components/form/formWithSteps/FormWithSteps
 import { AgreementSchema } from '@/src/components/form/helpers/customSchemas'
 import { TransactionLoading } from '@/src/components/loading/TransactionLoading'
 import { APP_URL, DOCS_URL } from '@/src/constants/common'
+import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
 import { useRegistrationBadgeModelKlerosMetadata } from '@/src/hooks/subgraph/useBadgeModelKlerosMetadata'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
@@ -49,8 +49,8 @@ export const MintSchemaStep1 = z.object({
 export default function MintSteps({ costs, evidenceSchema, onSubmit, txState }: MintStepsProps) {
   const { t } = useTranslation()
   const { address } = useWeb3Connection()
-  const searchParams = useSearchParams()
-  const modelId = searchParams.get('modelId')
+  const modelId = useModelIdParam()
+
   const [currentStep, setCurrentStep] = useState(0)
 
   if (!modelId) {

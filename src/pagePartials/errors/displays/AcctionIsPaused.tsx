@@ -23,7 +23,7 @@ const ModalBody = styled(Box)(({ theme }) => ({
       ? gradients.gradientBackgroundLight
       : gradients.gradientBackgroundDark,
   borderRadius: theme.spacing(1),
-  boxShadow: `0px 0px 20px rgba(255, 255, 255, 0.6)`,
+  boxShadow: `0px 0px 15px rgba(255, 255, 255, 0.4)`,
   padding: theme.spacing(4),
   '& .MuiContainer-root': {
     maxWidth: '100%',

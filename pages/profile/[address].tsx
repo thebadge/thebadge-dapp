@@ -5,8 +5,8 @@ import SharedProfile from '@/src/pagePartials/profile/SharedProfile'
 import { NextPageWithLayout } from '@/types/next'
 
 const SharedProfilePage: NextPageWithLayout = () => {
-  const searchParams = useSearchParams()
   const router = useRouter()
+  const searchParams = useSearchParams()
 
   const addressOnUrl = searchParams.get('address')?.toLowerCase()
 
