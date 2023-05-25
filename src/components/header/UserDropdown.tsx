@@ -115,7 +115,7 @@ export const UserDropdown: React.FC = () => {
     t('header.buttons.create'),
     colors.pink,
     !user || !user?.isCreator,
-    '/badge/type/create',
+    '/badge/model/create',
   )
 
   const blockiesIcon = (
