@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import { BadgePreviewProps, BadgePreviewV2 } from 'thebadge-ui-library'
+import { BadgePreview, BadgePreviewProps } from 'thebadge-ui-library'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
@@ -17,7 +17,7 @@ function BadgeModelPreview({ metadata, size = 'medium' }: Props) {
   const badgeMetadata = res.data?.content
   return (
     <SafeSuspense>
-      <BadgePreviewV2
+      <BadgePreview
         animationEffects={[]}
         animationOnHover
         badgeBackgroundUrl="https://images.unsplash.com/photo-1512998844734-cd2cca565822?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTIyfHxhYnN0cmFjdHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
