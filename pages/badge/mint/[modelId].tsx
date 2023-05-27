@@ -18,10 +18,6 @@ import MintSteps from '@/src/pagePartials/badge/mint/MintSteps'
 import { PreventActionIfBadgeTypePaused } from '@/src/pagePartials/errors/preventActionIfPaused'
 import { RequiredNotHaveBadge } from '@/src/pagePartials/errors/requiredNotHaveBadge'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
-import {
-  createAndUploadBadgeEvidence,
-  createAndUploadBadgeMetadata,
-} from '@/src/utils/badges/mintHelpers'
 import { BadgeModelMetadata } from '@/types/badges/BadgeMetadata'
 import { TheBadge__factory } from '@/types/generated/typechain'
 import { MetadataColumn } from '@/types/kleros/types'
@@ -67,6 +63,11 @@ const MintBadgeType: NextPageWithLayout = () => {
   async function onSubmit(data: z.infer<typeof CreateBadgeSchema>, imageDataUrl: string) {
     const values: Record<string, unknown> = {}
     Object.keys(data).forEach((key) => (values[key] = data[key]))
+
+    // Use NextJs dynamic import to reduce the bundle size
+    const { createAndUploadBadgeEvidence, createAndUploadBadgeMetadata } = await import(
+      '@/src/utils/badges/mintHelpers'
+    )
 
     const evidenceIPFSHash = await createAndUploadBadgeEvidence(
       klerosBadgeMetadata?.metadata.columns as MetadataColumn[],
