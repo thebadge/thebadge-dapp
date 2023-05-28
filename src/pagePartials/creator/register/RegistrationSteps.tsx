@@ -114,7 +114,7 @@ export default function RegistrationSteps({ onSubmit, txState }: RegistrationSte
         </Typography>
 
         <Typography textAlign="justify" variant="body3" width="85%">
-          {t(`creator.register.steps.${currentStep}.sub-title`)}
+          {t(`creator.register.steps.${currentStep}.subTitle`)}
         </Typography>
       </Stack>
       <FormWithSteps
@@ -123,7 +123,7 @@ export default function RegistrationSteps({ onSubmit, txState }: RegistrationSte
           {},
           {
             terms: {
-              agreementText: t('creator.register.form.terms-conditions'),
+              agreementText: t('creator.register.form.termsConditions'),
             },
           },
         ]}

@@ -4,7 +4,7 @@ import gql from 'graphql-tag'
 export const BADGES_IN_REVIEW = gql`
   query badgesInReview($date: BigInt!) {
     badges(where: { badgeKlerosMetaData_: { reviewDueDate_gt: $date } }) {
-      ...FullBadgeDetails
+      ...BadgesInReview
     }
   }
 `
