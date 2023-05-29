@@ -67,6 +67,7 @@ export default function DefaultLayout({ children }: DefaultLayoutProps) {
           <BackgroundGradient
             gradient={theme.palette?.backgroundGradient[mode as keyof PaletteColorOptions]}
           />
+
           <StyledBody>
             <NavigationRoom>
               <MainMenu />

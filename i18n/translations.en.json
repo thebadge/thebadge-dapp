@@ -147,7 +147,11 @@
     "notACreatorSubtitle": "Please, to continue it is necessary that you have registered as a creator, ",
     "alreadyOwnedBadge": "You already own this badge",
     "pausedAction": "This action has been temporarily paused.",
-    "pausedActionSubtitle": "Please, head over to our Discord channel for more information."
+    "pausedActionSubtitle": "Please, head over to our Discord channel for more information.",
+    "outOfService": "Oops, something went wrong!",
+    "outOfServiceSubtitle": "Please, head over to our Discord channel for more information.",
+    "outOfServiceErrorCode": "Error code: `{{errorCode}}`"
+
   },
   "creator": {
     "register": {
