@@ -1,5 +1,6 @@
 import { APP_URL } from '@/src/constants/common'
 import ipfsUpload from '@/src/utils/ipfsUpload'
+import { KlerosListStructure } from '@/src/utils/kleros/generateKlerosListMetaEvidence'
 import {
   BadgeEvidenceMetadata,
   BadgeMetadata,
@@ -41,16 +42,21 @@ export async function createAndUploadBadgeEvidence(
     },
     filePaths: filePaths,
   })
-  console.log({
-    attributes: {
-      columns,
-      values,
-    },
-    filePaths: filePaths,
-  })
 
-  console.log(evidenceIPFSUploaded.result?.ipfsHash)
   return `ipfs://${evidenceIPFSUploaded.result?.ipfsHash}`
+}
+
+export function createKlerosValuesObject(
+  data: Record<string, unknown>,
+  klerosBadgeMetadata?: KlerosListStructure | null,
+): Record<string, unknown> {
+  const values: Record<string, unknown> = {}
+  if (!klerosBadgeMetadata) return values
+  // If we change this "shape" key values, we need to update the klerosSchemaFactory on src/components/form/helpers/validators.ts
+  klerosBadgeMetadata.metadata.columns.forEach((column, i) => {
+    values[`${column.label}`] = data[`${i}`]
+  })
+  return values
 }
 
 function getFilePathsFromValues(values: Record<string, any>) {

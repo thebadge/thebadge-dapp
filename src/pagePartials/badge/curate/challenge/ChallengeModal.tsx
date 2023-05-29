@@ -16,6 +16,7 @@ import {
 } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
 import { Controller, useForm } from 'react-hook-form'
+import { ImageType } from 'react-images-uploading'
 import { colors, gradients } from 'thebadge-ui-library'
 import { z } from 'zod'
 
@@ -169,7 +170,7 @@ function ChallengeModalContent({ badgeId, onClose }: { badgeId: string; onClose:
         {t('badge.challenge.modal.challenge')}
       </Typography>
       <SafeSuspense fallback={<Skeleton variant={'text'} width={500} />}>
-        <CurationCriteriaLink badgeModelId={badgeId} />
+        <CurationCriteriaLink badgeModelId={badge.badgeModel.id} />
       </SafeSuspense>
       <Container sx={{ flexDirection: 'row', display: 'flex', alignItems: 'center', gap: 1 }}>
         <FindInPageOutlinedIcon />
@@ -204,7 +205,20 @@ function ChallengeModalContent({ badgeId, onClose }: { badgeId: string; onClose:
               control={control}
               name={'attachment'}
               render={({ field: { name, onChange, value }, fieldState: { error } }) => (
-                <FileInput error={error} label={name} onChange={onChange} value={value} />
+                <FileInput
+                  error={error}
+                  label={name}
+                  onChange={(value: ImageType | null) => {
+                    if (value) {
+                      // We change the structure a little bit to have it ready to push to the backend
+                      onChange({
+                        mimeType: value.file?.type,
+                        base64File: value.data_url,
+                      })
+                    } else onChange(null)
+                  }}
+                  value={value}
+                />
               )}
             />
           </Box>

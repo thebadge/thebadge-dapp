@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from 'react'
 
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 import FileUploadIcon from '@mui/icons-material/FileUpload'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf'
@@ -57,6 +58,8 @@ type FileInputProps = {
  * @constructor
  */
 export function FileInput({ error, label, onChange, placeholder, value }: FileInputProps) {
+  console.log('FileInput', value)
+
   const [files, setFiles] = useState<ImageListType>(value ? [value] : [])
   const maxNumber = 1
 
@@ -85,7 +88,15 @@ export function FileInput({ error, label, onChange, placeholder, value }: FileIn
             onChange={handleOnChange}
             value={files}
           >
-            {({ dragProps, errors, imageList, isDragging, onImageUpdate, onImageUpload }) => (
+            {({
+              dragProps,
+              errors,
+              imageList,
+              isDragging,
+              onImageRemoveAll,
+              onImageUpdate,
+              onImageUpload,
+            }) => (
               // write your building UI
               <Box display="flex" flexDirection="column" sx={{ flex: 1 }}>
                 {imageList.length === 0 && (
@@ -127,6 +138,14 @@ export function FileInput({ error, label, onChange, placeholder, value }: FileIn
                       >
                         <FileUploadIcon color="white" />
                       </IconButton>
+                      <IconButton
+                        aria-label="upload file"
+                        color="secondary"
+                        component="label"
+                        onClick={() => onImageRemoveAll()}
+                      >
+                        <DeleteForeverIcon color="white" />
+                      </IconButton>
                     </FileDrop>
                   </Box>
                 ))}
@@ -164,6 +183,7 @@ export default function FileInputWithTSForm() {
   const { error, field } = useTsController<z.infer<typeof FileSchema>>()
   const { label, placeholder } = useDescription()
 
+  console.log('FileInputWithTSForm', field.value)
   return (
     <FileInput
       error={error ? convertToFieldError(error) : undefined}

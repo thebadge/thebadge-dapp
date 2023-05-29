@@ -56,11 +56,7 @@ export default function DisplayEvidenceField({
     }
     case KLEROS_LIST_TYPES.IMAGE:
       return (
-        <DisplayImage
-          label={columnItem.label}
-          placeholder={columnItem.description}
-          value={value.data_url}
-        />
+        <DisplayImage label={columnItem.label} placeholder={columnItem.description} value={value} />
       )
     case KLEROS_LIST_TYPES.LINK:
       return (

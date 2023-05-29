@@ -61,13 +61,11 @@ const MintBadgeType: NextPageWithLayout = () => {
   const CreateBadgeSchema = z.object(klerosSchemaFactory(klerosBadgeMetadata.metadata.columns))
 
   async function onSubmit(data: z.infer<typeof CreateBadgeSchema>, imageDataUrl: string) {
-    const values: Record<string, unknown> = {}
-    Object.keys(data).forEach((key) => (values[key] = data[key]))
-
     // Use NextJs dynamic import to reduce the bundle size
-    const { createAndUploadBadgeEvidence, createAndUploadBadgeMetadata } = await import(
-      '@/src/utils/badges/mintHelpers'
-    )
+    const { createAndUploadBadgeEvidence, createAndUploadBadgeMetadata, createKlerosValuesObject } =
+      await import('@/src/utils/badges/mintHelpers')
+
+    const values = createKlerosValuesObject(data, klerosBadgeMetadata)
 
     const evidenceIPFSHash = await createAndUploadBadgeEvidence(
       klerosBadgeMetadata?.metadata.columns as MetadataColumn[],
