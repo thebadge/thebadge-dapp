@@ -1,8 +1,9 @@
 import React, { ReactElement } from 'react'
 
-import { styled } from '@mui/material'
+import { Container, styled } from '@mui/material'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
+import { Footer } from '@/src/components/layout/Footer'
 import useSubGraphStatus from '@/src/hooks/subgraph/useSubGraphStatus'
 import OutOfService from '@/src/pagePartials/errors/displays/OutOfService'
 
@@ -27,11 +28,14 @@ const CheckStatus: React.FC<Props> = ({ children }) => {
     subGraphAvailable.data?.hasIndexingErrors ||
     subGraphAvailable.error
   ) {
-    console.log(subGraphAvailable.error)
     return (
-      <Wrapper sx={{ minHeight: '70vh' }}>
-        <OutOfService errorCode={'ER-SG-404'} />
-      </Wrapper>
+      <Container>
+        {/* TODO Improve OutOfService Page design */}
+        <Wrapper sx={{ minHeight: '70vh' }}>
+          <OutOfService errorCode={'ER-SG-404'} />
+        </Wrapper>
+        <Footer />
+      </Container>
     )
   }
 

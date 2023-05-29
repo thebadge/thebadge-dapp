@@ -12,6 +12,7 @@ import { SWRConfig } from 'swr'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import Toast from '@/src/components/toast/Toast'
+import { PreventActionIfOutOfService } from '@/src/pagePartials/errors/preventActionIfOutOfService'
 import { Head } from '@/src/pagePartials/index/Head'
 import ThemeProvider from '@/src/providers/themeProvider'
 import { NextPageWithLayout } from '@/types/next'
@@ -89,7 +90,9 @@ export default function App({
                   <SectionReferencesProvider>
                     <TransactionNotificationProvider>
                       <CookiesWarningProvider>
-                        <Container>{getLayout(<Component {...pageProps} />)}</Container>
+                        <PreventActionIfOutOfService>
+                          <Container>{getLayout(<Component {...pageProps} />)}</Container>
+                        </PreventActionIfOutOfService>
                       </CookiesWarningProvider>
                     </TransactionNotificationProvider>
                   </SectionReferencesProvider>
