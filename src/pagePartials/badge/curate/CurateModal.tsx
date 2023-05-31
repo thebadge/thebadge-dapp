@@ -112,15 +112,17 @@ function CurateModalContent({ badgeId, onClose }: { badgeId: string; onClose: ()
           },
         }}
       >
-        <DisplayEvidenceField
-          columnItem={column}
-          value={getEvidenceValue(
-            badgeEvidence?.values,
-            badgeEvidence?.columns,
-            column.label,
-            column.type,
-          )}
-        />
+        <SafeSuspense>
+          <DisplayEvidenceField
+            columnItem={column}
+            value={getEvidenceValue(
+              badgeEvidence?.values,
+              badgeEvidence?.columns,
+              column.label,
+              column.type,
+            )}
+          />
+        </SafeSuspense>
       </Box>
     )) || []
 

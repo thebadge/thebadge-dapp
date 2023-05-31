@@ -8,8 +8,9 @@ import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
  * @param badgeModelId
  * @param ownerAddress
  */
-export default function useIsBadgeOwner(badgeModelId: string, ownerAddress: string) {
+export default function useIsBadgeOwner(badgeModelId: string, ownerAddress: string | null) {
   const userWithOwnerBadges = useBadgesOwnedByModelId(badgeModelId, ownerAddress)
+  if (!ownerAddress) return false
   return !!userWithOwnerBadges.data?.user?.badges?.length
 }
 
@@ -28,13 +29,15 @@ export function useBadgeOwnershipData(badgeModelId: string, ownerAddress: string
  * @param badgeModelId
  * @param ownerAddress
  */
-function useBadgesOwnedByModelId(badgeModelId: string, ownerAddress: string) {
+function useBadgesOwnedByModelId(badgeModelId: string, ownerAddress: string | null) {
   const gql = useSubgraph()
   return useSWR(
-    badgeModelId.length ? [`OwnedBadges:${badgeModelId}:${ownerAddress}`, ownerAddress] : null,
+    badgeModelId.length && ownerAddress?.length
+      ? [`OwnedBadges:${badgeModelId}:${ownerAddress}`, ownerAddress]
+      : null,
     async ([,]) => {
       const badgeResponse = await gql.userBadgeByModelId({
-        userId: ownerAddress,
+        userId: ownerAddress as string,
         modelId: badgeModelId,
       })
       return badgeResponse ? badgeResponse : {}

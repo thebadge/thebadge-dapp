@@ -53,15 +53,17 @@ export default function BadgeEvidenceInfoPreview({ badge }: { badge: Badge }) {
         {badgeEvidence?.columns.map((column) => {
           return (
             <Stack key={column.label + column.description}>
-              <DisplayEvidenceField
-                columnItem={column}
-                value={getEvidenceValue(
-                  badgeEvidence?.values,
-                  badgeEvidence?.columns,
-                  column.label,
-                  column.type,
-                )}
-              />
+              <SafeSuspense>
+                <DisplayEvidenceField
+                  columnItem={column}
+                  value={getEvidenceValue(
+                    badgeEvidence?.values,
+                    badgeEvidence?.columns,
+                    column.label,
+                    column.type,
+                  )}
+                />
+              </SafeSuspense>
             </Stack>
           )
         })}

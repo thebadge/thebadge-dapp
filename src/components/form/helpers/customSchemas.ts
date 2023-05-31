@@ -159,7 +159,8 @@ export const OptionalFileSchema = createUniqueFieldSchema(
       (value) => (value?.base64File?.length / 4) * 3 <= MAX_FILE_SIZE,
       `Max file size is 5MB.`,
     )
-    .optional(),
+    .optional()
+    .nullable(),
   'OptionalFileSchema',
 )
 
