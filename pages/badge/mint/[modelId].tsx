@@ -109,7 +109,7 @@ const MintBadgeType: NextPageWithLayout = () => {
           costs={{
             mintCost: formatUnits(creatorFee, 18),
             totalMintCost: formatUnits(mintValue, 18),
-            klerosCost: formatUnits(0, 18), // TODO fix this by checking the deposit cost. It has to be a dynamic call to klerosController
+            klerosCost: formatUnits(mintValue.sub(creatorFee), 18),
           }}
           evidenceSchema={CreateBadgeSchema}
           onSubmit={onSubmit}
