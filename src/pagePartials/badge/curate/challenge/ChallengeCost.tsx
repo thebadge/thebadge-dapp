@@ -6,11 +6,21 @@ import { formatUnits } from 'ethers/lib/utils'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { getNetworkConfig } from '@/src/config/web3'
+import {
+  useRemovalChallengeBaseDeposit,
+  useSubmissionChallengeBaseDeposit,
+} from '@/src/hooks/kleros/useChallengeBaseDeposits'
 import { useRegistrationBadgeModelKlerosMetadata } from '@/src/hooks/subgraph/useBadgeModelKlerosMetadata'
-import { useBadgeCost } from '@/src/pagePartials/badge/curate/useBadgeCost'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+import { BadgeStatus } from '@/types/generated/subgraph'
 
-export default function ChallengeCost({ badgeModelId }: { badgeModelId: string }) {
+export default function ChallengeCost({
+  badgeModelId,
+  badgeStatus,
+}: {
+  badgeModelId: string
+  badgeStatus: BadgeStatus
+}) {
   const { appChainId } = useWeb3Connection()
   const networkConfig = getNetworkConfig(appChainId)
 
@@ -20,10 +30,11 @@ export default function ChallengeCost({ badgeModelId }: { badgeModelId: string }
     throw `There was an error trying to fetch the metadata for the badge type`
   }
 
-  const challengeCost = useBadgeCost(badgeModelId)
+  const submissionChallengeCost = useSubmissionChallengeBaseDeposit(badgeModelId)
+  const removalChallengeCost = useRemovalChallengeBaseDeposit(badgeModelId)
   const challengePeriodDuration = badgeModelKlerosData.data?.challengePeriodDuration / 60 / 60 / 24
 
-  if (!challengeCost) {
+  if (!submissionChallengeCost.data || !removalChallengeCost.data) {
     throw 'There was not possible to get challenge cost. Try again in some minutes.'
   }
 
@@ -37,7 +48,10 @@ export default function ChallengeCost({ badgeModelId }: { badgeModelId: string }
         <Typography variant="dAppBody1">Total deposit required</Typography>
         <SafeSuspense>
           <Typography>
-            {formatUnits(challengeCost?.toString(), 18)} {networkConfig.token}
+            {badgeStatus === BadgeStatus.Requested
+              ? formatUnits(submissionChallengeCost.data, 18)
+              : formatUnits(removalChallengeCost.data, 18)}
+            {networkConfig.token}
           </Typography>
         </SafeSuspense>
       </Stack>
