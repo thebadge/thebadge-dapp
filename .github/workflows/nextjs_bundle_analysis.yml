@@ -92,26 +92,8 @@ jobs:
           body="${body//$'\r'/'%0D'}"
           echo ::set-output name=body::$body
 
-      - name: Find Comment
-        uses: peter-evans/find-comment@v1
-        if: success() && github.event.number
-        id: fc
+      - name: Comment
+        uses: marocchino/sticky-pull-request-comment@v2
         with:
-          issue-number: ${{ github.event.number }}
-          body-includes: '<!-- __NEXTJS_BUNDLE -->'
-
-      - name: Create Comment
-        uses: peter-evans/create-or-update-comment@v1.4.4
-        if: success() && github.event.number && steps.fc.outputs.comment-id == 0
-        with:
-          issue-number: ${{ github.event.number }}
-          body: ${{ steps.get-comment-body.outputs.body }}
-
-      - name: Update Comment
-        uses: peter-evans/create-or-update-comment@v1.4.4
-        if: success() && github.event.number && steps.fc.outputs.comment-id != 0
-        with:
-          issue-number: ${{ github.event.number }}
-          body: ${{ steps.get-comment-body.outputs.body }}
-          comment-id: ${{ steps.fc.outputs.comment-id }}
-          edit-mode: replace
+          header: next-touched-pages
+          message: ${{ steps.get-comment-body.outputs.body }}

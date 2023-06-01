@@ -1,6 +1,7 @@
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { useContractCall } from '@/src/hooks/useContractCall'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
+import { secondsToDays } from '@/src/utils/dateUtils'
 import { TCR, TCR__factory } from '@/types/generated/typechain'
 
 type Props = {
@@ -17,6 +18,6 @@ function GetBadgeTypeChallengePeriodDuration({ tcrList }: Props) {
 
   const duration = resDuration.data?.[0].toNumber() || 0
 
-  return <SafeSuspense>{duration / 60 / 60 / 24}</SafeSuspense>
+  return <SafeSuspense>{secondsToDays(duration)}</SafeSuspense>
 }
 export default GetBadgeTypeChallengePeriodDuration

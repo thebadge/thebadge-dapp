@@ -53,23 +53,25 @@ export default function CurateModal({ badgeId, onClose, open }: CurateModalProps
       onClose={onClose}
       open={open}
     >
-      <RequiredConnection noCloseButton>
-        <ModalBody>
-          <IconButton
-            aria-label="close curate modal"
-            color="secondary"
-            component="label"
-            onClick={onClose}
-            sx={{ position: 'absolute', right: 8, top: 8 }}
-          >
-            <CloseIcon color="white" />
-          </IconButton>
+      <Box>
+        <RequiredConnection noCloseButton>
+          <ModalBody>
+            <IconButton
+              aria-label="close curate modal"
+              color="secondary"
+              component="label"
+              onClick={onClose}
+              sx={{ position: 'absolute', right: 8, top: 8 }}
+            >
+              <CloseIcon color="white" />
+            </IconButton>
 
-          <SafeSuspense>
-            <CurateModalContent badgeId={badgeId} onClose={onClose} />
-          </SafeSuspense>
-        </ModalBody>
-      </RequiredConnection>
+            <SafeSuspense>
+              <CurateModalContent badgeId={badgeId} onClose={onClose} />
+            </SafeSuspense>
+          </ModalBody>
+        </RequiredConnection>
+      </Box>
     </Modal>
   )
 }
