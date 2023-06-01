@@ -1,3 +1,4 @@
+import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 
 import { Box, Stack } from '@mui/material'
@@ -14,12 +15,30 @@ import getHighlightColorByStatus from '@/src/utils/badges/getHighlightColorBySta
 import { BadgeStatus, Badge_Filter } from '@/types/generated/subgraph'
 import { KlerosController__factory } from '@/types/generated/typechain'
 
+const filters: Array<ListFilter> = [
+  {
+    title: 'Minted',
+    color: 'blue',
+    fixed: true,
+    defaultSelected: true,
+  },
+  {
+    title: 'Challenged',
+    color: 'pink',
+  },
+  {
+    title: 'In Review',
+    color: 'green',
+  },
+]
+
 type Props = {
   address: string
 }
 export default function BadgesYouOwnList({ address }: Props) {
   const { t } = useTranslation()
   const { sendTx } = useTransaction()
+  const router = useRouter()
   const { address: connectedWalletAddress } = useWeb3Connection()
 
   const isLoggedInUser = connectedWalletAddress === address
@@ -29,23 +48,6 @@ export default function BadgesYouOwnList({ address }: Props) {
 
   const klerosController = useContractInstance(KlerosController__factory, 'KlerosController')
   const gql = useSubgraph()
-
-  const filters: Array<ListFilter> = [
-    {
-      title: 'Minted',
-      color: 'blue',
-      fixed: true,
-      defaultSelected: true,
-    },
-    {
-      title: 'Challenged',
-      color: 'pink',
-    },
-    {
-      title: 'In Review',
-      color: 'green',
-    },
-  ]
 
   async function handleClaimIt(badgeId: string, address: string) {
     const transaction = await sendTx(() => klerosController.claim(badgeId))
@@ -95,7 +97,7 @@ export default function BadgesYouOwnList({ address }: Props) {
     const badgesLayouts = badges.map((badge) => {
       // TODO Use badge status to add claim or change the highlight color
       return (
-        <Box key={badge.id}>
+        <Box key={badge.id} onClick={() => router.push(`/badge/preview/${badge.id}`)}>
           <MiniBadgeModelPreview
             highlightColor={getHighlightColorByStatus(badge.status)}
             metadata={badge.badgeModel?.uri}

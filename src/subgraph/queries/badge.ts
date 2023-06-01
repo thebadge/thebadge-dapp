@@ -9,6 +9,14 @@ export const BADGES_IN_REVIEW = gql`
   }
 `
 
+export const BADGES_IN_REVIEW_AND_CHALLENGED = gql`
+  query badgesInReviewAndChallenged($date: BigInt!) {
+    badges(where: { badgeKlerosMetaData_: { reviewDueDate_gt: $date } }) {
+      ...BadgesInReview
+    }
+  }
+`
+
 export const BADGES_IN_REVIEW_SMALL_SET = gql`
   query badgesInReviewSmallSet($date: BigInt!) {
     badges(where: { badgeKlerosMetaData_: { reviewDueDate_gt: $date }, status_not: Challenged }) {

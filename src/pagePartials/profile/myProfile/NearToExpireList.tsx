@@ -4,6 +4,7 @@ import { useMemo } from 'react'
 import { Box } from '@mui/material'
 import { EmptyBadgePreview } from 'thebadge-ui-library'
 
+import InViewPort from '@/src/components/helpers/InViewPort'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import TBSwiper from '@/src/components/helpers/TBSwiper'
 import { fillListWithPlaceholders } from '@/src/components/utils/emptyBadges'
@@ -26,9 +27,11 @@ export default function NearToExpireList() {
           onClick={() => router.push(`/badge/preview/${badgeInReview.id}`)}
           sx={{ height: '100%', display: 'flex' }}
         >
-          <SafeSuspense>
-            <BadgeModelPreview metadata={badgeInReview?.badgeModel.uri} size="small" />
-          </SafeSuspense>
+          <InViewPort minHeight={220} minWidth={140}>
+            <SafeSuspense>
+              <BadgeModelPreview metadata={badgeInReview?.badgeModel.uri} size="small" />
+            </SafeSuspense>
+          </InViewPort>
         </Box>
       )
     })
