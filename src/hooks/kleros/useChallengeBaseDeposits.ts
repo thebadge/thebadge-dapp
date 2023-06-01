@@ -1,6 +1,5 @@
 import useSWR from 'swr'
 
-import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
 import { KlerosController__factory } from '@/types/generated/typechain'
 
@@ -11,12 +10,11 @@ import { KlerosController__factory } from '@/types/generated/typechain'
  * @param badgeId
  */
 export function useChallengeCost(badgeId: string) {
-  const badge = useBadgeById(badgeId)
-
   const klerosController = useContractInstance(KlerosController__factory, 'KlerosController')
 
   return useSWR(
-    [`challengeDeposit:${badgeId}:${badge.data?.status}`, badgeId, badge.data?.status],
+    [`challengeDeposit:${badgeId}`, badgeId],
     ([,]) => klerosController.getChallengeValue(badgeId),
+    { revalidateOnMount: true },
   )
 }
