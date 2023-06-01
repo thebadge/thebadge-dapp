@@ -1,6 +1,5 @@
 import React from 'react'
 
-import { BigNumber } from '@ethersproject/bignumber'
 import { zodResolver } from '@hookform/resolvers/zod'
 import CloseIcon from '@mui/icons-material/Close'
 import FindInPageOutlinedIcon from '@mui/icons-material/FindInPageOutlined'
@@ -212,7 +211,7 @@ function ChallengeModalContent({ badgeId, onClose }: { badgeId: string; onClose:
         </Box>
 
         <SafeSuspense>
-          <ChallengeCost badgeModelId={badgeModelId} badgeId={badge.id} />
+          <ChallengeCost badgeId={badge.id} badgeModelId={badgeModelId} />
         </SafeSuspense>
         <Box display="flex" mt={4}>
           <Button
