@@ -30,7 +30,11 @@ export default function ChallengeCost({
     throw 'There was not possible to get challenge cost. Try again in some minutes.'
   }
 
-  const challengePeriodDuration = badgeModelKlerosData.data?.challengePeriodDuration / 60 / 60 / 24
+  // Dividing the challengePeriodDuration (in seconds) by 60 (to convert seconds to minutes),
+  // then by 60 again (to convert minutes to hours), and finally by 24
+  // (to convert hours to days).
+  const challengePeriodDurationInDays =
+    badgeModelKlerosData.data?.challengePeriodDuration / 60 / 60 / 24
 
   return (
     <Box display="flex" flex={1} gap={4}>
@@ -54,7 +58,7 @@ export default function ChallengeCost({
           sx={{ display: 'flex', alignItems: 'center' }}
           variant="dAppBody1"
         >
-          {`Note that this is a deposit, not a fee and it will be reimbursed if the removal is accepted. The challenge period last ${challengePeriodDuration} days.`}
+          {`Note that this is a deposit, not a fee and it will be reimbursed if the removal is accepted. The challenge period last ${challengePeriodDurationInDays} days.`}
         </Typography>
       </Box>
     </Box>
