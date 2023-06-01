@@ -1,15 +1,14 @@
 import useSWR from 'swr'
 
+import useTCRContractInstance from '@/src/hooks/kleros/useTCRContractInstance'
 import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
-import { useContractInstance } from '@/src/hooks/useContractInstance'
 import { BadgeStatus } from '@/types/generated/subgraph'
-import { TCR__factory } from '@/types/generated/typechain'
 
 export function useSubmissionChallengeBaseDeposit(
   badgeModelId?: string,
   options?: { skip?: boolean },
 ) {
-  const tcrContractInstance = useContractInstance(TCR__factory, 'TCR', badgeModelId)
+  const tcrContractInstance = useTCRContractInstance(badgeModelId as string)
   const shouldFetch = !options?.skip && badgeModelId
   return useSWR(
     shouldFetch ? [`submissionChallengeBaseDeposit:${badgeModelId}`, badgeModelId] : null,
@@ -21,7 +20,7 @@ export function useRemovalChallengeBaseDeposit(
   badgeModelId?: string,
   options?: { skip?: boolean },
 ) {
-  const tcrContractInstance = useContractInstance(TCR__factory, 'TCR', badgeModelId)
+  const tcrContractInstance = useTCRContractInstance(badgeModelId as string)
   const shouldFetch = !options?.skip && badgeModelId
   return useSWR(
     shouldFetch ? [`removalChallengeBaseDeposit:${badgeModelId}`, badgeModelId] : null,

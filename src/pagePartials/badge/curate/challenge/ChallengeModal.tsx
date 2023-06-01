@@ -28,6 +28,7 @@ import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { useChallengeCost } from '@/src/hooks/kleros/useChallengeBaseDeposits'
 import useTCRContractInstance from '@/src/hooks/kleros/useTCRContractInstance'
 import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
+import { useBadgeKlerosMetadata } from '@/src/hooks/subgraph/useBadgeKlerosMetadata'
 import useTransaction from '@/src/hooks/useTransaction'
 import CurationCriteriaLink from '@/src/pagePartials/badge/curate/CurationCriteriaLink'
 import ChallengeCost from '@/src/pagePartials/badge/curate/challenge/ChallengeCost'
@@ -108,6 +109,7 @@ function ChallengeModalContent({ badgeId, onClose }: { badgeId: string; onClose:
   })
 
   const badgeById = useBadgeById(badgeId)
+  const badgeKlerosMetadata = useBadgeKlerosMetadata(badgeId)
   const challengeCost = useChallengeCost(badgeId)
   const badge = badgeById.data
 
@@ -124,6 +126,7 @@ function ChallengeModalContent({ badgeId, onClose }: { badgeId: string; onClose:
     const { createAndUploadChallengeEvidence } = await import(
       '@/src/utils/badges/challengeBadgesHelpers'
     )
+
     const evidenceIPFSHash = await createAndUploadChallengeEvidence(
       title,
       description,
@@ -131,7 +134,7 @@ function ChallengeModalContent({ badgeId, onClose }: { badgeId: string; onClose:
     )
 
     const transaction = await sendTx(() =>
-      tcrContractInstance.challengeRequest(badgeModelId, evidenceIPFSHash, {
+      tcrContractInstance.challengeRequest(badgeKlerosMetadata.data?.itemID, evidenceIPFSHash, {
         value: challengeCost.data,
       }),
     )
@@ -152,7 +155,7 @@ function ChallengeModalContent({ badgeId, onClose }: { badgeId: string; onClose:
         {t('badge.challenge.modal.challenge')}
       </Typography>
       <SafeSuspense fallback={<Skeleton variant={'text'} width={500} />}>
-        <CurationCriteriaLink badgeModelId={badge.badgeModel.id} />
+        <CurationCriteriaLink badgeModelId={badgeModelId} />
       </SafeSuspense>
       <Container sx={{ flexDirection: 'row', display: 'flex', alignItems: 'center', gap: 1 }}>
         <FindInPageOutlinedIcon />

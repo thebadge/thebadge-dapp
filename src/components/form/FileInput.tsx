@@ -58,8 +58,6 @@ type FileInputProps = {
  * @constructor
  */
 export function FileInput({ error, label, onChange, placeholder, value }: FileInputProps) {
-  console.log('FileInput', value)
-
   const [files, setFiles] = useState<ImageListType>(value ? [value] : [])
   const maxNumber = 1
 
@@ -183,7 +181,6 @@ export default function FileInputWithTSForm() {
   const { error, field } = useTsController<z.infer<typeof FileSchema>>()
   const { label, placeholder } = useDescription()
 
-  console.log('FileInputWithTSForm', field.value)
   return (
     <FileInput
       error={error ? convertToFieldError(error) : undefined}

@@ -4,7 +4,5 @@ import { TCR__factory } from '@/types/generated/typechain'
 
 export default function useTCRContractInstance(badgeModelId: string) {
   const badgeModel = useBadgeModelKlerosMetadata(badgeModelId)
-  const tcrContractInstance = useContractInstance(TCR__factory, 'TCR', badgeModel.data?.tcrList)
-
-  return tcrContractInstance
+  return useContractInstance(TCR__factory, 'TCR', badgeModel.data?.tcrList)
 }
