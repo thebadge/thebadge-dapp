@@ -1,32 +1,8 @@
 import useSWR from 'swr'
 
-import useTCRContractInstance from '@/src/hooks/kleros/useTCRContractInstance'
 import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
-import { BadgeStatus } from '@/types/generated/subgraph'
-
-export function useSubmissionChallengeBaseDeposit(
-  badgeModelId?: string,
-  options?: { skip?: boolean },
-) {
-  const tcrContractInstance = useTCRContractInstance(badgeModelId as string)
-  const shouldFetch = !options?.skip && badgeModelId
-  return useSWR(
-    shouldFetch ? [`submissionChallengeBaseDeposit:${badgeModelId}`, badgeModelId] : null,
-    ([,]) => tcrContractInstance.submissionChallengeBaseDeposit(),
-  )
-}
-
-export function useRemovalChallengeBaseDeposit(
-  badgeModelId?: string,
-  options?: { skip?: boolean },
-) {
-  const tcrContractInstance = useTCRContractInstance(badgeModelId as string)
-  const shouldFetch = !options?.skip && badgeModelId
-  return useSWR(
-    shouldFetch ? [`removalChallengeBaseDeposit:${badgeModelId}`, badgeModelId] : null,
-    ([,]) => tcrContractInstance.removalChallengeBaseDeposit(),
-  )
-}
+import { useContractInstance } from '@/src/hooks/useContractInstance'
+import { KlerosController__factory } from '@/types/generated/typechain'
 
 /**
  * This hook calculates the cost of challenge a summiting badge or a removal for a badge based on the badge's status and
@@ -36,17 +12,11 @@ export function useRemovalChallengeBaseDeposit(
  */
 export function useChallengeCost(badgeId: string) {
   const badge = useBadgeById(badgeId)
-  const badgeModelId = badge.data?.badgeModel.id
 
-  const challengeForRemovalCost = useRemovalChallengeBaseDeposit(badgeModelId, {
-    skip:
-      badge.data?.status !== BadgeStatus.Approved &&
-      badge.data?.status !== BadgeStatus.RequestRemoval,
-  })
+  const klerosController = useContractInstance(KlerosController__factory, 'KlerosController')
 
-  const challengeSubmitCost = useSubmissionChallengeBaseDeposit(badgeModelId, {
-    skip: badge.data?.status !== BadgeStatus.Requested,
-  })
-
-  return challengeSubmitCost || challengeForRemovalCost
+  return useSWR(
+    [`challengeDeposit:${badgeId}:${badge.data?.status}`, badgeId, badge.data?.status],
+    ([,]) => klerosController.getChallengeValue(badgeId),
+  )
 }

@@ -6,37 +6,31 @@ import { formatUnits } from 'ethers/lib/utils'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { getNetworkConfig } from '@/src/config/web3'
-import {
-  useRemovalChallengeBaseDeposit,
-  useSubmissionChallengeBaseDeposit,
-} from '@/src/hooks/kleros/useChallengeBaseDeposits'
+import { useChallengeCost } from '@/src/hooks/kleros/useChallengeBaseDeposits'
 import { useRegistrationBadgeModelKlerosMetadata } from '@/src/hooks/subgraph/useBadgeModelKlerosMetadata'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
-import { BadgeStatus } from '@/types/generated/subgraph'
 
 export default function ChallengeCost({
+  badgeId,
   badgeModelId,
-  badgeStatus,
 }: {
   badgeModelId: string
-  badgeStatus: BadgeStatus
+  badgeId: string
 }) {
   const { appChainId } = useWeb3Connection()
   const networkConfig = getNetworkConfig(appChainId)
 
   const badgeModelKlerosData = useRegistrationBadgeModelKlerosMetadata(badgeModelId)
+  const challengeCost = useChallengeCost(badgeId)
 
   if (badgeModelKlerosData.error || !badgeModelKlerosData.data) {
     throw `There was an error trying to fetch the metadata for the badge type`
   }
-
-  const submissionChallengeCost = useSubmissionChallengeBaseDeposit(badgeModelId)
-  const removalChallengeCost = useRemovalChallengeBaseDeposit(badgeModelId)
-  const challengePeriodDuration = badgeModelKlerosData.data?.challengePeriodDuration / 60 / 60 / 24
-
-  if (!submissionChallengeCost.data || !removalChallengeCost.data) {
+  if (!challengeCost.data) {
     throw 'There was not possible to get challenge cost. Try again in some minutes.'
   }
+
+  const challengePeriodDuration = badgeModelKlerosData.data?.challengePeriodDuration / 60 / 60 / 24
 
   return (
     <Box display="flex" flex={1} gap={4}>
@@ -48,9 +42,7 @@ export default function ChallengeCost({
         <Typography variant="dAppBody1">Total deposit required</Typography>
         <SafeSuspense>
           <Typography>
-            {badgeStatus === BadgeStatus.Requested
-              ? formatUnits(submissionChallengeCost.data, 18)
-              : formatUnits(removalChallengeCost.data, 18)}
+            {formatUnits(challengeCost.data, 18)}
             {networkConfig.token}
           </Typography>
         </SafeSuspense>
