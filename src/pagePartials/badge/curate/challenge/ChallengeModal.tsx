@@ -26,13 +26,12 @@ import { TextField } from '@/src/components/form/TextField'
 import { LongTextSchema, OptionalFileSchema } from '@/src/components/form/helpers/customSchemas'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { useChallengeCost } from '@/src/hooks/kleros/useChallengeBaseDeposits'
+import useTCRContractInstance from '@/src/hooks/kleros/useTCRContractInstance'
 import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
-import { useContractInstance } from '@/src/hooks/useContractInstance'
 import useTransaction from '@/src/hooks/useTransaction'
 import CurationCriteriaLink from '@/src/pagePartials/badge/curate/CurationCriteriaLink'
 import ChallengeCost from '@/src/pagePartials/badge/curate/challenge/ChallengeCost'
 import { RequiredConnection } from '@/src/pagePartials/errors/requiredConnection'
-import { TCR__factory } from '@/types/generated/typechain'
 
 const ModalBody = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -117,7 +116,7 @@ function ChallengeModalContent({ badgeId, onClose }: { badgeId: string; onClose:
   }
 
   const badgeModelId = badge.badgeModel.id
-  const tcrContractInstance = useContractInstance(TCR__factory, 'TCR')
+  const tcrContractInstance = useTCRContractInstance(badgeModelId)
 
   async function onSubmit(data: z.infer<typeof ChallengeSchema>) {
     const { description, title } = data
