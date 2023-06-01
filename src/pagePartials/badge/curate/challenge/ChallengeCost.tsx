@@ -9,6 +9,7 @@ import { getNetworkConfig } from '@/src/config/web3'
 import { useChallengeCost } from '@/src/hooks/kleros/useChallengeBaseDeposits'
 import { useRegistrationBadgeModelKlerosMetadata } from '@/src/hooks/subgraph/useBadgeModelKlerosMetadata'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+import { secondsToDays } from '@/src/utils/dateUtils'
 
 export default function ChallengeCost({
   badgeId,
@@ -30,11 +31,9 @@ export default function ChallengeCost({
     throw 'There was not possible to get challenge cost. Try again in some minutes.'
   }
 
-  // Dividing the challengePeriodDuration (in seconds) by 60 (to convert seconds to minutes),
-  // then by 60 again (to convert minutes to hours), and finally by 24
-  // (to convert hours to days).
-  const challengePeriodDurationInDays =
-    badgeModelKlerosData.data?.challengePeriodDuration / 60 / 60 / 24
+  const challengePeriodDurationInDays = secondsToDays(
+    badgeModelKlerosData.data?.challengePeriodDuration,
+  )
 
   return (
     <Box display="flex" flex={1} gap={4}>
