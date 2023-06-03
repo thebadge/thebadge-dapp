@@ -72,10 +72,15 @@ const CreateBadgeType: NextPageWithLayout = () => {
       contracts.Kleros.address[appChainId],
       readOnlyAppProvider,
       Severity[rigorousness as keyof typeof Severity],
-      0, //Fixed for now
+      /**
+       * Default Kleros court to use when creating a new badge model.
+       * TODO: we should set a default court in the short-circuit to the Kleros's  general court.
+       * In advance mode the user should be able to select the court.
+       */
+      process.env.NEXT_PUBLIC_KLEROS_DEFAULT_COURT as string,
       registrationIPFSHash,
       clearingIPFSHash,
-      challengePeriodDuration,
+      5 * 60, //challengePeriodDuration,
     )
 
     try {
