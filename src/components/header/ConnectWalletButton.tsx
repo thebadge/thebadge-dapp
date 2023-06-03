@@ -9,6 +9,7 @@ export default function ConnectWalletButton({ children, ...rest }: ButtonProps) 
       backgroundColor={colors.greenLogo}
       fontColor={colors.blackText}
       sx={{
+        ml: 2,
         borderRadius: '10px',
       }}
     >

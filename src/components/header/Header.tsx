@@ -45,7 +45,7 @@ const Header = () => {
       </Box>
       <Box display="flex">
         <WrongNetwork />
-        {isWalletConnected && <UserDropdown />}
+        <UserDropdown />
         {!isWalletConnected && (
           <ConnectWalletButton onClick={connectWallet}>
             {t('header.wallet.connect')}
