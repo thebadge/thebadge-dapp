@@ -31,6 +31,20 @@ export default function BadgeEvidenceInfoPreview({ badge }: { badge: Badge }) {
       <Box alignContent="center" display="flex" flex={1} justifyContent="space-between">
         <Stack gap={1}>
           <Typography fontSize={14} variant="body4">
+            {t('explorer.curate.curationList')}
+          </Typography>
+          <Address address={badge?.badgeModel.badgeModelKleros?.tcrList} />
+        </Stack>
+        <Box alignItems="flex-end" display="flex">
+          <Typography fontSize={14} variant="body4">
+            {`${t('explorer.curate.badgeId')} ${badge?.id}`}
+          </Typography>
+        </Box>
+      </Box>
+
+      <Box alignContent="center" display="flex" flex={1} justifyContent="space-between">
+        <Stack gap={1}>
+          <Typography fontSize={14} variant="body4">
             {t('explorer.curate.requester')}
           </Typography>
           <Address address={badge?.account.id} />

@@ -102,7 +102,9 @@
       "subtitle": "Badge Info"
     },
     "curate": {
-      "title": "Badge Evidence",
+      "title": "Badge details",
+      "curationList": "Curation list:",
+      "badgeId": "Badge id:",
       "challenge": "Challenge",
       "requester": "Requester address: ",
       "viewEvidence": "View raw evidence",
@@ -151,7 +153,6 @@
     "outOfService": "Oops, something went wrong!",
     "outOfServiceSubtitle": "Please, head over to our Discord channel for more information.",
     "outOfServiceErrorCode": "Error code: `{{errorCode}}`"
-
   },
   "creator": {
     "register": {
