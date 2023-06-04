@@ -59,6 +59,7 @@ gql`
       id
       uri
       badgeModelKleros {
+        tcrList
         registrationUri
       }
     }

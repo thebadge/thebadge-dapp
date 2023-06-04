@@ -1,5 +1,5 @@
 import { JsonRpcProvider } from '@ethersproject/providers'
-import { constants } from 'ethers'
+import { BigNumberish, constants } from 'ethers'
 import { defaultAbiCoder } from 'ethers/lib/utils'
 
 import { APP_URL, IS_DEVELOP } from '@/src/constants/common'
@@ -79,13 +79,11 @@ export async function encodeKlerosControllerData(
   klerosContractAddress: string,
   readOnlyAppProvider: JsonRpcProvider,
   severity: Severity,
-  courtId = 0,
+  courtId: BigNumberish,
   registrationIPFSHash: string,
   clearingIPFSHash: string,
   challengePeriodDuration: number,
 ) {
-  if (courtId !== 0) throw `Just the General court (courtId=0) is supported right now` // TODO: fixed for now
-
   const kleros = Kleros__factory.connect(klerosContractAddress, readOnlyAppProvider)
   const numberOfJurors = severity
   const klerosCourtInfo = await kleros.courts(courtId)
