@@ -65,6 +65,11 @@ export const UserDropdown: React.FC = () => {
     setAnchorEl(null)
   }
 
+  const logout = async () => {
+    await disconnectWallet()
+    router.push('/')
+  }
+
   const blockiesIcon = (
     <SafeSuspense>
       <Blockies scale={3.2} seed={address || 'default'} size={10} />
@@ -141,7 +146,7 @@ export const UserDropdown: React.FC = () => {
           </ListItemIcon>
           Switch network
         </MenuItem>
-        <MenuItem onClick={disconnectWallet}>
+        <MenuItem onClick={logout}>
           <ListItemIcon>
             <Logout />
           </ListItemIcon>
