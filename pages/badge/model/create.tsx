@@ -80,7 +80,7 @@ const CreateBadgeType: NextPageWithLayout = () => {
       process.env.NEXT_PUBLIC_KLEROS_DEFAULT_COURT as string,
       registrationIPFSHash,
       clearingIPFSHash,
-      5 * 60, //challengePeriodDuration,
+      challengePeriodDuration,
     )
 
     try {

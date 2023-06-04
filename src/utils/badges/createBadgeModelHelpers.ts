@@ -84,8 +84,6 @@ export async function encodeKlerosControllerData(
   clearingIPFSHash: string,
   challengePeriodDuration: number,
 ) {
-  // if (courtId !== 0) throw `Just the General court (courtId=0) is supported right now` // TODO: fixed for now
-
   const kleros = Kleros__factory.connect(klerosContractAddress, readOnlyAppProvider)
   const numberOfJurors = severity
   const klerosCourtInfo = await kleros.courts(courtId)
