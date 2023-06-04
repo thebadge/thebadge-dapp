@@ -40,7 +40,7 @@ export default function CertificationProcess() {
         display={'flex'}
         fontSize={'14px !important'}
         fontWeight={900}
-        href={`${DOCS_URL}/thebadge-documentation/overview/how-it-works`}
+        href={`${DOCS_URL}/thebadge-documentation/protocol-mechanics/how-it-works`}
         justifyContent={'center'}
         lineHeight={'15px'}
         mb={8}

@@ -130,9 +130,10 @@ export default function CreateSteps({ onSubmit, txState }: MintStepsProps) {
 
         <MarkdownTypography textAlign="justify" variant="body3" width="85%">
           {t(`badge.type.create.steps.${currentStep}.subTitle`, {
-            docsUrl: DOCS_URL + '/thebadge-documentation/overview/how-it-works',
-            criteriaDocsUrl: DOCS_URL + '/thebadge-documentation/overview/how-it-works',
-            createBadgeTypeDocs: DOCS_URL + '/thebadge-documentation/overview/how-it-works',
+            docsUrl: DOCS_URL + '/thebadge-documentation/protocol-mechanics/how-it-works',
+            criteriaDocsUrl: DOCS_URL + '/thebadge-documentation/protocol-mechanics/how-it-works',
+            createBadgeTypeDocs:
+              DOCS_URL + '/thebadge-documentation/protocol-mechanics/how-it-works',
           })}
         </MarkdownTypography>
       </Stack>
@@ -143,9 +144,9 @@ export default function CreateSteps({ onSubmit, txState }: MintStepsProps) {
             help: {
               agreementText: t('badge.type.create.helpSteps', {
                 curationCriteriaDocsUrl:
-                  DOCS_URL + '/thebadge-documentation/overview/how-it-works/challenge',
+                  DOCS_URL + '/thebadge-documentation/protocol-mechanics/challenge',
                 curationCriteriaStandardDocsUrl:
-                  DOCS_URL + '/thebadge-documentation/overview/how-it-works/challenge',
+                  DOCS_URL + '/thebadge-documentation/protocol-mechanics/challenge',
                 termsUrls: '/terms',
                 docsUrl: DOCS_URL,
                 discordUrl: DISCORD_URL,

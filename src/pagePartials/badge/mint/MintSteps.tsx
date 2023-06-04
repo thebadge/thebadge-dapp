@@ -156,8 +156,8 @@ export default function MintSteps({ costs, evidenceSchema, onSubmit, txState }: 
             badgeName: badgeModelMetadata.name,
             creatorContact: `mailto:${badgeCreatorMetadata.data?.content?.email}`,
             badgeCreatorName: badgeCreatorMetadata.data?.content?.name,
-            curationDocsUrl: DOCS_URL + '/thebadge-documentation/overview/how-it-works/challenge',
-            costDocsUrls: DOCS_URL + '/thebadge-documentation/overview/how-it-works/challenge',
+            curationDocsUrl: DOCS_URL + '/thebadge-documentation/protocol-mechanics/challenge',
+            costDocsUrls: DOCS_URL + '/thebadge-documentation/protocol-mechanics/challenge',
           })}
         </MarkdownTypography>
       </Stack>
@@ -170,8 +170,7 @@ export default function MintSteps({ costs, evidenceSchema, onSubmit, txState }: 
               agreementText: t('badge.type.mint.helpSteps', {
                 badgeCreatorName: badgeCreatorMetadata.data?.content?.name,
                 badgeCreatorProfileLink: '/profile/' + badgeModelData.data?.badgeModel?.creator.id,
-                curationDocsUrl:
-                  DOCS_URL + '/thebadge-documentation/overview/how-it-works/challenge',
+                curationDocsUrl: DOCS_URL + '/thebadge-documentation/protocol-mechanics/challenge',
                 curationCriteriaUrl: badgeCriteria,
                 challengePeriodDuration: klerosBadgeModel?.data?.challengePeriodDuration / 60 / 60,
                 timeUnit: 'days',
