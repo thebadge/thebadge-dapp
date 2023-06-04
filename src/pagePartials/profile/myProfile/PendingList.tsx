@@ -4,6 +4,7 @@ import { useMemo } from 'react'
 import { Box } from '@mui/material'
 import { EmptyBadgePreview, PendingBadgeOverlay } from 'thebadge-ui-library'
 
+import InViewPort from '@/src/components/helpers/InViewPort'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import TBSwiper from '@/src/components/helpers/TBSwiper'
 import { fillListWithPlaceholders } from '@/src/components/utils/emptyBadges'
@@ -17,7 +18,7 @@ export default function PendingList() {
   const router = useRouter()
   const gql = useSubgraph()
   const { getPendingTimeProgressPercentage, getTimeLeft, timestampToDate } = useDate()
-  const badgesInReview = gql.useBadgesInReview({ date: now })
+  const badgesInReview = gql.useBadgesInReviewAndChallenged({ date: now })
 
   const badgesList = useMemo(() => {
     const badges = badgesInReview.data?.badges.map((badgeInReview) => {
@@ -34,15 +35,17 @@ export default function PendingList() {
         <Box
           key={badgeInReview.id}
           onClick={() => router.push(`/badge/preview/${badgeInReview.id}`)}
-          sx={{ height: '100%', display: 'flex' }}
+          sx={{ height: '100%', display: 'flex', cursor: 'pointer' }}
         >
-          <SafeSuspense>
-            <PendingBadgeOverlay
-              badge={<BadgeModelPreview metadata={badgeInReview.badgeModel?.uri} size="small" />}
-              percentage={progressPercentage}
-              timeLeft={timeLeft}
-            />
-          </SafeSuspense>
+          <InViewPort minHeight={220} minWidth={140}>
+            <SafeSuspense>
+              <PendingBadgeOverlay
+                badge={<BadgeModelPreview metadata={badgeInReview.badgeModel?.uri} size="small" />}
+                percentage={progressPercentage}
+                timeLeft={timeLeft}
+              />
+            </SafeSuspense>
+          </InViewPort>
         </Box>
       )
     })
