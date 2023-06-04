@@ -5,7 +5,6 @@ import { Box } from '@mui/material'
 import { EffectCoverflow, Pagination } from 'swiper'
 import { EmptyBadgePreview } from 'thebadge-ui-library'
 
-import InViewPort from '@/src/components/helpers/InViewPort'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import TBSwiper from '@/src/components/helpers/TBSwiper'
 import { fillListWithPlaceholders } from '@/src/components/utils/emptyBadges'
@@ -30,11 +29,12 @@ export default function BadgeListTypeList() {
           onClick={() => router.push(`/badge/mint/${badgeModel.id}`)}
           sx={{ height: '100%', display: 'flex' }}
         >
-          <InViewPort minHeight={300} minWidth={180}>
-            <SafeSuspense>
-              <BadgeModelPreview metadata={badgeModel?.uri} size="small" />
-            </SafeSuspense>
-          </InViewPort>
+          {/* <InViewPort minHeight={300} minWidth={180}>
+            
+          </InViewPort> */}
+          <SafeSuspense fallback={<div>rendering: {badgeModel?.uri} </div>}>
+            <BadgeModelPreview metadata={badgeModel?.uri} size="small" />
+          </SafeSuspense>
         </Box>
       )
     })

@@ -4,7 +4,6 @@ import { Box, Divider, Typography, useTheme } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
 import { ButtonV2, colors } from 'thebadge-ui-library'
 
-import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import BadgeListTypeList from '@/src/pagePartials/home/BadgeListTypeList'
 import { SectionBox, SectionTitleBox } from '@/src/pagePartials/home/SectionBoxes'
 import { useSectionReferences } from '@/src/providers/referencesProvider'
@@ -46,9 +45,7 @@ export default function ClaimBadges() {
       </SectionTitleBox>
       <Divider color={'#BDBDBD'} />
       <Box sx={{ mt: 3, mb: -2 }}>
-        <SafeSuspense>
-          <BadgeListTypeList />
-        </SafeSuspense>
+        <BadgeListTypeList />
       </Box>
     </SectionBox>
   )

@@ -3,7 +3,6 @@ import React, { PropsWithChildren, useRef } from 'react'
 import { Stack } from '@mui/material'
 import { useInViewport } from 'react-in-viewport'
 
-import { Loading } from '@/src/components/loading/Loading'
 import { SpinnerProps } from '@/src/components/loading/Spinner'
 
 type Props = {
@@ -17,14 +16,16 @@ export default function InViewPort({
   color,
   minHeight,
   minWidth,
-  fallback = <Loading color={color} />,
-}: PropsWithChildren<Props & SpinnerProps>) {
+  fallback = <div>Not in viewport</div>,
+}: //fallback = <Loading color={color} />,
+PropsWithChildren<Props & SpinnerProps>) {
   const elemRef = useRef<HTMLDivElement>(null)
   const { inViewport } = useInViewport(elemRef)
 
   return (
     <Stack minHeight={minHeight} minWidth={minWidth} ref={elemRef}>
-      {inViewport ? children : fallback}
+      {/* {inViewport ? children : fallback} */}
+      {children}
     </Stack>
   )
 }

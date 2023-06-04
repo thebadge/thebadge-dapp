@@ -10,10 +10,17 @@ import { BackendResponse } from '@/types/utils'
  * @param hash
  */
 export default function useS3Metadata<T>(hash: string) {
-  return useSWR(hash.length ? hash : null, async (_hash) => {
+  const { data: res, mutate } = useSWR(hash.length ? hash : null, async (_hash) => {
     const cleanedHash = (_hash as string).replace(/^ipfs?:\/\//, '')
 
-    const res = await axios.get<BackendResponse<T>>(`${BACKEND_URL}/api/ipfs/${cleanedHash}`)
-    return res.data.result
+    try {
+      const res = await axios.get<BackendResponse<T>>(`${BACKEND_URL}/api/ipfs/${cleanedHash}`)
+      return { data: res.data.result, error: false }
+    } catch (error) {
+      console.error(error)
+      return { data: null, error }
+    }
   })
+
+  return { data: res?.data, error: res?.error, mutate }
 }
