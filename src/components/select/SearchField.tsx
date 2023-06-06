@@ -1,9 +1,13 @@
 import React, { useState } from 'react'
 
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 import SearchIcon from '@mui/icons-material/Search'
-import { InputAdornment, TextField, styled } from '@mui/material'
+import SubdirectoryArrowRightIcon from '@mui/icons-material/SubdirectoryArrowRight'
+import { IconButton, InputAdornment, TextField, styled } from '@mui/material'
 
-const StyledTextField = styled(TextField)(({ theme }) => ({
+const StyledTextField = styled(TextField, {
+  shouldForwardProp: (propName: string) => propName !== 'searchingText',
+})<{ searchingText: boolean }>(({ searchingText, theme }) => ({
   transition: 'all 1s',
   fontSize: '1rem',
   '& .MuiInputBase-root': {
@@ -16,6 +20,7 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
     paddingRight: theme.spacing(0.5),
   },
   '& .MuiFormLabel-root': {
+    maxWidth: `calc(100% - ${searchingText ? 22 : 46}px)`,
     fontSize: '1rem',
   },
 }))
@@ -53,22 +58,34 @@ export default function TBSearchField({ disabled, label, onSearch }: SearchField
         endAdornment: (
           <InputAdornment position="end">
             {textSearch.length > 0 && (
-              <button
+              <IconButton
+                aria-label="Clean search field"
+                color="secondary"
+                component="label"
                 onClick={() => {
                   setTextSearch('')
                   onSearch('')
                 }}
               >
-                x
-              </button>
+                <DeleteForeverIcon color="white" />
+              </IconButton>
             )}
 
-            <SearchIcon
-              onClick={disabled ? undefined : handleOnClick}
-              sx={{
-                cursor: disabled ? 'inherit' : 'pointer',
-              }}
-            />
+            {textSearch.length === 0 ? (
+              <SearchIcon
+                onClick={disabled ? undefined : handleOnClick}
+                sx={{
+                  cursor: disabled ? 'inherit' : 'pointer',
+                }}
+              />
+            ) : (
+              <SubdirectoryArrowRightIcon
+                onClick={disabled ? undefined : handleOnClick}
+                sx={{
+                  cursor: disabled ? 'inherit' : 'pointer',
+                }}
+              />
+            )}
           </InputAdornment>
         ),
       }}
@@ -80,6 +97,7 @@ export default function TBSearchField({ disabled, label, onSearch }: SearchField
           onSearch('')
         }
       }}
+      searchingText={searchingText}
       size="small"
       sx={{
         fontSize: '1rem',

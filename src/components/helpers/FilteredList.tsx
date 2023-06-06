@@ -39,6 +39,7 @@ type FilteredListProps = PropsWithChildren & {
   loadingColor?: SpinnerColors
   disableEdit?: boolean
   preview?: ReactNode | undefined
+  searchInputLabel?: string
 }
 
 const ItemsGridBox = styled(Box)(({ theme }) => ({
@@ -144,7 +145,7 @@ export default function FilteredList({ filters = [], ...props }: FilteredListPro
           {/* text search */}
           <TBSearchField
             disabled={!!props.disableEdit}
-            label="Text Search"
+            label={props.searchInputLabel || 'Text Search'}
             onSearch={(searchValue) => onStringSearch(searchValue)}
           />
         </Box>

@@ -14,11 +14,12 @@ import {
 import FilteredList, { ListFilter } from '@/src/components/helpers/FilteredList'
 import InViewPort from '@/src/components/helpers/InViewPort'
 import SafeSuspense, { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
-import { nowInSeconds } from '@/src/constants/helpers'
+import { ADDRESS_PREFIX, nowInSeconds } from '@/src/constants/helpers'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import { useKeyPress } from '@/src/hooks/useKeypress'
 import MiniBadgeModelPreview from '@/src/pagePartials/badge/MiniBadgeModelPreview'
 import BadgeEvidenceInfoPreview from '@/src/pagePartials/badge/explorer/BadgeEvidenceInfoPreview'
+import getHighlightColorByStatus from '@/src/utils/badges/getHighlightColorByStatus'
 import { Badge, BadgeStatus } from '@/types/generated/subgraph'
 import { NextPageWithLayout } from '@/types/next'
 
@@ -79,7 +80,7 @@ const CurateBadges: NextPageWithLayout = () => {
     const badgesInReview = await gql.badgesInReviewSmallSet({
       date: selectedFilters.some((f) => f.key == BadgeStatus.Approved) ? 0 : now,
       statuses: selectedFilters.map((f) => f.key) as Array<BadgeStatus>,
-      badgeReceiver: textSearch ? textSearch.toLowerCase() : '0x',
+      badgeReceiver: textSearch ? textSearch.toLowerCase() : ADDRESS_PREFIX,
     })
     const badges = (badgesInReview.badges as Badge[]) || []
     setSelectedBadgeIndex(0)
@@ -140,6 +141,7 @@ const CurateBadges: NextPageWithLayout = () => {
         loadingColor={'green'}
         preview={renderSelectedBadgePreview()}
         search={search}
+        searchInputLabel={t('curateExplorer.searchLabel')}
         title={t('curateExplorer.title')}
       >
         {badges.length > 0 ? (
@@ -150,14 +152,14 @@ const CurateBadges: NextPageWithLayout = () => {
               <InViewPort key={badge.id} minHeight={300} minWidth={180}>
                 <SafeSuspense fallback={<MiniBadgePreviewLoading />}>
                   <MiniBadgePreviewContainer
-                    highlightColor={colors.greenLogo}
+                    highlightColor={getHighlightColorByStatus(badge.status)}
                     ref={badgesElementRefs[i]}
                     selected={isSelected}
                   >
                     <MiniBadgeModelPreview
                       buttonTitle={t('curateExplorer.button')}
                       disableAnimations
-                      highlightColor={colors.greenLogo}
+                      highlightColor={getHighlightColorByStatus(badge.status)}
                       metadata={badge.badgeModel.uri}
                       onClick={() => setSelectedBadgeIndex(i)}
                     />
