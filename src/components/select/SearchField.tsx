@@ -38,7 +38,10 @@ export default function TBSearchField({ disabled, label, onSearch }: SearchField
   }
 
   function handleOnClick() {
-    textSearch.length > 0 ? onSearch(textSearch) : handleSearchFocus()
+    onSearch(textSearch)
+    if (textSearch.length > 0) {
+      handleSearchFocus()
+    }
   }
 
   return (
@@ -49,8 +52,19 @@ export default function TBSearchField({ disabled, label, onSearch }: SearchField
         disabled,
         endAdornment: (
           <InputAdornment position="end">
+            {textSearch.length > 0 && (
+              <button
+                onClick={() => {
+                  setTextSearch('')
+                  onSearch('')
+                }}
+              >
+                x
+              </button>
+            )}
+
             <SearchIcon
-              onClick={disabled ? undefined : () => handleOnClick}
+              onClick={disabled ? undefined : handleOnClick}
               sx={{
                 cursor: disabled ? 'inherit' : 'pointer',
               }}
@@ -60,7 +74,12 @@ export default function TBSearchField({ disabled, label, onSearch }: SearchField
       }}
       id="search-input"
       label={label}
-      onChange={(e) => setTextSearch(e.target.value)}
+      onChange={(e) => {
+        setTextSearch(e.target.value)
+        if (e.target.value.length === 0) {
+          onSearch('')
+        }
+      }}
       size="small"
       sx={{
         fontSize: '1rem',
