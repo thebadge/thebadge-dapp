@@ -15,20 +15,22 @@ import getHighlightColorByStatus from '@/src/utils/badges/getHighlightColorBySta
 import { BadgeStatus, Badge_Filter } from '@/types/generated/subgraph'
 import { KlerosController__factory } from '@/types/generated/typechain'
 
-const filters: Array<ListFilter> = [
+const filters: Array<ListFilter<BadgeStatus>> = [
   {
     title: 'Minted',
     color: 'blue',
-    fixed: true,
     defaultSelected: true,
+    key: BadgeStatus.Approved,
   },
   {
     title: 'Challenged',
     color: 'pink',
+    key: BadgeStatus.Challenged,
   },
   {
     title: 'In Review',
     color: 'green',
+    key: BadgeStatus.Requested,
   },
 ]
 
@@ -61,32 +63,10 @@ export default function BadgesYouOwnList({ address }: Props) {
     textSearch?: string,
   ) => {
     setLoading(true)
-    // TODO search with: selectedFilters, selectedCategory, textSearch
-    let where: Badge_Filter = {}
-    selectedFilters.forEach((filter) => {
-      if (filter.title === 'Minted') {
-        where = {
-          ...where,
-          status_in: where.status_in
-            ? [...where.status_in, BadgeStatus.Approved]
-            : [BadgeStatus.Approved],
-        }
-      }
-      if (filter.title === 'Challenged') {
-        where = {
-          ...where,
-          status: BadgeStatus.Challenged,
-        }
-      }
-      if (filter.title === 'In Review') {
-        where = {
-          ...where,
-          status_in: where.status_in
-            ? [...where.status_in, BadgeStatus.Requested]
-            : [BadgeStatus.Requested],
-        }
-      }
-    })
+
+    const where: Badge_Filter = {
+      status_in: (selectedFilters.map((filter) => filter.key) as Array<BadgeStatus>) || [],
+    }
 
     const userWithBadges = await gql.userBadges({
       ownerAddress: address,
@@ -114,11 +94,12 @@ export default function BadgesYouOwnList({ address }: Props) {
 
   return (
     <FilteredList
-      categories={['Category 1', 'Category 2', 'Category 3']}
+      // categories={['Category 1', 'Category 2', 'Category 3']}
       filters={filters}
       loading={loading}
       loadingColor={'blue'}
       search={search}
+      showTextSearch={false}
       title={
         isLoggedInUser ? t('profile.badgesYouOwn.title') : t('profile.badgesYouOwn.shared_title')
       }
