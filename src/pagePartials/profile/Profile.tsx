@@ -6,8 +6,6 @@ import { useTranslation } from 'next-export-i18n'
 import LinkWithTranslation from '@/src/components/helpers/LinkWithTranslation'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { useCurrentUser } from '@/src/hooks/subgraph/useCurrentUser'
-import BadgesCreatedSection from '@/src/pagePartials/profile/created/BadgesCreatedSection'
-import BadgesInReviewSection from '@/src/pagePartials/profile/inReview/BadgesInReviewSection'
 import MyProfileSection from '@/src/pagePartials/profile/myProfile/MyProfileSection'
 import InfoPreview from '@/src/pagePartials/profile/userInfo/InfoPreview'
 import { InfoPreviewSkeleton } from '@/src/pagePartials/profile/userInfo/InfoPreview.skeleton'
@@ -49,8 +47,8 @@ const Profile = () => {
         <InfoPreview address={user?.id || ''} />
       </SafeSuspense>
       {!filterType && <MyProfileSection />}
-      {filterType === 'badgesInReview' && <BadgesInReviewSection />}
-      {filterType === 'createdBadges' && <BadgesCreatedSection />}
+      {/* {filterType === 'badgesInReview' && <BadgesInReviewSection />}
+      {filterType === 'createdBadges' && <BadgesCreatedSection />} */}
     </SafeSuspense>
   )
 }

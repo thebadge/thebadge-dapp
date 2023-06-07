@@ -40,6 +40,7 @@ type FilteredListProps = PropsWithChildren & {
   disableEdit?: boolean
   preview?: ReactNode | undefined
   searchInputLabel?: string
+  showTextSearch?: boolean
 }
 
 const ItemsGridBox = styled(Box)(({ theme }) => ({
@@ -57,7 +58,11 @@ const FilteredListHeaderBox = styled(Box)(({ theme }) => ({
   alignItems: 'center',
 }))
 
-export default function FilteredList({ filters = [], ...props }: FilteredListProps) {
+export default function FilteredList({
+  filters = [],
+  showTextSearch = true,
+  ...props
+}: FilteredListProps) {
   const { mode } = useColorMode()
   const defaultSelectedFilters = filters.filter((f) => f.defaultSelected)
   const [selectedFilters, setSelectedFilters] = useState<ListFilter[]>(defaultSelectedFilters)
@@ -143,11 +148,13 @@ export default function FilteredList({ filters = [], ...props }: FilteredListPro
           ) : null}
 
           {/* text search */}
-          <TBSearchField
-            disabled={!!props.disableEdit}
-            label={props.searchInputLabel || 'Text Search'}
-            onSearch={(searchValue) => onStringSearch(searchValue)}
-          />
+          {showTextSearch && (
+            <TBSearchField
+              disabled={!!props.disableEdit}
+              label={props.searchInputLabel || 'Text Search'}
+              onSearch={(searchValue) => onStringSearch(searchValue)}
+            />
+          )}
         </Box>
       </FilteredListHeaderBox>
       <Divider color={mode === 'dark' ? 'white' : 'black'} sx={{ borderWidth: '1px' }} />
