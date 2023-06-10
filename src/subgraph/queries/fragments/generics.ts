@@ -9,6 +9,7 @@ gql`
     arbitrationParamsIndex
     requester
     challenger
+    disputeId
     evidences {
       ...Evidence
     }
