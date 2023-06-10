@@ -204,9 +204,17 @@ export default function ImageInputWithTSForm() {
     <ImageInput
       error={error ? convertToFieldError(error) : undefined}
       label={label}
-      onChange={field.onChange}
+      onChange={(value: ImageType | null) => {
+        if (value) {
+          // We change the structure a little bit to have it ready to push to the backend
+          field.onChange({
+            mimeType: value.file?.type,
+            base64File: value.data_url,
+          })
+        } else field.onChange(null)
+      }}
       placeholder={placeholder}
-      value={field.value}
+      value={field.value ? { dataURL: field.value.base64File, file: undefined } : undefined}
     />
   )
 }

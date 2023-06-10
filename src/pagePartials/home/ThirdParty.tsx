@@ -46,23 +46,25 @@ export default function ThirdParty() {
       </Typography>
 
       <Tooltip arrow title={t('home.thirdParty.buttonTooltip')}>
-        <ButtonV2
-          backgroundColor={'#22dbbd'}
-          disabled={true}
-          fontColor={colors.black}
-          sx={{
-            mt: 4,
-            borderRadius: '10px',
-            fontSize: '14px !important',
-            padding: '0.5rem 1rem !important',
-            height: 'fit-content !important',
-            lineHeight: '14px',
-            fontWeight: 700,
-            boxShadow: 'none',
-          }}
-        >
-          {t('home.thirdParty.button')}
-        </ButtonV2>
+        <Box>
+          <ButtonV2
+            backgroundColor={'#22dbbd'}
+            disabled={true}
+            fontColor={colors.black}
+            sx={{
+              mt: 4,
+              borderRadius: '10px',
+              fontSize: '14px !important',
+              padding: '0.5rem 1rem !important',
+              height: 'fit-content !important',
+              lineHeight: '14px',
+              fontWeight: 700,
+              boxShadow: 'none',
+            }}
+          >
+            {t('home.thirdParty.button')}
+          </ButtonV2>
+        </Box>
       </Tooltip>
     </Box>
   )

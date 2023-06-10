@@ -8,7 +8,9 @@ import { z } from 'zod'
 
 import klerosSchemaFactory from '@/src/components/form/helpers/validators'
 import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
-import useBadgeModel from '@/src/hooks/subgraph/useBadgeType'
+import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
+import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
+import { useRegistrationBadgeModelKlerosMetadata } from '@/src/hooks/subgraph/useBadgeModelKlerosMetadata'
 import useMintValue from '@/src/hooks/theBadge/useMintValue'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
 import useTransaction, { TransactionStates } from '@/src/hooks/useTransaction'
@@ -16,8 +18,9 @@ import MintSteps from '@/src/pagePartials/badge/mint/MintSteps'
 import { PreventActionIfBadgeTypePaused } from '@/src/pagePartials/errors/preventActionIfPaused'
 import { RequiredNotHaveBadge } from '@/src/pagePartials/errors/requiredNotHaveBadge'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
-import ipfsUpload from '@/src/utils/ipfsUpload'
+import { BadgeModelMetadata } from '@/types/badges/BadgeMetadata'
 import { TheBadge__factory } from '@/types/generated/typechain'
+import { MetadataColumn } from '@/types/kleros/types'
 import { NextPageWithLayout } from '@/types/next'
 
 const MintBadgeType: NextPageWithLayout = () => {
@@ -25,10 +28,10 @@ const MintBadgeType: NextPageWithLayout = () => {
   const theBadge = useContractInstance(TheBadge__factory, 'TheBadge')
   const { sendTx, state } = useTransaction()
   const router = useRouter()
+  const badgeModelId = useModelIdParam()
 
-  const badgeTypeId = router.query.typeId as string
-  if (!badgeTypeId) {
-    throw `No typeId provided us URL query param`
+  if (!badgeModelId) {
+    throw `No modelId provided us URL query param`
   }
 
   useEffect(() => {
@@ -38,52 +41,54 @@ const MintBadgeType: NextPageWithLayout = () => {
     }
   }, [router, state])
 
-  const badgeTypeData = useBadgeModel(badgeTypeId)
-  const klerosBadgeModel = badgeTypeData.data?.badgeModel.badgeModelKleros
-  const klerosBadgeMetadata = badgeTypeData.data?.badgeModelMetadata
+  const badgeModel = useBadgeModel(badgeModelId)
+  const badgeModelKleros = useRegistrationBadgeModelKlerosMetadata(badgeModelId)
 
-  if (badgeTypeData.error || !klerosBadgeModel || !klerosBadgeMetadata) {
+  const klerosBadgeMetadata = badgeModelKleros.data?.badgeModelKlerosRegistrationMetadata
+
+  if (badgeModel.error || !klerosBadgeMetadata || !badgeModel.data) {
     throw `There was an error trying to fetch the metadata for the badge type`
   }
 
   // Get kleros deposit value for the badge type
-  const { data: mintValue } = useMintValue(badgeTypeId)
+  const { data: mintValue } = useMintValue(badgeModelId)
   if (!mintValue) {
-    throw `There was not possible to get the value to mint a badge for badgeModel ${badgeTypeId}`
+    throw `There was not possible to get the value to mint a badge for badgeModel ${badgeModelId}`
   }
 
-  const creatorFee = BigNumber.from(badgeTypeData.data?.badgeModel.creatorFee || 0)
+  const creatorFee = BigNumber.from(badgeModel.data?.badgeModel.creatorFee || 0)
 
   const CreateBadgeSchema = z.object(klerosSchemaFactory(klerosBadgeMetadata.metadata.columns))
 
   async function onSubmit(data: z.infer<typeof CreateBadgeSchema>, imageDataUrl: string) {
-    const values: Record<string, unknown> = {}
-    Object.keys(data).forEach((key) => (values[key] = data[key]))
+    // Use NextJs dynamic import to reduce the bundle size
+    const { createAndUploadBadgeEvidence, createAndUploadBadgeMetadata, createKlerosValuesObject } =
+      await import('@/src/utils/badges/mintHelpers')
 
-    const evidenceIPFSUploaded = await ipfsUpload({
-      attributes: {
-        columns: klerosBadgeMetadata!.metadata.columns,
-        image: { mimeType: 'image/png', base64File: imageDataUrl },
-        values,
-      },
-      filePaths: ['image'],
-    })
+    const values = createKlerosValuesObject(data, klerosBadgeMetadata)
+
+    const evidenceIPFSHash = await createAndUploadBadgeEvidence(
+      klerosBadgeMetadata?.metadata.columns as MetadataColumn[],
+      values,
+    )
+
+    const badgeMetadataIPFSHash = await createAndUploadBadgeMetadata(
+      badgeModel.data?.badgeModelMetadata as BadgeModelMetadata,
+      address as string,
+      { imageBase64File: imageDataUrl },
+    )
 
     const klerosControllerDataEncoded = defaultAbiCoder.encode(
       [`tuple(string)`],
-      [
-        [
-          `ipfs://${evidenceIPFSUploaded.result?.ipfsHash}`, // evidence
-        ],
-      ],
+      [[evidenceIPFSHash]],
     )
 
     try {
       const transaction = await sendTx(() =>
         theBadge.mint(
-          badgeTypeId, // badgeModelId
-          address as string, // wallet
-          'ipfs://', // metadata para el badge //TODO
+          badgeModelId,
+          address as string,
+          badgeMetadataIPFSHash,
           klerosControllerDataEncoded,
           {
             value: mintValue,
@@ -104,7 +109,7 @@ const MintBadgeType: NextPageWithLayout = () => {
           costs={{
             mintCost: formatUnits(creatorFee, 18),
             totalMintCost: formatUnits(mintValue, 18),
-            klerosCost: formatUnits(0, 18), // TODO fix this by checking the deposit cost. It has to be a dynamic call to klerosController
+            klerosCost: formatUnits(mintValue.sub(creatorFee), 18),
           }}
           evidenceSchema={CreateBadgeSchema}
           onSubmit={onSubmit}

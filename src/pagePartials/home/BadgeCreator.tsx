@@ -65,7 +65,7 @@ export default function BadgeCreator() {
         component={'a'}
         fontSize={'14px !important'}
         fontWeight={700}
-        href={`${DOCS_URL}/thebadge-documentation/overview/how-it-works/creators`}
+        href={`${DOCS_URL}/thebadge-documentation/how-to-guides/how-to-become-a-creator`}
         lineHeight={'14px'}
         mt={2}
         target={'_blank'}

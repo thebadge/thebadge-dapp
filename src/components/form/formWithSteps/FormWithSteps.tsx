@@ -95,7 +95,6 @@ export function FormWithSteps({
         // find the first step that has not been completed
         stepNames.findIndex((step, i) => !completed[i] && i !== activeStep - 1)
       : activeStep + 1
-    console.log('newActiveStep', newActiveStep)
     // We don't want to increase the value over the amount of given schemas
     if (newActiveStep < 0 || newActiveStep >= stepNames.length) return
     setActiveStep(newActiveStep)

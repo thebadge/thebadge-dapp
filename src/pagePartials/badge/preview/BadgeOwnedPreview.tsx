@@ -1,5 +1,4 @@
 import Image from 'next/image'
-import { useSearchParams } from 'next/navigation'
 
 import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined'
 import { Box, Divider, IconButton, Stack, Typography } from '@mui/material'
@@ -9,26 +8,27 @@ import { colors } from 'thebadge-ui-library'
 import challengedLogo from '@/src/components/assets/challenged.webp'
 import LinkWithTranslation from '@/src/components/helpers/LinkWithTranslation'
 import { notify } from '@/src/components/toast/Toast'
+import useBadgeIdParam from '@/src/hooks/nextjs/useBadgeIdParam'
 import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
-import BadgeTypeMetadata from '@/src/pagePartials/badge/BadgeTypeMetadata'
+import BadgeModelPreview from '@/src/pagePartials/badge/BadgeModelPreview'
+import { BadgeStatus } from '@/types/generated/subgraph'
 import { ToastStates } from '@/types/toast'
 
 export default function BadgeOwnedPreview() {
   const { t } = useTranslation()
 
-  const searchParams = useSearchParams()
-  const typeId = searchParams.get('typeId')
-  const ownerAddress = searchParams.get('ownerAddress')
+  const badgeId = useBadgeIdParam()
 
-  if (!typeId || !ownerAddress) {
-    throw `No typeId/ownerAddress provided us URL query param`
+  if (!badgeId) {
+    throw `No badgeId provided us URL query param`
   }
 
-  const badgeById = useBadgeById(typeId, ownerAddress)
+  const badgeById = useBadgeById(badgeId)
 
-  const badge = badgeById.data?.badge
-  const badgeType = badge?.badgeType
-  const badgeMetadata = badgeById.data?.badgeMetadata
+  const badge = badgeById.data
+  const badgeModel = badge?.badgeModel
+  const badgeMetadata = badge?.badgeMetadata
+  const badgeModelMetadata = badgeModel?.badgeModelMetadata
 
   function handleShare() {
     navigator.clipboard.writeText(window.location.href)
@@ -37,15 +37,14 @@ export default function BadgeOwnedPreview() {
 
   return (
     <>
-      {/** TODO Temporary logic - Update to "Challenged" status **/}
-      {badge?.isChallenged && (
+      {badge?.status === BadgeStatus.Challenged && (
         <Box sx={{ position: 'absolute', right: 0, top: -10, width: '150px', cursor: 'pointer' }}>
           <Image alt="Challenged badge" src={challengedLogo} />
         </Box>
       )}
       <Box display="flex" flex={1} gap={8} justifyContent="space-between" my={4}>
         <Box display="flex" flex={1}>
-          <BadgeTypeMetadata metadata={badgeType?.metadataURL} />
+          <BadgeModelPreview metadata={badgeModel?.uri} />
         </Box>
         <Stack flex={2} gap={2} justifyContent="space-between">
           <Stack gap={3}>
@@ -56,10 +55,10 @@ export default function BadgeOwnedPreview() {
               }}
               variant="dAppTitle3"
             >
-              {badgeMetadata?.name}
+              {badgeModelMetadata?.name}
             </Typography>
             <Typography sx={{ color: colors.green, fontWeight: 'bold' }} variant="caption">
-              Badge type ID: {typeId}
+              Badge model ID: {badgeModel?.id}
             </Typography>
           </Stack>
           <Divider color={colors.white} />
@@ -67,7 +66,7 @@ export default function BadgeOwnedPreview() {
             <Typography variant="body2">
               {t('badge.viewBadge.issueBy', { issuer: 'TheBadge' })}
             </Typography>
-            <Typography variant="dAppBody1">{badgeMetadata?.description}</Typography>
+            <Typography variant="dAppBody1">{badgeModelMetadata?.description}</Typography>
           </Stack>
           <Divider color={colors.white} />
           <Typography
@@ -76,7 +75,7 @@ export default function BadgeOwnedPreview() {
             }}
             variant="body4"
           >
-            {badgeType?.badgesMintedAmount}
+            {badgeModel?.badgesMintedAmount}
             {t('badge.viewBadge.claims')}
           </Typography>
           <Box alignItems="center" display="flex" justifyContent="space-between">

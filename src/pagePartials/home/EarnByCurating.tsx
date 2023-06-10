@@ -30,7 +30,10 @@ export default function EarnByCurating() {
   const { t } = useTranslation()
 
   const openDocs = () =>
-    window.open(`${DOCS_URL}/thebadge-documentation/overview/how-it-works/curators`, '_blank')
+    window.open(
+      `${DOCS_URL}/thebadge-documentation/how-to-guides/how-to-become-a-creator`,
+      '_blank',
+    )
 
   return (
     <SectionBox ref={earnByCuratingSection}>

@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from 'react'
 
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 import FileUploadIcon from '@mui/icons-material/FileUpload'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf'
@@ -85,7 +86,15 @@ export function FileInput({ error, label, onChange, placeholder, value }: FileIn
             onChange={handleOnChange}
             value={files}
           >
-            {({ dragProps, errors, imageList, isDragging, onImageUpdate, onImageUpload }) => (
+            {({
+              dragProps,
+              errors,
+              imageList,
+              isDragging,
+              onImageRemoveAll,
+              onImageUpdate,
+              onImageUpload,
+            }) => (
               // write your building UI
               <Box display="flex" flexDirection="column" sx={{ flex: 1 }}>
                 {imageList.length === 0 && (
@@ -127,6 +136,14 @@ export function FileInput({ error, label, onChange, placeholder, value }: FileIn
                       >
                         <FileUploadIcon color="white" />
                       </IconButton>
+                      <IconButton
+                        aria-label="upload file"
+                        color="secondary"
+                        component="label"
+                        onClick={() => onImageRemoveAll()}
+                      >
+                        <DeleteForeverIcon color="white" />
+                      </IconButton>
                     </FileDrop>
                   </Box>
                 ))}
@@ -159,7 +176,6 @@ export function FileInput({ error, label, onChange, placeholder, value }: FileIn
 
 /**
  * Component wrapped to be used with @ts-react/form
- *
  */
 export default function FileInputWithTSForm() {
   const { error, field } = useTsController<z.infer<typeof FileSchema>>()
@@ -169,9 +185,17 @@ export default function FileInputWithTSForm() {
     <FileInput
       error={error ? convertToFieldError(error) : undefined}
       label={label}
-      onChange={field.onChange}
+      onChange={(value: ImageType | null) => {
+        if (value) {
+          // We change the structure a little bit to have it ready to push to the backend
+          field.onChange({
+            mimeType: value.file?.type,
+            base64File: value.data_url,
+          })
+        } else field.onChange(null)
+      }}
       placeholder={placeholder}
-      value={field.value}
+      value={field.value ? { dataURL: field.value.base64File, file: undefined } : undefined}
     />
   )
 }

@@ -5,13 +5,13 @@ import { BadgeStatus } from '@/types/generated/subgraph'
 export default function getHighlightColorByStatus(badgeStatus?: BadgeStatus) {
   switch (badgeStatus) {
     case BadgeStatus.Approved:
-      return colors.blue
-    case BadgeStatus.InReview:
-      return colors.green
-    case BadgeStatus.Rejected:
+      return colors.darkGreen
+    case BadgeStatus.Requested:
+      return colors.greenLogo
+    case BadgeStatus.RequestRemoval:
       return colors.pink
-    case BadgeStatus.Revoked:
-      return colors.black
+    case BadgeStatus.Challenged:
+      return colors.reredError
     default:
       return colors.white
   }

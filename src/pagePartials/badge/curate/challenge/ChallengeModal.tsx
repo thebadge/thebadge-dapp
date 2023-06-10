@@ -16,6 +16,7 @@ import {
 } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
 import { Controller, useForm } from 'react-hook-form'
+import { ImageType } from 'react-images-uploading'
 import { colors, gradients } from 'thebadge-ui-library'
 import { z } from 'zod'
 
@@ -24,14 +25,14 @@ import { TextArea } from '@/src/components/form/TextArea'
 import { TextField } from '@/src/components/form/TextField'
 import { LongTextSchema, OptionalFileSchema } from '@/src/components/form/helpers/customSchemas'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
-import { useContractInstance } from '@/src/hooks/useContractInstance'
+import { useChallengeCost } from '@/src/hooks/kleros/useChallengeBaseDeposits'
+import useTCRContractInstance from '@/src/hooks/kleros/useTCRContractInstance'
+import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
+import { useBadgeKlerosMetadata } from '@/src/hooks/subgraph/useBadgeKlerosMetadata'
 import useTransaction from '@/src/hooks/useTransaction'
 import CurationCriteriaLink from '@/src/pagePartials/badge/curate/CurationCriteriaLink'
 import ChallengeCost from '@/src/pagePartials/badge/curate/challenge/ChallengeCost'
-import { useBadgeCost } from '@/src/pagePartials/badge/curate/useBadgeCost'
 import { RequiredConnection } from '@/src/pagePartials/errors/requiredConnection'
-import ipfsUpload from '@/src/utils/ipfsUpload'
-import { KlerosController__factory } from '@/types/generated/typechain'
 
 const ModalBody = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -66,15 +67,9 @@ export const ChallengeSchema = z.object({
 type ChallengeModalProps = {
   open: boolean
   onClose: () => void
-  badgeTypeId: string
-  ownerAddress: string
+  badgeId: string
 }
-export default function ChallengeModal({
-  badgeTypeId,
-  onClose,
-  open,
-  ownerAddress,
-}: ChallengeModalProps) {
+export default function ChallengeModal({ badgeId, onClose, open }: ChallengeModalProps) {
   return (
     <Modal
       aria-describedby="modal-modal-description"
@@ -82,40 +77,30 @@ export default function ChallengeModal({
       onClose={onClose}
       open={open}
     >
-      <RequiredConnection noCloseButton>
-        <ModalBody>
-          <IconButton
-            aria-label="close challenge modal"
-            color="secondary"
-            component="label"
-            onClick={onClose}
-            sx={{ position: 'absolute', right: 8, top: 8 }}
-          >
-            <CloseIcon color="white" />
-          </IconButton>
+      <Box>
+        <RequiredConnection noCloseButton>
+          <ModalBody>
+            <IconButton
+              aria-label="close challenge modal"
+              color="secondary"
+              component="label"
+              onClick={onClose}
+              sx={{ position: 'absolute', right: 8, top: 8 }}
+            >
+              <CloseIcon color="white" />
+            </IconButton>
 
-          <SafeSuspense>
-            <ChallengeModalContent
-              badgeTypeId={badgeTypeId}
-              onClose={onClose}
-              ownerAddress={ownerAddress}
-            />
-          </SafeSuspense>
-        </ModalBody>
-      </RequiredConnection>
+            <SafeSuspense>
+              <ChallengeModalContent badgeId={badgeId} onClose={onClose} />
+            </SafeSuspense>
+          </ModalBody>
+        </RequiredConnection>
+      </Box>
     </Modal>
   )
 }
 
-function ChallengeModalContent({
-  badgeTypeId,
-  onClose,
-  ownerAddress,
-}: {
-  badgeTypeId: string
-  ownerAddress: string
-  onClose: () => void
-}) {
+function ChallengeModalContent({ badgeId, onClose }: { badgeId: string; onClose: () => void }) {
   const { t } = useTranslation()
   const { sendTx } = useTransaction()
 
@@ -123,48 +108,40 @@ function ChallengeModalContent({
     resolver: zodResolver(ChallengeSchema),
   })
 
-  const klerosController = useContractInstance(KlerosController__factory, 'KlerosController')
-  const challengeCost = useBadgeCost(badgeTypeId, ownerAddress)
+  const badgeById = useBadgeById(badgeId)
+  const badgeKlerosMetadata = useBadgeKlerosMetadata(badgeId)
+  const challengeCost = useChallengeCost(badgeId)
+
+  const badge = badgeById.data
+
+  if (!badge) {
+    throw 'There was an error fetching the badge, try again in some minutes.'
+  }
+
+  const badgeModelId = badge.badgeModel.id
+  const tcrContractInstance = useTCRContractInstance(badgeModelId)
 
   async function onSubmit(data: z.infer<typeof ChallengeSchema>) {
-    const hasAttachment = data.attachment && data.attachment?.data_url
+    const { description, title } = data
+    // Use NextJs dynamic import to reduce the bundle size
+    const { createAndUploadChallengeEvidence } = await import(
+      '@/src/utils/badges/challengeBadgesHelpers'
+    )
 
-    const evidenceIPFSUploaded = await ipfsUpload({
-      attributes: {
-        title: data.title,
-        description: data.description,
-        ...(hasAttachment
-          ? {
-              fileURI: {
-                mimeType: data.attachment?.file.type,
-                base64File: data.attachment?.data_url,
-              },
-              fileTypeExtension: data.attachment?.file.type,
-              type: data.attachment?.file.type.split('/')[1],
-            }
-          : {}),
-      },
-      filePaths: hasAttachment ? ['fileURI'] : [],
-    })
+    const evidenceIPFSHash = await createAndUploadChallengeEvidence(
+      title,
+      description,
+      data.attachment,
+    )
 
-    if (!evidenceIPFSUploaded.result) {
-      throw 'There was no possible to upload evidence.'
-    }
+    const transaction = await sendTx(() =>
+      tcrContractInstance.challengeRequest(badgeKlerosMetadata.data?.itemID, evidenceIPFSHash, {
+        value: challengeCost.data,
+      }),
+    )
 
-    // TODO: challenge has to be done calling the TCR contract
-    // const transaction = await sendTx(() =>
-    //   klerosController.challengeBadge(
-    //     badgeTypeId,
-    //     ownerAddress,
-    //     `ipfs://${evidenceIPFSUploaded.result?.ipfsHash}`,
-    //     {
-    //       value: challengeCost,
-    //     },
-    //   ),
-    // )
-
-    // onClose()
-    // await transaction.wait()
+    onClose()
+    await transaction.wait()
   }
 
   return (
@@ -179,7 +156,7 @@ function ChallengeModalContent({
         {t('badge.challenge.modal.challenge')}
       </Typography>
       <SafeSuspense fallback={<Skeleton variant={'text'} width={500} />}>
-        <CurationCriteriaLink badgeTypeId={badgeTypeId} />
+        <CurationCriteriaLink badgeModelId={badgeModelId} />
       </SafeSuspense>
       <Container sx={{ flexDirection: 'row', display: 'flex', alignItems: 'center', gap: 1 }}>
         <FindInPageOutlinedIcon />
@@ -214,14 +191,27 @@ function ChallengeModalContent({
               control={control}
               name={'attachment'}
               render={({ field: { name, onChange, value }, fieldState: { error } }) => (
-                <FileInput error={error} label={name} onChange={onChange} value={value} />
+                <FileInput
+                  error={error}
+                  label={name}
+                  onChange={(value: ImageType | null) => {
+                    if (value) {
+                      // We change the structure a little bit to have it ready to push to the backend
+                      onChange({
+                        mimeType: value.file?.type,
+                        base64File: value.data_url,
+                      })
+                    } else onChange(null)
+                  }}
+                  value={value}
+                />
               )}
             />
           </Box>
         </Box>
 
         <SafeSuspense>
-          <ChallengeCost badgeTypeId={badgeTypeId} ownerAddress={ownerAddress} />
+          <ChallengeCost badgeId={badge.id} badgeModelId={badgeModelId} />
         </SafeSuspense>
         <Box display="flex" mt={4}>
           <Button

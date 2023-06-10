@@ -3,10 +3,8 @@ import gql from 'graphql-tag'
 gql`
   fragment FullBadgeDetails on Badge {
     id
-    # evidenceMetadataUrl
-    # reviewDueDate
     status
-    # isChallenged
+    uri
     account {
       id
     }
@@ -17,13 +15,29 @@ gql`
       creatorFee
       validFor
       badgesMintedAmount
+    }
+  }
+`
+
+gql`
+  fragment BadgesInReview on Badge {
+    id
+    status
+    uri
+    account {
+      id
+    }
+    badgeModel {
+      id
+      uri
+      controllerType
+      validFor
       badgeModelKleros {
-        registrationUri
-        removalUri
-        tcrList
-        submissionBaseDeposit
         challengePeriodDuration
       }
+    }
+    badgeKlerosMetaData {
+      reviewDueDate
     }
   }
 `
@@ -45,28 +59,34 @@ gql`
       id
       uri
       badgeModelKleros {
+        tcrList
         registrationUri
       }
     }
   }
 `
 
-/**
- * Small fragment to use on the explorer, to search and list all the badges types,
- * Fetching an small amount of data speed up a little bit the time to render the list
- */
-
 gql`
-  fragment BadgeModel on BadgeModel {
+  fragment UserBadges on Badge {
     id
     uri
-    controllerType
-    validFor
-    paused
-    badgesMintedAmount
-    creator {
+    status
+    badgeModel {
       id
-      creatorUri
+    }
+    badgeKlerosMetaData {
+      reviewDueDate
+    }
+  }
+`
+
+gql`
+  fragment BadgeKlerosMetadata on BadgeKlerosMetaData {
+    id
+    itemID
+    reviewDueDate
+    requests {
+      ...Request
     }
   }
 `

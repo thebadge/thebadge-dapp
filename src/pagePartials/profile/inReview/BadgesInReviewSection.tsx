@@ -7,7 +7,7 @@ import { colors } from 'thebadge-ui-library'
 import { NoResultsAnimated } from '@/src/components/assets/animated/NoResults'
 import FilteredList, { ListFilter } from '@/src/components/helpers/FilteredList'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
-import MiniBadgeTypeMetadata from '@/src/pagePartials/badge/MiniBadgeTypeMetadata'
+import MiniBadgeModelPreview from '@/src/pagePartials/badge/MiniBadgeModelPreview'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 
 export default function BadgesInReviewSection() {
@@ -41,12 +41,12 @@ export default function BadgesInReviewSection() {
     // TODO filter badges with: selectedFilters, selectedCategory, textSearch
     const badgesInReview = await gql.userBadgesInReview({ ownerAddress: address })
 
-    const badgeTypes = badgesInReview?.user?.badges || []
-    const badgesLayouts = badgeTypes.map((badge) => {
-      const badgeType = badge.badgeType
+    const badgeModels = badgesInReview?.user?.badges || []
+    const badgesLayouts = badgeModels.map((badge) => {
+      const badgeModel = badge.badgeModel
       return (
-        <Box key={badgeType.id}>
-          <MiniBadgeTypeMetadata highlightColor={colors.green} metadata={badgeType?.metadataURL} />
+        <Box key={badge.id}>
+          <MiniBadgeModelPreview highlightColor={colors.green} metadata={badgeModel?.uri} />
         </Box>
       )
     })

@@ -26,9 +26,7 @@ export default function InfoPreview({ address }: Props) {
 
   const userResponse = useUserById(address)
   const user = userResponse.data
-  const resCreatorMetadata = useS3Metadata<{ content: CreatorMetadata }>(
-    user?.creatorMetadata || '',
-  )
+  const resCreatorMetadata = useS3Metadata<{ content: CreatorMetadata }>(user?.creatorUri || '')
   const creatorMetadata = resCreatorMetadata.data?.content
 
   return (

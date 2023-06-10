@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { useCallback, useState } from 'react'
 
-import { Avatar, Box, Stack, Typography } from '@mui/material'
+import { Stack, Typography } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
 import { colors } from 'thebadge-ui-library'
 import { z } from 'zod'
@@ -18,6 +18,7 @@ import {
 } from '@/src/components/form/helpers/customSchemas'
 import { TransactionLoading } from '@/src/components/loading/TransactionLoading'
 import { TransactionStates } from '@/src/hooks/useTransaction'
+import RegistrationInfoPreview from '@/src/pagePartials/creator/register/RegistrationInfoPreview'
 
 type RegistrationStepsProps = {
   txState: TransactionStates
@@ -98,48 +99,7 @@ export default function RegistrationSteps({ onSubmit, txState }: RegistrationSte
           <Typography component={'div'} variant="title3">
             Please review your data
           </Typography>
-          <Stack>
-            <Typography component={'div'} variant="title2">
-              Creator Information
-            </Typography>
-            <Box display="flex" flexDirection="row">
-              <Stack>
-                <Typography component={'div'} variant="body1">
-                  {data.name}
-                </Typography>
-                <Typography component={'div'} variant="body1">
-                  {data.description}
-                </Typography>
-              </Stack>
-              <Avatar>
-                <img alt="" src={data.logo.data_url} width="150" />
-              </Avatar>
-            </Box>
-            <Typography component={'div'} variant="title2">
-              Creator Contact
-            </Typography>
-            <Stack>
-              <Typography component={'div'} variant="body1">
-                {data.email}
-              </Typography>
-
-              {data.discord && (
-                <Typography component={'div'} variant="body1">
-                  {data.discord}
-                </Typography>
-              )}
-              {data.website && (
-                <Typography component={'div'} variant="body1">
-                  {data.website}
-                </Typography>
-              )}
-              {data.twitter && (
-                <Typography component={'div'} variant="body1">
-                  {data.twitter}
-                </Typography>
-              )}
-            </Stack>
-          </Stack>
+          <RegistrationInfoPreview creatorMetadata={data} logoUri={data.logo.base64File} />
         </Stack>
       )
     },
@@ -154,7 +114,7 @@ export default function RegistrationSteps({ onSubmit, txState }: RegistrationSte
         </Typography>
 
         <Typography textAlign="justify" variant="body3" width="85%">
-          {t(`creator.register.steps.${currentStep}.sub-title`)}
+          {t(`creator.register.steps.${currentStep}.subTitle`)}
         </Typography>
       </Stack>
       <FormWithSteps
@@ -163,12 +123,12 @@ export default function RegistrationSteps({ onSubmit, txState }: RegistrationSte
           {},
           {
             terms: {
-              agreementText: t('creator.register.form.terms-conditions'),
+              agreementText: t('creator.register.form.termsConditions'),
             },
           },
         ]}
         formGridLayout={formGridLayout}
-        formLayout={'gridResponsive'}
+        formLayout={'flex'}
         formSubmitReview={handleFormPreview}
         hideSubmit={txState !== TransactionStates.none}
         onStepChanged={(sn) => setCurrentStep(sn)}

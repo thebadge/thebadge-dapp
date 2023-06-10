@@ -3,7 +3,7 @@ import { useState } from 'react'
 
 import { Stack, Typography } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
-import { BadgePreviewV2, colors } from 'thebadge-ui-library'
+import { BadgePreview, colors } from 'thebadge-ui-library'
 import { z } from 'zod'
 
 import MarkdownTypography from '@/src/components/common/MarkdownTypography'
@@ -33,7 +33,7 @@ const MintSchemaStep2 = z.object({
   description: LongTextSchema.describe(
     'Description // This description will be showed on the Badge itself, you can use some helpers to inject user information on it.',
   ),
-  logoUri: ImageSchema.describe(
+  badgeModelLogoUri: ImageSchema.describe(
     'Your badge type logo // This Logo will be on the center part of the Badge itself. Recommended images with aspect ratio of 1.',
   ),
   criteriaFileUri: FileSchema.describe(
@@ -105,14 +105,14 @@ export default function CreateSteps({ onSubmit, txState }: MintStepsProps) {
     return (
       <Stack alignItems="center" gap={3} margin={4}>
         <Typography>{t('badge.type.create.previewTitle')}</Typography>
-        <BadgePreviewV2
+        <BadgePreview
           animationEffects={['wobble', 'grow', 'glare']}
           animationOnHover
           badgeBackgroundUrl="https://images.unsplash.com/photo-1512998844734-cd2cca565822?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTIyfHxhYnN0cmFjdHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
           badgeUrl={APP_URL}
           category={data.name}
           description={data.description}
-          imageUrl={data.logoUri.data_url}
+          imageUrl={data.badgeModelLogoUri.base64File}
           size="medium"
           textContrast="light-withTextBackground"
           title={data.name}
@@ -129,10 +129,11 @@ export default function CreateSteps({ onSubmit, txState }: MintStepsProps) {
         </Typography>
 
         <MarkdownTypography textAlign="justify" variant="body3" width="85%">
-          {t(`badge.type.create.steps.${currentStep}.sub-title`, {
-            docsUrl: DOCS_URL + '/thebadge-documentation/overview/how-it-works',
-            criteriaDocsUrl: DOCS_URL + '/thebadge-documentation/overview/how-it-works',
-            createBadgeTypeDocs: DOCS_URL + '/thebadge-documentation/overview/how-it-works',
+          {t(`badge.type.create.steps.${currentStep}.subTitle`, {
+            docsUrl: DOCS_URL + '/thebadge-documentation/protocol-mechanics/how-it-works',
+            criteriaDocsUrl: DOCS_URL + '/thebadge-documentation/protocol-mechanics/how-it-works',
+            createBadgeTypeDocs:
+              DOCS_URL + '/thebadge-documentation/protocol-mechanics/how-it-works',
           })}
         </MarkdownTypography>
       </Stack>
@@ -141,11 +142,11 @@ export default function CreateSteps({ onSubmit, txState }: MintStepsProps) {
         formFieldProps={[
           {
             help: {
-              agreementText: t('badge.type.create.help-steps', {
+              agreementText: t('badge.type.create.helpSteps', {
                 curationCriteriaDocsUrl:
-                  DOCS_URL + '/thebadge-documentation/overview/how-it-works/challenge',
+                  DOCS_URL + '/thebadge-documentation/protocol-mechanics/challenge',
                 curationCriteriaStandardDocsUrl:
-                  DOCS_URL + '/thebadge-documentation/overview/how-it-works/challenge',
+                  DOCS_URL + '/thebadge-documentation/protocol-mechanics/challenge',
                 termsUrls: '/terms',
                 docsUrl: DOCS_URL,
                 discordUrl: DISCORD_URL,

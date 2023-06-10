@@ -57,7 +57,6 @@ const Register: NextPageWithLayout = () => {
     const uploadedInfo = await ipfsUpload({
       attributes: {
         ...data,
-        logo: { mimeType: data.logo?.file.type, base64File: data.logo?.data_url },
       },
       filePaths: ['logo'],
     })

@@ -11,6 +11,7 @@ import { Address } from '@/src/components/helpers/Address'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import TBSwiper from '@/src/components/helpers/TBSwiper'
 import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
+import { useEvidenceBadgeKlerosMetadata } from '@/src/hooks/subgraph/useBadgeKlerosMetadata'
 import CurationCriteriaLink from '@/src/pagePartials/badge/curate/CurationCriteriaLink'
 import { RequiredConnection } from '@/src/pagePartials/errors/requiredConnection'
 import { useCurateProvider } from '@/src/providers/curateProvider'
@@ -42,15 +43,9 @@ const ModalBody = styled(Box)(({ theme }) => ({
 type CurateModalProps = {
   open: boolean
   onClose: () => void
-  badgeTypeId: string
-  ownerAddress: string
+  badgeId: string
 }
-export default function CurateModal({
-  badgeTypeId,
-  onClose,
-  open,
-  ownerAddress,
-}: CurateModalProps) {
+export default function CurateModal({ badgeId, onClose, open }: CurateModalProps) {
   return (
     <Modal
       aria-describedby="modal-modal-description"
@@ -58,51 +53,49 @@ export default function CurateModal({
       onClose={onClose}
       open={open}
     >
-      <RequiredConnection noCloseButton>
-        <ModalBody>
-          <IconButton
-            aria-label="close curate modal"
-            color="secondary"
-            component="label"
-            onClick={onClose}
-            sx={{ position: 'absolute', right: 8, top: 8 }}
-          >
-            <CloseIcon color="white" />
-          </IconButton>
+      <Box>
+        <RequiredConnection noCloseButton>
+          <ModalBody>
+            <IconButton
+              aria-label="close curate modal"
+              color="secondary"
+              component="label"
+              onClick={onClose}
+              sx={{ position: 'absolute', right: 8, top: 8 }}
+            >
+              <CloseIcon color="white" />
+            </IconButton>
 
-          <SafeSuspense>
-            <CurateModalContent
-              badgeTypeId={badgeTypeId}
-              onClose={onClose}
-              ownerAddress={ownerAddress}
-            />
-          </SafeSuspense>
-        </ModalBody>
-      </RequiredConnection>
+            <SafeSuspense>
+              <CurateModalContent badgeId={badgeId} onClose={onClose} />
+            </SafeSuspense>
+          </ModalBody>
+        </RequiredConnection>
+      </Box>
     </Modal>
   )
 }
 
-function CurateModalContent({
-  badgeTypeId,
-  onClose,
-  ownerAddress,
-}: {
-  badgeTypeId: string
-  ownerAddress: string
-  onClose: () => void
-}) {
+function CurateModalContent({ badgeId, onClose }: { badgeId: string; onClose: () => void }) {
   const { t } = useTranslation()
   const { address } = useWeb3Connection()
   const { challenge } = useCurateProvider()
 
-  const badgeById = useBadgeById(badgeTypeId, ownerAddress)
-
-  const badge = badgeById.data?.badge
-  const badgeEvidence = badgeById.data?.badgeEvidence
+  const badgeById = useBadgeById(badgeId)
+  const badge = badgeById.data
 
   if (!badge) {
-    return null
+    throw 'There was an error fetching the badge, try again in some minutes.'
+  }
+
+  const badgeModelId = badge.badgeModel.id
+  const ownerAddress = badge.account.id
+
+  const badgeKlerosMetadata = useEvidenceBadgeKlerosMetadata(badgeId)
+  const badgeEvidence = badgeKlerosMetadata.data?.requestBadgeEvidence
+
+  if (!badgeEvidence || !badgeKlerosMetadata.data?.requestBadgeEvidenceRawUrl) {
+    throw 'There was an error fetching the badge evidence, try again in some minutes.'
   }
 
   const evidenceItems: React.ReactNode[] =
@@ -112,6 +105,7 @@ function CurateModalContent({
         sx={{
           display: 'flex',
           alignItems: 'center',
+          flexDirection: 'column',
           margin: 4,
           width: '100%',
           '> *': {
@@ -120,15 +114,17 @@ function CurateModalContent({
           },
         }}
       >
-        <DisplayEvidenceField
-          columnItem={column}
-          value={getEvidenceValue(
-            badgeEvidence?.values,
-            badgeEvidence?.columns,
-            column.label,
-            column.type,
-          )}
-        />
+        <SafeSuspense>
+          <DisplayEvidenceField
+            columnItem={column}
+            value={getEvidenceValue(
+              badgeEvidence?.values,
+              badgeEvidence?.columns,
+              column.label,
+              column.type,
+            )}
+          />
+        </SafeSuspense>
       </Box>
     )) || []
 
@@ -159,7 +155,11 @@ function CurateModalContent({
         </Box>
         <Box display="flex">
           <Typography fontSize={14} sx={{ textDecoration: 'underline !important' }} variant="body4">
-            <a href={badgeById.data?.rawBadgeEvidenceUrl} rel="noreferrer" target="_blank">
+            <a
+              href={badgeKlerosMetadata.data?.requestBadgeEvidenceRawUrl}
+              rel="noreferrer"
+              target="_blank"
+            >
               {t('badge.curate.modal.viewEvidence')}
             </a>
           </Typography>
@@ -178,7 +178,7 @@ function CurateModalContent({
       >
         <Box mt={4}>
           <SafeSuspense fallback={<Skeleton variant={'text'} width={500} />}>
-            <CurationCriteriaLink badgeTypeId={badgeTypeId} />
+            <CurationCriteriaLink badgeModelId={badgeModelId} />
           </SafeSuspense>
         </Box>
 
@@ -194,7 +194,7 @@ function CurateModalContent({
                 disabled={address === ownerAddress}
                 fontColor={colors.white}
                 onClick={() => {
-                  challenge(badgeTypeId, ownerAddress)
+                  challenge(badgeModelId)
                   onClose()
                 }}
               >

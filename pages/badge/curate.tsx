@@ -14,62 +14,47 @@ import {
 import FilteredList, { ListFilter } from '@/src/components/helpers/FilteredList'
 import InViewPort from '@/src/components/helpers/InViewPort'
 import SafeSuspense, { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
+import { ADDRESS_PREFIX, nowInSeconds } from '@/src/constants/helpers'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import { useKeyPress } from '@/src/hooks/useKeypress'
-import MiniBadgeTypeMetadata from '@/src/pagePartials/badge/MiniBadgeTypeMetadata'
+import MiniBadgeModelPreview from '@/src/pagePartials/badge/MiniBadgeModelPreview'
 import BadgeEvidenceInfoPreview from '@/src/pagePartials/badge/explorer/BadgeEvidenceInfoPreview'
-import { Badge } from '@/types/generated/subgraph'
+import getHighlightColorByStatus from '@/src/utils/badges/getHighlightColorByStatus'
+import { Badge, BadgeStatus } from '@/types/generated/subgraph'
 import { NextPageWithLayout } from '@/types/next'
 
-const now = Math.floor(Date.now() / 1000 - 1000 * 60 * 60 * 24 * 30)
+const now = nowInSeconds()
 
-const filters: Array<ListFilter> = [
-  {
-    title: 'Minted',
-    color: 'blue',
-  },
+const filters: Array<ListFilter<BadgeStatus>> = [
   {
     title: 'In Review',
     color: 'green',
     defaultSelected: true,
     fixed: true,
+    key: BadgeStatus.Requested,
   },
   {
     title: 'Approved',
     color: 'darkGreen',
-  },
-  {
-    title: 'Challenged',
-    color: 'pink',
+    key: BadgeStatus.Approved,
   },
 ]
 
 const CurateBadges: NextPageWithLayout = () => {
   const { t } = useTranslation()
+  const gql = useSubgraph()
+  const leftPress = useKeyPress('ArrowLeft')
+  const rightPress = useKeyPress('ArrowRight')
 
   const [badges, setBadges] = useState<Badge[]>([])
   const [loading, setLoading] = useState<boolean>(false)
-  const [selectedBadge, setSelectedBadge] = useState<number>(0)
+  const [selectedBadgeIndex, setSelectedBadgeIndex] = useState<number>(0)
 
   const badgesElementRefs: RefObject<HTMLLIElement>[] = badges.map(() => createRef<HTMLLIElement>())
 
-  const gql = useSubgraph()
-
-  useEffect(() => {
-    // Each time that a new item is selected, we scroll to it
-    if (badgesElementRefs[selectedBadge]?.current) {
-      window.scrollTo({
-        top:
-          (badgesElementRefs[selectedBadge].current?.offsetTop || 0) -
-          (badgesElementRefs[selectedBadge].current?.offsetHeight || 0),
-        behavior: 'smooth',
-      })
-    }
-  }, [badgesElementRefs, selectedBadge])
-
   const selectPreviousBadge = useCallback(() => {
     if (!badges.length) return
-    setSelectedBadge((prevIndex) => {
+    setSelectedBadgeIndex((prevIndex) => {
       if (prevIndex === 0) return badges.length - 1
       return prevIndex - 1
     })
@@ -77,22 +62,11 @@ const CurateBadges: NextPageWithLayout = () => {
 
   const selectNextBadge = useCallback(() => {
     if (!badges.length) return
-    setSelectedBadge((prevIndex) => {
+    setSelectedBadgeIndex((prevIndex) => {
       if (prevIndex === badges.length - 1) return 0
       return prevIndex + 1
     })
   }, [badges.length])
-
-  const leftPress = useKeyPress('ArrowLeft')
-  const rightPress = useKeyPress('ArrowRight')
-
-  useEffect(() => {
-    if (leftPress) selectPreviousBadge()
-  }, [leftPress, selectPreviousBadge])
-
-  useEffect(() => {
-    if (rightPress) selectNextBadge()
-  }, [rightPress, selectNextBadge])
 
   const search = async (
     selectedFilters: Array<ListFilter>,
@@ -100,20 +74,23 @@ const CurateBadges: NextPageWithLayout = () => {
     textSearch?: string,
   ) => {
     setLoading(true)
+    setSelectedBadgeIndex(0)
+    setBadges([])
 
-    // TODO filter badges using filters, category, text
-    const badgesInReview = await gql.badgesInReviewSmallSet({ date: now })
+    const badgesInReview = await gql.badgesInReviewSmallSet({
+      date: selectedFilters.some((f) => f.key == BadgeStatus.Approved) ? 0 : now,
+      statuses: selectedFilters.map((f) => f.key) as Array<BadgeStatus>,
+      badgeReceiver: textSearch ? textSearch.toLowerCase() : ADDRESS_PREFIX,
+    })
     const badges = (badgesInReview.badges as Badge[]) || []
+    setSelectedBadgeIndex(0)
+    setBadges(badges)
 
-    setTimeout(() => {
-      setLoading(false)
-      setBadges(badges)
-      setSelectedBadge(0)
-    }, 2000)
+    setLoading(false)
   }
 
   function renderSelectedBadgePreview() {
-    if (!badges[selectedBadge]) return null
+    if (!badges[selectedBadgeIndex]) return null
     return (
       <>
         <Box display="flex" justifyContent="space-between">
@@ -130,41 +107,61 @@ const CurateBadges: NextPageWithLayout = () => {
           </Box>
         </Box>
         <SafeSuspense>
-          <BadgeEvidenceInfoPreview badge={badges[selectedBadge]} />
+          <BadgeEvidenceInfoPreview badge={badges[selectedBadgeIndex]} />
         </SafeSuspense>
       </>
     )
   }
 
+  useEffect(() => {
+    // Each time that a new item is selected, we scroll to it
+    if (badgesElementRefs[selectedBadgeIndex]?.current) {
+      window.scrollTo({
+        top:
+          (badgesElementRefs[selectedBadgeIndex].current?.offsetTop || 0) -
+          (badgesElementRefs[selectedBadgeIndex].current?.offsetHeight || 0),
+        behavior: 'smooth',
+      })
+    }
+  }, [badgesElementRefs, selectedBadgeIndex])
+
+  useEffect(() => {
+    if (leftPress) selectPreviousBadge()
+  }, [leftPress, selectPreviousBadge])
+
+  useEffect(() => {
+    if (rightPress) selectNextBadge()
+  }, [rightPress, selectNextBadge])
+
   return (
     <>
       <FilteredList
-        disableEdit
         filters={filters}
         loading={loading}
         loadingColor={'green'}
         preview={renderSelectedBadgePreview()}
         search={search}
+        searchInputLabel={t('curateExplorer.searchLabel')}
         title={t('curateExplorer.title')}
       >
         {badges.length > 0 ? (
           badges.map((badge, i) => {
-            const isSelected = badge.id === badges[selectedBadge]?.id
+            const isSelected = badge.id === badges[selectedBadgeIndex]?.id
 
             return (
               <InViewPort key={badge.id} minHeight={300} minWidth={180}>
                 <SafeSuspense fallback={<MiniBadgePreviewLoading />}>
                   <MiniBadgePreviewContainer
-                    highlightColor={colors.greenLogo}
+                    highlightColor={getHighlightColorByStatus(badge.status)}
                     ref={badgesElementRefs[i]}
                     selected={isSelected}
                   >
-                    <MiniBadgeTypeMetadata
+                    <MiniBadgeModelPreview
                       buttonTitle={t('curateExplorer.button')}
                       disableAnimations
-                      highlightColor={colors.greenLogo}
-                      metadata={badge.badgeType.metadataURL}
-                      onClick={() => setSelectedBadge(i)}
+                      highlightColor={getHighlightColorByStatus(badge.status)}
+                      metadata={badge.badgeModel.uri}
+                      onClick={() => setSelectedBadgeIndex(i)}
                     />
                   </MiniBadgePreviewContainer>
                 </SafeSuspense>

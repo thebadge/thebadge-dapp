@@ -1,14 +1,16 @@
 import { useRouter } from 'next/navigation'
-import { useMemo } from 'react'
+import React, { useCallback } from 'react'
 
 import { Box } from '@mui/material'
 import { EffectCoverflow, Pagination } from 'swiper'
+import { EmptyBadgePreview } from 'thebadge-ui-library'
 
 import InViewPort from '@/src/components/helpers/InViewPort'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import TBSwiper from '@/src/components/helpers/TBSwiper'
+import { fillListWithPlaceholders } from '@/src/components/utils/emptyBadges'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
-import BadgeTypeMetadata from '@/src/pagePartials/badge/BadgeTypeMetadata'
+import BadgeModelPreview from '@/src/pagePartials/badge/BadgeModelPreview'
 
 import 'swiper/css'
 import 'swiper/css/effect-coverflow'
@@ -17,27 +19,28 @@ import 'swiper/css/pagination'
 
 export default function BadgeListTypeList() {
   const gql = useSubgraph()
-  const badgeTypes = gql.useBadgeTypes()
+  const badgeModels = gql.useBadgeModels()
   const router = useRouter()
 
-  const badgesList = useMemo(() => {
-    const badges = badgeTypes.data?.badgeTypes?.map((badgeType) => {
+  const badgesList = useCallback(() => {
+    const badges = badgeModels.data?.badgeModels?.map((badgeModel) => {
       return (
         <Box
-          key={badgeType.id}
-          onClick={() => router.push(`/badge/mint/${badgeType.id}`)}
+          key={badgeModel.id}
+          onClick={() => router.push(`/badge/mint/${badgeModel.id}`)}
           sx={{ height: '100%', display: 'flex' }}
         >
-          <InViewPort minHeight={300}>
+          <InViewPort minHeight={300} minWidth={180}>
             <SafeSuspense>
-              <BadgeTypeMetadata metadata={badgeType?.metadataURL} size="small" />
+              <BadgeModelPreview metadata={badgeModel?.uri} size="small" />
             </SafeSuspense>
           </InViewPort>
         </Box>
       )
     })
-    return badges || []
-  }, [badgeTypes.data?.badgeTypes, router])
+    // If there is no badges to show, we list 5 placeholders
+    return fillListWithPlaceholders(badges, <EmptyBadgePreview size="small" />, 5)
+  }, [badgeModels.data?.badgeModels, router])
 
   return (
     <TBSwiper
@@ -52,7 +55,7 @@ export default function BadgeListTypeList() {
       }}
       effect={'coverflow'}
       grabCursor={true}
-      items={badgesList}
+      items={badgesList()}
       maxSlidesPerView={4}
       modules={[EffectCoverflow, Pagination]}
       noArrows

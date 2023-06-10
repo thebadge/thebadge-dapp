@@ -17,9 +17,7 @@ import { User } from '@/types/generated/subgraph'
 export default function CreatorInfoSmallPreview({ creator }: { creator: User }) {
   const { t } = useTranslation()
 
-  const resCreatorMetadata = useS3Metadata<{ content: CreatorMetadata }>(
-    creator.creatorMetadata || '',
-  )
+  const resCreatorMetadata = useS3Metadata<{ content: CreatorMetadata }>(creator.creatorUri || '')
   const creatorMetadata = resCreatorMetadata.data?.content
 
   /* Creator info */
