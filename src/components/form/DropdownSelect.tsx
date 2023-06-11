@@ -1,15 +1,7 @@
-import React from 'react'
+import React, { ChangeEvent } from 'react'
 
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
-import {
-  FormControl,
-  FormHelperText,
-  InputLabel,
-  Select as MUISelect,
-  MenuItem,
-  SelectChangeEvent,
-  Tooltip,
-} from '@mui/material'
+import { TextField, Tooltip, Typography } from '@mui/material'
 import { useDescription, useTsController } from '@ts-react/form'
 import { FieldError } from 'react-hook-form'
 import { ZodSchema, z } from 'zod'
@@ -25,50 +17,71 @@ type DropdownSelectProps = {
   placeholder?: string
   value: string | undefined
   options: string[]
+  native?: boolean
 }
 export function DropdownSelect({
   error,
   label,
+  native = true,
   onChange,
   options,
   placeholder,
   value,
 }: DropdownSelectProps) {
-  function handleChange(event: SelectChangeEvent) {
+  function handleChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     onChange(event.target.value as string)
   }
 
   return (
-    <FormControl sx={{ mx: 1, minWidth: 200 }} variant="standard">
-      <InputLabel id="select-helper-label">
-        {label}
-        {placeholder && (
-          <Tooltip arrow title={placeholder}>
-            <InfoOutlinedIcon />
-          </Tooltip>
-        )}
-      </InputLabel>
-      <MUISelect
-        error={!!error}
-        id="simple-select"
-        label={label}
-        labelId="select-helper-label"
-        onChange={handleChange}
-        sx={{ textTransform: 'capitalize' }}
-        value={value || ''}
-      >
-        {options.map((op) => {
-          return (
-            <MenuItem key={op} sx={{ textTransform: 'capitalize' }} value={op}>
-              {op}
-            </MenuItem>
-          )
-        })}
-      </MUISelect>
-      <FormHelperText>
-        {error ? <FormStatus status={TextFieldStatus.error}>{error.message}</FormStatus> : ' '}
-      </FormHelperText>
-    </FormControl>
+    <TextField
+      SelectProps={{
+        native,
+        MenuProps: {
+          PaperProps: {
+            sx: {
+              ...(!native && {
+                px: 1,
+                maxHeight: 'unset',
+                '& .MuiMenuItem-root': {
+                  px: 1,
+                  borderRadius: 0.75,
+                  typography: 'body2',
+                  textTransform: 'capitalize',
+                },
+              }),
+            },
+          },
+        },
+        sx: { textTransform: 'capitalize' },
+      }}
+      error={!!error}
+      fullWidth
+      helperText={
+        error ? <FormStatus status={TextFieldStatus.error}>{error.message}</FormStatus> : ' '
+      }
+      label={
+        <Typography id="select-helper-label">
+          {label}
+          {placeholder && (
+            <Tooltip arrow title={placeholder}>
+              <InfoOutlinedIcon />
+            </Tooltip>
+          )}
+        </Typography>
+      }
+      onChange={handleChange}
+      select
+      value={value || ''}
+      variant="standard"
+    >
+      {options.map((op) => {
+        return (
+          <option key={op} value={op}>
+            {op}
+          </option>
+        )
+      })}
+    </TextField>
   )
 }
 

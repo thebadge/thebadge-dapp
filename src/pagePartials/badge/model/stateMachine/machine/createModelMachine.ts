@@ -20,10 +20,10 @@ export const createModelMachine = createMachine<
   MultiStepFormMachineContext,
   MultiStepFormMachineEvent
 >({
-  id: 'Badge Model Creation',
-  initial: 'Accept Terms And Conditions',
+  id: 'BadgeModelCreation',
+  initial: 'TermsAndConditions',
   states: {
-    'Accept Terms And Conditions': {
+    TermsAndConditions: {
       initial: 'idle',
       states: {
         idle: {
@@ -54,10 +54,10 @@ export const createModelMachine = createMachine<
         },
       },
       onDone: {
-        target: 'Badge UI Basics',
+        target: 'BadgeUiBasics',
       },
     },
-    'Badge UI Basics': {
+    BadgeUiBasics: {
       initial: 'idle',
       states: {
         idle: {
@@ -67,7 +67,7 @@ export const createModelMachine = createMachine<
               actions: 'applyBadgeUIBasicsOnContext',
             },
             BACK: {
-              target: '#Badge Model Creation.Accept Terms And Conditions.idle',
+              target: '#BadgeModelCreation.TermsAndConditions.idle',
               actions: raise(CreateEvent.CONFIRM_TERMS),
             },
           },
@@ -92,16 +92,16 @@ export const createModelMachine = createMachine<
         },
       },
       onDone: {
-        target: 'Badge Strategy',
+        target: 'BadgeStrategy',
       },
     },
-    'Badge Strategy': {
+    BadgeStrategy: {
       initial: 'idle',
       states: {
         idle: {
           on: {
             BACK: {
-              target: '#Badge Model Creation.Badge UI Basics.idle',
+              target: '#BadgeModelCreation.BadgeUiBasics.idle',
               actions: raise(CreateEvent.CONFIRM_BASIC_CONFIGS),
             },
             CONFIRM_STRATEGY_FIELDS: {
@@ -130,10 +130,10 @@ export const createModelMachine = createMachine<
         },
       },
       onDone: {
-        target: 'Badge Preview',
+        target: 'BadgePreview',
       },
     },
-    'Badge Preview': {
+    BadgePreview: {
       initial: 'idle',
       states: {
         idle: {
@@ -142,7 +142,7 @@ export const createModelMachine = createMachine<
               target: 'sendingTx',
             },
             BACK: {
-              target: '#Badge Model Creation.Badge Strategy.idle',
+              target: '#BadgeModelCreation.BadgeStrategy.idle',
               actions: raise(CreateEvent.CONFIRM_STRATEGY_FIELDS),
             },
           },
