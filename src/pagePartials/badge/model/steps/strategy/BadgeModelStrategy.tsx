@@ -79,21 +79,21 @@ export default function BadgeModelStrategy() {
               />
             )}
           />
+          <Controller
+            control={control}
+            name={'validFor'}
+            render={({ field: { name, onChange, value }, fieldState: { error } }) => (
+              <ExpirationField
+                error={error}
+                label={'Expiration time'}
+                onChange={onChange}
+                value={value}
+              />
+            )}
+          />
         </Stack>
       </Box>
       <RequirementInput />
-      <Controller
-        control={control}
-        name={'validFor'}
-        render={({ field: { name, onChange, value }, fieldState: { error } }) => (
-          <ExpirationField
-            error={error}
-            label={'Expiration time'}
-            onChange={onChange}
-            value={value}
-          />
-        )}
-      />
     </>
   )
 }
