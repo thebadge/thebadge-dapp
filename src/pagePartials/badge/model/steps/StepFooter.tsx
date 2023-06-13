@@ -1,6 +1,9 @@
 import { Box, Button, styled } from '@mui/material'
 import { ButtonPropsColorOverrides } from '@mui/material/Button/Button'
 import { OverridableStringUnion } from '@mui/types'
+import { useFormContext } from 'react-hook-form'
+
+import { FORM_STORE_KEY } from '@/src/pagePartials/badge/model/CreateWithSteps'
 
 export const StepButton = styled(Button)(({ theme }) => ({
   borderRadius: theme.spacing(1.25),
@@ -15,15 +18,18 @@ export default function StepFooter({
     ButtonPropsColorOverrides
   >
 }) {
+  const { getValues } = useFormContext()
+
   const canGoBack = true
   const backButtonDisabled = true
-  const submitButtonDisabled = true
+  const submitButtonDisabled = false
 
   function onBack() {
     console.log('BACK')
   }
 
   function onSubmit() {
+    localStorage.setItem(FORM_STORE_KEY, JSON.stringify(getValues()))
     console.log('SUBMIT')
   }
 

@@ -2,7 +2,7 @@ import React, { useRef } from 'react'
 
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined'
 import GridViewIcon from '@mui/icons-material/GridView'
-import { Box, Typography, styled } from '@mui/material'
+import { Box, IconButton, Typography, styled } from '@mui/material'
 import { Identifier, XYCoord } from 'dnd-core'
 import { useDrag, useDrop } from 'react-dnd'
 import { z } from 'zod'
@@ -22,30 +22,30 @@ type DragItem = {
   type: string
 }
 
-const Container = styled(Box, {
+const BorderedBox = styled(Box)(({ theme }) => ({
+  borderBottom: '0.5px solid white',
+  columnGap: theme.spacing(2),
+  mb: theme.spacing(2),
+  display: 'flex',
+  cursor: 'grab',
+}))
+
+const DraggableContainer = styled(Box, {
   shouldForwardProp: (propName) => propName !== 'isDragging' && propName !== 'isOver',
 })<{
   isDragging: boolean
   isOver: boolean
 }>(({ isDragging, isOver, theme }) => ({
-  marginBottom: theme.spacing(4),
-  borderBottom: '0.5px solid white',
-  columnGap: theme.spacing(2),
-  display: 'flex',
-  cursor: 'grab',
+  marginBottom: theme.spacing(2),
+  padding: theme.spacing(2),
+
   backgroundColor: 'transparent',
-  ...(isDragging
-    ? {
-        borderWidth: '1px',
-        borderStyle: 'dashed',
-        borderColor: theme.palette.grey['500'],
-        opacity: 0.6,
-      }
-    : {}),
+  ...(isDragging ? { opacity: 0.1 } : {}),
   ...(isOver
     ? {
         borderWidth: '1px',
         borderStyle: 'dashed',
+        borderRadius: theme.spacing(1),
         borderColor: theme.palette.green.main,
       }
     : {}),
@@ -137,27 +137,38 @@ export default function FormFieldItem({ field, index, moveItem, removeItem }: Fo
   }
 
   return (
-    <Container data-handler-id={handlerId} isDragging={isDragging} isOver={isOver} ref={ref}>
-      <GridViewIcon />
-      <Box sx={{ display: 'flex', flex: 1, justifyContent: 'space-evenly', mb: 3 }}>
-        <Typography sx={{ flex: 1 }} variant="subtitle1">
-          {truncate(field.label)}
-        </Typography>
+    <DraggableContainer
+      data-handler-id={handlerId}
+      isDragging={isDragging}
+      isOver={isOver}
+      ref={ref}
+    >
+      <BorderedBox>
+        <GridViewIcon />
+        <Box sx={{ display: 'flex', flex: 1, justifyContent: 'space-evenly' }}>
+          <Typography component="p" sx={{ flex: 2 }} variant="subtitle1">
+            {truncate(field.label, 30)}
+          </Typography>
 
-        <Typography sx={{ flex: 2 }} variant="subtitle1">
-          {truncate(field.description, 25)}
-        </Typography>
+          <Typography component="p" sx={{ flex: 3 }} variant="subtitle1">
+            {truncate(field.description, 35)}
+          </Typography>
 
-        <Typography sx={{ flex: 1, textTransform: 'capitalize' }} variant="subtitle1">
-          {field.type}
-        </Typography>
-      </Box>
-      <Box
-        onClick={removeItem}
-        sx={{ ml: 'auto', cursor: 'pointer', justifyContent: 'center', display: 'flex' }}
-      >
-        <DeleteOutlineOutlinedIcon />
-      </Box>
-    </Container>
+          <Typography
+            component="p"
+            sx={{ flex: 1, textTransform: 'capitalize' }}
+            variant="subtitle1"
+          >
+            {field.type}
+          </Typography>
+        </Box>
+        <IconButton
+          onClick={removeItem}
+          sx={{ ml: 'auto', cursor: 'pointer', justifyContent: 'center', display: 'flex' }}
+        >
+          <DeleteOutlineOutlinedIcon />
+        </IconButton>
+      </BorderedBox>
+    </DraggableContainer>
   )
 }

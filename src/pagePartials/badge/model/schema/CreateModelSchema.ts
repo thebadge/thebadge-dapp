@@ -15,6 +15,7 @@ import { IS_DEVELOP } from '@/src/constants/common'
 
 export const CreateModelSchema = z.object({
   howItWorks: AgreementSchema.describe(`Badge creation quick tutorial.`),
+  // ------ UI BASICS FIELD ------
   name: z.string().describe('Name // This is the name that your badge type will have'),
   description: LongTextSchema.describe(
     'Description // This description will be showed on the Badge itself, you can use some helpers to inject user information on it.',
@@ -22,11 +23,18 @@ export const CreateModelSchema = z.object({
   badgeModelLogoUri: ImageSchema.describe(
     'Your badge type logo // This Logo will be on the center part of the Badge itself. Recommended images with aspect ratio of 1.',
   ),
+  textContrast: z.string(),
+  backgroundImage: z.string(),
+  template: z.string(),
+  // ------ STRATEGY FIELD ------
   criteriaFileUri: FileSchema.describe(
     'Curation criteria (PDF format). // This is the document containing your badge curation criteria, an example of curation criteria can be found on the docs.',
   ),
-  textContrast: z.string(),
-  backgroundImage: z.string(),
+  criteriaDeltaText: z
+    .object({ string: z.string(), delta: z.any() })
+    .describe(
+      'Curation criteria (Text format). // This is the document containing your badge curation criteria, an example of curation criteria can be found on the docs.',
+    ),
   challengePeriodDuration: ChallengePeriodTypeSchema.describe(
     `Challenge period duration (${
       IS_DEVELOP ? 'minutes' : 'days'

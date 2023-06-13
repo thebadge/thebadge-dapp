@@ -6,9 +6,8 @@ import { useDescription, useTsController } from '@ts-react/form'
 import { FieldError } from 'react-hook-form'
 import { ZodSchema, z } from 'zod'
 
-import { TextFieldStatus } from '@/src/components/form/TextField'
-import { FormStatus } from '@/src/components/form/helpers/FormStatus'
 import { convertToFieldError } from '@/src/components/form/helpers/validators'
+import { capitalizeFirstLetter } from '@/src/utils/strings'
 
 type DropdownSelectProps = {
   error?: FieldError
@@ -56,9 +55,7 @@ export function DropdownSelect({
       }}
       error={!!error}
       fullWidth
-      helperText={
-        error ? <FormStatus status={TextFieldStatus.error}>{error.message}</FormStatus> : ' '
-      }
+      helperText={error ? error.message : ' '}
       label={
         <Typography id="select-helper-label">
           {label}
@@ -77,7 +74,7 @@ export function DropdownSelect({
       {options.map((op) => {
         return (
           <option key={op} value={op}>
-            {op}
+            {capitalizeFirstLetter(op)}
           </option>
         )
       })}

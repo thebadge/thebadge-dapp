@@ -14,7 +14,13 @@ import MarkdownTypography from '@/src/components/common/MarkdownTypography'
 import { DOCS_URL } from '@/src/constants/common'
 import { useSizeSM } from '@/src/hooks/useSize'
 
-const steps = ['Help', 'Badge model basics', 'Badge model strategy', 'Badge model preview']
+const steps = [
+  'Help',
+  'Badge model basics',
+  'Badge model strategy',
+  'Evidence form',
+  'Badge model preview',
+]
 
 export default function StepHeader({
   color,
@@ -50,6 +56,9 @@ export default function StepHeader({
           alternativeLabel
           nonLinear
           orientation={isMobile ? 'vertical' : 'horizontal'}
+          sx={{
+            width: '100%',
+          }}
         >
           {steps.map((label, index) => (
             <Step completed={completed[index]} key={label}>

@@ -1,18 +1,12 @@
 import * as React from 'react'
-import { useEffect, useState } from 'react'
 
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import { Box, Slider, Tooltip, Typography, styled } from '@mui/material'
-import { useDescription, useTsController } from '@ts-react/form'
 import { FieldError } from 'react-hook-form'
 import { gradients } from 'thebadge-ui-library'
-import { z } from 'zod'
 
 import { TextFieldStatus } from '@/src/components/form/TextField'
 import { FormField } from '@/src/components/form/helpers/FormField'
-import { SeverityTypeSchema } from '@/src/components/form/helpers/customSchemas'
-import { convertToFieldError } from '@/src/components/form/helpers/validators'
-import { Severity, Severity_Keys } from '@/types/utils'
 
 const Wrapper = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -33,48 +27,37 @@ const CustomSlider = styled(Slider)({
   },
 })
 
-const marks = [
-  {
-    value: 1,
-    label: Severity_Keys[0],
-  },
-  {
-    value: 5,
-    label: Severity_Keys[2],
-  },
-]
-
-type SeveritySelectorProps = {
+type PeriodSelectorProps = {
   error?: FieldError
   label?: string
   onChange: (value: any) => void
   placeholder?: string
-  value: z.infer<typeof SeverityTypeSchema> | undefined
+  value: number | undefined
+  maxValue: number
+  minValue: number
 }
 
-export function SeveritySelector({ error, label, onChange, placeholder }: SeveritySelectorProps) {
-  const [auxValue, setAuxValue] = useState<number>(1)
-
-  useEffect(() => {
-    // Use effect to set the default value, is made on this way to
-    // prevent the use of default props on the form
-    onChange(Severity[auxValue])
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
+export function PeriodSelector({
+  error,
+  label,
+  maxValue = 100,
+  minValue = 1,
+  onChange,
+  placeholder,
+  value,
+}: PeriodSelectorProps) {
   const handleChange = (e: Event, newValue: number | number[]) => {
     if (!Array.isArray(newValue)) {
-      setAuxValue(newValue)
-      onChange(Severity[newValue])
+      onChange(newValue)
     }
   }
 
   function valuetext(value: number) {
-    return Severity[value]
+    return `${value} days`
   }
 
   function valueLabelFormat(value: number) {
-    return Severity[value]
+    return `${value} days`
   }
 
   return (
@@ -83,19 +66,26 @@ export function SeveritySelector({ error, label, onChange, placeholder }: Severi
         formControl={
           <Box display="flex" flex={1} flexDirection="column" width="100%">
             <CustomSlider
-              aria-label="Severity-court"
-              color="secondary"
-              defaultValue={30}
+              aria-label="period-duration"
+              color="primary"
+              defaultValue={2}
               getAriaValueText={valuetext}
-              marks={marks}
-              max={5}
-              min={1}
+              marks={[
+                {
+                  value: minValue,
+                  label: `${minValue || 1} days`,
+                },
+                {
+                  value: maxValue,
+                  label: `${maxValue} days`,
+                },
+              ]}
+              max={maxValue}
+              min={minValue}
               onChange={handleChange}
-              step={2}
-              sx={{
-                minWidth: '200px',
-              }}
-              value={auxValue}
+              step={1}
+              sx={{ minWidth: '200px' }}
+              value={value}
               valueLabelDisplay="auto"
               valueLabelFormat={valueLabelFormat}
             />
@@ -116,28 +106,5 @@ export function SeveritySelector({ error, label, onChange, placeholder }: Severi
         statusText={error?.message}
       />
     </Wrapper>
-  )
-}
-
-/**
- * Component wrapped to be used with @ts-react/form
- *
- */
-export default function SeveritySelectorWithTSForm() {
-  const { error, field } = useTsController<z.infer<typeof SeverityTypeSchema>>()
-  const { label, placeholder } = useDescription()
-
-  function onChange(value: z.infer<typeof SeverityTypeSchema>) {
-    field.onChange(value)
-  }
-
-  return (
-    <SeveritySelector
-      error={error ? convertToFieldError(error) : undefined}
-      label={label}
-      onChange={onChange}
-      placeholder={placeholder}
-      value={field.value}
-    />
   )
 }

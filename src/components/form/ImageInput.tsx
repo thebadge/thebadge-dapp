@@ -97,7 +97,7 @@ export function ImageInput({ error, label, onChange, placeholder, value }: Image
         formControl={
           <Container maxWidth="md" sx={{ display: 'flex', mt: 2, width: '100%' }}>
             <ImageUploading
-              dataURLKey="data_url"
+              dataURLKey="base64File"
               maxNumber={maxNumber}
               onChange={handleChange}
               value={images}
@@ -166,7 +166,7 @@ export function ImageInput({ error, label, onChange, placeholder, value }: Image
                         onClick={() => onImageUpdate(index)}
                         {...dragProps}
                       >
-                        <img alt="" src={image['data_url']} width="250" />
+                        <img alt="" src={image['base64File']} width="250" />
                         <StyledIconButton onClick={() => onImageRemove(index)} size="small">
                           <CloseIcon width={16} />
                         </StyledIconButton>
@@ -223,12 +223,12 @@ export default function ImageInputWithTSForm() {
           // We change the structure a little bit to have it ready to push to the backend
           field.onChange({
             mimeType: value.file?.type,
-            base64File: value.data_url,
+            base64File: value.base64File,
           })
         } else field.onChange(null)
       }}
       placeholder={placeholder}
-      value={field.value ? { dataURL: field.value.base64File, file: undefined } : undefined}
+      value={field.value}
     />
   )
 }

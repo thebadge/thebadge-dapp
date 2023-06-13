@@ -36,18 +36,18 @@ const Backgrounds: { [key: string]: string } = {
 
 export default function BadgeModelUIBasics() {
   const { t } = useTranslation()
-  const { control, watch } = useFormContext() // retrieve all hook methods
+  const { control, watch } = useFormContext()
 
-  const watchedName = watch('name', 'Badge name placeholder')
-  const watchedDescription = watch('description', 'Badge description placeholder')
-  const watchedLogoUri = watch('badgeModelLogoUri', { base64File: '' })
-  const watchedTextContrast = watch('textContrast', 'Black')
-  const watchedBackground = watch('backgroundImage', 'Two')
+  const watchedName = watch('name')
+  const watchedDescription = watch('description')
+  const watchedLogoUri = watch('badgeModelLogoUri')
+  const watchedTextContrast = watch('textContrast')
+  const watchedBackground = watch('backgroundImage')
 
   return (
     <>
       <Box display="flex" flexDirection="row" gap={5} justifyContent="space-between">
-        <Stack flex="1">
+        <Stack flex="1" gap={2}>
           <Controller
             control={control}
             name={'name'}
@@ -74,7 +74,7 @@ export default function BadgeModelUIBasics() {
                     // We change the structure a little bit to have it ready to push to the backend
                     onChange({
                       mimeType: value.file?.type,
-                      base64File: value.data_url,
+                      base64File: value.base64File,
                     })
                   } else onChange(null)
                 }}
@@ -131,7 +131,7 @@ export default function BadgeModelUIBasics() {
         <Stack flex="1" gap={2}>
           <Controller
             control={control}
-            name={'Template'}
+            name={'template'}
             render={({ field: { name, onChange, value }, fieldState: { error } }) => (
               <DropdownSelect
                 error={error}

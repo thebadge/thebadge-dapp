@@ -1,29 +1,25 @@
-import { useEffect, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import * as React from 'react'
 
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import {
   Box,
   FormControlLabel,
-  Checkbox as MUICheckbox,
-  Select as MUISelect,
   MenuItem,
-  SelectChangeEvent,
+  Stack,
+  Switch,
   TextField,
   Tooltip,
-  Typography,
   styled,
 } from '@mui/material'
 import { useDescription, useTsController } from '@ts-react/form'
 import dayjs from 'dayjs'
 import { FieldError } from 'react-hook-form'
-import { colors } from 'thebadge-ui-library'
 import { z } from 'zod'
 
-import { TextFieldStatus } from '@/src/components/form/TextField'
-import { FormField } from '@/src/components/form/helpers/FormField'
 import { ExpirationTypeSchema } from '@/src/components/form/helpers/customSchemas'
 import { convertToFieldError } from '@/src/components/form/helpers/validators'
+import { Disable } from '@/src/components/helpers/DisableElements'
 
 type TimeUnit = 'day' | 'month' | 'year'
 const options = ['day', 'month', 'year']
@@ -35,10 +31,10 @@ const Wrapper = styled(Box)(() => ({
   position: 'relative',
 }))
 
-const InputWrapper = styled(Box)(() => ({
+const InputWrapper = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'row',
-  justifyContent: 'space-between',
+  gap: theme.spacing(2),
   position: 'relative',
 }))
 
@@ -65,8 +61,7 @@ export function ExpirationField({
   useEffect(() => {
     // Easy way to set default value
     onChange(0)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [onChange])
 
   function setExpiration(value: string) {
     setStringValue(value)
@@ -80,10 +75,8 @@ export function ExpirationField({
     }
   }
 
-  function handleDropdownChange(e: SelectChangeEvent<TimeUnit>) {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const newUnit: TimeUnit = e.target.value
+  function handleDropdownChange(e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
+    const newUnit = e.target.value as TimeUnit
     setUnit(newUnit)
     onChange(parseToSeconds(stringValue, newUnit))
   }
@@ -92,79 +85,90 @@ export function ExpirationField({
     setEnableExpiration(enable)
     if (!enable) {
       onChange(0) // if disable expiration, reset the values
-      setExpiration('0')
+      setExpiration('')
       setUnit('day')
     }
   }
 
   return (
     <Wrapper>
-      <FormField
-        formControl={
-          <>
-            <Box alignItems="center" display="flex">
-              <FormControlLabel
-                control={
-                  <MUICheckbox
-                    checked={enableExpiration}
-                    onChange={() => toggleExpiration(!enableExpiration)}
-                    sx={{ width: 'fit-content' }}
-                  />
-                }
-                label={<Typography>Enable expiration time</Typography>}
-                sx={{ my: 1 }}
+      <Stack flex="1" gap={0} justifyContent="center">
+        <Box alignItems="center" display="flex">
+          <FormControlLabel
+            control={
+              <Switch
+                checked={enableExpiration}
+                onChange={() => toggleExpiration(!enableExpiration)}
               />
-            </Box>
+            }
+            label={'Enable expiration time'}
+          />
+        </Box>
 
-            {enableExpiration && (
-              <InputWrapper>
-                <TextField
-                  InputProps={{
-                    endAdornment: (
-                      <Tooltip
-                        arrow
-                        title={
-                          placeholder +
-                          `\n e.g. If you mint this badge today, It will expire on: ${validTo(
-                            value,
-                          )}`
-                        }
-                      >
-                        <InfoOutlinedIcon />
-                      </Tooltip>
-                    ),
-                  }}
-                  color="secondary"
-                  label={label}
-                  onChange={handleOnChange}
-                  sx={{ justifyContent: 'end' }}
-                  value={stringValue}
-                  variant={'standard'}
-                />
-                <MUISelect
-                  id="unit-select"
-                  onChange={handleDropdownChange}
-                  size="small"
-                  sx={{ textTransform: 'capitalize', ml: 2, background: colors.transparent }}
-                  value={unit || ''}
-                  variant="filled"
-                >
-                  {options.map((op) => {
-                    return (
-                      <MenuItem key={op} sx={{ textTransform: 'capitalize' }} value={op}>
-                        {op}s
-                      </MenuItem>
-                    )
-                  })}
-                </MUISelect>
-              </InputWrapper>
-            )}
-          </>
-        }
-        labelPosition={'top'}
-        status={error ? TextFieldStatus.error : TextFieldStatus.success}
-        statusText={error ? error?.message : ' '}
-      />
+        <Disable disabled={!enableExpiration}>
+          <InputWrapper>
+            <TextField
+              InputProps={{
+                endAdornment: (
+                  <Tooltip
+                    arrow
+                    title={
+                      placeholder +
+                      `\n e.g. If you mint this badge today, It will expire on: ${validTo(value)}`
+                    }
+                  >
+                    <InfoOutlinedIcon />
+                  </Tooltip>
+                ),
+              }}
+              color="secondary"
+              label={label}
+              onChange={handleOnChange}
+              sx={{ justifyContent: 'end', textTransform: 'capitalize' }}
+              value={stringValue}
+              variant={'standard'}
+            />
+            <TextField
+              SelectProps={{
+                MenuProps: {
+                  PaperProps: {
+                    sx: {
+                      p: 0.5,
+                      '& .MuiMenuItem-root': {
+                        px: 1,
+                        borderRadius: 0.75,
+                        typography: 'body2',
+                        textTransform: 'capitalize',
+                      },
+                    },
+                  },
+                },
+                sx: { textTransform: 'capitalize' },
+              }}
+              error={!!error}
+              id="unit-select"
+              onChange={handleDropdownChange}
+              select
+              size="small"
+              sx={{
+                textTransform: 'capitalize',
+                ml: 2,
+                mt: 'auto',
+              }}
+              value={unit || ''}
+              variant="standard"
+            >
+              {options.map((op) => {
+                return (
+                  <MenuItem key={op} value={op}>
+                    {op}s
+                  </MenuItem>
+                )
+              })}
+            </TextField>
+          </InputWrapper>
+        </Disable>
+      </Stack>
     </Wrapper>
   )
 }
