@@ -11,6 +11,7 @@ import StepHeader from './steps/StepHeader'
 import { CreateModelSchema } from '@/src/pagePartials/badge/model/schema/CreateModelSchema'
 import StepFooter from '@/src/pagePartials/badge/model/steps/StepFooter'
 import BadgeModelEvidenceFormCreation from '@/src/pagePartials/badge/model/steps/evidence/BadgeModelEvidenceFormCreation'
+import BadgeModelConfirmation from '@/src/pagePartials/badge/model/steps/preview/BadgeModelConfirmation'
 import BadgeModelStrategy from '@/src/pagePartials/badge/model/steps/strategy/BadgeModelStrategy'
 import HowItWorks from '@/src/pagePartials/badge/model/steps/terms/HowItWorks'
 import BadgeModelUIBasics from '@/src/pagePartials/badge/model/steps/uiBasics/BadgeModelUIBasics'
@@ -54,9 +55,11 @@ export default function CreateWithSteps() {
         {currentStep === 1 && <BadgeModelUIBasics />}
         {currentStep === 2 && <BadgeModelStrategy />}
         {currentStep === 3 && <BadgeModelEvidenceFormCreation />}
+        {currentStep === 4 && <BadgeModelConfirmation />}
+
         <StepFooter
           onBackCallback={() => setCurrentStep((prev) => (prev === 0 ? 0 : prev - 1))}
-          onSubmitCallback={() => setCurrentStep((prev) => (prev === 3 ? 3 : prev + 1))}
+          onSubmitCallback={() => setCurrentStep((prev) => (prev === 4 ? 4 : prev + 1))}
         />
       </Container>
     </FormProvider>
