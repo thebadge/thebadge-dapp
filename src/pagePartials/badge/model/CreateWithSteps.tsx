@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Container } from '@mui/material'
@@ -10,11 +10,10 @@ import { MultiStepFormMachineContext } from './stateMachine/machine/createModelM
 import StepHeader from './steps/StepHeader'
 import { CreateModelSchema } from '@/src/pagePartials/badge/model/schema/CreateModelSchema'
 import StepFooter from '@/src/pagePartials/badge/model/steps/StepFooter'
-import EvidenceFormCreation from '@/src/pagePartials/badge/model/steps/evidence/EvidenceFormCreation'
+import BadgeModelEvidenceFormCreation from '@/src/pagePartials/badge/model/steps/evidence/BadgeModelEvidenceFormCreation'
 import BadgeModelStrategy from '@/src/pagePartials/badge/model/steps/strategy/BadgeModelStrategy'
+import HowItWorks from '@/src/pagePartials/badge/model/steps/terms/HowItWorks'
 import BadgeModelUIBasics from '@/src/pagePartials/badge/model/steps/uiBasics/BadgeModelUIBasics'
-
-const steps = ['Help', 'Badge type basics', 'Evidence form', 'Badge Type Preview']
 
 const termsSelector = (state: State<MultiStepFormMachineContext>) => {
   return state.matches('TermsAndConditions')
@@ -38,6 +37,8 @@ const defaultValues = () => {
 }
 
 export default function CreateWithSteps() {
+  const [currentStep, setCurrentStep] = useState(0)
+
   const methods = useForm<z.infer<typeof CreateModelSchema>>({
     resolver: zodResolver(CreateModelSchema),
     defaultValues: defaultValues(),
@@ -47,15 +48,16 @@ export default function CreateWithSteps() {
 
   return (
     <FormProvider {...methods}>
-      <StepHeader />
+      <StepHeader currentStep={currentStep} />
       <Container maxWidth="md">
-        <p>Step 1</p>
-        <BadgeModelUIBasics />
-        <p>Step 2</p>
-        <BadgeModelStrategy />
-        <p>Step 3</p>
-        <EvidenceFormCreation />
-        <StepFooter />
+        {currentStep === 0 && <HowItWorks />}
+        {currentStep === 1 && <BadgeModelUIBasics />}
+        {currentStep === 2 && <BadgeModelStrategy />}
+        {currentStep === 3 && <BadgeModelEvidenceFormCreation />}
+        <StepFooter
+          onBackCallback={() => setCurrentStep((prev) => (prev === 0 ? 0 : prev - 1))}
+          onSubmitCallback={() => setCurrentStep((prev) => (prev === 3 ? 3 : prev + 1))}
+        />
       </Container>
     </FormProvider>
   )

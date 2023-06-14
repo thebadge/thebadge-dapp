@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import * as React from 'react'
 
 import { Box, Stack, Typography } from '@mui/material'
@@ -24,7 +23,9 @@ const steps = [
 
 export default function StepHeader({
   color,
+  currentStep,
 }: {
+  currentStep: number
   color?: OverridableStringUnion<
     'inherit' | 'primary' | 'secondary' | 'success' | 'error' | 'info' | 'warning',
     ButtonPropsColorOverrides
@@ -33,7 +34,6 @@ export default function StepHeader({
   const { t } = useTranslation()
   const isMobile = useSizeSM()
 
-  const [currentStep, setCurrentStep] = useState(0)
   const completed = [true]
 
   return (

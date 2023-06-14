@@ -17,14 +17,14 @@ const BoxShadow = styled(Box)(({ theme }) => ({
   filter: `drop-shadow(0px 0px 15px ${alpha(theme.palette.text.primary, 0.3)})`,
 }))
 
-const TextContrast: { [key: string]: string } = {
+export const BADGE_MODEL_TEXT_CONTRAST: { [key: string]: string } = {
   Black: 'light',
   White: 'dark',
   'White with shadow': 'dark-withTextBackground',
   'Black with shadow': 'light-withTextBackground',
 }
 
-const Backgrounds: { [key: string]: string } = {
+export const BADGE_MODEL_BACKGROUNDS: { [key: string]: string } = {
   One: 'https://images.unsplash.com/photo-1620421680010-0766ff230392?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=749&q=80',
   Two: 'https://images.unsplash.com/photo-1512998844734-cd2cca565822?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTIyfHxhYnN0cmFjdHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60',
   Three:
@@ -88,12 +88,12 @@ export default function BadgeModelUIBasics() {
             <BadgePreview
               animationEffects={['wobble', 'grow', 'glare']}
               animationOnHover
-              badgeBackgroundUrl={Backgrounds[watchedBackground]}
+              badgeBackgroundUrl={BADGE_MODEL_BACKGROUNDS[watchedBackground]}
               badgeUrl="https://www.thebadge.xyz"
               description={watchedDescription}
               imageUrl={watchedLogoUri?.base64File}
               size="medium"
-              textContrast={TextContrast[watchedTextContrast]}
+              textContrast={BADGE_MODEL_TEXT_CONTRAST[watchedTextContrast]}
               title={watchedName}
             />
           </BoxShadow>
@@ -109,7 +109,7 @@ export default function BadgeModelUIBasics() {
                 error={error}
                 label={'Font color'}
                 onChange={onChange}
-                options={Object.keys(TextContrast)}
+                options={Object.keys(BADGE_MODEL_TEXT_CONTRAST)}
                 value={value || 'Black'}
               />
             )}
@@ -122,7 +122,7 @@ export default function BadgeModelUIBasics() {
                 error={error}
                 label={'Background'}
                 onChange={onChange}
-                options={Object.keys(Backgrounds)}
+                options={Object.keys(BADGE_MODEL_BACKGROUNDS)}
                 value={value || 'Two'}
               />
             )}

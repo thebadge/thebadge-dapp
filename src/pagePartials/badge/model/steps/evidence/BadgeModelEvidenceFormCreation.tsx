@@ -5,7 +5,7 @@ import { Controller, useFormContext } from 'react-hook-form'
 
 import { KlerosDynamicFieldsCreator } from '@/src/components/form/klerosDynamicFormField/FormFieldCreator'
 
-export default function EvidenceFormCreation() {
+export default function BadgeModelEvidenceFormCreation() {
   const { t } = useTranslation()
   const { control, watch } = useFormContext()
   return (

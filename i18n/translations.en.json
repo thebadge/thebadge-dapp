@@ -180,19 +180,19 @@
     "curateButton": "Curate",
     "type": {
       "create": {
-        "title": "Create your Badge Type",
+        "title": "Create your Badge Model",
         "subTitle": "Do you want to design and publish custom badges that other users can apply for to verify real-world information? Also, you could set the price for the badges you create and receive a share of the fee when users apply for them... So please, complete the form and let´s start creating!",
-        "helpSteps": "- For creating a badge type you will have to set up the name, description, and logo that users will see when searching for badges\n\n - You also have to upload **curation criteria**. For guidelines and examples about how to define good curation criteria please check our [docs]({{curationCriteriaDocsUrl}})\n\n* Please note that in order for your badge type to be approved and listed, the curation criteria should be in compliance with the [curation criteria standards]({{curationCriteriaStandardDocsUrl}}) and the [terms and conditions]({{termsUrls}})\n\n* If you have any doubts please check the [docs]({{docsUrl}}) or ask for help in our [discord]({{discordUrl}}).\n",
-        "previewTitle": "This is how your new badge type will look like",
+        "helpSteps": "- For creating a badge model you will have to set up the name, description, and logo that users will see when searching for badges\n\n - You also have to upload **curation criteria**. For guidelines and examples about how to define good curation criteria please check our [docs]({{curationCriteriaDocsUrl}})\n\n* Please note that in order for your badge model to be approved and listed, the curation criteria should be in compliance with the [curation criteria standards]({{curationCriteriaStandardDocsUrl}}) and the [terms and conditions]({{termsUrls}})\n\n* If you have any doubts please check the [docs]({{docsUrl}}) or ask for help in our [discord]({{discordUrl}}).\n",
+        "previewTitle": "This is how your new badge model will look like",
         "steps": [
           {
-            "subTitle": "You are starting the process of creating a new badge type. Please read the following instructions carefully in order to be able to complete the process correctly."
+            "subTitle": "You are starting the process of creating a new badge model. Please read the following instructions carefully in order to be able to complete the process correctly."
           },
           {
-            "subTitle": "In order to create a new badge type you have to complete the following form containing the basic configuration of your badge. For examples or more details about how to create a good badge type, please check our [docs]({{docsUrl}})."
+            "subTitle": "In order to create a new badge model you have to complete the following form containing the basic configuration of your badge. For examples or more details about how to create a good badge model, please check our [docs]({{docsUrl}})."
           },
           {
-            "subTitle": "You have to define the fields your badge minters will have to complete in order to accomplish your badge curation criteria. The curation criteria should match with the fields you are requesting for your users and should complain with TheBadge badge [type criteria]({{criteriaDocsUrl}}), otherwise, your badge type will be rejected. For examples or more details about how to create a good badge type, please check our [docs]({{createBadgeTypeDocs}})."
+            "subTitle": "You have to define the fields your badge minters will have to complete in order to accomplish your badge curation criteria. The curation criteria should match with the fields you are requesting for your users and should complain with TheBadge badge [model criteria]({{criteriaDocsUrl}}), otherwise, your badge model will be rejected. For examples or more details about how to create a good badge model, please check our [docs]({{createBadgeTypeDocs}})."
           },
           {
             "subTitle": "This is how your badge is going to look like when a user obtain it."
