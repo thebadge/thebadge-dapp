@@ -2,13 +2,18 @@ import React, { useState } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Container } from '@mui/material'
-import { FormProvider, useForm } from 'react-hook-form'
+import { FormProvider, SubmitHandler, useForm } from 'react-hook-form'
 import { State } from 'xstate'
 import { z } from 'zod'
 
 import { MultiStepFormMachineContext } from './stateMachine/machine/createModelMachine'
 import StepHeader from './steps/StepHeader'
-import { CreateModelSchema } from '@/src/pagePartials/badge/model/schema/CreateModelSchema'
+import StepPrompt from './steps/StepPrompt'
+import { useTriggerRHF } from '@/src/hooks/useTriggerRHF'
+import {
+  CreateModelSchema,
+  CreateModelSchemaType,
+} from '@/src/pagePartials/badge/model/schema/CreateModelSchema'
 import StepFooter from '@/src/pagePartials/badge/model/steps/StepFooter'
 import BadgeModelEvidenceFormCreation from '@/src/pagePartials/badge/model/steps/evidence/BadgeModelEvidenceFormCreation'
 import BadgeModelConfirmation from '@/src/pagePartials/badge/model/steps/preview/BadgeModelConfirmation'
@@ -32,35 +37,67 @@ const defaultValues = () => {
   } else {
     return {
       textContrast: 'Black',
-      backgroundImage: 'Two',
+      backgroundImage: 'White Waves',
+      template: 'Classic',
     }
   }
 }
-
+const STEP_0 = ['howItWorks']
+const STEP_1 = [
+  'name',
+  'description',
+  'badgeModelLogoUri',
+  'textContrast',
+  'backgroundImage',
+  'template',
+]
+const STEP_2 = [
+  'criteriaFileUri',
+  'criteriaDeltaText',
+  'challengePeriodDuration',
+  'rigorousness',
+  'mintCost',
+  'validFor',
+]
+const STEP_3 = ['badgeMetadataColumns']
+const FIELDS_TO_VALIDATE_ON_STEP = [STEP_0, STEP_1, STEP_2, STEP_3]
 export default function CreateWithSteps() {
   const [currentStep, setCurrentStep] = useState(0)
 
   const methods = useForm<z.infer<typeof CreateModelSchema>>({
     resolver: zodResolver(CreateModelSchema),
     defaultValues: defaultValues(),
+    reValidateMode: 'onChange',
+    mode: 'onChange',
   })
+
+  const triggerValidation = useTriggerRHF(methods)
   // const services = useContext(CreateModelMachineContext)
   // const isOnTerms = useSelector(services.createService, termsSelector)
 
+  function onBackCallback() {
+    //setCurrentStep((prev) => (prev === 0 ? 0 : prev - 1))
+  }
+  const onSubmit: SubmitHandler<CreateModelSchemaType> = (data) => console.log(data)
+  async function onSubmitCallback() {
+    const isValid = await triggerValidation(FIELDS_TO_VALIDATE_ON_STEP[currentStep])
+    if (isValid) setCurrentStep((prev) => (prev === 4 ? 4 : prev + 1))
+  }
+
   return (
     <FormProvider {...methods}>
+      <StepPrompt hasUnsavedChanges={methods.formState.isDirty} />
       <StepHeader currentStep={currentStep} />
       <Container maxWidth="md">
-        {currentStep === 0 && <HowItWorks />}
-        {currentStep === 1 && <BadgeModelUIBasics />}
-        {currentStep === 2 && <BadgeModelStrategy />}
-        {currentStep === 3 && <BadgeModelEvidenceFormCreation />}
-        {currentStep === 4 && <BadgeModelConfirmation />}
+        <form onSubmit={methods.handleSubmit(onSubmit)}>
+          {currentStep === 0 && <HowItWorks />}
+          {currentStep === 1 && <BadgeModelUIBasics />}
+          {currentStep === 2 && <BadgeModelStrategy />}
+          {currentStep === 3 && <BadgeModelEvidenceFormCreation />}
+          {currentStep === 4 && <BadgeModelConfirmation />}
 
-        <StepFooter
-          onBackCallback={() => setCurrentStep((prev) => (prev === 0 ? 0 : prev - 1))}
-          onSubmitCallback={() => setCurrentStep((prev) => (prev === 4 ? 4 : prev + 1))}
-        />
+          <StepFooter onBackCallback={onBackCallback} onSubmitCallback={onSubmitCallback} />
+        </form>
       </Container>
     </FormProvider>
   )

@@ -4,6 +4,7 @@ import { Box, Typography, alpha, styled } from '@mui/material'
 import { useFormContext } from 'react-hook-form'
 import { BadgePreview } from 'thebadge-ui-library'
 
+import { CreateModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateModelSchema'
 import {
   BADGE_MODEL_BACKGROUNDS,
   BADGE_MODEL_TEXT_CONTRAST,
@@ -15,7 +16,7 @@ const BoxShadow = styled(Box)(({ theme }) => ({
 }))
 
 export default function BadgeModelConfirmation() {
-  const { watch } = useFormContext()
+  const { watch } = useFormContext<CreateModelSchemaType>()
 
   const watchedName = watch('name')
   const watchedDescription = watch('description')

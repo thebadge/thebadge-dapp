@@ -10,6 +10,7 @@ import { DropdownSelect } from '@/src/components/form/DropdownSelect'
 import { ImageInput } from '@/src/components/form/ImageInput'
 import { TextArea } from '@/src/components/form/TextArea'
 import { TextField } from '@/src/components/form/TextField'
+import { CreateModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateModelSchema'
 
 const BoxShadow = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -25,18 +26,22 @@ export const BADGE_MODEL_TEXT_CONTRAST: { [key: string]: string } = {
 }
 
 export const BADGE_MODEL_BACKGROUNDS: { [key: string]: string } = {
-  One: 'https://images.unsplash.com/photo-1620421680010-0766ff230392?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=749&q=80',
-  Two: 'https://images.unsplash.com/photo-1512998844734-cd2cca565822?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTIyfHxhYnN0cmFjdHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60',
-  Three:
-    'https://images.unsplash.com/photo-1579546928686-286c9fbde1ec?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjA5fHxhYnN0cmFjdHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60',
-  Four: 'https://images.unsplash.com/photo-1549317336-206569e8475c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80',
-  Five: 'https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=735&q=80',
-  Six: 'https://images.unsplash.com/photo-1567359781514-3b964e2b04d6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=536&q=80',
+  'Rainbow Vortex':
+    'https://images.unsplash.com/photo-1620421680010-0766ff230392?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=749&q=80',
+  'White Waves':
+    'https://images.unsplash.com/photo-1512998844734-cd2cca565822?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTIyfHxhYnN0cmFjdHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60',
+  Calm: 'https://images.unsplash.com/photo-1579546928686-286c9fbde1ec?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjA5fHxhYnN0cmFjdHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60',
+  'Neon Storm':
+    'https://images.unsplash.com/photo-1549317336-206569e8475c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80',
+  'Mountain Sea':
+    'https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=735&q=80',
+  'Purple Lava':
+    'https://images.unsplash.com/photo-1567359781514-3b964e2b04d6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=536&q=80',
 }
 
 export default function BadgeModelUIBasics() {
   const { t } = useTranslation()
-  const { control, watch } = useFormContext()
+  const { control, watch } = useFormContext<CreateModelSchemaType>()
 
   const watchedName = watch('name')
   const watchedDescription = watch('description')
@@ -107,7 +112,7 @@ export default function BadgeModelUIBasics() {
             render={({ field: { name, onChange, value }, fieldState: { error } }) => (
               <DropdownSelect
                 error={error}
-                label={'Font color'}
+                label={'Text color'}
                 onChange={onChange}
                 options={Object.keys(BADGE_MODEL_TEXT_CONTRAST)}
                 value={value || 'Black'}

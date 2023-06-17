@@ -5,15 +5,16 @@ import { Controller, useFormContext } from 'react-hook-form'
 
 import { AgreementField } from '@/src/components/form/AgreementField'
 import { DISCORD_URL, DOCS_URL } from '@/src/constants/common'
+import { CreateModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateModelSchema'
 
 export default function HowItWorks() {
   const { t } = useTranslation()
-  const { control } = useFormContext() // retrieve all hook methods
+  const { control } = useFormContext<CreateModelSchemaType>() // retrieve all hook methods
 
   return (
     <Controller
       control={control}
-      name={'wowItWorks'}
+      name={'howItWorks'}
       render={({ field: { onChange, value }, fieldState: { error } }) => (
         <AgreementField
           agreementText={t('badge.type.create.helpSteps', {

@@ -9,12 +9,13 @@ import { ExpirationField } from '@/src/components/form/ExpirationField'
 import { PeriodSelector } from '@/src/components/form/PeriodSelector'
 import { SeveritySelector } from '@/src/components/form/SeveritySelector'
 import { getNetworkConfig } from '@/src/config/web3'
+import { CreateModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateModelSchema'
 import RequirementInput from '@/src/pagePartials/badge/model/steps/strategy/RequirementInput'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 
 export default function BadgeModelStrategy() {
   const { t } = useTranslation()
-  const { control, watch } = useFormContext()
+  const { control, watch } = useFormContext<CreateModelSchemaType>()
   const { appChainId } = useWeb3Connection()
   const networkConfig = getNetworkConfig(appChainId)
 
@@ -36,24 +37,12 @@ export default function BadgeModelStrategy() {
               />
             )}
           />
-          <Controller
-            control={control}
-            name={'rigorousness'}
-            render={({ field: { name, onChange, value }, fieldState: { error } }) => (
-              <SeveritySelector
-                error={error}
-                label={'Rigorousness'}
-                onChange={onChange}
-                value={value}
-              />
-            )}
-          />
         </Stack>
         <Stack flex="1" gap={4}>
           <Controller
             control={control}
             name={'mintCost'}
-            render={({ field: { name, onChange, value }, fieldState: { error } }) => (
+            render={({ field: { onChange, value }, fieldState: { error } }) => (
               <BigNumberInput
                 decimals={8}
                 onChange={onChange}
@@ -61,6 +50,7 @@ export default function BadgeModelStrategy() {
                   <Stack>
                     <TextField
                       color="secondary"
+                      error={!!error}
                       helperText={error?.message}
                       inputProps={{
                         min: 0,
@@ -82,7 +72,7 @@ export default function BadgeModelStrategy() {
           <Controller
             control={control}
             name={'validFor'}
-            render={({ field: { name, onChange, value }, fieldState: { error } }) => (
+            render={({ field: { onChange, value }, fieldState: { error } }) => (
               <ExpirationField
                 error={error}
                 label={'Expiration time'}
@@ -93,6 +83,18 @@ export default function BadgeModelStrategy() {
           />
         </Stack>
       </Box>
+      <Controller
+        control={control}
+        name={'rigorousness'}
+        render={({ field: { name, onChange, value }, fieldState: { error } }) => (
+          <SeveritySelector
+            error={error}
+            label={'Rigorousness'}
+            onChange={onChange}
+            value={value}
+          />
+        )}
+      />
       <RequirementInput />
     </>
   )

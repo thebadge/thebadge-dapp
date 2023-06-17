@@ -2,7 +2,17 @@ import * as React from 'react'
 import { useEffect, useState } from 'react'
 
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
-import { Box, Slider, Tooltip, Typography, styled } from '@mui/material'
+import {
+  Box,
+  FormControlLabel,
+  Paper,
+  Slider,
+  Stack,
+  Switch,
+  Tooltip,
+  Typography,
+  styled,
+} from '@mui/material'
 import { useDescription, useTsController } from '@ts-react/form'
 import { FieldError } from 'react-hook-form'
 import { gradients } from 'thebadge-ui-library'
@@ -39,6 +49,10 @@ const marks = [
     label: Severity_Keys[0],
   },
   {
+    value: 3,
+    label: Severity_Keys[1],
+  },
+  {
     value: 5,
     label: Severity_Keys[2],
   },
@@ -54,6 +68,8 @@ type SeveritySelectorProps = {
 
 export function SeveritySelector({ error, label, onChange, placeholder }: SeveritySelectorProps) {
   const [auxValue, setAuxValue] = useState<number>(1)
+
+  const [enableAdvance, setAdvanceMode] = useState<boolean>(false)
 
   useEffect(() => {
     // Use effect to set the default value, is made on this way to
@@ -75,6 +91,14 @@ export function SeveritySelector({ error, label, onChange, placeholder }: Severi
 
   function valueLabelFormat(value: number) {
     return Severity[value]
+  }
+
+  function toggleAdvanceMode(enable: boolean) {
+    setAdvanceMode(enable)
+    if (!enable) {
+      setAuxValue(1)
+      onChange(Severity[1])
+    }
   }
 
   return (
@@ -109,12 +133,33 @@ export function SeveritySelector({ error, label, onChange, placeholder }: Severi
                 <InfoOutlinedIcon sx={{ ml: 1 }} />
               </Tooltip>
             )}
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={enableAdvance}
+                  onChange={() => toggleAdvanceMode(!enableAdvance)}
+                />
+              }
+              label={'Advance'}
+              sx={{ position: 'absolute', right: 0, mr: 0 }}
+            />
           </Typography>
         }
         labelPosition={'top-left'}
         status={error ? TextFieldStatus.error : TextFieldStatus.success}
         statusText={error?.message}
       />
+      {enableAdvance && (
+        <Stack>
+          <Box display="flex" justifyContent="space-evenly">
+            <Paper elevation={3} sx={{ m: 1, width: 128, height: 128 }} />
+            <Paper elevation={3} sx={{ m: 1, width: 128, height: 128 }} />
+            <Paper elevation={3} sx={{ m: 1, width: 128, height: 128 }} />
+            <Paper elevation={3} sx={{ m: 1, width: 128, height: 128 }} />
+            <Paper elevation={3} sx={{ m: 1, width: 128, height: 128 }} />
+          </Box>
+        </Stack>
+      )}
     </Wrapper>
   )
 }

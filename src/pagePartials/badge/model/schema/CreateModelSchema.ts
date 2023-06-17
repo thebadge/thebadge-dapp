@@ -8,11 +8,14 @@ import {
   ImageSchema,
   KlerosDynamicFields,
   LongTextSchema,
-  NumberSchema,
   SeverityTypeSchema,
+  TokenInputSchema,
 } from '@/src/components/form/helpers/customSchemas'
 import { IS_DEVELOP } from '@/src/constants/common'
 
+export const FirstStepModelSchema = z.object({
+  howItWorks: AgreementSchema.describe(`Badge creation quick tutorial.`),
+})
 export const CreateModelSchema = z.object({
   howItWorks: AgreementSchema.describe(`Badge creation quick tutorial.`),
   // ------ UI BASICS FIELD ------
@@ -43,13 +46,16 @@ export const CreateModelSchema = z.object({
   rigorousness: SeverityTypeSchema.describe(
     'Rigorousness // How rigorous the emission of badges should be',
   ),
-  mintCost: NumberSchema.describe(
+  mintCost: TokenInputSchema.describe(
     'Cost to mint in ETH // How much it will be necessary to deposit.',
   ),
   validFor: ExpirationTypeSchema.describe(
     'Expiration time // The badge will be valid for this amount of time (0 is forever)',
   ),
+  // ------ EVIDENCE FORM FIELD ------
   badgeMetadataColumns: KlerosDynamicFields.describe(
     'Evidence fields // List of fields that the user will need to provider to be able to mint this badge type.',
   ),
 })
+
+export type CreateModelSchemaType = z.infer<typeof CreateModelSchema>
