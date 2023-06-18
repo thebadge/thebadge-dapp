@@ -70,7 +70,7 @@ export default function BadgeModelUIBasics() {
           <Controller
             control={control}
             name={'badgeModelLogoUri'}
-            render={({ field: { name, onChange, value }, fieldState: { error } }) => (
+            render={({ field: { onChange, value }, fieldState: { error } }) => (
               <ImageInput
                 error={error}
                 label={'The logo for your badge'}
@@ -109,7 +109,7 @@ export default function BadgeModelUIBasics() {
           <Controller
             control={control}
             name={'textContrast'}
-            render={({ field: { name, onChange, value }, fieldState: { error } }) => (
+            render={({ field: { onChange, value }, fieldState: { error } }) => (
               <DropdownSelect
                 error={error}
                 label={'Text color'}
@@ -122,7 +122,7 @@ export default function BadgeModelUIBasics() {
           <Controller
             control={control}
             name={'backgroundImage'}
-            render={({ field: { name, onChange, value }, fieldState: { error } }) => (
+            render={({ field: { onChange, value }, fieldState: { error } }) => (
               <DropdownSelect
                 error={error}
                 label={'Background'}
@@ -137,7 +137,7 @@ export default function BadgeModelUIBasics() {
           <Controller
             control={control}
             name={'template'}
-            render={({ field: { name, onChange, value }, fieldState: { error } }) => (
+            render={({ field: { onChange, value }, fieldState: { error } }) => (
               <DropdownSelect
                 error={error}
                 label={'Template (Not implemented yet)'}

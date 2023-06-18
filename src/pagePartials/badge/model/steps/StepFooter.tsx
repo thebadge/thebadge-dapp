@@ -3,7 +3,7 @@ import { ButtonPropsColorOverrides } from '@mui/material/Button/Button'
 import { OverridableStringUnion } from '@mui/types'
 import { useFormContext } from 'react-hook-form'
 
-import { FORM_STORE_KEY } from '@/src/pagePartials/badge/model/CreateWithSteps'
+import { saveFormValues } from '../utils'
 
 export const StepButton = styled(Button)(({ theme }) => ({
   borderRadius: theme.spacing(1.25),
@@ -13,31 +13,32 @@ export const StepButton = styled(Button)(({ theme }) => ({
 
 export default function StepFooter({
   color,
+  currentStep,
   onBackCallback,
-  onSubmitCallback,
+  onNextCallback,
 }: {
   color?: OverridableStringUnion<
     'inherit' | 'primary' | 'secondary' | 'success' | 'error' | 'info' | 'warning',
     ButtonPropsColorOverrides
   >
-  onSubmitCallback: VoidFunction
+  currentStep?: number
+  onNextCallback: VoidFunction
   onBackCallback: VoidFunction
 }) {
   const { getValues } = useFormContext()
 
-  const canGoBack = true
-  const backButtonDisabled = false
-  const submitButtonDisabled = false
+  const canGoBack = currentStep !== 0
+  const backButtonDisabled = currentStep !== 0
+  const nextButtonDisabled = false
 
   function onBack() {
-    console.log('BACK')
+    saveFormValues(getValues())
     if (onBackCallback) onBackCallback()
   }
 
-  function onSubmit() {
-    localStorage.setItem(FORM_STORE_KEY, JSON.stringify(getValues()))
-    console.log('SUBMIT')
-    if (onSubmitCallback) onSubmitCallback()
+  function onNext() {
+    saveFormValues(getValues())
+    if (onNextCallback) onNextCallback()
   }
 
   return (
@@ -55,8 +56,8 @@ export default function StepFooter({
         )}
         <StepButton
           color={color || 'primary'}
-          disabled={submitButtonDisabled}
-          onClick={onSubmit}
+          disabled={nextButtonDisabled}
+          onClick={onNext}
           sx={{ ml: !canGoBack ? 'auto' : 'none' }}
           variant="contained"
         >

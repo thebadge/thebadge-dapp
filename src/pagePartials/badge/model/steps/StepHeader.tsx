@@ -23,9 +23,13 @@ const steps = [
 
 export default function StepHeader({
   color,
+  completedSteps,
   currentStep,
+  onStepNavigation,
 }: {
   currentStep: number
+  onStepNavigation: (n: number) => void
+  completedSteps: Record<string, boolean>
   color?: OverridableStringUnion<
     'inherit' | 'primary' | 'secondary' | 'success' | 'error' | 'info' | 'warning',
     ButtonPropsColorOverrides
@@ -33,8 +37,6 @@ export default function StepHeader({
 }) {
   const { t } = useTranslation()
   const isMobile = useSizeSM()
-
-  const completed = [true]
 
   return (
     <Stack sx={{ display: 'flex', flexDirection: 'column', mb: 6, gap: 4, alignItems: 'center' }}>
@@ -61,9 +63,9 @@ export default function StepHeader({
           }}
         >
           {steps.map((label, index) => (
-            <Step completed={completed[index]} key={label}>
+            <Step completed={completedSteps[index] === true} key={label}>
               <StepButton
-                onClick={() => console.log('step')}
+                onClick={() => onStepNavigation(index)}
                 sx={{
                   '.MuiStepLabel-iconContainer': {
                     '.Mui-active, .Mui-completed': {
