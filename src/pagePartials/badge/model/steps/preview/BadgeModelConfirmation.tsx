@@ -39,22 +39,24 @@ export default function BadgeModelConfirmation() {
           title={watchedName}
         />
       </BoxShadow>
-      <Typography
-        fontSize={'14px !important'}
-        sx={{ '& a': { textDecoration: 'underline !important' } }}
-        textAlign="center"
-        variant="body4"
-      >
-        By continuing, you agree to our{' '}
-        <a href="/legal/terms" target="_blank">
-          terms of use
-        </a>{' '}
-        and{' '}
-        <a href="/legal/privacy-policy" target="_blank">
-          privacy policy
-        </a>
-        .
-      </Typography>
+      <Box display="flex" flex="1" justifyContent="center" mt={2}>
+        <Typography
+          fontSize={'14px !important'}
+          sx={{ '& a': { textDecoration: 'underline !important' } }}
+          textAlign="center"
+          variant="body4"
+        >
+          By continuing, you agree to our{' '}
+          <a href="/legal/terms" target="_blank">
+            terms of use
+          </a>{' '}
+          and{' '}
+          <a href="/legal/privacy-policy" target="_blank">
+            privacy policy
+          </a>
+          .
+        </Typography>
+      </Box>
     </>
   )
 }

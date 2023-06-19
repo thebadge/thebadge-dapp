@@ -2,14 +2,14 @@ import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 
 import { parseUnits } from 'ethers/lib/utils'
-import { z } from 'zod'
 
 import { isMetadataColumnArray } from '@/src/components/form/helpers/validators'
 import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import { contracts } from '@/src/contracts/contracts'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
 import useTransaction, { TransactionStates } from '@/src/hooks/useTransaction'
-import CreateSteps, { BadgeTypeCreateSchema } from '@/src/pagePartials/badge/type/CreateSteps'
+import CreateWithSteps from '@/src/pagePartials/badge/model/CreateWithSteps'
+import { CreateModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateModelSchema'
 import { RequiredConnection } from '@/src/pagePartials/errors/requiredConnection'
 import { RequiredCreatorAccess } from '@/src/pagePartials/errors/requiresCreatorAccess'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
@@ -31,7 +31,7 @@ const CreateBadgeType: NextPageWithLayout = () => {
     }
   }, [router, state])
 
-  const onSubmit = async (data: z.infer<typeof BadgeTypeCreateSchema>) => {
+  const onSubmit = async (data: CreateModelSchemaType) => {
     const {
       badgeMetadataColumns,
       badgeModelLogoUri,
@@ -45,47 +45,49 @@ const CreateBadgeType: NextPageWithLayout = () => {
     // Safe-ward to infer MetadataColumn[], It will never go throw the return
     if (!isMetadataColumnArray(badgeMetadataColumns)) return
 
-    // Use NextJs dynamic import to reduce the bundle size
-    const {
-      createAndUploadBadgeModelMetadata,
-      createAndUploadClearingAndRegistrationFilesForKleros,
-      encodeKlerosControllerData,
-    } = await import('@/src/utils/badges/createBadgeModelHelpers')
-
-    const { clearingIPFSHash, registrationIPFSHash } =
-      await createAndUploadClearingAndRegistrationFilesForKleros(
-        name,
-        description,
-        badgeModelLogoUri,
-        criteriaFileUri,
-        badgeMetadataColumns,
-      )
-
-    const badgeModelMetadataIPFSHash = createAndUploadBadgeModelMetadata(
-      name,
-      description,
-      badgeModelLogoUri,
-    )
-
-    const klerosControllerDataEncoded = encodeKlerosControllerData(
-      address as string,
-      contracts.Kleros.address[appChainId],
-      readOnlyAppProvider,
-      Severity[rigorousness as keyof typeof Severity],
-      /**
-       * Default Kleros court to use when creating a new badge model.
-       * TODO: we should set a default court in the short-circuit to the Kleros's  general court.
-       * In advance mode the user should be able to select the court.
-       */
-      process.env.NEXT_PUBLIC_KLEROS_DEFAULT_COURT as string,
-      registrationIPFSHash,
-      clearingIPFSHash,
-      challengePeriodDuration,
-    )
-
     try {
-      const transaction = await sendTx(() =>
-        theBadge.createBadgeModel(
+      // Start transaction to show the loading state when we create the files
+      // and configs
+      const transaction = await sendTx(async () => {
+        // Use NextJs dynamic import to reduce the bundle size
+        const {
+          createAndUploadBadgeModelMetadata,
+          createAndUploadClearingAndRegistrationFilesForKleros,
+          encodeKlerosControllerData,
+        } = await import('@/src/utils/badges/createBadgeModelHelpers')
+
+        const { clearingIPFSHash, registrationIPFSHash } =
+          await createAndUploadClearingAndRegistrationFilesForKleros(
+            name,
+            description,
+            badgeModelLogoUri,
+            criteriaFileUri,
+            badgeMetadataColumns,
+          )
+
+        const badgeModelMetadataIPFSHash = createAndUploadBadgeModelMetadata(
+          name,
+          description,
+          badgeModelLogoUri,
+        )
+
+        const klerosControllerDataEncoded = encodeKlerosControllerData(
+          address as string,
+          contracts.Kleros.address[appChainId],
+          readOnlyAppProvider,
+          Severity[rigorousness as keyof typeof Severity],
+          /**
+           * Default Kleros court to use when creating a new badge model.
+           * TODO: we should set a default court in the short-circuit to the Kleros's  general court.
+           * In advance mode the user should be able to select the court.
+           */
+          process.env.NEXT_PUBLIC_KLEROS_DEFAULT_COURT as string,
+          registrationIPFSHash,
+          clearingIPFSHash,
+          challengePeriodDuration,
+        )
+
+        return theBadge.createBadgeModel(
           {
             metadata: badgeModelMetadataIPFSHash,
             controllerName: 'kleros',
@@ -93,8 +95,8 @@ const CreateBadgeType: NextPageWithLayout = () => {
             validFor: data.validFor, // in seconds, 0 infinite
           },
           klerosControllerDataEncoded,
-        ),
-      )
+        )
+      })
 
       await transaction.wait()
     } catch (e) {
@@ -105,7 +107,7 @@ const CreateBadgeType: NextPageWithLayout = () => {
   return (
     <RequiredConnection>
       <RequiredCreatorAccess>
-        <CreateSteps onSubmit={onSubmit} txState={state} />
+        <CreateWithSteps onSubmit={onSubmit} txState={state} />
       </RequiredCreatorAccess>
     </RequiredConnection>
   )

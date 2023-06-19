@@ -24,9 +24,9 @@ export const FORM_STORE_KEY = 'badge-model-creation'
  * happens
  */
 export function defaultValues() {
-  const storedValues = localStorage.getItem(FORM_STORE_KEY)
-  if (storedValues) {
-    return JSON.parse(storedValues)
+  if (checkIfHasOngoingModelCreation()) {
+    const storedValues = JSON.parse(localStorage.getItem(FORM_STORE_KEY) as string)
+    return storedValues.values
   } else {
     return {
       textContrast: 'Black',
@@ -36,6 +36,16 @@ export function defaultValues() {
   }
 }
 
+export function checkIfHasOngoingModelCreation() {
+  const item = localStorage.getItem(FORM_STORE_KEY)
+  return !!item && Date.now() < JSON.parse(item).expirationTime
+}
+
 export function saveFormValues(values: Record<string, any>) {
-  localStorage.setItem(FORM_STORE_KEY, JSON.stringify(values))
+  const ONE_DAY = 24 * 60 * 60 * 1000 /* ms */
+
+  localStorage.setItem(
+    FORM_STORE_KEY,
+    JSON.stringify({ expirationTime: Date.now() + ONE_DAY, values }),
+  )
 }

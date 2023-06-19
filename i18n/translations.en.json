@@ -196,6 +196,9 @@
           },
           {
             "subTitle": "This is how your badge is going to look like when a user obtain it."
+          },
+          {
+            "subTitle" : " "
           }
         ]
       },

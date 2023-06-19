@@ -35,6 +35,7 @@ export const CreateModelSchema = z.object({
   ),
   criteriaDeltaText: z
     .object({ string: z.string(), delta: z.any() })
+    .optional()
     .describe(
       'Curation criteria (Text format). // This is the document containing your badge curation criteria, an example of curation criteria can be found on the docs.',
     ),

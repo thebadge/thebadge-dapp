@@ -4,6 +4,7 @@ import { OverridableStringUnion } from '@mui/types'
 import { useFormContext } from 'react-hook-form'
 
 import { saveFormValues } from '../utils'
+import { PreventActionWithoutConnection } from '@/src/pagePartials/errors/preventActionWithoutConnection'
 
 export const StepButton = styled(Button)(({ theme }) => ({
   borderRadius: theme.spacing(1.25),
@@ -28,8 +29,9 @@ export default function StepFooter({
   const { getValues } = useFormContext()
 
   const canGoBack = currentStep !== 0
-  const backButtonDisabled = currentStep !== 0
+  const backButtonDisabled = currentStep === 0
   const nextButtonDisabled = false
+  const isLastStep = currentStep === 4
 
   function onBack() {
     saveFormValues(getValues())
@@ -44,7 +46,7 @@ export default function StepFooter({
   return (
     <>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 6 }}>
-        {canGoBack && (
+        {!isLastStep && canGoBack && (
           <StepButton
             color={color || 'primary'}
             disabled={backButtonDisabled}
@@ -54,15 +56,29 @@ export default function StepFooter({
             Back
           </StepButton>
         )}
-        <StepButton
-          color={color || 'primary'}
-          disabled={nextButtonDisabled}
-          onClick={onNext}
-          sx={{ ml: !canGoBack ? 'auto' : 'none' }}
-          variant="contained"
-        >
-          Next
-        </StepButton>
+        {!isLastStep && (
+          <StepButton
+            color={color || 'primary'}
+            disabled={nextButtonDisabled}
+            onClick={onNext}
+            sx={{ ml: !canGoBack ? 'auto' : 'none' }}
+            variant="contained"
+          >
+            Next
+          </StepButton>
+        )}
+        {isLastStep && (
+          <PreventActionWithoutConnection sx={{ m: 'auto' }}>
+            <StepButton
+              color={color || 'primary'}
+              sx={{ m: 'auto' }}
+              type="submit"
+              variant="contained"
+            >
+              Submit
+            </StepButton>
+          </PreventActionWithoutConnection>
+        )}
       </Box>
     </>
   )

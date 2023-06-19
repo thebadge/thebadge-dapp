@@ -5,23 +5,24 @@ import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import {
   Box,
   FormControlLabel,
-  Paper,
   Slider,
   Stack,
   Switch,
   Tooltip,
   Typography,
+  alpha,
   styled,
 } from '@mui/material'
 import { useDescription, useTsController } from '@ts-react/form'
 import { FieldError } from 'react-hook-form'
-import { gradients } from 'thebadge-ui-library'
+import { colors, gradients } from 'thebadge-ui-library'
 import { z } from 'zod'
 
 import { TextFieldStatus } from '@/src/components/form/TextField'
 import { FormField } from '@/src/components/form/helpers/FormField'
 import { SeverityTypeSchema } from '@/src/components/form/helpers/customSchemas'
 import { convertToFieldError } from '@/src/components/form/helpers/validators'
+import { Disable } from '@/src/components/helpers/DisableElements'
 import { Severity, Severity_Keys } from '@/types/utils'
 
 const Wrapper = styled(Box)(({ theme }) => ({
@@ -42,6 +43,27 @@ const CustomSlider = styled(Slider)({
     background: 'grey',
   },
 })
+
+const CustomOptionPaper = styled(Box, {
+  shouldForwardProp: (propName) => propName !== 'color',
+})<{
+  color: string
+}>(({ color, theme }) => ({
+  margin: theme.spacing(1),
+  width: 140,
+  height: 140,
+  cursor: 'pointer',
+  transition: 'all .3s cubic-bezier(0.65, 0, 0.35, 1)',
+  background: alpha(color, 0.2),
+  borderColor: alpha(color, 0.8),
+  borderWidth: '1px',
+  borderStyle: 'solid',
+  borderRadius: theme.spacing(1),
+  '&:hover': {
+    background: alpha(color, 0.4),
+    borderColor: color,
+  },
+}))
 
 const marks = [
   {
@@ -106,23 +128,25 @@ export function SeveritySelector({ error, label, onChange, placeholder }: Severi
       <FormField
         formControl={
           <Box display="flex" flex={1} flexDirection="column" width="100%">
-            <CustomSlider
-              aria-label="Severity-court"
-              color="secondary"
-              defaultValue={30}
-              getAriaValueText={valuetext}
-              marks={marks}
-              max={5}
-              min={1}
-              onChange={handleChange}
-              step={2}
-              sx={{
-                minWidth: '200px',
-              }}
-              value={auxValue}
-              valueLabelDisplay="auto"
-              valueLabelFormat={valueLabelFormat}
-            />
+            <Disable disabled={enableAdvance} sx={{ width: '100%' }}>
+              <CustomSlider
+                aria-label="Severity-court"
+                color="secondary"
+                defaultValue={30}
+                getAriaValueText={valuetext}
+                marks={marks}
+                max={5}
+                min={1}
+                onChange={handleChange}
+                step={2}
+                sx={{
+                  minWidth: '200px',
+                }}
+                value={auxValue}
+                valueLabelDisplay="auto"
+                valueLabelFormat={valueLabelFormat}
+              />
+            </Disable>
           </Box>
         }
         label={
@@ -150,14 +174,18 @@ export function SeveritySelector({ error, label, onChange, placeholder }: Severi
         statusText={error?.message}
       />
       {enableAdvance && (
-        <Stack>
-          <Box display="flex" justifyContent="space-evenly">
-            <Paper elevation={3} sx={{ m: 1, width: 128, height: 128 }} />
-            <Paper elevation={3} sx={{ m: 1, width: 128, height: 128 }} />
-            <Paper elevation={3} sx={{ m: 1, width: 128, height: 128 }} />
-            <Paper elevation={3} sx={{ m: 1, width: 128, height: 128 }} />
-            <Paper elevation={3} sx={{ m: 1, width: 128, height: 128 }} />
+        <Stack gap={1}>
+          <Box display="flex" justifyContent="space-between">
+            <CustomOptionPaper color={colors.greenLight} />
+            <CustomOptionPaper color={colors.green} />
+            <CustomOptionPaper color={colors.purple} />
+            <CustomOptionPaper color={colors.pink} />
+            <CustomOptionPaper color={colors.deepPurple} />
           </Box>
+          <Typography sx={{ fontSize: '12px !important' }}>Amount of Jurors:</Typography>
+          <Typography sx={{ fontSize: '12px !important' }}>Fee per Juror:</Typography>
+          <Typography sx={{ fontSize: '12px !important' }}>Estimated deposit:</Typography>
+          <Typography sx={{ fontSize: '12px !important' }}>Court: -</Typography>
         </Stack>
       )}
     </Wrapper>

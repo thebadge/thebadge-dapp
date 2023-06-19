@@ -3,13 +3,13 @@ import React, { useState } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Container } from '@mui/material'
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form'
-import { State } from 'xstate'
 import { z } from 'zod'
 
-import { MultiStepFormMachineContext } from './stateMachine/machine/createModelMachine'
 import StepHeader from './steps/StepHeader'
 import StepPrompt from './steps/StepPrompt'
 import { FIELDS_TO_VALIDATE_ON_STEP, defaultValues } from './utils'
+import { TransactionLoading } from '@/src/components/loading/TransactionLoading'
+import { TransactionStates } from '@/src/hooks/useTransaction'
 import { useTriggerRHF } from '@/src/hooks/useTriggerRHF'
 import {
   CreateModelSchema,
@@ -22,11 +22,15 @@ import BadgeModelStrategy from '@/src/pagePartials/badge/model/steps/strategy/Ba
 import HowItWorks from '@/src/pagePartials/badge/model/steps/terms/HowItWorks'
 import BadgeModelUIBasics from '@/src/pagePartials/badge/model/steps/uiBasics/BadgeModelUIBasics'
 
-const termsSelector = (state: State<MultiStepFormMachineContext>) => {
-  return state.matches('TermsAndConditions')
+type CreateModelStepsProps = {
+  onSubmit: SubmitHandler<CreateModelSchemaType>
+  txState: TransactionStates
 }
 
-export default function CreateWithSteps() {
+export default function CreateWithSteps({
+  onSubmit,
+  txState = TransactionStates.none,
+}: CreateModelStepsProps) {
   const [currentStep, setCurrentStep] = useState(0)
 
   // Naive completed step implementation
@@ -40,20 +44,19 @@ export default function CreateWithSteps() {
   })
 
   const triggerValidation = useTriggerRHF(methods)
-  // const services = useContext(CreateModelMachineContext)
-  // const isOnTerms = useSelector(services.createService, termsSelector)
-
-  const onSubmit: SubmitHandler<CreateModelSchemaType> = (data) => console.log(data)
+  async function isValidStep() {
+    return await triggerValidation(FIELDS_TO_VALIDATE_ON_STEP[currentStep])
+  }
 
   // Navigation helpers to go back on the steps
   async function onBackCallback() {
-    const isValid = await triggerValidation(FIELDS_TO_VALIDATE_ON_STEP[currentStep])
+    const isValid = await isValidStep()
     if (isValid) setCurrentStep((prev) => (prev === 0 ? 0 : prev - 1))
   }
 
   // Navigation helpers to go to the next step
   async function onNextCallback() {
-    const isValid = await triggerValidation(FIELDS_TO_VALIDATE_ON_STEP[currentStep])
+    const isValid = await isValidStep()
     if (isValid) {
       setCompleted((prev) => ({ ...prev, [currentStep]: true }))
       setCurrentStep((prev) => (prev === 4 ? 4 : prev + 1))
@@ -62,13 +65,17 @@ export default function CreateWithSteps() {
 
   // Navigation helpers to jump to a given number step
   async function onStepNavigation(stepNumber: number) {
-    const isValid = await triggerValidation(FIELDS_TO_VALIDATE_ON_STEP[currentStep])
-    // Only allows one step further
-    if (isValid && stepNumber <= currentStep + 1) {
+    // Safeguard to prevent navigation on Transaction
+    if (txState !== TransactionStates.none) return
+    const isValid = await isValidStep()
+    // Only allows one step further or to a completed steps
+    if (isValid && (stepNumber <= currentStep + 1 || completed[stepNumber])) {
       setCompleted((prev) => ({ ...prev, [currentStep]: true }))
       setCurrentStep(stepNumber)
     }
   }
+
+  console.warn('Debugging: formState.errors', methods.formState.errors)
 
   return (
     <FormProvider {...methods}>
@@ -78,20 +85,23 @@ export default function CreateWithSteps() {
         currentStep={currentStep}
         onStepNavigation={onStepNavigation}
       />
-      <Container maxWidth="md">
-        <form onSubmit={methods.handleSubmit(onSubmit)}>
-          {currentStep === 0 && <HowItWorks />}
-          {currentStep === 1 && <BadgeModelUIBasics />}
-          {currentStep === 2 && <BadgeModelStrategy />}
-          {currentStep === 3 && <BadgeModelEvidenceFormCreation />}
-          {currentStep === 4 && <BadgeModelConfirmation />}
+      <Container maxWidth="md" sx={{ minHeight: '50vh' }}>
+        {txState !== TransactionStates.none && <TransactionLoading state={txState} />}
+        {txState === TransactionStates.none && (
+          <form onSubmit={methods.handleSubmit(onSubmit)}>
+            {currentStep === 0 && <HowItWorks />}
+            {currentStep === 1 && <BadgeModelUIBasics />}
+            {currentStep === 2 && <BadgeModelStrategy />}
+            {currentStep === 3 && <BadgeModelEvidenceFormCreation />}
+            {currentStep === 4 && <BadgeModelConfirmation />}
 
-          <StepFooter
-            currentStep={currentStep}
-            onBackCallback={onBackCallback}
-            onNextCallback={onNextCallback}
-          />
-        </form>
+            <StepFooter
+              currentStep={currentStep}
+              onBackCallback={onBackCallback}
+              onNextCallback={onNextCallback}
+            />
+          </form>
+        )}
       </Container>
     </FormProvider>
   )

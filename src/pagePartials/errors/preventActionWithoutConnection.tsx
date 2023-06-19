@@ -1,6 +1,8 @@
 import React, { ReactElement, ReactNode } from 'react'
 
 import { Button, styled } from '@mui/material'
+import { Theme } from '@mui/material/styles'
+import { SxProps } from '@mui/system'
 
 import { DisableOverlay, DisableWrapper } from '@/src/components/helpers/DisableElements'
 import { chainsConfig } from '@/src/config/web3'
@@ -18,6 +20,7 @@ const Wrapper = styled('div')`
 type RequiredConnectionProps = {
   children: ReactElement | ReactNode
   minHeight?: number
+  sx?: SxProps<Theme>
 }
 
 const PreventActionWithoutConnection: React.FC<RequiredConnectionProps> = ({
