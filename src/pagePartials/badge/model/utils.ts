@@ -32,6 +32,7 @@ export function defaultValues() {
       textContrast: 'Black',
       backgroundImage: 'White Waves',
       template: 'Classic',
+      challengePeriodDuration: 2,
     }
   }
 }

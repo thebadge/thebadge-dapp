@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Container } from '@mui/material'
+import { Container, Stack } from '@mui/material'
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -89,17 +89,19 @@ export default function CreateWithSteps({
         {txState !== TransactionStates.none && <TransactionLoading state={txState} />}
         {txState === TransactionStates.none && (
           <form onSubmit={methods.handleSubmit(onSubmit)}>
-            {currentStep === 0 && <HowItWorks />}
-            {currentStep === 1 && <BadgeModelUIBasics />}
-            {currentStep === 2 && <BadgeModelStrategy />}
-            {currentStep === 3 && <BadgeModelEvidenceFormCreation />}
-            {currentStep === 4 && <BadgeModelConfirmation />}
+            <Stack gap={3}>
+              {currentStep === 0 && <HowItWorks />}
+              {currentStep === 1 && <BadgeModelUIBasics />}
+              {currentStep === 2 && <BadgeModelStrategy />}
+              {currentStep === 3 && <BadgeModelEvidenceFormCreation />}
+              {currentStep === 4 && <BadgeModelConfirmation />}
 
-            <StepFooter
-              currentStep={currentStep}
-              onBackCallback={onBackCallback}
-              onNextCallback={onNextCallback}
-            />
+              <StepFooter
+                currentStep={currentStep}
+                onBackCallback={onBackCallback}
+                onNextCallback={onNextCallback}
+              />
+            </Stack>
           </form>
         )}
       </Container>

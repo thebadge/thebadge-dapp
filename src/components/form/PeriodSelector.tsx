@@ -8,12 +8,10 @@ import { gradients } from 'thebadge-ui-library'
 import { TextFieldStatus } from '@/src/components/form/TextField'
 import { FormField } from '@/src/components/form/helpers/FormField'
 
-const Wrapper = styled(Box)(({ theme }) => ({
+const Wrapper = styled(Box)(() => ({
   display: 'flex',
   flexDirection: 'column',
   position: 'relative',
-  rowGap: theme.spacing(1),
-  gridColumn: 'span 1 / span 2',
 }))
 
 const CustomSlider = styled(Slider)({

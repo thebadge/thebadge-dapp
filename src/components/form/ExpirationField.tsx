@@ -91,85 +91,83 @@ export function ExpirationField({
   }
 
   return (
-    <Wrapper>
-      <Stack flex="1" gap={0} justifyContent="center">
-        <Box alignItems="center" display="flex">
-          <FormControlLabel
-            control={
-              <Switch
-                checked={enableExpiration}
-                onChange={() => toggleExpiration(!enableExpiration)}
-              />
-            }
-            label={'Enable expiration time'}
-          />
-        </Box>
-
-        <Disable disabled={!enableExpiration}>
-          <InputWrapper>
-            <TextField
-              InputProps={{
-                endAdornment: (
-                  <Tooltip
-                    arrow
-                    title={
-                      placeholder +
-                      `\n e.g. If you mint this badge today, It will expire on: ${validTo(value)}`
-                    }
-                  >
-                    <InfoOutlinedIcon />
-                  </Tooltip>
-                ),
-              }}
-              color="secondary"
-              label={label}
-              onChange={handleOnChange}
-              sx={{ justifyContent: 'end', textTransform: 'capitalize' }}
-              value={stringValue}
-              variant={'standard'}
+    <Stack flex="1" gap={0} justifyContent="center">
+      <Box alignItems="center" display="flex">
+        <FormControlLabel
+          control={
+            <Switch
+              checked={enableExpiration}
+              onChange={() => toggleExpiration(!enableExpiration)}
             />
-            <TextField
-              SelectProps={{
-                MenuProps: {
-                  PaperProps: {
-                    sx: {
-                      p: 0.5,
-                      '& .MuiMenuItem-root': {
-                        px: 1,
-                        borderRadius: 0.75,
-                        typography: 'body2',
-                        textTransform: 'capitalize',
-                      },
+          }
+          label={'Enable expiration time'}
+        />
+      </Box>
+
+      <Disable disabled={!enableExpiration}>
+        <InputWrapper>
+          <TextField
+            InputProps={{
+              endAdornment: (
+                <Tooltip
+                  arrow
+                  title={
+                    placeholder +
+                    `\n e.g. If you mint this badge today, It will expire on: ${validTo(value)}`
+                  }
+                >
+                  <InfoOutlinedIcon />
+                </Tooltip>
+              ),
+            }}
+            color="secondary"
+            label={label}
+            onChange={handleOnChange}
+            sx={{ justifyContent: 'end', textTransform: 'capitalize' }}
+            value={stringValue}
+            variant={'standard'}
+          />
+          <TextField
+            SelectProps={{
+              MenuProps: {
+                PaperProps: {
+                  sx: {
+                    p: 0.5,
+                    '& .MuiMenuItem-root': {
+                      px: 1,
+                      borderRadius: 0.75,
+                      typography: 'body2',
+                      textTransform: 'capitalize',
                     },
                   },
                 },
-                sx: { textTransform: 'capitalize' },
-              }}
-              error={!!error}
-              id="unit-select"
-              onChange={handleDropdownChange}
-              select
-              size="small"
-              sx={{
-                textTransform: 'capitalize',
-                ml: 2,
-                mt: 'auto',
-              }}
-              value={unit || ''}
-              variant="standard"
-            >
-              {options.map((op) => {
-                return (
-                  <MenuItem key={op} value={op}>
-                    {op}s
-                  </MenuItem>
-                )
-              })}
-            </TextField>
-          </InputWrapper>
-        </Disable>
-      </Stack>
-    </Wrapper>
+              },
+              sx: { textTransform: 'capitalize' },
+            }}
+            error={!!error}
+            id="unit-select"
+            onChange={handleDropdownChange}
+            select
+            size="small"
+            sx={{
+              textTransform: 'capitalize',
+              ml: 2,
+              mt: 'auto',
+            }}
+            value={unit || ''}
+            variant="standard"
+          >
+            {options.map((op) => {
+              return (
+                <MenuItem key={op} value={op}>
+                  {op}s
+                </MenuItem>
+              )
+            })}
+          </TextField>
+        </InputWrapper>
+      </Disable>
+    </Stack>
   )
 }
 
@@ -186,13 +184,15 @@ export default function ExpirationFieldWithTSForm() {
   }
 
   return (
-    <ExpirationField
-      error={error ? convertToFieldError(error) : undefined}
-      label={label}
-      onChange={onChange}
-      placeholder={placeholder}
-      value={field.value}
-    />
+    <Wrapper>
+      <ExpirationField
+        error={error ? convertToFieldError(error) : undefined}
+        label={label}
+        onChange={onChange}
+        placeholder={placeholder}
+        value={field.value}
+      />
+    </Wrapper>
   )
 }
 

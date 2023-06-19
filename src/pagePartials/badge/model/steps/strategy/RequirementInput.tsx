@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { Collapse, FormControlLabel, FormHelperText, Switch } from '@mui/material'
+import { Collapse, FormHelperText, Typography } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
 import { DeltaStatic } from 'quill'
 import { Controller, useFormContext } from 'react-hook-form'
@@ -21,11 +21,9 @@ export default function RequirementInput() {
 
   return (
     <>
-      <FormControlLabel
-        control={<Switch checked={enableTextEditor} onChange={toggleTextEditor} />}
-        label={'Enable text editor'}
-        sx={{ ml: 'auto' }}
-      />
+      <Typography color="text.disabled" variant="dAppTitle2">
+        Create the acceptance criteria
+      </Typography>
       <TransitionGroup>
         {!enableTextEditor && (
           <Collapse key={'criteriaFileUri'}>
@@ -36,6 +34,15 @@ export default function RequirementInput() {
                 <PDFRequirementInput error={error} onChange={onChange} value={value} />
               )}
             />
+            <Typography
+              fontSize={'14px !important'}
+              onClick={toggleTextEditor}
+              sx={{ textDecoration: 'underline', cursor: 'pointer' }}
+              textAlign="center"
+              variant="body4"
+            >
+              Switch back to text editor.
+            </Typography>
           </Collapse>
         )}
         {enableTextEditor && (
@@ -62,6 +69,15 @@ export default function RequirementInput() {
                 />
               )}
             />
+            <Typography
+              fontSize={'14px !important'}
+              onClick={toggleTextEditor}
+              sx={{ textDecoration: 'underline', cursor: 'pointer' }}
+              textAlign="center"
+              variant="body4"
+            >
+              Upload criteria as PDF.
+            </Typography>
           </Collapse>
         )}
       </TransitionGroup>
