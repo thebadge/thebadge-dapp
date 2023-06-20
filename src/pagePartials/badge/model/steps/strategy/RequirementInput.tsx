@@ -37,11 +37,11 @@ export default function RequirementInput() {
             <Typography
               fontSize={'14px !important'}
               onClick={toggleTextEditor}
-              sx={{ textDecoration: 'underline', cursor: 'pointer' }}
+              sx={{ cursor: 'pointer' }}
               textAlign="center"
               variant="body4"
             >
-              Switch back to text editor.
+              Switch back to <span style={{ textDecoration: 'underline' }}>text editor</span>.
             </Typography>
           </Collapse>
         )}
@@ -72,11 +72,11 @@ export default function RequirementInput() {
             <Typography
               fontSize={'14px !important'}
               onClick={toggleTextEditor}
-              sx={{ textDecoration: 'underline', cursor: 'pointer' }}
+              sx={{ cursor: 'pointer' }}
               textAlign="center"
               variant="body4"
             >
-              Upload criteria as PDF.
+              Upload criteria as <span style={{ textDecoration: 'underline' }}>PDF</span>.
             </Typography>
           </Collapse>
         )}
