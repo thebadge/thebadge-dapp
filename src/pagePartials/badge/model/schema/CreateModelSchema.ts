@@ -3,6 +3,7 @@ import { z } from 'zod'
 import {
   AgreementSchema,
   ChallengePeriodTypeSchema,
+  DeltaPDFSchema,
   ExpirationTypeSchema,
   FileSchema,
   ImageSchema,
@@ -22,8 +23,26 @@ export const CreateModelSchema = z.object({
   backgroundImage: z.string(),
   template: z.string(),
   // ------ STRATEGY FIELD ------
-  criteriaFileUri: FileSchema,
-  criteriaDeltaText: z.object({ string: z.string(), delta: z.any() }).optional(),
+  criteria: z
+    .object({
+      criteriaFileUri: FileSchema,
+      criteriaDeltaText: DeltaPDFSchema,
+    })
+    .partial()
+    .superRefine((data, ctx) => {
+      if (!data.criteriaFileUri && !data.criteriaDeltaText) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ['criteriaFileUri'],
+          message: 'You must add a criteria, upload a PDF or write it down on the editor',
+        })
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ['criteriaDeltaText'],
+          message: 'You must add a criteria, upload a PDF or write it down on the editor',
+        })
+      }
+    }),
   challengePeriodDuration: ChallengePeriodTypeSchema,
   rigorousness: SeverityTypeSchema,
   mintCost: TokenInputSchema,

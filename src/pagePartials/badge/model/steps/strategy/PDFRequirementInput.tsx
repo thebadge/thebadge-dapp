@@ -6,6 +6,7 @@ import { FieldError } from 'react-hook-form'
 import { ImageType } from 'react-images-uploading'
 
 import { FileInput } from '@/src/components/form/FileInput'
+import { CRITERIA_TEMPLATE_URL } from '@/src/constants/common'
 
 export default function PDFRequirementInput({
   error,
@@ -20,6 +21,7 @@ export default function PDFRequirementInput({
     <FileInput
       downloadableTemplate={
         <Button
+          onClick={() => window.open(`${CRITERIA_TEMPLATE_URL}`, '_ blank')}
           sx={{ borderRadius: 2, gap: 1, color: '#FFF', mr: 'auto', width: 'fit-content' }}
           variant="outlined"
         >
@@ -28,7 +30,6 @@ export default function PDFRequirementInput({
         </Button>
       }
       error={error}
-      label={'PDF with the requirements to mint a badge'}
       onChange={(value: ImageType | null) => {
         if (value) {
           // We change the structure a little bit to have it ready to push to the backend

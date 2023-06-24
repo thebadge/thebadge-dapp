@@ -151,6 +151,11 @@ export const FileSchema = createUniqueFieldSchema(
   'FileSchema',
 )
 
+export const DeltaPDFSchema = createUniqueFieldSchema(
+  z.object({ string: z.string(), delta: z.any() }),
+  'DeltaPDFSchema',
+)
+
 export const OptionalFileSchema = createUniqueFieldSchema(
   z
     .any()

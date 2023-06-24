@@ -18,3 +18,7 @@ export const APP_URL = process.env.NEXT_PUBLIC_FRONTEND_URL || 'http://localhost
 export const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5001'
 
 export const IS_DEVELOP = process.env.NEXT_PUBLIC_DEV_MODE || false
+
+export const CRITERIA_TEMPLATE_URL =
+  process.env.CRITERIA_TEMPLATE_URL ||
+  'https://drive.google.com/uc?export=download&id=19ZngN2Ia-LKi5DRBnWzwffooVZ8un-39'

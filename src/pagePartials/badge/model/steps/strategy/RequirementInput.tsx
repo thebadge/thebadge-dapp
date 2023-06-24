@@ -7,11 +7,13 @@ import { Controller, useFormContext } from 'react-hook-form'
 import { TransitionGroup } from 'react-transition-group'
 import { Editor } from 'thebadge-ui-library'
 
+import { CreateModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateModelSchema'
 import PDFRequirementInput from '@/src/pagePartials/badge/model/steps/strategy/PDFRequirementInput'
+import { getCriteriaTemplate } from '@/src/pagePartials/badge/model/utils'
 
 export default function RequirementInput() {
   const { t } = useTranslation()
-  const { control } = useFormContext()
+  const { control } = useFormContext<CreateModelSchemaType>()
 
   const [enableTextEditor, setEnableTextEditor] = useState(false)
 
@@ -26,10 +28,10 @@ export default function RequirementInput() {
       </Typography>
       <TransitionGroup>
         {!enableTextEditor && (
-          <Collapse key={'criteriaFileUri'}>
+          <Collapse key={'criteria.criteriaFileUri'}>
             <Controller
               control={control}
-              name={'criteriaFileUri'}
+              name={'criteria.criteriaFileUri'}
               render={({ field: { name, onChange, value }, fieldState: { error } }) => (
                 <PDFRequirementInput error={error} onChange={onChange} value={value} />
               )}
@@ -49,23 +51,29 @@ export default function RequirementInput() {
           <Collapse key={'criteriaDeltaText'}>
             <Controller
               control={control}
-              name={'criteriaDeltaText'}
-              render={({ field: { name, onChange, value }, fieldState: { error } }) => (
+              name={'criteria.criteriaDeltaText'}
+              render={({ field: { onChange, value }, fieldState: { error } }) => (
                 <Editor
                   error={!!error}
                   helperText={
                     !!error && (
-                      <FormHelperText error={!!error} sx={{ px: 2 }}>
+                      <FormHelperText error={!!error} sx={{ px: 1 }}>
                         {error?.message}
                       </FormHelperText>
                     )
                   }
-                  id={name}
+                  id={'criteriaDeltaText'}
                   onChange={(value: string, delta: DeltaStatic) =>
                     onChange({ string: value, delta })
                   }
                   placeholder={'Write your acceptance criteria'}
-                  value={value ? value.string : ''}
+                  sx={{
+                    '& .ql-editor ': {
+                      overflowY: 'scroll',
+                      resize: 'vertical',
+                    },
+                  }}
+                  value={value ? value.string : getCriteriaTemplate()}
                 />
               )}
             />

@@ -80,10 +80,10 @@ export function FileInput({
   )
 
   return (
-    <Wrapper>
+    <Wrapper error={!!error}>
       <FormField
         formControl={
-          <Stack sx={{ width: '100%', gap: 3, p: 0 }}>
+          <Stack sx={{ width: '100%', gap: 1, p: 0 }}>
             {/* Custom element where we can define a template example for the expected file */}
             {downloadableTemplate ? downloadableTemplate : null}
             <ImageUploading
