@@ -18,3 +18,5 @@ export const APP_URL = process.env.NEXT_PUBLIC_FRONTEND_URL || 'http://localhost
 export const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5001'
 
 export const IS_DEVELOP = process.env.NEXT_PUBLIC_DEV_MODE || false
+
+export const WEB3_AUTH_CLIENT_ID = process.env.NEXT_PUBLIC_WEB3AUTH_CLIENT_ID || ''

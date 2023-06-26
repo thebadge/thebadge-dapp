@@ -14,15 +14,17 @@ import { OnboardAPI, WalletState } from '@web3-onboard/core'
 import injectedModule from '@web3-onboard/injected-wallets'
 import { init, useConnectWallet, useSetChain, useWallets } from '@web3-onboard/react'
 import walletConnectModule from '@web3-onboard/walletconnect'
+import web3authModule from '@web3-onboard/web3auth'
 import nullthrows from 'nullthrows'
 
 import { Chains, INITIAL_APP_CHAIN_ID, chainsConfig, getNetworkConfig } from '@/src/config/web3'
-import { appName } from '@/src/constants/common'
+import { WEB3_AUTH_CLIENT_ID, appName } from '@/src/constants/common'
 import {
   recoverLocalStorageKey,
   removeLocalStorageKey,
   setLocalStorageKey,
 } from '@/src/hooks/usePersistedState'
+import isDev from '@/src/utils/isDev'
 import { hexToNumber } from '@/src/utils/strings'
 import { ChainConfig, ChainsValues } from '@/types/chains'
 import { RequiredNonNull } from '@/types/utils'
@@ -37,6 +39,30 @@ nullthrows(
 
 const injected = injectedModule()
 const walletConnect = walletConnectModule()
+const web3auth = web3authModule({
+  clientId: WEB3_AUTH_CLIENT_ID, // Get your Client ID from Web3Auth Dashboard
+  authMode: 'WALLET', // Enables only social wallets
+  chainConfig: {
+    chainNamespace: 'eip155',
+    chainId: isDev
+      ? chainsConfig[Chains.goerli].chainIdHex
+      : chainsConfig[Chains.goerli].chainIdHex, // @todo (agustin) change with prod
+    displayName: '1231231 Test',
+    ticker: isDev ? chainsConfig[Chains.goerli].token : chainsConfig[Chains.goerli].token, // @todo (agustin) change with prod
+    tickerName: isDev ? chainsConfig[Chains.goerli].token : chainsConfig[Chains.goerli].token, // @todo (agustin) change with prod
+    rpcTarget: isDev ? chainsConfig[Chains.goerli].rpcUrl : chainsConfig[Chains.goerli].rpcUrl, // @todo (agustin) change with prod
+    blockExplorer: isDev
+      ? chainsConfig[Chains.goerli].blockExplorerUrls[0]
+      : chainsConfig[Chains.goerli].blockExplorerUrls[0], // @todo (agustin) change with prod
+  },
+  uiConfig: {
+    appName,
+    appLogo: 'https://avatars.githubusercontent.com/u/109973181?s=200&v=4',
+    modalZIndex: '13002', // Onboard modal is 13001
+    defaultLanguage: 'en',
+    web3AuthNetwork: isDev ? 'testnet' : 'mainnet',
+  },
+})
 
 const chainsForOnboard = Object.values(chainsConfig).map(
   ({ chainIdHex, name, rpcUrl, token }: ChainConfig) => ({
@@ -53,7 +79,7 @@ export function initOnboard() {
   if (typeof window === 'undefined' || window?.onboard || onBoardApi) return
 
   onBoardApi = init({
-    wallets: [injected, walletConnect],
+    wallets: [injected, walletConnect, web3auth],
     chains: chainsForOnboard,
     notify: {
       enabled: false,
