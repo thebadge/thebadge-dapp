@@ -15,6 +15,8 @@ import injectedModule from '@web3-onboard/injected-wallets'
 import { init, useConnectWallet, useSetChain, useWallets } from '@web3-onboard/react'
 import walletConnectModule from '@web3-onboard/walletconnect'
 import web3authModule from '@web3-onboard/web3auth'
+import { UserInfo } from '@web3auth/base'
+import { Web3Auth } from '@web3auth/modal'
 import nullthrows from 'nullthrows'
 
 import { Chains, INITIAL_APP_CHAIN_ID, chainsConfig, getNetworkConfig } from '@/src/config/web3'
@@ -121,12 +123,15 @@ export type Web3Context = {
   isOnboardChangingChain: boolean
   isWalletConnected: boolean
   isWalletNetworkSupported: boolean
+  isSocialWallet: boolean
   pushNetwork: (options: SetChainOptions) => Promise<boolean>
   readOnlyAppProvider: JsonRpcProvider
   setAppChainId: Dispatch<SetStateAction<ChainsValues>>
   wallet: WalletState | null
   walletChainId: number | null
   web3Provider: Web3Provider | null
+  web3AuthInstance: Web3Auth | null
+  userSocialInfo: Partial<UserInfo> | undefined
 }
 
 export type Web3Connected = RequiredNonNull<Web3Context>
@@ -147,6 +152,9 @@ export default function Web3ConnectionProvider({ children }: Props) {
 
   const [appChainId, setAppChainId] = useState(INITIAL_APP_CHAIN_ID)
   const [address, setAddress] = useState<string | null>(null)
+  const [isSocialWallet, setIsSocialWallet] = useState<boolean>(false)
+  const [web3AuthInstance, setWeb3AuthInstance] = useState<Web3Auth | null>(null)
+  const [userSocialInfo, setUserSocialInfo] = useState<Partial<UserInfo> | undefined>(undefined)
 
   const web3Provider = wallet?.provider != null ? new Web3Provider(wallet.provider) : null
 
@@ -186,6 +194,33 @@ export default function Web3ConnectionProvider({ children }: Props) {
       setAddress(null)
     }
   }, [wallet])
+
+  // Recovers the web3AuthInstance if connected
+  useEffect(() => {
+    const fetchWeb3AuthInstance = async () => {
+      if (wallet?.label.toLowerCase().includes('web3auth')) {
+        setWeb3AuthInstance(wallet?.instance as Web3Auth)
+        setIsSocialWallet(true)
+      } else {
+        setWeb3AuthInstance(null)
+        setIsSocialWallet(false)
+      }
+    }
+    if (wallet && wallet.instance) {
+      fetchWeb3AuthInstance()
+    }
+  }, [wallet])
+
+  // Recovers the user social account if connected via social
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      const userInfo = await web3AuthInstance?.getUserInfo()
+      setUserSocialInfo(userInfo)
+    }
+    if (web3AuthInstance && isSocialWallet) {
+      fetchUserInfo()
+    }
+  }, [isSocialWallet, web3AuthInstance])
 
   // Auto connect wallet if localStorage has values
   useEffect(() => {
@@ -234,6 +269,7 @@ export default function Web3ConnectionProvider({ children }: Props) {
     isOnboardChangingChain: settingChain,
     isWalletConnected,
     isWalletNetworkSupported,
+    isSocialWallet,
     pushNetwork: setChain,
     readOnlyAppProvider,
     setAppChainId,
@@ -241,6 +277,8 @@ export default function Web3ConnectionProvider({ children }: Props) {
     wallet,
     walletChainId,
     web3Provider,
+    web3AuthInstance,
+    userSocialInfo,
   }
 
   return <Web3ContextConnection.Provider value={value}>{children}</Web3ContextConnection.Provider>
