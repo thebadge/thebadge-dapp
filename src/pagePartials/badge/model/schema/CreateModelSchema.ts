@@ -13,6 +13,30 @@ import {
   TokenInputSchema,
 } from '@/src/components/form/helpers/customSchemas'
 
+/**
+ * Auxiliary schema to support the PDF upload or the PDF creation on the same form
+ */
+const BadgeModelCriteriaSchema = z
+  .object({
+    criteriaFileUri: FileSchema,
+    criteriaDeltaText: DeltaPDFSchema,
+  })
+  .partial()
+  .superRefine((data, ctx) => {
+    if (!data.criteriaFileUri && !data.criteriaDeltaText) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ['criteriaFileUri'],
+        message: 'You must add a criteria, upload a PDF or write it down on the editor',
+      })
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ['criteriaDeltaText'],
+        message: 'You must add a criteria, upload a PDF or write it down on the editor',
+      })
+    }
+  })
+
 export const CreateModelSchema = z.object({
   howItWorks: AgreementSchema,
   // ------ UI BASICS FIELD ------
@@ -23,26 +47,7 @@ export const CreateModelSchema = z.object({
   backgroundImage: z.string(),
   template: z.string(),
   // ------ STRATEGY FIELD ------
-  criteria: z
-    .object({
-      criteriaFileUri: FileSchema,
-      criteriaDeltaText: DeltaPDFSchema,
-    })
-    .partial()
-    .superRefine((data, ctx) => {
-      if (!data.criteriaFileUri && !data.criteriaDeltaText) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          path: ['criteriaFileUri'],
-          message: 'You must add a criteria, upload a PDF or write it down on the editor',
-        })
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          path: ['criteriaDeltaText'],
-          message: 'You must add a criteria, upload a PDF or write it down on the editor',
-        })
-      }
-    }),
+  criteria: BadgeModelCriteriaSchema,
   challengePeriodDuration: ChallengePeriodTypeSchema,
   rigorousness: SeverityTypeSchema,
   mintCost: TokenInputSchema,
@@ -51,4 +56,5 @@ export const CreateModelSchema = z.object({
   badgeMetadataColumns: KlerosDynamicFields,
 })
 
+export type BadgeModelCriteriaType = z.infer<typeof BadgeModelCriteriaSchema>
 export type CreateModelSchemaType = z.infer<typeof CreateModelSchema>

@@ -36,7 +36,7 @@ const CreateBadgeType: NextPageWithLayout = () => {
       badgeMetadataColumns,
       badgeModelLogoUri,
       challengePeriodDuration,
-      criteriaFileUri,
+      criteria,
       description,
       name,
       rigorousness,
@@ -61,7 +61,7 @@ const CreateBadgeType: NextPageWithLayout = () => {
             name,
             description,
             badgeModelLogoUri,
-            criteriaFileUri,
+            criteria,
             badgeMetadataColumns,
           )
 

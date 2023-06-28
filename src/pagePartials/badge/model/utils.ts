@@ -1,3 +1,5 @@
+import { APP_URL } from '@/src/constants/common'
+
 const STEP_0 = ['howItWorks']
 const STEP_1 = [
   'name',
@@ -52,9 +54,7 @@ export function getCriteriaTemplate() {
   return `
 <p>
   <span style="background-color: transparent; color: rgb(0, 0, 0)">
-    <img
-      src="https://lh6.googleusercontent.com/70bCaI6k90CzRqeM5KcE50eCQl3kuyBTKu8C472Vr0q_IAwCqdsfQaWl_uZq_elctOApObHwTlZUrqb235e5tszPyA36_ptgnRwTSR4-WQx4X2zzsMC6Wl2r8cFkBgHhiCLOs0Crgfb4b4qClNxaU-o"
-    />
+    <img src="${APP_URL}/shareable/acceptance-header.png"/>
   </span>
 </p>
 <p><br /></p>

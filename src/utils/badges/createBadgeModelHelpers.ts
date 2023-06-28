@@ -1,8 +1,11 @@
 import { JsonRpcProvider } from '@ethersproject/providers'
 import { BigNumberish, constants } from 'ethers'
 import { defaultAbiCoder } from 'ethers/lib/utils'
+import { z } from 'zod'
 
+import { DeltaPDFSchema } from '@/src/components/form/helpers/customSchemas'
 import { APP_URL, IS_DEVELOP } from '@/src/constants/common'
+import { BadgeModelCriteriaType } from '@/src/pagePartials/badge/model/schema/CreateModelSchema'
 import ipfsUpload from '@/src/utils/ipfsUpload'
 import {
   KlerosListStructure,
@@ -39,19 +42,34 @@ export async function createAndUploadBadgeModelMetadata(
  * @param badgeModelName
  * @param badgeModelDescription
  * @param badgeModelLogoUri
- * @param badgeModelCriteriaFileUri
+ * @param badgeModelCriteria
  * @param badgeModelKlerosColumns
  */
 export async function createAndUploadClearingAndRegistrationFilesForKleros(
   badgeModelName: string,
   badgeModelDescription: string,
   badgeModelLogoUri: BackendFileUpload,
-  badgeModelCriteriaFileUri: BackendFileUpload,
+  badgeModelCriteria: BadgeModelCriteriaType,
   badgeModelKlerosColumns: MetadataColumn[],
 ) {
+  let badgeModelCriteriaFile: BackendFileUpload = {
+    mimeType: 'application/pdf',
+    base64File: '',
+  }
+  // If the user upload the file, we already have the needed format
+  if (badgeModelCriteria.criteriaFileUri) {
+    badgeModelCriteriaFile = badgeModelCriteria.criteriaFileUri
+  }
+  // If the user has made the criteria on our own text area, we need to convert it to PDF on Base64
+  if (badgeModelCriteria.criteriaDeltaText) {
+    badgeModelCriteriaFile.base64File = await transformDeltaToPDF(
+      badgeModelCriteria.criteriaDeltaText.delta,
+    )
+  }
+
   const { clearing, registration } = generateKlerosListMetaEvidence(
     badgeModelName,
-    badgeModelCriteriaFileUri,
+    badgeModelCriteriaFile,
     badgeModelName,
     badgeModelDescription,
     badgeModelKlerosColumns,
@@ -138,4 +156,19 @@ export async function encodeKlerosControllerData(
   )
 
   return klerosControllerDataEncoded
+}
+
+async function transformDeltaToPDF(pdfValues: z.infer<typeof DeltaPDFSchema>) {
+  if (!pdfValues) return
+  // Use NextJs dynamic import to reduce the bundle size
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  const { pdfExporter } = await import('@/src/utils/quill-to-pdf')
+
+  // we retrieve the delta object from the Quill instance
+  // the delta is the raw content of the Quill editor
+  const { delta } = pdfValues
+  // we pass the delta object to the generatePdf function of the pdfExporter
+  // it will resolve to a Blob of the PDF document
+  return await pdfExporter.generatePdfBase64(delta)
 }

@@ -2,8 +2,9 @@ import React, { useState } from 'react'
 
 import { Collapse, FormHelperText, Typography } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
-import { DeltaStatic } from 'quill'
+import { DeltaStatic, Sources } from 'quill'
 import { Controller, useFormContext } from 'react-hook-form'
+import { UnprivilegedEditor } from 'react-quill'
 import { TransitionGroup } from 'react-transition-group'
 import { Editor } from 'thebadge-ui-library'
 
@@ -32,7 +33,7 @@ export default function RequirementInput() {
             <Controller
               control={control}
               name={'criteria.criteriaFileUri'}
-              render={({ field: { name, onChange, value }, fieldState: { error } }) => (
+              render={({ field: { onChange, value }, fieldState: { error } }) => (
                 <PDFRequirementInput error={error} onChange={onChange} value={value} />
               )}
             />
@@ -63,9 +64,12 @@ export default function RequirementInput() {
                     )
                   }
                   id={'criteriaDeltaText'}
-                  onChange={(value: string, delta: DeltaStatic) =>
-                    onChange({ string: value, delta })
-                  }
+                  onChange={(
+                    value: string,
+                    delta: DeltaStatic,
+                    source: Sources,
+                    editor: UnprivilegedEditor,
+                  ) => onChange({ string: value, delta: editor.getContents() })}
                   placeholder={'Write your acceptance criteria'}
                   sx={{
                     '& .ql-editor ': {
