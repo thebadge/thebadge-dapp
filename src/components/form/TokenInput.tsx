@@ -9,8 +9,6 @@ import { formatUnits, parseUnits } from 'ethers/lib/utils'
 import { FieldError } from 'react-hook-form'
 import { z } from 'zod'
 
-import { TextFieldStatus } from '@/src/components/form/TextField'
-import { FormField } from '@/src/components/form/helpers/FormField'
 import { TokenInputSchema } from '@/src/components/form/helpers/customSchemas'
 import { ErrorHelperProps } from '@/src/components/form/helpers/validators'
 
@@ -45,6 +43,9 @@ interface PropsWithTSForm extends ErrorHelperProps, SharedProps {
   maxValue: BigNumberish
 }
 
+/**
+ * Component wrapped to be used with @ts-react/form
+ */
 export default function TokenInputWithTSForm({
   balancePosition = 'topLeft',
   cleanError,
@@ -64,6 +65,10 @@ export default function TokenInputWithTSForm({
     [maxValue, value],
   )
 
+  const setMaxValue = useCallback(() => {
+    onChange(parseUnits(maxValueFormatted).toString())
+  }, [maxValueFormatted, onChange])
+
   useEffect(() => {
     if (valueGreaterThanMaxValue) {
       setError({ message: 'valueGreaterThanMaxValue', type: 'custom' })
@@ -73,49 +78,39 @@ export default function TokenInputWithTSForm({
   }, [cleanError, setError, valueGreaterThanMaxValue])
 
   return (
-    <FormField
-      formControl={
-        <Box display="flex" flexDirection="column">
-          <BigNumberInput
-            decimals={decimals}
-            onChange={onChange}
-            renderInput={(props) => (
-              <Stack>
-                <TextField
-                  color="secondary"
-                  inputProps={{
-                    min: 0,
-                  }}
-                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                    props.onChange && props.onChange(e)
-                  }
-                  placeholder="0.00"
-                  value={props.value}
-                  variant="standard"
-                />
-              </Stack>
-            )}
-            value={value || ''}
-          />
-          <Box display="flex" flexDirection="row">
-            <Balance balancePosition={balancePosition}>
-              Balance: {maxValueFormatted} {symbol ? symbol : 'tokens'}
-            </Balance>
-            <Button
-              color="error"
-              disabled={maxDisabled}
-              onClick={() => onChange(maxValueFormatted)}
-            >
-              Max
-            </Button>
-          </Box>
-        </Box>
-      }
-      label={label}
-      labelPosition={'top'}
-      status={error || valueGreaterThanMaxValue ? TextFieldStatus.error : TextFieldStatus.success}
-      statusText={error?.errorMessage}
-    />
+    <Stack justifyContent="space-between">
+      <Box display="flex" flexDirection="row" justifyContent="space-between">
+        <Balance balancePosition={balancePosition}>
+          Balance: {(+maxValueFormatted).toFixed(4)} {symbol ? symbol : 'tokens'}
+        </Balance>
+        <Button color="error" disabled={maxDisabled} onClick={setMaxValue}>
+          Max
+        </Button>
+      </Box>
+
+      <BigNumberInput
+        decimals={decimals}
+        onChange={onChange}
+        renderInput={(props) => (
+          <Stack>
+            <TextField
+              color="secondary"
+              error={!!error || valueGreaterThanMaxValue}
+              helperText={error?.errorMessage}
+              inputProps={{
+                min: 0,
+              }}
+              label={label}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => props.onChange && props.onChange(e)}
+              placeholder="0.00"
+              value={props.value}
+              variant="standard"
+            />
+          </Stack>
+        )}
+        value={value || ''}
+      />
+    </Stack>
   )
 }
 
