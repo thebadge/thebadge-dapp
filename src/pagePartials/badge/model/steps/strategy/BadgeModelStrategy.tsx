@@ -1,13 +1,13 @@
-import React, { ChangeEvent } from 'react'
+import React from 'react'
 
-import { Box, Stack, TextField } from '@mui/material'
-import { BigNumberInput } from 'big-number-input'
+import { Box, Stack } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
 import { Controller, useFormContext } from 'react-hook-form'
 
 import { ExpirationField } from '@/src/components/form/ExpirationField'
 import { PeriodSelector } from '@/src/components/form/PeriodSelector'
 import { SeveritySelector } from '@/src/components/form/SeveritySelector'
+import { TokenInput } from '@/src/components/form/TokenInput'
 import { getNetworkConfig } from '@/src/config/web3'
 import { CreateModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateModelSchema'
 import RequirementInput from '@/src/pagePartials/badge/model/steps/strategy/RequirementInput'
@@ -15,8 +15,8 @@ import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 
 export default function BadgeModelStrategy() {
   const { t } = useTranslation()
-  const { control } = useFormContext<CreateModelSchemaType>()
-  const { appChainId } = useWeb3Connection()
+  const { control, setError } = useFormContext<CreateModelSchemaType>()
+  const { appChainId, balance } = useWeb3Connection()
   const networkConfig = getNetworkConfig(appChainId)
 
   return (
@@ -67,29 +67,14 @@ export default function BadgeModelStrategy() {
             control={control}
             name={'mintCost'}
             render={({ field: { onChange, value }, fieldState: { error } }) => (
-              <BigNumberInput
-                decimals={8}
+              <TokenInput
+                decimals={18}
+                error={error}
+                hiddenBalance={true}
+                label={'Mint const'}
                 onChange={onChange}
-                renderInput={(props) => (
-                  <Stack>
-                    <TextField
-                      color="secondary"
-                      error={!!error}
-                      helperText={error?.message}
-                      inputProps={{
-                        min: 0,
-                      }}
-                      label={`Cost to mint in ${networkConfig.token}`}
-                      onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                        props.onChange && props.onChange(e)
-                      }
-                      placeholder="0.00"
-                      value={props.value}
-                      variant="standard"
-                    />
-                  </Stack>
-                )}
-                value={value || ''}
+                symbol={networkConfig.token}
+                value={value}
               />
             )}
           />
