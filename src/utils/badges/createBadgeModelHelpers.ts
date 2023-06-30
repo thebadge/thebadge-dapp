@@ -14,7 +14,7 @@ import {
 import { BadgeModelMetadata } from '@/types/badges/BadgeMetadata'
 import { Kleros__factory } from '@/types/generated/typechain'
 import { MetadataColumn } from '@/types/kleros/types'
-import { BackendFileUpload, Severity } from '@/types/utils'
+import { BackendFileUpload } from '@/types/utils'
 
 export async function createAndUploadBadgeModelMetadata(
   badgeModelName: string,
@@ -96,17 +96,18 @@ export async function encodeKlerosControllerData(
   creatorAddress: string,
   klerosContractAddress: string,
   readOnlyAppProvider: JsonRpcProvider,
-  severity: Severity,
+  rigorousness: { amountOfJurors: number; challengeBounty: string },
   courtId: BigNumberish,
   registrationIPFSHash: string,
   clearingIPFSHash: string,
   challengePeriodDuration: number,
 ) {
   const kleros = Kleros__factory.connect(klerosContractAddress, readOnlyAppProvider)
-  const numberOfJurors = severity
+  const numberOfJurors = rigorousness.amountOfJurors
   const klerosCourtInfo = await kleros.courts(courtId)
   const baseDeposit = klerosCourtInfo.feeForJuror.mul(numberOfJurors)
 
+  // TODO Add challengeBounty
   // jurors * fee per juror + rigorousness
   const submissionDeposit = baseDeposit
     .add(klerosCourtInfo.feeForJuror.mul(numberOfJurors))

@@ -15,7 +15,6 @@ import { RequiredCreatorAccess } from '@/src/pagePartials/errors/requiresCreator
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { TheBadge__factory } from '@/types/generated/typechain'
 import { NextPageWithLayout } from '@/types/next'
-import { Severity } from '@/types/utils'
 
 const CreateBadgeType: NextPageWithLayout = () => {
   const { sendTx, state } = useTransaction()
@@ -75,7 +74,7 @@ const CreateBadgeType: NextPageWithLayout = () => {
           address as string,
           contracts.Kleros.address[appChainId],
           readOnlyAppProvider,
-          Severity[rigorousness as keyof typeof Severity],
+          rigorousness,
           /**
            * Default Kleros court to use when creating a new badge model.
            * TODO: we should set a default court in the short-circuit to the Kleros's  general court.
