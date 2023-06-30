@@ -66,8 +66,8 @@ const Container = styled(InnerContainer)`
 
 export default function App({
   Component,
-  pageProps,
   emotionCache = clientSideEmotionCache,
+  pageProps,
 }: AppPropsWithLayout) {
   // Black magic explained here https://nextjs.org/docs/basic-features/layouts
   const getLayout = Component.getLayout ?? ((page) => <DefaultLayout>{page}</DefaultLayout>)
