@@ -1,8 +1,8 @@
 import * as React from 'react'
 
 import { Box, Stack, TextField, Typography, alpha, styled } from '@mui/material'
+import { colors } from '@thebadge/ui-library'
 import { formatUnits } from 'ethers/lib/utils'
-import { colors } from 'thebadge-ui-library'
 
 import { ZERO_BN } from '@/src/constants/bigNumber'
 import { useJurorFee } from '@/src/hooks/kleros/useJurorFee'

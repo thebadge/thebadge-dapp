@@ -14,10 +14,10 @@ import {
   alpha,
   styled,
 } from '@mui/material'
+import { colors } from '@thebadge/ui-library'
 import { useDescription, useTsController } from '@ts-react/form'
 import { FieldError } from 'react-hook-form'
 import ImageUploading, { ImageListType, ImageType } from 'react-images-uploading'
-import { colors } from 'thebadge-ui-library'
 import { z } from 'zod'
 
 import UploadIllustration from '../assets/UploadIllustration'

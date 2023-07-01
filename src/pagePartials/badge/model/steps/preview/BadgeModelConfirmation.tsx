@@ -1,8 +1,8 @@
 import React from 'react'
 
 import { Box, Typography, alpha, styled } from '@mui/material'
+import { BadgePreview } from '@thebadge/ui-library'
 import { useFormContext } from 'react-hook-form'
-import { BadgePreview } from 'thebadge-ui-library'
 
 import { CreateModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateModelSchema'
 import {

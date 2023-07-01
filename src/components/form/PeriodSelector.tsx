@@ -2,8 +2,8 @@ import * as React from 'react'
 
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import { Box, Slider, Tooltip, Typography, styled } from '@mui/material'
+import { gradients } from '@thebadge/ui-library'
 import { FieldError } from 'react-hook-form'
-import { gradients } from 'thebadge-ui-library'
 
 import { TextFieldStatus } from '@/src/components/form/TextField'
 import { FormField } from '@/src/components/form/helpers/FormField'

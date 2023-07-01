@@ -160,16 +160,16 @@ export async function encodeKlerosControllerData(
 }
 
 async function transformDeltaToPDF(pdfValues: z.infer<typeof DeltaPDFSchema>) {
-  if (!pdfValues) return
+  if (!pdfValues) return ''
   // Use NextJs dynamic import to reduce the bundle size
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-  const { pdfExporter } = await import('@/src/utils/quill-to-pdf')
+  const { pdfExporter } = await import('@thebadge/quill-to-pdf')
 
   // we retrieve the delta object from the Quill instance
   // the delta is the raw content of the Quill editor
   const { delta } = pdfValues
   // we pass the delta object to the generatePdf function of the pdfExporter
   // it will resolve to a Blob of the PDF document
-  return await pdfExporter.generatePdfBase64(delta)
+  return (await pdfExporter.generatePdfBase64(delta)) as string
 }

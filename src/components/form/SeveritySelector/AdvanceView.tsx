@@ -3,8 +3,8 @@ import * as React from 'react'
 
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import { Box, Stack, TextField, Tooltip, Typography, alpha, styled } from '@mui/material'
+import { colors } from '@thebadge/ui-library'
 import { formatUnits, parseUnits } from 'ethers/lib/utils'
-import { colors } from 'thebadge-ui-library'
 import { z } from 'zod'
 
 import SeverityOptionItem from '@/src/components/form/SeveritySelector/SeverityOptionItem'

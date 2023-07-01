@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 
 import { Box, Stack, Typography, styled } from '@mui/material'
+import { colors } from '@thebadge/ui-library'
 import { formatUnits } from 'ethers/lib/utils'
 import { useTranslation } from 'next-export-i18n'
-import { colors } from 'thebadge-ui-library'
 
 import { NoResultsAnimated } from '@/src/components/assets/animated/NoResults'
 import { MiniBadgePreviewContainer } from '@/src/components/common/MiniBadgePreviewContainer'

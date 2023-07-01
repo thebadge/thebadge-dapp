@@ -3,9 +3,9 @@ import { useEffect, useState } from 'react'
 
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import { Box, FormControlLabel, Slider, Switch, Tooltip, Typography, styled } from '@mui/material'
+import { gradients } from '@thebadge/ui-library'
 import { useDescription, useTsController } from '@ts-react/form'
 import { FieldError } from 'react-hook-form'
-import { gradients } from 'thebadge-ui-library'
 import { z } from 'zod'
 
 import SeveritySelectorAdvanceView from '@/src/components/form/SeveritySelector/AdvanceView'

@@ -1,10 +1,10 @@
 import React from 'react'
 
 import { Box, Stack, alpha, styled } from '@mui/material'
+import { BadgePreview } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 import { Controller, useFormContext } from 'react-hook-form'
 import { ImageType } from 'react-images-uploading'
-import { BadgePreview } from 'thebadge-ui-library'
 
 import { DropdownSelect } from '@/src/components/form/DropdownSelect'
 import { ImageInput } from '@/src/components/form/ImageInput'

@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 
 import { Collapse, FormHelperText, Typography } from '@mui/material'
+import { Editor } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 import { DeltaStatic, Sources } from 'quill'
 import { Controller, useFormContext } from 'react-hook-form'
 import { UnprivilegedEditor } from 'react-quill'
 import { TransitionGroup } from 'react-transition-group'
-import { Editor } from 'thebadge-ui-library'
 
 import { CreateModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateModelSchema'
 import PDFRequirementInput from '@/src/pagePartials/badge/model/steps/strategy/PDFRequirementInput'
