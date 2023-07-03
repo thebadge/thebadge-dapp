@@ -187,7 +187,7 @@ export default function SeveritySelectorWithTSForm() {
       label={label}
       onChange={onChange}
       placeholder={placeholder}
-      value={field.value}
+      value={field.value as z.infer<typeof SeverityTypeSchema>}
     />
   )
 }
