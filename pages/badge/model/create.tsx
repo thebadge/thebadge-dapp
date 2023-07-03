@@ -10,8 +10,6 @@ import { useContractInstance } from '@/src/hooks/useContractInstance'
 import useTransaction, { TransactionStates } from '@/src/hooks/useTransaction'
 import CreateWithSteps from '@/src/pagePartials/badge/model/CreateWithSteps'
 import { CreateModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateModelSchema'
-import { RequiredConnection } from '@/src/pagePartials/errors/requiredConnection'
-import { RequiredCreatorAccess } from '@/src/pagePartials/errors/requiresCreatorAccess'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { TheBadge__factory } from '@/types/generated/typechain'
 import { NextPageWithLayout } from '@/types/next'
@@ -103,13 +101,7 @@ const CreateBadgeType: NextPageWithLayout = () => {
     }
   }
 
-  return (
-    <RequiredConnection>
-      <RequiredCreatorAccess>
-        <CreateWithSteps onSubmit={onSubmit} txState={state} />
-      </RequiredCreatorAccess>
-    </RequiredConnection>
-  )
+  return <CreateWithSteps onSubmit={onSubmit} txState={state} />
 }
 
 export default withPageGenericSuspense(CreateBadgeType)
