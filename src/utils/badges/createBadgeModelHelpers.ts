@@ -103,17 +103,15 @@ export async function encodeKlerosControllerData(
   challengePeriodDuration: number,
 ) {
   const kleros = Kleros__factory.connect(klerosContractAddress, readOnlyAppProvider)
-  const numberOfJurors = rigorousness.amountOfJurors
   const klerosCourtInfo = await kleros.courts(courtId)
+  const numberOfJurors = rigorousness.amountOfJurors
+  const challengeBounty = rigorousness.challengeBounty
   const baseDeposit = klerosCourtInfo.feeForJuror.mul(numberOfJurors)
 
-  // TODO Add challengeBounty
-  // jurors * fee per juror + rigorousness
-  const submissionDeposit = baseDeposit
-    .add(klerosCourtInfo.feeForJuror.mul(numberOfJurors))
-    .toString()
+  // jurors * fee per juror + challengeBounty
+  const submissionDeposit = baseDeposit.add(challengeBounty).toString()
   // The base deposit to remove an item.
-  const removalDeposit = baseDeposit.add(klerosCourtInfo.feeForJuror.mul(numberOfJurors)).toString()
+  const removalDeposit = baseDeposit.add(challengeBounty).toString()
   // The base deposit to challenge a submission.
   const challengeSubmissionRequestDeposit = baseDeposit.div(2).toString()
   // The base deposit to challenge a removal request

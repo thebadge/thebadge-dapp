@@ -63,7 +63,7 @@ export default function StepHeader({
           }}
         >
           {steps.map((label, index) => (
-            <Step completed={completedSteps[index] === true} key={label}>
+            <Step completed={completedSteps[index]} key={label}>
               <StepButton
                 onClick={() => onStepNavigation(index)}
                 sx={{

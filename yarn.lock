@@ -9982,24 +9982,6 @@ text-table@^0.2.0:
   resolved "https://registry.yarnpkg.com/text-table/-/text-table-0.2.0.tgz#7f5ee823ae805207c00af2df4a84ec3fcfa570b4"
   integrity sha512-N+8UisAXDGk8PFXP4HAzVR9nbfmVJ3zYLAWiTIoqC5v5isinhr+r5uaO8+7r3BMfuNIufIsA7RdpVgacC2cSpw==
 
-thebadge-ui-library@^1.7.1:
-  version "1.7.1"
-  resolved "https://registry.yarnpkg.com/thebadge-ui-library/-/thebadge-ui-library-1.7.1.tgz#839315ed696a8a812c89bdbd7bb85a3061782e12"
-  integrity sha512-ukhLfeDjC2JkKp+LJEqCcDpZIGZuytp7mvghuEy44H21TxvTtklkkcZmqpt6LFAACOROTozUBXVpKo3jNY8f2A==
-  dependencies:
-    "@emotion/react" "^11.10.5"
-    "@emotion/server" "^11.10.0"
-    "@emotion/styled" "^11.10.5"
-    "@mui/icons-material" "^5.11.0"
-    "@mui/material" "^5.11.0"
-    highlight.js "^11.8.0"
-    next "^13.4.4"
-    react "^17.0.0"
-    react-dom "^17.0.0"
-    react-qr-code "^2.0.8"
-    react-quill "^2.0.0"
-    react-transition-group "^4.4.5"
-
 thread-stream@^0.15.1:
   version "0.15.2"
   resolved "https://registry.yarnpkg.com/thread-stream/-/thread-stream-0.15.2.tgz#fb95ad87d2f1e28f07116eb23d85aba3bc0425f4"
@@ -10731,11 +10713,6 @@ ws@^7.3.1, ws@^7.4.0, ws@^7.4.5, ws@^7.5.1:
   version "7.5.9"
   resolved "https://registry.yarnpkg.com/ws/-/ws-7.5.9.tgz#54fa7db29f4c7cec68b1ddd3a89de099942bb591"
   integrity sha512-F+P9Jil7UiSKSkppIiD94dN07AwvFixvLIj1Og1Rl9GGMuNipJnV9JzjD6XuqmAeiswGvUmNLjr5cFuXwNS77Q==
-
-xstate@^4.37.2:
-  version "4.37.2"
-  resolved "https://registry.yarnpkg.com/xstate/-/xstate-4.37.2.tgz#c5f4c1d8062784238b91e2dfddca05f821cb4eac"
-  integrity sha512-Qm337O49CRTZ3PRyRuK6b+kvI+D3JGxXIZCTul+xEsyFCVkTFDt5jixaL1nBWcUBcaTQ9um/5CRGVItPi7fveg==
 
 xtend@^4.0.0, xtend@^4.0.1:
   version "4.0.2"

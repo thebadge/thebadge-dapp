@@ -30,7 +30,6 @@ export default function StepFooter({
 
   const canGoBack = currentStep !== 0
   const backButtonDisabled = currentStep === 0
-  const nextButtonDisabled = false
   const isLastStep = currentStep === 4
 
   function onBack() {
@@ -59,7 +58,6 @@ export default function StepFooter({
         {!isLastStep && (
           <StepButton
             color={color || 'primary'}
-            disabled={nextButtonDisabled}
             onClick={onNext}
             sx={{ ml: !canGoBack ? 'auto' : 'none' }}
             variant="contained"

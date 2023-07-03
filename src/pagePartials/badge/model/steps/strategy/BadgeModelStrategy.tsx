@@ -15,8 +15,8 @@ import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 
 export default function BadgeModelStrategy() {
   const { t } = useTranslation()
-  const { control, setError } = useFormContext<CreateModelSchemaType>()
-  const { appChainId, balance } = useWeb3Connection()
+  const { control } = useFormContext<CreateModelSchemaType>()
+  const { appChainId } = useWeb3Connection()
   const networkConfig = getNetworkConfig(appChainId)
 
   return (
@@ -39,7 +39,6 @@ export default function BadgeModelStrategy() {
         control={control}
         name={'rigorousness'}
         render={({ field: { onChange, value }, fieldState: { error } }) => {
-          console.log(value)
           return (
             <SeveritySelector
               error={error}
