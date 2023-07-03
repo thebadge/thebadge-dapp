@@ -189,7 +189,10 @@ export const ChallengePeriodTypeSchema = createUniqueFieldSchema(
 
 export const SeverityTypeSchema = createUniqueFieldSchema(
   z.object({
-    amountOfJurors: z.number(),
+    amountOfJurors: z
+      .number()
+      .positive()
+      .refine((v) => v % 2 != 0, 'Must be even'),
     challengeBounty: z.string(),
   }),
   'SeverityTypeSchema',

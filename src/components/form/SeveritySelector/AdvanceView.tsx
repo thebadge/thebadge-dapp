@@ -3,12 +3,11 @@ import * as React from 'react'
 
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import { Box, Stack, TextField, Tooltip, Typography, alpha, styled } from '@mui/material'
-import { colors } from '@thebadge/ui-library'
-import { formatUnits, parseUnits } from 'ethers/lib/utils'
+import { formatUnits } from 'ethers/lib/utils'
 import { z } from 'zod'
 
+import SeverityOptionEditable from '@/src/components/form/SeveritySelector/SeverityOptionEditable'
 import SeverityOptionItem from '@/src/components/form/SeveritySelector/SeverityOptionItem'
-import { getDefaultConfigs } from '@/src/components/form/SeveritySelector/utilts'
 import { SeverityTypeSchema } from '@/src/components/form/helpers/customSchemas'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { ZERO_BN } from '@/src/constants/bigNumber'
@@ -85,20 +84,23 @@ export default function SeveritySelectorAdvanceView({
   const feeForJuror = useJurorFee(process.env.NEXT_PUBLIC_KLEROS_DEFAULT_COURT as string)
   const feeForJurorDisplayValue = formatUnits(feeForJuror.data || ZERO_BN)
 
-  const baseDeposit = feeForJuror.data
-    ?.mul(value?.amountOfJurors)
-    .add(parseUnits(value?.challengeBounty))
+  const baseDeposit = feeForJuror.data?.mul(value?.amountOfJurors || 1).add(value?.challengeBounty)
 
   const baseDepositDisplayValue = formatUnits(baseDeposit || ZERO_BN)
 
   const handleOptionSelection = useCallback(
-    (opt: number) => {
+    (opt: number, values: any) => {
       onOptionSelectedChange(opt)
-      if (opt !== Severity.Custom) {
-        onChange(getDefaultConfigs(opt))
-      }
+      onChange(values)
     },
     [onChange, onOptionSelectedChange],
+  )
+
+  const handleEdition = useCallback(
+    (values: any) => {
+      onChange(values)
+    },
+    [onChange],
   )
 
   return (
@@ -107,7 +109,7 @@ export default function SeveritySelectorAdvanceView({
         {/* 1 juror with normal reward on challenges */}
         <SafeSuspense>
           <SeverityOptionItem
-            onSelect={() => handleOptionSelection(Severity.Normal)}
+            onSelect={(values) => handleOptionSelection(Severity.Normal, values)}
             selected={optionSelected === Severity.Normal}
             severity={Severity.Normal}
           />
@@ -116,7 +118,7 @@ export default function SeveritySelectorAdvanceView({
         {/* 3 jurors with normal reward on challenges */}
         <SafeSuspense>
           <SeverityOptionItem
-            onSelect={() => handleOptionSelection(Severity['Above average'])}
+            onSelect={(values) => handleOptionSelection(Severity['Above average'], values)}
             selected={optionSelected === Severity['Above average']}
             severity={Severity['Above average']}
           />
@@ -125,39 +127,31 @@ export default function SeveritySelectorAdvanceView({
         {/* 3 jurors with high reward on challenges */}
         <SafeSuspense>
           <SeverityOptionItem
-            onSelect={() => handleOptionSelection(Severity.Heavy)}
+            onSelect={(values) => handleOptionSelection(Severity.Heavy, values)}
             selected={optionSelected === Severity.Heavy}
             severity={Severity.Heavy}
           />
         </SafeSuspense>
 
         {/* editable */}
-        <CustomOptionPaper
-          color={colors.deepPurple}
-          onClick={() => handleOptionSelection(Severity.Custom)}
-          selected={optionSelected === Severity.Custom}
-        >
-          <Stack>
-            <Typography sx={{ fontSize: '12px !important' }}>Amount of Jurors</Typography>
-            <VerySmallTextField id="standard-basic" size="small" value="3" variant="standard" />
-          </Stack>
-
-          <Stack>
-            <Typography sx={{ fontSize: '12px !important' }}>Challenge Bounty</Typography>
-            <VerySmallTextField id="standard-basic" size="small" value="0.003" variant="standard" />
-          </Stack>
-          <Stack>
-            <Typography sx={{ fontSize: '12px !important' }}>Base deposit</Typography>
-            <Typography sx={{ fontSize: '14px !important' }}>0.08</Typography>
-          </Stack>
-        </CustomOptionPaper>
+        <SafeSuspense>
+          <SeverityOptionEditable
+            onChange={handleEdition}
+            onSelect={(values) => handleOptionSelection(Severity.Custom, values)}
+            selected={optionSelected === Severity.Custom}
+            severity={Severity.Custom}
+            value={value}
+          />
+        </SafeSuspense>
       </Box>
+
       <Typography sx={{ fontSize: '12px !important' }}>
         <Tooltip arrow title={numberOfJurorExplanations}>
           <InfoOutlinedIcon sx={{ mr: 0.5, fontSize: '1rem' }} />
         </Tooltip>
         Amount of Jurors: <strong>{value?.amountOfJurors}</strong>
       </Typography>
+
       <Typography sx={{ fontSize: '12px !important' }}>
         <Tooltip arrow title={feePerJurorExplanation}>
           <InfoOutlinedIcon sx={{ mr: 0.5, fontSize: '1rem' }} />
@@ -165,18 +159,21 @@ export default function SeveritySelectorAdvanceView({
         Fee per Juror:
         <strong> {feeForJurorDisplayValue}</strong>
       </Typography>
+
       <Typography sx={{ fontSize: '12px !important' }}>
         <Tooltip arrow title={challengeBountyExplanation}>
           <InfoOutlinedIcon sx={{ mr: 0.5, fontSize: '1rem' }} />
         </Tooltip>
-        Challenge Bounty: <strong>{value?.challengeBounty}</strong>
+        Challenge Bounty: <strong>{formatUnits(value?.challengeBounty)}</strong>
       </Typography>
+
       <Typography sx={{ fontSize: '12px !important' }}>
         <Tooltip arrow title={baseDepositExplanation}>
           <InfoOutlinedIcon sx={{ mr: 0.5, fontSize: '1rem' }} />
         </Tooltip>
         Base deposit: <strong>{baseDepositDisplayValue}</strong>
       </Typography>
+
       <Typography sx={{ fontSize: '12px !important' }}>Court: -</Typography>
     </Stack>
   )

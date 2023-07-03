@@ -38,14 +38,17 @@ export default function BadgeModelStrategy() {
       <Controller
         control={control}
         name={'rigorousness'}
-        render={({ field: { name, onChange, value }, fieldState: { error } }) => (
-          <SeveritySelector
-            error={error}
-            label={'Rigorousness'}
-            onChange={onChange}
-            value={value}
-          />
-        )}
+        render={({ field: { onChange, value }, fieldState: { error } }) => {
+          console.log(value)
+          return (
+            <SeveritySelector
+              error={error}
+              label={'Rigorousness'}
+              onChange={onChange}
+              value={value}
+            />
+          )
+        }}
       />
       <Box display="flex" flexDirection="row" gap={5} justifyContent="space-between">
         <Stack flex="1" gap={4}>

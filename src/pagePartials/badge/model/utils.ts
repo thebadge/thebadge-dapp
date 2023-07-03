@@ -28,6 +28,10 @@ export function defaultValues() {
       backgroundImage: 'White Waves',
       template: 'Classic',
       challengePeriodDuration: 2,
+      rigorousness: {
+        amountOfJurors: 1,
+        challengeBounty: '0',
+      },
     }
   }
 }

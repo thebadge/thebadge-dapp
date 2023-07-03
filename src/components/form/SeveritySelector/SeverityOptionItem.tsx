@@ -1,9 +1,12 @@
+import { useCallback } from 'react'
 import * as React from 'react'
 
-import { Box, Stack, TextField, Typography, alpha, styled } from '@mui/material'
-import { colors } from '@thebadge/ui-library'
+import { Box, Stack, Typography, alpha, styled } from '@mui/material'
 import { formatUnits } from 'ethers/lib/utils'
+import { z } from 'zod'
 
+import { SEVERITY_COLORS, SEVERITY_FEES } from './utilts'
+import { SeverityTypeSchema } from '@/src/components/form/helpers/customSchemas'
 import { ZERO_BN } from '@/src/constants/bigNumber'
 import { useJurorFee } from '@/src/hooks/kleros/useJurorFee'
 import { Severity } from '@/types/utils'
@@ -35,46 +38,6 @@ const CustomOptionPaper = styled(Box, {
   },
 }))
 
-const VerySmallTextField = styled(TextField)(() => ({
-  width: '50%',
-  margin: 'auto',
-  '& .MuiInputBase-root': {
-    fontSize: '12px !important',
-  },
-  '& .MuiInputBase-input': {
-    textAlign: 'center',
-  },
-  '& .MuiFormLabel-root': {
-    fontSize: '12px !important',
-  },
-}))
-
-const SEVERITY_FEES = {
-  [Severity.Normal]: {
-    amountOfJurors: process.env.NEXT_PUBLIC_BADGE_MODEL_SEVERITY_NORMAL_JURORS,
-    challengeBountyMultiplier: process.env.NEXT_PUBLIC_BADGE_MODEL_SEVERITY_NORMAL_BOUNTY,
-  },
-  [Severity['Above average']]: {
-    amountOfJurors: process.env.NEXT_PUBLIC_BADGE_MODEL_SEVERITY_ABOVE_JURORS,
-    challengeBountyMultiplier: process.env.NEXT_PUBLIC_BADGE_MODEL_SEVERITY_ABOVE_BOUNTY,
-  },
-  [Severity.Heavy]: {
-    amountOfJurors: process.env.NEXT_PUBLIC_BADGE_MODEL_SEVERITY_HEAVY_JURORS,
-    challengeBountyMultiplier: process.env.NEXT_PUBLIC_BADGE_MODEL_SEVERITY_HEAVY_BOUNTY,
-  },
-  [Severity.Custom]: {
-    amountOfJurors: 0,
-    challengeBountyMultiplier: 0,
-  },
-}
-
-const SEVERITY_COLORS = {
-  [Severity.Normal]: colors.green,
-  [Severity['Above average']]: colors.purple,
-  [Severity.Heavy]: colors.pink,
-  [Severity.Custom]: colors.deepPurple,
-}
-
 export default function SeverityOptionItem({
   onSelect,
   selected,
@@ -82,7 +45,7 @@ export default function SeverityOptionItem({
 }: {
   severity: Severity
   selected: boolean
-  onSelect: () => void
+  onSelect: (values: z.infer<typeof SeverityTypeSchema._def.type>) => void
 }) {
   const feeForJuror = useJurorFee(process.env.NEXT_PUBLIC_KLEROS_DEFAULT_COURT as string)
 
@@ -97,11 +60,24 @@ export default function SeverityOptionItem({
 
   const baseDepositDisplayValue = formatUnits(baseDeposit || ZERO_BN)
 
+  const onSelectHandler = useCallback(() => {
+    onSelect({
+      amountOfJurors: SEVERITY_FEES[severity].amountOfJurors,
+      challengeBounty: challengeBounty.toString(),
+    })
+  }, [challengeBounty, onSelect, severity])
+
   return (
-    <CustomOptionPaper color={SEVERITY_COLORS[severity]} onClick={onSelect} selected={selected}>
+    <CustomOptionPaper
+      color={SEVERITY_COLORS[severity]}
+      onClick={onSelectHandler}
+      selected={selected}
+    >
       <Stack>
         <Typography sx={{ fontSize: '12px !important' }}>Amount of Jurors</Typography>
-        <Typography sx={{ fontSize: '14px !important' }}>3</Typography>
+        <Typography sx={{ fontSize: '14px !important' }}>
+          {SEVERITY_FEES[severity].amountOfJurors}
+        </Typography>
       </Stack>
 
       <Stack>

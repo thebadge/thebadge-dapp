@@ -1,8 +1,17 @@
 import * as React from 'react'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
-import { Box, FormControlLabel, Slider, Switch, Tooltip, Typography, styled } from '@mui/material'
+import {
+  Box,
+  FormControlLabel,
+  Skeleton,
+  Slider,
+  Switch,
+  Tooltip,
+  Typography,
+  styled,
+} from '@mui/material'
 import { gradients } from '@thebadge/ui-library'
 import { useDescription, useTsController } from '@ts-react/form'
 import { FieldError } from 'react-hook-form'
@@ -57,7 +66,7 @@ type SeveritySelectorProps = {
   label?: string
   onChange: (value: any) => void
   placeholder?: string
-  value: z.infer<typeof SeverityTypeSchema> | undefined
+  value: z.infer<typeof SeverityTypeSchema>
 }
 
 export function SeveritySelector({
@@ -70,16 +79,6 @@ export function SeveritySelector({
   const [auxValue, setAuxValue] = useState<number>(1)
 
   const [enableAdvance, setAdvanceMode] = useState<boolean>(false)
-
-  useEffect(() => {
-    // Use effect to set the default value, is made on this way to
-    // prevent the use of default props on the form
-    onChange({
-      amountOfJurors: 1,
-      challengeBounty: '0.002',
-    })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
 
   const handleChange = (e: Event, newValue: number | number[]) => {
     if (!Array.isArray(newValue)) {
@@ -154,8 +153,10 @@ export function SeveritySelector({
         status={error ? TextFieldStatus.error : TextFieldStatus.success}
         statusText={error?.message}
       />
-      {enableAdvance && value && (
-        <SafeSuspense>
+      {enableAdvance && (
+        <SafeSuspense
+          fallback={<Skeleton animation="wave" height="100%" variant="rounded" width={150} />}
+        >
           <SeveritySelectorAdvanceView
             onChange={onChange}
             onOptionSelectedChange={(aux) => setAuxValue(aux)}
