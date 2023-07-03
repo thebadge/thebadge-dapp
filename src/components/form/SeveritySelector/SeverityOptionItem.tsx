@@ -1,42 +1,16 @@
 import { useCallback } from 'react'
 import * as React from 'react'
 
-import { Box, Stack, Typography, alpha, styled } from '@mui/material'
+import { Box, Divider } from '@mui/material'
 import { formatUnits } from 'ethers/lib/utils'
 import { z } from 'zod'
 
+import { CustomOptionPaper, Title, Value, ValueContainer } from './styled'
 import { SEVERITY_COLORS, SEVERITY_FEES } from './utilts'
 import { SeverityTypeSchema } from '@/src/components/form/helpers/customSchemas'
 import { ZERO_BN } from '@/src/constants/bigNumber'
 import { useJurorFee } from '@/src/hooks/kleros/useJurorFee'
 import { Severity } from '@/types/utils'
-
-const CustomOptionPaper = styled(Box, {
-  shouldForwardProp: (propName) => propName !== 'color' && propName !== 'selected',
-})<{
-  color: string
-  selected: boolean
-}>(({ color, selected, theme }) => ({
-  margin: theme.spacing(1),
-  width: 160,
-  height: 160,
-  cursor: 'pointer',
-  textAlign: 'center',
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'space-evenly',
-  transition: 'all .3s cubic-bezier(0.65, 0, 0.35, 1)',
-  borderWidth: selected ? '2px' : '1px',
-  borderStyle: 'solid',
-  borderRadius: theme.spacing(1),
-  borderColor: selected ? color : alpha(color, 0.8),
-  background: alpha(color, 0.2),
-  '&:hover': {
-    background: alpha(color, 0.4),
-    borderWidth: '2px',
-    borderColor: color,
-  },
-}))
 
 export default function SeverityOptionItem({
   onSelect,
@@ -73,22 +47,40 @@ export default function SeverityOptionItem({
       onClick={onSelectHandler}
       selected={selected}
     >
-      <Stack>
-        <Typography sx={{ fontSize: '12px !important' }}>Amount of Jurors</Typography>
-        <Typography sx={{ fontSize: '14px !important' }}>
-          {SEVERITY_FEES[severity].amountOfJurors}
-        </Typography>
-      </Stack>
+      <Box display="flex">
+        <Box alignItems="center" flex="1">
+          <Title>
+            Amount <br /> of Jurors
+          </Title>
+        </Box>
+        <ValueContainer>
+          <Value color={SEVERITY_COLORS[severity]}>{SEVERITY_FEES[severity].amountOfJurors}</Value>
+        </ValueContainer>
+      </Box>
 
-      <Stack>
-        <Typography sx={{ fontSize: '12px !important' }}>Challenge Bounty</Typography>
-        <Typography sx={{ fontSize: '14px !important' }}>{challengeBountyDisplay}</Typography>
-      </Stack>
+      <Divider color={SEVERITY_COLORS[severity]} />
 
-      <Stack>
-        <Typography sx={{ fontSize: '12px !important' }}>Base deposit</Typography>
-        <Typography sx={{ fontSize: '14px !important' }}>{baseDepositDisplayValue}</Typography>
-      </Stack>
+      <Box display="flex">
+        <Box alignItems="center" flex="1">
+          <Title>Challenge Bounty</Title>
+        </Box>
+        <ValueContainer>
+          <Value color={SEVERITY_COLORS[severity]}>{challengeBountyDisplay}</Value>
+        </ValueContainer>
+      </Box>
+
+      <Divider color={SEVERITY_COLORS[severity]} />
+
+      <Box display="flex">
+        <Box alignItems="center" display="flex" flex="1">
+          <Title>
+            Base <br /> deposit
+          </Title>
+        </Box>
+        <ValueContainer>
+          <Value color={SEVERITY_COLORS[severity]}>{baseDepositDisplayValue}</Value>
+        </ValueContainer>
+      </Box>
     </CustomOptionPaper>
   )
 }

@@ -1,12 +1,10 @@
-import { colors } from '@thebadge/ui-library'
-
 import { Severity } from '@/types/utils'
 
 export const SEVERITY_COLORS = {
-  [Severity.Normal]: colors.green,
-  [Severity['Above average']]: colors.purple,
-  [Severity.Heavy]: colors.pink,
-  [Severity.Custom]: colors.deepPurple,
+  [Severity.Normal]: '#24F3D2',
+  [Severity['Above average']]: '#59BCF7',
+  [Severity.Heavy]: '#284EE8',
+  [Severity.Custom]: '#AF20AF',
 }
 
 export const SEVERITY_FEES = {

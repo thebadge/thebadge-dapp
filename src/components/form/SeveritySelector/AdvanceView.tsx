@@ -2,7 +2,7 @@ import { useCallback } from 'react'
 import * as React from 'react'
 
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
-import { Box, Stack, TextField, Tooltip, Typography, alpha, styled } from '@mui/material'
+import { Box, Stack, Tooltip, Typography } from '@mui/material'
 import { formatUnits } from 'ethers/lib/utils'
 import { z } from 'zod'
 
@@ -13,47 +13,6 @@ import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { ZERO_BN } from '@/src/constants/bigNumber'
 import { useJurorFee } from '@/src/hooks/kleros/useJurorFee'
 import { Severity } from '@/types/utils'
-
-const CustomOptionPaper = styled(Box, {
-  shouldForwardProp: (propName) => propName !== 'color' && propName !== 'selected',
-})<{
-  color: string
-  selected: boolean
-}>(({ color, selected, theme }) => ({
-  margin: theme.spacing(1),
-  width: 160,
-  height: 160,
-  cursor: 'pointer',
-  textAlign: 'center',
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'space-evenly',
-  transition: 'all .3s cubic-bezier(0.65, 0, 0.35, 1)',
-  borderWidth: selected ? '2px' : '1px',
-  borderStyle: 'solid',
-  borderRadius: theme.spacing(1),
-  borderColor: selected ? color : alpha(color, 0.8),
-  background: alpha(color, 0.2),
-  '&:hover': {
-    background: alpha(color, 0.4),
-    borderWidth: '2px',
-    borderColor: color,
-  },
-}))
-
-const VerySmallTextField = styled(TextField)(() => ({
-  width: '50%',
-  margin: 'auto',
-  '& .MuiInputBase-root': {
-    fontSize: '12px !important',
-  },
-  '& .MuiInputBase-input': {
-    textAlign: 'center',
-  },
-  '& .MuiFormLabel-root': {
-    fontSize: '12px !important',
-  },
-}))
 
 // TODO Do it with HTML to have a better look and feel
 const numberOfJurorExplanations =
@@ -145,36 +104,45 @@ export default function SeveritySelectorAdvanceView({
         </SafeSuspense>
       </Box>
 
-      <Typography sx={{ fontSize: '12px !important' }}>
-        <Tooltip arrow title={numberOfJurorExplanations}>
-          <InfoOutlinedIcon sx={{ mr: 0.5, fontSize: '1rem' }} />
-        </Tooltip>
-        Amount of Jurors: <strong>{value?.amountOfJurors}</strong>
-      </Typography>
+      <Box display="flex" gap={3} mt={3}>
+        <Stack gap={2}>
+          <Typography sx={{ fontSize: '14px !important' }}>
+            <Tooltip arrow title={numberOfJurorExplanations}>
+              <InfoOutlinedIcon sx={{ mr: 0.5 }} />
+            </Tooltip>
+            <strong>Amount of Jurors:</strong> {value?.amountOfJurors}
+          </Typography>
 
-      <Typography sx={{ fontSize: '12px !important' }}>
-        <Tooltip arrow title={feePerJurorExplanation}>
-          <InfoOutlinedIcon sx={{ mr: 0.5, fontSize: '1rem' }} />
-        </Tooltip>
-        Fee per Juror:
-        <strong> {feeForJurorDisplayValue}</strong>
-      </Typography>
+          <Typography sx={{ fontSize: '14px !important' }}>
+            <Tooltip arrow title={feePerJurorExplanation}>
+              <InfoOutlinedIcon sx={{ mr: 0.5 }} />
+            </Tooltip>
+            <strong>Fee per Juror:</strong>
+            {feeForJurorDisplayValue}
+          </Typography>
+        </Stack>
 
-      <Typography sx={{ fontSize: '12px !important' }}>
-        <Tooltip arrow title={challengeBountyExplanation}>
-          <InfoOutlinedIcon sx={{ mr: 0.5, fontSize: '1rem' }} />
-        </Tooltip>
-        Challenge Bounty: <strong>{formatUnits(value?.challengeBounty)}</strong>
-      </Typography>
+        <Stack gap={2}>
+          <Typography sx={{ fontSize: '14px !important' }}>
+            <Tooltip arrow title={challengeBountyExplanation}>
+              <InfoOutlinedIcon sx={{ mr: 0.5 }} />
+            </Tooltip>
+            <strong>Challenge Bounty:</strong> {formatUnits(value?.challengeBounty)}
+          </Typography>
 
-      <Typography sx={{ fontSize: '12px !important' }}>
-        <Tooltip arrow title={baseDepositExplanation}>
-          <InfoOutlinedIcon sx={{ mr: 0.5, fontSize: '1rem' }} />
-        </Tooltip>
-        Base deposit: <strong>{baseDepositDisplayValue}</strong>
-      </Typography>
+          <Typography sx={{ fontSize: '14px !important' }}>
+            <Tooltip arrow title={baseDepositExplanation}>
+              <InfoOutlinedIcon sx={{ mr: 0.5 }} />
+            </Tooltip>
+            <strong>Base deposit: </strong>
+            {baseDepositDisplayValue}
+          </Typography>
+        </Stack>
 
-      <Typography sx={{ fontSize: '12px !important' }}>Court: -</Typography>
+        <Typography sx={{ fontSize: '14px !important' }}>
+          <strong>Court:</strong> General
+        </Typography>
+      </Box>
     </Stack>
   )
 }
