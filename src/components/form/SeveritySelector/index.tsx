@@ -76,13 +76,13 @@ export function SeveritySelector({
   placeholder,
   value,
 }: SeveritySelectorProps) {
-  const [auxValue, setAuxValue] = useState<number>(1)
+  const [optionSelectedAuxIndex, setOptionSelectedAuxIndex] = useState<number>(1)
 
   const [enableAdvance, setAdvanceMode] = useState<boolean>(false)
 
   const handleChange = (e: Event, newValue: number | number[]) => {
     if (!Array.isArray(newValue)) {
-      setAuxValue(newValue)
+      setOptionSelectedAuxIndex(newValue)
       onChange(getDefaultConfigs(newValue))
     }
   }
@@ -98,7 +98,7 @@ export function SeveritySelector({
   function toggleAdvanceMode(enable: boolean) {
     setAdvanceMode(enable)
     if (!enable) {
-      setAuxValue(Severity.Normal)
+      setOptionSelectedAuxIndex(Severity.Normal)
       onChange(getDefaultConfigs(Severity.Normal))
     }
   }
@@ -122,7 +122,7 @@ export function SeveritySelector({
                 sx={{
                   minWidth: '200px',
                 }}
-                value={auxValue}
+                value={optionSelectedAuxIndex}
                 valueLabelDisplay="auto"
                 valueLabelFormat={valueLabelFormat}
               />
@@ -159,8 +159,8 @@ export function SeveritySelector({
         >
           <SeveritySelectorAdvanceView
             onChange={onChange}
-            onOptionSelectedChange={(aux) => setAuxValue(aux)}
-            optionSelected={auxValue}
+            onOptionSelectedChange={(aux) => setOptionSelectedAuxIndex(aux)}
+            optionSelected={optionSelectedAuxIndex}
             value={value}
           />
         </SafeSuspense>

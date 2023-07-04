@@ -1,4 +1,4 @@
-import { APP_URL } from '@/src/constants/common'
+import { APP_URL, MODEL_CREATION_CACHE_EXPIRATION_MS } from '@/src/constants/common'
 
 const STEP_0 = ['howItWorks']
 const STEP_1 = [
@@ -43,10 +43,13 @@ export function checkIfHasOngoingModelCreation() {
 
 export function saveFormValues(values: Record<string, any>) {
   const ONE_DAY = 24 * 60 * 60 * 1000 /* ms */
+  const expiration = MODEL_CREATION_CACHE_EXPIRATION_MS
+    ? +MODEL_CREATION_CACHE_EXPIRATION_MS
+    : ONE_DAY
 
   localStorage.setItem(
     FORM_STORE_KEY,
-    JSON.stringify({ expirationTime: Date.now() + ONE_DAY, values }),
+    JSON.stringify({ expirationTime: Date.now() + expiration, values }),
   )
 }
 

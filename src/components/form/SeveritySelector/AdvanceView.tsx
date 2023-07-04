@@ -11,6 +11,7 @@ import SeverityOptionItem from '@/src/components/form/SeveritySelector/SeverityO
 import { SeverityTypeSchema } from '@/src/components/form/helpers/customSchemas'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { ZERO_BN } from '@/src/constants/bigNumber'
+import { DEFAULT_COURT_ID } from '@/src/constants/common'
 import { useJurorFee } from '@/src/hooks/kleros/useJurorFee'
 import { Severity } from '@/types/utils'
 
@@ -40,7 +41,7 @@ export default function SeveritySelectorAdvanceView({
    * TODO: we should set a default court in the short-circuit to the Kleros's  general court.
    * In advance mode the user should be able to select the court.
    */
-  const feeForJuror = useJurorFee(process.env.NEXT_PUBLIC_KLEROS_DEFAULT_COURT as string)
+  const feeForJuror = useJurorFee(DEFAULT_COURT_ID)
   const feeForJurorDisplayValue = formatUnits(feeForJuror.data || ZERO_BN)
 
   const baseDeposit = feeForJuror.data?.mul(value?.amountOfJurors || 1).add(value?.challengeBounty)

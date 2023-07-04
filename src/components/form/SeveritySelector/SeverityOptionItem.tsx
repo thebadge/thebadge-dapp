@@ -9,6 +9,7 @@ import { CustomOptionPaper, Title, Value, ValueContainer } from './styled'
 import { SEVERITY_COLORS, SEVERITY_FEES } from './utilts'
 import { SeverityTypeSchema } from '@/src/components/form/helpers/customSchemas'
 import { ZERO_BN } from '@/src/constants/bigNumber'
+import { DEFAULT_COURT_ID } from '@/src/constants/common'
 import { useJurorFee } from '@/src/hooks/kleros/useJurorFee'
 import { Severity } from '@/types/utils'
 
@@ -21,7 +22,7 @@ export default function SeverityOptionItem({
   selected: boolean
   onSelect: (values: z.infer<typeof SeverityTypeSchema._def.type>) => void
 }) {
-  const feeForJuror = useJurorFee(process.env.NEXT_PUBLIC_KLEROS_DEFAULT_COURT as string)
+  const feeForJuror = useJurorFee(DEFAULT_COURT_ID)
 
   const challengeBounty =
     feeForJuror.data?.mul(SEVERITY_FEES[severity].challengeBountyMultiplier || 0) || ZERO_BN

@@ -5,6 +5,7 @@ import { parseUnits } from 'ethers/lib/utils'
 
 import { isMetadataColumnArray } from '@/src/components/form/helpers/validators'
 import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
+import { DEFAULT_COURT_ID } from '@/src/constants/common'
 import { contracts } from '@/src/contracts/contracts'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
 import useTransaction, { TransactionStates } from '@/src/hooks/useTransaction'
@@ -78,7 +79,7 @@ const CreateBadgeType: NextPageWithLayout = () => {
            * TODO: we should set a default court in the short-circuit to the Kleros's  general court.
            * In advance mode the user should be able to select the court.
            */
-          process.env.NEXT_PUBLIC_KLEROS_DEFAULT_COURT as string,
+          DEFAULT_COURT_ID,
           registrationIPFSHash,
           clearingIPFSHash,
           challengePeriodDuration,

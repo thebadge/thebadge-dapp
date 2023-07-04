@@ -12,6 +12,7 @@ import { CustomOptionPaper, Title, Value, ValueContainer, VerySmallTextField } f
 import { SEVERITY_COLORS, SEVERITY_FEES } from './utilts'
 import { SeverityTypeSchema } from '@/src/components/form/helpers/customSchemas'
 import { ZERO_BN } from '@/src/constants/bigNumber'
+import { DEFAULT_COURT_ID } from '@/src/constants/common'
 import { useJurorFee } from '@/src/hooks/kleros/useJurorFee'
 import { Severity } from '@/types/utils'
 
@@ -28,7 +29,7 @@ export default function SeverityOptionEditable({
   onSelect: (values: any) => void
   onChange: (value: any) => void
 }) {
-  const feeForJuror = useJurorFee(process.env.NEXT_PUBLIC_KLEROS_DEFAULT_COURT as string)
+  const feeForJuror = useJurorFee(DEFAULT_COURT_ID)
   const [challengeBounty, setChallengeBounty] = useState(
     feeForJuror.data?.toString() || ZERO_BN.toString(),
   )

@@ -1,3 +1,11 @@
+import {
+  SEVERITY_ABOVE_BOUNTY_MULTIPLIER,
+  SEVERITY_ABOVE_JURORS,
+  SEVERITY_HEAVY_BOUNTY_MULTIPLIER,
+  SEVERITY_HEAVY_JURORS,
+  SEVERITY_NORMAL_BOUNTY_MULTIPLIER,
+  SEVERITY_NORMAL_JURORS,
+} from '@/src/constants/common'
 import { Severity } from '@/types/utils'
 
 export const SEVERITY_COLORS = {
@@ -9,19 +17,19 @@ export const SEVERITY_COLORS = {
 
 export const SEVERITY_FEES = {
   [Severity.Normal]: {
-    amountOfJurors: +(process.env.NEXT_PUBLIC_BADGE_MODEL_SEVERITY_NORMAL_JURORS || 0),
-    challengeBountyMultiplier: +(process.env.NEXT_PUBLIC_BADGE_MODEL_SEVERITY_NORMAL_BOUNTY || 0),
+    amountOfJurors: SEVERITY_NORMAL_JURORS,
+    challengeBountyMultiplier: SEVERITY_NORMAL_BOUNTY_MULTIPLIER,
   },
   [Severity['Above average']]: {
-    amountOfJurors: +(process.env.NEXT_PUBLIC_BADGE_MODEL_SEVERITY_ABOVE_JURORS || 0),
-    challengeBountyMultiplier: +(process.env.NEXT_PUBLIC_BADGE_MODEL_SEVERITY_ABOVE_BOUNTY || 0),
+    amountOfJurors: SEVERITY_ABOVE_JURORS,
+    challengeBountyMultiplier: SEVERITY_ABOVE_BOUNTY_MULTIPLIER,
   },
   [Severity.Heavy]: {
-    amountOfJurors: +(process.env.NEXT_PUBLIC_BADGE_MODEL_SEVERITY_HEAVY_JURORS || 0),
-    challengeBountyMultiplier: +(process.env.NEXT_PUBLIC_BADGE_MODEL_SEVERITY_HEAVY_BOUNTY || 0),
+    amountOfJurors: SEVERITY_HEAVY_JURORS,
+    challengeBountyMultiplier: SEVERITY_HEAVY_BOUNTY_MULTIPLIER,
   },
   [Severity.Custom]: {
-    amountOfJurors: +(process.env.NEXT_PUBLIC_BADGE_MODEL_SEVERITY_HEAVY_JURORS || 0),
+    amountOfJurors: SEVERITY_HEAVY_JURORS,
     challengeBountyMultiplier: 0,
   },
 }
