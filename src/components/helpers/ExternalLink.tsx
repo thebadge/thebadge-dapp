@@ -1,50 +1,49 @@
 import { useState } from 'react'
 
 import { styled } from '@mui/material'
+import { useTranslation } from 'next-export-i18n'
 import { Toast, toast } from 'react-hot-toast'
 
 import { Copy } from '@/src/components/assets/Copy'
 import { Link } from '@/src/components/assets/Link'
 import { ToastComponent } from '@/src/components/toast/ToastComponent'
 
-const Wrapper = styled('span')`
-  align-items: center;
-  column-gap: 8px;
-  display: flex;
-`
+const Wrapper = styled('span')(({ theme }) => ({
+  alignItems: 'center',
+  columnGap: theme.spacing(1),
+  display: 'flex',
+}))
 
-const ExternalLink = styled('a')`
-  color: ${({ theme: { palette } }) => palette.text.primary};
-  font-weight: 400;
-  line-height: 133%;
-  font-size: 14px;
-  text-decoration: underline;
+const ExternalLink = styled('a')(({ theme }) => ({
+  color: theme.palette.text.primary,
+  fontWeight: '400',
+  lineHeight: '133%',
+  fontSize: '14px',
+  textDecoration: 'underline',
+  '&:hover': {
+    textDecoration: 'none',
+  },
+  '&:active': {
+    opacity: 0.7,
+  },
+}))
 
-  &:hover {
-    text-decoration: none;
-  }
+const CopyButton = styled('button')(() => ({
+  background: 'none',
+  border: 'none',
+  cursor: 'pointer',
+  padding: 0,
 
-  &:active {
-    opacity: 0.7;
-  }
-`
+  '&:active': {
+    opacity: 0.7,
+  },
+}))
 
 ExternalLink.defaultProps = {
   className: 'externalLink',
   rel: 'noopener noreferrer',
   target: '_blank',
 }
-
-const CopyButton = styled('button')`
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-
-  &:active {
-    opacity: 0.7;
-  }
-`
 
 interface Props {
   href: string
@@ -60,15 +59,16 @@ const ExternalLinkComponent: React.FC<Props> = ({
   showExternalLink = true,
   ...restProps
 }) => {
+  const { t } = useTranslation()
   const [toastId, setToastId] = useState('')
 
   const copyExternalLink = (address: string) => {
     navigator.clipboard.writeText(address)
     toast.remove(toastId)
     toast.custom(
-      (t: Toast) => {
+      (toast: Toast) => {
         setToastId(t.id)
-        return <ToastComponent message={'ExternalLink copied'} t={t} />
+        return <ToastComponent message={t('externalLink.copied')} t={toast} />
       },
       {
         duration: 1000,

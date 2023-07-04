@@ -83,6 +83,7 @@ export default function ChallengeStatus() {
             <Address address={activeRequest.requester} />
           </DisplayWrapper>
           {/*
+          TODO: Add arbitrator to the SG
             activeRequest.arbitrator && (
             <DisplayWrapper>
               <Typography variant="dAppBody4">
@@ -126,6 +127,7 @@ export default function ChallengeStatus() {
         <Timeline>
           {[...activeRequest.evidences, ...activeRequest.evidences, ...activeRequest.evidences].map(
             (item, index) => (
+              /* TODO: Add all the evidence to the SG */
               <EvidenceItem
                 isLast={index === activeRequest.evidences.length * 3 - 1}
                 item={item}

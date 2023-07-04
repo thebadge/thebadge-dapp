@@ -315,5 +315,8 @@
       "seconds": "seconds left",
       "time": "time left"
     }
+  },
+  "externalLink" : {
+    "copied": "Link copied"
   }
 }
