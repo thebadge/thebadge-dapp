@@ -25,7 +25,7 @@ import { NextPageWithLayout } from '@/types/next'
 import { SupportedRelayMethods } from '@/types/relayedTx'
 
 const MintBadgeType: NextPageWithLayout = () => {
-  const { address, appChainId, isSocialWallet } = useWeb3Connection()
+  const { address, appChainId, isSocialWallet, userSocialInfo, web3Provider } = useWeb3Connection()
   const theBadge = useContractInstance(TheBadge__factory, 'TheBadge')
   const { sendRelayTx, sendTx, state } = useTransaction()
   const router = useRouter()
@@ -87,7 +87,7 @@ const MintBadgeType: NextPageWithLayout = () => {
     try {
       // If social login relay tx
       // @todo (agustin) add more validations, also on backend, user should be authenticated
-      if (isSocialWallet && address) {
+      if (isSocialWallet && address && userSocialInfo) {
         const data = JSON.stringify({
           badgeModelId,
           address,
@@ -98,12 +98,23 @@ const MintBadgeType: NextPageWithLayout = () => {
           },
         })
 
+        const signature = await web3Provider?.getSigner().signMessage(data)
+
+        if (!signature) {
+          throw new Error('User rejected the signing of the message')
+        }
+
         // Send to backend
         await sendRelayTx({
           data,
           from: address,
           chainId: appChainId.toString(),
           method: SupportedRelayMethods.MINT,
+          signature,
+          userAccount: {
+            address,
+            userSocialInfo,
+          },
         })
         return
       }

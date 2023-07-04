@@ -12,16 +12,19 @@ import {
 export const Chains = {
   //mainnet: 1,
   goerli: 5,
+  gnosis: 100,
 } as const
 
 export const providerChains: ProviderChains = {
   [RPCProviders.infura]: {
     //[Chains.mainnet]: 'mainnet',
     [Chains.goerli]: 'goerli',
+    [Chains.gnosis]: 'gnosis',
   },
   [RPCProviders.alchemy]: {
     //[Chains.mainnet]: 'eth-mainnet',
     [Chains.goerli]: 'eth-goerli',
+    [Chains.gnosis]: 'xDai-gnosis',
   },
 }
 
@@ -77,6 +80,16 @@ export const chainsConfig: Record<ChainsValues, ChainConfig> = {
     rpcUrl: getProviderUrl(Chains.goerli),
     blockExplorerUrls: ['https://goerli.etherscan.io/'],
     token: 'ETH',
+  },
+  [Chains.gnosis]: {
+    id: Chains.gnosis,
+    name: 'Gnosis Chain',
+    shortName: 'xDai',
+    chainId: Chains.gnosis,
+    chainIdHex: '0x64',
+    rpcUrl: getProviderUrl(Chains.gnosis),
+    blockExplorerUrls: ['https://gnosisscan.io/'],
+    token: 'xDAI',
   },
   // [Chains.mainnet]: {
   //   id: Chains.mainnet,

@@ -111,12 +111,14 @@ export default function useTransaction() {
       try {
         notifyWaitingForSignature()
         setTransactionState(TransactionStates.waitingSignature)
-        const { chainId, data, from, method } = populatedTx
+        const { chainId, data, from, method, signature, userAccount } = populatedTx
         const { error, message, result } = await sendTxToRelayer({
           data,
           from,
           chainId,
           method,
+          signature,
+          userAccount,
         })
         if (error || !result) {
           throw new Error(message)

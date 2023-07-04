@@ -38,9 +38,23 @@ nullthrows(
   Object.values(Chains).includes(INITIAL_APP_CHAIN_ID) ? INITIAL_APP_CHAIN_ID : null,
   'No default chain ID is defined or is not supported',
 )
+nullthrows(
+  process.env.NEXT_PUBLIC_WALLET_CONNECT ? process.env.NEXT_PUBLIC_WALLET_CONNECT : null,
+  'No default WALLET CONNECT ID is defined or is not supported',
+)
 
 const injected = injectedModule()
-const walletConnect = walletConnectModule()
+const wcInitOptions = {
+  /**
+   * Project ID associated with [WalletConnect account](https://cloud.walletconnect.com)
+   */
+  projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT || '',
+  /**
+   * Chains required to be supported by all wallets connecting to your DApp
+   */
+  requiredChains: [Chains.goerli, Chains.gnosis],
+}
+const walletConnect = walletConnectModule(wcInitOptions)
 const web3auth = web3authModule({
   clientId: WEB3_AUTH_CLIENT_ID, // Get your Client ID from Web3Auth Dashboard
   authMode: 'WALLET', // Enables only social wallets
