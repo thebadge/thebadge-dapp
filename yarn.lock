@@ -7014,10 +7014,10 @@ graphemer@^1.4.0:
   resolved "https://registry.yarnpkg.com/graphemer/-/graphemer-1.4.0.tgz#fb2f1d55e0e3a1849aeffc90c4fa0dd53a0e66c6"
   integrity sha512-EtKwoO6kxCL9WO5xipiHTZlSzBm7WLT627TqC/uVRd0HKmq8NXyebnNYxDoBi7wt8eTWrUrKXCOVaFq9x1kgag==
 
-graphql-codegen-plugin-typescript-swr@^0.8.3:
-  version "0.8.4"
-  resolved "https://registry.yarnpkg.com/graphql-codegen-plugin-typescript-swr/-/graphql-codegen-plugin-typescript-swr-0.8.4.tgz#08921db0c148925232467154c54d36ed8ea181bd"
-  integrity sha512-c5ejfdFhuAsWbNaPDtdy4PSQ8s9XOGA1+VLKPva0KLnpdFFjQq/VtELf7huv/JgDfKle4k2lZFXkdkmYTVHqXg==
+graphql-codegen-plugin-typescript-swr@0.8.3:
+  version "0.8.3"
+  resolved "https://registry.yarnpkg.com/graphql-codegen-plugin-typescript-swr/-/graphql-codegen-plugin-typescript-swr-0.8.3.tgz#c435c06505dd56dd568c8cdfd34c933cc603c379"
+  integrity sha512-6PH4z34oZMgvDkYIiBFHetZEgnkNrzUQ+F0pivGjOpsjgRZSESFXYa2h9kPXuCCAQbwn4Sp6yMuWUnlnm55Gaw==
   dependencies:
     "@graphql-codegen/plugin-helpers" "^2.3.1"
     "@graphql-codegen/visitor-plugin-common" "^2.5.1"
