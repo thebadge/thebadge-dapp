@@ -70,6 +70,12 @@ export const INITIAL_APP_CHAIN_ID = Number(
   process.env.NEXT_PUBLIC_DEFAULT_CHAIN_ID || isGitHubActionBuild ? '5' : '42',
 ) as ChainsValues
 
+export const WALLET_CONNECT_ID = Number(
+  process.env.NEXT_PUBLIC_WALLET_CONNECT || isGitHubActionBuild
+    ? 'test'
+    : process.env.NEXT_PUBLIC_WALLET_CONNECT,
+) as ChainsValues
+
 export const chainsConfig: Record<ChainsValues, ChainConfig> = {
   [Chains.goerli]: {
     id: Chains.goerli,

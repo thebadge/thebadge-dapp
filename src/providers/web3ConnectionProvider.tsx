@@ -19,7 +19,13 @@ import { UserInfo } from '@web3auth/base'
 import { Web3Auth } from '@web3auth/modal'
 import nullthrows from 'nullthrows'
 
-import { Chains, INITIAL_APP_CHAIN_ID, chainsConfig, getNetworkConfig } from '@/src/config/web3'
+import {
+  Chains,
+  INITIAL_APP_CHAIN_ID,
+  WALLET_CONNECT_ID,
+  chainsConfig,
+  getNetworkConfig,
+} from '@/src/config/web3'
 import { WEB3_AUTH_CLIENT_ID, appName } from '@/src/constants/common'
 import {
   recoverLocalStorageKey,
@@ -39,8 +45,8 @@ nullthrows(
   'No default chain ID is defined or is not supported',
 )
 nullthrows(
-  process.env.NEXT_PUBLIC_WALLET_CONNECT ? process.env.NEXT_PUBLIC_WALLET_CONNECT : null,
-  'No default WALLET CONNECT ID is defined or is not supported',
+  WALLET_CONNECT_ID ? WALLET_CONNECT_ID : null,
+  'No default NEXT_PUBLIC_WALLET_CONNECT is defined or is not supported',
 )
 
 const injected = injectedModule()
