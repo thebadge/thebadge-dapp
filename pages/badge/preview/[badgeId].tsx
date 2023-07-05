@@ -46,7 +46,7 @@ const ViewBadge: NextPageWithLayout = () => {
             alignItems="center"
             display="flex"
             flex="1"
-            justifyContent="space-evenly"
+            justifyContent="space-between"
             maxWidth={300}
           >
             <Tooltip arrow title={address === ownerAddress ? 'You already own this badge.' : ''}>
