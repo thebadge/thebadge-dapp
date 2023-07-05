@@ -3,8 +3,8 @@ import React, { RefObject, createRef, useCallback, useEffect, useState } from 'r
 import ArrowBackIosOutlinedIcon from '@mui/icons-material/ArrowBackIosOutlined'
 import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined'
 import { Box, IconButton, Stack, Typography } from '@mui/material'
-import { useTranslation } from 'next-export-i18n'
 import { colors } from '@thebadge/ui-library'
+import { useTranslation } from 'next-export-i18n'
 
 import { NoResultsAnimated } from '@/src/components/assets/animated/NoResults'
 import {

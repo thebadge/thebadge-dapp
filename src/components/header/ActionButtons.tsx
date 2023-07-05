@@ -1,8 +1,8 @@
 import React, { RefObject } from 'react'
 
 import { Box, Button, Tooltip, styled } from '@mui/material'
-import { useTranslation } from 'next-export-i18n'
 import { colors } from '@thebadge/ui-library'
+import { useTranslation } from 'next-export-i18n'
 
 import { useCurrentUser } from '@/src/hooks/subgraph/useCurrentUser'
 import { useSectionReferences } from '@/src/providers/referencesProvider'

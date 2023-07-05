@@ -11,17 +11,24 @@ import { fillListWithPlaceholders } from '@/src/components/utils/emptyBadges'
 import { nowInSeconds } from '@/src/constants/helpers'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import { TimeLeft, useDate } from '@/src/hooks/useDate'
+import { useSizeLG } from '@/src/hooks/useSize'
 import BadgeModelPreview from '@/src/pagePartials/badge/BadgeModelPreview'
+import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 
 const now = nowInSeconds()
 export default function PendingList() {
   const router = useRouter()
   const gql = useSubgraph()
   const { getPendingTimeProgressPercentage, getTimeLeft, timestampToDate } = useDate()
-  const badgesInReview = gql.useBadgesInReviewAndChallenged({ date: now })
+  const { address: ownerAddress } = useWeb3Connection()
+  const badgesInReview = gql.useUserBadgesInReviewAndChallenged({
+    ownerAddress: ownerAddress || '',
+    date: now,
+  })
 
   const badgesList = useMemo(() => {
-    const badges = badgesInReview.data?.badges.map((badgeInReview) => {
+    const badges = badgesInReview.data?.user?.badges?.map((badgeInReview) => {
+      console.log('badge', badgeInReview)
       const dueDate: Date = timestampToDate(badgeInReview.badgeKlerosMetaData?.reviewDueDate)
       const pendingTimeDurationSeconds: number =
         badgeInReview.badgeModel.badgeModelKleros?.challengePeriodDuration
@@ -37,8 +44,8 @@ export default function PendingList() {
           onClick={() => router.push(`/badge/preview/${badgeInReview.id}`)}
           sx={{ height: '100%', display: 'flex', cursor: 'pointer' }}
         >
-          <InViewPort minHeight={220} minWidth={140}>
-            <SafeSuspense>
+          <InViewPort color={'green'} minHeight={220} minWidth={140}>
+            <SafeSuspense color={'green'}>
               <PendingBadgeOverlay
                 badge={<BadgeModelPreview metadata={badgeInReview.badgeModel?.uri} size="small" />}
                 percentage={progressPercentage}
@@ -50,9 +57,9 @@ export default function PendingList() {
       )
     })
     // If there is no badges to show, we list 5 placeholders
-    return fillListWithPlaceholders(badges, <EmptyBadgePreview size="small" />, 5)
+    return fillListWithPlaceholders(badges, <EmptyBadgePreview size="small" />, 2)
   }, [
-    badgesInReview.data?.badges,
+    badgesInReview.data?.user?.badges,
     getPendingTimeProgressPercentage,
     getTimeLeft,
     router,
@@ -64,7 +71,7 @@ export default function PendingList() {
       items={badgesList}
       itemsScale={'0.7'}
       leftPadding={'0'}
-      maxSlidesPerView={2}
+      maxSlidesPerView={useSizeLG() ? 1 : 2}
       spaceBetween={8}
     />
   )

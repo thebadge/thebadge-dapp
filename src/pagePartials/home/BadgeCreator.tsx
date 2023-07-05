@@ -2,8 +2,8 @@ import { useRouter } from 'next/router'
 
 import TaskAltIcon from '@mui/icons-material/TaskAlt'
 import { Box, Typography } from '@mui/material'
-import { useTranslation } from 'next-export-i18n'
 import { ButtonV2, colors } from '@thebadge/ui-library'
+import { useTranslation } from 'next-export-i18n'
 
 import { DOCS_URL } from '@/src/constants/common'
 import { useSectionReferences } from '@/src/providers/referencesProvider'

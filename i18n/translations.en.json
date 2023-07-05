@@ -120,6 +120,12 @@
   "profile": {
     "title": "This is your profile",
     "titleOf": "This is the profile of {{address}}",
+    "nearToExpire": {
+      "title": "Near to expire"
+    },
+    "pending": {
+      "title": "Pending"
+    },
     "badgesYouOwn": {
       "title": "Badges that you own",
       "shared_title": "Badges that the user own",
@@ -269,6 +275,13 @@
         "ownBadgeChallenge": "You can't do a challenge to your own badge",
         "challengeButton": "CHALLENGE"
       }
+    }
+  },
+  "badgesList": {
+    "filters": {
+      "minted": "Minted",
+      "challenged": "Challenged",
+      "inReview": "In Review"
     }
   },
   "footer": {

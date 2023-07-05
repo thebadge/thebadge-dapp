@@ -2,9 +2,9 @@ import React from 'react'
 
 import CloseIcon from '@mui/icons-material/Close'
 import { Box, IconButton, Modal, Skeleton, Stack, Tooltip, Typography, styled } from '@mui/material'
-import { useTranslation } from 'next-export-i18n'
 import { ButtonV2, colors } from '@thebadge/ui-library'
 import { gradients } from '@thebadge/ui-library'
+import { useTranslation } from 'next-export-i18n'
 
 import DisplayEvidenceField from '@/src/components/displayEvidence/DisplayEvidenceField'
 import { Address } from '@/src/components/helpers/Address'

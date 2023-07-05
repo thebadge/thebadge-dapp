@@ -5,4 +5,10 @@ export function nowInSeconds() {
   return Math.floor(Date.now() / 1000)
 }
 
+export function nowPlusOneMonthInSeconds() {
+  // const now = new Date()
+  // const nowPlusOneMonth = now.addMonths(1)
+  return Math.floor(Date.now() / 1000)
+}
+
 export const ADDRESS_PREFIX = '0x'

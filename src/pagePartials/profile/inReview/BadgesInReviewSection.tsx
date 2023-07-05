@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 
 import { Box, Stack } from '@mui/material'
-import { useTranslation } from 'next-export-i18n'
 import { colors } from '@thebadge/ui-library'
+import { useTranslation } from 'next-export-i18n'
 
 import { NoResultsAnimated } from '@/src/components/assets/animated/NoResults'
 import FilteredList, { ListFilter } from '@/src/components/helpers/FilteredList'

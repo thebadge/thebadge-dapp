@@ -5,6 +5,7 @@ gql`
     id
     status
     uri
+    validFor
     account {
       id
     }

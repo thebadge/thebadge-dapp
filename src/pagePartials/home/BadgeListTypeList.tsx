@@ -2,8 +2,8 @@ import { useRouter } from 'next/navigation'
 import React, { useCallback } from 'react'
 
 import { Box } from '@mui/material'
-import { EffectCoverflow, Pagination } from 'swiper'
 import { EmptyBadgePreview } from '@thebadge/ui-library'
+import { EffectCoverflow, Pagination } from 'swiper'
 
 import InViewPort from '@/src/components/helpers/InViewPort'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'

@@ -1,7 +1,7 @@
 import { Box, Container, styled, useTheme } from '@mui/material'
 import { PaletteColorOptions } from '@mui/material/styles/createPalette'
-import Headroom from 'react-headroom'
 import { BackgroundGradient } from '@thebadge/ui-library'
+import Headroom from 'react-headroom'
 
 import Header from '@/src/components/header/Header'
 import { Footer } from '@/src/components/layout/Footer'
