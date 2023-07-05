@@ -1,7 +1,7 @@
 import { Box, Container, styled, useTheme } from '@mui/material'
 import { PaletteColorOptions } from '@mui/material/styles/createPalette'
 import Headroom from 'react-headroom'
-import { BackgroundGradient } from 'thebadge-ui-library'
+import { BackgroundGradient } from '@thebadge/ui-library'
 
 import Header from '@/src/components/header/Header'
 import { Footer } from '@/src/components/layout/Footer'
@@ -77,7 +77,7 @@ export default function DefaultLayout({ children }: DefaultLayoutProps) {
               sx={{
                 display: 'flex',
                 flexDirection: 'column',
-                margin: theme.spacing(6, 'auto', 12),
+                margin: theme.spacing(6, 'auto', 6),
               }}
             >
               {children}

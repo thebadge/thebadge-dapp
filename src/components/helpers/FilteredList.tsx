@@ -4,7 +4,7 @@ import { Box, Chip, Divider, Stack, Typography, styled } from '@mui/material'
 import { ChipPropsColorOverrides } from '@mui/material/Chip/Chip'
 import { OverridableStringUnion } from '@mui/types'
 import Sticky from 'react-sticky-el'
-import { colors } from 'thebadge-ui-library'
+import { colors } from '@thebadge/ui-library'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { Loading } from '@/src/components/loading/Loading'

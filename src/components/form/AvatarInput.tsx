@@ -7,7 +7,7 @@ import { useDescription, useTsController } from '@ts-react/form'
 import Blockies from 'react-18-blockies'
 import { FieldError } from 'react-hook-form'
 import ImageUploading, { ImageListType, ImageType } from 'react-images-uploading'
-import { colors } from 'thebadge-ui-library'
+import { colors } from '@thebadge/ui-library'
 import { z } from 'zod'
 
 import { TextFieldStatus } from '@/src/components/form/TextField'

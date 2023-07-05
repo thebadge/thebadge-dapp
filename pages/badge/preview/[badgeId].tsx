@@ -2,7 +2,7 @@ import { useRouter } from 'next/navigation'
 
 import { Box, Stack, Tooltip } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
-import { ButtonV2, colors } from 'thebadge-ui-library'
+import { ButtonV2, colors } from '@thebadge/ui-library'
 
 import SafeSuspense, { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import useBadgeIdParam from '@/src/hooks/nextjs/useBadgeIdParam'

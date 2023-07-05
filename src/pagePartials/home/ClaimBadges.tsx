@@ -2,7 +2,7 @@ import { useRouter } from 'next/router'
 
 import { Box, Divider, Typography, useTheme } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
-import { ButtonV2, colors } from 'thebadge-ui-library'
+import { ButtonV2, colors } from '@thebadge/ui-library'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import BadgeListTypeList from '@/src/pagePartials/home/BadgeListTypeList'

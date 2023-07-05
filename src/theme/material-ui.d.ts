@@ -4,7 +4,7 @@ import {
   PaletteColorOptions,
   SimplePaletteColorOptions,
 } from '@mui/material/styles/createPalette';
-import 'thebadge-ui-library/dist/assets/material-ui.d.ts';
+import '@thebadge/ui-library/dist/assets/material-ui.d.ts';
 
 // TODO Do the right augmentation
 

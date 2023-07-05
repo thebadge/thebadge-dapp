@@ -5,7 +5,7 @@ import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import { Box, Slider, Tooltip, Typography, styled } from '@mui/material'
 import { useDescription, useTsController } from '@ts-react/form'
 import { FieldError } from 'react-hook-form'
-import { gradients } from 'thebadge-ui-library'
+import { gradients } from '@thebadge/ui-library'
 import { z } from 'zod'
 
 import { TextFieldStatus } from '@/src/components/form/TextField'

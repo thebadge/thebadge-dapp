@@ -1,4 +1,4 @@
-import { colors } from 'thebadge-ui-library'
+import { colors } from '@thebadge/ui-library'
 
 import { MenuItemType } from '@/src/components/navigation/MainMenu.types'
 

@@ -4,7 +4,7 @@ import React from 'react'
 import CloseIcon from '@mui/icons-material/Close'
 import { Box, IconButton, Stack, Typography, styled } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
-import { colors, gradients } from 'thebadge-ui-library'
+import { colors, gradients } from '@thebadge/ui-library'
 
 import { BadgeAnimatedLogo } from '@/src/components/assets/animated/BadgeAnimatedLogo'
 import { useSectionReferences } from '@/src/providers/referencesProvider'

@@ -3,7 +3,7 @@ import Image from 'next/image'
 import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined'
 import { Box, Divider, IconButton, Stack, Typography } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
-import { colors } from 'thebadge-ui-library'
+import { colors } from '@thebadge/ui-library'
 
 import challengedLogo from '@/src/components/assets/challenged.webp'
 import LinkWithTranslation from '@/src/components/helpers/LinkWithTranslation'

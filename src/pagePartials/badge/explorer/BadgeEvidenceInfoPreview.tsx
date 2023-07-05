@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Box, Divider, Stack, Typography } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
-import { ButtonV2, colors } from 'thebadge-ui-library'
+import { ButtonV2, colors } from '@thebadge/ui-library'
 
 import DisplayEvidenceField from '@/src/components/displayEvidence/DisplayEvidenceField'
 import { Address } from '@/src/components/helpers/Address'

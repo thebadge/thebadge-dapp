@@ -1,6 +1,6 @@
 import { Box, Typography, useTheme } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
-import { SectionLayout, colors, gradients } from 'thebadge-ui-library'
+import { SectionLayout, colors, gradients } from '@thebadge/ui-library'
 
 import BadgeCreator from '@/src/pagePartials/home/BadgeCreator'
 import CertificationProcess from '@/src/pagePartials/home/CertificationProcess'

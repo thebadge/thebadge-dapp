@@ -3,7 +3,7 @@ import * as React from 'react'
 import ReportProblemOutlinedIcon from '@mui/icons-material/ReportProblemOutlined'
 import { Box, Divider, Stack, Typography } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
-import { colors } from 'thebadge-ui-library'
+import { colors } from '@thebadge/ui-library'
 
 import MarkdownTypography from '@/src/components/common/MarkdownTypography'
 import { getNetworkConfig } from '@/src/config/web3'

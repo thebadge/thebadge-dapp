@@ -10,7 +10,7 @@ import {
   Typography,
   styled,
 } from '@mui/material'
-import { colors } from 'thebadge-ui-library'
+import { colors } from '@thebadge/ui-library'
 
 import { FormField } from '@/src/components/form/helpers/FormField'
 import useS3Metadata from '@/src/hooks/useS3Metadata'

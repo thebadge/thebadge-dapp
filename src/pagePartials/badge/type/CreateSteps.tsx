@@ -3,7 +3,7 @@ import { useState } from 'react'
 
 import { Stack, Typography } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
-import { BadgePreview, colors } from 'thebadge-ui-library'
+import { BadgePreview, colors } from '@thebadge/ui-library'
 import { z } from 'zod'
 
 import MarkdownTypography from '@/src/components/common/MarkdownTypography'

@@ -1,6 +1,6 @@
 import HistoryOutlinedIcon from '@mui/icons-material/HistoryOutlined'
 import { Box, Divider, Typography } from '@mui/material'
-import { colors } from 'thebadge-ui-library'
+import { colors } from '@thebadge/ui-library'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { SectionTitleBox } from '@/src/pagePartials/home/SectionBoxes'

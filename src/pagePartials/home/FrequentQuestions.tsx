@@ -1,7 +1,7 @@
 import AddIcon from '@mui/icons-material/Add'
 import { Accordion, AccordionDetails, AccordionSummary, Box, Typography } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
-import { colors } from 'thebadge-ui-library'
+import { colors } from '@thebadge/ui-library'
 
 import { DOCS_URL } from '@/src/constants/common'
 import { useSectionReferences } from '@/src/providers/referencesProvider'
@@ -18,7 +18,7 @@ export default function FrequentQuestions() {
       display={'flex'}
       flex={1}
       flexDirection={'column'}
-      paddingY={6}
+      marginTop={8}
       ref={frequentQuestionsSection}
     >
       <Typography color={colors.pink} fontSize={'20px !important'} lineHeight={'26px'}>

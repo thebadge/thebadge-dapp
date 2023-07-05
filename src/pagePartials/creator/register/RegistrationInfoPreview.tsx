@@ -3,7 +3,7 @@ import React from 'react'
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined'
 import TwitterIcon from '@mui/icons-material/Twitter'
 import { Avatar, Box, Stack, Typography } from '@mui/material'
-import { IconDiscord } from 'thebadge-ui-library'
+import { IconDiscord } from '@thebadge/ui-library'
 
 import { Address } from '@/src/components/helpers/Address'
 import { InfoPreviewContainer } from '@/src/pagePartials/profile/userInfo/InfoPreviewContainer'

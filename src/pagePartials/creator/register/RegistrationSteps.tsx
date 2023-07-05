@@ -3,7 +3,7 @@ import { useCallback, useState } from 'react'
 
 import { Stack, Typography } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
-import { colors } from 'thebadge-ui-library'
+import { colors } from '@thebadge/ui-library'
 import { z } from 'zod'
 
 import { RegisterCuratorSchema } from '@/pages/creator/register'

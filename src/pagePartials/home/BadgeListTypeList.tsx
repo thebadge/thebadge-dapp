@@ -3,7 +3,7 @@ import React, { useCallback } from 'react'
 
 import { Box } from '@mui/material'
 import { EffectCoverflow, Pagination } from 'swiper'
-import { EmptyBadgePreview } from 'thebadge-ui-library'
+import { EmptyBadgePreview } from '@thebadge/ui-library'
 
 import InViewPort from '@/src/components/helpers/InViewPort'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'

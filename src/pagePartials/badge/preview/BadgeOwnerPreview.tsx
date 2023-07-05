@@ -19,7 +19,7 @@ import {
 } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
 import Blockies from 'react-18-blockies'
-import { ButtonV2, IconDiscord, colors } from 'thebadge-ui-library'
+import { ButtonV2, IconDiscord, colors } from '@thebadge/ui-library'
 
 import { Address } from '@/src/components/helpers/Address'
 import VerifiedCreator from '@/src/components/icons/VerifiedCreator'

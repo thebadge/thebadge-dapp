@@ -5,7 +5,7 @@ import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined'
 import TwitterIcon from '@mui/icons-material/Twitter'
 import { Avatar, Badge, Box, IconButton, Stack, Tooltip, Typography } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
-import { IconDiscord } from 'thebadge-ui-library'
+import { IconDiscord } from '@thebadge/ui-library'
 
 import { Address } from '@/src/components/helpers/Address'
 import VerifiedCreator from '@/src/components/icons/VerifiedCreator'

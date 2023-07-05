@@ -4,7 +4,7 @@ import { useCallback, useRef, useState } from 'react'
 import { Box, Stack, Typography } from '@mui/material'
 import domtoimage from 'dom-to-image'
 import { useTranslation } from 'next-export-i18n'
-import { BadgePreview, colors } from 'thebadge-ui-library'
+import { BadgePreview, colors } from '@thebadge/ui-library'
 import { AnyZodObject, z } from 'zod'
 
 import MarkdownTypography from '@/src/components/common/MarkdownTypography'

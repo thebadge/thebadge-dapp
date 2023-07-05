@@ -4,7 +4,7 @@ import React from 'react'
 import { Box, Divider, Stack, Typography } from '@mui/material'
 import { formatUnits } from 'ethers/lib/utils'
 import { useTranslation } from 'next-export-i18n'
-import { ButtonV2, colors } from 'thebadge-ui-library'
+import { ButtonV2, colors } from '@thebadge/ui-library'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { getNetworkConfig } from '@/src/config/web3'

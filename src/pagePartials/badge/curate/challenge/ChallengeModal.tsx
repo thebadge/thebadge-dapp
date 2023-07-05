@@ -17,7 +17,7 @@ import {
 import { useTranslation } from 'next-export-i18n'
 import { Controller, useForm } from 'react-hook-form'
 import { ImageType } from 'react-images-uploading'
-import { colors, gradients } from 'thebadge-ui-library'
+import { colors, gradients } from '@thebadge/ui-library'
 import { z } from 'zod'
 
 import { FileInput } from '@/src/components/form/FileInput'

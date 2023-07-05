@@ -4,7 +4,7 @@ import ArrowBackIosOutlinedIcon from '@mui/icons-material/ArrowBackIosOutlined'
 import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined'
 import { Box, IconButton, Stack, Typography } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
-import { colors } from 'thebadge-ui-library'
+import { colors } from '@thebadge/ui-library'
 
 import { NoResultsAnimated } from '@/src/components/assets/animated/NoResults'
 import {

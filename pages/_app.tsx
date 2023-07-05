@@ -16,7 +16,7 @@ import { PreventActionIfOutOfService } from '@/src/pagePartials/errors/preventAc
 import { Head } from '@/src/pagePartials/index/Head'
 import ThemeProvider from '@/src/providers/themeProvider'
 import { NextPageWithLayout } from '@/types/next'
-import 'node_modules/thebadge-ui-library/dist/index.css'
+import 'node_modules/@thebadge/ui-library/dist/index.css'
 import 'sanitize.css'
 import 'src/theme/global.css'
 import 'src/theme/icon-animation.css'
