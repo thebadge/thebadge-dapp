@@ -44,7 +44,7 @@ export default function BadgeOwnedPreview() {
       )}
       <Box display="flex" flex={1} gap={8} justifyContent="space-between" my={4}>
         <Box display="flex" flex={1}>
-          <BadgeModelPreview metadata={badgeModel?.uri} />
+          <BadgeModelPreview effects metadata={badgeModel?.uri} />
         </Box>
         <Stack flex={2} gap={2} justifyContent="space-between">
           <Stack gap={3}>

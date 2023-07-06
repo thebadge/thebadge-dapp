@@ -330,5 +330,8 @@
       "time": "time left",
       "toExpire": "to expire"
     }
+  },
+  "externalLink" : {
+    "copied": "Link copied"
   }
 }

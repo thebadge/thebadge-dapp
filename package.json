@@ -22,6 +22,7 @@
     "@hookform/resolvers": "^2.9.11",
     "@mdx-js/loader": "^2.3.0",
     "@mdx-js/react": "^2.3.0",
+    "@mui/lab": "^5.0.0-alpha.133",
     "@mui/material": "^5.11.3",
     "@next/mdx": "^13.2.4",
     "@thebadge/ui-library": "^1.7.4",

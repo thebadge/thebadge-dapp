@@ -3,6 +3,7 @@ import React, { useRef, useState } from 'react'
 
 import AddRoundedIcon from '@mui/icons-material/AddRounded'
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined'
+import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded'
 import TwitterIcon from '@mui/icons-material/Twitter'
 import {
   Avatar,
@@ -82,7 +83,7 @@ export default function BadgeOwnerPreview({ ownerAddress }: { ownerAddress: stri
         </Box>
 
         <IconButton onClick={handleClick} size="small">
-          <AddRoundedIcon color="purple" />
+          {!open ? <AddRoundedIcon color="purple" /> : <RemoveRoundedIcon color="purple" />}
         </IconButton>
       </Wrapper>
       <OwnerDisplay
