@@ -1,8 +1,9 @@
 import { useRouter } from 'next/navigation'
 import { useMemo } from 'react'
 
-import { Box } from '@mui/material'
-import { EmptyBadgePreview, TimeToExpireBadgeOverlay } from '@thebadge/ui-library'
+import { Box, Tooltip } from '@mui/material'
+import { ButtonV2, EmptyBadgePreview, TimeToExpireBadgeOverlay, colors } from '@thebadge/ui-library'
+import { useTranslation } from 'next-export-i18n'
 
 import InViewPort from '@/src/components/helpers/InViewPort'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
@@ -19,6 +20,7 @@ const now = nowInSeconds()
 const nowPlusOneMonth = nowPlusOneMonthInSeconds()
 
 export default function NearToExpireList() {
+  const { t } = useTranslation()
   const router = useRouter()
   const gql = useSubgraph()
   const md = useSizeMD()
@@ -37,17 +39,44 @@ export default function NearToExpireList() {
       const expirationDate: Date = timestampToDate(badge.validFor)
       const timeLeft: TimeLeft = getTimeLeftToExpire(expirationDate)
       return (
-        <Box
-          key={badge.id}
-          onClick={() => router.push(`/badge/preview/${badge.id}`)}
-          sx={{ height: '100%', display: 'flex' }}
-        >
+        <Box key={badge.id} sx={{ height: '100%', display: 'flex' }}>
           <InViewPort color={'purple'} minHeight={220} minWidth={140}>
             <SafeSuspense color={'purple'}>
-              <TimeToExpireBadgeOverlay
-                badge={<BadgeModelPreview metadata={badge.badgeModel?.uri} size="small" />}
-                timeLeft={timeLeft}
-              />
+              <Box sx={{ width: 'fit-content' }}>
+                <Box
+                  onClick={() => router.push(`/badge/preview/${badge.id}`)}
+                  sx={{ cursor: 'pointer' }}
+                >
+                  <TimeToExpireBadgeOverlay
+                    badge={<BadgeModelPreview metadata={badge.badgeModel?.uri} size="small" />}
+                    timeLeft={timeLeft}
+                  />
+                </Box>
+                <Tooltip arrow title={'Not available yet. Coming soon...'}>
+                  <span>
+                    <ButtonV2
+                      backgroundColor={colors.purple}
+                      disabled={true}
+                      fontColor={colors.white}
+                      sx={{
+                        width: '100%',
+                        height: 'fit-content !important',
+                        marginTop: '1rem',
+                        padding: '0.5rem 1rem !important',
+                        borderRadius: '10px',
+                        fontSize: '15px !important',
+                        lineHeight: '15px',
+                        fontWeight: 700,
+                        boxShadow: 'none',
+                        textTransform: 'uppercase',
+                      }}
+                      variant="contained"
+                    >
+                      {t('badge.mintAgainButton')}
+                    </ButtonV2>
+                  </span>
+                </Tooltip>
+              </Box>
             </SafeSuspense>
           </InViewPort>
         </Box>

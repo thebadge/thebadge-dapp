@@ -275,7 +275,8 @@
         "challengeButton": "CHALLENGE"
       }
     },
-    "claimButton": "Claim"
+    "claimButton": "Claim",
+    "mintAgainButton": "Mint again"
   },
   "badgesList": {
     "filters": {

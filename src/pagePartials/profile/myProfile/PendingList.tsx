@@ -50,19 +50,20 @@ export default function PendingList() {
       }
 
       return (
-        <Box
-          key={badge.id}
-          onClick={() => router.push(`/badge/preview/${badge.id}`)}
-          sx={{ height: '100%', display: 'flex', cursor: 'pointer' }}
-        >
+        <Box key={badge.id} sx={{ height: '100%', display: 'flex', cursor: 'pointer' }}>
           <InViewPort color={'green'} minHeight={220} minWidth={140}>
             <SafeSuspense color={'green'}>
               <Box sx={{ width: 'fit-content' }}>
-                <PendingBadgeOverlay
-                  badge={<BadgeModelPreview metadata={badge.badgeModel?.uri} size="small" />}
-                  percentage={progressPercentage}
-                  timeLeft={timeLeft}
-                />
+                <Box
+                  onClick={() => router.push(`/badge/preview/${badge.id}`)}
+                  sx={{ cursor: 'pointer' }}
+                >
+                  <PendingBadgeOverlay
+                    badge={<BadgeModelPreview metadata={badge.badgeModel?.uri} size="small" />}
+                    percentage={progressPercentage}
+                    timeLeft={timeLeft}
+                  />
+                </Box>
                 <ButtonV2
                   backgroundColor={colors.blue}
                   disabled={progressPercentage < 100}
