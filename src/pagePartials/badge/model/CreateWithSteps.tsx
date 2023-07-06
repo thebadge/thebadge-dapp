@@ -18,6 +18,7 @@ import {
 import StepFooter from '@/src/pagePartials/badge/model/steps/StepFooter'
 import BadgeModelEvidenceFormCreation from '@/src/pagePartials/badge/model/steps/evidence/BadgeModelEvidenceFormCreation'
 import BadgeModelConfirmation from '@/src/pagePartials/badge/model/steps/preview/BadgeModelConfirmation'
+import BadgeModelCreated from '@/src/pagePartials/badge/model/steps/preview/BadgeModelCreated'
 import BadgeModelStrategy from '@/src/pagePartials/badge/model/steps/strategy/BadgeModelStrategy'
 import HowItWorks from '@/src/pagePartials/badge/model/steps/terms/HowItWorks'
 import BadgeModelUIBasics from '@/src/pagePartials/badge/model/steps/uiBasics/BadgeModelUIBasics'
@@ -86,7 +87,10 @@ export default function CreateWithSteps({
         onStepNavigation={onStepNavigation}
       />
       <Container maxWidth="md" sx={{ minHeight: '50vh' }}>
-        {txState !== TransactionStates.none && <TransactionLoading state={txState} />}
+        {txState !== TransactionStates.none && txState !== TransactionStates.success && (
+          <TransactionLoading state={txState} />
+        )}
+        {txState === TransactionStates.success && <BadgeModelCreated />}
         {txState === TransactionStates.none && (
           <form onSubmit={methods.handleSubmit(onSubmit)}>
             <Stack gap={3}>

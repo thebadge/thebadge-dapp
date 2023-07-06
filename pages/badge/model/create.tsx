@@ -1,6 +1,3 @@
-import { useRouter } from 'next/router'
-import { useEffect } from 'react'
-
 import { parseUnits } from 'ethers/lib/utils'
 
 import { isMetadataColumnArray } from '@/src/components/form/helpers/validators'
@@ -16,18 +13,10 @@ import { TheBadge__factory } from '@/types/generated/typechain'
 import { NextPageWithLayout } from '@/types/next'
 
 const CreateBadgeType: NextPageWithLayout = () => {
-  const { sendTx, state } = useTransaction()
-  const router = useRouter()
+  const { sendTx } = useTransaction()
 
   const { address, appChainId, readOnlyAppProvider } = useWeb3Connection()
   const theBadge = useContractInstance(TheBadge__factory, 'TheBadge')
-
-  useEffect(() => {
-    // Redirect to the creator profile section
-    if (state === TransactionStates.success) {
-      router.push(`/profile?filter=createdBadges`)
-    }
-  }, [router, state])
 
   const onSubmit = async (data: CreateModelSchemaType) => {
     const {
@@ -102,7 +91,7 @@ const CreateBadgeType: NextPageWithLayout = () => {
     }
   }
 
-  return <CreateWithSteps onSubmit={onSubmit} txState={state} />
+  return <CreateWithSteps onSubmit={onSubmit} txState={TransactionStates.success} />
 }
 
 export default withPageGenericSuspense(CreateBadgeType)
