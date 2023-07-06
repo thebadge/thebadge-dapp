@@ -27,7 +27,7 @@ export default function BadgeModelStrategy() {
         render={({ field: { onChange, value }, fieldState: { error } }) => (
           <PeriodSelector
             error={error}
-            label={'Challenge period duration'}
+            label={t('badge.model.create.strategy.challengePeriodDuration')}
             maxValue={90}
             minValue={2}
             onChange={onChange}
@@ -42,7 +42,7 @@ export default function BadgeModelStrategy() {
           return (
             <SeveritySelector
               error={error}
-              label={'Rigorousness'}
+              label={t('badge.model.create.strategy.rigorousness')}
               onChange={onChange}
               value={value}
             />
@@ -57,7 +57,7 @@ export default function BadgeModelStrategy() {
             render={({ field: { onChange, value }, fieldState: { error } }) => (
               <ExpirationField
                 error={error}
-                label={'Expiration time'}
+                label={t('badge.model.create.strategy.validFor')}
                 onChange={onChange}
                 value={value}
               />
@@ -73,7 +73,7 @@ export default function BadgeModelStrategy() {
                 decimals={18}
                 error={error}
                 hiddenBalance={true}
-                label={'Mint const'}
+                label={t('badge.model.create.strategy.mintCost')}
                 onChange={onChange}
                 symbol={networkConfig.token}
                 value={value}

@@ -3,6 +3,7 @@ import * as React from 'react'
 
 import { Box, Divider } from '@mui/material'
 import { formatUnits } from 'ethers/lib/utils'
+import { useTranslation } from 'next-export-i18n'
 import { z } from 'zod'
 
 import { CustomOptionPaper, Title, Value, ValueContainer } from './styled'
@@ -22,6 +23,7 @@ export default function SeverityOptionItem({
   selected: boolean
   onSelect: (values: z.infer<typeof SeverityTypeSchema._def.type>) => void
 }) {
+  const { t } = useTranslation()
   const feeForJuror = useJurorFee(DEFAULT_COURT_ID)
 
   const challengeBounty =
@@ -50,9 +52,7 @@ export default function SeverityOptionItem({
     >
       <Box display="flex">
         <Box alignItems="center" flex="1">
-          <Title>
-            Amount <br /> of Jurors
-          </Title>
+          <Title>{t('severity.amountOfJurors')}</Title>
         </Box>
         <ValueContainer>
           <Value color={SEVERITY_COLORS[severity]}>{SEVERITY_FEES[severity].amountOfJurors}</Value>
@@ -63,7 +63,7 @@ export default function SeverityOptionItem({
 
       <Box display="flex">
         <Box alignItems="center" flex="1">
-          <Title>Challenge Bounty</Title>
+          <Title>{t('severity.challengeBounty')}</Title>
         </Box>
         <ValueContainer>
           <Value color={SEVERITY_COLORS[severity]}>{challengeBountyDisplay}</Value>
@@ -74,9 +74,7 @@ export default function SeverityOptionItem({
 
       <Box display="flex">
         <Box alignItems="center" display="flex" flex="1">
-          <Title>
-            Base <br /> deposit
-          </Title>
+          <Title>{t('severity.baseDeposit')}</Title>
         </Box>
         <ValueContainer>
           <Value color={SEVERITY_COLORS[severity]}>{baseDepositDisplayValue}</Value>

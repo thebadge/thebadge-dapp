@@ -41,11 +41,11 @@ export default function StepHeader({
   return (
     <Stack sx={{ display: 'flex', flexDirection: 'column', mb: 6, gap: 4, alignItems: 'center' }}>
       <Typography color={colors.purple} textAlign="center" variant="title2">
-        {t('badge.type.create.title')}
+        {t('badge.model.create.title')}
       </Typography>
 
       <MarkdownTypography textAlign="justify" variant="body3" width="85%">
-        {t(`badge.type.create.steps.${currentStep}.subTitle`, {
+        {t(`badge.model.create.steps.${currentStep}.subTitle`, {
           docsUrl: DOCS_URL + '/thebadge-documentation/protocol-mechanics/how-it-works',
           criteriaDocsUrl: DOCS_URL + '/thebadge-documentation/protocol-mechanics/how-it-works',
           createBadgeTypeDocs: DOCS_URL + '/thebadge-documentation/protocol-mechanics/how-it-works',

@@ -1,6 +1,7 @@
 import { Box, Button, styled } from '@mui/material'
 import { ButtonPropsColorOverrides } from '@mui/material/Button/Button'
 import { OverridableStringUnion } from '@mui/types'
+import { useTranslation } from 'next-export-i18n'
 import { useFormContext } from 'react-hook-form'
 
 import { saveFormValues } from '../utils'
@@ -26,6 +27,7 @@ export default function StepFooter({
   onNextCallback: VoidFunction
   onBackCallback: VoidFunction
 }) {
+  const { t } = useTranslation()
   const { getValues } = useFormContext()
 
   const canGoBack = currentStep !== 0
@@ -52,7 +54,7 @@ export default function StepFooter({
             onClick={onBack}
             variant="contained"
           >
-            Back
+            {t('badge.model.create.back')}
           </StepButton>
         )}
         {!isLastStep && (
@@ -62,7 +64,7 @@ export default function StepFooter({
             sx={{ ml: !canGoBack ? 'auto' : 'none' }}
             variant="contained"
           >
-            Next
+            {t('badge.model.create.next')}
           </StepButton>
         )}
         {isLastStep && (
@@ -73,7 +75,7 @@ export default function StepFooter({
               type="submit"
               variant="contained"
             >
-              Submit
+              {t('badge.model.create.submit')}
             </StepButton>
           </PreventActionWithoutConnection>
         )}

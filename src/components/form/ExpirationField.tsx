@@ -14,6 +14,7 @@ import {
 } from '@mui/material'
 import { useDescription, useTsController } from '@ts-react/form'
 import dayjs from 'dayjs'
+import { useTranslation } from 'next-export-i18n'
 import { FieldError } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -53,6 +54,7 @@ export function ExpirationField({
   placeholder,
   value,
 }: ExpirationFieldProps) {
+  const { t } = useTranslation()
   const [stringValue, setStringValue] = useState<string>('')
   const [enableExpiration, setEnableExpiration] = useState<boolean>(false)
 
@@ -100,7 +102,7 @@ export function ExpirationField({
               onChange={() => toggleExpiration(!enableExpiration)}
             />
           }
-          label={'Enable expiration time'}
+          label={t('expirationField.enable')}
         />
       </Box>
 
@@ -112,8 +114,7 @@ export function ExpirationField({
                 <Tooltip
                   arrow
                   title={
-                    placeholder +
-                    `\n e.g. If you mint this badge today, It will expire on: ${validTo(value)}`
+                    placeholder + '\n' + t('expirationField.expirePlaceholder') + validTo(value)
                   }
                 >
                   <InfoOutlinedIcon />

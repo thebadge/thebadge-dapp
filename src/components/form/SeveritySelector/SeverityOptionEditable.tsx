@@ -6,6 +6,7 @@ import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded'
 import { Box, Divider, IconButton, InputAdornment } from '@mui/material'
 import { BigNumberInput } from 'big-number-input'
 import { formatUnits } from 'ethers/lib/utils'
+import { useTranslation } from 'next-export-i18n'
 import { z } from 'zod'
 
 import { CustomOptionPaper, Title, Value, ValueContainer, VerySmallTextField } from './styled'
@@ -29,6 +30,7 @@ export default function SeverityOptionEditable({
   onSelect: (values: any) => void
   onChange: (value: any) => void
 }) {
+  const { t } = useTranslation()
   const feeForJuror = useJurorFee(DEFAULT_COURT_ID)
   const [challengeBounty, setChallengeBounty] = useState(
     feeForJuror.data?.toString() || ZERO_BN.toString(),
@@ -88,9 +90,9 @@ export default function SeverityOptionEditable({
       selected={selected}
     >
       <Box display="flex">
-        <Title>
-          Amount <br /> of Jurors
-        </Title>
+        <Box alignItems="center" flex="1">
+          <Title>{t('severity.amountOfJurors')}</Title>
+        </Box>
         <ValueContainer>
           <VerySmallTextField
             InputProps={{
@@ -135,10 +137,9 @@ export default function SeverityOptionEditable({
       <Divider color={SEVERITY_COLORS[severity]} />
 
       <Box display="flex">
-        <Title>
-          Challenge <br /> Bounty
-        </Title>
-
+        <Box alignItems="center" flex="1">
+          <Title>{t('severity.challengeBounty')}</Title>
+        </Box>
         <ValueContainer>
           <BigNumberInput
             decimals={18}
@@ -162,9 +163,7 @@ export default function SeverityOptionEditable({
       <Divider color={SEVERITY_COLORS[severity]} />
 
       <Box display="flex">
-        <Title>
-          Base <br /> deposit
-        </Title>
+        <Title>{t('severity.baseDeposit')}</Title>
         <ValueContainer>
           <Value color={SEVERITY_COLORS[severity]}>{baseDepositDisplayValue}</Value>
         </ValueContainer>

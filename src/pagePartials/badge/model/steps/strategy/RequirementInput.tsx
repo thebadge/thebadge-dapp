@@ -25,7 +25,7 @@ export default function RequirementInput() {
   return (
     <>
       <Typography color="text.disabled" variant="dAppTitle2">
-        Create the acceptance criteria
+        {t('acceptanceCriteria.create')}
       </Typography>
       <TransitionGroup>
         {!enableTextEditor && (

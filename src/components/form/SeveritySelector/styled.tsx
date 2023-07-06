@@ -34,7 +34,7 @@ export const CustomOptionPaper = styled(Box, {
 }))
 
 export const VerySmallTextField = styled(TextField)<{ fontColor: string }>(({ fontColor }) => ({
-  width: '70%',
+  width: '95%',
   marginLeft: 'auto',
   '& :before': {
     borderBottom: 'none !important',

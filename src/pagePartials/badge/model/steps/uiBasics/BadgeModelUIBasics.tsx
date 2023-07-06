@@ -56,15 +56,25 @@ export default function BadgeModelUIBasics() {
           <Controller
             control={control}
             name={'name'}
-            render={({ field: { name, onChange, value }, fieldState: { error } }) => (
-              <TextField error={error} label={name} onChange={onChange} value={value} />
+            render={({ field: { onChange, value }, fieldState: { error } }) => (
+              <TextField
+                error={error}
+                label={t('badge.model.create.uiBasics.name')}
+                onChange={onChange}
+                value={value}
+              />
             )}
           />
           <Controller
             control={control}
             name={'description'}
-            render={({ field: { name, onChange, value }, fieldState: { error } }) => (
-              <TextArea error={error} label={name} onChange={onChange} value={value} />
+            render={({ field: { onChange, value }, fieldState: { error } }) => (
+              <TextArea
+                error={error}
+                label={t('badge.model.create.uiBasics.description')}
+                onChange={onChange}
+                value={value}
+              />
             )}
           />
           <Controller
@@ -73,7 +83,7 @@ export default function BadgeModelUIBasics() {
             render={({ field: { onChange, value }, fieldState: { error } }) => (
               <ImageInput
                 error={error}
-                label={'The logo for your badge'}
+                label={t('badge.model.create.uiBasics.logo')}
                 onChange={(value: ImageType | null) => {
                   if (value) {
                     // We change the structure a little bit to have it ready to push to the backend
@@ -112,7 +122,7 @@ export default function BadgeModelUIBasics() {
             render={({ field: { onChange, value }, fieldState: { error } }) => (
               <DropdownSelect
                 error={error}
-                label={'Text color'}
+                label={t('badge.model.create.uiBasics.textContrast')}
                 onChange={onChange}
                 options={Object.keys(BADGE_MODEL_TEXT_CONTRAST)}
                 value={value || 'Black'}
@@ -125,7 +135,7 @@ export default function BadgeModelUIBasics() {
             render={({ field: { onChange, value }, fieldState: { error } }) => (
               <DropdownSelect
                 error={error}
-                label={'Background'}
+                label={t('badge.model.create.uiBasics.backgroundImage')}
                 onChange={onChange}
                 options={Object.keys(BADGE_MODEL_BACKGROUNDS)}
                 value={value || 'Two'}
@@ -139,8 +149,9 @@ export default function BadgeModelUIBasics() {
             name={'template'}
             render={({ field: { onChange, value }, fieldState: { error } }) => (
               <DropdownSelect
+                disabled
                 error={error}
-                label={'Template (Not implemented yet)'}
+                label={t('badge.model.create.uiBasics.template')}
                 onChange={onChange}
                 options={['Classic', 'Business', 'Product', 'Academic', 'Fashion']}
                 value={value || 'Classic'}

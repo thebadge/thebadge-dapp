@@ -2,6 +2,7 @@ import React from 'react'
 
 import { Box, Typography, alpha, styled } from '@mui/material'
 import { BadgePreview } from '@thebadge/ui-library'
+import { useTranslation } from 'next-export-i18n'
 import { useFormContext } from 'react-hook-form'
 
 import { CreateModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateModelSchema'
@@ -16,6 +17,7 @@ const BoxShadow = styled(Box)(({ theme }) => ({
 }))
 
 export default function BadgeModelConfirmation() {
+  const { t } = useTranslation()
   const { watch } = useFormContext<CreateModelSchemaType>()
 
   const watchedName = watch('name')
@@ -46,13 +48,13 @@ export default function BadgeModelConfirmation() {
           textAlign="center"
           variant="body4"
         >
-          By continuing, you agree to our{' '}
+          {t('badge.model.create.confirmation.youAgree')}
           <a href="/legal/terms" target="_blank">
-            terms of use
-          </a>{' '}
-          and{' '}
+            {t('badge.model.create.confirmation.termsOfUse')}
+          </a>
+          {t('badge.model.create.confirmation.and')}
           <a href="/legal/privacy-policy" target="_blank">
-            privacy policy
+            {t('badge.model.create.confirmation.privacy')}
           </a>
           .
         </Typography>

@@ -1,14 +1,12 @@
 import React from 'react'
 
-import { useTranslation } from 'next-export-i18n'
 import { Controller, useFormContext } from 'react-hook-form'
 
 import { KlerosDynamicFieldsCreator } from '@/src/components/form/klerosDynamicFormField/FormFieldCreator'
 import { CreateModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateModelSchema'
 
 export default function BadgeModelEvidenceFormCreation() {
-  const { t } = useTranslation()
-  const { control, watch } = useFormContext<CreateModelSchemaType>()
+  const { control } = useFormContext<CreateModelSchemaType>()
   return (
     <>
       <Controller

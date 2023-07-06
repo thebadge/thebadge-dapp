@@ -17,8 +17,10 @@ type DropdownSelectProps = {
   value: string | undefined
   options: string[]
   native?: boolean
+  disabled?: boolean
 }
 export function DropdownSelect({
+  disabled,
   error,
   label,
   native = true,
@@ -53,6 +55,7 @@ export function DropdownSelect({
         },
         sx: { textTransform: 'capitalize' },
       }}
+      disabled={disabled}
       error={!!error}
       fullWidth
       helperText={error ? error.message : ' '}

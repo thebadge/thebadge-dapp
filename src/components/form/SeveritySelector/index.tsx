@@ -14,6 +14,7 @@ import {
 } from '@mui/material'
 import { gradients } from '@thebadge/ui-library'
 import { useDescription, useTsController } from '@ts-react/form'
+import { useTranslation } from 'next-export-i18n'
 import { FieldError } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -76,6 +77,7 @@ export function SeveritySelector({
   placeholder,
   value,
 }: SeveritySelectorProps) {
+  const { t } = useTranslation()
   const [optionSelectedAuxIndex, setOptionSelectedAuxIndex] = useState<number>(1)
 
   const [enableAdvance, setAdvanceMode] = useState<boolean>(false)
@@ -144,7 +146,7 @@ export function SeveritySelector({
                   onChange={() => toggleAdvanceMode(!enableAdvance)}
                 />
               }
-              label={'Advance'}
+              label={t('severity.advance')}
               sx={{ position: 'absolute', right: 0, mr: 0 }}
             />
           </Typography>

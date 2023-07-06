@@ -4,6 +4,7 @@ import * as React from 'react'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import { Box, Stack, Tooltip, Typography } from '@mui/material'
 import { formatUnits } from 'ethers/lib/utils'
+import { useTranslation } from 'next-export-i18n'
 import { z } from 'zod'
 
 import SeverityOptionEditable from '@/src/components/form/SeveritySelector/SeverityOptionEditable'
@@ -36,6 +37,7 @@ export default function SeveritySelectorAdvanceView({
   optionSelected: number
   onOptionSelectedChange: (value: number) => void
 }) {
+  const { t } = useTranslation()
   /**
    * Default Kleros court to use when creating a new badge model.
    * TODO: we should set a default court in the short-circuit to the Kleros's  general court.
@@ -111,15 +113,14 @@ export default function SeveritySelectorAdvanceView({
             <Tooltip arrow title={numberOfJurorExplanations}>
               <InfoOutlinedIcon sx={{ mr: 0.5 }} />
             </Tooltip>
-            <strong>Amount of Jurors:</strong> {value?.amountOfJurors}
+            <strong>{t('severity.display.amountOfJurors')}</strong> {value?.amountOfJurors}
           </Typography>
 
           <Typography sx={{ fontSize: '14px !important' }}>
             <Tooltip arrow title={feePerJurorExplanation}>
               <InfoOutlinedIcon sx={{ mr: 0.5 }} />
             </Tooltip>
-            <strong>Fee per Juror:</strong>
-            {feeForJurorDisplayValue}
+            <strong>{t('severity.display.feePerJuror')}</strong> {feeForJurorDisplayValue}
           </Typography>
         </Stack>
 
@@ -128,20 +129,20 @@ export default function SeveritySelectorAdvanceView({
             <Tooltip arrow title={challengeBountyExplanation}>
               <InfoOutlinedIcon sx={{ mr: 0.5 }} />
             </Tooltip>
-            <strong>Challenge Bounty:</strong> {formatUnits(value?.challengeBounty)}
+            <strong>{t('severity.display.challengeBounty')}</strong>{' '}
+            {formatUnits(value?.challengeBounty)}
           </Typography>
 
           <Typography sx={{ fontSize: '14px !important' }}>
             <Tooltip arrow title={baseDepositExplanation}>
               <InfoOutlinedIcon sx={{ mr: 0.5 }} />
             </Tooltip>
-            <strong>Base deposit: </strong>
-            {baseDepositDisplayValue}
+            <strong>{t('severity.display.baseDeposit')}</strong> {baseDepositDisplayValue}
           </Typography>
         </Stack>
 
         <Typography sx={{ fontSize: '14px !important' }}>
-          <strong>Court:</strong> General
+          <strong>{t('severity.display.court')}</strong> General
         </Typography>
       </Box>
     </Stack>

@@ -17,7 +17,7 @@ export default function HowItWorks() {
       name={'howItWorks'}
       render={({ field: { onChange, value }, fieldState: { error } }) => (
         <AgreementField
-          agreementText={t('badge.type.create.helpSteps', {
+          agreementText={t('badge.model.create.helpSteps', {
             curationCriteriaDocsUrl:
               DOCS_URL + '/thebadge-documentation/protocol-mechanics/challenge',
             curationCriteriaStandardDocsUrl:
