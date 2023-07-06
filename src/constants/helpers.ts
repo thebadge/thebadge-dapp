@@ -6,9 +6,9 @@ export function nowInSeconds() {
 }
 
 export function nowPlusOneMonthInSeconds() {
-  // const now = new Date()
-  // const nowPlusOneMonth = now.addMonths(1)
-  return Math.floor(Date.now() / 1000)
+  const date = new Date()
+  date.setMonth(date.getMonth() + 3)
+  return Math.floor(date.getTime() / 1000)
 }
 
 export const ADDRESS_PREFIX = '0x'

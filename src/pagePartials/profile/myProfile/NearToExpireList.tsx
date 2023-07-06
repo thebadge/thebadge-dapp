@@ -8,7 +8,7 @@ import InViewPort from '@/src/components/helpers/InViewPort'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import TBSwiper from '@/src/components/helpers/TBSwiper'
 import { fillListWithPlaceholders } from '@/src/components/utils/emptyBadges'
-import { nowInSeconds } from '@/src/constants/helpers'
+import { nowInSeconds, nowPlusOneMonthInSeconds } from '@/src/constants/helpers'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import { TimeLeft, useDate } from '@/src/hooks/useDate'
 import { useSizeLG, useSizeMD } from '@/src/hooks/useSize'
@@ -16,6 +16,7 @@ import BadgeModelPreview from '@/src/pagePartials/badge/BadgeModelPreview'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 
 const now = nowInSeconds()
+const nowPlusOneMonth = nowPlusOneMonthInSeconds()
 
 export default function NearToExpireList() {
   const router = useRouter()
@@ -28,12 +29,11 @@ export default function NearToExpireList() {
   const badgesExpiringSoon = gql.useUserBadgesExpiringBetween({
     ownerAddress: ownerAddress || '',
     startDate: now,
-    endDate: 1691238040,
+    endDate: nowPlusOneMonth,
   })
 
   const badgesList = useMemo(() => {
     const badges = badgesExpiringSoon.data?.user?.badges?.map((badge) => {
-      // TODO get expiration date
       const expirationDate: Date = timestampToDate(badge.validFor)
       const timeLeft: TimeLeft = getTimeLeftToExpire(expirationDate)
       return (

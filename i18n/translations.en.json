@@ -275,7 +275,8 @@
         "ownBadgeChallenge": "You can't do a challenge to your own badge",
         "challengeButton": "CHALLENGE"
       }
-    }
+    },
+    "claimButton": "Claim"
   },
   "badgesList": {
     "filters": {

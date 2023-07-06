@@ -2,7 +2,8 @@ import { useRouter } from 'next/navigation'
 import { useMemo } from 'react'
 
 import { Box } from '@mui/material'
-import { EmptyBadgePreview, PendingBadgeOverlay } from '@thebadge/ui-library'
+import { ButtonV2, EmptyBadgePreview, PendingBadgeOverlay, colors } from '@thebadge/ui-library'
+import { useTranslation } from 'next-export-i18n'
 
 import InViewPort from '@/src/components/helpers/InViewPort'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
@@ -10,28 +11,38 @@ import TBSwiper from '@/src/components/helpers/TBSwiper'
 import { fillListWithPlaceholders } from '@/src/components/utils/emptyBadges'
 import { nowInSeconds } from '@/src/constants/helpers'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
+import { useContractInstance } from '@/src/hooks/useContractInstance'
 import { TimeLeft, useDate } from '@/src/hooks/useDate'
 import { useSizeLG } from '@/src/hooks/useSize'
+import useTransaction from '@/src/hooks/useTransaction'
 import BadgeModelPreview from '@/src/pagePartials/badge/BadgeModelPreview'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+import { KlerosController__factory } from '@/types/generated/typechain'
 
 const now = nowInSeconds()
 export default function PendingList() {
+  const { t } = useTranslation()
+  const { sendTx } = useTransaction()
   const router = useRouter()
   const gql = useSubgraph()
   const { getPendingTimeProgressPercentage, getTimeLeft, timestampToDate } = useDate()
   const { address: ownerAddress } = useWeb3Connection()
-  const badgesInReview = gql.useUserBadgesInReviewAndChallenged({
+  const badgesInReviewAndChallenged = gql.useUserBadgesInReviewAndChallenged({
     ownerAddress: ownerAddress || '',
     date: now,
   })
+  const klerosController = useContractInstance(KlerosController__factory, 'KlerosController')
+
+  async function handleClaimBadge(badgeId: string) {
+    const transaction = await sendTx(() => klerosController.claim(badgeId))
+    await transaction.wait()
+  }
 
   const badgesList = useMemo(() => {
-    const badges = badgesInReview.data?.user?.badges?.map((badgeInReview) => {
-      console.log('badge', badgeInReview)
-      const dueDate: Date = timestampToDate(badgeInReview.badgeKlerosMetaData?.reviewDueDate)
+    const badges = badgesInReviewAndChallenged.data?.user?.badges?.map((badge) => {
+      const dueDate: Date = timestampToDate(badge.badgeKlerosMetaData?.reviewDueDate)
       const pendingTimeDurationSeconds: number =
-        badgeInReview.badgeModel.badgeModelKleros?.challengePeriodDuration
+        badge.badgeModel.badgeModelKleros?.challengePeriodDuration
       const timeLeft: TimeLeft = getTimeLeft(dueDate)
       const progressPercentage = getPendingTimeProgressPercentage(
         dueDate,
@@ -40,17 +51,45 @@ export default function PendingList() {
 
       return (
         <Box
-          key={badgeInReview.id}
-          onClick={() => router.push(`/badge/preview/${badgeInReview.id}`)}
+          key={badge.id}
+          onClick={() => router.push(`/badge/preview/${badge.id}`)}
           sx={{ height: '100%', display: 'flex', cursor: 'pointer' }}
         >
           <InViewPort color={'green'} minHeight={220} minWidth={140}>
             <SafeSuspense color={'green'}>
-              <PendingBadgeOverlay
-                badge={<BadgeModelPreview metadata={badgeInReview.badgeModel?.uri} size="small" />}
-                percentage={progressPercentage}
-                timeLeft={timeLeft}
-              />
+              <Box sx={{ width: 'fit-content' }}>
+                <PendingBadgeOverlay
+                  badge={<BadgeModelPreview metadata={badge.badgeModel?.uri} size="small" />}
+                  percentage={progressPercentage}
+                  timeLeft={timeLeft}
+                />
+                <ButtonV2
+                  backgroundColor={colors.blue}
+                  disabled={progressPercentage < 100}
+                  fontColor={colors.white}
+                  onClick={() => handleClaimBadge(badge.id)}
+                  sx={{
+                    width: '100%',
+                    height: 'fit-content !important',
+                    marginTop: '1rem',
+                    padding: '0.5rem 1rem !important',
+                    borderRadius: '10px',
+                    fontSize: '15px !important',
+                    lineHeight: '15px',
+                    fontWeight: 700,
+                    boxShadow: 'none',
+                    textTransform: 'uppercase',
+
+                    '&.Mui-disabled': {
+                      pointerEvents: 'auto',
+                      cursor: 'not-allowed',
+                    },
+                  }}
+                  variant="contained"
+                >
+                  {t('badge.claimButton')}
+                </ButtonV2>
+              </Box>
             </SafeSuspense>
           </InViewPort>
         </Box>
@@ -59,10 +98,12 @@ export default function PendingList() {
     // If there is no badges to show, we list 5 placeholders
     return fillListWithPlaceholders(badges, <EmptyBadgePreview size="small" />, 2)
   }, [
-    badgesInReview.data?.user?.badges,
+    badgesInReviewAndChallenged.data?.user?.badges,
     getPendingTimeProgressPercentage,
     getTimeLeft,
+    handleClaimBadge,
     router,
+    t,
     timestampToDate,
   ])
 
