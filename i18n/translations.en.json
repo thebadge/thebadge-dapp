@@ -348,6 +348,9 @@
       "time": "time left"
     }
   },
+  "externalLink" : {
+    "copied": "Link copied"
+  },
   "severity": {
     "advance": "Advance",
     "amountOfJurors": "Amount \n of Jurors",

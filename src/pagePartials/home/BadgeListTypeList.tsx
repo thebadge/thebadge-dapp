@@ -32,7 +32,7 @@ export default function BadgeListTypeList() {
         >
           <InViewPort minHeight={300} minWidth={180}>
             <SafeSuspense>
-              <BadgeModelPreview metadata={badgeModel?.uri} size="small" />
+              <BadgeModelPreview effects metadata={badgeModel?.uri} size="small" />
             </SafeSuspense>
           </InViewPort>
         </Box>

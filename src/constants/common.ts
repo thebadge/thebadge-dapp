@@ -17,6 +17,8 @@ export const DOCS_URL = process.env.NEXT_PUBLIC_DOCS_URL || 'https://docs.thebad
 export const APP_URL = process.env.NEXT_PUBLIC_FRONTEND_URL || 'http://localhost:3000'
 export const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5001'
 
+export const KLEROS_COURT_URL = process.env.KLEROS_COURT_URL || 'https://court.kleros.io'
+
 export const IS_DEVELOP = process.env.NEXT_PUBLIC_DEV_MODE || false
 
 /**** Model Creation ****/
