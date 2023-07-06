@@ -22,7 +22,7 @@ export default function NearToExpireList() {
   const gql = useSubgraph()
   const md = useSizeMD()
   const lg = useSizeLG()
-  const { getTimeLeft, timestampToDate } = useDate()
+  const { getTimeLeftToExpire, timestampToDate } = useDate()
   const { address: ownerAddress } = useWeb3Connection()
 
   const badgesExpiringSoon = gql.useUserBadgesExpiringBetween({
@@ -35,7 +35,7 @@ export default function NearToExpireList() {
     const badges = badgesExpiringSoon.data?.user?.badges?.map((badge) => {
       // TODO get expiration date
       const expirationDate: Date = timestampToDate(badge.validFor)
-      const timeLeft: TimeLeft = getTimeLeft(expirationDate)
+      const timeLeft: TimeLeft = getTimeLeftToExpire(expirationDate)
       return (
         <Box
           key={badge.id}
@@ -55,7 +55,7 @@ export default function NearToExpireList() {
     })
     // If there is no badges to show, we list 5 placeholders
     return fillListWithPlaceholders(badges, <EmptyBadgePreview size="small" />, 3)
-  }, [badgesExpiringSoon.data?.user?.badges, timestampToDate, getTimeLeft, router])
+  }, [badgesExpiringSoon.data?.user?.badges, timestampToDate, getTimeLeftToExpire, router])
 
   const amountItems = () => {
     if (md) {

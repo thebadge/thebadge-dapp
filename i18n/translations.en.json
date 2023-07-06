@@ -326,7 +326,8 @@
       "hours": "hours left",
       "minutes": "minutes left",
       "seconds": "seconds left",
-      "time": "time left"
+      "time": "time left",
+      "toExpire": "to expire"
     }
   }
 }
