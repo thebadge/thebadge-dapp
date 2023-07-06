@@ -184,7 +184,7 @@
         "title": "Create your Badge Model",
         "subTitle": "Do you want to design and publish custom badges that other users can apply for to verify real-world information? Also, you could set the price for the badges you create and receive a share of the fee when users apply for them... So please, complete the form and let´s start creating!",
         "helpSteps": "- For creating a badge model you will have to set up the name, description, and logo that users will see when searching for badges\n\n - You also have to upload **curation criteria**. For guidelines and examples about how to define good curation criteria please check our [docs]({{curationCriteriaDocsUrl}})\n\n* Please note that in order for your badge model to be approved and listed, the curation criteria should be in compliance with the [curation criteria standards]({{curationCriteriaStandardDocsUrl}}) and the [terms and conditions]({{termsUrls}})\n\n* If you have any doubts please check the [docs]({{docsUrl}}) or ask for help in our [discord]({{discordUrl}}).\n",
-        "previewTitle": "This is how your new badge model will look like",
+        "previewTitle": "This is how your badge is going to look when a user obtains it.",
         "steps": [
           {
             "subTitle": "You are starting the process of creating a new badge model. Please read the following instructions carefully in order to be able to complete the process correctly."
