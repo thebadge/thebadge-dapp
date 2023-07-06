@@ -35,6 +35,20 @@ export const BADGES_IN_REVIEW_SMALL_SET = gql`
   }
 `
 
+export const BADGES_USER_CAN_REVIEW = gql`
+  query badgesUserCanReview($userAddress: String!, $date: BigInt!) {
+    badges(
+      where: {
+        badgeKlerosMetaData_: { reviewDueDate_gt: $date }
+        status: Requested
+        account_not: $userAddress
+      }
+    ) {
+      ...BadgesInReview
+    }
+  }
+`
+
 export const MY_BADGES = gql`
   query myBadges($wallet: String!) {
     badges(where: { account: $wallet }) {

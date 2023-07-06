@@ -132,20 +132,19 @@
       "noResults": "You don't have any badges that match these filters..."
     },
     "badgesCreated": {
-      "title": "Explore other badges",
-      "badgesCreatedNoResults": "You don't have any badges that match these filters...",
+      "title": "Created badge models",
+      "badgesCreatedNoResults": "You don't have any badge models created...",
       "explorerBadgeCost": "Cost:",
       "explorerBadgeMinted": "Minted: "
     },
-    "exploreOtherBadges": "Explore other badges",
     "badgesToCurate": "Browse other badges to curate",
     "createdBadges": "Earn by creating new badges",
     "tab1": "MY PROFILE",
     "tab2": "CURATOR PROFILE",
     "tab3": "CREATOR PROFILE",
-    "badgesInReview": {
-      "title": "Your badges in review",
-      "noResults": "There are no badges in review..."
+    "badgesToReview": {
+      "title": "Badges you can review",
+      "noResults": "There are no badges you can review..."
     },
     "verified": "Verified user"
   },

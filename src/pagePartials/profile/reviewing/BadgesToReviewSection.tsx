@@ -6,11 +6,14 @@ import { useTranslation } from 'next-export-i18n'
 
 import { NoResultsAnimated } from '@/src/components/assets/animated/NoResults'
 import FilteredList, { ListFilter } from '@/src/components/helpers/FilteredList'
+import { nowInSeconds } from '@/src/constants/helpers'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import MiniBadgeModelPreview from '@/src/pagePartials/badge/MiniBadgeModelPreview'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 
-export default function BadgesInReviewSection() {
+const now = nowInSeconds()
+
+export default function BadgesToReviewSection() {
   const { t } = useTranslation()
   const filters: Array<ListFilter> = [
     {
@@ -39,9 +42,9 @@ export default function BadgesInReviewSection() {
   ) => {
     setLoading(true)
     // TODO filter badges with: selectedFilters, selectedCategory, textSearch
-    const badgesInReview = await gql.userBadgesInReview({ ownerAddress: address })
+    const badgesToReview = await gql.badgesUserCanReview({ userAddress: address, date: now })
 
-    const badgeModels = badgesInReview?.user?.badges || []
+    const badgeModels = badgesToReview?.badges || []
     const badgesLayouts = badgeModels.map((badge) => {
       const badgeModel = badge.badgeModel
       return (
@@ -65,14 +68,14 @@ export default function BadgesInReviewSection() {
         loading={loading}
         loadingColor={'green'}
         search={search}
-        title={t('profile.badgesInReview.title')}
+        title={t('profile.badgesToReview.title')}
         titleColor={colors.green}
       >
         {items.length > 0 ? (
           items
         ) : (
           <Stack>
-            <NoResultsAnimated errorText={t('profile.badgesInReview.noResults')} />
+            <NoResultsAnimated errorText={t('profile.badgesToReview.noResults')} />
           </Stack>
         )}
       </FilteredList>

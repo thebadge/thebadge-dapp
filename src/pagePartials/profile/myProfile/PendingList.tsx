@@ -33,11 +33,6 @@ export default function PendingList() {
   })
   const klerosController = useContractInstance(KlerosController__factory, 'KlerosController')
 
-  async function handleClaimBadge(badgeId: string) {
-    const transaction = await sendTx(() => klerosController.claim(badgeId))
-    await transaction.wait()
-  }
-
   const badgesList = useMemo(() => {
     const badges = badgesInReviewAndChallenged.data?.user?.badges?.map((badge) => {
       const dueDate: Date = timestampToDate(badge.badgeKlerosMetaData?.reviewDueDate)
@@ -48,6 +43,11 @@ export default function PendingList() {
         dueDate,
         pendingTimeDurationSeconds,
       )
+
+      async function handleClaimBadge(badgeId: string) {
+        const transaction = await sendTx(() => klerosController.claim(badgeId))
+        await transaction.wait()
+      }
 
       return (
         <Box
@@ -101,8 +101,9 @@ export default function PendingList() {
     badgesInReviewAndChallenged.data?.user?.badges,
     getPendingTimeProgressPercentage,
     getTimeLeft,
-    handleClaimBadge,
+    klerosController,
     router,
+    sendTx,
     t,
     timestampToDate,
   ])
