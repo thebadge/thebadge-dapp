@@ -4,7 +4,6 @@ import { z } from 'zod'
 
 import { isEmail } from '@/src/components/form/helpers/validators'
 import { KLEROS_LIST_TYPES_KEYS } from '@/types/kleros/types'
-import { Severity_Keys } from '@/types/utils'
 
 // Why we need these schemas?
 // https://github.com/iway1/react-ts-form#dealing-with-collisions
@@ -151,6 +150,11 @@ export const FileSchema = createUniqueFieldSchema(
   'FileSchema',
 )
 
+export const DeltaPDFSchema = createUniqueFieldSchema(
+  z.object({ string: z.string(), delta: z.any() }),
+  'DeltaPDFSchema',
+)
+
 export const OptionalFileSchema = createUniqueFieldSchema(
   z
     .any()
@@ -184,7 +188,13 @@ export const ChallengePeriodTypeSchema = createUniqueFieldSchema(
 )
 
 export const SeverityTypeSchema = createUniqueFieldSchema(
-  z.enum(Severity_Keys),
+  z.object({
+    amountOfJurors: z
+      .number()
+      .positive()
+      .refine((v) => v % 2 != 0, 'Must be even'),
+    challengeBounty: z.string(),
+  }),
   'SeverityTypeSchema',
 )
 

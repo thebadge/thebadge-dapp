@@ -3,7 +3,7 @@ import * as React from 'react'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import OpenInNewOutlinedIcon from '@mui/icons-material/OpenInNewOutlined'
 import { Box, Divider, IconButton, Tooltip, Typography, styled } from '@mui/material'
-import { colors } from 'thebadge-ui-library'
+import { colors } from '@thebadge/ui-library'
 
 import { getFromIPFS } from '@/src/hooks/subgraph/utils'
 import { BackendFileResponse } from '@/types/utils'

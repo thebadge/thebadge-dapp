@@ -1,8 +1,8 @@
 import { useRouter } from 'next/router'
 
 import { Box, styled } from '@mui/material'
+import { LogoTheBadgeWithText } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
-import { LogoTheBadgeWithText } from 'thebadge-ui-library'
 
 import ActionButtons from '@/src/components/header/ActionButtons'
 import ConnectWalletButton from '@/src/components/header/ConnectWalletButton'

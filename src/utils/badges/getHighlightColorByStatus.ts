@@ -1,4 +1,4 @@
-import { colors } from 'thebadge-ui-library'
+import { colors } from '@thebadge/ui-library'
 
 import { BadgeStatus } from '@/types/generated/subgraph'
 
