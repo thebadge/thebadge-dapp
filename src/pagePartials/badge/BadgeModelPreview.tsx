@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import { BadgePreview, BadgePreviewProps } from 'thebadge-ui-library'
+import { BadgePreview, BadgePreviewProps } from '@thebadge/ui-library'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import useS3Metadata from '@/src/hooks/useS3Metadata'

@@ -2,8 +2,8 @@ import * as React from 'react'
 import { useCallback, useState } from 'react'
 
 import { Stack, Typography } from '@mui/material'
+import { colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
-import { colors } from 'thebadge-ui-library'
 import { z } from 'zod'
 
 import { RegisterCuratorSchema } from '@/pages/creator/register'

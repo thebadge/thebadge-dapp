@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import { IconBadge, MiniBadgePreview, colors } from 'thebadge-ui-library'
+import { IconBadge, MiniBadgePreview, colors } from '@thebadge/ui-library'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import useS3Metadata from '@/src/hooks/useS3Metadata'

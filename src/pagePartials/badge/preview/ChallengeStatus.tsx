@@ -9,8 +9,8 @@ import {
   TimelineSeparator,
 } from '@mui/lab'
 import { Box, Button, Divider, Stack, Typography, styled } from '@mui/material'
+import { colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
-import { colors } from 'thebadge-ui-library'
 
 import { Address } from '@/src/components/helpers/Address'
 import ExternalLink from '@/src/components/helpers/ExternalLink'

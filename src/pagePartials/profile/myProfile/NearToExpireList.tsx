@@ -2,7 +2,7 @@ import { useRouter } from 'next/navigation'
 import { useMemo } from 'react'
 
 import { Box } from '@mui/material'
-import { EmptyBadgePreview } from 'thebadge-ui-library'
+import { EmptyBadgePreview } from '@thebadge/ui-library'
 
 import InViewPort from '@/src/components/helpers/InViewPort'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'

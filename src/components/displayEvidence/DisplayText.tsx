@@ -2,7 +2,7 @@ import * as React from 'react'
 
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import { Box, Divider, Tooltip, Typography, styled } from '@mui/material'
-import { colors } from 'thebadge-ui-library'
+import { colors } from '@thebadge/ui-library'
 
 import { FormField } from '@/src/components/form/helpers/FormField'
 

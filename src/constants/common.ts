@@ -20,3 +20,37 @@ export const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localh
 export const KLEROS_COURT_URL = process.env.KLEROS_COURT_URL || 'https://court.kleros.io'
 
 export const IS_DEVELOP = process.env.NEXT_PUBLIC_DEV_MODE || false
+
+/**** Model Creation ****/
+
+export const CRITERIA_TEMPLATE_URL =
+  process.env.CRITERIA_TEMPLATE_URL ||
+  'https://drive.google.com/uc?export=download&id=19ZngN2Ia-LKi5DRBnWzwffooVZ8un-39'
+
+export const MODEL_CREATION_CACHE_EXPIRATION_MS = process.env.MODEL_CREATION_CACHE_EXPIRATION_MS
+
+/**** Kleros *****/
+
+export const DEFAULT_COURT_ID = process.env.NEXT_PUBLIC_KLEROS_DEFAULT_COURT || '1'
+
+/**** Severity *****/
+export const SEVERITY_NORMAL_JURORS = +(
+  process.env.NEXT_PUBLIC_BADGE_MODEL_SEVERITY_NORMAL_JURORS || 1
+)
+export const SEVERITY_NORMAL_BOUNTY_MULTIPLIER = +(
+  process.env.NEXT_PUBLIC_BADGE_MODEL_SEVERITY_NORMAL_BOUNTY || 1
+)
+
+export const SEVERITY_ABOVE_JURORS = +(
+  process.env.NEXT_PUBLIC_BADGE_MODEL_SEVERITY_ABOVE_JURORS || 3
+)
+export const SEVERITY_ABOVE_BOUNTY_MULTIPLIER = +(
+  process.env.NEXT_PUBLIC_BADGE_MODEL_SEVERITY_ABOVE_BOUNTY || 1
+)
+
+export const SEVERITY_HEAVY_JURORS = +(
+  process.env.NEXT_PUBLIC_BADGE_MODEL_SEVERITY_HEAVY_JURORS || 3
+)
+export const SEVERITY_HEAVY_BOUNTY_MULTIPLIER = +(
+  process.env.NEXT_PUBLIC_BADGE_MODEL_SEVERITY_HEAVY_BOUNTY || 2
+)

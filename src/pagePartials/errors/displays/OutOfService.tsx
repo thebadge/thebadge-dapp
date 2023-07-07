@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 
 import { Box, Stack, Typography, styled } from '@mui/material'
+import { colors, gradients } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 import { Toast, toast } from 'react-hot-toast'
-import { colors, gradients } from 'thebadge-ui-library'
 
 import { Copy } from '@/src/components/assets/Copy'
 import { BadgeAnimatedLogo } from '@/src/components/assets/animated/BadgeAnimatedLogo'

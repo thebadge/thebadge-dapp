@@ -1,6 +1,6 @@
 import ElectricBoltIcon from '@mui/icons-material/ElectricBolt'
 import { ButtonProps, Typography } from '@mui/material'
-import { ButtonV2, colors } from 'thebadge-ui-library'
+import { ButtonV2, colors } from '@thebadge/ui-library'
 
 export default function ConnectWalletButton({ children, ...rest }: ButtonProps) {
   return (

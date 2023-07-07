@@ -1,11 +1,11 @@
 import { Box, Container, Divider, Stack, Typography, styled } from '@mui/material'
+import { LogoTheBadgeWithText, colors } from '@thebadge/ui-library'
+import { IconDiscord } from '@thebadge/ui-library/src/components/icons/IconDiscord/IconDiscord'
+import { IconEmail } from '@thebadge/ui-library/src/components/icons/IconEmail/IconEmail'
+import { IconGithub } from '@thebadge/ui-library/src/components/icons/IconGithub/IconGithub'
+import { IconMedium } from '@thebadge/ui-library/src/components/icons/IconMedium/IconMedium'
+import { IconTwitter } from '@thebadge/ui-library/src/components/icons/IconTwitter/IconTwitter'
 import { useTranslation } from 'next-export-i18n'
-import { LogoTheBadgeWithText, colors } from 'thebadge-ui-library'
-import { IconDiscord } from 'thebadge-ui-library/src/components/icons/IconDiscord/IconDiscord'
-import { IconEmail } from 'thebadge-ui-library/src/components/icons/IconEmail/IconEmail'
-import { IconGithub } from 'thebadge-ui-library/src/components/icons/IconGithub/IconGithub'
-import { IconMedium } from 'thebadge-ui-library/src/components/icons/IconMedium/IconMedium'
-import { IconTwitter } from 'thebadge-ui-library/src/components/icons/IconTwitter/IconTwitter'
 
 import {
   DISCORD_URL,

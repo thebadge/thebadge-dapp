@@ -56,7 +56,7 @@ export function DescriptionInputField({
   }
 
   return (
-    <Wrapper>
+    <>
       <Typography>{label}</Typography>
       <Typography fontWeight={300} sx={{ fontSize: '14px !important' }}>
         Personalize the description with any of this variables:
@@ -88,7 +88,7 @@ export function DescriptionInputField({
         value={value ? value : ''}
         variant={'standard'}
       />
-    </Wrapper>
+    </>
   )
 }
 
@@ -105,12 +105,14 @@ export default function DescriptionInputFieldWithTSForm() {
   }
 
   return (
-    <DescriptionInputField
-      error={error ? convertToFieldError(error) : undefined}
-      label={label}
-      onChange={onChange}
-      placeholder={placeholder}
-      value={field.value}
-    />
+    <Wrapper>
+      <DescriptionInputField
+        error={error ? convertToFieldError(error) : undefined}
+        label={label}
+        onChange={onChange}
+        placeholder={placeholder}
+        value={field.value}
+      />
+    </Wrapper>
   )
 }

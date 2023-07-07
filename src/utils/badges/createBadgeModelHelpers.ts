@@ -1,8 +1,11 @@
 import { JsonRpcProvider } from '@ethersproject/providers'
 import { BigNumberish, constants } from 'ethers'
 import { defaultAbiCoder } from 'ethers/lib/utils'
+import { z } from 'zod'
 
+import { DeltaPDFSchema } from '@/src/components/form/helpers/customSchemas'
 import { APP_URL, IS_DEVELOP } from '@/src/constants/common'
+import { BadgeModelCriteriaType } from '@/src/pagePartials/badge/model/schema/CreateModelSchema'
 import ipfsUpload from '@/src/utils/ipfsUpload'
 import {
   KlerosListStructure,
@@ -11,7 +14,7 @@ import {
 import { BadgeModelMetadata } from '@/types/badges/BadgeMetadata'
 import { Kleros__factory } from '@/types/generated/typechain'
 import { MetadataColumn } from '@/types/kleros/types'
-import { BackendFileUpload, Severity } from '@/types/utils'
+import { BackendFileUpload } from '@/types/utils'
 
 export async function createAndUploadBadgeModelMetadata(
   badgeModelName: string,
@@ -39,19 +42,34 @@ export async function createAndUploadBadgeModelMetadata(
  * @param badgeModelName
  * @param badgeModelDescription
  * @param badgeModelLogoUri
- * @param badgeModelCriteriaFileUri
+ * @param badgeModelCriteria
  * @param badgeModelKlerosColumns
  */
 export async function createAndUploadClearingAndRegistrationFilesForKleros(
   badgeModelName: string,
   badgeModelDescription: string,
   badgeModelLogoUri: BackendFileUpload,
-  badgeModelCriteriaFileUri: BackendFileUpload,
+  badgeModelCriteria: BadgeModelCriteriaType,
   badgeModelKlerosColumns: MetadataColumn[],
 ) {
+  let badgeModelCriteriaFile: BackendFileUpload = {
+    mimeType: 'application/pdf',
+    base64File: '',
+  }
+  // If the user upload the file, we already have the needed format
+  if (badgeModelCriteria.criteriaFileUri) {
+    badgeModelCriteriaFile = badgeModelCriteria.criteriaFileUri
+  }
+  // If the user has made the criteria on our own text area, we need to convert it to PDF on Base64
+  if (badgeModelCriteria.criteriaDeltaText) {
+    badgeModelCriteriaFile.base64File = await transformDeltaToPDF(
+      badgeModelCriteria.criteriaDeltaText.delta,
+    )
+  }
+
   const { clearing, registration } = generateKlerosListMetaEvidence(
     badgeModelName,
-    badgeModelCriteriaFileUri,
+    badgeModelCriteriaFile,
     badgeModelName,
     badgeModelDescription,
     badgeModelKlerosColumns,
@@ -78,23 +96,22 @@ export async function encodeKlerosControllerData(
   creatorAddress: string,
   klerosContractAddress: string,
   readOnlyAppProvider: JsonRpcProvider,
-  severity: Severity,
+  rigorousness: { amountOfJurors: number; challengeBounty: string },
   courtId: BigNumberish,
   registrationIPFSHash: string,
   clearingIPFSHash: string,
   challengePeriodDuration: number,
 ) {
   const kleros = Kleros__factory.connect(klerosContractAddress, readOnlyAppProvider)
-  const numberOfJurors = severity
   const klerosCourtInfo = await kleros.courts(courtId)
+  const numberOfJurors = rigorousness.amountOfJurors
+  const challengeBounty = rigorousness.challengeBounty
   const baseDeposit = klerosCourtInfo.feeForJuror.mul(numberOfJurors)
 
-  // jurors * fee per juror + rigorousness
-  const submissionDeposit = baseDeposit
-    .add(klerosCourtInfo.feeForJuror.mul(numberOfJurors))
-    .toString()
+  // jurors * fee per juror + challengeBounty
+  const submissionDeposit = baseDeposit.add(challengeBounty).toString()
   // The base deposit to remove an item.
-  const removalDeposit = baseDeposit.add(klerosCourtInfo.feeForJuror.mul(numberOfJurors)).toString()
+  const removalDeposit = baseDeposit.add(challengeBounty).toString()
   // The base deposit to challenge a submission.
   const challengeSubmissionRequestDeposit = baseDeposit.div(2).toString()
   // The base deposit to challenge a removal request
@@ -138,4 +155,19 @@ export async function encodeKlerosControllerData(
   )
 
   return klerosControllerDataEncoded
+}
+
+async function transformDeltaToPDF(pdfValues: z.infer<typeof DeltaPDFSchema>) {
+  if (!pdfValues) return ''
+  // Use NextJs dynamic import to reduce the bundle size
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  const { pdfExporter } = await import('@thebadge/quill-to-pdf')
+
+  // we retrieve the delta object from the Quill instance
+  // the delta is the raw content of the Quill editor
+  const { delta } = pdfValues
+  // we pass the delta object to the generatePdf function of the pdfExporter
+  // it will resolve to a Blob of the PDF document
+  return (await pdfExporter.generatePdfBase64(delta)) as string
 }
