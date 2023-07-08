@@ -27,18 +27,15 @@ export const LinkSchema = createUniqueFieldSchema(
     }),
   'LinkSchema',
 )
-
-export const AgreementSchema = createUniqueFieldSchema(
-  z
-    .boolean({
-      required_error: 'You need to agree to be able to continue.',
-      invalid_type_error: 'You must agree to continue.',
-    })
-    .refine((value) => value, {
-      message: 'You need to agree to be able to continue.',
-    }),
-  'AgreementSchema',
-)
+export const AgreementSchema = z
+  .boolean({
+    required_error: 'You need to agree to be able to continue.',
+    invalid_type_error: 'You must agree to continue.',
+  })
+  .refine((value) => value, {
+    message: 'You need to agree to be able to continue.',
+  })
+export const AgreementSchemaBranded = createUniqueFieldSchema(AgreementSchema, 'AgreementSchema')
 
 export const RadioButtonSchema = createUniqueFieldSchema(
   z.boolean({
@@ -72,10 +69,8 @@ export const EmailSchema = createUniqueFieldSchema(
   'EmailSchema',
 )
 
-export const TokenInputSchema = createUniqueFieldSchema(
-  z.string({ required_error: 'Is required' }),
-  'TokenInputSchema',
-)
+export const TokenInputSchema = z.string({ required_error: 'Is required' })
+export const TokenInputSchemaBranded = createUniqueFieldSchema(TokenInputSchema, 'TokenInputSchema')
 
 export const NumberSchema = createUniqueFieldSchema(
   z.number({
@@ -150,10 +145,7 @@ export const FileSchema = createUniqueFieldSchema(
   'FileSchema',
 )
 
-export const DeltaPDFSchema = createUniqueFieldSchema(
-  z.object({ string: z.string(), delta: z.any() }),
-  'DeltaPDFSchema',
-)
+export const DeltaPDFSchema = z.object({ string: z.string(), delta: z.any() })
 
 export const OptionalFileSchema = createUniqueFieldSchema(
   z
@@ -168,11 +160,12 @@ export const OptionalFileSchema = createUniqueFieldSchema(
   'OptionalFileSchema',
 )
 
-export const ExpirationTypeSchema = createUniqueFieldSchema(
-  z.number({
-    required_error: 'Is required',
-    invalid_type_error: 'Must enter an amount of days',
-  }),
+export const ExpirationTypeSchema = z.number({
+  required_error: 'Is required',
+  invalid_type_error: 'Must enter an amount of days',
+})
+export const ExpirationTypeSchemaBranded = createUniqueFieldSchema(
+  ExpirationTypeSchema,
   'ExpirationTypeSchema',
 )
 
