@@ -19,6 +19,7 @@ import { UserInfo } from '@web3auth/base'
 import { Web3Auth } from '@web3auth/modal'
 import nullthrows from 'nullthrows'
 
+import translate from '@/i18n'
 import {
   Chains,
   INITIAL_APP_CHAIN_ID,
@@ -104,7 +105,7 @@ export function initOnboard() {
     },
     appMetadata: {
       name: appName || '',
-      icon: '<svg><svg/>', // brand icon
+      icon: '/favicon/favicon.svg', // brand icon
       description: 'The Badge DApp',
       recommendedInjectedWallets: [{ name: 'MetaMask', url: 'https://metamask.io' }],
     },
@@ -117,7 +118,12 @@ export function initOnboard() {
         enabled: false,
       },
     },
-    // i18n: {} change all texts in the onboard modal
+    i18n: {
+      // You can see more about it here
+      // https://github.com/blocknative/web3-onboard/blob/develop/packages/core/src/i18n/en.json
+      en: translate.translations.en.web3Onboard,
+    },
+    //change all texts in the onboard modal
   })
   window.onboard = onBoardApi
 }
@@ -186,6 +192,14 @@ export default function Web3ConnectionProvider({ children }: Props) {
     () => new JsonRpcProvider(getNetworkConfig(appChainId)?.rpcUrl, appChainId),
     [appChainId],
   )
+
+  useEffect(() => {
+    if (connectingWallet && window) {
+      setTimeout(() => {
+        renameWeb3Auth()
+      }, 200)
+    }
+  }, [connectingWallet])
 
   useEffect(() => {
     if (isWalletNetworkSupported && walletChainId) {
@@ -258,6 +272,20 @@ export default function Web3ConnectionProvider({ children }: Props) {
       return `${url}${type}/${hash}`
     }
   }, [appChainId])
+
+  function renameWeb3Auth() {
+    // Disclaimer: This is not the most fancy way to do it, but as the library
+    // doesn't allow us to change the names, we need to do it by hand
+    const onboardElement = document.querySelector('body > onboard-v2')
+    if (!onboardElement) return
+    // In case that we decide to add a new wallet, maybe we will to change this
+    // approach to something clever, like getting the array of buttons and find the web3Auth one
+    const web3AuthButtonElement = onboardElement.shadowRoot?.querySelector(
+      'section > div > div > div > div > div > div > div.content.flex.flex-column.svelte-b3j15j > div.scroll-container.svelte-b3j15j > div > div > div > div:nth-child(3) > button > div > div.name.svelte-1vlog3j',
+    )
+    if (!web3AuthButtonElement) return
+    web3AuthButtonElement.innerHTML = 'Social login'
+  }
 
   const handleDisconnectWallet = async () => {
     if (wallet) {

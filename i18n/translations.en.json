@@ -380,5 +380,29 @@
     "confirmation": "Waiting confirmation",
     "done": "Transaction done",
     "failed": "Transaction failed"
+  },
+  "web3Onboard": {
+    "connect": {
+      "selectingWallet": {
+        "header": "Available Wallets",
+        "sidebar": {
+          "heading": "",
+          "subheading": "Connect your wallet",
+          "paragraph": "Connecting your wallet is like “logging in” to Web3. Select your wallet from the options to get started",
+          "IDontHaveAWallet": "I don't have a wallet"
+        },
+        "recommendedWalletsPart1": "{app} only supports",
+        "recommendedWalletsPart2": "on this platform. Please use or install one of the supported wallets to continue",
+        "installWallet": "You do not have any wallets installed that {app} supports, please use a supported wallet",
+        "agreement": {
+          "agree": "I agree to the",
+          "terms": "Terms & Conditions",
+          "and": "and",
+          "privacy": "Privacy Policy"
+        },
+        "whyDontISeeMyWallet": "Why don't I see my wallet?",
+        "learnMore": "Click here to learn more"
+      }
+    }
   }
 }
