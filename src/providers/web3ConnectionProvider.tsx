@@ -19,7 +19,13 @@ import { UserInfo } from '@web3auth/base'
 import { Web3Auth } from '@web3auth/modal'
 import nullthrows from 'nullthrows'
 
-import { Chains, INITIAL_APP_CHAIN_ID, chainsConfig, getNetworkConfig } from '@/src/config/web3'
+import {
+  Chains,
+  INITIAL_APP_CHAIN_ID,
+  WALLET_CONNECT_ID,
+  chainsConfig,
+  getNetworkConfig,
+} from '@/src/config/web3'
 import { WEB3_AUTH_CLIENT_ID, appName } from '@/src/constants/common'
 import {
   recoverLocalStorageKey,
@@ -44,7 +50,7 @@ const wcInitOptions = {
   /**
    * Project ID associated with [WalletConnect account](https://cloud.walletconnect.com)
    */
-  projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT || '',
+  projectId: String(WALLET_CONNECT_ID) || '',
   /**
    * Chains required to be supported by all wallets connecting to your DApp
    */
