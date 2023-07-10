@@ -55,7 +55,7 @@ export const MY_BADGE_TYPES_IN_REVIEW = gql`
 export const MY_BADGES_IN_REVIEW_AND_CHALLENGED = gql`
   query userBadgesInReviewAndChallenged($ownerAddress: ID!, $date: BigInt!) {
     user(id: $ownerAddress) {
-      badges(where: { badgeKlerosMetaData_: { reviewDueDate_gt: $date } }) {
+      badges(where: { badgeKlerosMetaData_: { reviewDueDate_gt: $date }, status_in: [Requested] }) {
         ...BadgesInReview
       }
     }

@@ -28,6 +28,7 @@ export default function NearToExpireList() {
   const { getTimeLeftToExpire, timestampToDate } = useDate()
   const { address: ownerAddress } = useWeb3Connection()
 
+  // TODO now "NEAR TO EXPIRE" is in max 1 month, we will change this to configurable time
   const badgesExpiringSoon = gql.useUserBadgesExpiringBetween({
     ownerAddress: ownerAddress || '',
     startDate: now,
@@ -84,7 +85,7 @@ export default function NearToExpireList() {
     })
     // If there is no badges to show, we list 5 placeholders
     return fillListWithPlaceholders(badges, <EmptyBadgePreview size="small" />, 3)
-  }, [badgesExpiringSoon.data?.user?.badges, timestampToDate, getTimeLeftToExpire, router])
+  }, [badgesExpiringSoon.data?.user?.badges, timestampToDate, getTimeLeftToExpire, t, router])
 
   const amountItems = () => {
     if (md) {

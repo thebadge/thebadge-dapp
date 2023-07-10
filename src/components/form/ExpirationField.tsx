@@ -12,7 +12,6 @@ import {
   Tooltip,
   styled,
 } from '@mui/material'
-import { colors } from '@thebadge/ui-library'
 import { useDescription, useTsController } from '@ts-react/form'
 import dayjs from 'dayjs'
 import { useTranslation } from 'next-export-i18n'

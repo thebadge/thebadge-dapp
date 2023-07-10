@@ -5,7 +5,7 @@ import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import { DEFAULT_COURT_ID } from '@/src/constants/common'
 import { contracts } from '@/src/contracts/contracts'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
-import useTransaction, { TransactionStates } from '@/src/hooks/useTransaction'
+import useTransaction from '@/src/hooks/useTransaction'
 import CreateWithSteps from '@/src/pagePartials/badge/model/CreateWithSteps'
 import { CreateModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateModelSchema'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
@@ -13,7 +13,7 @@ import { TheBadge__factory } from '@/types/generated/typechain'
 import { NextPageWithLayout } from '@/types/next'
 
 const CreateBadgeType: NextPageWithLayout = () => {
-  const { sendTx } = useTransaction()
+  const { sendTx, state: transactionState } = useTransaction()
 
   const { address, appChainId, readOnlyAppProvider } = useWeb3Connection()
   const theBadge = useContractInstance(TheBadge__factory, 'TheBadge')
@@ -91,7 +91,7 @@ const CreateBadgeType: NextPageWithLayout = () => {
     }
   }
 
-  return <CreateWithSteps onSubmit={onSubmit} txState={TransactionStates.success} />
+  return <CreateWithSteps onSubmit={onSubmit} txState={transactionState} />
 }
 
 export default withPageGenericSuspense(CreateBadgeType)

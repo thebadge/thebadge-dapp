@@ -7,7 +7,7 @@ export function nowInSeconds() {
 
 export function nowPlusOneMonthInSeconds() {
   const date = new Date()
-  date.setMonth(date.getMonth() + 3)
+  date.setMonth(date.getMonth() + 1)
   return Math.floor(date.getTime() / 1000)
 }
 

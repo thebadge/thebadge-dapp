@@ -47,7 +47,7 @@ export default function InfoPreview({ address }: Props) {
       <Stack flex="5" justifyContent="space-between" overflow="auto">
         <Stack gap={1}>
           <Typography variant="dAppHeadline2">{creatorMetadata?.name}</Typography>
-          <Address address={user?.id || ''} showCopyButton={false} showExternalLink={false} />
+          <Address address={user?.id || ''} truncate={false} />
         </Stack>
         <Box display="flex">
           <Stack flex="1" gap={2} height="100%" justifyContent="space-evenly" overflow="auto">

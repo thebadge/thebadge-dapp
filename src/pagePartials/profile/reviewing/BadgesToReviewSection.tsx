@@ -25,6 +25,8 @@ export default function BadgesToReviewSection() {
     {
       title: 'Challenged',
       color: 'pink',
+      fixed: true,
+      defaultSelected: true,
     },
   ]
 
@@ -42,9 +44,9 @@ export default function BadgesToReviewSection() {
   ) => {
     setLoading(true)
     // TODO filter badges with: selectedFilters, selectedCategory, textSearch
-    const badgesToReview = await gql.badgesUserCanReview({ userAddress: address, date: now })
+    const badgesIamReviewing = await gql.badgesUserCanReview({ userAddress: address, date: now })
 
-    const badgeModels = badgesToReview?.badges || []
+    const badgeModels = badgesIamReviewing?.badges || []
     const badgesLayouts = badgeModels.map((badge) => {
       const badgeModel = badge.badgeModel
       return (
@@ -68,6 +70,7 @@ export default function BadgesToReviewSection() {
         loading={loading}
         loadingColor={'green'}
         search={search}
+        showTextSearch={false}
         title={t('profile.badgesToReview.title')}
         titleColor={colors.green}
       >
