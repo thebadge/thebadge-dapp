@@ -10,7 +10,7 @@ if (Object.keys(endpoints).length) {
   const codeGenOutDir = 'types/generated/subgraph.ts'
 
   const schemas = Object.values(endpoints).reduce((acc, current) => {
-    return [...acc, ...Object.values(current)]
+    return [...acc, ...Object.values(current)].filter((v) => !!v)
   }, [])
 
   module.exports = {
@@ -24,6 +24,13 @@ if (Object.keys(endpoints).length) {
           'typescript-operations',
           'typescript-graphql-request',
           'plugin-typescript-swr',
+          {
+            // Workaround to handle the following error
+            // https://github.com/dotansimha/graphql-code-generator/issues/9046
+            add: {
+              content: '// @ts-nocheck',
+            },
+          },
         ],
       },
     },

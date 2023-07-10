@@ -15,13 +15,13 @@ import TextArea from '@/src/components/form/TextArea'
 import TokenInput from '@/src/components/form/TokenInput'
 import {
   AddressSchema,
-  AgreementSchema,
+  AgreementSchemaBranded,
   AvatarSchema,
   ChallengePeriodTypeSchema,
   CheckBoxSchema,
   DescriptionTextSchema,
   EmailSchema,
-  ExpirationTypeSchema,
+  ExpirationTypeSchemaBranded,
   FileSchema,
   ImageSchema,
   KlerosDynamicFields,
@@ -31,7 +31,7 @@ import {
   NumberSchema,
   OptionalFileSchema,
   SeverityTypeSchema,
-  TokenInputSchema,
+  TokenInputSchemaBranded,
   TwitterSchema,
 } from '@/src/components/form/helpers/customSchemas'
 import KlerosDynamicFieldsCreator from '@/src/components/form/klerosDynamicFormField/FormFieldCreator'
@@ -50,12 +50,12 @@ export const mappingSchemaToComponents = [
   [AvatarSchema, AvatarInput],
   [FileSchema, FileInput],
   [OptionalFileSchema, FileInput],
-  [TokenInputSchema, TokenInput],
-  [AgreementSchema, AgreementField],
+  [TokenInputSchemaBranded, TokenInput],
+  [AgreementSchemaBranded, AgreementField],
   [KlerosFieldTypeSchema, DropdownSelect],
   [KlerosDynamicFields, KlerosDynamicFieldsCreator],
   [SeverityTypeSchema, SeveritySelector],
-  [ExpirationTypeSchema, ExpirationField],
+  [ExpirationTypeSchemaBranded, ExpirationField],
   [ChallengePeriodTypeSchema, NumberField],
   [DescriptionTextSchema, DescriptionInputField],
   // TODO Add file types

@@ -9,7 +9,7 @@ import { formatUnits, parseUnits } from 'ethers/lib/utils'
 import { FieldError } from 'react-hook-form'
 import { z } from 'zod'
 
-import { TokenInputSchema } from '@/src/components/form/helpers/customSchemas'
+import { TokenInputSchemaBranded } from '@/src/components/form/helpers/customSchemas'
 import { ErrorHelperProps } from '@/src/components/form/helpers/validators'
 
 const Balance = styled(Box, { shouldForwardProp: (propName) => propName !== 'balancePosition' })<{
@@ -55,7 +55,7 @@ export default function TokenInputWithTSForm({
   setError,
   symbol,
 }: PropsWithTSForm) {
-  const { error, field } = useTsController<z.infer<typeof TokenInputSchema>>()
+  const { error, field } = useTsController<z.infer<typeof TokenInputSchemaBranded>>()
   const { onChange, value } = field
   const { label } = useDescription()
 

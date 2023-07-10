@@ -14,15 +14,26 @@ import { OnboardAPI, WalletState } from '@web3-onboard/core'
 import injectedModule from '@web3-onboard/injected-wallets'
 import { init, useConnectWallet, useSetChain, useWallets } from '@web3-onboard/react'
 import walletConnectModule from '@web3-onboard/walletconnect'
+import web3authModule from '@web3-onboard/web3auth'
+import { UserInfo } from '@web3auth/base'
+import { Web3Auth } from '@web3auth/modal'
 import nullthrows from 'nullthrows'
 
-import { Chains, INITIAL_APP_CHAIN_ID, chainsConfig, getNetworkConfig } from '@/src/config/web3'
-import { appName } from '@/src/constants/common'
+import translate from '@/i18n'
+import {
+  Chains,
+  INITIAL_APP_CHAIN_ID,
+  WALLET_CONNECT_ID,
+  chainsConfig,
+  getNetworkConfig,
+} from '@/src/config/web3'
+import { WEB3_AUTH_CLIENT_ID, appName } from '@/src/constants/common'
 import {
   recoverLocalStorageKey,
   removeLocalStorageKey,
   setLocalStorageKey,
 } from '@/src/hooks/usePersistedState'
+import isDev from '@/src/utils/isDev'
 import { hexToNumber } from '@/src/utils/strings'
 import { ChainConfig, ChainsValues } from '@/types/chains'
 import { RequiredNonNull } from '@/types/utils'
@@ -36,7 +47,41 @@ nullthrows(
 )
 
 const injected = injectedModule()
-const walletConnect = walletConnectModule()
+const wcInitOptions = {
+  /**
+   * Project ID associated with [WalletConnect account](https://cloud.walletconnect.com)
+   */
+  projectId: String(WALLET_CONNECT_ID) || '',
+  /**
+   * Chains required to be supported by all wallets connecting to your DApp
+   */
+  requiredChains: [Chains.goerli, Chains.gnosis],
+}
+const walletConnect = walletConnectModule(wcInitOptions)
+const web3auth = web3authModule({
+  clientId: WEB3_AUTH_CLIENT_ID, // Get your Client ID from Web3Auth Dashboard
+  authMode: 'WALLET', // Enables only social wallets
+  chainConfig: {
+    chainNamespace: 'eip155',
+    chainId: isDev
+      ? chainsConfig[Chains.goerli].chainIdHex
+      : chainsConfig[Chains.gnosis].chainIdHex,
+    displayName: '1231231 Test',
+    ticker: isDev ? chainsConfig[Chains.goerli].token : chainsConfig[Chains.gnosis].token,
+    tickerName: isDev ? chainsConfig[Chains.goerli].token : chainsConfig[Chains.gnosis].token,
+    rpcTarget: isDev ? chainsConfig[Chains.goerli].rpcUrl : chainsConfig[Chains.gnosis].rpcUrl,
+    blockExplorer: isDev
+      ? chainsConfig[Chains.goerli].blockExplorerUrls[0]
+      : chainsConfig[Chains.gnosis].blockExplorerUrls[0],
+  },
+  uiConfig: {
+    appName,
+    appLogo: 'https://avatars.githubusercontent.com/u/109973181?s=200&v=4',
+    modalZIndex: '13002', // Onboard modal is 13001
+    defaultLanguage: 'en',
+    web3AuthNetwork: isDev ? 'testnet' : 'mainnet',
+  },
+})
 
 const chainsForOnboard = Object.values(chainsConfig).map(
   ({ chainIdHex, name, rpcUrl, token }: ChainConfig) => ({
@@ -53,14 +98,14 @@ export function initOnboard() {
   if (typeof window === 'undefined' || window?.onboard || onBoardApi) return
 
   onBoardApi = init({
-    wallets: [injected, walletConnect],
+    wallets: [injected, walletConnect, web3auth],
     chains: chainsForOnboard,
     notify: {
       enabled: false,
     },
     appMetadata: {
       name: appName || '',
-      icon: '<svg><svg/>', // brand icon
+      icon: '/favicon/favicon.svg', // brand icon
       description: 'The Badge DApp',
       recommendedInjectedWallets: [{ name: 'MetaMask', url: 'https://metamask.io' }],
     },
@@ -73,7 +118,12 @@ export function initOnboard() {
         enabled: false,
       },
     },
-    // i18n: {} change all texts in the onboard modal
+    i18n: {
+      // You can see more about it here
+      // https://github.com/blocknative/web3-onboard/blob/develop/packages/core/src/i18n/en.json
+      en: translate.translations.en.web3Onboard,
+    },
+    //change all texts in the onboard modal
   })
   window.onboard = onBoardApi
 }
@@ -95,12 +145,15 @@ export type Web3Context = {
   isOnboardChangingChain: boolean
   isWalletConnected: boolean
   isWalletNetworkSupported: boolean
+  isSocialWallet: boolean
   pushNetwork: (options: SetChainOptions) => Promise<boolean>
   readOnlyAppProvider: JsonRpcProvider
   setAppChainId: Dispatch<SetStateAction<ChainsValues>>
   wallet: WalletState | null
   walletChainId: number | null
   web3Provider: Web3Provider | null
+  web3AuthInstance: Web3Auth | null
+  userSocialInfo: Partial<UserInfo> | undefined
 }
 
 export type Web3Connected = RequiredNonNull<Web3Context>
@@ -121,6 +174,9 @@ export default function Web3ConnectionProvider({ children }: Props) {
 
   const [appChainId, setAppChainId] = useState(INITIAL_APP_CHAIN_ID)
   const [address, setAddress] = useState<string | null>(null)
+  const [isSocialWallet, setIsSocialWallet] = useState<boolean>(false)
+  const [web3AuthInstance, setWeb3AuthInstance] = useState<Web3Auth | null>(null)
+  const [userSocialInfo, setUserSocialInfo] = useState<Partial<UserInfo> | undefined>(undefined)
 
   const web3Provider = wallet?.provider != null ? new Web3Provider(wallet.provider) : null
 
@@ -136,6 +192,14 @@ export default function Web3ConnectionProvider({ children }: Props) {
     () => new JsonRpcProvider(getNetworkConfig(appChainId)?.rpcUrl, appChainId),
     [appChainId],
   )
+
+  useEffect(() => {
+    if (connectingWallet && window) {
+      setTimeout(() => {
+        renameWeb3Auth()
+      }, 200)
+    }
+  }, [connectingWallet])
 
   useEffect(() => {
     if (isWalletNetworkSupported && walletChainId) {
@@ -161,6 +225,33 @@ export default function Web3ConnectionProvider({ children }: Props) {
     }
   }, [wallet])
 
+  // Recovers the web3AuthInstance if connected
+  useEffect(() => {
+    const fetchWeb3AuthInstance = async () => {
+      if (wallet?.label.toLowerCase().includes('web3auth')) {
+        setWeb3AuthInstance(wallet?.instance as Web3Auth)
+        setIsSocialWallet(true)
+      } else {
+        setWeb3AuthInstance(null)
+        setIsSocialWallet(false)
+      }
+    }
+    if (wallet && wallet.instance) {
+      fetchWeb3AuthInstance()
+    }
+  }, [wallet])
+
+  // Recovers the user social account if connected via social
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      const userInfo = await web3AuthInstance?.getUserInfo()
+      setUserSocialInfo(userInfo)
+    }
+    if (web3AuthInstance && isSocialWallet) {
+      fetchUserInfo()
+    }
+  }, [isSocialWallet, web3AuthInstance])
+
   // Auto connect wallet if localStorage has values
   useEffect(() => {
     const previouslyConnectedWallets = recoverLocalStorageKey(STORAGE_CONNECTED_WALLET, [])
@@ -181,6 +272,20 @@ export default function Web3ConnectionProvider({ children }: Props) {
       return `${url}${type}/${hash}`
     }
   }, [appChainId])
+
+  function renameWeb3Auth() {
+    // Disclaimer: This is not the most fancy way to do it, but as the library
+    // doesn't allow us to change the names, we need to do it by hand
+    const onboardElement = document.querySelector('body > onboard-v2')
+    if (!onboardElement) return
+    // In case that we decide to add a new wallet, maybe we will to change this
+    // approach to something clever, like getting the array of buttons and find the web3Auth one
+    const web3AuthButtonElement = onboardElement.shadowRoot?.querySelector(
+      'section > div > div > div > div > div > div > div.content.flex.flex-column.svelte-b3j15j > div.scroll-container.svelte-b3j15j > div > div > div > div:nth-child(3) > button > div > div.name.svelte-1vlog3j',
+    )
+    if (!web3AuthButtonElement) return
+    web3AuthButtonElement.innerHTML = 'Social login'
+  }
 
   const handleDisconnectWallet = async () => {
     if (wallet) {
@@ -208,6 +313,7 @@ export default function Web3ConnectionProvider({ children }: Props) {
     isOnboardChangingChain: settingChain,
     isWalletConnected,
     isWalletNetworkSupported,
+    isSocialWallet,
     pushNetwork: setChain,
     readOnlyAppProvider,
     setAppChainId,
@@ -215,6 +321,8 @@ export default function Web3ConnectionProvider({ children }: Props) {
     wallet,
     walletChainId,
     web3Provider,
+    web3AuthInstance,
+    userSocialInfo,
   }
 
   return <Web3ContextConnection.Provider value={value}>{children}</Web3ContextConnection.Provider>

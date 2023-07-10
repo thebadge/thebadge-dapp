@@ -10,7 +10,7 @@ import { RegisterCuratorSchema } from '@/pages/creator/register'
 import { DataGrid } from '@/src/components/form/customForms/type'
 import { FormWithSteps } from '@/src/components/form/formWithSteps/FormWithSteps'
 import {
-  AgreementSchema,
+  AgreementSchemaBranded,
   AvatarSchema,
   EmailSchema,
   LongTextSchema,
@@ -74,7 +74,7 @@ export const RegisterCuratorSchemaStep2 = z.object({
 })
 
 export const RegisterCuratorSchemaStep3 = z.object({
-  terms: AgreementSchema.describe(`Terms & Conditions // ??`),
+  terms: AgreementSchemaBranded.describe(`Terms & Conditions // ??`),
 })
 
 export default function RegistrationSteps({ onSubmit, txState }: RegistrationStepsProps) {
