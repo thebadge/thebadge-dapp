@@ -17,12 +17,10 @@ export const Chains = {
 
 export const providerChains: ProviderChains = {
   [RPCProviders.infura]: {
-    //[Chains.mainnet]: 'mainnet',
     [Chains.goerli]: 'goerli',
     [Chains.gnosis]: 'gnosis',
   },
   [RPCProviders.alchemy]: {
-    //[Chains.mainnet]: 'eth-mainnet',
     [Chains.goerli]: 'eth-goerli',
     [Chains.gnosis]: 'xDai-gnosis',
   },
