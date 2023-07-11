@@ -1,11 +1,9 @@
-import { parseUnits } from 'ethers/lib/utils'
-
 import { isMetadataColumnArray } from '@/src/components/form/helpers/validators'
 import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import { DEFAULT_COURT_ID } from '@/src/constants/common'
 import { contracts } from '@/src/contracts/contracts'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
-import useTransaction, { TransactionStates } from '@/src/hooks/useTransaction'
+import useTransaction from '@/src/hooks/useTransaction'
 import CreateWithSteps from '@/src/pagePartials/badge/model/CreateWithSteps'
 import { CreateModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateModelSchema'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
@@ -13,13 +11,14 @@ import { TheBadge__factory } from '@/types/generated/typechain'
 import { NextPageWithLayout } from '@/types/next'
 
 const CreateBadgeType: NextPageWithLayout = () => {
-  const { sendTx } = useTransaction()
+  const { sendTx, state } = useTransaction()
 
   const { address, appChainId, readOnlyAppProvider } = useWeb3Connection()
   const theBadge = useContractInstance(TheBadge__factory, 'TheBadge')
 
   const onSubmit = async (data: CreateModelSchemaType) => {
     const {
+      backgroundImage,
       badgeMetadataColumns,
       badgeModelLogoUri,
       challengePeriodDuration,
@@ -27,6 +26,7 @@ const CreateBadgeType: NextPageWithLayout = () => {
       description,
       name,
       rigorousness,
+      textContrast,
     } = data
 
     // Safe-ward to infer MetadataColumn[], It will never go throw the return
@@ -56,6 +56,8 @@ const CreateBadgeType: NextPageWithLayout = () => {
           name,
           description,
           badgeModelLogoUri,
+          backgroundImage,
+          textContrast,
         )
 
         const klerosControllerDataEncoded = encodeKlerosControllerData(
@@ -78,7 +80,7 @@ const CreateBadgeType: NextPageWithLayout = () => {
           {
             metadata: badgeModelMetadataIPFSHash,
             controllerName: 'kleros',
-            mintCreatorFee: parseUnits(data.mintCost.toString(), 18),
+            mintCreatorFee: data.mintCost,
             validFor: data.validFor, // in seconds, 0 infinite
           },
           klerosControllerDataEncoded,
@@ -91,7 +93,7 @@ const CreateBadgeType: NextPageWithLayout = () => {
     }
   }
 
-  return <CreateWithSteps onSubmit={onSubmit} txState={TransactionStates.success} />
+  return <CreateWithSteps onSubmit={onSubmit} txState={state} />
 }
 
 export default withPageGenericSuspense(CreateBadgeType)

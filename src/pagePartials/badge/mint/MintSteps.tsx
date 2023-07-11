@@ -8,9 +8,8 @@ import { useTranslation } from 'next-export-i18n'
 import { AnyZodObject, z } from 'zod'
 
 import MarkdownTypography from '@/src/components/common/MarkdownTypography'
-import { DataGrid } from '@/src/components/form/customForms/type'
 import { FormWithSteps } from '@/src/components/form/formWithSteps/FormWithSteps'
-import { AgreementSchema } from '@/src/components/form/helpers/customSchemas'
+import { AgreementSchemaBranded } from '@/src/components/form/helpers/customSchemas'
 import { TransactionLoading } from '@/src/components/loading/TransactionLoading'
 import { APP_URL, DOCS_URL } from '@/src/constants/common'
 import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
@@ -37,13 +36,8 @@ type MintStepsProps<SchemaType extends z.ZodEffects<any, any, any> | AnyZodObjec
 
 const steps = ['Help', 'Evidence form', 'Badge Preview']
 
-const formGridLayout: DataGrid[][] = [
-  [{ i: 'AgreementSchema', x: 0, y: 0, w: 12, h: 8, static: true }],
-  [],
-]
-
 export const MintSchemaStep1 = z.object({
-  help: AgreementSchema.describe(`Mint badge quick tutorial.`),
+  help: AgreementSchemaBranded.describe(`Mint badge quick tutorial.`),
 })
 
 export default function MintSteps({ costs, evidenceSchema, onSubmit, txState }: MintStepsProps) {
