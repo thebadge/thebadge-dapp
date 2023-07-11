@@ -13,7 +13,7 @@ import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 
 const now = nowInSeconds()
 
-export default function BadgesToReviewSection() {
+export default function BadgesIAmReviewingSection() {
   const { t } = useTranslation()
   const filters: Array<ListFilter> = [
     {
@@ -71,14 +71,14 @@ export default function BadgesToReviewSection() {
         loadingColor={'green'}
         search={search}
         showTextSearch={false}
-        title={t('profile.badgesToReview.title')}
+        title={t('profile.badgesIAmReviewing.title')}
         titleColor={colors.green}
       >
         {items.length > 0 ? (
           items
         ) : (
           <Stack>
-            <NoResultsAnimated errorText={t('profile.badgesToReview.noResults')} />
+            <NoResultsAnimated errorText={t('profile.badgesIAmReviewing.noResults')} />
           </Stack>
         )}
       </FilteredList>

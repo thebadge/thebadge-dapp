@@ -8,7 +8,7 @@ import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { useCurrentUser } from '@/src/hooks/subgraph/useCurrentUser'
 import BadgesCreatedSection from '@/src/pagePartials/profile/created/BadgesCreatedSection'
 import MyProfileSection from '@/src/pagePartials/profile/myProfile/MyProfileSection'
-import BadgesToReviewSection from '@/src/pagePartials/profile/reviewing/BadgesToReviewSection'
+import BadgesIAmReviewingSection from '@/src/pagePartials/profile/reviewing/BadgesIAmReviewingSection'
 import InfoPreview from '@/src/pagePartials/profile/userInfo/InfoPreview'
 import { InfoPreviewSkeleton } from '@/src/pagePartials/profile/userInfo/InfoPreview.skeleton'
 
@@ -30,8 +30,8 @@ const Profile = () => {
               {t('profile.tab1')}
             </Typography>
           </LinkWithTranslation>
-          <LinkWithTranslation pathname={`/profile`} queryParams={{ filter: 'badgesToReview' }}>
-            <Typography color={filterType === 'badgesToReview' ? 'text.primary' : 'text.disabled'}>
+          <LinkWithTranslation pathname={`/profile`} queryParams={{ filter: 'badgesIAmReviewing' }}>
+            <Typography color={filterType === 'badgesIAmReviewing' ? 'text.primary' : 'text.disabled'}>
               {t('profile.tab2')}
             </Typography>
           </LinkWithTranslation>
@@ -49,7 +49,7 @@ const Profile = () => {
         <InfoPreview address={user?.id || ''} />
       </SafeSuspense>
       {!filterType && <MyProfileSection />}
-      {filterType === 'badgesToReview' && <BadgesToReviewSection />}
+      {filterType === 'badgesIAmReviewing' && <BadgesIAmReviewingSection />}
       {filterType === 'createdBadges' && <BadgesCreatedSection />}
     </SafeSuspense>
   )

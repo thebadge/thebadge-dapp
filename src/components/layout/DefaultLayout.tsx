@@ -77,7 +77,7 @@ export default function DefaultLayout({ children }: DefaultLayoutProps) {
               sx={{
                 display: 'flex',
                 flexDirection: 'column',
-                margin: theme.spacing(6, 'auto', 6),
+                margin: theme.spacing(6, 'auto', 0),
               }}
             >
               {children}

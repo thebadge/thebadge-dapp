@@ -40,7 +40,7 @@ export const Footer: React.FC = () => {
   const iconColor = 'white'
 
   return (
-    <Box id="footer" sx={{ background: 'black' }}>
+    <Box id="footer" sx={{ background: 'black', mt: 8 }}>
       <Container>
         <Stack sx={{ justifyContent: 'center', gap: 5, mb: 5 }}>
           <Divider color={mode === 'dark' ? 'white' : 'black'} sx={{ borderWidth: '1px' }} />

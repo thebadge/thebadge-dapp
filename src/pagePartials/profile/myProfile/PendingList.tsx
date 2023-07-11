@@ -97,7 +97,13 @@ export default function PendingList() {
       )
     })
     // If there is no badges to show, we list 5 placeholders
-    return fillListWithPlaceholders(badges, <EmptyBadgePreview size="small" />, 2)
+    return fillListWithPlaceholders(
+      badges,
+      <div style={{ minHeight: '365px' }}>
+        <EmptyBadgePreview size="small" />
+      </div>,
+      2,
+    )
   }, [
     badgesInReviewAndChallenged.data?.user?.badges,
     getPendingTimeProgressPercentage,

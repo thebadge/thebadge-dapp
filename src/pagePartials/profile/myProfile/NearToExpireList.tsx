@@ -53,30 +53,32 @@ export default function NearToExpireList() {
                     timeLeft={timeLeft}
                   />
                 </Box>
-                <Tooltip arrow title={'Not available yet. Coming soon...'}>
-                  <span>
-                    <ButtonV2
-                      backgroundColor={colors.purple}
-                      disabled={true}
-                      fontColor={colors.white}
-                      sx={{
-                        width: '100%',
-                        height: 'fit-content !important',
-                        marginTop: '1rem',
-                        padding: '0.5rem 1rem !important',
-                        borderRadius: '10px',
-                        fontSize: '15px !important',
-                        lineHeight: '15px',
-                        fontWeight: 700,
-                        boxShadow: 'none',
-                        textTransform: 'uppercase',
-                      }}
-                      variant="contained"
-                    >
-                      {t('badge.mintAgainButton')}
-                    </ButtonV2>
-                  </span>
-                </Tooltip>
+                <ButtonV2
+                  backgroundColor={colors.purple}
+                  disabled={true}
+                  fontColor={colors.white}
+                  onClick={() => router.push(`/renew/${badge.id}`)}
+                  sx={{
+                    width: '100%',
+                    height: 'fit-content !important',
+                    marginTop: '1rem',
+                    padding: '0.5rem 1rem !important',
+                    borderRadius: '10px',
+                    fontSize: '15px !important',
+                    lineHeight: '15px',
+                    fontWeight: 700,
+                    boxShadow: 'none',
+                    textTransform: 'uppercase',
+
+                    '&.Mui-disabled': {
+                      pointerEvents: 'auto',
+                      cursor: 'not-allowed',
+                    },
+                  }}
+                  variant="contained"
+                >
+                  {t('badge.renew')}
+                </ButtonV2>
               </Box>
             </SafeSuspense>
           </InViewPort>
@@ -84,7 +86,13 @@ export default function NearToExpireList() {
       )
     })
     // If there is no badges to show, we list 5 placeholders
-    return fillListWithPlaceholders(badges, <EmptyBadgePreview size="small" />, 3)
+    return fillListWithPlaceholders(
+      badges,
+      <div style={{ minHeight: '365px' }}>
+        <EmptyBadgePreview size="small" />
+      </div>,
+      3,
+    )
   }, [badgesExpiringSoon.data?.user?.badges, timestampToDate, getTimeLeftToExpire, t, router])
 
   const amountItems = () => {

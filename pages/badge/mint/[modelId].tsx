@@ -37,7 +37,7 @@ const MintBadgeType: NextPageWithLayout = () => {
   useEffect(() => {
     // Redirect to the profile
     if (state === TransactionStates.success) {
-      router.push(`/profile?filter=badgesInReview`)
+      router.push(`/profile`)
     }
   }, [router, state])
 

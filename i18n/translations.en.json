@@ -142,9 +142,9 @@
     "tab1": "MY PROFILE",
     "tab2": "CURATOR PROFILE",
     "tab3": "CREATOR PROFILE",
-    "badgesToReview": {
+    "badgesIAmReviewing": {
       "title": "Badges I am reviewing",
-      "noResults": "There are no badges you can review..."
+      "noResults": "There are no badges you are already reviewing..."
     },
     "verified": "Verified user"
   },
@@ -312,7 +312,7 @@
       }
     },
     "claimButton": "Claim",
-    "mintAgainButton": "Renew"
+    "renew": "Renew"
   },
   "badgesList": {
     "filters": {
