@@ -44,10 +44,13 @@ export default function BadgesIAmReviewingSection() {
   ) => {
     setLoading(true)
     // TODO filter badges with: selectedFilters, selectedCategory, textSearch
-    const badgesIamReviewing = await gql.badgesUserCanReview({ userAddress: address, date: now })
-
-    const badgeModels = badgesIamReviewing?.badges || []
-    const badgesLayouts = badgeModels.map((badge) => {
+    const badgesMetadataIamReviewing = await gql.badgesMetaDataUserChallenged({
+      userAddress: address,
+    })
+    const badgesIamReviewing = badgesMetadataIamReviewing.badgeKlerosMetaDatas.map(
+      (metadata) => metadata.badge,
+    )
+    const badgesLayouts = badgesIamReviewing.map((badge) => {
       const badgeModel = badge.badgeModel
       return (
         <Box key={badge.id}>

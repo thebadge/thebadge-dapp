@@ -80,14 +80,3 @@ gql`
     }
   }
 `
-
-gql`
-  fragment BadgeKlerosMetadata on BadgeKlerosMetaData {
-    id
-    itemID
-    reviewDueDate
-    requests {
-      ...Request
-    }
-  }
-`
