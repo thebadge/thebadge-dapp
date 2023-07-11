@@ -9,17 +9,17 @@ import { ZodSchema, z } from 'zod'
 import { convertToFieldError } from '@/src/components/form/helpers/validators'
 import { capitalizeFirstLetter } from '@/src/utils/strings'
 
-type DropdownSelectProps = {
+type DropdownSelectProps<T> = {
   error?: FieldError
   label?: string
-  onChange: (value: string) => void
+  onChange: (value: T) => void
   placeholder?: string
-  value: string | undefined
+  value: T | undefined
   options: string[]
   native?: boolean
   disabled?: boolean
 }
-export function DropdownSelect({
+export function DropdownSelect<T>({
   disabled,
   error,
   label,
@@ -28,9 +28,9 @@ export function DropdownSelect({
   options,
   placeholder,
   value,
-}: DropdownSelectProps) {
+}: DropdownSelectProps<T>) {
   function handleChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
-    onChange(event.target.value as string)
+    onChange(event.target.value as T)
   }
 
   return (

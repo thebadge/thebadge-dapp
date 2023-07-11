@@ -22,11 +22,12 @@ import { BadgeModelMetadata } from '@/types/badges/BadgeMetadata'
 import { TheBadge__factory } from '@/types/generated/typechain'
 import { MetadataColumn } from '@/types/kleros/types'
 import { NextPageWithLayout } from '@/types/next'
+import { SupportedRelayMethods } from '@/types/relayedTx'
 
 const MintBadgeType: NextPageWithLayout = () => {
-  const { address } = useWeb3Connection()
+  const { address, appChainId, isSocialWallet, userSocialInfo, web3Provider } = useWeb3Connection()
   const theBadge = useContractInstance(TheBadge__factory, 'TheBadge')
-  const { sendTx, state } = useTransaction()
+  const { sendRelayTx, sendTx, state } = useTransaction()
   const router = useRouter()
   const badgeModelId = useModelIdParam()
 
@@ -84,6 +85,40 @@ const MintBadgeType: NextPageWithLayout = () => {
     )
 
     try {
+      // If social login relay tx
+      // @todo (agustin) add more validations, also on backend, user should be authenticated
+      if (isSocialWallet && address && userSocialInfo) {
+        const data = JSON.stringify({
+          badgeModelId,
+          address,
+          badgeMetadataIPFSHash,
+          klerosControllerDataEncoded,
+          overrides: {
+            value: mintValue,
+          },
+        })
+
+        const signature = await web3Provider?.getSigner().signMessage(data)
+
+        if (!signature) {
+          throw new Error('User rejected the signing of the message')
+        }
+
+        // Send to backend
+        await sendRelayTx({
+          data,
+          from: address,
+          chainId: appChainId.toString(),
+          method: SupportedRelayMethods.MINT,
+          signature,
+          userAccount: {
+            address,
+            userSocialInfo,
+          },
+        })
+        return
+      }
+      // If user is not social logged, just send the tx
       const transaction = await sendTx(() =>
         theBadge.mint(
           badgeModelId,
@@ -95,9 +130,9 @@ const MintBadgeType: NextPageWithLayout = () => {
           },
         ),
       )
-
       await transaction.wait()
     } catch (e) {
+      console.error(e)
       // Do nothing
     }
   }

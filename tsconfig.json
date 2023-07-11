@@ -13,8 +13,8 @@
     "skipLibCheck": true,
     "strict": true,
     "paths": {
-      "@/pdf-worker": [
-        "./pdf-worker.js"
+      "@/i18n": [
+        "i18n/index.js"
       ],
       "@/*": [
         "*"

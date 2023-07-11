@@ -12,7 +12,6 @@ export const FormButton = styled(Button)(({ theme }) => ({
 }))
 
 function MyCustomFormComponent({
-  submitButton = { disabled: false, label: 'Submit', ref: undefined },
   backButton = { disabled: false, label: 'Back', ref: undefined },
   children,
   color,
@@ -22,6 +21,7 @@ function MyCustomFormComponent({
   onBack,
   onSubmit,
   rowHeight,
+  submitButton = { disabled: false, label: 'Submit', ref: undefined },
 }: CustomFormProps) {
   if (layout !== 'gridResponsive' && gridStructure) {
     throw new Error(`gridStructure must be provided only on layout = 'gridResponsive'`)
@@ -65,7 +65,6 @@ function MyCustomFormComponent({
  * want to avoid the use of type=submit and also the user of another Form Tag
  */
 function MyCustomFormComponentWithoutSubmit({
-  submitButton = { disabled: false, label: 'Submit', ref: undefined },
   backButton = { disabled: false, label: 'Back', ref: undefined },
   children,
   color,
@@ -75,6 +74,7 @@ function MyCustomFormComponentWithoutSubmit({
   onBack,
   onSubmit,
   rowHeight,
+  submitButton = { disabled: false, label: 'Submit', ref: undefined },
 }: CustomFormProps) {
   if (layout !== 'gridResponsive' && gridStructure) {
     throw new Error(`gridStructure must be provided only on layout = 'gridResponsive'`)

@@ -113,7 +113,7 @@ export function KlerosDynamicFieldsCreator({ error, ...props }: Props) {
             control={control}
             name={'type'}
             render={({ field: { onChange, value }, fieldState: { error } }) => (
-              <DropdownSelect
+              <DropdownSelect<typeof value>
                 error={error}
                 label={'Field Type'}
                 onChange={onChange}
