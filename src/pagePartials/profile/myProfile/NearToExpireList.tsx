@@ -1,7 +1,7 @@
 import { useRouter } from 'next/navigation'
 import { useMemo } from 'react'
 
-import { Box, Tooltip } from '@mui/material'
+import { Box } from '@mui/material'
 import { ButtonV2, EmptyBadgePreview, TimeToExpireBadgeOverlay, colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 
@@ -55,7 +55,6 @@ export default function NearToExpireList() {
                 </Box>
                 <ButtonV2
                   backgroundColor={colors.purple}
-                  disabled={true}
                   fontColor={colors.white}
                   onClick={() => router.push(`/renew/${badge.id}`)}
                   sx={{
@@ -69,15 +68,10 @@ export default function NearToExpireList() {
                     fontWeight: 700,
                     boxShadow: 'none',
                     textTransform: 'uppercase',
-
-                    '&.Mui-disabled': {
-                      pointerEvents: 'auto',
-                      cursor: 'not-allowed',
-                    },
                   }}
                   variant="contained"
                 >
-                  {t('badge.renew')}
+                  {t('badge.renewButton')}
                 </ButtonV2>
               </Box>
             </SafeSuspense>

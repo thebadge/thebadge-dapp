@@ -35,12 +35,20 @@ export const BADGES_IN_REVIEW_SMALL_SET = gql`
   }
 `
 
+export const MY_BADGES = gql`
+  query myBadges($wallet: String!) {
+    badges(where: { account: $wallet }) {
+      ...FullBadgeDetails
+    }
+  }
+`
+
 export const BADGES_USER_CAN_REVIEW = gql`
   query badgesUserCanReview($userAddress: String!, $date: BigInt!) {
     badges(
       where: {
         badgeKlerosMetaData_: { reviewDueDate_gt: $date }
-        status: Requested
+        status_in: [Requested, Challenged]
         account_not: $userAddress
       }
     ) {
@@ -49,13 +57,38 @@ export const BADGES_USER_CAN_REVIEW = gql`
   }
 `
 
-export const MY_BADGES = gql`
-  query myBadges($wallet: String!) {
-    badges(where: { account: $wallet }) {
-      ...FullBadgeDetails
+export const BADGES_USER_CAN_REVIEW_SMALL_SET = gql`
+  query badgesUserCanReviewSmallSet(
+    $userAddress: String!
+    $date: BigInt!
+    $statuses: [BadgeStatus!]!
+    $badgeReceiver: String!
+  ) {
+    badges(
+      where: {
+        badgeKlerosMetaData_: { reviewDueDate_gt: $date }
+        status_in: $statuses
+        account_starts_with: $badgeReceiver
+        account_not: $userAddress
+      }
+    ) {
+      ...BadgeWithJustIds
     }
   }
 `
+
+// export const BADGES_USER_IS_REVIEWING = gql`
+//   query badgesUserIsReviewing($userAddress: String!, $date: BigInt!) {
+//     badges(
+//       where: {
+//         badgeKlerosMetaData_: { reviewDueDate_gt: $date, requests_: { challenger: $userAddress } }
+//         status: Challenged
+//       }
+//     ) {
+//       ...BadgesInReview
+//     }
+//   }
+// `
 
 export const BADGE_BY_ID = gql`
   query badgeById($id: ID!) {

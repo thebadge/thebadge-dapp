@@ -1,7 +1,7 @@
 import { useRouter } from 'next/navigation'
 import { useMemo } from 'react'
 
-import { Box } from '@mui/material'
+import { Box, Tooltip } from '@mui/material'
 import { ButtonV2, EmptyBadgePreview, PendingBadgeOverlay, colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 
@@ -50,7 +50,7 @@ export default function PendingList() {
       }
 
       return (
-        <Box key={badge.id} sx={{ height: '100%', display: 'flex', cursor: 'pointer' }}>
+        <Box key={badge.id} sx={{ height: '100%', display: 'flex' }}>
           <InViewPort color={'green'} minHeight={220} minWidth={140}>
             <SafeSuspense color={'green'}>
               <Box sx={{ width: 'fit-content' }}>
@@ -64,32 +64,34 @@ export default function PendingList() {
                     timeLeft={timeLeft}
                   />
                 </Box>
-                <ButtonV2
-                  backgroundColor={colors.blue}
-                  disabled={progressPercentage < 100}
-                  fontColor={colors.white}
-                  onClick={() => handleClaimBadge(badge.id)}
-                  sx={{
-                    width: '100%',
-                    height: 'fit-content !important',
-                    marginTop: '1rem',
-                    padding: '0.5rem 1rem !important',
-                    borderRadius: '10px',
-                    fontSize: '15px !important',
-                    lineHeight: '15px',
-                    fontWeight: 700,
-                    boxShadow: 'none',
-                    textTransform: 'uppercase',
-
-                    '&.Mui-disabled': {
-                      pointerEvents: 'auto',
-                      cursor: 'not-allowed',
-                    },
-                  }}
-                  variant="contained"
+                <Tooltip
+                  arrow
+                  title={progressPercentage < 100 ? t('badge.claimButtonDisabledTooltip') : ''}
                 >
-                  {t('badge.claimButton')}
-                </ButtonV2>
+                  <div>
+                    <ButtonV2
+                      backgroundColor={colors.blue}
+                      disabled={progressPercentage < 100}
+                      fontColor={colors.white}
+                      onClick={() => handleClaimBadge(badge.id)}
+                      sx={{
+                        width: '100%',
+                        height: 'fit-content !important',
+                        marginTop: '1rem',
+                        padding: '0.5rem 1rem !important',
+                        borderRadius: '10px',
+                        fontSize: '15px !important',
+                        lineHeight: '15px',
+                        fontWeight: 700,
+                        boxShadow: 'none',
+                        textTransform: 'uppercase',
+                      }}
+                      variant="contained"
+                    >
+                      {t('badge.claimButton')}
+                    </ButtonV2>
+                  </div>
+                </Tooltip>
               </Box>
             </SafeSuspense>
           </InViewPort>

@@ -182,7 +182,12 @@
   "curator": {},
   "badge": {
     "mintButton": "Apply for it",
+    "mintButtonDisabledTooltip": "You already own this badge.",
     "curateButton": "Curate",
+    "curateButtonDisabledTooltip": "You cannot curate your own badge.",
+    "claimButton": "Claim",
+    "claimButtonDisabledTooltip": "You cannot claim this badge yet.",
+    "renewButton": "Renew",
     "model": {
       "create": {
         "howItWorks": "How it works",
@@ -310,9 +315,7 @@
         "ownBadgeChallenge": "You can't do a challenge to your own badge",
         "challengeButton": "CHALLENGE"
       }
-    },
-    "claimButton": "Claim",
-    "renew": "Renew"
+    }
   },
   "badgesList": {
     "filters": {

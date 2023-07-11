@@ -19,6 +19,7 @@ import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import { useKeyPress } from '@/src/hooks/useKeypress'
 import MiniBadgeModelPreview from '@/src/pagePartials/badge/MiniBadgeModelPreview'
 import BadgeEvidenceInfoPreview from '@/src/pagePartials/badge/explorer/BadgeEvidenceInfoPreview'
+import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import getHighlightColorByStatus from '@/src/utils/badges/getHighlightColorByStatus'
 import { Badge, BadgeStatus } from '@/types/generated/subgraph'
 import { NextPageWithLayout } from '@/types/next'
@@ -43,6 +44,7 @@ const filters: Array<ListFilter<BadgeStatus>> = [
 const CurateBadges: NextPageWithLayout = () => {
   const { t } = useTranslation()
   const gql = useSubgraph()
+  const { address } = useWeb3Connection()
   const leftPress = useKeyPress('ArrowLeft')
   const rightPress = useKeyPress('ArrowRight')
 
@@ -77,12 +79,13 @@ const CurateBadges: NextPageWithLayout = () => {
     setSelectedBadgeIndex(0)
     setBadges([])
 
-    const badgesInReview = await gql.badgesInReviewSmallSet({
+    const badgesUserCanReview = await gql.badgesUserCanReviewSmallSet({
+      userAddress: address || '',
       date: selectedFilters.some((f) => f.key == BadgeStatus.Approved) ? 0 : now,
       statuses: selectedFilters.map((f) => f.key) as Array<BadgeStatus>,
       badgeReceiver: textSearch ? textSearch.toLowerCase() : ADDRESS_PREFIX,
     })
-    const badges = (badgesInReview.badges as Badge[]) || []
+    const badges = (badgesUserCanReview.badges as Badge[]) || []
     setSelectedBadgeIndex(0)
     setBadges(badges)
 

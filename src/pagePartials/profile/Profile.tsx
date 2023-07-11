@@ -31,7 +31,9 @@ const Profile = () => {
             </Typography>
           </LinkWithTranslation>
           <LinkWithTranslation pathname={`/profile`} queryParams={{ filter: 'badgesIAmReviewing' }}>
-            <Typography color={filterType === 'badgesIAmReviewing' ? 'text.primary' : 'text.disabled'}>
+            <Typography
+              color={filterType === 'badgesIAmReviewing' ? 'text.primary' : 'text.disabled'}
+            >
               {t('profile.tab2')}
             </Typography>
           </LinkWithTranslation>
