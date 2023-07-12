@@ -55,7 +55,9 @@ export default function MintCost({ costs }: Props) {
         gap: 2,
       }}
     >
-      <Typography variant="dAppTitle2">Total deposit required</Typography>
+      <Typography fontWeight={800} variant="dAppTitle3">
+        {t('badge.type.mint.depositRequired')}
+      </Typography>
       <Box display="flex" flex={1} gap={4}>
         <Stack flex={1} gap={1} sx={{ borderBottom: '1px solid white', margin: 'auto' }}>
           <Typography variant="dAppTitle2">{t('badge.type.mint.depositCost')}</Typography>
@@ -69,6 +71,7 @@ export default function MintCost({ costs }: Props) {
             sx={{
               display: 'flex',
               alignItems: 'center',
+              fontWeight: 300,
               '& a': { textDecoration: 'underline !important' },
             }}
             variant="subtitle2"

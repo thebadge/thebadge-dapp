@@ -1,5 +1,3 @@
-import { parseUnits } from 'ethers/lib/utils'
-
 import { isMetadataColumnArray } from '@/src/components/form/helpers/validators'
 import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import { DEFAULT_COURT_ID } from '@/src/constants/common'
@@ -20,6 +18,7 @@ const CreateBadgeType: NextPageWithLayout = () => {
 
   const onSubmit = async (data: CreateModelSchemaType) => {
     const {
+      backgroundImage,
       badgeMetadataColumns,
       badgeModelLogoUri,
       challengePeriodDuration,
@@ -27,6 +26,7 @@ const CreateBadgeType: NextPageWithLayout = () => {
       description,
       name,
       rigorousness,
+      textContrast,
     } = data
 
     // Safe-ward to infer MetadataColumn[], It will never go throw the return
@@ -56,6 +56,8 @@ const CreateBadgeType: NextPageWithLayout = () => {
           name,
           description,
           badgeModelLogoUri,
+          backgroundImage,
+          textContrast,
         )
 
         const klerosControllerDataEncoded = encodeKlerosControllerData(
@@ -77,8 +79,8 @@ const CreateBadgeType: NextPageWithLayout = () => {
         return theBadge.createBadgeModel(
           {
             metadata: badgeModelMetadataIPFSHash,
-            controllerName: 'kleros',
-            mintCreatorFee: parseUnits(data.mintCost.toString(), 18),
+            controllerName: 'kleros', // TODO kleros is hardcoded as controller for now
+            mintCreatorFee: data.mintCost,
             validFor: data.validFor, // in seconds, 0 infinite
           },
           klerosControllerDataEncoded,
