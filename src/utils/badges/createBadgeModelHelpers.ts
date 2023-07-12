@@ -20,6 +20,8 @@ export async function createAndUploadBadgeModelMetadata(
   badgeModelName: string,
   badgeModelDescription: string,
   badgeModelLogoUri: BackendFileUpload,
+  backgroundType: string,
+  textContrast: string,
 ) {
   const badgeModelMetadataIPFSUploaded = await ipfsUpload<BadgeModelMetadata<BackendFileUpload>>({
     attributes: {
@@ -27,6 +29,16 @@ export async function createAndUploadBadgeModelMetadata(
       description: badgeModelDescription,
       image: badgeModelLogoUri,
       external_link: `${APP_URL}/explore`,
+      attributes: [
+        {
+          trait_type: 'Background',
+          value: backgroundType,
+        },
+        {
+          trait_type: 'TextContrast',
+          value: textContrast,
+        },
+      ],
     },
     filePaths: ['image'],
   })

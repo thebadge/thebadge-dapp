@@ -11,6 +11,7 @@ export type BadgeModelMetadata<T = IPFSHash | BackendFileResponse | BackendFileU
   description: string
   image: T
   external_link: string
+  attributes?: NFTAttribute[]
 }
 
 // This type follows the https://docs.opensea.io/docs/metadata-standards

@@ -106,5 +106,5 @@ export type IPFSHash = string
 export type NFTAttribute = {
   trait_type: string
   value: string | number
-  display_type: undefined | 'date'
+  display_type?: undefined | 'date'
 }
