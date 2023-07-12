@@ -1,3 +1,4 @@
+import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 
 import { Box, Stack } from '@mui/material'
@@ -33,6 +34,7 @@ export default function BadgesIAmReviewingSection() {
   const [items, setItems] = useState<React.ReactNode[]>([])
   const [loading, setLoading] = useState<boolean>(false)
   const { address } = useWeb3Connection()
+  const router = useRouter()
   const gql = useSubgraph()
 
   if (!address) return null
@@ -54,7 +56,11 @@ export default function BadgesIAmReviewingSection() {
       const badgeModel = badge.badgeModel
       return (
         <Box key={badge.id}>
-          <MiniBadgeModelPreview highlightColor={colors.green} metadata={badgeModel?.uri} />
+          <MiniBadgeModelPreview
+            highlightColor={colors.green}
+            metadata={badgeModel?.uri}
+            onClick={() => router.push(`/badge/preview/${badge.id}`)}
+          />
         </Box>
       )
     })
