@@ -1,4 +1,3 @@
-import { ProfileFilter } from "@/src/pagePartials/profile/Profile";
 import { useRouter } from 'next/router'
 import React from 'react'
 
@@ -13,6 +12,7 @@ import {
   BADGE_MODEL_BACKGROUNDS,
   BADGE_MODEL_TEXT_CONTRAST,
 } from '@/src/pagePartials/badge/model/steps/uiBasics/BadgeModelUIBasics'
+import { ProfileFilter } from '@/src/pagePartials/profile/Profile'
 
 const BoxShadow = styled(Box)(({ theme }) => ({
   display: 'flex',

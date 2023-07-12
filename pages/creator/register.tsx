@@ -1,4 +1,3 @@
-import { ProfileFilter } from "@/src/pagePartials/profile/Profile";
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 
@@ -16,6 +15,7 @@ import RegistrationSteps, {
 } from '@/src/pagePartials/creator/register/RegistrationSteps'
 import { PreventActionIfRegisterPaused } from '@/src/pagePartials/errors/preventActionIfPaused'
 import { RequiredConnection } from '@/src/pagePartials/errors/requiredConnection'
+import { ProfileFilter } from '@/src/pagePartials/profile/Profile'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import ipfsUpload from '@/src/utils/ipfsUpload'
 import { TheBadge__factory } from '@/types/generated/typechain'
