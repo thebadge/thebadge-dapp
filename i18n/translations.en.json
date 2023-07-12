@@ -243,6 +243,7 @@
         "depositDisclaimer": "Note that this is a deposit, not a fee and it will be reimbursed if the request is accepted. The challenge period last *{{challengePeriodDuration}} {{timeUnit}}*. For more information check the [docs]({{docsUrl}})",
         "mintCost": "Badge fee ",
         "totalCost": "Total need: {{cost}} ",
+        "depositRequired": "Total deposit required",
         "makeSure": "Make sure your submission complies with the ",
         "curationCriteria": "Curation Criteria",
         "avoidChallenges": " to avoid challenges.",
