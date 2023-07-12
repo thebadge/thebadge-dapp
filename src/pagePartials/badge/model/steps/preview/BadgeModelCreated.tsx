@@ -1,3 +1,4 @@
+import { ProfileFilter } from "@/src/pagePartials/profile/Profile";
 import { useRouter } from 'next/router'
 import React from 'react'
 
@@ -54,7 +55,7 @@ export default function BadgeModelCreated() {
       </Stack>
       <StepButton
         color={'primary'}
-        onClick={() => router.push(`/profile?filter=createdBadges`)}
+        onClick={() => router.push(`/profile?filter=${ProfileFilter.CREATED_BADGES}`)}
         sx={{ m: 'auto' }}
         variant="contained"
       >

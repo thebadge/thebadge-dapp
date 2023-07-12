@@ -77,19 +77,6 @@ export const BADGES_USER_CAN_REVIEW_SMALL_SET = gql`
   }
 `
 
-// export const BADGES_USER_IS_REVIEWING = gql`
-//   query badgesUserIsReviewing($userAddress: String!, $date: BigInt!) {
-//     badges(
-//       where: {
-//         badgeKlerosMetaData_: { reviewDueDate_gt: $date, requests_: { challenger: $userAddress } }
-//         status: Challenged
-//       }
-//     ) {
-//       ...BadgesInReview
-//     }
-//   }
-// `
-
 export const BADGE_BY_ID = gql`
   query badgeById($id: ID!) {
     badge(id: $id) {

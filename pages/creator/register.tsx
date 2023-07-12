@@ -1,3 +1,4 @@
+import { ProfileFilter } from "@/src/pagePartials/profile/Profile";
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 
@@ -35,7 +36,7 @@ const Register: NextPageWithLayout = () => {
   useEffect(() => {
     // Redirect to the creator profile section
     if (state === TransactionStates.success) {
-      router.push(`/profile?filter=createdBadges`)
+      router.push(`/profile?filter=${ProfileFilter.CREATED_BADGES}`)
     }
   }, [router, state])
 
@@ -47,7 +48,7 @@ const Register: NextPageWithLayout = () => {
   })
 
   if (userProfile.data?.user?.isCreator) {
-    router.push('/profile?filter=createdBadges')
+    router.push(`/profile?filter=${ProfileFilter.CREATED_BADGES}`)
   }
 
   async function onSubmit(data: z.infer<typeof RegisterCuratorSchema>) {
