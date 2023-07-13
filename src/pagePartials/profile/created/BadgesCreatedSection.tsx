@@ -81,11 +81,12 @@ export default function BadgesCreatedSection() {
   return (
     <RequiredCreatorAccess>
       <FilteredList
-        categories={['Category 1', 'Category 2', 'Category 3']}
+        // categories={['Category 1', 'Category 2', 'Category 3']}
         filters={[]}
         loading={loading}
         loadingColor={'primary'}
         search={search}
+        showTextSearch={false}
         title={t('profile.badgesCreated.title')}
         titleColor={colors.pink}
       >

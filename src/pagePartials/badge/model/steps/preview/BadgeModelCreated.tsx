@@ -12,6 +12,7 @@ import {
   BADGE_MODEL_BACKGROUNDS,
   BADGE_MODEL_TEXT_CONTRAST,
 } from '@/src/pagePartials/badge/model/steps/uiBasics/BadgeModelUIBasics'
+import { ProfileFilter } from '@/src/pagePartials/profile/Profile'
 
 const BoxShadow = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -54,7 +55,7 @@ export default function BadgeModelCreated() {
       </Stack>
       <StepButton
         color={'primary'}
-        onClick={() => router.push(`/profile?filter=createdBadges`)}
+        onClick={() => router.push(`/profile?filter=${ProfileFilter.CREATED_BADGES}`)}
         sx={{ m: 'auto' }}
         variant="contained"
       >

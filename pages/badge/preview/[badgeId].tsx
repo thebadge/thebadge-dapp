@@ -49,7 +49,10 @@ const ViewBadge: NextPageWithLayout = () => {
             justifyContent="space-between"
             maxWidth={300}
           >
-            <Tooltip arrow title={address === ownerAddress ? 'You already own this badge.' : ''}>
+            <Tooltip
+              arrow
+              title={address === ownerAddress ? t('badge.mintButtonDisabledTooltip') : ''}
+            >
               <div>
                 <ButtonV2
                   backgroundColor={colors.transparent}
@@ -71,24 +74,32 @@ const ViewBadge: NextPageWithLayout = () => {
                 </ButtonV2>
               </div>
             </Tooltip>
-            <ButtonV2
-              backgroundColor={colors.greenLogo}
-              fontColor={colors.blackText}
-              onClick={() => curate(badgeId)}
-              sx={{
-                borderRadius: '10px',
-                fontSize: '11px !important',
-                padding: '0.5rem 1rem !important',
-                height: 'fit-content !important',
-                lineHeight: '14px',
-                fontWeight: 700,
-                boxShadow: 'none',
-                textTransform: 'uppercase',
-              }}
-              variant="contained"
+            <Tooltip
+              arrow
+              title={address === ownerAddress ? t('badge.curateButtonDisabledTooltip') : ''}
             >
-              {t('badge.curateButton')}
-            </ButtonV2>
+              <div>
+                <ButtonV2
+                  backgroundColor={colors.greenLogo}
+                  disabled={address === ownerAddress}
+                  fontColor={colors.blackText}
+                  onClick={() => curate(badgeId)}
+                  sx={{
+                    borderRadius: '10px',
+                    fontSize: '11px !important',
+                    padding: '0.5rem 1rem !important',
+                    height: 'fit-content !important',
+                    lineHeight: '14px',
+                    fontWeight: 700,
+                    boxShadow: 'none',
+                    textTransform: 'uppercase',
+                  }}
+                  variant="contained"
+                >
+                  {t('badge.curateButton')}
+                </ButtonV2>
+              </div>
+            </Tooltip>
           </Box>
           <SafeSuspense>
             <BadgeOwnerPreview ownerAddress={ownerAddress} />

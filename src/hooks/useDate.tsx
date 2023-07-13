@@ -61,6 +61,15 @@ export const useDate = () => {
     [t],
   )
 
+  const getTimeLeftToExpire = useCallback(
+    (date: Date): TimeLeft => {
+      const timeLeft = getTimeLeft(date)
+      timeLeft.unitText = timeLeft.unitText.concat(' ' + t('date.timeLeft.toExpire'))
+      return timeLeft
+    },
+    [getTimeLeft, t],
+  )
+
   const getPendingTimeProgressPercentage = useCallback(
     (dueDate: Date, pendingTimeDurationSeconds: number): number => {
       const now = new Date().getTime()
@@ -74,6 +83,7 @@ export const useDate = () => {
   return {
     timestampToDate,
     getTimeLeft,
+    getTimeLeftToExpire,
     getPendingTimeProgressPercentage,
   }
 }
