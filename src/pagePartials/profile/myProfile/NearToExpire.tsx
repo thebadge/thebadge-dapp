@@ -1,12 +1,15 @@
 import HistoryOutlinedIcon from '@mui/icons-material/HistoryOutlined'
 import { Box, Divider, Typography } from '@mui/material'
 import { colors } from '@thebadge/ui-library'
+import { useTranslation } from 'next-export-i18n'
 
+import InViewPort from '@/src/components/helpers/InViewPort'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { SectionTitleBox } from '@/src/pagePartials/home/SectionBoxes'
 import NearToExpireList from '@/src/pagePartials/profile/myProfile/NearToExpireList'
 
 export default function NearToExpire() {
+  const { t } = useTranslation()
   return (
     <Box sx={{ width: '100%', px: 2, py: 1, mr: 1 }}>
       <SectionTitleBox>
@@ -19,14 +22,16 @@ export default function NearToExpire() {
             textAlign="center"
             variant={'h5'}
           >
-            Near to expire
+            {t('profile.nearToExpire.title')}
           </Typography>
         </Box>
       </SectionTitleBox>
       <Divider />
-      <SafeSuspense>
-        <NearToExpireList />
-      </SafeSuspense>
+      <InViewPort color={'purple'} minHeight={220} minWidth={140}>
+        <SafeSuspense color={'purple'}>
+          <NearToExpireList />
+        </SafeSuspense>
+      </InViewPort>
     </Box>
   )
 }

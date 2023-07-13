@@ -18,7 +18,7 @@ export default function FrequentQuestions() {
       display={'flex'}
       flex={1}
       flexDirection={'column'}
-      paddingY={6}
+      marginTop={8}
       ref={frequentQuestionsSection}
     >
       <Typography color={colors.pink} fontSize={'20px !important'} lineHeight={'26px'}>

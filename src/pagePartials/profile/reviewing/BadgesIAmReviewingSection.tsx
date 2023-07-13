@@ -1,3 +1,4 @@
+import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 
 import { Box, Stack } from '@mui/material'
@@ -6,11 +7,14 @@ import { useTranslation } from 'next-export-i18n'
 
 import { NoResultsAnimated } from '@/src/components/assets/animated/NoResults'
 import FilteredList, { ListFilter } from '@/src/components/helpers/FilteredList'
+import { nowInSeconds } from '@/src/constants/helpers'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import MiniBadgeModelPreview from '@/src/pagePartials/badge/MiniBadgeModelPreview'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 
-export default function BadgesInReviewSection() {
+const now = nowInSeconds()
+
+export default function BadgesIAmReviewingSection() {
   const { t } = useTranslation()
   const filters: Array<ListFilter> = [
     {
@@ -22,12 +26,15 @@ export default function BadgesInReviewSection() {
     {
       title: 'Challenged',
       color: 'pink',
+      fixed: true,
+      defaultSelected: true,
     },
   ]
 
   const [items, setItems] = useState<React.ReactNode[]>([])
   const [loading, setLoading] = useState<boolean>(false)
   const { address } = useWeb3Connection()
+  const router = useRouter()
   const gql = useSubgraph()
 
   if (!address) return null
@@ -39,14 +46,21 @@ export default function BadgesInReviewSection() {
   ) => {
     setLoading(true)
     // TODO filter badges with: selectedFilters, selectedCategory, textSearch
-    const badgesInReview = await gql.userBadgesInReview({ ownerAddress: address })
-
-    const badgeModels = badgesInReview?.user?.badges || []
-    const badgesLayouts = badgeModels.map((badge) => {
+    const badgesMetadataIamReviewing = await gql.badgesMetaDataUserChallenged({
+      userAddress: address,
+    })
+    const badgesIamReviewing = badgesMetadataIamReviewing.badgeKlerosMetaDatas.map(
+      (metadata) => metadata.badge,
+    )
+    const badgesLayouts = badgesIamReviewing.map((badge) => {
       const badgeModel = badge.badgeModel
       return (
         <Box key={badge.id}>
-          <MiniBadgeModelPreview highlightColor={colors.green} metadata={badgeModel?.uri} />
+          <MiniBadgeModelPreview
+            highlightColor={colors.green}
+            metadata={badgeModel?.uri}
+            onClick={() => router.push(`/badge/preview/${badge.id}`)}
+          />
         </Box>
       )
     })
@@ -65,14 +79,15 @@ export default function BadgesInReviewSection() {
         loading={loading}
         loadingColor={'green'}
         search={search}
-        title={t('profile.badgesInReview.title')}
+        showTextSearch={false}
+        title={t('profile.badgesIAmReviewing.title')}
         titleColor={colors.green}
       >
         {items.length > 0 ? (
           items
         ) : (
           <Stack>
-            <NoResultsAnimated errorText={t('profile.badgesInReview.noResults')} />
+            <NoResultsAnimated errorText={t('profile.badgesIAmReviewing.noResults')} />
           </Stack>
         )}
       </FilteredList>

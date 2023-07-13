@@ -120,26 +120,31 @@
   "profile": {
     "title": "This is your profile",
     "titleOf": "This is the profile of {{address}}",
+    "nearToExpire": {
+      "title": "Near to expire"
+    },
+    "pending": {
+      "title": "Pending"
+    },
     "badgesYouOwn": {
       "title": "Badges that you own",
       "shared_title": "Badges that the user own",
       "noResults": "You don't have any badges that match these filters..."
     },
     "badgesCreated": {
-      "title": "Explore other badges",
-      "badgesCreatedNoResults": "You don't have any badges that match these filters...",
+      "title": "Created badge models",
+      "badgesCreatedNoResults": "You don't have any badge models created...",
       "explorerBadgeCost": "Cost:",
       "explorerBadgeMinted": "Minted: "
     },
-    "exploreOtherBadges": "Explore other badges",
     "badgesToCurate": "Browse other badges to curate",
     "createdBadges": "Earn by creating new badges",
     "tab1": "MY PROFILE",
     "tab2": "CURATOR PROFILE",
     "tab3": "CREATOR PROFILE",
-    "badgesInReview": {
-      "title": "Your badges in review",
-      "noResults": "There are no badges in review..."
+    "badgesIAmReviewing": {
+      "title": "Badges I am reviewing",
+      "noResults": "There are no badges you are already reviewing..."
     },
     "verified": "Verified user"
   },
@@ -177,7 +182,12 @@
   "curator": {},
   "badge": {
     "mintButton": "Apply for it",
+    "mintButtonDisabledTooltip": "You already own this badge.",
     "curateButton": "Curate",
+    "curateButtonDisabledTooltip": "You cannot curate your own badge.",
+    "claimButton": "Claim",
+    "claimButtonDisabledTooltip": "You cannot claim this badge yet.",
+    "renewButton": "Renew",
     "model": {
       "create": {
         "howItWorks": "How it works",
@@ -308,6 +318,13 @@
       }
     }
   },
+  "badgesList": {
+    "filters": {
+      "minted": "Minted",
+      "challenged": "Challenged",
+      "inReview": "In Review"
+    }
+  },
   "footer": {
     "about": {
       "title": "ABOUT",
@@ -350,7 +367,8 @@
       "hours": "hours left",
       "minutes": "minutes left",
       "seconds": "seconds left",
-      "time": "time left"
+      "time": "time left",
+      "toExpire": "to expire"
     }
   },
   "externalLink" : {

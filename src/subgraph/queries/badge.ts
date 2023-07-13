@@ -43,6 +43,40 @@ export const MY_BADGES = gql`
   }
 `
 
+export const BADGES_USER_CAN_REVIEW = gql`
+  query badgesUserCanReview($userAddress: String!, $date: BigInt!) {
+    badges(
+      where: {
+        badgeKlerosMetaData_: { reviewDueDate_gt: $date }
+        status_in: [Requested, Challenged]
+        account_not: $userAddress
+      }
+    ) {
+      ...BadgesInReview
+    }
+  }
+`
+
+export const BADGES_USER_CAN_REVIEW_SMALL_SET = gql`
+  query badgesUserCanReviewSmallSet(
+    $userAddress: String!
+    $date: BigInt!
+    $statuses: [BadgeStatus!]!
+    $badgeReceiver: String!
+  ) {
+    badges(
+      where: {
+        badgeKlerosMetaData_: { reviewDueDate_gt: $date }
+        status_in: $statuses
+        account_starts_with: $badgeReceiver
+        account_not: $userAddress
+      }
+    ) {
+      ...BadgeWithJustIds
+    }
+  }
+`
+
 export const BADGE_BY_ID = gql`
   query badgeById($id: ID!) {
     badge(id: $id) {

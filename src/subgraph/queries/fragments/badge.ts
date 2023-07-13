@@ -5,6 +5,7 @@ gql`
     id
     status
     uri
+    validFor
     account {
       id
     }
@@ -76,17 +77,6 @@ gql`
     }
     badgeKlerosMetaData {
       reviewDueDate
-    }
-  }
-`
-
-gql`
-  fragment BadgeKlerosMetadata on BadgeKlerosMetaData {
-    id
-    itemID
-    reviewDueDate
-    requests {
-      ...Request
     }
   }
 `

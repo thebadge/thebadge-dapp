@@ -15,25 +15,6 @@ import getHighlightColorByStatus from '@/src/utils/badges/getHighlightColorBySta
 import { BadgeStatus, Badge_Filter } from '@/types/generated/subgraph'
 import { KlerosController__factory } from '@/types/generated/typechain'
 
-const filters: Array<ListFilter<BadgeStatus>> = [
-  {
-    title: 'Minted',
-    color: 'blue',
-    defaultSelected: true,
-    key: BadgeStatus.Approved,
-  },
-  {
-    title: 'Challenged',
-    color: 'pink',
-    key: BadgeStatus.Challenged,
-  },
-  {
-    title: 'In Review',
-    color: 'green',
-    key: BadgeStatus.Requested,
-  },
-]
-
 type Props = {
   address: string
 }
@@ -56,6 +37,25 @@ export default function BadgesYouOwnList({ address }: Props) {
 
     await transaction.wait()
   }
+
+  const filters: Array<ListFilter<BadgeStatus>> = [
+    {
+      title: t('badgesList.filters.minted'),
+      color: 'blue',
+      defaultSelected: true,
+      key: BadgeStatus.Approved,
+    },
+    {
+      title: t('badgesList.filters.challenged'),
+      color: 'pink',
+      key: BadgeStatus.Challenged,
+    },
+    {
+      title: t('badgesList.filters.inReview'),
+      color: 'green',
+      key: BadgeStatus.Requested,
+    },
+  ]
 
   const search = async (
     selectedFilters: Array<ListFilter>,
