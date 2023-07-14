@@ -1,5 +1,5 @@
 import { useRouter } from 'next/navigation'
-import React, { useCallback } from 'react'
+import React from 'react'
 
 import { Box } from '@mui/material'
 import { EmptyBadgePreview } from '@thebadge/ui-library'
@@ -19,11 +19,11 @@ import 'swiper/css/pagination'
 
 export default function BadgeListTypeList() {
   const gql = useSubgraph()
-  const badgeModels = gql.useBadgeModels()
   const router = useRouter()
 
-  const badgesList = useCallback(() => {
-    const badges = badgeModels.data?.badgeModels?.map((badgeModel) => {
+  const badgeModels = gql
+    .useLastCreatedBadgeModels({ first: 10 })
+    .data?.badgeModels?.map((badgeModel) => {
       return (
         <Box
           key={badgeModel.id}
@@ -38,9 +38,12 @@ export default function BadgeListTypeList() {
         </Box>
       )
     })
-    // If there is no badges to show, we list 5 placeholders
-    return fillListWithPlaceholders(badges, <EmptyBadgePreview size="small" />, 5)
-  }, [badgeModels.data?.badgeModels, router])
+  // If there is no badges to show, we list 5 placeholders
+  const badgeModelsList = fillListWithPlaceholders(
+    badgeModels,
+    <EmptyBadgePreview size="small" />,
+    5,
+  )
 
   return (
     <TBSwiper
@@ -55,14 +58,20 @@ export default function BadgeListTypeList() {
       }}
       effect={'coverflow'}
       grabCursor={true}
-      items={badgesList()}
+      initialSlide={2}
+      items={badgeModelsList}
+      loop={false}
       maxSlidesPerView={4}
       modules={[EffectCoverflow, Pagination]}
       noArrows
       pagination={{ type: 'bullets', clickable: true }}
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      style={{ padding: '0 0 56px 35px', '--swiper-pagination-bullet-inactive-color': '#ffffff' }}
+      spaceBetween={12}
+      style={{
+        padding: '20px 0 56px 43px',
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        '--swiper-pagination-bullet-inactive-color': '#ffffff',
+      }}
     />
   )
 }

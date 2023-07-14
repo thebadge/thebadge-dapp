@@ -2,7 +2,15 @@ import gql from 'graphql-tag'
 
 export const BADGE_MODELS = gql`
   query badgeModels {
-    badgeModels {
+    badgeModels(orderBy: createdAt, orderDirection: desc) {
+      ...BadgeModel
+    }
+  }
+`
+
+export const LAST_CREATED_BADGE_MODELS = gql`
+  query lastCreatedBadgeModels($first: Int!) {
+    badgeModels(first: $first, orderBy: createdAt, orderDirection: desc) {
       ...BadgeModel
     }
   }
