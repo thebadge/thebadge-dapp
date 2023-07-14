@@ -31,7 +31,7 @@ export default function MintCost({ costs }: Props) {
   const badgeModelKlerosData = useRegistrationBadgeModelKlerosMetadata(modelId)
 
   if (badgeModelKlerosData.error || !badgeModelKlerosData.data) {
-    throw `There was an error trying to fetch the metadata for the badge type`
+    throw `There was an error trying to fetch the metadata for the badge model`
   }
 
   const challengePeriodDuration = badgeModelKlerosData.data?.challengePeriodDuration

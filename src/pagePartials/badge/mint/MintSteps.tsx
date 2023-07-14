@@ -59,7 +59,7 @@ export default function MintSteps({ costs, evidenceSchema, onSubmit, txState }: 
   const badgeModelMetadata = badgeModelData.data?.badgeModelMetadata
 
   if (badgeModelData.error || !badgeModelMetadata || !badgeModelKlerosMetadata) {
-    throw `There was an error trying to fetch the metadata for the badge type`
+    throw `There was an error trying to fetch the metadata for the badge model`
   }
 
   const badgeLogoImage = badgeModelData.data?.badgeModelMetadata?.image
