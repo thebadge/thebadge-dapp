@@ -25,7 +25,7 @@ export default function ChallengeCost({
   const challengeCost = useChallengeCost(badgeId)
 
   if (badgeModelKlerosData.error || !badgeModelKlerosData.data) {
-    throw `There was an error trying to fetch the metadata for the badge c`
+    throw `There was an error trying to fetch the metadata for the badge model`
   }
   if (!challengeCost.data) {
     throw 'There was not possible to get challenge cost. Try again in some minutes.'
