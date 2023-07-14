@@ -37,8 +37,8 @@ export default function BadgesInReviewSwiper() {
       )
     })
     // If there is no badges to show, we list 5 placeholders
-    return fillListWithPlaceholders(badges, <EmptyBadgePreview size="small" />, 5)
+    return fillListWithPlaceholders(badges, <EmptyBadgePreview size="small" />, 4)
   }, [badgesUserCanReview.data?.badges, router])
 
-  return <TBSwiper items={badgesList} />
+  return <TBSwiper items={badgesList} loop={false} slidesPerView={4} />
 }
