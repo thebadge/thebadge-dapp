@@ -11,7 +11,7 @@ export default function CurationCriteriaLink({ badgeModelId }: { badgeModelId: s
   const badgeModelKlerosData = useRegistrationBadgeModelKlerosMetadata(badgeModelId)
 
   if (!badgeModelKlerosData.data) {
-    throw `There was an error trying to fetch the metadata for the badge type`
+    throw `There was an error trying to fetch the metadata for the badge model`
   }
 
   const badgeModelMetadata = badgeModelKlerosData.data?.badgeModelKlerosRegistrationMetadata

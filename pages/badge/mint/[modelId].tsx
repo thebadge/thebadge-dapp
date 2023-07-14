@@ -48,13 +48,13 @@ const MintBadgeType: NextPageWithLayout = () => {
   const klerosBadgeMetadata = badgeModelKleros.data?.badgeModelKlerosRegistrationMetadata
 
   if (badgeModel.error || !klerosBadgeMetadata || !badgeModel.data) {
-    throw `There was an error trying to fetch the metadata for the badge type`
+    throw `There was an error trying to fetch the metadata for the badge model`
   }
 
-  // Get kleros deposit value for the badge type
+  // Get kleros deposit value for the badge model
   const { data: mintValue } = useMintValue(badgeModelId)
   if (!mintValue) {
-    throw `There was not possible to get the value to mint a badge for badgeModel ${badgeModelId}`
+    throw `There was not possible to get the value to mint a badge for the badge model: ${badgeModelId}`
   }
 
   const creatorFee = BigNumber.from(badgeModel.data?.badgeModel.creatorFee || 0)

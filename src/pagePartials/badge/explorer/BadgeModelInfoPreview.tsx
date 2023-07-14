@@ -27,7 +27,7 @@ export default function BadgeModelInfoPreview({ badgeModel }: { badgeModel: Badg
 
   return (
     <Stack gap={4}>
-      {/* Badge Type info */}
+      {/* Badge Model info */}
       <Stack gap={2}>
         <Stack gap={1}>
           <Typography fontWeight="normal" variant="dAppTitle1">
