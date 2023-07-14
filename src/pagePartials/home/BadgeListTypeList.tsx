@@ -22,7 +22,7 @@ export default function BadgeListTypeList() {
   const router = useRouter()
 
   const badgeModels = gql
-    .useLastCreatedBadgeModels({ first: 10 })
+    .useBadgeModelsMaxAmount({ first: 10 })
     .data?.badgeModels?.map((badgeModel) => {
       return (
         <Box

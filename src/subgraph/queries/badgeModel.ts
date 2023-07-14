@@ -8,8 +8,8 @@ export const BADGE_MODELS = gql`
   }
 `
 
-export const LAST_CREATED_BADGE_MODELS = gql`
-  query lastCreatedBadgeModels($first: Int!) {
+export const BADGE_MODELS_MAX_AMOUNT = gql`
+  query badgeModelsMaxAmount($first: Int!) {
     badgeModels(first: $first, orderBy: createdAt, orderDirection: desc) {
       ...BadgeModel
     }
