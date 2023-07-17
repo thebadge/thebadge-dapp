@@ -33,7 +33,7 @@ import {
   removeLocalStorageKey,
   setLocalStorageKey,
 } from '@/src/hooks/usePersistedState'
-import isDev from '@/src/utils/isDev'
+import { isTestnet } from '@/src/utils/nerwork'
 import { hexToNumber } from '@/src/utils/strings'
 import { ChainConfig, ChainsValues } from '@/types/chains'
 import { RequiredNonNull } from '@/types/utils'
@@ -63,14 +63,14 @@ const web3auth = web3authModule({
   authMode: 'WALLET', // Enables only social wallets
   chainConfig: {
     chainNamespace: 'eip155',
-    chainId: isDev
+    chainId: isTestnet
       ? chainsConfig[Chains.goerli].chainIdHex
       : chainsConfig[Chains.gnosis].chainIdHex,
     displayName: '1231231 Test',
-    ticker: isDev ? chainsConfig[Chains.goerli].token : chainsConfig[Chains.gnosis].token,
-    tickerName: isDev ? chainsConfig[Chains.goerli].token : chainsConfig[Chains.gnosis].token,
-    rpcTarget: isDev ? chainsConfig[Chains.goerli].rpcUrl : chainsConfig[Chains.gnosis].rpcUrl,
-    blockExplorer: isDev
+    ticker: isTestnet ? chainsConfig[Chains.goerli].token : chainsConfig[Chains.gnosis].token,
+    tickerName: isTestnet ? chainsConfig[Chains.goerli].token : chainsConfig[Chains.gnosis].token,
+    rpcTarget: isTestnet ? chainsConfig[Chains.goerli].rpcUrl : chainsConfig[Chains.gnosis].rpcUrl,
+    blockExplorer: isTestnet
       ? chainsConfig[Chains.goerli].blockExplorerUrls[0]
       : chainsConfig[Chains.gnosis].blockExplorerUrls[0],
   },
@@ -79,7 +79,7 @@ const web3auth = web3authModule({
     appLogo: 'https://avatars.githubusercontent.com/u/109973181?s=200&v=4',
     modalZIndex: '13002', // Onboard modal is 13001
     defaultLanguage: 'en',
-    web3AuthNetwork: isDev ? 'testnet' : 'mainnet',
+    web3AuthNetwork: isTestnet ? 'testnet' : 'mainnet',
   },
 })
 
