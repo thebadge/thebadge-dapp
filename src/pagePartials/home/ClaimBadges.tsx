@@ -1,8 +1,8 @@
 import { useRouter } from 'next/router'
 
 import { Box, Divider, Typography, useTheme } from '@mui/material'
+import { ButtonV2, colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
-import { ButtonV2, colors } from 'thebadge-ui-library'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import BadgeListTypeList from '@/src/pagePartials/home/BadgeListTypeList'
@@ -16,7 +16,7 @@ export default function ClaimBadges() {
   const { t } = useTranslation()
 
   return (
-    <SectionBox ref={claimBadgesSection}>
+    <SectionBox ref={claimBadgesSection} sx={{ padding: '2.25rem 3.325rem 1.5rem' }}>
       <SectionTitleBox>
         <Typography
           color={colors.blue}

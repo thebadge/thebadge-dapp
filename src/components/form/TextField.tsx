@@ -33,25 +33,23 @@ type TextFieldProps = {
 
 export function TextField({ error, label, onChange, placeholder, value }: TextFieldProps) {
   return (
-    <Wrapper>
-      <StyledTextField
-        InputProps={{
-          endAdornment: (
-            <Tooltip arrow title={placeholder}>
-              <InfoOutlinedIcon />
-            </Tooltip>
-          ),
-        }}
-        color="secondary"
-        error={!!error}
-        helperText={error?.message || ' '}
-        label={label}
-        onChange={onChange}
-        sx={{ textTransform: 'capitalize' }}
-        value={value ? value : ''}
-        variant={'standard'}
-      />
-    </Wrapper>
+    <StyledTextField
+      InputProps={{
+        endAdornment: (
+          <Tooltip arrow title={placeholder}>
+            <InfoOutlinedIcon />
+          </Tooltip>
+        ),
+      }}
+      color="secondary"
+      error={!!error}
+      helperText={error?.message || ' '}
+      label={label}
+      onChange={onChange}
+      sx={{ textTransform: 'capitalize', width: '100%' }}
+      value={value ? value : ''}
+      variant={'standard'}
+    />
   )
 }
 
@@ -68,12 +66,14 @@ export default function TextFieldWithTSForm() {
   }
 
   return (
-    <TextField
-      error={error ? convertToFieldError(error) : undefined}
-      label={label}
-      onChange={onChange}
-      placeholder={placeholder}
-      value={field.value}
-    />
+    <Wrapper>
+      <TextField
+        error={error ? convertToFieldError(error) : undefined}
+        label={label}
+        onChange={onChange}
+        placeholder={placeholder}
+        value={field.value}
+      />
+    </Wrapper>
   )
 }

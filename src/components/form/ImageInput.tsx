@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
-import FileUploadIcon from '@mui/icons-material/FileUpload'
+import CloseIcon from '@mui/icons-material/Close'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import {
   AvatarProps,
@@ -12,14 +11,16 @@ import {
   Stack,
   Tooltip,
   Typography,
+  alpha,
   styled,
 } from '@mui/material'
+import { colors } from '@thebadge/ui-library'
 import { useDescription, useTsController } from '@ts-react/form'
 import { FieldError } from 'react-hook-form'
 import ImageUploading, { ImageListType, ImageType } from 'react-images-uploading'
-import { colors } from 'thebadge-ui-library'
 import { z } from 'zod'
 
+import UploadIllustration from '../assets/UploadIllustration'
 import { TextFieldStatus } from '@/src/components/form/TextField'
 import { FormField } from '@/src/components/form/helpers/FormField'
 import { ImageSchema } from '@/src/components/form/helpers/customSchemas'
@@ -32,9 +33,21 @@ const Wrapper = styled(Box, {
   flexDirection: 'column',
   position: 'relative',
   rowGap: theme.spacing(1),
+  marginTop: theme.spacing(2),
   width: '100%',
   gridColumn: 'span 1 / 4',
   borderBottom: `1px solid ${error ? theme.palette.error.main : colors.white}`,
+}))
+
+const StyledIconButton = styled(IconButton)(({ theme }) => ({
+  top: 8,
+  right: 8,
+  p: '1px',
+  position: 'absolute',
+  backgroundColor: alpha(theme.palette.grey[900], 0.48),
+  '&:hover': {
+    backgroundColor: alpha(theme.palette.grey[900], 0.72),
+  },
 }))
 
 const ImageDisplayer = styled(MUIAvatar, {
@@ -44,9 +57,10 @@ const ImageDisplayer = styled(MUIAvatar, {
     isDragging?: boolean
   }
 >(({ isDragging, theme }) => ({
-  width: 200,
-  height: 200,
+  width: 300,
+  height: 250,
   borderRadius: theme.spacing(2),
+  padding: theme.spacing(2),
   borderWidth: 1,
   backgroundColor: colors.transparent,
   borderColor: isDragging ? colors.green : colors.white,
@@ -83,7 +97,7 @@ export function ImageInput({ error, label, onChange, placeholder, value }: Image
         formControl={
           <Container maxWidth="md" sx={{ display: 'flex', mt: 2, width: '100%' }}>
             <ImageUploading
-              dataURLKey="data_url"
+              dataURLKey="base64File"
               maxNumber={maxNumber}
               onChange={handleChange}
               value={images}
@@ -97,7 +111,6 @@ export function ImageInput({ error, label, onChange, placeholder, value }: Image
                 onImageUpdate,
                 onImageUpload,
               }) => (
-                // write your building UI
                 <Box
                   display="flex"
                   flexDirection="column"
@@ -110,13 +123,35 @@ export function ImageInput({ error, label, onChange, placeholder, value }: Image
                       onClick={onImageUpload}
                       sx={{ cursor: 'pointer' }}
                     >
-                      <Stack sx={{ flex: 1, flexWrap: 'wrap', alignContent: 'center' }}>
-                        <Typography color="text.primary" variant="subtitle2">
-                          Click here or drop
+                      <Stack
+                        sx={{
+                          flex: 1,
+                          flexWrap: 'wrap',
+                          gap: 2,
+                          alignContent: 'center',
+                          alignItems: 'center',
+                        }}
+                      >
+                        <UploadIllustration sx={{ width: 150 }} />
+
+                        <Typography
+                          sx={{ color: 'text.secondary', textAlign: 'center' }}
+                          variant="subtitle2"
+                        >
+                          Drop files here or click
+                          <Typography
+                            component="span"
+                            sx={{
+                              mx: 0.5,
+                              color: 'primary.main',
+                              textDecoration: 'underline',
+                            }}
+                            variant="subtitle2"
+                          >
+                            browse
+                          </Typography>
+                          thorough your machine
                         </Typography>
-                        <Box display="flex" justifyContent="center">
-                          <FileUploadIcon color="white" />
-                        </Box>
                       </Stack>
                     </ImageDisplayer>
                   )}
@@ -131,33 +166,11 @@ export function ImageInput({ error, label, onChange, placeholder, value }: Image
                         onClick={() => onImageUpdate(index)}
                         {...dragProps}
                       >
-                        <img alt="" src={image['data_url']} width="150" />
+                        <img alt="" src={image['base64File']} width="250" />
+                        <StyledIconButton onClick={() => onImageRemove(index)} size="small">
+                          <CloseIcon width={16} />
+                        </StyledIconButton>
                       </ImageDisplayer>
-                      <Box
-                        alignItems="center"
-                        display="flex"
-                        flexDirection="row"
-                        justifyContent="space-evenly"
-                        marginLeft={2}
-                      >
-                        <IconButton
-                          aria-label="upload avatar"
-                          color="secondary"
-                          component="label"
-                          onClick={() => onImageUpdate(index)}
-                        >
-                          <FileUploadIcon color="white" />
-                        </IconButton>
-
-                        <IconButton
-                          aria-label="use default avatar"
-                          color="error"
-                          component="label"
-                          onClick={() => onImageRemove(index)}
-                        >
-                          <DeleteOutlineIcon />
-                        </IconButton>
-                      </Box>
                     </Box>
                   ))}
                   {errors && (
@@ -176,7 +189,7 @@ export function ImageInput({ error, label, onChange, placeholder, value }: Image
           </Container>
         }
         label={
-          <Typography>
+          <Typography color="text.disabled">
             {label}
             {placeholder && (
               <Tooltip arrow title={placeholder}>
@@ -185,6 +198,7 @@ export function ImageInput({ error, label, onChange, placeholder, value }: Image
             )}
           </Typography>
         }
+        labelPosition="top-left"
         status={error ? TextFieldStatus.error : TextFieldStatus.success}
         statusText={error?.message}
       />
@@ -204,7 +218,15 @@ export default function ImageInputWithTSForm() {
     <ImageInput
       error={error ? convertToFieldError(error) : undefined}
       label={label}
-      onChange={field.onChange}
+      onChange={(value: ImageType | null) => {
+        if (value) {
+          // We change the structure a little bit to have it ready to push to the backend
+          field.onChange({
+            mimeType: value.file?.type,
+            base64File: value.base64File,
+          })
+        } else field.onChange(null)
+      }}
       placeholder={placeholder}
       value={field.value}
     />

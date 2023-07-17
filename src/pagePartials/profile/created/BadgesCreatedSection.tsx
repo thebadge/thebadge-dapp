@@ -1,15 +1,15 @@
 import React, { useState } from 'react'
 
 import { Box, Stack, Typography, styled } from '@mui/material'
+import { colors } from '@thebadge/ui-library'
 import { formatUnits } from 'ethers/lib/utils'
 import { useTranslation } from 'next-export-i18n'
-import { colors } from 'thebadge-ui-library'
 
 import { NoResultsAnimated } from '@/src/components/assets/animated/NoResults'
 import { MiniBadgePreviewContainer } from '@/src/components/common/MiniBadgePreviewContainer'
 import FilteredList, { ListFilter } from '@/src/components/helpers/FilteredList'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
-import MiniBadgeTypeMetadata from '@/src/pagePartials/badge/MiniBadgeTypeMetadata'
+import MiniBadgeModelPreview from '@/src/pagePartials/badge/MiniBadgeModelPreview'
 import { RequiredCreatorAccess } from '@/src/pagePartials/errors/requiresCreatorAccess'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 
@@ -48,22 +48,24 @@ export default function BadgesCreatedSection() {
     setLoading(true)
     // TODO filter badges with: selectedFilters, selectedCategory, textSearch
     const userCreatedBadges = await gql.userCreatedBadges({ ownerAddress: address })
-    const badgeTypes = userCreatedBadges?.user?.createdBadgeTypes || []
+    const badgeModels = userCreatedBadges?.user?.createdBadgeModels || []
 
-    const badgesLayouts = badgeTypes.map((badgeType) => {
+    const badgesLayouts = badgeModels.map((badgeModel) => {
+      // TODO Add mintcost
+      const mintCost = '100000000000000' //badgeModel.mintCost;
       return (
-        <StyledBadgeContainer highlightColor={colors.pink} key={badgeType.id}>
-          <MiniBadgeTypeMetadata
+        <StyledBadgeContainer highlightColor={colors.pink} key={badgeModel.id}>
+          <MiniBadgeModelPreview
             disableAnimations
             highlightColor={colors.pink}
-            metadata={badgeType?.metadataURL}
+            metadata={badgeModel?.uri}
           />
           <Box id="badge-info">
             <Typography variant="body4">
-              {t('profile.badgesCreated.explorerBadgeCost')} {formatUnits(badgeType.mintCost, 18)}
+              {t('profile.badgesCreated.explorerBadgeCost')} {formatUnits(mintCost, 18)}
             </Typography>
             <Typography variant="body4">
-              {t('profile.badgesCreated.explorerBadgeMinted')} {badgeType.badgesMintedAmount}
+              {t('profile.badgesCreated.explorerBadgeMinted')} {badgeModel.badgesMintedAmount}
             </Typography>
           </Box>
         </StyledBadgeContainer>
@@ -79,11 +81,12 @@ export default function BadgesCreatedSection() {
   return (
     <RequiredCreatorAccess>
       <FilteredList
-        categories={['Category 1', 'Category 2', 'Category 3']}
+        // categories={['Category 1', 'Category 2', 'Category 3']}
         filters={[]}
         loading={loading}
         loadingColor={'primary'}
         search={search}
+        showTextSearch={false}
         title={t('profile.badgesCreated.title')}
         titleColor={colors.pink}
       >

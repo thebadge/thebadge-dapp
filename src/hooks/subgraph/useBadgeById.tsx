@@ -1,55 +1,43 @@
-import axios from 'axios'
 import useSWR from 'swr'
 
-import { BACKEND_URL } from '@/src/constants/common'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
-import { BadgeMetadata, BadgeTypeMetadata } from '@/types/badges/BadgeMetadata'
-import { BackendFileResponse, BackendResponse } from '@/types/utils'
+import { getFromIPFS } from '@/src/hooks/subgraph/utils'
+import { BadgeMetadata, BadgeModelMetadata } from '@/types/badges/BadgeMetadata'
+import { BackendFileResponse } from '@/types/utils'
 
 /**
  * Hooks to wrap the getBadgeById graphql query, to take advantage of the SWR cache
  * and reduce the number of queries and also reduce the repeated code
- * @param typeId
- * @param ownerAddress
+ * @param badgeId
  */
-export default function useBadgeById(typeId: string, ownerAddress: string) {
+export default function useBadgeById(badgeId: string) {
   const gql = useSubgraph()
-  const badgeId = `${ownerAddress}-${typeId}`
 
   return useSWR(badgeId.length ? `Badge:${badgeId}` : null, async (_badgeId: string) => {
     const badgeResponse = await gql.badgeById({ id: badgeId })
 
     const badge = badgeResponse.badge
-    const badgeType = badge?.badgeType
+    const badgeModel = badge?.badgeModel
 
-    if (!badgeType?.metadataURL || !badge?.evidenceMetadataUrl) {
+    if (!badge?.uri || !badgeModel?.uri) {
       throw 'There was not possible to get the needed metadata. Try again in some minutes.'
     }
-
-    const cleanedMetadataHash = badgeType?.metadataURL.replace(/^ipfs?:\/\//, '')
-    const cleanedEvidenceHash = badge?.evidenceMetadataUrl.replace(/^ipfs?:\/\//, '')
 
     const res = await Promise.all([
-      axios.get<BackendResponse<{ content: BadgeTypeMetadata }>>(
-        `${BACKEND_URL}/api/ipfs/${cleanedMetadataHash}`,
-      ),
-      axios.get<BackendResponse<BackendFileResponse & { content: BadgeMetadata }>>(
-        `${BACKEND_URL}/api/ipfs/${cleanedEvidenceHash}`,
-      ),
+      getFromIPFS<BadgeMetadata<BackendFileResponse>>(badge?.uri),
+      getFromIPFS<BadgeModelMetadata<BackendFileResponse>>(badgeModel?.uri),
     ])
-    if (!res[0].data.result || !res[1].data.result) {
-      throw 'There was not possible to get the needed metadata. Try again in some minutes.'
-    }
 
-    const badgeMetadata = res[0].data.result?.content
-    const badgeEvidence = res[1].data.result?.content
-    const rawBadgeEvidenceUrl = 's3Url' in res[1].data.result ? res[1].data.result?.s3Url : ''
+    const badgeMetadata = res[0] ? res[0].data.result?.content : null
+    const badgeModelMetadata = res[1] ? res[1].data.result?.content : null
 
     return {
-      badge,
+      ...badge,
+      badgeModel: {
+        ...badge.badgeModel,
+        badgeModelMetadata,
+      },
       badgeMetadata,
-      badgeEvidence,
-      rawBadgeEvidenceUrl,
     }
   })
 }

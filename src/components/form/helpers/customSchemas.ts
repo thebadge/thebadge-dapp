@@ -4,7 +4,6 @@ import { z } from 'zod'
 
 import { isEmail } from '@/src/components/form/helpers/validators'
 import { KLEROS_LIST_TYPES_KEYS } from '@/types/kleros/types'
-import { Severity_Keys } from '@/types/utils'
 
 // Why we need these schemas?
 // https://github.com/iway1/react-ts-form#dealing-with-collisions
@@ -28,18 +27,15 @@ export const LinkSchema = createUniqueFieldSchema(
     }),
   'LinkSchema',
 )
-
-export const AgreementSchema = createUniqueFieldSchema(
-  z
-    .boolean({
-      required_error: 'You need to agree to be able to continue.',
-      invalid_type_error: 'You must agree to continue.',
-    })
-    .refine((value) => value, {
-      message: 'You need to agree to be able to continue.',
-    }),
-  'AgreementSchema',
-)
+export const AgreementSchema = z
+  .boolean({
+    required_error: 'You need to agree to be able to continue.',
+    invalid_type_error: 'You must agree to continue.',
+  })
+  .refine((value) => value, {
+    message: 'You need to agree to be able to continue.',
+  })
+export const AgreementSchemaBranded = createUniqueFieldSchema(AgreementSchema, 'AgreementSchema')
 
 export const RadioButtonSchema = createUniqueFieldSchema(
   z.boolean({
@@ -73,10 +69,8 @@ export const EmailSchema = createUniqueFieldSchema(
   'EmailSchema',
 )
 
-export const TokenInputSchema = createUniqueFieldSchema(
-  z.string({ required_error: 'Is required' }),
-  'TokenInputSchema',
-)
+export const TokenInputSchema = z.string({ required_error: 'Is required' })
+export const TokenInputSchemaBranded = createUniqueFieldSchema(TokenInputSchema, 'TokenInputSchema')
 
 export const NumberSchema = createUniqueFieldSchema(
   z.number({
@@ -113,10 +107,13 @@ const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/web
 export const ImageSchema = createUniqueFieldSchema(
   z
     .any()
-    .refine((value) => !!value?.file, 'Upload an image is required.')
-    .refine((value) => value?.file?.size <= MAX_FILE_SIZE, `Max file size is 5MB.`)
+    .refine((value) => !!value?.base64File, 'Upload an image is required.')
     .refine(
-      (value) => ACCEPTED_IMAGE_TYPES.includes(value?.file?.type),
+      (value) => (value?.base64File?.length / 4) * 3 <= MAX_FILE_SIZE,
+      `Max file size is 5MB.`,
+    )
+    .refine(
+      (value) => ACCEPTED_IMAGE_TYPES.includes(value?.mimeType),
       '.jpg, .jpeg, .png and .webp files are accepted.',
     ),
   'ImageSchema',
@@ -125,10 +122,13 @@ export const ImageSchema = createUniqueFieldSchema(
 export const AvatarSchema = createUniqueFieldSchema(
   z
     .any()
-    .refine((value) => !!value?.file, 'Upload an image is required.')
-    .refine((value) => value?.file?.size <= MAX_FILE_SIZE, `Max file size is 5MB.`)
+    .refine((value) => !!value?.base64File, 'Upload an image is required.')
     .refine(
-      (value) => ACCEPTED_IMAGE_TYPES.includes(value?.file?.type),
+      (value) => (value?.base64File?.length / 4) * 3 <= MAX_FILE_SIZE,
+      `Max file size is 5MB.`,
+    )
+    .refine(
+      (value) => ACCEPTED_IMAGE_TYPES.includes(value?.mimeType),
       '.jpg, .jpeg, .png and .webp files are accepted.',
     ),
   'AvatarSchema',
@@ -137,25 +137,35 @@ export const AvatarSchema = createUniqueFieldSchema(
 export const FileSchema = createUniqueFieldSchema(
   z
     .any()
-    .refine((value) => !!value && !!value.file, 'Upload a file is required.')
-    .refine((value) => value?.file?.size <= MAX_FILE_SIZE, `Max file size is 5MB.`),
+    .refine((value) => !!value && !!value.base64File, 'Upload a file is required.')
+    .refine(
+      (value) => (value?.base64File?.length / 4) * 3 <= MAX_FILE_SIZE,
+      `Max file size is 5MB.`,
+    ),
   'FileSchema',
 )
+
+export const DeltaPDFSchema = z.object({ string: z.string(), delta: z.any() })
 
 export const OptionalFileSchema = createUniqueFieldSchema(
   z
     .any()
-    .refine((value) => !!value && !!value.file, 'Upload a file is required.')
-    .refine((value) => value?.file?.size <= MAX_FILE_SIZE, `Max file size is 5MB.`)
-    .optional(),
+    .refine((value) => !!value && !!value.base64File, 'Upload a file is required.')
+    .refine(
+      (value) => (value?.base64File?.length / 4) * 3 <= MAX_FILE_SIZE,
+      `Max file size is 5MB.`,
+    )
+    .optional()
+    .nullable(),
   'OptionalFileSchema',
 )
 
-export const ExpirationTypeSchema = createUniqueFieldSchema(
-  z.number({
-    required_error: 'Is required',
-    invalid_type_error: 'Must enter an amount of days',
-  }),
+export const ExpirationTypeSchema = z.number({
+  required_error: 'Is required',
+  invalid_type_error: 'Must enter an amount of days',
+})
+export const ExpirationTypeSchemaBranded = createUniqueFieldSchema(
+  ExpirationTypeSchema,
   'ExpirationTypeSchema',
 )
 
@@ -171,7 +181,13 @@ export const ChallengePeriodTypeSchema = createUniqueFieldSchema(
 )
 
 export const SeverityTypeSchema = createUniqueFieldSchema(
-  z.enum(Severity_Keys),
+  z.object({
+    amountOfJurors: z
+      .number()
+      .positive()
+      .refine((v) => v % 2 != 0, 'Must be even'),
+    challengeBounty: z.string(),
+  }),
   'SeverityTypeSchema',
 )
 

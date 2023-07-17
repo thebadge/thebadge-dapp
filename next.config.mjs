@@ -37,7 +37,7 @@ export default withMDX(withBundleAnalyzerWrapper(
     compiler: {
       styledComponents: true,
     },
-    transpilePackages: ['@mui/material', 'thebadge-ui-library', '@web3-onboard/*'],
+    transpilePackages: ['@mui/material', '@thebadge/ui-library', '@web3-onboard/*'],
     images: {
       unoptimized: true,
       domains: [

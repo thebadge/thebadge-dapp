@@ -3,8 +3,8 @@ import React, { PropsWithChildren, ReactNode, useEffect, useState } from 'react'
 import { Box, Chip, Divider, Stack, Typography, styled } from '@mui/material'
 import { ChipPropsColorOverrides } from '@mui/material/Chip/Chip'
 import { OverridableStringUnion } from '@mui/types'
+import { colors } from '@thebadge/ui-library'
 import Sticky from 'react-sticky-el'
-import { colors } from 'thebadge-ui-library'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { Loading } from '@/src/components/loading/Loading'
@@ -13,7 +13,7 @@ import TBSearchField from '@/src/components/select/SearchField'
 import TBadgeSelect from '@/src/components/select/Select'
 import { useColorMode } from '@/src/providers/themeProvider'
 
-export type ListFilter = {
+export type ListFilter<K = unknown> = {
   title: string
   color?: OverridableStringUnion<
     'default' | 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning',
@@ -21,8 +21,10 @@ export type ListFilter = {
   >
   defaultSelected?: boolean // default is false
   fixed?: boolean // if true, cannot be deselected, default is false
+  key?: K // the key to be used in the search function
 }
 
+// TODO: It would be nice to add K to ListFilter here, but it exceeds my TS know
 type FilteredListProps = PropsWithChildren & {
   title: string
   titleColor?: string
@@ -37,6 +39,8 @@ type FilteredListProps = PropsWithChildren & {
   loadingColor?: SpinnerColors
   disableEdit?: boolean
   preview?: ReactNode | undefined
+  searchInputLabel?: string
+  showTextSearch?: boolean
 }
 
 const ItemsGridBox = styled(Box)(({ theme }) => ({
@@ -54,7 +58,11 @@ const FilteredListHeaderBox = styled(Box)(({ theme }) => ({
   alignItems: 'center',
 }))
 
-export default function FilteredList({ filters = [], ...props }: FilteredListProps) {
+export default function FilteredList({
+  filters = [],
+  showTextSearch = true,
+  ...props
+}: FilteredListProps) {
   const { mode } = useColorMode()
   const defaultSelectedFilters = filters.filter((f) => f.defaultSelected)
   const [selectedFilters, setSelectedFilters] = useState<ListFilter[]>(defaultSelectedFilters)
@@ -68,9 +76,8 @@ export default function FilteredList({ filters = [], ...props }: FilteredListPro
     }
   }, [props, initialLoadDone, defaultSelectedFilters])
 
-  const search = (textSearch?: string) => {
+  const onStringSearch = (textSearch?: string) =>
     props.search(selectedFilters, selectedCategory, textSearch)
-  }
 
   const isFilterSelected = (filter: ListFilter) => {
     return !!selectedFilters.find((f) => f.title === filter.title)
@@ -141,11 +148,13 @@ export default function FilteredList({ filters = [], ...props }: FilteredListPro
           ) : null}
 
           {/* text search */}
-          <TBSearchField
-            disabled={!!props.disableEdit}
-            label="Text Search"
-            onSearch={(searchValue) => search(searchValue)}
-          />
+          {showTextSearch && (
+            <TBSearchField
+              disabled={!!props.disableEdit}
+              label={props.searchInputLabel || 'Text Search'}
+              onSearch={(searchValue) => onStringSearch(searchValue)}
+            />
+          )}
         </Box>
       </FilteredListHeaderBox>
       <Divider color={mode === 'dark' ? 'white' : 'black'} sx={{ borderWidth: '1px' }} />

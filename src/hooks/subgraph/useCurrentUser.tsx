@@ -4,7 +4,6 @@ import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { User } from '@/types/generated/subgraph'
 
-// @todo (agustin) use SWR
 export const useCurrentUser = () => {
   const { address } = useWeb3Connection()
   const gql = useSubgraph()

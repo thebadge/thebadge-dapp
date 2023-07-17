@@ -1,15 +1,15 @@
-import { useSearchParams } from 'next/navigation'
 import * as React from 'react'
 
 import ReportProblemOutlinedIcon from '@mui/icons-material/ReportProblemOutlined'
 import { Box, Divider, Stack, Typography } from '@mui/material'
+import { colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
-import { colors } from 'thebadge-ui-library'
 
 import MarkdownTypography from '@/src/components/common/MarkdownTypography'
 import { getNetworkConfig } from '@/src/config/web3'
 import { DOCS_URL } from '@/src/constants/common'
-import useBadgeType from '@/src/hooks/subgraph/useBadgeType'
+import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
+import { useRegistrationBadgeModelKlerosMetadata } from '@/src/hooks/subgraph/useBadgeModelKlerosMetadata'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 
 type Props = {
@@ -23,32 +23,27 @@ export default function MintCost({ costs }: Props) {
   const { t } = useTranslation()
   const { appChainId } = useWeb3Connection()
   const networkConfig = getNetworkConfig(appChainId)
-  const searchParams = useSearchParams()
-  const typeId = searchParams.get('typeId')
+  const modelId = useModelIdParam()
 
-  if (!typeId) {
-    throw `No typeId provided as URL query param`
+  if (!modelId) {
+    throw `No modelId provided as URL query param`
   }
-  const badgeTypeData = useBadgeType(typeId)
+  const badgeModelKlerosData = useRegistrationBadgeModelKlerosMetadata(modelId)
 
-  if (
-    badgeTypeData.error ||
-    !badgeTypeData.data?.badgeType ||
-    !badgeTypeData.data?.badgeTypeMetadata
-  ) {
-    throw `There was an error trying to fetch the metadata for the badge type`
+  if (badgeModelKlerosData.error || !badgeModelKlerosData.data) {
+    throw `There was an error trying to fetch the metadata for the badge model`
   }
 
-  const challengePeriodDuration =
-    badgeTypeData.data?.badgeType?.klerosBadge?.challengePeriodDuration
+  const challengePeriodDuration = badgeModelKlerosData.data?.challengePeriodDuration
 
-  const fileURI = badgeTypeData.data?.badgeTypeMetadata?.fileURI
+  const badgeModelMetadata = badgeModelKlerosData.data?.badgeModelKlerosRegistrationMetadata
 
-  if (!fileURI) {
+  if (!badgeModelMetadata) {
     throw 'There was not possible to get the needed metadata. Try again in some minutes.'
   }
 
-  const criteriaUrl = 's3Url' in fileURI ? fileURI.s3Url : ''
+  const badgeCriteria =
+    's3Url' in badgeModelMetadata.fileURI ? badgeModelMetadata.fileURI.s3Url : ''
 
   return (
     <Stack
@@ -60,7 +55,9 @@ export default function MintCost({ costs }: Props) {
         gap: 2,
       }}
     >
-      <Typography variant="dAppTitle2">Total deposit required</Typography>
+      <Typography fontWeight={800} variant="dAppTitle3">
+        {t('badge.type.mint.depositRequired')}
+      </Typography>
       <Box display="flex" flex={1} gap={4}>
         <Stack flex={1} gap={1} sx={{ borderBottom: '1px solid white', margin: 'auto' }}>
           <Typography variant="dAppTitle2">{t('badge.type.mint.depositCost')}</Typography>
@@ -74,12 +71,13 @@ export default function MintCost({ costs }: Props) {
             sx={{
               display: 'flex',
               alignItems: 'center',
+              fontWeight: 300,
               '& a': { textDecoration: 'underline !important' },
             }}
             variant="subtitle2"
           >
             {t('badge.type.mint.depositDisclaimer', {
-              docsUrl: DOCS_URL + '/thebadge-documentation/overview/how-it-works/challenge',
+              docsUrl: DOCS_URL + '/thebadge-documentation/protocol-mechanics/challenge',
               challengePeriodDuration: challengePeriodDuration / 60 / 60,
               timeUnit: 'days',
             })}
@@ -107,7 +105,12 @@ export default function MintCost({ costs }: Props) {
 
       <Typography textAlign="center" variant="subtitle2">
         {t('badge.type.mint.makeSure')}
-        <a href={criteriaUrl} rel="noreferrer" style={{ color: colors.green }} target={'_blank'}>
+        <a
+          href={badgeCriteria as string}
+          rel="noreferrer"
+          style={{ color: colors.green }}
+          target={'_blank'}
+        >
           {t('badge.type.mint.curationCriteria')}
         </a>
         {t('badge.type.mint.avoidChallenges')}

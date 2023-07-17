@@ -1,9 +1,9 @@
-import { useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/router'
 import React, { useRef, useState } from 'react'
 
 import AddRoundedIcon from '@mui/icons-material/AddRounded'
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined'
+import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded'
 import TwitterIcon from '@mui/icons-material/Twitter'
 import {
   Avatar,
@@ -18,9 +18,9 @@ import {
   alpha,
   styled,
 } from '@mui/material'
+import { ButtonV2, IconDiscord, colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 import Blockies from 'react-18-blockies'
-import { ButtonV2, IconDiscord, colors } from 'thebadge-ui-library'
 
 import { Address } from '@/src/components/helpers/Address'
 import VerifiedCreator from '@/src/components/icons/VerifiedCreator'
@@ -52,18 +52,16 @@ const OwnerDisplay = styled(Menu)<OwnerDisplayProps>(({ theme, width }) => ({
   },
 }))
 
-export default function BadgeOwnerPreview() {
+export default function BadgeOwnerPreview({ ownerAddress }: { ownerAddress: string }) {
   const router = useRouter()
   const { t } = useTranslation()
-  const searchParams = useSearchParams()
-  const ownerAddress = searchParams.get('ownerAddress')
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLDivElement>(null)
   const wrapperRef = useRef<HTMLDivElement>()
   const open = Boolean(anchorEl)
 
   if (!ownerAddress) {
-    throw `No ownerAddress provided us URL query param`
+    throw `No ownerAddress provided`
   }
   const handleClick = () => {
     if (wrapperRef?.current) setAnchorEl(wrapperRef.current)
@@ -73,7 +71,7 @@ export default function BadgeOwnerPreview() {
   }
 
   const owner = useUserById(ownerAddress)
-  const resMetadata = useS3Metadata<{ content: CreatorMetadata }>(owner.data?.creatorMetadata || '')
+  const resMetadata = useS3Metadata<{ content: CreatorMetadata }>(owner.data?.creatorUri || '')
   const ownerMetadata = resMetadata.data?.content
 
   return (
@@ -85,7 +83,7 @@ export default function BadgeOwnerPreview() {
         </Box>
 
         <IconButton onClick={handleClick} size="small">
-          <AddRoundedIcon color="purple" />
+          {!open ? <AddRoundedIcon color="purple" /> : <RemoveRoundedIcon color="purple" />}
         </IconButton>
       </Wrapper>
       <OwnerDisplay

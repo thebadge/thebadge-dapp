@@ -1,13 +1,14 @@
 import React, { useCallback, useState } from 'react'
 
-import FileUploadIcon from '@mui/icons-material/FileUpload'
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
+import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf'
-import { Box, IconButton, Tooltip, Typography, styled } from '@mui/material'
+import { Box, IconButton, Stack, Tooltip, Typography, styled } from '@mui/material'
+import { colors } from '@thebadge/ui-library'
 import { useDescription, useTsController } from '@ts-react/form'
 import { FieldError } from 'react-hook-form'
 import ImageUploading, { ImageListType, ImageType } from 'react-images-uploading'
-import { colors } from 'thebadge-ui-library'
 import { z } from 'zod'
 
 import { TextFieldStatus } from '@/src/components/form/TextField'
@@ -15,13 +16,16 @@ import { FormField } from '@/src/components/form/helpers/FormField'
 import { FileSchema } from '@/src/components/form/helpers/customSchemas'
 import { convertToFieldError } from '@/src/components/form/helpers/validators'
 
-const Wrapper = styled(Box)(({ theme }) => ({
+const Wrapper = styled(Box, {
+  shouldForwardProp: (propName) => propName !== 'error',
+})<{ error?: boolean }>(({ error, theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   position: 'relative',
   rowGap: theme.spacing(1),
   width: '100%',
   gridColumn: 'span 1 / 4',
+  borderBottom: `1px solid ${error ? theme.palette.error.main : colors.white}`,
 }))
 
 const FileDrop = styled(Box, {
@@ -35,12 +39,6 @@ const FileDrop = styled(Box, {
   alignItems: 'center',
   justifyContent: 'space-between',
   height: '50px',
-  borderBottomWidth: 1,
-  borderBottomColor: error ? theme.palette.error.main : isDragging ? colors.green : colors.grey,
-  borderBottomStyle: 'solid',
-  '&:hover': {
-    borderBottomColor: colors.green,
-  },
 }))
 
 type FileInputProps = {
@@ -49,6 +47,7 @@ type FileInputProps = {
   onChange: (image: ImageType | null) => void
   placeholder?: string
   value: ImageType | undefined
+  downloadableTemplate?: React.ReactNode
 }
 
 /**
@@ -56,7 +55,14 @@ type FileInputProps = {
  * config on accepted files
  * @constructor
  */
-export function FileInput({ error, label, onChange, placeholder, value }: FileInputProps) {
+export function FileInput({
+  downloadableTemplate,
+  error,
+  label,
+  onChange,
+  placeholder,
+  value,
+}: FileInputProps) {
   const [files, setFiles] = useState<ImageListType>(value ? [value] : [])
   const maxNumber = 1
 
@@ -74,41 +80,37 @@ export function FileInput({ error, label, onChange, placeholder, value }: FileIn
   )
 
   return (
-    <Wrapper>
+    <Wrapper error={!!error}>
       <FormField
         formControl={
-          <ImageUploading
-            acceptType={['pdf']}
-            allowNonImageType={true}
-            dataURLKey="data_url"
-            maxNumber={maxNumber}
-            onChange={handleOnChange}
-            value={files}
-          >
-            {({ dragProps, errors, imageList, isDragging, onImageUpdate, onImageUpload }) => (
-              // write your building UI
-              <Box display="flex" flexDirection="column" sx={{ flex: 1 }}>
-                {imageList.length === 0 && (
-                  <FileDrop
-                    error={!!error}
-                    isDragging={isDragging}
-                    onClick={onImageUpload}
-                    {...dragProps}
-                  >
-                    <Typography color="text.disabled">Click or Drop here</Typography>
-                    <IconButton aria-label="upload file" color="secondary" component="label">
-                      <FileUploadIcon color="white" />
-                    </IconButton>
-                  </FileDrop>
-                )}
-                {imageList.map((image, index) => (
-                  <Box
-                    className="pdf-item"
-                    key={index}
-                    sx={{ display: 'flex', flexDirection: 'row' }}
-                  >
-                    <FileDrop {...dragProps} error={!!error || !!errors}>
-                      <PictureAsPdfIcon sx={{ mr: 1 }} />
+          <Stack sx={{ width: '100%', gap: 1, p: 0 }}>
+            {/* Custom element where we can define a template example for the expected file */}
+            {downloadableTemplate ? downloadableTemplate : null}
+            <ImageUploading
+              acceptType={['pdf']}
+              allowNonImageType={true}
+              dataURLKey="base64File"
+              maxNumber={maxNumber}
+              onChange={handleOnChange}
+              value={files}
+            >
+              {({ dragProps, errors, imageList, isDragging, onImageRemoveAll, onImageUpload }) => (
+                <Stack flex="1">
+                  {imageList.length === 0 && (
+                    <FileDrop
+                      error={!!error}
+                      isDragging={isDragging}
+                      onClick={onImageUpload}
+                      {...dragProps}
+                    >
+                      <Typography color="text.disabled">Upload file</Typography>
+                      <IconButton aria-label="upload file" color="secondary" component="label">
+                        <FileUploadOutlinedIcon color="white" />
+                      </IconButton>
+                    </FileDrop>
+                  )}
+                  {imageList.map((image, index) => (
+                    <FileDrop key={index} {...dragProps} error={!!error || !!errors}>
                       <Typography
                         sx={{
                           overflow: 'hidden',
@@ -117,31 +119,32 @@ export function FileInput({ error, label, onChange, placeholder, value }: FileIn
                           maxWidth: '330px',
                         }}
                       >
+                        <PictureAsPdfIcon sx={{ mr: 1 }} />
                         {image.file?.name}
                       </Typography>
                       <IconButton
                         aria-label="upload file"
                         color="secondary"
                         component="label"
-                        onClick={() => onImageUpdate(index)}
+                        onClick={() => onImageRemoveAll()}
                       >
-                        <FileUploadIcon color="white" />
+                        <DeleteForeverIcon color="white" />
                       </IconButton>
                     </FileDrop>
-                  </Box>
-                ))}
-                {errors && (
-                  <div>
-                    {errors.acceptType && <span>Your selected file type is not allow</span>}
-                    {errors.maxFileSize && <span>Selected file size exceed maxFileSize</span>}
-                  </div>
-                )}
-              </Box>
-            )}
-          </ImageUploading>
+                  ))}
+                  {errors && (
+                    <div>
+                      {errors.acceptType && <span>Your selected file type is not allow</span>}
+                      {errors.maxFileSize && <span>Selected file size exceed maxFileSize</span>}
+                    </div>
+                  )}
+                </Stack>
+              )}
+            </ImageUploading>
+          </Stack>
         }
         label={
-          <Typography sx={{ textTransform: 'capitalize', color: 'text.secondary' }}>
+          <Typography sx={{ textTransform: 'capitalize', color: 'text.disabled' }}>
             {label}
             {placeholder && (
               <Tooltip arrow title={placeholder}>
@@ -150,6 +153,7 @@ export function FileInput({ error, label, onChange, placeholder, value }: FileIn
             )}
           </Typography>
         }
+        labelPosition={'top-left'}
         status={error ? TextFieldStatus.error : TextFieldStatus.success}
         statusText={error?.message}
       />
@@ -159,7 +163,6 @@ export function FileInput({ error, label, onChange, placeholder, value }: FileIn
 
 /**
  * Component wrapped to be used with @ts-react/form
- *
  */
 export default function FileInputWithTSForm() {
   const { error, field } = useTsController<z.infer<typeof FileSchema>>()
@@ -169,7 +172,15 @@ export default function FileInputWithTSForm() {
     <FileInput
       error={error ? convertToFieldError(error) : undefined}
       label={label}
-      onChange={field.onChange}
+      onChange={(value: ImageType | null) => {
+        if (value) {
+          // We change the structure a little bit to have it ready to push to the backend
+          field.onChange({
+            mimeType: value.file?.type,
+            base64File: value.base64File,
+          })
+        } else field.onChange(null)
+      }}
       placeholder={placeholder}
       value={field.value}
     />

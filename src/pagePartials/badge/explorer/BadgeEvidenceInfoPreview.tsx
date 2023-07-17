@@ -1,13 +1,13 @@
 import React from 'react'
 
 import { Box, Divider, Stack, Typography } from '@mui/material'
+import { ButtonV2, colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
-import { ButtonV2, colors } from 'thebadge-ui-library'
 
 import DisplayEvidenceField from '@/src/components/displayEvidence/DisplayEvidenceField'
 import { Address } from '@/src/components/helpers/Address'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
-import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
+import { useEvidenceBadgeKlerosMetadata } from '@/src/hooks/subgraph/useBadgeKlerosMetadata'
 import { ListingCriteriaPreview } from '@/src/pagePartials/badge/explorer/ListingCriteriaPreview'
 import { useCurateProvider } from '@/src/providers/curateProvider'
 import { getEvidenceValue } from '@/src/utils/kleros/getEvidenceValue'
@@ -17,9 +17,12 @@ export default function BadgeEvidenceInfoPreview({ badge }: { badge: Badge }) {
   const { t } = useTranslation()
   const { challenge } = useCurateProvider()
 
-  const badgeById = useBadgeById(badge?.badgeType.id, badge?.receiver.id)
+  const badgeKlerosMetadata = useEvidenceBadgeKlerosMetadata(badge?.id)
+  const badgeEvidence = badgeKlerosMetadata.data?.requestBadgeEvidence
 
-  const badgeEvidence = badgeById.data?.badgeEvidence
+  if (!badgeEvidence || !badgeKlerosMetadata.data?.requestBadgeEvidenceRawUrl) {
+    throw 'There was an error fetching the badge evidence, try again in some minutes.'
+  }
 
   return (
     <Stack gap={4}>
@@ -28,13 +31,31 @@ export default function BadgeEvidenceInfoPreview({ badge }: { badge: Badge }) {
       <Box alignContent="center" display="flex" flex={1} justifyContent="space-between">
         <Stack gap={1}>
           <Typography fontSize={14} variant="body4">
+            {t('explorer.curate.curationList')}
+          </Typography>
+          <Address address={badge?.badgeModel.badgeModelKleros?.tcrList} />
+        </Stack>
+        <Box alignItems="flex-end" display="flex">
+          <Typography fontSize={14} variant="body4">
+            {`${t('explorer.curate.badgeId')} ${badge?.id}`}
+          </Typography>
+        </Box>
+      </Box>
+
+      <Box alignContent="center" display="flex" flex={1} justifyContent="space-between">
+        <Stack gap={1}>
+          <Typography fontSize={14} variant="body4">
             {t('explorer.curate.requester')}
           </Typography>
-          <Address address={badge?.receiver.id} />
+          <Address address={badge?.account.id} />
         </Stack>
         <Box alignItems="flex-end" display="flex">
           <Typography fontSize={14} sx={{ textDecoration: 'underline !important' }} variant="body4">
-            <a href={badgeById.data?.rawBadgeEvidenceUrl} rel="noreferrer" target="_blank">
+            <a
+              href={badgeKlerosMetadata.data?.requestBadgeEvidenceRawUrl}
+              rel="noreferrer"
+              target="_blank"
+            >
               {t('explorer.curate.viewEvidence')}
             </a>
           </Typography>
@@ -46,15 +67,17 @@ export default function BadgeEvidenceInfoPreview({ badge }: { badge: Badge }) {
         {badgeEvidence?.columns.map((column) => {
           return (
             <Stack key={column.label + column.description}>
-              <DisplayEvidenceField
-                columnItem={column}
-                value={getEvidenceValue(
-                  badgeEvidence?.values,
-                  badgeEvidence?.columns,
-                  column.label,
-                  column.type,
-                )}
-              />
+              <SafeSuspense>
+                <DisplayEvidenceField
+                  columnItem={column}
+                  value={getEvidenceValue(
+                    badgeEvidence?.values,
+                    badgeEvidence?.columns,
+                    column.label,
+                    column.type,
+                  )}
+                />
+              </SafeSuspense>
             </Stack>
           )
         })}
@@ -66,7 +89,7 @@ export default function BadgeEvidenceInfoPreview({ badge }: { badge: Badge }) {
           {t('explorer.curate.listingCriteria')}
         </Typography>
         <SafeSuspense>
-          <ListingCriteriaPreview badgeTypeId={badge?.badgeType.id} />
+          <ListingCriteriaPreview badgeModelId={badge?.badgeModel.id} />
         </SafeSuspense>
         <Divider color={colors.white} />
       </Stack>
@@ -75,7 +98,7 @@ export default function BadgeEvidenceInfoPreview({ badge }: { badge: Badge }) {
         <ButtonV2
           backgroundColor={colors.redError}
           fontColor={colors.white}
-          onClick={() => challenge(badge?.badgeType.id, badge?.receiver.id)}
+          onClick={() => challenge(badge?.id)}
           sx={{ ml: 'auto' }}
           variant="contained"
         >

@@ -3,8 +3,8 @@ import React from 'react'
 
 import CloseIcon from '@mui/icons-material/Close'
 import { Box, IconButton, Stack, Typography, styled } from '@mui/material'
+import { colors, gradients } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
-import { colors, gradients } from 'thebadge-ui-library'
 
 import { PauseAnimated } from '@/src/components/assets/animated/PauseAnimated'
 
@@ -23,7 +23,7 @@ const ModalBody = styled(Box)(({ theme }) => ({
       ? gradients.gradientBackgroundLight
       : gradients.gradientBackgroundDark,
   borderRadius: theme.spacing(1),
-  boxShadow: `0px 0px 20px rgba(255, 255, 255, 0.6)`,
+  boxShadow: `0px 0px 15px rgba(255, 255, 255, 0.4)`,
   padding: theme.spacing(4),
   '& .MuiContainer-root': {
     maxWidth: '100%',

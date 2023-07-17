@@ -15,6 +15,7 @@ import RegistrationSteps, {
 } from '@/src/pagePartials/creator/register/RegistrationSteps'
 import { PreventActionIfRegisterPaused } from '@/src/pagePartials/errors/preventActionIfPaused'
 import { RequiredConnection } from '@/src/pagePartials/errors/requiredConnection'
+import { ProfileFilter } from '@/src/pagePartials/profile/Profile'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import ipfsUpload from '@/src/utils/ipfsUpload'
 import { TheBadge__factory } from '@/types/generated/typechain'
@@ -35,7 +36,7 @@ const Register: NextPageWithLayout = () => {
   useEffect(() => {
     // Redirect to the creator profile section
     if (state === TransactionStates.success) {
-      router.push(`/profile?filter=createdBadges`)
+      router.push(`/profile?filter=${ProfileFilter.CREATED_BADGES}`)
     }
   }, [router, state])
 
@@ -47,7 +48,7 @@ const Register: NextPageWithLayout = () => {
   })
 
   if (userProfile.data?.user?.isCreator) {
-    router.push('/profile?filter=createdBadges')
+    router.push(`/profile?filter=${ProfileFilter.CREATED_BADGES}`)
   }
 
   async function onSubmit(data: z.infer<typeof RegisterCuratorSchema>) {
@@ -57,14 +58,13 @@ const Register: NextPageWithLayout = () => {
     const uploadedInfo = await ipfsUpload({
       attributes: {
         ...data,
-        logo: { mimeType: data.logo?.file.type, base64File: data.logo?.data_url },
       },
       filePaths: ['logo'],
     })
 
     try {
       const transaction = await sendTx(() =>
-        theBadge.registerEmitter(address, `ipfs://${uploadedInfo.result?.ipfsHash}`),
+        theBadge.registerBadgeModelCreator(`ipfs://${uploadedInfo.result?.ipfsHash}`),
       )
 
       await transaction.wait()

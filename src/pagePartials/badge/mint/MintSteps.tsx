@@ -1,20 +1,20 @@
-import { useSearchParams } from 'next/navigation'
 import * as React from 'react'
 import { useCallback, useRef, useState } from 'react'
 
 import { Box, Stack, Typography } from '@mui/material'
+import { BadgePreview, colors } from '@thebadge/ui-library'
 import domtoimage from 'dom-to-image'
 import { useTranslation } from 'next-export-i18n'
-import { BadgePreview, colors } from 'thebadge-ui-library'
 import { AnyZodObject, z } from 'zod'
 
 import MarkdownTypography from '@/src/components/common/MarkdownTypography'
-import { DataGrid } from '@/src/components/form/customForms/type'
 import { FormWithSteps } from '@/src/components/form/formWithSteps/FormWithSteps'
-import { AgreementSchema } from '@/src/components/form/helpers/customSchemas'
+import { AgreementSchemaBranded } from '@/src/components/form/helpers/customSchemas'
 import { TransactionLoading } from '@/src/components/loading/TransactionLoading'
 import { APP_URL, DOCS_URL } from '@/src/constants/common'
-import useBadgeType from '@/src/hooks/subgraph/useBadgeType'
+import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
+import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
+import { useRegistrationBadgeModelKlerosMetadata } from '@/src/hooks/subgraph/useBadgeModelKlerosMetadata'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { TransactionStates } from '@/src/hooks/useTransaction'
 import MintCost from '@/src/pagePartials/badge/mint/MintCost'
@@ -36,48 +36,40 @@ type MintStepsProps<SchemaType extends z.ZodEffects<any, any, any> | AnyZodObjec
 
 const steps = ['Help', 'Evidence form', 'Badge Preview']
 
-const formGridLayout: DataGrid[][] = [
-  [{ i: 'AgreementSchema', x: 0, y: 0, w: 12, h: 8, static: true }],
-  [],
-]
-
 export const MintSchemaStep1 = z.object({
-  help: AgreementSchema.describe(`Mint badge quick tutorial.`),
+  help: AgreementSchemaBranded.describe(`Mint badge quick tutorial.`),
 })
 
 export default function MintSteps({ costs, evidenceSchema, onSubmit, txState }: MintStepsProps) {
   const { t } = useTranslation()
   const { address } = useWeb3Connection()
-  const searchParams = useSearchParams()
-  const typeId = searchParams.get('typeId')
+  const modelId = useModelIdParam()
+
   const [currentStep, setCurrentStep] = useState(0)
 
-  if (!typeId) {
-    throw `No typeId provided us URL query param`
+  if (!modelId) {
+    throw `No modelId provided us URL query param`
   }
   const badgePreviewRef = useRef<HTMLDivElement>()
 
-  const badgeTypeData = useBadgeType(typeId)
+  const badgeModelData = useBadgeModel(modelId)
+  const klerosBadgeModel = useRegistrationBadgeModelKlerosMetadata(modelId)
 
-  if (
-    badgeTypeData.error ||
-    !badgeTypeData.data?.badgeType ||
-    !badgeTypeData.data?.badgeTypeMetadata
-  ) {
-    throw `There was an error trying to fetch the metadata for the badge type`
+  const badgeModelKlerosMetadata = klerosBadgeModel.data?.badgeModelKlerosRegistrationMetadata
+  const badgeModelMetadata = badgeModelData.data?.badgeModelMetadata
+
+  if (badgeModelData.error || !badgeModelMetadata || !badgeModelKlerosMetadata) {
+    throw `There was an error trying to fetch the metadata for the badge model`
   }
 
-  const klerosBadge = badgeTypeData.data?.badgeType.klerosBadge
-  const badgeMetadata = badgeTypeData.data?.badgeTypeMetadata
+  const badgeLogoImage = badgeModelData.data?.badgeModelMetadata?.image
 
-  const badgeLogoData = useS3Metadata<{ s3Url: string }>(
-    badgeMetadata.metadata.logoURI as unknown as string,
-  )
   const badgeCreatorMetadata = useS3Metadata<{ content: Creator }>(
-    badgeTypeData.data?.badgeType?.creator.creatorMetadata || '',
+    badgeModelData.data?.badgeModel?.creator.creatorUri || '',
   )
 
-  const badgeCriteria = 's3Url' in badgeMetadata.fileURI ? badgeMetadata.fileURI.s3Url : ''
+  const badgeCriteria =
+    's3Url' in badgeModelKlerosMetadata.fileURI ? badgeModelKlerosMetadata.fileURI.s3Url : ''
 
   const convertPreviewToImage = useCallback(async (): Promise<string> => {
     if (!badgePreviewRef.current) return ''
@@ -121,13 +113,13 @@ export default function MintSteps({ costs, evidenceSchema, onSubmit, txState }: 
               animationEffects={['wobble', 'grow', 'glare']}
               animationOnHover
               badgeBackgroundUrl="https://images.unsplash.com/photo-1512998844734-cd2cca565822?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTIyfHxhYnN0cmFjdHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
-              badgeUrl={`${APP_URL}/${typeId}/${address}`}
+              badgeUrl={`${APP_URL}/${modelId}/${address}`}
               category="Badge for Testing"
-              description={enrichTextWithValues(badgeMetadata.description, enrichTextValues)}
-              imageUrl={badgeLogoData.data?.s3Url}
+              description={enrichTextWithValues(badgeModelMetadata.description, enrichTextValues)}
+              imageUrl={badgeLogoImage?.s3Url}
               size="medium"
               textContrast="light-withTextBackground"
-              title={badgeMetadata.name}
+              title={badgeModelMetadata.name}
             />
           </Box>
           <MintCost costs={costs} />
@@ -136,13 +128,13 @@ export default function MintSteps({ costs, evidenceSchema, onSubmit, txState }: 
     },
     [
       address,
-      badgeLogoData.data?.s3Url,
-      badgeMetadata.description,
-      badgeMetadata.name,
+      badgeLogoImage?.s3Url,
+      badgeModelMetadata.description,
+      badgeModelMetadata.name,
       costs,
       t,
       txState,
-      typeId,
+      modelId,
     ],
   )
 
@@ -155,11 +147,11 @@ export default function MintSteps({ costs, evidenceSchema, onSubmit, txState }: 
 
         <MarkdownTypography textAlign="justify" variant="body3" width="85%">
           {t(`badge.type.mint.steps.${currentStep}.subTitle`, {
-            badgeName: badgeMetadata.name,
+            badgeName: badgeModelMetadata.name,
             creatorContact: `mailto:${badgeCreatorMetadata.data?.content?.email}`,
             badgeCreatorName: badgeCreatorMetadata.data?.content?.name,
-            curationDocsUrl: DOCS_URL + '/thebadge-documentation/overview/how-it-works/challenge',
-            costDocsUrls: DOCS_URL + '/thebadge-documentation/overview/how-it-works/challenge',
+            curationDocsUrl: DOCS_URL + '/thebadge-documentation/protocol-mechanics/challenge',
+            costDocsUrls: DOCS_URL + '/thebadge-documentation/protocol-mechanics/challenge',
           })}
         </MarkdownTypography>
       </Stack>
@@ -171,11 +163,10 @@ export default function MintSteps({ costs, evidenceSchema, onSubmit, txState }: 
             help: {
               agreementText: t('badge.type.mint.helpSteps', {
                 badgeCreatorName: badgeCreatorMetadata.data?.content?.name,
-                badgeCreatorProfileLink: '/profile/' + badgeTypeData.data?.badgeType?.creator.id,
-                curationDocsUrl:
-                  DOCS_URL + '/thebadge-documentation/overview/how-it-works/challenge',
+                badgeCreatorProfileLink: '/profile/' + badgeModelData.data?.badgeModel?.creator.id,
+                curationDocsUrl: DOCS_URL + '/thebadge-documentation/protocol-mechanics/challenge',
                 curationCriteriaUrl: badgeCriteria,
-                challengePeriodDuration: klerosBadge?.challengePeriodDuration / 60 / 60,
+                challengePeriodDuration: klerosBadgeModel?.data?.challengePeriodDuration / 60 / 60,
                 timeUnit: 'days',
               }),
               color: 'blue',

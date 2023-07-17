@@ -1,6 +1,6 @@
 import { Box, Typography, styled, useTheme } from '@mui/material'
+import { ButtonV2, colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
-import { ButtonV2, colors } from 'thebadge-ui-library'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { DOCS_URL } from '@/src/constants/common'
@@ -30,7 +30,10 @@ export default function EarnByCurating() {
   const { t } = useTranslation()
 
   const openDocs = () =>
-    window.open(`${DOCS_URL}/thebadge-documentation/overview/how-it-works/curators`, '_blank')
+    window.open(
+      `${DOCS_URL}/thebadge-documentation/how-to-guides/how-to-become-a-creator`,
+      '_blank',
+    )
 
   return (
     <SectionBox ref={earnByCuratingSection}>

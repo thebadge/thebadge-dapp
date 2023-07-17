@@ -1,5 +1,8 @@
 {
   "5": {
-    "theBadge": "https://api.thegraph.com/subgraphs/name/nicosampler/thebadge-goerli"
+    "theBadge": "https://api.thegraph.com/subgraphs/name/thebadgeadmin/dev"
+  },
+  "100": {
+    "theBadge": ""
   }
 }

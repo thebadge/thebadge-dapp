@@ -7,16 +7,21 @@ import LinkWithTranslation from '@/src/components/helpers/LinkWithTranslation'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { useCurrentUser } from '@/src/hooks/subgraph/useCurrentUser'
 import BadgesCreatedSection from '@/src/pagePartials/profile/created/BadgesCreatedSection'
-import BadgesInReviewSection from '@/src/pagePartials/profile/inReview/BadgesInReviewSection'
 import MyProfileSection from '@/src/pagePartials/profile/myProfile/MyProfileSection'
+import BadgesIAmReviewingSection from '@/src/pagePartials/profile/reviewing/BadgesIAmReviewingSection'
 import InfoPreview from '@/src/pagePartials/profile/userInfo/InfoPreview'
 import { InfoPreviewSkeleton } from '@/src/pagePartials/profile/userInfo/InfoPreview.skeleton'
+
+export enum ProfileFilter {
+  BADGES_I_AM_REVIEWING = 'badgesIAmReviewing',
+  CREATED_BADGES = 'createdBadges',
+}
 
 const Profile = () => {
   const { t } = useTranslation()
 
   const params = useSearchParams()
-  const filterType = params.get('filter')
+  const selectedFilter = params.get('filter')
 
   const userData = useCurrentUser()
   const user = userData.data
@@ -26,18 +31,34 @@ const Profile = () => {
       <Stack sx={{ mb: 6, gap: 4, alignItems: 'center' }}>
         <Box display="flex" flex={1} flexDirection="row" justifyContent="space-evenly" width="100%">
           <LinkWithTranslation pathname={`/profile`}>
-            <Typography color={!filterType ? 'text.primary' : 'text.disabled'}>
+            <Typography color={!selectedFilter ? 'text.primary' : 'text.disabled'}>
               {t('profile.tab1')}
             </Typography>
           </LinkWithTranslation>
-          <LinkWithTranslation pathname={`/profile`} queryParams={{ filter: 'badgesInReview' }}>
-            <Typography color={filterType === 'badgesInReview' ? 'text.primary' : 'text.disabled'}>
+          <LinkWithTranslation
+            pathname={`/profile`}
+            queryParams={{ filter: ProfileFilter.BADGES_I_AM_REVIEWING }}
+          >
+            <Typography
+              color={
+                selectedFilter === ProfileFilter.BADGES_I_AM_REVIEWING
+                  ? 'text.primary'
+                  : 'text.disabled'
+              }
+            >
               {t('profile.tab2')}
             </Typography>
           </LinkWithTranslation>
           {user?.isCreator && (
-            <LinkWithTranslation pathname={`/profile`} queryParams={{ filter: 'createdBadges' }}>
-              <Typography color={filterType === 'createdBadges' ? 'text.primary' : 'text.disabled'}>
+            <LinkWithTranslation
+              pathname={`/profile`}
+              queryParams={{ filter: ProfileFilter.CREATED_BADGES }}
+            >
+              <Typography
+                color={
+                  selectedFilter === ProfileFilter.CREATED_BADGES ? 'text.primary' : 'text.disabled'
+                }
+              >
                 {t('profile.tab3')}
               </Typography>
             </LinkWithTranslation>
@@ -48,9 +69,9 @@ const Profile = () => {
       <SafeSuspense fallback={<InfoPreviewSkeleton />}>
         <InfoPreview address={user?.id || ''} />
       </SafeSuspense>
-      {!filterType && <MyProfileSection />}
-      {filterType === 'badgesInReview' && <BadgesInReviewSection />}
-      {filterType === 'createdBadges' && <BadgesCreatedSection />}
+      {!selectedFilter && <MyProfileSection />}
+      {selectedFilter === ProfileFilter.BADGES_I_AM_REVIEWING && <BadgesIAmReviewingSection />}
+      {selectedFilter === ProfileFilter.CREATED_BADGES && <BadgesCreatedSection />}
     </SafeSuspense>
   )
 }

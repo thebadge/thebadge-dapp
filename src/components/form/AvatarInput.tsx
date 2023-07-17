@@ -3,11 +3,11 @@ import React, { useCallback, useEffect, useRef, useState } from 'react'
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
 import FileUploadIcon from '@mui/icons-material/FileUpload'
 import { AvatarProps, Box, Container, IconButton, Avatar as MUIAvatar, styled } from '@mui/material'
+import { colors } from '@thebadge/ui-library'
 import { useDescription, useTsController } from '@ts-react/form'
 import Blockies from 'react-18-blockies'
 import { FieldError } from 'react-hook-form'
 import ImageUploading, { ImageListType, ImageType } from 'react-images-uploading'
-import { colors } from 'thebadge-ui-library'
 import { z } from 'zod'
 
 import { TextFieldStatus } from '@/src/components/form/TextField'
@@ -49,7 +49,7 @@ type AvatarInputProps = {
   label?: string
   onChange: (image: ImageType | null) => void
   placeholder?: string
-  value: ImageListType | undefined
+  value: ImageType | undefined
 }
 
 export function AvatarInput({ error, label, onChange, value }: AvatarInputProps) {
@@ -192,7 +192,13 @@ export default function AvatarInputWithTSForm() {
   const { label, placeholder } = useDescription()
 
   function onChange(value: z.infer<typeof ImageSchema>) {
-    field.onChange(value)
+    if (value) {
+      // We change the structure a little bit to have it ready to push to the backend
+      field.onChange({
+        mimeType: value.file?.type,
+        base64File: value.data_url,
+      })
+    } else field.onChange(null)
   }
 
   return (
@@ -201,7 +207,7 @@ export default function AvatarInputWithTSForm() {
       label={label}
       onChange={onChange}
       placeholder={placeholder}
-      value={field.value}
+      value={field.value ? { dataURL: field.value.base64File, file: undefined } : undefined}
     />
   )
 }

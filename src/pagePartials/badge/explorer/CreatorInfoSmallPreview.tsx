@@ -4,8 +4,8 @@ import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined'
 import OpenInNewOutlinedIcon from '@mui/icons-material/OpenInNewOutlined'
 import TwitterIcon from '@mui/icons-material/Twitter'
 import { Avatar, Badge, Box, Divider, IconButton, Stack, Tooltip, Typography } from '@mui/material'
+import { IconDiscord, colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
-import { IconDiscord, colors } from 'thebadge-ui-library'
 
 import { Address } from '@/src/components/helpers/Address'
 import VerifiedCreator from '@/src/components/icons/VerifiedCreator'
@@ -17,9 +17,7 @@ import { User } from '@/types/generated/subgraph'
 export default function CreatorInfoSmallPreview({ creator }: { creator: User }) {
   const { t } = useTranslation()
 
-  const resCreatorMetadata = useS3Metadata<{ content: CreatorMetadata }>(
-    creator.creatorMetadata || '',
-  )
+  const resCreatorMetadata = useS3Metadata<{ content: CreatorMetadata }>(creator.creatorUri || '')
   const creatorMetadata = resCreatorMetadata.data?.content
 
   /* Creator info */

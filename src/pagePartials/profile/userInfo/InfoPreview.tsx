@@ -4,8 +4,8 @@ import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined'
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined'
 import TwitterIcon from '@mui/icons-material/Twitter'
 import { Avatar, Badge, Box, IconButton, Stack, Tooltip, Typography } from '@mui/material'
+import { IconDiscord } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
-import { IconDiscord } from 'thebadge-ui-library'
 
 import { Address } from '@/src/components/helpers/Address'
 import VerifiedCreator from '@/src/components/icons/VerifiedCreator'
@@ -26,9 +26,7 @@ export default function InfoPreview({ address }: Props) {
 
   const userResponse = useUserById(address)
   const user = userResponse.data
-  const resCreatorMetadata = useS3Metadata<{ content: CreatorMetadata }>(
-    user?.creatorMetadata || '',
-  )
+  const resCreatorMetadata = useS3Metadata<{ content: CreatorMetadata }>(user?.creatorUri || '')
   const creatorMetadata = resCreatorMetadata.data?.content
 
   return (
@@ -49,7 +47,7 @@ export default function InfoPreview({ address }: Props) {
       <Stack flex="5" justifyContent="space-between" overflow="auto">
         <Stack gap={1}>
           <Typography variant="dAppHeadline2">{creatorMetadata?.name}</Typography>
-          <Address address={user?.id || ''} showCopyButton={false} showExternalLink={false} />
+          <Address address={user?.id || ''} truncate={false} />
         </Stack>
         <Box display="flex">
           <Stack flex="1" gap={2} height="100%" justifyContent="space-evenly" overflow="auto">

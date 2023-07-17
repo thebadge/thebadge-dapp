@@ -52,12 +52,14 @@ interface Props {
   address: string
   showExternalLink?: boolean
   showCopyButton?: boolean
+  truncate?: boolean
 }
 
 export const Address: React.FC<Props> = ({
   address,
   showCopyButton = true,
   showExternalLink = true,
+  truncate = true,
   ...restProps
 }) => {
   const { getExplorerUrl } = useWeb3Connection()
@@ -81,7 +83,7 @@ export const Address: React.FC<Props> = ({
   return (
     <Wrapper {...restProps}>
       <ExternalLink href={getExplorerUrl(address)}>
-        {truncateStringInTheMiddle(address, 8, 6)}
+        {truncate ? truncateStringInTheMiddle(address, 8, 6) : address}
       </ExternalLink>
       {showCopyButton && (
         <CopyButton onClick={() => copyAddress(address)}>

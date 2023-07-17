@@ -4,18 +4,18 @@ import OpenInNewOutlinedIcon from '@mui/icons-material/OpenInNewOutlined'
 import { Box, IconButton } from '@mui/material'
 
 import PDFViewer from '@/src/components/common/PDFViewer'
-import useBadgeType from '@/src/hooks/subgraph/useBadgeType'
+import { useRegistrationBadgeModelKlerosMetadata } from '@/src/hooks/subgraph/useBadgeModelKlerosMetadata'
 
-export function ListingCriteriaPreview({ badgeTypeId }: { badgeTypeId: string }) {
-  const badgeTypeData = useBadgeType(badgeTypeId)
-  const badgeTypeMetadata = badgeTypeData.data?.badgeTypeMetadata
+export function ListingCriteriaPreview({ badgeModelId }: { badgeModelId: string }) {
+  const badgeModelKlerosData = useRegistrationBadgeModelKlerosMetadata(badgeModelId)
+  const badgeModelKlerosMetadata = badgeModelKlerosData.data?.badgeModelKlerosRegistrationMetadata
 
-  if (!badgeTypeMetadata) {
+  if (!badgeModelKlerosMetadata) {
     throw 'There was an error with the metadata. Try again in some minutes.'
   }
 
   const badgeCriteriaUrl =
-    's3Url' in badgeTypeMetadata.fileURI ? badgeTypeMetadata?.fileURI.s3Url : ''
+    's3Url' in badgeModelKlerosMetadata.fileURI ? badgeModelKlerosMetadata?.fileURI.s3Url : ''
 
   return (
     <>

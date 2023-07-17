@@ -1,9 +1,10 @@
 import { useRouter } from 'next/router'
 
 import { Box, styled } from '@mui/material'
+import { LogoTheBadgeWithText } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
-import { LogoTheBadgeWithText } from 'thebadge-ui-library'
 
+import ActionButtons from '@/src/components/header/ActionButtons'
 import ConnectWalletButton from '@/src/components/header/ConnectWalletButton'
 import { UserDropdown } from '@/src/components/header/UserDropdown'
 import WrongNetwork from '@/src/components/utils/WrongNetwork'
@@ -18,8 +19,8 @@ const HeaderContainer = styled(Box)(({ theme }) => ({
   transform: 'translateX(-50%)',
   paddingTop: theme.spacing(2),
   paddingBottom: theme.spacing(2),
-  paddingLeft: '5%',
-  paddingRight: 'calc(5% - 16px)',
+  paddingLeft: 'calc(5% - 32px)',
+  paddingRight: 'calc(5% - 32px)',
   [theme.breakpoints.down('sm')]: {
     flex: 1,
   },
@@ -47,9 +48,12 @@ const Header = () => {
         <WrongNetwork />
         {isWalletConnected && <UserDropdown />}
         {!isWalletConnected && (
-          <ConnectWalletButton onClick={connectWallet}>
-            {t('header.wallet.connect')}
-          </ConnectWalletButton>
+          <Box display="flex" gap={2}>
+            <ActionButtons />
+            <ConnectWalletButton onClick={connectWallet}>
+              {t('header.wallet.connect')}
+            </ConnectWalletButton>
+          </Box>
         )}
       </Box>
     </HeaderContainer>

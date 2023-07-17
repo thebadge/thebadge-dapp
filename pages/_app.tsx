@@ -12,10 +12,11 @@ import { SWRConfig } from 'swr'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import Toast from '@/src/components/toast/Toast'
+import { PreventActionIfOutOfService } from '@/src/pagePartials/errors/preventActionIfOutOfService'
 import { Head } from '@/src/pagePartials/index/Head'
 import ThemeProvider from '@/src/providers/themeProvider'
 import { NextPageWithLayout } from '@/types/next'
-import 'node_modules/thebadge-ui-library/dist/index.css'
+import 'node_modules/@thebadge/ui-library/dist/index.css'
 import 'sanitize.css'
 import 'src/theme/global.css'
 import 'src/theme/icon-animation.css'
@@ -65,8 +66,8 @@ const Container = styled(InnerContainer)`
 
 export default function App({
   Component,
-  pageProps,
   emotionCache = clientSideEmotionCache,
+  pageProps,
 }: AppPropsWithLayout) {
   // Black magic explained here https://nextjs.org/docs/basic-features/layouts
   const getLayout = Component.getLayout ?? ((page) => <DefaultLayout>{page}</DefaultLayout>)
@@ -89,7 +90,9 @@ export default function App({
                   <SectionReferencesProvider>
                     <TransactionNotificationProvider>
                       <CookiesWarningProvider>
-                        <Container>{getLayout(<Component {...pageProps} />)}</Container>
+                        <PreventActionIfOutOfService>
+                          <Container>{getLayout(<Component {...pageProps} />)}</Container>
+                        </PreventActionIfOutOfService>
                       </CookiesWarningProvider>
                     </TransactionNotificationProvider>
                   </SectionReferencesProvider>

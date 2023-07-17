@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { Box, useTheme } from '@mui/material'
-import { SectionLayout, colors } from 'thebadge-ui-library'
+import { SectionLayout, colors } from '@thebadge/ui-library'
 
 import BadgesYouOwnList from '@/src/pagePartials/profile/myProfile/BadgesYouOwnList'
 import NearToExpire from '@/src/pagePartials/profile/myProfile/NearToExpire'
