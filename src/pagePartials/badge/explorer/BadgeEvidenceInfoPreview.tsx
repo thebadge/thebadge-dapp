@@ -47,7 +47,7 @@ export default function BadgeEvidenceInfoPreview({ badge }: { badge: Badge }) {
           <Typography fontSize={14} variant="body4">
             {t('explorer.curate.requester')}
           </Typography>
-          <Address address={badge?.account.id} />
+          <Address address={badge?.account.id} isUserAddress />
         </Stack>
         <Box alignItems="flex-end" display="flex">
           <Typography fontSize={14} sx={{ textDecoration: 'underline !important' }} variant="body4">

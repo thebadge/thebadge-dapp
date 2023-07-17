@@ -36,6 +36,7 @@ export default function PDFRequirementInput({
           onChange({
             mimeType: value.file?.type,
             base64File: value.base64File,
+            file: value.file,
           })
         } else onChange(null)
       }}

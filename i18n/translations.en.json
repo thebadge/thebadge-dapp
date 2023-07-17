@@ -103,7 +103,7 @@
     },
     "curate": {
       "title": "Badge details",
-      "curationList": "Curation list:",
+      "curationList": "Contract Address:",
       "badgeId": "Badge id:",
       "challenge": "Challenge",
       "requester": "Requester address: ",
