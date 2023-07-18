@@ -33,7 +33,7 @@ import {
   removeLocalStorageKey,
   setLocalStorageKey,
 } from '@/src/hooks/usePersistedState'
-import { isTestnet } from '@/src/utils/nerwork'
+import { isTestnet } from '@/src/utils/network'
 import { hexToNumber } from '@/src/utils/strings'
 import { ChainConfig, ChainsValues } from '@/types/chains'
 import { RequiredNonNull } from '@/types/utils'
