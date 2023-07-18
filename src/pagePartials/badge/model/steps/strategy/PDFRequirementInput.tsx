@@ -7,6 +7,7 @@ import { ImageType } from 'react-images-uploading'
 
 import { FileInput } from '@/src/components/form/FileInput'
 import { CRITERIA_TEMPLATE_URL } from '@/src/constants/common'
+import { addToJsonPrototype } from '@/src/utils/fileUtilts'
 
 export default function PDFRequirementInput({
   error,
@@ -36,7 +37,7 @@ export default function PDFRequirementInput({
           onChange({
             mimeType: value.file?.type,
             base64File: value.base64File,
-            file: value.file,
+            file: addToJsonPrototype(value.file),
           })
         } else onChange(null)
       }}
