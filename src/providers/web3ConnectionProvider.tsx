@@ -88,7 +88,6 @@ const web3auth = web3authModule({
     //web3AuthNetwork: isTestnet ? 'testnet' : 'mainnet',
   },
 })
-console.log('chainID:', INITIAL_APP_CHAIN_ID)
 
 const chainsForOnboard = Object.values(chainsConfig).map(
   ({ chainIdHex, name, rpcUrl, token }: ChainConfig) => ({

@@ -1,3 +1,6 @@
+import { BigNumber } from '@ethersproject/bignumber'
+
+import { ZERO_BN } from '@/src/constants/bigNumber'
 import {
   SEVERITY_ABOVE_BOUNTY_MULTIPLIER,
   SEVERITY_ABOVE_JURORS,
@@ -34,32 +37,42 @@ export const SEVERITY_FEES = {
   },
 }
 
-export function getDefaultConfigs(severity: number) {
+export function getDefaultConfigs(severity: number, feePerJuror?: BigNumber) {
   switch (severity) {
     case Severity.Normal:
       return {
         amountOfJurors: 1,
-        challengeBounty: 0,
+        challengeBounty: (
+          feePerJuror?.mul(SEVERITY_FEES[severity].challengeBountyMultiplier || 0) || ZERO_BN
+        ).toString(),
       }
     case Severity['Above average']:
       return {
         amountOfJurors: 3,
-        challengeBounty: 0,
+        challengeBounty: (
+          feePerJuror?.mul(SEVERITY_FEES[severity].challengeBountyMultiplier || 0) || ZERO_BN
+        ).toString(),
       }
     case Severity.Heavy:
       return {
         amountOfJurors: 3,
-        challengeBounty: 0,
+        challengeBounty: (
+          feePerJuror?.mul(SEVERITY_FEES[severity].challengeBountyMultiplier || 0) || ZERO_BN
+        ).toString(),
       }
     case Severity.Custom:
       return {
         amountOfJurors: 3,
-        challengeBounty: 0,
+        challengeBounty: (
+          feePerJuror?.mul(SEVERITY_FEES[severity].challengeBountyMultiplier || 0) || ZERO_BN
+        ).toString(),
       }
     default:
       return {
         amountOfJurors: 1,
-        challengeBounty: 0,
+        challengeBounty: (
+          feePerJuror?.mul(SEVERITY_FEES[Severity.Normal].challengeBountyMultiplier || 0) || ZERO_BN
+        ).toString(),
       }
   }
 }

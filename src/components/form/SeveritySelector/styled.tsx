@@ -33,7 +33,9 @@ export const CustomOptionPaper = styled(Box, {
     : {}),
 }))
 
-export const VerySmallTextField = styled(TextField)<{ fontColor: string }>(({ fontColor }) => ({
+export const VerySmallTextField = styled(TextField, {
+  shouldForwardProp: (propName) => propName !== 'fontColor',
+})<{ fontColor: string }>(({ fontColor }) => ({
   width: '95%',
   marginLeft: 'auto',
   '& :before': {
