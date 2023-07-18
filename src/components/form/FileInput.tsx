@@ -178,6 +178,7 @@ export default function FileInputWithTSForm() {
           field.onChange({
             mimeType: value.file?.type,
             base64File: value.base64File,
+            file: value.file,
           })
         } else field.onChange(null)
       }}

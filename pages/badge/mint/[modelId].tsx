@@ -62,65 +62,69 @@ const MintBadgeType: NextPageWithLayout = () => {
   const CreateBadgeSchema = z.object(klerosSchemaFactory(klerosBadgeMetadata.metadata.columns))
 
   async function onSubmit(data: z.infer<typeof CreateBadgeSchema>, imageDataUrl: string) {
-    // Use NextJs dynamic import to reduce the bundle size
-    const { createAndUploadBadgeEvidence, createAndUploadBadgeMetadata, createKlerosValuesObject } =
-      await import('@/src/utils/badges/mintHelpers')
-
-    const values = createKlerosValuesObject(data, klerosBadgeMetadata)
-
-    const evidenceIPFSHash = await createAndUploadBadgeEvidence(
-      klerosBadgeMetadata?.metadata.columns as MetadataColumn[],
-      values,
-    )
-
-    const badgeMetadataIPFSHash = await createAndUploadBadgeMetadata(
-      badgeModel.data?.badgeModelMetadata as BadgeModelMetadata,
-      address as string,
-      { imageBase64File: imageDataUrl },
-    )
-
-    const klerosControllerDataEncoded = defaultAbiCoder.encode(
-      [`tuple(string)`],
-      [[evidenceIPFSHash]],
-    )
-
     try {
-      // If social login relay tx
-      // @todo (agustin) add more validations, also on backend, user should be authenticated
-      if (isSocialWallet && address && userSocialInfo) {
-        const data = JSON.stringify({
-          badgeModelId,
-          address,
-          badgeMetadataIPFSHash,
-          klerosControllerDataEncoded,
-          overrides: {
-            value: mintValue,
-          },
-        })
+      // Start transaction to show the loading state when we create the files
+      // and configs
+      const transaction = await sendTx(async () => {
+        // Use NextJs dynamic import to reduce the bundle size
+        const {
+          createAndUploadBadgeEvidence,
+          createAndUploadBadgeMetadata,
+          createKlerosValuesObject,
+        } = await import('@/src/utils/badges/mintHelpers')
 
-        const signature = await web3Provider?.getSigner().signMessage(data)
+        const values = createKlerosValuesObject(data, klerosBadgeMetadata)
 
-        if (!signature) {
-          throw new Error('User rejected the signing of the message')
-        }
+        const evidenceIPFSHash = await createAndUploadBadgeEvidence(
+          klerosBadgeMetadata?.metadata.columns as MetadataColumn[],
+          values,
+        )
 
-        // Send to backend
-        await sendRelayTx({
-          data,
-          from: address,
-          chainId: appChainId.toString(),
-          method: SupportedRelayMethods.MINT,
-          signature,
-          userAccount: {
+        const badgeMetadataIPFSHash = await createAndUploadBadgeMetadata(
+          badgeModel.data?.badgeModelMetadata as BadgeModelMetadata,
+          address as string,
+          { imageBase64File: imageDataUrl },
+        )
+
+        const klerosControllerDataEncoded = defaultAbiCoder.encode(
+          [`tuple(string)`],
+          [[evidenceIPFSHash]],
+        )
+
+        // If social login relay tx
+        // @todo (agustin) add more validations, also on backend, user should be authenticated
+        if (isSocialWallet && address && userSocialInfo) {
+          const data = JSON.stringify({
+            badgeModelId,
             address,
-            userSocialInfo,
-          },
-        })
-        return
-      }
-      // If user is not social logged, just send the tx
-      const transaction = await sendTx(() =>
-        theBadge.mint(
+            badgeMetadataIPFSHash,
+            klerosControllerDataEncoded,
+            overrides: {
+              value: mintValue,
+            },
+          })
+
+          const signature = await web3Provider?.getSigner().signMessage(data)
+
+          if (!signature) {
+            throw new Error('User rejected the signing of the message')
+          }
+
+          // Send to backend
+          await sendRelayTx({
+            data,
+            from: address,
+            chainId: appChainId.toString(),
+            method: SupportedRelayMethods.MINT,
+            signature,
+            userAccount: {
+              address,
+              userSocialInfo,
+            },
+          })
+        }
+        // If user is not social logged, just send the tx
+        return theBadge.mint(
           badgeModelId,
           address as string,
           badgeMetadataIPFSHash,
@@ -128,8 +132,8 @@ const MintBadgeType: NextPageWithLayout = () => {
           {
             value: mintValue,
           },
-        ),
-      )
+        )
+      })
       await transaction.wait()
     } catch (e) {
       console.error(e)

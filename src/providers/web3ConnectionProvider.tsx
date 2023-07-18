@@ -27,13 +27,17 @@ import {
   chainsConfig,
   getNetworkConfig,
 } from '@/src/config/web3'
-import { WEB3_AUTH_CLIENT_ID, appName } from '@/src/constants/common'
+import {
+  WEB3_AUTH_CLIENT_ID_PRODUCTION,
+  WEB3_AUTH_CLIENT_ID_TESTNET,
+  appName,
+} from '@/src/constants/common'
 import {
   recoverLocalStorageKey,
   removeLocalStorageKey,
   setLocalStorageKey,
 } from '@/src/hooks/usePersistedState'
-import isDev from '@/src/utils/isDev'
+import { isTestnet } from '@/src/utils/network'
 import { hexToNumber } from '@/src/utils/strings'
 import { ChainConfig, ChainsValues } from '@/types/chains'
 import { RequiredNonNull } from '@/types/utils'
@@ -59,18 +63,18 @@ const wcInitOptions = {
 }
 const walletConnect = walletConnectModule(wcInitOptions)
 const web3auth = web3authModule({
-  clientId: WEB3_AUTH_CLIENT_ID, // Get your Client ID from Web3Auth Dashboard
+  clientId: isTestnet ? WEB3_AUTH_CLIENT_ID_TESTNET : WEB3_AUTH_CLIENT_ID_PRODUCTION, // Client ID from Web3Auth Dashboard
   authMode: 'WALLET', // Enables only social wallets
   chainConfig: {
     chainNamespace: 'eip155',
-    chainId: isDev
+    chainId: isTestnet
       ? chainsConfig[Chains.goerli].chainIdHex
       : chainsConfig[Chains.gnosis].chainIdHex,
     displayName: '1231231 Test',
-    ticker: isDev ? chainsConfig[Chains.goerli].token : chainsConfig[Chains.gnosis].token,
-    tickerName: isDev ? chainsConfig[Chains.goerli].token : chainsConfig[Chains.gnosis].token,
-    rpcTarget: isDev ? chainsConfig[Chains.goerli].rpcUrl : chainsConfig[Chains.gnosis].rpcUrl,
-    blockExplorer: isDev
+    ticker: isTestnet ? chainsConfig[Chains.goerli].token : chainsConfig[Chains.gnosis].token,
+    tickerName: isTestnet ? chainsConfig[Chains.goerli].token : chainsConfig[Chains.gnosis].token,
+    rpcTarget: isTestnet ? chainsConfig[Chains.goerli].rpcUrl : chainsConfig[Chains.gnosis].rpcUrl,
+    blockExplorer: isTestnet
       ? chainsConfig[Chains.goerli].blockExplorerUrls[0]
       : chainsConfig[Chains.gnosis].blockExplorerUrls[0],
   },
@@ -79,9 +83,12 @@ const web3auth = web3authModule({
     appLogo: 'https://avatars.githubusercontent.com/u/109973181?s=200&v=4',
     modalZIndex: '13002', // Onboard modal is 13001
     defaultLanguage: 'en',
-    web3AuthNetwork: isDev ? 'testnet' : 'mainnet',
+    // todo remove this on development, is an outstanding issue for deployment versions: https://github.com/orgs/Web3Auth/discussions/1143
+    //web3AuthNetwork: 'mainnet',
+    web3AuthNetwork: isTestnet ? 'testnet' : 'mainnet',
   },
 })
+console.log('Running in testnet mode?: ', isTestnet)
 
 const chainsForOnboard = Object.values(chainsConfig).map(
   ({ chainIdHex, name, rpcUrl, token }: ChainConfig) => ({
@@ -280,10 +287,17 @@ export default function Web3ConnectionProvider({ children }: Props) {
     if (!onboardElement) return
     // In case that we decide to add a new wallet, maybe we will to change this
     // approach to something clever, like getting the array of buttons and find the web3Auth one
-    const web3AuthButtonElement = onboardElement.shadowRoot?.querySelector(
+    let web3AuthButtonElement = onboardElement.shadowRoot?.querySelector(
       'section > div > div > div > div > div > div > div.content.flex.flex-column.svelte-b3j15j > div.scroll-container.svelte-b3j15j > div > div > div > div:nth-child(3) > button > div > div.name.svelte-1vlog3j',
     )
-    if (!web3AuthButtonElement) return
+
+    if (!web3AuthButtonElement) {
+      // Check if it's on the second position (in case that MM is not available)
+      web3AuthButtonElement = onboardElement.shadowRoot?.querySelector(
+        'section > div > div > div > div > div > div > div.content.flex.flex-column.svelte-b3j15j > div.scroll-container.svelte-b3j15j > div > div > div > div:nth-child(2) > button > div > div.name.svelte-1vlog3j',
+      )
+      if (!web3AuthButtonElement) return
+    }
     web3AuthButtonElement.innerHTML = 'Social login'
   }
 

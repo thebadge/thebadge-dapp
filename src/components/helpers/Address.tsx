@@ -6,6 +6,7 @@ import { Toast, toast } from 'react-hot-toast'
 import { Copy } from '@/src/components/assets/Copy'
 import { Link } from '@/src/components/assets/Link'
 import { ToastComponent } from '@/src/components/toast/ToastComponent'
+import { APP_URL } from '@/src/constants/common'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { truncateStringInTheMiddle } from '@/src/utils/strings'
 
@@ -51,12 +52,14 @@ const CopyButton = styled('button')`
 interface Props {
   address: string
   showExternalLink?: boolean
+  isUserAddress?: boolean
   showCopyButton?: boolean
   truncate?: boolean
 }
 
 export const Address: React.FC<Props> = ({
   address,
+  isUserAddress = false,
   showCopyButton = true,
   showExternalLink = true,
   truncate = true,
@@ -80,9 +83,13 @@ export const Address: React.FC<Props> = ({
     )
   }
 
+  function getProfileUrl() {
+    return `${APP_URL}/profile/${address}`
+  }
+
   return (
     <Wrapper {...restProps}>
-      <ExternalLink href={getExplorerUrl(address)}>
+      <ExternalLink href={isUserAddress ? getProfileUrl() : getExplorerUrl(address)}>
         {truncate ? truncateStringInTheMiddle(address, 8, 6) : address}
       </ExternalLink>
       {showCopyButton && (

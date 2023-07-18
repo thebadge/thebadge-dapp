@@ -22,10 +22,13 @@ import SeveritySelectorAdvanceView from '@/src/components/form/SeveritySelector/
 import { getDefaultConfigs } from '@/src/components/form/SeveritySelector/utilts'
 import { TextFieldStatus } from '@/src/components/form/TextField'
 import { FormField } from '@/src/components/form/helpers/FormField'
+import { FormStatus } from '@/src/components/form/helpers/FormStatus'
 import { SeverityTypeSchema } from '@/src/components/form/helpers/customSchemas'
 import { convertToFieldError } from '@/src/components/form/helpers/validators'
 import { Disable } from '@/src/components/helpers/DisableElements'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
+import { DEFAULT_COURT_ID } from '@/src/constants/common'
+import { useJurorFee } from '@/src/hooks/kleros/useJurorFee'
 import { Severity, Severity_Keys } from '@/types/utils'
 
 const Wrapper = styled(Box)(({ theme }) => ({
@@ -63,7 +66,7 @@ const marks = [
 ]
 
 type SeveritySelectorProps = {
-  error?: FieldError
+  error?: FieldError & { amountOfJurors?: FieldError; challengeBounty?: FieldError }
   label?: string
   onChange: (value: any) => void
   placeholder?: string
@@ -78,14 +81,23 @@ export function SeveritySelector({
   value,
 }: SeveritySelectorProps) {
   const { t } = useTranslation()
+  /**
+   * Default Kleros court to use when creating a new badge model.
+   * TODO: we should set a default court in the short-circuit to the Kleros's  general court.
+   * In advance mode the user should be able to select the court.
+   */
+  const feeForJuror = useJurorFee(DEFAULT_COURT_ID)
+
   const [optionSelectedAuxIndex, setOptionSelectedAuxIndex] = useState<number>(1)
 
   const [enableAdvance, setAdvanceMode] = useState<boolean>(false)
 
+  const hasInternalError = error?.amountOfJurors || error?.challengeBounty
+
   const handleChange = (e: Event, newValue: number | number[]) => {
     if (!Array.isArray(newValue)) {
       setOptionSelectedAuxIndex(newValue)
-      onChange(getDefaultConfigs(newValue))
+      onChange(getDefaultConfigs(newValue, feeForJuror.data))
     }
   }
 
@@ -101,7 +113,7 @@ export function SeveritySelector({
     setAdvanceMode(enable)
     if (!enable) {
       setOptionSelectedAuxIndex(Severity.Normal)
-      onChange(getDefaultConfigs(Severity.Normal))
+      onChange(getDefaultConfigs(Severity.Normal, feeForJuror.data))
     }
   }
 
@@ -155,6 +167,9 @@ export function SeveritySelector({
         status={error ? TextFieldStatus.error : TextFieldStatus.success}
         statusText={error?.message}
       />
+      {hasInternalError && (
+        <FormStatus status={TextFieldStatus.error}>{hasInternalError?.message}</FormStatus>
+      )}
       {enableAdvance && (
         <SafeSuspense
           fallback={<Skeleton animation="wave" height="100%" variant="rounded" width={150} />}

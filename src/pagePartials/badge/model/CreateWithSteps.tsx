@@ -51,8 +51,7 @@ export default function CreateWithSteps({
 
   // Navigation helpers to go back on the steps
   async function onBackCallback() {
-    const isValid = await isValidStep()
-    if (isValid) setCurrentStep((prev) => (prev === 0 ? 0 : prev - 1))
+    setCurrentStep((prev) => (prev === 0 ? 0 : prev - 1))
   }
 
   // Navigation helpers to go to the next step

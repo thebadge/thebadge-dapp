@@ -27,7 +27,6 @@ export default function BadgeOwnedPreview() {
 
   const badge = badgeById.data
   const badgeModel = badge?.badgeModel
-  const badgeMetadata = badge?.badgeMetadata
   const badgeModelMetadata = badgeModel?.badgeModelMetadata
 
   function handleShare() {

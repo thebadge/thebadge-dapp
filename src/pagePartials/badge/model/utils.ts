@@ -53,6 +53,10 @@ export function saveFormValues(values: Record<string, any>) {
   )
 }
 
+export function cleanFormValues() {
+  localStorage.removeItem(FORM_STORE_KEY)
+}
+
 /**
  *  Default Acceptance Criteria based on the Google File -> https://docs.google.com/document/d/1NVZ8f9EKoA0jNG4xIbKAAzSXL_luq1qBybnUswDj7zI/edit?usp=sharing
  *  The image used on the header is linked directly to the Google doc, please update it if you edit the doc
