@@ -37,7 +37,7 @@ import {
   removeLocalStorageKey,
   setLocalStorageKey,
 } from '@/src/hooks/usePersistedState'
-import { isTestnet } from '@/src/utils/nerwork'
+import { isTestnet } from '@/src/utils/network'
 import { hexToNumber } from '@/src/utils/strings'
 import { ChainConfig, ChainsValues } from '@/types/chains'
 import { RequiredNonNull } from '@/types/utils'
@@ -62,6 +62,7 @@ const wcInitOptions = {
   requiredChains: [Chains.goerli, Chains.gnosis],
 }
 const walletConnect = walletConnectModule(wcInitOptions)
+const web3AuthNetwork = isTestnet ? 'testnet' : 'mainnet'
 const web3auth = web3authModule({
   clientId: isTestnet ? WEB3_AUTH_CLIENT_ID_TESTNET : WEB3_AUTH_CLIENT_ID_PRODUCTION, // Client ID from Web3Auth Dashboard
   authMode: 'WALLET', // Enables only social wallets
@@ -83,9 +84,10 @@ const web3auth = web3authModule({
     appLogo: 'https://avatars.githubusercontent.com/u/109973181?s=200&v=4',
     modalZIndex: '13002', // Onboard modal is 13001
     defaultLanguage: 'en',
-    web3AuthNetwork: isTestnet ? 'testnet' : 'mainnet',
+    web3AuthNetwork,
   },
 })
+console.log('Web3Auth configured on: ', web3AuthNetwork)
 
 const chainsForOnboard = Object.values(chainsConfig).map(
   ({ chainIdHex, name, rpcUrl, token }: ChainConfig) => ({
@@ -284,10 +286,17 @@ export default function Web3ConnectionProvider({ children }: Props) {
     if (!onboardElement) return
     // In case that we decide to add a new wallet, maybe we will to change this
     // approach to something clever, like getting the array of buttons and find the web3Auth one
-    const web3AuthButtonElement = onboardElement.shadowRoot?.querySelector(
+    let web3AuthButtonElement = onboardElement.shadowRoot?.querySelector(
       'section > div > div > div > div > div > div > div.content.flex.flex-column.svelte-b3j15j > div.scroll-container.svelte-b3j15j > div > div > div > div:nth-child(3) > button > div > div.name.svelte-1vlog3j',
     )
-    if (!web3AuthButtonElement) return
+
+    if (!web3AuthButtonElement) {
+      // Check if it's on the second position (in case that MM is not available)
+      web3AuthButtonElement = onboardElement.shadowRoot?.querySelector(
+        'section > div > div > div > div > div > div > div.content.flex.flex-column.svelte-b3j15j > div.scroll-container.svelte-b3j15j > div > div > div > div:nth-child(2) > button > div > div.name.svelte-1vlog3j',
+      )
+      if (!web3AuthButtonElement) return
+    }
     web3AuthButtonElement.innerHTML = 'Social login'
   }
 
