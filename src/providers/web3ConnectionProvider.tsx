@@ -27,7 +27,11 @@ import {
   chainsConfig,
   getNetworkConfig,
 } from '@/src/config/web3'
-import { WEB3_AUTH_CLIENT_ID, appName } from '@/src/constants/common'
+import {
+  WEB3_AUTH_CLIENT_ID_PRODUCTION,
+  WEB3_AUTH_CLIENT_ID_TESTNET,
+  appName,
+} from '@/src/constants/common'
 import {
   recoverLocalStorageKey,
   removeLocalStorageKey,
@@ -59,7 +63,7 @@ const wcInitOptions = {
 }
 const walletConnect = walletConnectModule(wcInitOptions)
 const web3auth = web3authModule({
-  clientId: WEB3_AUTH_CLIENT_ID, // Get your Client ID from Web3Auth Dashboard
+  clientId: isTestnet ? WEB3_AUTH_CLIENT_ID_TESTNET : WEB3_AUTH_CLIENT_ID_PRODUCTION, // Client ID from Web3Auth Dashboard
   authMode: 'WALLET', // Enables only social wallets
   chainConfig: {
     chainNamespace: 'eip155',
