@@ -84,10 +84,11 @@ const web3auth = web3authModule({
     modalZIndex: '13002', // Onboard modal is 13001
     defaultLanguage: 'en',
     // todo remove this on development, is an outstanding issue for deployment versions: https://github.com/orgs/Web3Auth/discussions/1143
-    web3AuthNetwork: 'mainnet',
-    //web3AuthNetwork: isTestnet ? 'testnet' : 'mainnet',
+    //web3AuthNetwork: 'mainnet',
+    web3AuthNetwork: isTestnet ? 'testnet' : 'mainnet',
   },
 })
+console.log('Running in testnet mode?: ', isTestnet)
 
 const chainsForOnboard = Object.values(chainsConfig).map(
   ({ chainIdHex, name, rpcUrl, token }: ChainConfig) => ({
