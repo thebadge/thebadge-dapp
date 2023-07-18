@@ -62,7 +62,6 @@ const wcInitOptions = {
   requiredChains: [Chains.goerli, Chains.gnosis],
 }
 const walletConnect = walletConnectModule(wcInitOptions)
-const web3AuthNetwork = isTestnet ? 'testnet' : 'mainnet'
 const web3auth = web3authModule({
   clientId: isTestnet ? WEB3_AUTH_CLIENT_ID_TESTNET : WEB3_AUTH_CLIENT_ID_PRODUCTION, // Client ID from Web3Auth Dashboard
   authMode: 'WALLET', // Enables only social wallets
@@ -84,10 +83,12 @@ const web3auth = web3authModule({
     appLogo: 'https://avatars.githubusercontent.com/u/109973181?s=200&v=4',
     modalZIndex: '13002', // Onboard modal is 13001
     defaultLanguage: 'en',
-    web3AuthNetwork,
+    // todo remove this on development, is an outstanding issue for deployment versions: https://github.com/orgs/Web3Auth/discussions/1143
+    web3AuthNetwork: 'mainnet',
+    //web3AuthNetwork: isTestnet ? 'testnet' : 'mainnet',
   },
 })
-console.log('Web3Auth configured on: ', web3AuthNetwork)
+console.log('chainID:', INITIAL_APP_CHAIN_ID)
 
 const chainsForOnboard = Object.values(chainsConfig).map(
   ({ chainIdHex, name, rpcUrl, token }: ChainConfig) => ({
