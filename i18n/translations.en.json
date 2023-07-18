@@ -144,7 +144,8 @@
     "tab3": "CREATOR PROFILE",
     "badgesIAmReviewing": {
       "title": "Badges I am reviewing",
-      "noResults": "There are no badges you are already reviewing..."
+      "noResults": "There are no badges you are already reviewing...",
+      "addEvidence": "Add more evidence"
     },
     "verified": "Verified user"
   },
