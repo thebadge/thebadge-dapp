@@ -1,4 +1,4 @@
-import React, { RefObject, createRef, useCallback, useEffect, useState } from 'react'
+import React, { RefObject, createRef, useState } from 'react'
 
 import ArrowBackIosOutlinedIcon from '@mui/icons-material/ArrowBackIosOutlined'
 import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined'
@@ -15,7 +15,7 @@ import FilteredList, { ListFilter } from '@/src/components/helpers/FilteredList'
 import InViewPort from '@/src/components/helpers/InViewPort'
 import SafeSuspense, { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
-import { useKeyPress } from '@/src/hooks/useKeypress'
+import useListItemNavigation from '@/src/hooks/useListItemNavigation'
 import MiniBadgeModelPreview from '@/src/pagePartials/badge/MiniBadgeModelPreview'
 import BadgeModelInfoPreview from '@/src/pagePartials/badge/explorer/BadgeModelInfoPreview'
 import { BadgeModel } from '@/types/generated/subgraph'
@@ -23,57 +23,21 @@ import { NextPageWithLayout } from '@/types/next'
 
 const ExploreBadgeTypes: NextPageWithLayout = () => {
   const { t } = useTranslation()
+  const gql = useSubgraph()
+
   const [badgeModels, setBadgeModels] = useState<BadgeModel[]>([])
   const [loading, setLoading] = useState<boolean>(false)
-  const [selectedBadgeModel, setSelectedBadgeType] = useState<number>(0)
+  const [selectedBadgeModel, setSelectedBadgeModel] = useState<number>(0)
 
   const badgeModelsElementRefs: RefObject<HTMLLIElement>[] = badgeModels.map(() =>
     createRef<HTMLLIElement>(),
   )
-  const gql = useSubgraph()
-
-  const leftPress = useKeyPress('ArrowLeft')
-  const rightPress = useKeyPress('ArrowRight')
-
-  useEffect(() => {
-    // Each time that a new item is selected, we scroll to it
-    if (badgeModelsElementRefs[selectedBadgeModel]?.current) {
-      window.scrollTo({
-        top:
-          (badgeModelsElementRefs[selectedBadgeModel].current?.offsetTop || 0) -
-          (badgeModelsElementRefs[selectedBadgeModel].current?.offsetHeight || 0),
-        behavior: 'smooth',
-      })
-    }
-  }, [badgeModelsElementRefs, selectedBadgeModel])
-
-  const selectPreviousBadgeType = useCallback(() => {
-    if (!badgeModels.length) return
-    setSelectedBadgeType((prevIndex) => {
-      if (prevIndex === 0) return badgeModels.length - 1
-      return prevIndex - 1
-    })
-  }, [badgeModels.length])
-
-  const selectNextBadgeType = useCallback(() => {
-    if (!badgeModels.length) return
-    setSelectedBadgeType((prevIndex) => {
-      if (prevIndex === badgeModels.length - 1) return 0
-      return prevIndex + 1
-    })
-  }, [badgeModels.length])
-
-  useEffect(() => {
-    if (rightPress) {
-      selectNextBadgeType()
-    }
-  }, [rightPress, selectNextBadgeType])
-
-  useEffect(() => {
-    if (leftPress) {
-      selectPreviousBadgeType()
-    }
-  }, [leftPress, selectPreviousBadgeType])
+  const { selectNext, selectPrevious } = useListItemNavigation(
+    setSelectedBadgeModel,
+    badgeModelsElementRefs,
+    selectedBadgeModel,
+    badgeModels.length,
+  )
 
   const search = async (
     selectedFilters: Array<ListFilter>,
@@ -89,7 +53,7 @@ const ExploreBadgeTypes: NextPageWithLayout = () => {
     setTimeout(() => {
       setLoading(false)
       setBadgeModels(badges)
-      setSelectedBadgeType(0)
+      setSelectedBadgeModel(0)
     }, 2000)
   }
 
@@ -102,10 +66,10 @@ const ExploreBadgeTypes: NextPageWithLayout = () => {
             {t('explorer.preview.title')}
           </Typography>
           <Box>
-            <IconButton onClick={selectPreviousBadgeType}>
+            <IconButton onClick={selectPrevious}>
               <ArrowBackIosOutlinedIcon color="blue" />
             </IconButton>
-            <IconButton onClick={selectNextBadgeType}>
+            <IconButton onClick={selectNext}>
               <ArrowForwardIosOutlinedIcon color="blue" />
             </IconButton>
           </Box>
@@ -132,7 +96,7 @@ const ExploreBadgeTypes: NextPageWithLayout = () => {
                 <SafeSuspense fallback={<MiniBadgePreviewLoading />}>
                   <MiniBadgePreviewContainer
                     highlightColor={colors.blue}
-                    onClick={() => setSelectedBadgeType(i)}
+                    onClick={() => setSelectedBadgeModel(i)}
                     ref={badgeModelsElementRefs[i]}
                     selected={isSelected}
                   >

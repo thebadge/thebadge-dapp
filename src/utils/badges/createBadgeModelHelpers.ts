@@ -11,7 +11,7 @@ import {
   KlerosListStructure,
   generateKlerosListMetaEvidence,
 } from '@/src/utils/kleros/generateKlerosListMetaEvidence'
-import { BadgeModelMetadata } from '@/types/badges/BadgeMetadata'
+import { BadgeModelMetadata, BadgeNFTAttributesType } from '@/types/badges/BadgeMetadata'
 import { Kleros__factory } from '@/types/generated/typechain'
 import { MetadataColumn } from '@/types/kleros/types'
 import { BackendFileUpload } from '@/types/utils'
@@ -31,11 +31,11 @@ export async function createAndUploadBadgeModelMetadata(
       external_link: `${APP_URL}/explore`,
       attributes: [
         {
-          trait_type: 'Background',
+          trait_type: BadgeNFTAttributesType.Background,
           value: backgroundType,
         },
         {
-          trait_type: 'TextContrast',
+          trait_type: BadgeNFTAttributesType.TextContrast,
           value: textContrast,
         },
       ],

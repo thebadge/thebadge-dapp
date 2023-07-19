@@ -5,7 +5,8 @@ import { IconBadge, MiniBadgePreview, colors } from '@thebadge/ui-library'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { useColorMode } from '@/src/providers/themeProvider'
-import { BadgeModelMetadata } from '@/types/badges/BadgeMetadata'
+import { getBackgroundBadgeUrl } from '@/src/utils/badges/getBackgroundBadgeUrl'
+import { BadgeModelMetadata, BadgeNFTAttributesType } from '@/types/badges/BadgeMetadata'
 import { BackendFileResponse } from '@/types/utils'
 
 type Props = {
@@ -27,12 +28,20 @@ function MiniBadgeModelPreview({
   const { mode } = useColorMode()
   const badgeMetadata = res.data?.content
 
+  const backgroundType = badgeMetadata?.attributes?.find(
+    (at) => at.trait_type === BadgeNFTAttributesType.Background,
+  )
+
+  const textContrast = badgeMetadata?.attributes?.find(
+    (at) => at.trait_type === BadgeNFTAttributesType.TextContrast,
+  )
+
   return (
     <SafeSuspense>
       <MiniBadgePreview
         animationEffects={!disableAnimations ? ['wobble', 'grow', 'glare'] : []}
         animationOnHover
-        badgeBackgroundUrl="https://images.unsplash.com/photo-1512998844734-cd2cca565822?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTIyfHxhYnN0cmFjdHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
+        badgeBackgroundUrl={getBackgroundBadgeUrl(backgroundType?.value)}
         buttonTitle={buttonTitle}
         description={badgeMetadata?.description}
         height={'50px'}
@@ -40,7 +49,7 @@ function MiniBadgeModelPreview({
         imageUrl={badgeMetadata?.image.s3Url}
         miniIcon={<IconBadge color={colors.white} height={25} width={25} />}
         onClick={onClick}
-        textContrast="light-withTextBackground"
+        textContrast={textContrast?.value || 'light-withTextBackground'}
         textContrastOutside={mode}
         title={badgeMetadata?.name}
       />
