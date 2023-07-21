@@ -57,10 +57,8 @@ const ModalBody = styled(Box)(({ theme }) => ({
 }))
 
 export const ChallengeSchema = z.object({
-  title: z.string().describe('Title // The title of the challenge'),
-  description: LongTextSchema.describe(
-    'Description // Explain why do you think that this badge need to be removed.',
-  ),
+  title: z.string(),
+  description: LongTextSchema,
   attachment: OptionalFileSchema,
 })
 

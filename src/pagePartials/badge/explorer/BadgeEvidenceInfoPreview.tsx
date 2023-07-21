@@ -2,6 +2,7 @@ import React from 'react'
 
 import { Box, Divider, Stack, Typography } from '@mui/material'
 import { ButtonV2, colors } from '@thebadge/ui-library'
+import { constants } from 'ethers'
 import { useTranslation } from 'next-export-i18n'
 
 import DisplayEvidenceField from '@/src/components/displayEvidence/DisplayEvidenceField'
@@ -33,7 +34,7 @@ export default function BadgeEvidenceInfoPreview({ badge }: { badge: Badge }) {
           <Typography fontSize={14} variant="body4">
             {t('explorer.curate.curationList')}
           </Typography>
-          <Address address={badge?.badgeModel.badgeModelKleros?.tcrList} />
+          <Address address={badge?.badgeModel.badgeModelKleros?.tcrList || constants.AddressZero} />
         </Stack>
         <Box alignItems="flex-end" display="flex">
           <Typography fontSize={14} variant="body4">
