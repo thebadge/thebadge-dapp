@@ -33,6 +33,7 @@ import useTransaction from '@/src/hooks/useTransaction'
 import CurationCriteriaLink from '@/src/pagePartials/badge/curate/CurationCriteriaLink'
 import ChallengeCost from '@/src/pagePartials/badge/curate/challenge/ChallengeCost'
 import { RequiredConnection } from '@/src/pagePartials/errors/requiredConnection'
+import { BadgeStatus } from '@/types/generated/subgraph'
 
 const ModalBody = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -132,11 +133,31 @@ function ChallengeModalContent({ badgeId, onClose }: { badgeId: string; onClose:
       data.attachment,
     )
 
-    const transaction = await sendTx(() =>
-      tcrContractInstance.challengeRequest(badgeKlerosMetadata.data?.itemID, evidenceIPFSHash, {
-        value: challengeCost.data,
-      }),
-    )
+    const transaction = await sendTx(() => {
+      if (
+        badge?.status === BadgeStatus.Challenged ||
+        badge?.status === BadgeStatus.RequestRemoval
+      ) {
+        return tcrContractInstance.submitEvidence(
+          badgeKlerosMetadata.data?.itemID,
+          evidenceIPFSHash,
+        )
+      }
+      if (badge?.status === BadgeStatus.Approved) {
+        return tcrContractInstance.removeItem(badgeKlerosMetadata.data?.itemID, evidenceIPFSHash, {
+          value: challengeCost.data,
+        })
+      } else {
+        // BadgeStatus.Requested
+        return tcrContractInstance.challengeRequest(
+          badgeKlerosMetadata.data?.itemID,
+          evidenceIPFSHash,
+          {
+            value: challengeCost.data,
+          },
+        )
+      }
+    })
 
     onClose()
     await transaction.wait()

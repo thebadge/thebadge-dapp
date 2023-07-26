@@ -16,7 +16,6 @@ import InViewPort from '@/src/components/helpers/InViewPort'
 import SafeSuspense, { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import { ADDRESS_PREFIX, nowInSeconds } from '@/src/constants/helpers'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
-import { useKeyPress } from '@/src/hooks/useKeypress'
 import useListItemNavigation from '@/src/hooks/useListItemNavigation'
 import MiniBadgeModelPreview from '@/src/pagePartials/badge/MiniBadgeModelPreview'
 import BadgeEvidenceInfoPreview from '@/src/pagePartials/badge/explorer/BadgeEvidenceInfoPreview'
@@ -46,8 +45,6 @@ const CurateBadges: NextPageWithLayout = () => {
   const { t } = useTranslation()
   const gql = useSubgraph()
   const { address } = useWeb3Connection()
-  const leftPress = useKeyPress('ArrowLeft')
-  const rightPress = useKeyPress('ArrowRight')
 
   const [badges, setBadges] = useState<Badge[]>([])
   const [loading, setLoading] = useState<boolean>(false)
@@ -88,7 +85,7 @@ const CurateBadges: NextPageWithLayout = () => {
       <>
         <Box display="flex" justifyContent="space-between">
           <Typography color={colors.green} mb={4} variant="dAppHeadline2">
-            {t('explorer.curate.title')}
+            {t('explorer.curate.title') + '#' + badges[selectedBadgeIndex].id}
           </Typography>
           <Box>
             <IconButton onClick={selectPrevious}>
