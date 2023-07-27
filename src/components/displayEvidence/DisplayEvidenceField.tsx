@@ -64,7 +64,7 @@ export default function DisplayEvidenceField({
       )
     default:
       return (
-        <Typography>
+        <Typography variant="subtitle2">
           Error: Unhandled Type {columnItem.type} for data {value}
         </Typography>
       )

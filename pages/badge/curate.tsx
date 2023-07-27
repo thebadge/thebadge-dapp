@@ -2,7 +2,7 @@ import React, { RefObject, createRef, useState } from 'react'
 
 import ArrowBackIosOutlinedIcon from '@mui/icons-material/ArrowBackIosOutlined'
 import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined'
-import { Box, IconButton, Stack, Typography } from '@mui/material'
+import { Box, IconButton, Stack, Typography, styled } from '@mui/material'
 import { colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 
@@ -19,10 +19,19 @@ import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import useListItemNavigation from '@/src/hooks/useListItemNavigation'
 import MiniBadgeModelPreview from '@/src/pagePartials/badge/MiniBadgeModelPreview'
 import BadgeEvidenceInfoPreview from '@/src/pagePartials/badge/explorer/BadgeEvidenceInfoPreview'
+import TimeLeftDisplay from '@/src/pagePartials/badge/explorer/addons/TimeLeftDisplay'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import getHighlightColorByStatus from '@/src/utils/badges/getHighlightColorByStatus'
 import { Badge, BadgeStatus } from '@/types/generated/subgraph'
 import { NextPageWithLayout } from '@/types/next'
+
+const TimeLeftContainer = styled(Box)(() => ({
+  position: 'absolute',
+  zIndex: 1,
+  top: '6px',
+  left: '50%',
+  transform: 'translate(-50%, 0)',
+}))
 
 const now = nowInSeconds()
 
@@ -85,7 +94,7 @@ const CurateBadges: NextPageWithLayout = () => {
       <>
         <Box display="flex" justifyContent="space-between">
           <Typography color={colors.green} mb={4} variant="dAppHeadline2">
-            {t('explorer.curate.title') + '#' + badges[selectedBadgeIndex].id}
+            {t('explorer.curate.title')}
           </Typography>
           <Box>
             <IconButton onClick={selectPrevious}>
@@ -126,6 +135,12 @@ const CurateBadges: NextPageWithLayout = () => {
                     ref={badgesElementRefs[i]}
                     selected={isSelected}
                   >
+                    <TimeLeftContainer>
+                      <TimeLeftDisplay
+                        reviewDueDate={badge?.badgeKlerosMetaData?.reviewDueDate}
+                        smallView
+                      />
+                    </TimeLeftContainer>
                     <MiniBadgeModelPreview
                       buttonTitle={t('curateExplorer.button')}
                       disableAnimations

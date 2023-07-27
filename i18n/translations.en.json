@@ -104,11 +104,13 @@
     "curate": {
       "title": "Badge details",
       "curationList": "Contract Address:",
-      "badgeId": "Badge id:",
+      "badgeId": "Badge ID: ",
+      "timeLeft": "The curation period ends {{time}}",
       "challenge": "Challenge",
       "requester": "Requester address: ",
-      "viewEvidence": "View raw evidence",
-      "listingCriteria": "Listing Criteria"
+      "viewEvidence": "View raw evidence (.json)",
+      "evidences": "Evidence",
+      "listingCriteria": "Curation Criteria"
     }
   },
   "curateExplorer": {
@@ -312,7 +314,7 @@
       "modal": {
         "evidence": "Badge evidences",
         "requester": "Requester address: ",
-        "viewEvidence": "View evidence raw file",
+        "viewEvidence": "View raw evidence (.json)",
         "curationCriteria": "Curation Criteria",
         "ownBadgeChallenge": "You can't do a challenge to your own badge",
         "challengeButton": "CHALLENGE"
