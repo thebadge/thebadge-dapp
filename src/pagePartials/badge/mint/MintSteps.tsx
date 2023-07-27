@@ -19,7 +19,9 @@ import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { TransactionStates } from '@/src/hooks/useTransaction'
 import MintCost from '@/src/pagePartials/badge/mint/MintCost'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+import { getBackgroundBadgeUrl } from '@/src/utils/badges/getBackgroundBadgeUrl'
 import enrichTextWithValues, { EnrichTextValues } from '@/src/utils/enrichTextWithValues'
+import { BadgeNFTAttributesType } from '@/types/badges/BadgeMetadata'
 import { Creator } from '@/types/badges/Creator'
 
 // eslint-disable-next-line @typescript-eslint/ban-types
@@ -105,6 +107,14 @@ export default function MintSteps({ costs, evidenceSchema, onSubmit, txState }: 
         '{address}': address as string,
       }
 
+      const backgroundType = badgeModelMetadata?.attributes?.find(
+        (at) => at.trait_type === BadgeNFTAttributesType.Background,
+      )
+
+      const textContrast = badgeModelMetadata?.attributes?.find(
+        (at) => at.trait_type === BadgeNFTAttributesType.TextContrast,
+      )
+
       return (
         <Stack alignItems={'center'} gap={3} margin={1}>
           <Typography>{t('badge.type.mint.previewTitle')}</Typography>
@@ -112,30 +122,20 @@ export default function MintSteps({ costs, evidenceSchema, onSubmit, txState }: 
             <BadgePreview
               animationEffects={['wobble', 'grow', 'glare']}
               animationOnHover
-              badgeBackgroundUrl="https://images.unsplash.com/photo-1512998844734-cd2cca565822?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTIyfHxhYnN0cmFjdHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
+              badgeBackgroundUrl={getBackgroundBadgeUrl(backgroundType?.value)}
               badgeUrl={`${APP_URL}/${modelId}/${address}`}
-              category="Badge for Testing"
+              category={badgeModelMetadata?.name}
               description={enrichTextWithValues(badgeModelMetadata.description, enrichTextValues)}
               imageUrl={badgeLogoImage?.s3Url}
               size="medium"
-              textContrast="light-withTextBackground"
-              title={badgeModelMetadata.name}
+              textContrast={textContrast?.value || 'light-withTextBackground'}
             />
           </Box>
           <MintCost costs={costs} />
         </Stack>
       )
     },
-    [
-      address,
-      badgeLogoImage?.s3Url,
-      badgeModelMetadata.description,
-      badgeModelMetadata.name,
-      costs,
-      t,
-      txState,
-      modelId,
-    ],
+    [txState, address, badgeModelMetadata, t, modelId, badgeLogoImage?.s3Url, costs],
   )
 
   return (

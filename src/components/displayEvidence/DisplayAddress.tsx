@@ -33,7 +33,7 @@ export function DisplayAddress({ label, placeholder, value }: DisplayAddressProp
             )}
           </Box>
         }
-        label={<Typography>{label}</Typography>}
+        label={<Typography variant="subtitle2">{label}</Typography>}
         labelPosition={'top-left'}
       />
       <Divider color={colors.white} sx={{ mt: -1 }} />

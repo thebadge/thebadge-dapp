@@ -34,6 +34,7 @@ gql`
       controllerType
       validFor
       badgeModelKleros {
+        tcrList
         challengePeriodDuration
       }
     }
@@ -63,6 +64,9 @@ gql`
         tcrList
         registrationUri
       }
+    }
+    badgeKlerosMetaData {
+      reviewDueDate
     }
   }
 `

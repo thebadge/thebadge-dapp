@@ -22,3 +22,8 @@ export type BadgeMetadata<T = IPFSHash | BackendFileResponse | BackendFileUpload
   image: T
   attributes?: NFTAttribute[]
 }
+
+export enum BadgeNFTAttributesType {
+  Background = 'Background',
+  TextContrast = 'TextContrast',
+}

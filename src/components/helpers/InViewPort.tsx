@@ -23,7 +23,7 @@ export default function InViewPort({
   const { inViewport } = useInViewport(elemRef)
 
   return (
-    <Stack minHeight={minHeight} minWidth={minWidth} ref={elemRef}>
+    <Stack minHeight={minHeight} minWidth={minWidth} position="relative" ref={elemRef}>
       {inViewport ? children : fallback}
     </Stack>
   )

@@ -1,12 +1,10 @@
+import { useRouter } from 'next/navigation'
 import React from 'react'
 
 import { Box, Divider, Stack, Typography } from '@mui/material'
 import { ButtonV2, colors } from '@thebadge/ui-library'
-import { constants } from 'ethers'
 import { useTranslation } from 'next-export-i18n'
 
-import DisplayEvidenceField from '@/src/components/displayEvidence/DisplayEvidenceField'
-import { Address } from '@/src/components/helpers/Address'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { useEvidenceBadgeKlerosMetadata } from '@/src/hooks/subgraph/useBadgeKlerosMetadata'
 import BadgeIdDisplay from '@/src/pagePartials/badge/explorer/addons/BadgeIdDisplay'
@@ -14,13 +12,13 @@ import BadgeRequesterPreview from '@/src/pagePartials/badge/explorer/addons/Badg
 import { ListingCriteriaPreview } from '@/src/pagePartials/badge/explorer/addons/ListingCriteriaPreview'
 import TimeLeftDisplay from '@/src/pagePartials/badge/explorer/addons/TimeLeftDisplay'
 import ViewEvidenceButton from '@/src/pagePartials/badge/explorer/addons/ViewEvidenceButton'
+import EvidencesList from '@/src/pagePartials/badge/preview/addons/EvidencesList'
 import { useCurateProvider } from '@/src/providers/curateProvider'
-import isDev from '@/src/utils/isDev'
-import { getEvidenceValue } from '@/src/utils/kleros/getEvidenceValue'
 import { Badge } from '@/types/generated/subgraph'
 
-export default function BadgeEvidenceInfoPreview({ badge }: { badge: Badge }) {
+export default function BadgeReviewingInfoPreview({ badge }: { badge: Badge }) {
   const { t } = useTranslation()
+  const router = useRouter()
   const { challenge } = useCurateProvider()
 
   const badgeKlerosMetadata = useEvidenceBadgeKlerosMetadata(badge?.id)
@@ -32,6 +30,8 @@ export default function BadgeEvidenceInfoPreview({ badge }: { badge: Badge }) {
 
   return (
     <Stack gap={4} p={1}>
+      {/* Badge Receiver Address + Raw evidence info */}
+
       <Box alignContent="center" display="flex" flex={1} justifyContent="space-between">
         <BadgeIdDisplay id={badge?.id} />
         <TimeLeftDisplay reviewDueDate={badge?.badgeKlerosMetaData?.reviewDueDate} />
@@ -42,64 +42,48 @@ export default function BadgeEvidenceInfoPreview({ badge }: { badge: Badge }) {
 
       {/* Badge Evidence */}
       <Stack gap={2}>
-        {/* Title + Raw */}
-
         <Box alignContent="center" display="flex" flex={1} justifyContent="space-between" mb={2}>
-          <Typography variant="body3">{t('explorer.curate.evidences')}</Typography>
+          <Typography variant="body3">{`Requester ` + t('explorer.curate.evidences')}</Typography>
           <ViewEvidenceButton evidenceUrl={badgeKlerosMetadata.data?.requestBadgeEvidenceRawUrl} />
         </Box>
-
-        {/* Evidence Items */}
-
-        {badgeEvidence?.columns.map((column) => {
-          return (
-            <Stack key={column.label + column.description}>
-              <SafeSuspense>
-                <DisplayEvidenceField
-                  columnItem={column}
-                  value={getEvidenceValue(
-                    badgeEvidence?.values,
-                    badgeEvidence?.columns,
-                    column.label,
-                    column.type,
-                  )}
-                />
-              </SafeSuspense>
-            </Stack>
-          )
-        })}
+        <Divider color={colors.white} />
       </Stack>
 
-      {/* Listing Criteria info */}
-      <Stack gap={1} position="relative">
-        <Typography variant="body3">{t('explorer.curate.listingCriteria')}</Typography>
-        <SafeSuspense>
-          <ListingCriteriaPreview badgeModelId={badge?.badgeModel.id} />
-        </SafeSuspense>
+      <Stack gap={2}>
+        <Typography variant="body3">{`Last Activity`}</Typography>
+        <EvidencesList badgeId={badge.id} />
         <Divider color={colors.white} />
       </Stack>
 
       <Box display="flex" flex="1" justifyContent="space-between">
         <ButtonV2
-          backgroundColor={colors.redError}
+          backgroundColor={colors.transparent}
+          fontColor={colors.white}
+          onClick={() => router.push(`/badge/preview/${badge.id}`)}
+        >
+          {t('profile.badgesIAmReviewing.viewAll')}
+        </ButtonV2>
+        <ButtonV2
+          backgroundColor={colors.transparent}
           fontColor={colors.white}
           onClick={() => challenge(badge?.id)}
-          sx={{ ml: 'auto' }}
-          variant="contained"
+          variant="outlined"
         >
-          {t('explorer.curate.challenge')}
+          {t('profile.badgesIAmReviewing.addEvidence')}
         </ButtonV2>
       </Box>
-      {/* TCR Contract Address, available on develop */}
 
-      {isDev && (
-        <Box display="flex" gap={1}>
-          <Typography fontSize={14} variant="body4">
-            {t('explorer.curate.curationList')}
-          </Typography>
-          <Address address={badge?.badgeModel.badgeModelKleros?.tcrList || constants.AddressZero} />
-        </Box>
-      )}
+      {/* Listing Criteria info */}
+      <Stack gap={1} position="relative">
+        <Typography fontSize={14} variant="body3">
+          {t('explorer.curate.listingCriteria')}
+        </Typography>
+        <SafeSuspense>
+          {/* TODO NEED TO BE UPDATED WITH REQUEST DATA */}
+          <ListingCriteriaPreview badgeModelId={badge?.badgeModel.id} />
+        </SafeSuspense>
+        <Divider color={colors.white} />
+      </Stack>
     </Stack>
   )
 }
