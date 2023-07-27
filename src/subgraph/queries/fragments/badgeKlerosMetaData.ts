@@ -21,7 +21,7 @@ gql`
     }
     badge {
       id
-      validFor
+      validUntil
       account {
         id
       }
