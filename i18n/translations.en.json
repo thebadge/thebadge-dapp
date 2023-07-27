@@ -147,7 +147,8 @@
     "badgesIAmReviewing": {
       "title": "Badges I am reviewing",
       "noResults": "There are no badges you are already reviewing...",
-      "addEvidence": "Add more evidence"
+      "addEvidence": "Add more evidence",
+      "viewAll": "View All"
     },
     "verified": "Verified user"
   },
