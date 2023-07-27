@@ -8,7 +8,7 @@ import DisplayEvidenceField from '@/src/components/displayEvidence/DisplayEviden
 import { Address } from '@/src/components/helpers/Address'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { useEvidenceBadgeKlerosMetadata } from '@/src/hooks/subgraph/useBadgeKlerosMetadata'
-import { ListingCriteriaPreview } from '@/src/pagePartials/badge/explorer/ListingCriteriaPreview'
+import { ListingCriteriaPreview } from '@/src/pagePartials/badge/explorer/addons/ListingCriteriaPreview'
 import { useCurateProvider } from '@/src/providers/curateProvider'
 import { getEvidenceValue } from '@/src/utils/kleros/getEvidenceValue'
 import { Badge } from '@/types/generated/subgraph'
@@ -90,6 +90,7 @@ export default function BadgeReviewingInfoPreview({ badge }: { badge: Badge }) {
           {t('explorer.curate.listingCriteria')}
         </Typography>
         <SafeSuspense>
+          {/* TODO NEED TO BE UPDATED WITH REQUEST DATA */}
           <ListingCriteriaPreview badgeModelId={badge?.badgeModel.id} />
         </SafeSuspense>
         <Divider color={colors.white} />
