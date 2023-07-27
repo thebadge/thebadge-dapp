@@ -37,7 +37,7 @@ export default function NearToExpireList() {
 
   const badgesList = useMemo(() => {
     const badges = badgesExpiringSoon.data?.user?.badges?.map((badge) => {
-      const expirationDate: Date = timestampToDate(badge.validFor)
+      const expirationDate: Date = timestampToDate(badge.validUntil)
       const timeLeft: TimeLeft = getTimeLeftToExpire(expirationDate)
       return (
         <Box key={badge.id} sx={{ height: '100%', display: 'flex' }}>

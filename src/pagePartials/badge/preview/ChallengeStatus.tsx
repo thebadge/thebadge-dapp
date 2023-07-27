@@ -97,8 +97,8 @@ export default function ChallengeStatus() {
               {t('badge.viewBadge.challengeStatus.disputeId')}
             </Typography>
             <ExternalLink
-              href={`${KLEROS_COURT_URL}/cases/${activeRequest.disputeId}`}
-              label={activeRequest.disputeId}
+              href={`${KLEROS_COURT_URL}/cases/${activeRequest.disputeID}`}
+              label={activeRequest.disputeID}
             />
           </DisplayWrapper>
           <Divider color={colors.white} />
