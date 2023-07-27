@@ -72,18 +72,6 @@ export default function BadgesIAmReviewingSection() {
     const badgesIamReviewing = badgesMetadataIamReviewing.badgeKlerosMetaDatas.map(
       (metadata) => metadata.badge,
     ) as Badge[]
-    //const badgesLayouts = badgesIamReviewing.map((badge) => {
-    //  const badgeModel = badge.badgeModel
-    //  return (
-    //    <Box key={badge.id}>
-    //      <MiniBadgeModelPreview
-    //        highlightColor={colors.green}
-    //        metadata={badgeModel?.uri}
-    //        onClick={() => router.push(`/badge/preview/${badge.id}`)}
-    //      />
-    //    </Box>
-    //  )
-    //})
 
     setItems(badgesIamReviewing)
     setLoading(false)
