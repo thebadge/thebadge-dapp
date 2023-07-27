@@ -27,3 +27,8 @@ export enum BadgeNFTAttributesType {
   Background = 'Background',
   TextContrast = 'TextContrast',
 }
+
+export type EvidenceMetadata = {
+  title: string
+  description: string
+}

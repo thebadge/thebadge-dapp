@@ -83,7 +83,7 @@ export default function BadgesIAmReviewingSection() {
       <SafeSuspense>
         <Box display="flex" justifyContent="space-between">
           <Typography color={colors.green} mb={4} variant="dAppHeadline2">
-            {t('explorer.preview.title')}
+            {t('profile.badgesIAmReviewing.previewTitle')}
           </Typography>
           <Box>
             <IconButton onClick={selectPrevious}>

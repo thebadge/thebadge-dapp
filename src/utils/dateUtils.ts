@@ -68,3 +68,19 @@ export const timeLeftToShort = (timestamp?: string | number) => {
   if (format !== null) return format
   return ''
 }
+
+/**
+ * By default expect Unix Timestamp (seconds)
+ * @param timestamp
+ */
+export const formatTimestamp = (
+  timestamp?: string | number,
+  dateFormat = 'MMM DD, YYYY [at] hh:mm A',
+) => {
+  if (!timestamp) {
+    return ''
+  }
+  const format = dayjs.unix(Number(timestamp)).format(dateFormat)
+  if (format !== null) return format
+  return ''
+}
