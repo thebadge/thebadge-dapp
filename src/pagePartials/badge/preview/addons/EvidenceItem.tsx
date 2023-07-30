@@ -18,13 +18,18 @@ import { Evidence } from '@/types/generated/subgraph'
 
 type EvidenceItemProps = {
   item: Evidence
-  isLast: boolean
+  isLast?: boolean
+  isRegistrationEvidence?: boolean
 }
 
-export default function EvidenceItem({ isLast, item }: EvidenceItemProps) {
-  const { id, sender, timestamp, uri } = item
-  const res = useS3Metadata<{ content: EvidenceMetadata }>(uri)
+export default function EvidenceItem({ isLast, isRegistrationEvidence, item }: EvidenceItemProps) {
+  const { sender, timestamp, uri } = item
+  const res = useS3Metadata<{ content: EvidenceMetadata; s3Url: string }>(uri)
   const evidence = res.data?.content
+
+  function handleClick() {
+    window.open(res.data?.s3Url, '_blank')
+  }
 
   return (
     <TimelineItem>
@@ -42,10 +47,14 @@ export default function EvidenceItem({ isLast, item }: EvidenceItemProps) {
       >
         <Paper elevation={4} sx={{ p: 1 }}>
           <Box display="flex" flexWrap="wrap" justifyContent="space-between">
-            <Typography variant="body1">{evidence?.title} </Typography>
-            <IconButton>
-              <FilePresentOutlinedIcon sx={{ width: '18px', height: '18px' }} />
-            </IconButton>
+            <Typography variant="body1">
+              {isRegistrationEvidence ? 'Request Evidence' : evidence?.title}{' '}
+            </Typography>
+            {isRegistrationEvidence && (
+              <IconButton onClick={handleClick}>
+                <FilePresentOutlinedIcon sx={{ width: '18px', height: '18px' }} />
+              </IconButton>
+            )}
           </Box>
           <Typography
             sx={{
@@ -55,7 +64,6 @@ export default function EvidenceItem({ isLast, item }: EvidenceItemProps) {
             }}
             variant="subtitle2"
           >
-            {evidence?.description}
             {evidence?.description}
           </Typography>
         </Paper>

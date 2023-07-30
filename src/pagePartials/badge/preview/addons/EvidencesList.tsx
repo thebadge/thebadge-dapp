@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import * as React from 'react'
 
 import { Timeline } from '@mui/lab'
@@ -5,7 +6,7 @@ import { Box } from '@mui/material'
 
 import { useBadgeKlerosMetadata } from '@/src/hooks/subgraph/useBadgeKlerosMetadata'
 import EvidenceItem from '@/src/pagePartials/badge/preview/addons/EvidenceItem'
-import { KlerosBadgeRequest } from '@/types/generated/subgraph'
+import { Evidence, KlerosBadgeRequest, KlerosRequestType } from '@/types/generated/subgraph'
 
 export default function EvidencesList({
   badgeId,
@@ -20,7 +21,19 @@ export default function EvidencesList({
     badgeKlerosMetadata.data?.requests.length - 1
   ] as KlerosBadgeRequest
 
-  const numOfItemsToShow = showLastActivity ? 3 : activeRequest.evidences.length
+  const isRegistration = activeRequest.type === KlerosRequestType.Registration
+
+  const evidencesToShow = useMemo(() => {
+    const numOfItemsToShow = showLastActivity ? 3 : activeRequest.evidences.length
+
+    if (!isRegistration || activeRequest.evidences.length > 3) {
+      // if its registration, we  want to be sure that we don't show
+      // the registration evidence as last activity
+      return activeRequest.evidences.slice(-numOfItemsToShow)
+    } else {
+      return activeRequest.evidences.slice(1).slice(-numOfItemsToShow)
+    }
+  }, [activeRequest.evidences, isRegistration, showLastActivity])
 
   return (
     <Box
@@ -31,7 +44,10 @@ export default function EvidencesList({
       }}
     >
       <Timeline>
-        {activeRequest.evidences.slice(-numOfItemsToShow).map((item, index, array) => (
+        {isRegistration && (
+          <EvidenceItem isRegistrationEvidence item={activeRequest.evidences.shift() as Evidence} />
+        )}
+        {evidencesToShow.map((item, index, array) => (
           <EvidenceItem isLast={index === array.length - 1} item={item} key={item.id + index} />
         ))}
       </Timeline>
