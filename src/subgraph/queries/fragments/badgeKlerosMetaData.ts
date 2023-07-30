@@ -17,7 +17,7 @@ gql`
     itemID
     reviewDueDate
     requests {
-      ...Request
+      type
     }
     badge {
       id

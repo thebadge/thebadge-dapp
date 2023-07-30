@@ -94,6 +94,7 @@ export default function BadgeEvidenceInfoPreview({ badge }: { badge: Badge }) {
 
       {isDev && (
         <Box display="flex" gap={1}>
+          <Typography>Debug Info (dev only)</Typography>
           <Typography fontSize={14} variant="body4">
             {t('explorer.curate.curationList')}
           </Typography>

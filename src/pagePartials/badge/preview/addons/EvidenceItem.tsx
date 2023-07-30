@@ -10,9 +10,9 @@ import {
 } from '@mui/lab'
 import { Box, IconButton, Paper, Typography } from '@mui/material'
 
-import { Address } from '@/src/components/helpers/Address'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { formatTimestamp } from '@/src/utils/dateUtils'
+import { truncateStringInTheMiddle } from '@/src/utils/strings'
 import { EvidenceMetadata } from '@/types/badges/BadgeMetadata'
 import { Evidence } from '@/types/generated/subgraph'
 
@@ -28,7 +28,10 @@ export default function EvidenceItem({ isLast, isRegistrationEvidence, item }: E
   const evidence = res.data?.content
 
   function handleClick() {
-    window.open(res.data?.s3Url, '_blank')
+    if (isRegistrationEvidence) window.open(res.data?.s3Url, '_blank')
+    else {
+      window.open(evidence?.fileURI, '_blank')
+    }
   }
 
   return (
@@ -48,9 +51,9 @@ export default function EvidenceItem({ isLast, isRegistrationEvidence, item }: E
         <Paper elevation={4} sx={{ p: 1 }}>
           <Box display="flex" flexWrap="wrap" justifyContent="space-between">
             <Typography variant="body1">
-              {isRegistrationEvidence ? 'Request Evidence' : evidence?.title}{' '}
+              {isRegistrationEvidence ? 'Submission Evidence' : evidence?.title}
             </Typography>
-            {isRegistrationEvidence && (
+            {(isRegistrationEvidence || evidence?.fileURI) && (
               <IconButton onClick={handleClick}>
                 <FilePresentOutlinedIcon sx={{ width: '18px', height: '18px' }} />
               </IconButton>
@@ -67,9 +70,13 @@ export default function EvidenceItem({ isLast, isRegistrationEvidence, item }: E
             {evidence?.description}
           </Typography>
         </Paper>
-        <Box display="flex" justifyContent="space-between">
+        <Box display="flex">
           <Typography variant="subtitle2">
-            {`Submitted ` + formatTimestamp(timestamp) + ` by `} <Address address={sender} />
+            {`Submitted ` +
+              formatTimestamp(timestamp) +
+              ` by ` +
+              // TODO make this a link as every address
+              truncateStringInTheMiddle(sender, 8, 6)}
           </Typography>
         </Box>
       </TimelineContent>

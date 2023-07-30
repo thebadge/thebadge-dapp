@@ -31,4 +31,9 @@ export enum BadgeNFTAttributesType {
 export type EvidenceMetadata = {
   title: string
   description: string
+  // Attached file evidence
+  fileURI?: string
+  fileTypeExtension?: string
+  // File Mimetype
+  type?: string
 }

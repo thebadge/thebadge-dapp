@@ -6,7 +6,7 @@ import { Box } from '@mui/material'
 
 import { useBadgeKlerosMetadata } from '@/src/hooks/subgraph/useBadgeKlerosMetadata'
 import EvidenceItem from '@/src/pagePartials/badge/preview/addons/EvidenceItem'
-import { Evidence, KlerosBadgeRequest, KlerosRequestType } from '@/types/generated/subgraph'
+import { KlerosBadgeRequest, KlerosRequestType } from '@/types/generated/subgraph'
 
 export default function EvidencesList({
   badgeId,
@@ -45,7 +45,7 @@ export default function EvidencesList({
     >
       <Timeline>
         {isRegistration && (
-          <EvidenceItem isRegistrationEvidence item={activeRequest.evidences.shift() as Evidence} />
+          <EvidenceItem isRegistrationEvidence item={activeRequest.evidences[0]} />
         )}
         {evidencesToShow.map((item, index, array) => (
           <EvidenceItem isLast={index === array.length - 1} item={item} key={item.id + index} />
