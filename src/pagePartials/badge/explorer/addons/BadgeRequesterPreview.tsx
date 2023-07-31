@@ -31,7 +31,7 @@ const OwnerDisplay = styled(Paper)<OwnerDisplayProps>(({ color, theme }) => ({
   backgroundColor: '#000',
   backgroundImage: 'none',
   boxShadow: `0px 0px 4px ${alpha(color || colors.purple, 0.6)}`,
-  padding: theme.spacing(1, 2, 1, 2),
+  padding: theme.spacing(2.5, 2, 2.5, 2),
   borderRadius: theme.spacing(0, 0, 1, 1),
 }))
 

@@ -5,7 +5,7 @@ gql`
     id
     status
     uri
-    validFor
+    validUntil
     account {
       id
     }

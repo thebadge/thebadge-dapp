@@ -146,6 +146,7 @@
     "tab3": "CREATOR PROFILE",
     "badgesIAmReviewing": {
       "title": "Badges I am reviewing",
+      "previewTitle": "Challenged Badge",
       "noResults": "There are no badges you are already reviewing...",
       "addEvidence": "Add more evidence",
       "viewAll": "View All"

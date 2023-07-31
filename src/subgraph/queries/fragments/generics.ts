@@ -9,7 +9,8 @@ gql`
     arbitrationParamsIndex
     requester
     challenger
-    disputeId
+    disputeID
+    disputeOutcome
     evidences {
       ...Evidence
     }
@@ -19,7 +20,8 @@ gql`
 gql`
   fragment Evidence on Evidence {
     id
-    uri
     sender
+    timestamp
+    uri
   }
 `

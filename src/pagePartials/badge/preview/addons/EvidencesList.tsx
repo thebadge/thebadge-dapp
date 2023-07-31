@@ -31,12 +31,8 @@ export default function EvidencesList({
       }}
     >
       <Timeline>
-        {activeRequest.evidences.slice(-numOfItemsToShow).map((item, index) => (
-          <EvidenceItem
-            isLast={index === activeRequest.evidences.length * 3 - 1}
-            item={item}
-            key={item.id + index}
-          />
+        {activeRequest.evidences.slice(-numOfItemsToShow).map((item, index, array) => (
+          <EvidenceItem isLast={index === array.length - 1} item={item} key={item.id + index} />
         ))}
       </Timeline>
     </Box>

@@ -65,7 +65,7 @@ export const MY_BADGES_IN_REVIEW_AND_CHALLENGED = gql`
 export const MY_BADGES_EXPIRING_BETWEEN = gql`
   query userBadgesExpiringBetween($ownerAddress: ID!, $startDate: BigInt!, $endDate: BigInt!) {
     user(id: $ownerAddress) {
-      badges(where: { validFor_gte: $startDate, validFor_lte: $endDate }) {
+      badges(where: { validUntil_gte: $startDate, validUntil_lte: $endDate }) {
         ...FullBadgeDetails
       }
     }
