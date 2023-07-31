@@ -285,7 +285,7 @@
       "challengeStatus": {
         "title": "Challenge Status",
         "challenged": "CHALLENGED",
-        "requestType": "Type:",
+        "requestType": "Description:",
         "challenger": "Challenger:",
         "requester": "Requester:",
         "arbitrator": "Arbitrator:",

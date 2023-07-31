@@ -1,6 +1,7 @@
 import Link from 'next/link'
 
 import { styled } from '@mui/material'
+import { LogoTheBadgeWithText } from '@thebadge/ui-library'
 
 import { Logo as BaseLogoSVG } from '@/src/components/assets/Logo'
 
@@ -17,10 +18,23 @@ const LogoSVG = styled(BaseLogoSVG)`
   width: 55px;
 `
 
-export const Logo: React.FC = (props) => (
+const LogoSVGWithText = styled(LogoTheBadgeWithText)`
+  cursor: pointer;
+  width: 55px;
+`
+
+export const Logo = ({ size }: { size?: number }) => (
   <Link href="/" legacyBehavior passHref>
-    <HomeLink {...props}>
-      <LogoSVG size={222} />
+    <HomeLink>
+      <LogoSVG size={size || 100} />
+    </HomeLink>
+  </Link>
+)
+
+export const LogoWithText = ({ color, size }: { size?: number; color?: string }) => (
+  <Link href="/" legacyBehavior passHref>
+    <HomeLink>
+      <LogoSVGWithText fill={color} size={size || 100} />
     </HomeLink>
   </Link>
 )
