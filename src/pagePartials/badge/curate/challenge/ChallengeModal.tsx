@@ -7,6 +7,7 @@ import {
   Box,
   Button,
   Container,
+  Divider,
   IconButton,
   Modal,
   Skeleton,
@@ -171,7 +172,7 @@ function ChallengeModalContent({ badgeId, onClose }: { badgeId: string; onClose:
         width: '100%',
       }}
     >
-      <Typography color={'#42FF00'} id="modal-modal-title" variant="dAppHeadline2">
+      <Typography color="error" id="modal-modal-title" variant="dAppHeadline2">
         {t('badge.challenge.modal.challenge')}
       </Typography>
       <SafeSuspense fallback={<Skeleton variant={'text'} width={500} />}>
@@ -179,7 +180,7 @@ function ChallengeModalContent({ badgeId, onClose }: { badgeId: string; onClose:
       </SafeSuspense>
       <Container sx={{ flexDirection: 'row', display: 'flex', alignItems: 'center', gap: 1 }}>
         <FindInPageOutlinedIcon />
-        <Typography component="p" variant="dAppBody1">
+        <Typography component="p" variant="body2">
           {t('badge.challenge.modal.explainWhy')}
         </Typography>
       </Container>
@@ -205,7 +206,7 @@ function ChallengeModalContent({ badgeId, onClose }: { badgeId: string; onClose:
               )}
             />
           </Box>
-          <Box display="flex" flex={1}>
+          <Box display="flex" flex={1} mb={2}>
             <Controller
               control={control}
               name={'attachment'}
@@ -232,9 +233,10 @@ function ChallengeModalContent({ badgeId, onClose }: { badgeId: string; onClose:
         <SafeSuspense>
           <ChallengeCost badgeId={badge.id} badgeModelId={badgeModelId} />
         </SafeSuspense>
+        <Divider color={colors.white} sx={{ mt: 8 }} />
         <Box display="flex" mt={4}>
           <Button
-            color="green"
+            color="error"
             onClick={handleSubmit(onSubmit)}
             sx={{ borderRadius: 3, ml: 'auto', color: colors.black }}
             variant="contained"

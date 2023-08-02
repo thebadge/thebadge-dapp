@@ -309,7 +309,10 @@
         "explainWhy": "Explain de jurors why do you think this items should de removed.",
         "readCriteria": "Read the ",
         "curationCriteria": "Curation Criteria",
-        "toAvoid": " to avoid wrong challenge requests."
+        "toAvoid": " to avoid wrong challenge requests.",
+        "deposit": "Total deposit required",
+        "depositValue": "{{value}} {{symbol}}",
+        "depositWarning": "Note that this is a deposit, not a fee and it will be reimbursed if the removal is accepted. The challenge period last {{period}} days."
       }
     },
     "curate": {
