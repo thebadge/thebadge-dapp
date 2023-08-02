@@ -50,19 +50,19 @@ export default function ChallengeStatus() {
           sx={{ fontSize: '11px !important', borderRadius: 2 }}
           variant="outlined"
         >
-          Add Evidence
+          {t('badge.viewBadge.challengeStatus.addEvidence')}
         </Button>
       </Box>
       <Box display="flex" gap={4} justifyContent="space-between">
         <Stack flex="1" gap={3}>
           <DisplayWrapper>
             <Typography variant="dAppBody4">
-              {t('badge.viewBadge.challengeStatus.requestType')}
+              {t('badge.viewBadge.challengeStatus.description')}
             </Typography>
             <Typography variant="dAppBody4">
               {isRegistration
-                ? 'Badge submission has been challenged'
-                : 'A removal request has been rise'}
+                ? t('badge.viewBadge.challengeStatus.descriptionBaseChallenge')
+                : t('badge.viewBadge.challengeStatus.descriptionRemovalChallenge')}
             </Typography>
           </DisplayWrapper>
           <DisplayWrapper>

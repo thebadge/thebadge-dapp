@@ -149,7 +149,10 @@
       "previewTitle": "Challenged Badge",
       "noResults": "There are no badges you are already reviewing...",
       "addEvidence": "Add more evidence",
-      "viewAll": "View All"
+      "viewAll": "View All",
+      "lastActivity": "Last Activity",
+      "submissionChallenge": "You have challenged the submission of this badge",
+      "removalChallenge": "You have requested the removal of this badge"
     },
     "verified": "Verified user"
   },
@@ -285,7 +288,10 @@
       "challengeStatus": {
         "title": "Challenge Status",
         "challenged": "CHALLENGED",
-        "requestType": "Description:",
+        "description": "Description:",
+        "addEvidence": "Add evidence",
+        "descriptionBaseChallenge": "Badge submission has been challenged",
+        "descriptionRemovalChallenge": "A removal request has been rise",
         "challenger": "Challenger:",
         "requester": "Requester:",
         "arbitrator": "Arbitrator:",
@@ -295,6 +301,10 @@
         "amount": "Amount",
         "userAddress": "User address:",
         "file": "File:"
+      },
+      "evidence": {
+        "submission": "Submission Evidence",
+        "submittedBy": "Submitted {{at}} by {{submitter}}"
       },
       "owner": {
         "address": "OWNER ADDRESS:",

@@ -39,8 +39,8 @@ export default function BadgeReviewingInfoPreview({ badge }: { badge: Badge }) {
 
       <Alert severity="info">
         {isRegistration
-          ? 'You have challenged the submission of this badge'
-          : 'You have requested the removal of this badge'}
+          ? t('profile.badgesIAmReviewing.submissionChallenge')
+          : t('profile.badgesIAmReviewing.removalChallenge')}
       </Alert>
 
       <Box alignContent="center" display="flex" flex={1} justifyContent="space-between">
@@ -58,7 +58,7 @@ export default function BadgeReviewingInfoPreview({ badge }: { badge: Badge }) {
       </Stack>
 
       <Stack gap={2}>
-        <Typography variant="body3">{`Last Activity`}</Typography>
+        <Typography variant="body3">{t('profile.badgesIAmReviewing.lastActivity')}</Typography>
         <EvidencesList badgeId={badge.id} />
         <Divider color={colors.white} />
       </Stack>

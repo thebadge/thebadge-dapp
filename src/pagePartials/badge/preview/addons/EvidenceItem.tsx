@@ -9,6 +9,7 @@ import {
   TimelineSeparator,
 } from '@mui/lab'
 import { Box, IconButton, Paper, Typography } from '@mui/material'
+import { useTranslation } from 'next-export-i18n'
 
 import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { formatTimestamp } from '@/src/utils/dateUtils'
@@ -23,6 +24,8 @@ type EvidenceItemProps = {
 }
 
 export default function EvidenceItem({ isLast, isRegistrationEvidence, item }: EvidenceItemProps) {
+  const { t } = useTranslation()
+
   const { sender, timestamp, uri } = item
   const res = useS3Metadata<{ content: EvidenceMetadata; s3Url: string }>(uri)
   const evidence = res.data?.content
@@ -51,7 +54,7 @@ export default function EvidenceItem({ isLast, isRegistrationEvidence, item }: E
         <Paper elevation={4} sx={{ p: 1 }}>
           <Box display="flex" flexWrap="wrap" justifyContent="space-between">
             <Typography variant="body1">
-              {isRegistrationEvidence ? 'Submission Evidence' : evidence?.title}
+              {isRegistrationEvidence ? t('badge.viewBadge.evidence.submission') : evidence?.title}
             </Typography>
             {(isRegistrationEvidence || evidence?.fileURI) && (
               <IconButton onClick={handleClick}>
@@ -72,11 +75,10 @@ export default function EvidenceItem({ isLast, isRegistrationEvidence, item }: E
         </Paper>
         <Box display="flex">
           <Typography variant="subtitle2">
-            {`Submitted ` +
-              formatTimestamp(timestamp) +
-              ` by ` +
-              // TODO make this a link as every address
-              truncateStringInTheMiddle(sender, 8, 6)}
+            {t('badge.viewBadge.evidence.submission', {
+              at: formatTimestamp(timestamp),
+              submitter: truncateStringInTheMiddle(sender, 8, 6),
+            })}
           </Typography>
         </Box>
       </TimelineContent>

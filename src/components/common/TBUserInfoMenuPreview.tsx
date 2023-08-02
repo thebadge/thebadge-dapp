@@ -75,7 +75,7 @@ export default function TBUserInfoExpandablePreview({
         </Box>
 
         <IconButton onClick={handleClick} size="small">
-          {!open ? <AddRoundedIcon color={color} /> : <RemoveRoundedIcon color={color} />}
+          {!open ? <AddRoundedIcon sx={{ color }} /> : <RemoveRoundedIcon sx={{ color }} />}
         </IconButton>
       </Wrapper>
       <OwnerDisplay
