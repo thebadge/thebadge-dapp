@@ -284,7 +284,7 @@
     },
     "viewBadge": {
       "issueBy": "Issued by: {{issuer}}",
-      "claims": " # of claims",
+      "claims": " # badges claimed",
       "checkHowElse": "Check who else claimed it. ",
       "challengeStatus": {
         "title": "Challenge Status",
