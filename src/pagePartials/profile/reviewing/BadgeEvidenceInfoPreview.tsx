@@ -9,9 +9,9 @@ import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { useEvidenceBadgeKlerosMetadata } from '@/src/hooks/subgraph/useBadgeKlerosMetadata'
 import BadgeIdDisplay from '@/src/pagePartials/badge/explorer/addons/BadgeIdDisplay'
 import { ListingCriteriaPreview } from '@/src/pagePartials/badge/explorer/addons/ListingCriteriaPreview'
-import TimeLeftDisplay from '@/src/pagePartials/badge/explorer/addons/TimeLeftDisplay'
 import ViewEvidenceButton from '@/src/pagePartials/badge/explorer/addons/ViewEvidenceButton'
 import EvidencesList from '@/src/pagePartials/badge/preview/addons/EvidencesList'
+import DisputeIdDisplay from '@/src/pagePartials/profile/reviewing/addons/DisputeIdDisplay'
 import { useCurateProvider } from '@/src/providers/curateProvider'
 import { Badge, KlerosBadgeRequest, KlerosRequestType } from '@/types/generated/subgraph'
 
@@ -45,7 +45,7 @@ export default function BadgeReviewingInfoPreview({ badge }: { badge: Badge }) {
 
       <Box alignContent="center" display="flex" flex={1} justifyContent="space-between">
         <BadgeIdDisplay id={badge?.id} />
-        <TimeLeftDisplay reviewDueDate={badge?.badgeKlerosMetaData?.reviewDueDate} />
+        <DisputeIdDisplay disputeId={activeRequest.disputeID} />
       </Box>
 
       {/* Badge Evidence */}

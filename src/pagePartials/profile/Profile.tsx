@@ -28,6 +28,10 @@ const Profile = () => {
 
   return (
     <SafeSuspense>
+      <SafeSuspense fallback={<InfoPreviewSkeleton />}>
+        <InfoPreview address={user?.id || ''} />
+      </SafeSuspense>
+
       <Stack sx={{ mb: 6, gap: 4, alignItems: 'center' }}>
         <Box display="flex" flex={1} flexDirection="row" justifyContent="space-evenly" width="100%">
           <LinkWithTranslation pathname={`/profile`}>
@@ -66,9 +70,6 @@ const Profile = () => {
         </Box>
       </Stack>
 
-      <SafeSuspense fallback={<InfoPreviewSkeleton />}>
-        <InfoPreview address={user?.id || ''} />
-      </SafeSuspense>
       {!selectedFilter && <MyProfileSection />}
       {selectedFilter === ProfileFilter.BADGES_I_AM_REVIEWING && <BadgesIAmReviewingSection />}
       {selectedFilter === ProfileFilter.CREATED_BADGES && <BadgesCreatedSection />}

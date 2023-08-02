@@ -75,7 +75,7 @@ export default function EvidenceItem({ isLast, isRegistrationEvidence, item }: E
         </Paper>
         <Box display="flex">
           <Typography variant="subtitle2">
-            {t('badge.viewBadge.evidence.submission', {
+            {t('badge.viewBadge.evidence.submittedBy', {
               at: formatTimestamp(timestamp),
               submitter: truncateStringInTheMiddle(sender, 8, 6),
             })}
