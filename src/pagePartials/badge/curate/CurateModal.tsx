@@ -106,7 +106,8 @@ function CurateModalContent({ badgeId, onClose }: { badgeId: string; onClose: ()
           display: 'flex',
           alignItems: 'center',
           flexDirection: 'column',
-          margin: 4,
+          marginTop: 4,
+          marginBottom: 4,
           width: '100%',
           '> *': {
             width: '90%',
@@ -133,9 +134,10 @@ function CurateModalContent({ badgeId, onClose }: { badgeId: string; onClose: ()
       sx={{
         alignItems: 'center',
         width: '100%',
+        gap: 3,
       }}
     >
-      <Typography color={'#24F3D2'} id="modal-modal-title" variant="dAppHeadline2">
+      <Typography color={colors.green} id="modal-modal-title" variant="dAppHeadline2">
         {t('badge.curate.modal.evidence')}
       </Typography>
 
