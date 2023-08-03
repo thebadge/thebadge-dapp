@@ -37,7 +37,11 @@ export const MY_CREATED_BADGE_TYPES = gql`
         controllerType
         badgesMintedAmount
       }
-      createdBadgesModelAmount
+      statistics {
+        creatorStatistic {
+          createdBadgeModelsAmount
+        }
+      }
     }
   }
 `
