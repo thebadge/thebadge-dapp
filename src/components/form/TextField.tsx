@@ -35,11 +35,11 @@ export function TextField({ error, label, onChange, placeholder, value }: TextFi
   return (
     <StyledTextField
       InputProps={{
-        endAdornment: (
+        endAdornment: placeholder ? (
           <Tooltip arrow title={placeholder}>
             <InfoOutlinedIcon />
           </Tooltip>
-        ),
+        ) : null,
       }}
       color="secondary"
       error={!!error}

@@ -1,9 +1,9 @@
 import { useRouter } from 'next/router'
 
 import { Box, styled } from '@mui/material'
-import { LogoTheBadgeWithText } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 
+import { LogoWithText } from '@/src/components/common/Logo'
 import ActionButtons from '@/src/components/header/ActionButtons'
 import ConnectWalletButton from '@/src/components/header/ConnectWalletButton'
 import { UserDropdown } from '@/src/components/header/UserDropdown'
@@ -40,9 +40,7 @@ const Header = () => {
           flex: 1,
         }}
       >
-        <Box onClick={() => router.push('/')} sx={{ cursor: 'pointer', width: 'fit-content' }}>
-          <LogoTheBadgeWithText size={100} />
-        </Box>
+        <LogoWithText />
       </Box>
       <Box display="flex">
         <WrongNetwork />

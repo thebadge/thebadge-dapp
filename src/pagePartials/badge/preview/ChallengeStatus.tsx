@@ -11,7 +11,7 @@ import useBadgeIdParam from '@/src/hooks/nextjs/useBadgeIdParam'
 import { useBadgeKlerosMetadata } from '@/src/hooks/subgraph/useBadgeKlerosMetadata'
 import EvidencesList from '@/src/pagePartials/badge/preview/addons/EvidencesList'
 import { useCurateProvider } from '@/src/providers/curateProvider'
-import { KlerosBadgeRequest } from '@/types/generated/subgraph'
+import { KlerosBadgeRequest, KlerosRequestType } from '@/types/generated/subgraph'
 
 const DisplayWrapper = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -34,6 +34,7 @@ export default function ChallengeStatus() {
   const activeRequest = badgeKlerosMetadata.data?.requests[
     badgeKlerosMetadata.data?.requests.length - 1
   ] as KlerosBadgeRequest
+  const isRegistration = activeRequest.type === KlerosRequestType.Registration
 
   return (
     <Stack gap={3} mt={5}>
@@ -49,16 +50,20 @@ export default function ChallengeStatus() {
           sx={{ fontSize: '11px !important', borderRadius: 2 }}
           variant="outlined"
         >
-          Add Evidence
+          {t('badge.viewBadge.challengeStatus.addEvidence')}
         </Button>
       </Box>
       <Box display="flex" gap={4} justifyContent="space-between">
         <Stack flex="1" gap={3}>
           <DisplayWrapper>
             <Typography variant="dAppBody4">
-              {t('badge.viewBadge.challengeStatus.requestType')}
+              {t('badge.viewBadge.challengeStatus.description')}
             </Typography>
-            <Typography variant="dAppBody4">{activeRequest.type}</Typography>
+            <Typography variant="dAppBody4">
+              {isRegistration
+                ? t('badge.viewBadge.challengeStatus.descriptionBaseChallenge')
+                : t('badge.viewBadge.challengeStatus.descriptionRemovalChallenge')}
+            </Typography>
           </DisplayWrapper>
           <DisplayWrapper>
             <Typography variant="dAppBody4">
