@@ -5,8 +5,8 @@ import { ButtonV2, colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
-import BadgeListTypeList from '@/src/pagePartials/home/BadgeListTypeList'
 import { SectionBox, SectionTitleBox } from '@/src/pagePartials/home/SectionBoxes'
+import BadgeListTypeList from '@/src/pagePartials/home/carousels/BadgeListTypeList'
 import { useSectionReferences } from '@/src/providers/referencesProvider'
 
 export default function ClaimBadges() {

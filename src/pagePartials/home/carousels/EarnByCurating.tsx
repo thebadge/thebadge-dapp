@@ -4,8 +4,8 @@ import { useTranslation } from 'next-export-i18n'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { DOCS_URL } from '@/src/constants/common'
-import BadgesInReviewSwiper from '@/src/pagePartials/home/BadgesInReviewSwiper'
 import { SectionBox, SectionTitleBox } from '@/src/pagePartials/home/SectionBoxes'
+import BadgesInReviewSwiper from '@/src/pagePartials/home/carousels/BadgesInReviewSwiper'
 import { useSectionReferences } from '@/src/providers/referencesProvider'
 
 const LearnMoreButton = styled(ButtonV2)(({ theme }) => ({
