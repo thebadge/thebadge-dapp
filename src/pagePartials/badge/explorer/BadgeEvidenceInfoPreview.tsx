@@ -2,11 +2,9 @@ import React from 'react'
 
 import { Box, Divider, Stack, Typography } from '@mui/material'
 import { ButtonV2, colors } from '@thebadge/ui-library'
-import { constants } from 'ethers'
 import { useTranslation } from 'next-export-i18n'
 
 import DisplayEvidenceField from '@/src/components/displayEvidence/DisplayEvidenceField'
-import { Address } from '@/src/components/helpers/Address'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { useEvidenceBadgeKlerosMetadata } from '@/src/hooks/subgraph/useBadgeKlerosMetadata'
 import BadgeIdDisplay from '@/src/pagePartials/badge/explorer/addons/BadgeIdDisplay'
@@ -15,7 +13,6 @@ import { ListingCriteriaPreview } from '@/src/pagePartials/badge/explorer/addons
 import TimeLeftDisplay from '@/src/pagePartials/badge/explorer/addons/TimeLeftDisplay'
 import ViewEvidenceButton from '@/src/pagePartials/badge/explorer/addons/ViewEvidenceButton'
 import { useCurateProvider } from '@/src/providers/curateProvider'
-import isDev from '@/src/utils/isDev'
 import { getEvidenceValue } from '@/src/utils/kleros/getEvidenceValue'
 import { Badge } from '@/types/generated/subgraph'
 
@@ -90,16 +87,6 @@ export default function BadgeEvidenceInfoPreview({ badge }: { badge: Badge }) {
           {t('explorer.curate.challenge')}
         </ButtonV2>
       </Box>
-      {/* TCR Contract Address, available on develop */}
-
-      {isDev && (
-        <Box display="flex" gap={1}>
-          <Typography fontSize={14} variant="body4">
-            {t('explorer.curate.curationList')}
-          </Typography>
-          <Address address={badge?.badgeModel.badgeModelKleros?.tcrList || constants.AddressZero} />
-        </Box>
-      )}
     </Stack>
   )
 }

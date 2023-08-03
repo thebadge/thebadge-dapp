@@ -9,22 +9,33 @@ import {
   TimelineSeparator,
 } from '@mui/lab'
 import { Box, IconButton, Paper, Typography } from '@mui/material'
+import { useTranslation } from 'next-export-i18n'
 
-import { Address } from '@/src/components/helpers/Address'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { formatTimestamp } from '@/src/utils/dateUtils'
+import { truncateStringInTheMiddle } from '@/src/utils/strings'
 import { EvidenceMetadata } from '@/types/badges/BadgeMetadata'
 import { Evidence } from '@/types/generated/subgraph'
 
 type EvidenceItemProps = {
   item: Evidence
-  isLast: boolean
+  isLast?: boolean
+  isRegistrationEvidence?: boolean
 }
 
-export default function EvidenceItem({ isLast, item }: EvidenceItemProps) {
-  const { id, sender, timestamp, uri } = item
-  const res = useS3Metadata<{ content: EvidenceMetadata }>(uri)
+export default function EvidenceItem({ isLast, isRegistrationEvidence, item }: EvidenceItemProps) {
+  const { t } = useTranslation()
+
+  const { sender, timestamp, uri } = item
+  const res = useS3Metadata<{ content: EvidenceMetadata; s3Url: string }>(uri)
   const evidence = res.data?.content
+
+  function handleClick() {
+    if (isRegistrationEvidence) window.open(res.data?.s3Url, '_blank')
+    else {
+      window.open(evidence?.fileURI, '_blank')
+    }
+  }
 
   return (
     <TimelineItem>
@@ -42,10 +53,14 @@ export default function EvidenceItem({ isLast, item }: EvidenceItemProps) {
       >
         <Paper elevation={4} sx={{ p: 1 }}>
           <Box display="flex" flexWrap="wrap" justifyContent="space-between">
-            <Typography variant="body1">{evidence?.title} </Typography>
-            <IconButton>
-              <FilePresentOutlinedIcon sx={{ width: '18px', height: '18px' }} />
-            </IconButton>
+            <Typography variant="body1">
+              {isRegistrationEvidence ? t('badge.viewBadge.evidence.submission') : evidence?.title}
+            </Typography>
+            {(isRegistrationEvidence || evidence?.fileURI) && (
+              <IconButton onClick={handleClick}>
+                <FilePresentOutlinedIcon sx={{ width: '18px', height: '18px' }} />
+              </IconButton>
+            )}
           </Box>
           <Typography
             sx={{
@@ -56,12 +71,14 @@ export default function EvidenceItem({ isLast, item }: EvidenceItemProps) {
             variant="subtitle2"
           >
             {evidence?.description}
-            {evidence?.description}
           </Typography>
         </Paper>
-        <Box display="flex" justifyContent="space-between">
+        <Box display="flex">
           <Typography variant="subtitle2">
-            {`Submitted ` + formatTimestamp(timestamp) + ` by `} <Address address={sender} />
+            {t('badge.viewBadge.evidence.submittedBy', {
+              at: formatTimestamp(timestamp),
+              submitter: truncateStringInTheMiddle(sender, 8, 6),
+            })}
           </Typography>
         </Box>
       </TimelineContent>
