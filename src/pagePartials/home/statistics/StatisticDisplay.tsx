@@ -27,7 +27,11 @@ export default function StatisticDisplay({
         number={number}
         sx={{ color: transparent ? 'background.default' : 'text.primary' }}
       />
-      <Typography color={transparent ? 'background.default' : 'text.primary'} variant="dAppTitle2">
+      <Typography
+        color={transparent ? 'background.default' : 'text.primary'}
+        textTransform="uppercase"
+        variant="dAppTitle2"
+      >
         {label}
       </Typography>
     </StatisticContainer>

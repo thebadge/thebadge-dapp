@@ -31,7 +31,13 @@ export default function StatisticDoubleDisplay({
           number={primaryNumber}
           sx={{ color: transparent ? 'black' : undefined }}
         />
-        <Typography color="black" component="div" lineHeight="110%" variant="dAppTitle2">
+        <Typography
+          color="black"
+          component="div"
+          lineHeight="110%"
+          textTransform="uppercase"
+          variant="dAppTitle2"
+        >
           {primaryLabel}
         </Typography>
       </Box>
@@ -40,7 +46,13 @@ export default function StatisticDoubleDisplay({
           number={secondaryNumber}
           sx={{ color: transparent ? 'black' : undefined }}
         />
-        <Typography color="black" component="div" lineHeight="110%" variant="dAppTitle2">
+        <Typography
+          color="black"
+          component="div"
+          lineHeight="110%"
+          textTransform="uppercase"
+          variant="dAppTitle2"
+        >
           {secondaryLabel}
         </Typography>
       </Box>

@@ -63,12 +63,12 @@
     },
     "statistics": {
       "title": "Protocol statistics",
-      "created": "BADGES CREATED",
-      "types": "TYPE OF BADGES",
-      "challenged": "BADGES CHALLENGED",
-      "owners": "BADGES\nOWNERS",
-      "creators": "BADGES\nCREATORS",
-      "curators": "BADGES CURATORS"
+      "created": "Badges Created",
+      "models": "Badge Models",
+      "challenged": "Badges Challenged",
+      "owners": "Badge\nOwners",
+      "creators": "Badge\nCreators",
+      "curators": "Badge Curators"
 
 
     }

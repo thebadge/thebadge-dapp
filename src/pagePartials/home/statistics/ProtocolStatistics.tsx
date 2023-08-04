@@ -33,7 +33,7 @@ export default function ProtocolStatistics() {
         />
 
         <StatisticDisplay
-          label={t('home.statistics.types')}
+          label={t('home.statistics.models')}
           number={protocolStatistic.data?.protocolStatistic?.badgeModelsCreatedAmount}
           transparent
         />
