@@ -14,7 +14,7 @@ export function useChallengeCost(badgeId: string) {
 
   return useSWR(
     [`challengeDeposit:${badgeId}`, badgeId],
-    ([,]) => klerosController.getChallengeValue(badgeId),
+    ([,]) => klerosController.getChallengeDepositValue(badgeId),
     { revalidateOnMount: true },
   )
 }
