@@ -7,14 +7,14 @@ import { Chains } from '@/src/config/web3'
 export const contracts = {
   TheBadge: {
     address: {
-      [Chains.goerli]: '0x641dDCeDe396fA1C2B1AF323523508D2f8fd6825',
+      [Chains.goerli]: '0x5E7c648EE852241f145e1d480932C091979883D1',
       [Chains.gnosis]: 'null',
     },
     abi: TheBadge,
   },
   KlerosController: {
     address: {
-      [Chains.goerli]: '0x6269Ae4D1Afae6bC88FF6Fbf09137deecB6799c7',
+      [Chains.goerli]: '0x17174F4B1DCd25183Bf53E675ee5AF37e2baa37a',
       [Chains.gnosis]: 'null',
     },
     abi: KlerosController,
