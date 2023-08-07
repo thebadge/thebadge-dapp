@@ -184,17 +184,24 @@
       {
         "indexed": true,
         "internalType": "uint256",
-        "name": "badgeID",
+        "name": "newAmountInBps",
         "type": "uint256"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "wallet",
-        "type": "address"
       }
     ],
-    "name": "BadgeRequested",
+    "name": "BadgeModelProtocolFeeUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "badgeModelId",
+        "type": "uint256"
+      }
+    ],
+    "name": "BadgeModelUpdated",
     "type": "event"
   },
   {
@@ -227,25 +234,6 @@
       }
     ],
     "name": "CreatorRegistered",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "creator",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "string",
-        "name": "metadata",
-        "type": "string"
-      }
-    ],
-    "name": "CreatorUpdated",
     "type": "event"
   },
   {
@@ -297,6 +285,50 @@
       }
     ],
     "name": "PaymentMade",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "mintBadgeDefaultFee",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "createBadgeModelValue",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "registerCreatorValue",
+        "type": "uint256"
+      }
+    ],
+    "name": "ProtocolSettingsUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "creator",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "deleted",
+        "type": "bool"
+      }
+    ],
+    "name": "RemovedCreator",
     "type": "event"
   },
   {
@@ -372,6 +404,25 @@
       }
     ],
     "name": "RoleRevoked",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "creator",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "suspended",
+        "type": "bool"
+      }
+    ],
+    "name": "SuspendedCreator",
     "type": "event"
   },
   {
@@ -478,6 +529,25 @@
       }
     ],
     "name": "Unpaused",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "creator",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "metadata",
+        "type": "string"
+      }
+    ],
+    "name": "UpdatedCreatorMetadata",
     "type": "event"
   },
   {
