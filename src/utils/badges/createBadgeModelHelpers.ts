@@ -129,8 +129,8 @@ export async function encodeKlerosControllerData(
   // The base deposit to challenge a removal request
   const challengeRemovalRequestDeposit = baseDeposit.div(4).toString()
 
-  // Received challengePeriodDuration is considered in Dev = hours and in Prod = Days
-  const challengeDurationInSeconds = challengePeriodDuration * (IS_DEVELOP ? 1 : 24) * 60 * 60
+  // Received challengePeriodDuration is considered in Dev = minutes and in Prod = Days
+  const challengeDurationInSeconds = challengePeriodDuration * (IS_DEVELOP ? 1 / 60 : 24) * 60 * 60
 
   const klerosControllerDataEncoded = defaultAbiCoder.encode(
     [
