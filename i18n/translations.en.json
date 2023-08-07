@@ -60,6 +60,17 @@
         "description": "Third-party Badges are a blockchain certification service that leverages TheBadge's platform, allowing third-party entities to issue their own certificates. These badges are backed by the issuing entity, providing added legitimacy to the certification. By utilizing TheBadge's platform, these entities can ensure secure storage and verification of their certification data, providing a reliable certification process. Third-party Badges allow individuals to showcase their achievements in a trusted ecosystem, enhancing their credibility in the wider community. ",
         "documentation": "thebadge-documentation/what-is-a-badge/badge-categories/third-party-badges"
       }
+    },
+    "statistics": {
+      "title": "Protocol statistics",
+      "created": "Badges Created",
+      "models": "Badge Models",
+      "challenged": "Badges Challenged",
+      "owners": "Badge\nOwners",
+      "creators": "Badge\nCreators",
+      "curators": "Badge Curators"
+
+
     }
   },
   "header": {
