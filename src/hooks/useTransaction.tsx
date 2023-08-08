@@ -26,6 +26,10 @@ export default function useTransaction() {
     notifyWaitingForTxMined,
   } = useTransactionNotification()
 
+  const resetTxState = useCallback(() => {
+    setTransactionState(TransactionStates.none)
+  }, [])
+
   const waitForTxExecution = useCallback(
     (tx: ContractTransaction) => {
       notifyWaitingForTxMined(tx.hash)
@@ -142,5 +146,5 @@ export default function useTransaction() {
     [isAppConnected, notifyWaitingForSignature, waitForAsyncTxExecution, notifyRejectSignature],
   )
 
-  return { state, sendTx, sendRelayTx }
+  return { state, sendTx, sendRelayTx, resetTxState }
 }

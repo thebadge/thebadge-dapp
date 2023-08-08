@@ -13,8 +13,10 @@ export const FormButton = styled(Button)(({ theme }) => ({
 
 function MyCustomFormComponent({
   backButton = { disabled: false, label: 'Back', ref: undefined },
+  buttonsSx,
   children,
   color,
+  containerSx,
   draggable,
   gridStructure,
   layout = 'flex',
@@ -28,13 +30,13 @@ function MyCustomFormComponent({
   }
   const Layout = getFormLayout(layout)
   return (
-    <Container maxWidth="md" sx={{ display: 'flex', width: '100%' }}>
+    <Container maxWidth="md" sx={{ display: 'flex', width: '100%', ...containerSx }}>
       <form onSubmit={onSubmit} style={{ display: 'flex', flexDirection: 'column' }}>
         {/* children are you form field components */}
         <Layout draggable={draggable} gridStructure={gridStructure} rowHeight={rowHeight}>
           {children}
         </Layout>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2, ...buttonsSx }}>
           {onBack && (
             <FormButton
               color={color || 'primary'}
@@ -66,8 +68,10 @@ function MyCustomFormComponent({
  */
 function MyCustomFormComponentWithoutSubmit({
   backButton = { disabled: false, label: 'Back', ref: undefined },
+  buttonsSx,
   children,
   color,
+  containerSx,
   draggable,
   gridStructure,
   layout = 'flex',
@@ -81,13 +85,13 @@ function MyCustomFormComponentWithoutSubmit({
   }
   const Layout = getFormLayout(layout)
   return (
-    <Container maxWidth="md" sx={{ display: 'flex', width: '100%' }}>
+    <Container maxWidth="md" sx={{ display: 'flex', width: '100%', ...containerSx }}>
       <Box style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
         {/* children are you form field components */}
         <Layout draggable={draggable} gridStructure={gridStructure} rowHeight={rowHeight}>
           {children}
         </Layout>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2, ...buttonsSx }}>
           {onBack && (
             <FormButton
               color={color || 'primary'}

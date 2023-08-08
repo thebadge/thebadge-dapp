@@ -4,7 +4,9 @@ import { OverridableStringUnion } from '@mui/types'
 import { useTranslation } from 'next-export-i18n'
 import { useFormContext } from 'react-hook-form'
 
-import { CREATE_MODEL_STEPS_AMOUNT, saveFormValues } from '../utils'
+import { MINT_STEPS_AMOUNT, saveFormValues } from '../utils'
+import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
+import { MintBadgeSchemaType } from '@/src/pagePartials/badge/mint/schema/MintBadgeSchema'
 import { PreventActionWithoutConnection } from '@/src/pagePartials/errors/preventActionWithoutConnection'
 
 export const StepButton = styled(Button)(({ theme }) => ({
@@ -28,19 +30,22 @@ export default function StepFooter({
   onBackCallback: VoidFunction
 }) {
   const { t } = useTranslation()
-  const { getValues } = useFormContext()
+  const modelId = useModelIdParam()
+  const { getValues, watch } = useFormContext<MintBadgeSchemaType>()
 
   const canGoBack = currentStep !== 0
   const backButtonDisabled = currentStep === 0
-  const isLastStep = currentStep === CREATE_MODEL_STEPS_AMOUNT - 1
+  const isLastStep = currentStep === MINT_STEPS_AMOUNT - 1
+
+  const imageHasBeenGenerated = watch('previewImage')
 
   function onBack() {
-    saveFormValues(getValues())
+    saveFormValues(getValues(), modelId)
     if (onBackCallback) onBackCallback()
   }
 
   function onNext() {
-    saveFormValues(getValues())
+    saveFormValues(getValues(), modelId)
     if (onNextCallback) onNextCallback()
   }
 
@@ -54,7 +59,7 @@ export default function StepFooter({
             onClick={onBack}
             variant="contained"
           >
-            {t('badge.model.create.back')}
+            {t('badge.model.mint.back')}
           </StepButton>
         )}
         {!isLastStep && (
@@ -64,18 +69,19 @@ export default function StepFooter({
             sx={{ ml: !canGoBack ? 'auto' : 'none' }}
             variant="contained"
           >
-            {t('badge.model.create.next')}
+            {t('badge.model.mint.next')}
           </StepButton>
         )}
         {isLastStep && (
           <PreventActionWithoutConnection sx={{ m: 'auto' }}>
             <StepButton
               color={color || 'primary'}
+              disabled={!imageHasBeenGenerated}
               sx={{ m: 'auto' }}
               type="submit"
               variant="contained"
             >
-              {t('badge.model.create.submit')}
+              {t('badge.model.mint.submit')}
             </StepButton>
           </PreventActionWithoutConnection>
         )}
