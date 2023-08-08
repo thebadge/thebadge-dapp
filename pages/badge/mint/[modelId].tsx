@@ -13,7 +13,7 @@ import { useContractInstance } from '@/src/hooks/useContractInstance'
 import useTransaction, { TransactionStates } from '@/src/hooks/useTransaction'
 import MintWithSteps from '@/src/pagePartials/badge/mint/MintWithSteps'
 import { MintBadgeSchemaType } from '@/src/pagePartials/badge/mint/schema/MintBadgeSchema'
-import { cleanMintFormValues } from '@/src/pagePartials/badge/model/utils'
+import { cleanMintFormValues } from '@/src/pagePartials/badge/mint/utils'
 import { PreventActionIfBadgeTypePaused } from '@/src/pagePartials/errors/preventActionIfPaused'
 import { RequiredNotHaveBadge } from '@/src/pagePartials/errors/requiredNotHaveBadge'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
@@ -131,7 +131,7 @@ const MintBadgeType: NextPageWithLayout = () => {
         )
       })
       await transaction.wait()
-      cleanMintFormValues()
+      cleanMintFormValues(badgeModelId)
     } catch (e) {
       console.error(e)
       // Do nothing

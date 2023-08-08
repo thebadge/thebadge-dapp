@@ -41,8 +41,8 @@ export function checkIfHasOngoingBadgeMint(modelId: string) {
   return !!item && Date.now() < JSON.parse(item).expirationTime
 }
 
-export function cleanFormValues() {
-  localStorage.removeItem(FORM_STORE_KEY)
+export function cleanMintFormValues(modelId: string) {
+  localStorage.removeItem(FORM_STORE_KEY + `-${modelId}`)
 }
 
 export async function convertPreviewToImage(

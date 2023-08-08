@@ -54,7 +54,7 @@ export function saveFormValues(values: Record<string, any>) {
   )
 }
 
-export function cleanMintFormValues() {
+export function cleanCreateModelFormValues() {
   localStorage.removeItem(FORM_STORE_KEY)
 }
 
