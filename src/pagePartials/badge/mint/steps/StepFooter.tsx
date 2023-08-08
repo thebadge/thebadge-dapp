@@ -59,7 +59,7 @@ export default function StepFooter({
             onClick={onBack}
             variant="contained"
           >
-            {t('badge.model.create.back')}
+            {t('badge.model.mint.back')}
           </StepButton>
         )}
         {!isLastStep && (
@@ -69,7 +69,7 @@ export default function StepFooter({
             sx={{ ml: !canGoBack ? 'auto' : 'none' }}
             variant="contained"
           >
-            {t('badge.model.create.next')}
+            {t('badge.model.mint.next')}
           </StepButton>
         )}
         {isLastStep && (
@@ -81,7 +81,7 @@ export default function StepFooter({
               type="submit"
               variant="contained"
             >
-              {t('badge.model.create.submit')}
+              {t('badge.model.mint.submit')}
             </StepButton>
           </PreventActionWithoutConnection>
         )}
