@@ -9,7 +9,6 @@ import InViewPort from '@/src/components/helpers/InViewPort'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import TBSwiper from '@/src/components/helpers/TBSwiper'
 import { fillListWithPlaceholders } from '@/src/components/utils/emptyBadges'
-import { nowInSeconds } from '@/src/constants/helpers'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
 import { TimeLeft, useDate } from '@/src/hooks/useDate'
@@ -19,7 +18,6 @@ import BadgeModelPreview from '@/src/pagePartials/badge/BadgeModelPreview'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { KlerosBadgeModelController__factory } from '@/types/generated/typechain'
 
-const now = nowInSeconds()
 export default function PendingList() {
   const { t } = useTranslation()
   const { sendTx } = useTransaction()
@@ -27,9 +25,8 @@ export default function PendingList() {
   const gql = useSubgraph()
   const { getPendingTimeProgressPercentage, getTimeLeft, timestampToDate } = useDate()
   const { address: ownerAddress } = useWeb3Connection()
-  const badgesInReviewAndChallenged = gql.useUserBadgesInReviewAndChallenged({
+  const badgesInReviewAndChallenged = gql.useUserBadgesInReview({
     ownerAddress: ownerAddress || '',
-    date: now,
   })
   const klerosBadgeModelController = useContractInstance(
     KlerosBadgeModelController__factory,
