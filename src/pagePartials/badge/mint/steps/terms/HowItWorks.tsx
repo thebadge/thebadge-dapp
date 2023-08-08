@@ -39,12 +39,13 @@ export default function HowItWorks() {
       name={'howItWorks'}
       render={({ field: { onChange, value }, fieldState: { error } }) => (
         <AgreementField
-          agreementText={t('badge.type.mint.helpSteps', {
+          agreementText={t('badge.model.mint.helpSteps', {
             badgeCreatorName: badgeCreatorMetadata.data?.content?.name,
             badgeCreatorProfileLink: '/profile/' + badgeModelData.data?.badgeModel?.creator.id,
             curationDocsUrl: DOCS_URL + '/thebadge-documentation/protocol-mechanics/challenge',
             curationCriteriaUrl: badgeCriteria,
-            challengePeriodDuration: klerosBadgeModel?.data?.challengePeriodDuration / 60 / 60,
+            challengePeriodDuration:
+              (klerosBadgeModel?.data?.challengePeriodDuration / 60 / 60) * (isTestnet ? 60 : 1),
             timeUnit: isTestnet ? 'minutes' : 'days',
           })}
           color="blue"

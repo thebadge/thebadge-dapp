@@ -50,11 +50,11 @@ export default function StepHeader({
   return (
     <Stack sx={{ display: 'flex', flexDirection: 'column', mb: 6, gap: 4, alignItems: 'center' }}>
       <Typography color={colors.blue} textAlign="center" variant="title2">
-        {t('badge.model.create.title')}
+        {t('badge.model.mint.title')}
       </Typography>
 
       <MarkdownTypography textAlign="justify" variant="body3" width="85%">
-        {t(`badge.type.mint.steps.${currentStep}.subTitle`, {
+        {t(`badge.model.mint.steps.${currentStep}.subTitle`, {
           badgeName: badgeModelMetadata?.name,
           creatorContact: `mailto:${badgeCreatorMetadata.data?.content?.email}`,
           badgeCreatorName: badgeCreatorMetadata.data?.content?.name,

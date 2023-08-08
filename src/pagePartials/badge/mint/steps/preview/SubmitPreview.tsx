@@ -65,7 +65,7 @@ export default function SubmitPreview({
 
   return (
     <Stack alignItems={'center'} gap={3} margin={1}>
-      <Typography>{t('badge.type.mint.previewTitle')}</Typography>
+      <Typography>{t('badge.model.mint.previewTitle')}</Typography>
       <Box ref={badgePreviewRef}>
         <BadgePreview
           animationEffects={['wobble', 'grow', 'glare']}
