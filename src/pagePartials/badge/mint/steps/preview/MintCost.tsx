@@ -11,6 +11,7 @@ import { DOCS_URL } from '@/src/constants/common'
 import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import { useRegistrationBadgeModelKlerosMetadata } from '@/src/hooks/subgraph/useBadgeModelKlerosMetadata'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+import { isTestnet } from '@/src/utils/network'
 
 type Props = {
   costs: {
@@ -79,7 +80,7 @@ export default function MintCost({ costs }: Props) {
             {t('badge.type.mint.depositDisclaimer', {
               docsUrl: DOCS_URL + '/thebadge-documentation/protocol-mechanics/challenge',
               challengePeriodDuration: challengePeriodDuration / 60 / 60,
-              timeUnit: 'days',
+              timeUnit: isTestnet ? 'minutes' : 'days',
             })}
           </MarkdownTypography>
         </Box>

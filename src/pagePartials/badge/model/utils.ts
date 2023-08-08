@@ -12,6 +12,7 @@ const STEP_1 = [
 const STEP_2 = ['criteriaFileUri', 'criteria', 'rigorousness', 'mintCost', 'validFor']
 const STEP_3 = ['badgeMetadataColumns']
 export const FIELDS_TO_VALIDATE_ON_STEP = [STEP_0, STEP_1, STEP_2, STEP_3]
+export const CREATE_MODEL_STEPS_AMOUNT = 5
 
 export const FORM_STORE_KEY = 'badge-model-creation'
 /**
@@ -53,7 +54,7 @@ export function saveFormValues(values: Record<string, any>) {
   )
 }
 
-export function cleanFormValues() {
+export function cleanMintFormValues() {
   localStorage.removeItem(FORM_STORE_KEY)
 }
 
