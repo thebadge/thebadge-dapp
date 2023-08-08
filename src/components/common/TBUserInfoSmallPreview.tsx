@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router'
 import React from 'react'
 
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined'
@@ -8,7 +9,6 @@ import { useTranslation } from 'next-export-i18n'
 
 import TBUserAvatar from '@/src/components/common/TBUserAvatar'
 import { Address } from '@/src/components/helpers/Address'
-import { APP_URL } from '@/src/constants/common'
 import { truncateStringInTheMiddle } from '@/src/utils/strings'
 import { CreatorMetadata } from '@/types/badges/Creator'
 
@@ -46,9 +46,10 @@ export default function TBUserInfoSmallPreview({
   isVerified?: boolean
 }) {
   const { t } = useTranslation()
+  const router = useRouter()
 
   function handleClick() {
-    window.open(`${APP_URL}/profile/${userAddress}`, '_ blank')
+    window.open(`${router.basePath}/profile/${userAddress}`, '_ blank')
   }
 
   return (

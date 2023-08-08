@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router'
 import { useState } from 'react'
 
 import { styled } from '@mui/material'
@@ -6,7 +7,6 @@ import { Toast, toast } from 'react-hot-toast'
 import { Copy } from '@/src/components/assets/Copy'
 import { Link } from '@/src/components/assets/Link'
 import { ToastComponent } from '@/src/components/toast/ToastComponent'
-import { APP_URL } from '@/src/constants/common'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { truncateStringInTheMiddle } from '@/src/utils/strings'
 
@@ -65,6 +65,7 @@ export const Address: React.FC<Props> = ({
   truncate = true,
   ...restProps
 }) => {
+  const router = useRouter()
   const { getExplorerUrl } = useWeb3Connection()
   const [toastId, setToastId] = useState('')
 
@@ -84,7 +85,7 @@ export const Address: React.FC<Props> = ({
   }
 
   function getProfileUrl() {
-    return `${APP_URL}/profile/${address}`
+    return `${router.basePath}/profile/${address}`
   }
 
   return (
