@@ -4,13 +4,14 @@ import { defaultAbiCoder } from 'ethers/lib/utils'
 import { z } from 'zod'
 
 import { DeltaPDFSchema } from '@/src/components/form/helpers/customSchemas'
-import { APP_URL, IS_DEVELOP } from '@/src/constants/common'
+import { APP_URL } from '@/src/constants/common'
 import { BadgeModelCriteriaType } from '@/src/pagePartials/badge/model/schema/CreateModelSchema'
 import ipfsUpload from '@/src/utils/ipfsUpload'
 import {
   KlerosListStructure,
   generateKlerosListMetaEvidence,
 } from '@/src/utils/kleros/generateKlerosListMetaEvidence'
+import { isTestnet } from '@/src/utils/network'
 import { BadgeModelMetadata, BadgeNFTAttributesType } from '@/types/badges/BadgeMetadata'
 import { Kleros__factory } from '@/types/generated/typechain'
 import { MetadataColumn } from '@/types/kleros/types'
@@ -130,7 +131,7 @@ export async function encodeKlerosControllerData(
   const challengeRemovalRequestDeposit = baseDeposit.div(4).toString()
 
   // Received challengePeriodDuration is considered in Dev = minutes and in Prod = Days
-  const challengeDurationInSeconds = challengePeriodDuration * (IS_DEVELOP ? 1 / 60 : 24) * 60 * 60
+  const challengeDurationInSeconds = challengePeriodDuration * (isTestnet ? 1 / 60 : 24) * 60 * 60
 
   const klerosControllerDataEncoded = defaultAbiCoder.encode(
     [
