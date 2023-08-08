@@ -178,7 +178,7 @@
       {
         "indexed": true,
         "internalType": "uint256",
-        "name": "badgeModelID",
+        "name": "badgeModelId",
         "type": "uint256"
       },
       {
@@ -240,6 +240,25 @@
     "anonymous": false,
     "inputs": [
       {
+        "indexed": true,
+        "internalType": "address",
+        "name": "admin",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "minter",
+        "type": "address"
+      }
+    ],
+    "name": "Initialize",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
         "indexed": false,
         "internalType": "uint8",
         "name": "version",
@@ -272,7 +291,7 @@
         "type": "address"
       },
       {
-        "indexed": true,
+        "indexed": false,
         "internalType": "uint256",
         "name": "amount",
         "type": "uint256"
@@ -282,6 +301,12 @@
         "internalType": "enum TheBadgeStore.PaymentType",
         "name": "paymentType",
         "type": "uint8"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "badgeModelId",
+        "type": "uint256"
       }
     ],
     "name": "PaymentMade",
@@ -881,7 +906,7 @@
   },
   {
     "inputs": [],
-    "name": "createBadgeModelValue",
+    "name": "createBadgeModelProtocolFee",
     "outputs": [
       {
         "internalType": "uint256",
@@ -994,7 +1019,7 @@
       },
       {
         "internalType": "address",
-        "name": "feeCollector",
+        "name": "_feeCollector",
         "type": "address"
       },
       {
@@ -1062,7 +1087,7 @@
   },
   {
     "inputs": [],
-    "name": "mintBadgeDefaultFee",
+    "name": "mintBadgeProtocolDefaultFeeInBps",
     "outputs": [
       {
         "internalType": "uint256",
@@ -1140,7 +1165,7 @@
   },
   {
     "inputs": [],
-    "name": "registerCreatorValue",
+    "name": "registerCreatorProtocolFee",
     "outputs": [
       {
         "internalType": "uint256",
