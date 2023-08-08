@@ -79,7 +79,7 @@ export default function MintCost({ costs }: Props) {
           >
             {t('badge.type.mint.depositDisclaimer', {
               docsUrl: DOCS_URL + '/thebadge-documentation/protocol-mechanics/challenge',
-              challengePeriodDuration: challengePeriodDuration / 60 / 60,
+              challengePeriodDuration: (challengePeriodDuration / 60 / 60) * (isTestnet ? 60 : 1),
               timeUnit: isTestnet ? 'minutes' : 'days',
             })}
           </MarkdownTypography>
