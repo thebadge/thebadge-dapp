@@ -11,7 +11,7 @@ export const MINT_STEPS_AMOUNT = 3
 
 export const FORM_STORE_KEY = 'mint-badge'
 
-export function saveFormValues(values: Record<string, any>) {
+export function saveFormValues(values: Record<string, any>, modelId: string) {
   const ONE_DAY = 24 * 60 * 60 * 1000 /* ms */
   const expiration = MODEL_CREATION_CACHE_EXPIRATION_MS
     ? +MODEL_CREATION_CACHE_EXPIRATION_MS
@@ -27,17 +27,17 @@ export function saveFormValues(values: Record<string, any>) {
  * Retrieve stored values, in case that the user refresh the page or something
  * happens
  */
-export function defaultValues() {
-  if (checkIfHasOngoingBadgeMint()) {
-    const storedValues = JSON.parse(localStorage.getItem(FORM_STORE_KEY) as string)
+export function defaultValues(modelId: string) {
+  if (checkIfHasOngoingBadgeMint(modelId)) {
+    const storedValues = JSON.parse(localStorage.getItem(FORM_STORE_KEY + `-${modelId}`) as string)
     return storedValues.values
   } else {
     return {}
   }
 }
 
-export function checkIfHasOngoingBadgeMint() {
-  const item = localStorage.getItem(FORM_STORE_KEY)
+export function checkIfHasOngoingBadgeMint(modelId: string) {
+  const item = localStorage.getItem(FORM_STORE_KEY + `-${modelId}`)
   return !!item && Date.now() < JSON.parse(item).expirationTime
 }
 

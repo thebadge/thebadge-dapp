@@ -10,6 +10,7 @@ import StepHeader from './steps/StepHeader'
 import { FIELDS_TO_VALIDATE_ON_STEP, defaultValues } from './utils'
 import StepPrompt from '@/src/components/form/formWithSteps/StepPrompt'
 import { TransactionLoading } from '@/src/components/loading/TransactionLoading'
+import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import { TransactionStates } from '@/src/hooks/useTransaction'
 import { useTriggerRHF } from '@/src/hooks/useTriggerRHF'
 import {
@@ -34,13 +35,14 @@ export default function MintWithSteps({
 }: MintStepsProps) {
   const badgePreviewRef = useRef<HTMLDivElement>()
   const [currentStep, setCurrentStep] = useState(0)
+  const modelId = useModelIdParam()
 
   // Naive completed step implementation
   const [completed, setCompleted] = useState<Record<string, boolean>>({})
 
   const methods = useForm<z.infer<typeof MintBadgeSchema>>({
     resolver: zodResolver(MintBadgeSchema),
-    defaultValues: defaultValues(),
+    defaultValues: defaultValues(modelId),
     reValidateMode: 'onChange',
     mode: 'onChange',
   })
