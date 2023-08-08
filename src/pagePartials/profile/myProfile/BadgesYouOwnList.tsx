@@ -13,7 +13,7 @@ import MiniBadgeModelPreview from '@/src/pagePartials/badge/MiniBadgeModelPrevie
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import getHighlightColorByStatus from '@/src/utils/badges/getHighlightColorByStatus'
 import { BadgeStatus, Badge_Filter } from '@/types/generated/subgraph'
-import { KlerosController__factory } from '@/types/generated/typechain'
+import { KlerosBadgeModelController__factory } from '@/types/generated/typechain'
 
 type Props = {
   address: string
@@ -29,11 +29,14 @@ export default function BadgesYouOwnList({ address }: Props) {
   const [items, setItems] = useState<React.ReactNode[]>([])
   const [loading, setLoading] = useState<boolean>(false)
 
-  const klerosController = useContractInstance(KlerosController__factory, 'KlerosController')
+  const klerosBadgeModelController = useContractInstance(
+    KlerosBadgeModelController__factory,
+    'KlerosBadgeModelController',
+  )
   const gql = useSubgraph()
 
   async function handleClaimIt(badgeId: string, address: string) {
-    const transaction = await sendTx(() => klerosController.claim(badgeId))
+    const transaction = await sendTx(() => klerosBadgeModelController.claim(badgeId))
 
     await transaction.wait()
   }

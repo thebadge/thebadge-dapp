@@ -40,7 +40,7 @@ const CreateBadgeType: NextPageWithLayout = () => {
         const {
           createAndUploadBadgeModelMetadata,
           createAndUploadClearingAndRegistrationFilesForKleros,
-          encodeKlerosControllerData,
+          encodeKlerosBadgeModelControllerData,
         } = await import('@/src/utils/badges/createBadgeModelHelpers')
 
         const { clearingIPFSHash, registrationIPFSHash } =
@@ -60,7 +60,7 @@ const CreateBadgeType: NextPageWithLayout = () => {
           textContrast,
         )
 
-        const klerosControllerDataEncoded = encodeKlerosControllerData(
+        const klerosBadgeModelControllerDataEncoded = encodeKlerosBadgeModelControllerData(
           address as string,
           contracts.Kleros.address[appChainId],
           readOnlyAppProvider,
@@ -83,7 +83,7 @@ const CreateBadgeType: NextPageWithLayout = () => {
             mintCreatorFee: data.mintCost,
             validFor: data.validFor, // in seconds, 0 infinite
           },
-          klerosControllerDataEncoded,
+          klerosBadgeModelControllerDataEncoded,
         )
       })
 

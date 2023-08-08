@@ -105,7 +105,7 @@ export async function createAndUploadClearingAndRegistrationFilesForKleros(
   }
 }
 
-export async function encodeKlerosControllerData(
+export async function encodeKlerosBadgeModelControllerData(
   creatorAddress: string,
   klerosContractAddress: string,
   readOnlyAppProvider: JsonRpcProvider,
@@ -133,7 +133,7 @@ export async function encodeKlerosControllerData(
   // Received challengePeriodDuration is considered in Dev = minutes and in Prod = Days
   const challengeDurationInSeconds = challengePeriodDuration * (isTestnet ? 1 / 60 : 24) * 60 * 60
 
-  const klerosControllerDataEncoded = defaultAbiCoder.encode(
+  const klerosBadgeModelControllerDataEncoded = defaultAbiCoder.encode(
     [
       `tuple(
           address,
@@ -167,7 +167,7 @@ export async function encodeKlerosControllerData(
     ],
   )
 
-  return klerosControllerDataEncoded
+  return klerosBadgeModelControllerDataEncoded
 }
 
 async function transformDeltaToPDF(pdfValues: z.infer<typeof DeltaPDFSchema>) {

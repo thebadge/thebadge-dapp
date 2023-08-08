@@ -12,7 +12,7 @@ export const contracts = {
     },
     abi: TheBadge,
   },
-  KlerosController: {
+  KlerosBadgeModelController: {
     address: {
       [Chains.goerli]: '0xC4A430363e8c4Aae0a221E929ae8d3a95742cA82',
       [Chains.gnosis]: 'null',

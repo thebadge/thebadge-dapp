@@ -86,7 +86,7 @@ const MintBadgeType: NextPageWithLayout = () => {
           { imageBase64File: imageDataUrl },
         )
 
-        const klerosControllerDataEncoded = defaultAbiCoder.encode(
+        const klerosBadgeModelControllerDataEncoded = defaultAbiCoder.encode(
           [`tuple(string)`],
           [[evidenceIPFSHash]],
         )
@@ -98,7 +98,7 @@ const MintBadgeType: NextPageWithLayout = () => {
             badgeModelId,
             address,
             badgeMetadataIPFSHash,
-            klerosControllerDataEncoded,
+            klerosControllerDataEncoded: klerosBadgeModelControllerDataEncoded,
             overrides: {
               value: mintValue,
             },
@@ -128,7 +128,7 @@ const MintBadgeType: NextPageWithLayout = () => {
           badgeModelId,
           address as string,
           badgeMetadataIPFSHash,
-          klerosControllerDataEncoded,
+          klerosBadgeModelControllerDataEncoded,
           {
             value: mintValue,
           },

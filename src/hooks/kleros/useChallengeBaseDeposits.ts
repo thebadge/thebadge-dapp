@@ -1,7 +1,7 @@
 import useSWR from 'swr'
 
 import { useContractInstance } from '@/src/hooks/useContractInstance'
-import { KlerosController__factory } from '@/types/generated/typechain'
+import { KlerosBadgeModelController__factory } from '@/types/generated/typechain'
 
 /**
  * This hook calculates the cost of challenge a summiting badge or a removal for a badge based on the badge's status and
@@ -10,11 +10,14 @@ import { KlerosController__factory } from '@/types/generated/typechain'
  * @param badgeId
  */
 export function useChallengeCost(badgeId: string) {
-  const klerosController = useContractInstance(KlerosController__factory, 'KlerosController')
+  const klerosBadgeModelController = useContractInstance(
+    KlerosBadgeModelController__factory,
+    'KlerosBadgeModelController',
+  )
 
   return useSWR(
     [`challengeDeposit:${badgeId}`, badgeId],
-    ([,]) => klerosController.getChallengeDepositValue(badgeId),
+    ([,]) => klerosBadgeModelController.getChallengeDepositValue(badgeId),
     { revalidateOnMount: true },
   )
 }

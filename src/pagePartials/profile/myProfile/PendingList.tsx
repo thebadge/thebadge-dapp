@@ -17,7 +17,7 @@ import { useSizeLG } from '@/src/hooks/useSize'
 import useTransaction from '@/src/hooks/useTransaction'
 import BadgeModelPreview from '@/src/pagePartials/badge/BadgeModelPreview'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
-import { KlerosController__factory } from '@/types/generated/typechain'
+import { KlerosBadgeModelController__factory } from '@/types/generated/typechain'
 
 const now = nowInSeconds()
 export default function PendingList() {
@@ -31,7 +31,10 @@ export default function PendingList() {
     ownerAddress: ownerAddress || '',
     date: now,
   })
-  const klerosController = useContractInstance(KlerosController__factory, 'KlerosController')
+  const klerosBadgeModelController = useContractInstance(
+    KlerosBadgeModelController__factory,
+    'KlerosBadgeModelController',
+  )
 
   const badgesList = useMemo(() => {
     const badges = badgesInReviewAndChallenged.data?.user?.badges?.map((badge) => {
@@ -45,7 +48,7 @@ export default function PendingList() {
       )
 
       async function handleClaimBadge(badgeId: string) {
-        const transaction = await sendTx(() => klerosController.claim(badgeId))
+        const transaction = await sendTx(() => klerosBadgeModelController.claim(badgeId))
         await transaction.wait()
       }
 
@@ -110,7 +113,7 @@ export default function PendingList() {
     badgesInReviewAndChallenged.data?.user?.badges,
     getPendingTimeProgressPercentage,
     getTimeLeft,
-    klerosController,
+    klerosBadgeModelController,
     router,
     sendTx,
     t,
