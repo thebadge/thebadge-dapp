@@ -1,6 +1,8 @@
 import { ReactNode, RefObject } from 'react'
 
+import { Theme } from '@mui/material'
 import { ButtonPropsColorOverrides } from '@mui/material/Button/Button'
+import { SxProps } from '@mui/system'
 import { OverridableStringUnion } from '@mui/types'
 import { ReactComponentWithRequiredProps } from '@ts-react/form/src/createSchemaForm'
 
@@ -17,6 +19,8 @@ type BasicCustomFormProps = {
   layout?: FormLayoutType
   submitButton: CustomFormButtonType
   backButton?: CustomFormButtonType
+  containerSx?: SxProps<Theme>
+  buttonsSx?: SxProps<Theme>
 }
 
 export type CustomFormProps =

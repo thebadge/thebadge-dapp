@@ -64,7 +64,7 @@ export default function BadgeModelInfoPreview({ badgeModel }: { badgeModel: Badg
       <Box display="flex" flex="1" justifyContent="space-between">
         <ButtonV2
           backgroundColor={colors.transparent}
-          onClick={() => router.push(`/badge/${badgeModel.id}`)}
+          onClick={() => router.push(`/badge/model/${badgeModel.id}/explorer`)}
           variant="outlined"
         >
           {t('explorer.preview.badge.showOthers')}

@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router'
 import React, { useRef, useState } from 'react'
 
 import AddRoundedIcon from '@mui/icons-material/AddRounded'
@@ -10,7 +11,6 @@ import { useTranslation } from 'next-export-i18n'
 
 import TBUserAvatar from '@/src/components/common/TBUserAvatar'
 import { Address } from '@/src/components/helpers/Address'
-import { APP_URL } from '@/src/constants/common'
 import { truncateStringInTheMiddle } from '@/src/utils/strings'
 import { CreatorMetadata } from '@/types/badges/Creator'
 
@@ -50,6 +50,7 @@ export default function TBUserInfoExpandablePreview({
   label?: string
   isVerified?: boolean
 }) {
+  const router = useRouter()
   const { t } = useTranslation()
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLDivElement>(null)
@@ -63,7 +64,7 @@ export default function TBUserInfoExpandablePreview({
   }
 
   function handleViewProfileClick() {
-    window.open(`${APP_URL}/profile/${userAddress}`, '_ blank')
+    window.open(`${router.basePath}/profile/${userAddress}`, '_ blank')
   }
 
   return (

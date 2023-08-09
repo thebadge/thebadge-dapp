@@ -11,7 +11,7 @@ import { TheBadge__factory } from '@/types/generated/typechain'
 import { NextPageWithLayout } from '@/types/next'
 
 const CreateBadgeType: NextPageWithLayout = () => {
-  const { sendTx, state: transactionState } = useTransaction()
+  const { resetTxState, sendTx, state: transactionState } = useTransaction()
 
   const { address, appChainId, readOnlyAppProvider } = useWeb3Connection()
   const theBadge = useContractInstance(TheBadge__factory, 'TheBadge')
@@ -94,7 +94,9 @@ const CreateBadgeType: NextPageWithLayout = () => {
     }
   }
 
-  return <CreateWithSteps onSubmit={onSubmit} txState={transactionState} />
+  return (
+    <CreateWithSteps onSubmit={onSubmit} resetTxState={resetTxState} txState={transactionState} />
+  )
 }
 
 export default withPageGenericSuspense(CreateBadgeType)

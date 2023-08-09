@@ -1,47 +1,48 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Container, Stack } from '@mui/material'
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
+import StepFooter from './steps/StepFooter'
 import StepHeader from './steps/StepHeader'
 import { FIELDS_TO_VALIDATE_ON_STEP, defaultValues } from './utils'
 import StepPrompt from '@/src/components/form/formWithSteps/StepPrompt'
 import { TransactionLoading } from '@/src/components/loading/TransactionLoading'
+import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import { TransactionStates } from '@/src/hooks/useTransaction'
 import { useTriggerRHF } from '@/src/hooks/useTriggerRHF'
 import {
-  CreateModelSchema,
-  CreateModelSchemaType,
-} from '@/src/pagePartials/badge/model/schema/CreateModelSchema'
-import StepFooter from '@/src/pagePartials/badge/model/steps/StepFooter'
-import BadgeModelEvidenceFormCreation from '@/src/pagePartials/badge/model/steps/evidence/BadgeModelEvidenceFormCreation'
-import BadgeModelConfirmation from '@/src/pagePartials/badge/model/steps/preview/BadgeModelConfirmation'
-import BadgeModelCreated from '@/src/pagePartials/badge/model/steps/preview/BadgeModelCreated'
-import BadgeModelStrategy from '@/src/pagePartials/badge/model/steps/strategy/BadgeModelStrategy'
-import HowItWorks from '@/src/pagePartials/badge/model/steps/terms/HowItWorks'
-import BadgeModelUIBasics from '@/src/pagePartials/badge/model/steps/uiBasics/BadgeModelUIBasics'
+  MintBadgeSchema,
+  MintBadgeSchemaType,
+} from '@/src/pagePartials/badge/mint/schema/MintBadgeSchema'
+import DynamicForm from '@/src/pagePartials/badge/mint/steps/dynamicForm/DynamicEvidenceForm'
+import MintSucceed from '@/src/pagePartials/badge/mint/steps/preview/MintSucceed'
+import SubmitPreview from '@/src/pagePartials/badge/mint/steps/preview/SubmitPreview'
+import HowItWorks from '@/src/pagePartials/badge/mint/steps/terms/HowItWorks'
 
-type CreateModelStepsProps = {
-  onSubmit: SubmitHandler<CreateModelSchemaType>
+type MintStepsProps = {
+  onSubmit: SubmitHandler<MintBadgeSchemaType>
   txState: TransactionStates
   resetTxState: VoidFunction
 }
 
-export default function CreateWithSteps({
+export default function MintWithSteps({
   onSubmit,
   resetTxState,
   txState = TransactionStates.none,
-}: CreateModelStepsProps) {
+}: MintStepsProps) {
+  const badgePreviewRef = useRef<HTMLDivElement>()
   const [currentStep, setCurrentStep] = useState(0)
+  const modelId = useModelIdParam()
 
   // Naive completed step implementation
   const [completed, setCompleted] = useState<Record<string, boolean>>({})
 
-  const methods = useForm<z.infer<typeof CreateModelSchema>>({
-    resolver: zodResolver(CreateModelSchema),
-    defaultValues: defaultValues(),
+  const methods = useForm<z.infer<typeof MintBadgeSchema>>({
+    resolver: zodResolver(MintBadgeSchema),
+    defaultValues: defaultValues(modelId),
     reValidateMode: 'onChange',
     mode: 'onChange',
   })
@@ -83,7 +84,7 @@ export default function CreateWithSteps({
     <FormProvider {...methods}>
       <StepPrompt hasUnsavedChanges={methods.formState.isDirty} />
       <StepHeader
-        color="purple"
+        color="blue"
         completedSteps={completed}
         currentStep={currentStep}
         onStepNavigation={onStepNavigation}
@@ -92,22 +93,25 @@ export default function CreateWithSteps({
         {txState !== TransactionStates.none && txState !== TransactionStates.success && (
           <TransactionLoading resetTxState={resetTxState} state={txState} />
         )}
-        {txState === TransactionStates.success && <BadgeModelCreated />}
+        {txState === TransactionStates.success && <MintSucceed />}
         {txState === TransactionStates.none && (
           <form onSubmit={methods.handleSubmit(onSubmit)}>
             <Stack gap={3}>
               {currentStep === 0 && <HowItWorks />}
-              {currentStep === 1 && <BadgeModelUIBasics />}
-              {currentStep === 2 && <BadgeModelStrategy />}
-              {currentStep === 3 && <BadgeModelEvidenceFormCreation />}
-              {currentStep === 4 && <BadgeModelConfirmation />}
+              {currentStep === 1 && (
+                <DynamicForm onBackCallback={onBackCallback} onNextCallback={onNextCallback} />
+              )}
+              {currentStep === 2 && <SubmitPreview badgePreviewRef={badgePreviewRef} />}
 
-              <StepFooter
-                color="purple"
-                currentStep={currentStep}
-                onBackCallback={onBackCallback}
-                onNextCallback={onNextCallback}
-              />
+              {/* We disable the footer on the dynamic form, bc its need to handle his own footer */}
+              {currentStep !== 1 && (
+                <StepFooter
+                  color="blue"
+                  currentStep={currentStep}
+                  onBackCallback={onBackCallback}
+                  onNextCallback={onNextCallback}
+                />
+              )}
             </Stack>
           </form>
         )}

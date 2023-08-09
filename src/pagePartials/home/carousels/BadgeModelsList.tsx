@@ -17,7 +17,7 @@ import 'swiper/css/effect-coverflow'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 
-export default function BadgeListTypeList() {
+export default function BadgeModelsList() {
   const gql = useSubgraph()
   const router = useRouter()
 

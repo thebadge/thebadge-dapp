@@ -1,6 +1,7 @@
-import { DOMAttributes, HTMLAttributes } from 'react'
+import React, { DOMAttributes, HTMLAttributes } from 'react'
 
 import { Box, Typography, styled } from '@mui/material'
+import { ButtonV2, colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 
 import { LoadingArrow } from '@/src/components/loading/animated/LoadingArrow'
@@ -21,8 +22,10 @@ const Wrapper = styled(Box)`
 
 interface Props extends DOMAttributes<HTMLDivElement>, HTMLAttributes<HTMLDivElement> {
   state: TransactionStates
+  resetTxState?: VoidFunction
 }
-export const TransactionLoading: React.FC<Props> = ({ state, ...restProps }) => {
+
+export const TransactionLoading: React.FC<Props> = ({ resetTxState, state, ...restProps }) => {
   const { t } = useTranslation()
 
   function renderState(state: TransactionStates) {
@@ -55,6 +58,15 @@ export const TransactionLoading: React.FC<Props> = ({ state, ...restProps }) => 
           <>
             <Typography variant="dAppTitle1">{t('transactionLoading.failed')}</Typography>
             <LoadingFailed />
+            {resetTxState && (
+              <ButtonV2
+                backgroundColor={colors.transparent}
+                fontColor={colors.green}
+                onClick={resetTxState}
+              >
+                <Typography>Try again</Typography>
+              </ButtonV2>
+            )}
           </>
         )
     }

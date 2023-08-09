@@ -37,6 +37,11 @@ type FormWithStepsProps = {
   >
 }
 
+/**
+ * @deprecated Please don't use it anymore - It will be deleted as soon as i migrate the Registration Form, if you need
+ * to create a form with steps, please visit the MintWithSteps.tsx and use it as example, or also CreateWithSteps.tsx as
+ * a simple one
+ */
 export function FormWithSteps({
   color,
   formFieldProps,

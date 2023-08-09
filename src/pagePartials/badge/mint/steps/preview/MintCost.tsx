@@ -11,6 +11,7 @@ import { DOCS_URL } from '@/src/constants/common'
 import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import { useRegistrationBadgeModelKlerosMetadata } from '@/src/hooks/subgraph/useBadgeModelKlerosMetadata'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+import { isTestnet } from '@/src/utils/network'
 
 type Props = {
   costs: {
@@ -56,11 +57,11 @@ export default function MintCost({ costs }: Props) {
       }}
     >
       <Typography fontWeight={800} variant="dAppTitle3">
-        {t('badge.type.mint.depositRequired')}
+        {t('badge.model.mint.depositRequired')}
       </Typography>
       <Box display="flex" flex={1} gap={4}>
         <Stack flex={1} gap={1} sx={{ borderBottom: '1px solid white', margin: 'auto' }}>
-          <Typography variant="dAppTitle2">{t('badge.type.mint.depositCost')}</Typography>
+          <Typography variant="dAppTitle2">{t('badge.model.mint.depositCost')}</Typography>
           <Typography variant="body2">
             {costs.klerosCost} {networkConfig.token}
           </Typography>
@@ -76,10 +77,10 @@ export default function MintCost({ costs }: Props) {
             }}
             variant="subtitle2"
           >
-            {t('badge.type.mint.depositDisclaimer', {
+            {t('badge.model.mint.depositDisclaimer', {
               docsUrl: DOCS_URL + '/thebadge-documentation/protocol-mechanics/challenge',
-              challengePeriodDuration: challengePeriodDuration / 60 / 60,
-              timeUnit: 'days',
+              challengePeriodDuration: (challengePeriodDuration / 60 / 60) * (isTestnet ? 60 : 1),
+              timeUnit: isTestnet ? 'minutes' : 'days',
             })}
           </MarkdownTypography>
         </Box>
@@ -95,7 +96,7 @@ export default function MintCost({ costs }: Props) {
           minWidth: '50%',
         }}
       >
-        <Typography variant="dAppTitle2">{t('badge.type.mint.mintCost')}</Typography>
+        <Typography variant="dAppTitle2">{t('badge.model.mint.mintCost')}</Typography>
         <Box display="flex" justifyContent="space-between">
           <Typography sx={{ display: 'flex' }} variant="body2">
             {costs.mintCost} {networkConfig.token}
@@ -104,16 +105,16 @@ export default function MintCost({ costs }: Props) {
       </Stack>
 
       <Typography textAlign="center" variant="subtitle2">
-        {t('badge.type.mint.makeSure')}
+        {t('badge.model.mint.makeSure')}
         <a
           href={badgeCriteria as string}
           rel="noreferrer"
           style={{ color: colors.green }}
           target={'_blank'}
         >
-          {t('badge.type.mint.curationCriteria')}
+          {t('badge.model.mint.curationCriteria')}
         </a>
-        {t('badge.type.mint.avoidChallenges')}
+        {t('badge.model.mint.avoidChallenges')}
       </Typography>
     </Stack>
   )

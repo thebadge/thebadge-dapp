@@ -2,11 +2,8 @@ import { useRouter } from 'next/router'
 import * as React from 'react'
 import { useEffect } from 'react'
 
-import { BigNumber } from 'ethers'
-import { defaultAbiCoder, formatUnits } from 'ethers/lib/utils'
-import { z } from 'zod'
+import { defaultAbiCoder } from 'ethers/lib/utils'
 
-import klerosSchemaFactory from '@/src/components/form/helpers/validators'
 import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
@@ -14,7 +11,9 @@ import { useRegistrationBadgeModelKlerosMetadata } from '@/src/hooks/subgraph/us
 import useMintValue from '@/src/hooks/theBadge/useMintValue'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
 import useTransaction, { TransactionStates } from '@/src/hooks/useTransaction'
-import MintSteps from '@/src/pagePartials/badge/mint/MintSteps'
+import MintWithSteps from '@/src/pagePartials/badge/mint/MintWithSteps'
+import { MintBadgeSchemaType } from '@/src/pagePartials/badge/mint/schema/MintBadgeSchema'
+import { cleanMintFormValues } from '@/src/pagePartials/badge/mint/utils'
 import { PreventActionIfBadgeTypePaused } from '@/src/pagePartials/errors/preventActionIfPaused'
 import { RequiredNotHaveBadge } from '@/src/pagePartials/errors/requiredNotHaveBadge'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
@@ -27,7 +26,7 @@ import { SupportedRelayMethods } from '@/types/relayedTx'
 const MintBadgeType: NextPageWithLayout = () => {
   const { address, appChainId, isSocialWallet, userSocialInfo, web3Provider } = useWeb3Connection()
   const theBadge = useContractInstance(TheBadge__factory, 'TheBadge')
-  const { sendRelayTx, sendTx, state } = useTransaction()
+  const { resetTxState, sendRelayTx, sendTx, state } = useTransaction()
   const router = useRouter()
   const badgeModelId = useModelIdParam()
 
@@ -57,15 +56,12 @@ const MintBadgeType: NextPageWithLayout = () => {
     throw `There was not possible to get the value to mint a badge for the badge model: ${badgeModelId}`
   }
 
-  const creatorFee = BigNumber.from(badgeModel.data?.badgeModel.creatorFee || 0)
-
-  const CreateBadgeSchema = z.object(klerosSchemaFactory(klerosBadgeMetadata.metadata.columns))
-
-  async function onSubmit(data: z.infer<typeof CreateBadgeSchema>, imageDataUrl: string) {
+  async function onSubmit(data: MintBadgeSchemaType) {
     try {
       // Start transaction to show the loading state when we create the files
       // and configs
       const transaction = await sendTx(async () => {
+        const { evidence, previewImage } = data
         // Use NextJs dynamic import to reduce the bundle size
         const {
           createAndUploadBadgeEvidence,
@@ -73,7 +69,7 @@ const MintBadgeType: NextPageWithLayout = () => {
           createKlerosValuesObject,
         } = await import('@/src/utils/badges/mintHelpers')
 
-        const values = createKlerosValuesObject(data, klerosBadgeMetadata)
+        const values = createKlerosValuesObject(evidence, klerosBadgeMetadata)
 
         const evidenceIPFSHash = await createAndUploadBadgeEvidence(
           klerosBadgeMetadata?.metadata.columns as MetadataColumn[],
@@ -83,7 +79,7 @@ const MintBadgeType: NextPageWithLayout = () => {
         const badgeMetadataIPFSHash = await createAndUploadBadgeMetadata(
           badgeModel.data?.badgeModelMetadata as BadgeModelMetadata,
           address as string,
-          { imageBase64File: imageDataUrl },
+          { imageBase64File: previewImage },
         )
 
         const klerosBadgeModelControllerDataEncoded = defaultAbiCoder.encode(
@@ -137,6 +133,7 @@ const MintBadgeType: NextPageWithLayout = () => {
       if (transaction) {
         await transaction.wait()
       }
+      cleanMintFormValues(badgeModelId)
     } catch (e) {
       console.error(e)
       // Do nothing
@@ -146,16 +143,7 @@ const MintBadgeType: NextPageWithLayout = () => {
   return (
     <PreventActionIfBadgeTypePaused>
       <RequiredNotHaveBadge>
-        <MintSteps
-          costs={{
-            mintCost: formatUnits(creatorFee, 18),
-            totalMintCost: formatUnits(mintValue, 18),
-            klerosCost: formatUnits(mintValue.sub(creatorFee), 18),
-          }}
-          evidenceSchema={CreateBadgeSchema}
-          onSubmit={onSubmit}
-          txState={state}
-        />
+        <MintWithSteps onSubmit={onSubmit} resetTxState={resetTxState} txState={state} />
       </RequiredNotHaveBadge>
     </PreventActionIfBadgeTypePaused>
   )
