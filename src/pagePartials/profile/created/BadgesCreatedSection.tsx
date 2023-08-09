@@ -60,7 +60,8 @@ export default function BadgesCreatedSection() {
           />
           <Box id="badge-info">
             <Typography variant="body4">
-              {t('profile.badgesCreated.explorerBadgeCost')} {formatUnits(badgeModel.mintCost, 18)}
+              {t('profile.badgesCreated.explorerBadgeCost')}
+              {formatUnits(badgeModel.creatorFee, 18)}
             </Typography>
             <Typography variant="body4">
               {t('profile.badgesCreated.explorerBadgeMinted')} {badgeModel.badgesMintedAmount}
