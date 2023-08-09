@@ -4,6 +4,7 @@ import { BackendFileResponse, BackendFileUpload, IPFSHash, NFTAttribute } from '
 export type BadgeEvidenceMetadata = {
   columns: MetadataColumn[]
   values: Record<string, any>
+  submittedAt: number
 }
 
 export type BadgeModelMetadata<T = IPFSHash | BackendFileResponse | BackendFileUpload> = {

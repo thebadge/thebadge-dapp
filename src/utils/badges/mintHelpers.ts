@@ -39,6 +39,7 @@ export async function createAndUploadBadgeEvidence(
     attributes: {
       columns,
       values,
+      submittedAt: Date.now(),
     },
     filePaths: filePaths,
   })
