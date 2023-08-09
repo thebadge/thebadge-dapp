@@ -46,7 +46,9 @@ export default function PendingList() {
 
       async function handleClaimBadge(badgeId: string) {
         const transaction = await sendTx(() => klerosBadgeModelController.claim(badgeId))
-        await transaction.wait()
+        if (transaction) {
+          await transaction.wait()
+        }
       }
 
       return (

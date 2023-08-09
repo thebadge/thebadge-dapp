@@ -134,7 +134,9 @@ const MintBadgeType: NextPageWithLayout = () => {
           },
         )
       })
-      await transaction.wait()
+      if (transaction) {
+        await transaction.wait()
+      }
     } catch (e) {
       console.error(e)
       // Do nothing

@@ -67,7 +67,9 @@ const Register: NextPageWithLayout = () => {
         theBadge.registerBadgeModelCreator(`ipfs://${uploadedInfo.result?.ipfsHash}`),
       )
 
-      await transaction.wait()
+      if (transaction) {
+        await transaction.wait()
+      }
     } catch (e) {
       // Do nothing
     }

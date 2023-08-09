@@ -25,10 +25,12 @@ const TxButton: React.FC<TxButtonProps> = ({
   const txHandler = useCallback(async () => {
     try {
       const transaction = await sendTx(tx)
-      onSend && onSend(transaction)
-      if (onMined) {
-        const receipt = await transaction.wait()
-        onMined(receipt)
+      if (transaction) {
+        onSend && onSend(transaction)
+        if (onMined && transaction) {
+          const receipt = await transaction.wait()
+          onMined(receipt)
+        }
       }
     } catch (error) {
       onFail && onFail(error)

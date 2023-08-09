@@ -38,7 +38,9 @@ export default function BadgesYouOwnList({ address }: Props) {
   async function handleClaimIt(badgeId: string, address: string) {
     const transaction = await sendTx(() => klerosBadgeModelController.claim(badgeId))
 
-    await transaction.wait()
+    if (transaction) {
+      await transaction.wait()
+    }
   }
 
   const filters: Array<ListFilter<BadgeStatus>> = [

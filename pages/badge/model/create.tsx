@@ -86,8 +86,9 @@ const CreateBadgeType: NextPageWithLayout = () => {
           klerosBadgeModelControllerDataEncoded,
         )
       })
-
-      await transaction.wait()
+      if (transaction) {
+        await transaction.wait()
+      }
     } catch (e) {
       // Do nothing
     }
