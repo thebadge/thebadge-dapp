@@ -1,6 +1,7 @@
 import * as React from 'react'
 
-import { Box, Stack, Typography } from '@mui/material'
+import TipsAndUpdatesOutlinedIcon from '@mui/icons-material/TipsAndUpdatesOutlined'
+import { Box, Stack, Typography, styled } from '@mui/material'
 import { ButtonPropsColorOverrides } from '@mui/material/Button/Button'
 import Step from '@mui/material/Step'
 import StepButton from '@mui/material/StepButton'
@@ -18,6 +19,17 @@ import { useSizeSM } from '@/src/hooks/useSize'
 import { Creator } from '@/types/badges/Creator'
 
 const steps = ['Help', 'Badge Evidence', 'Badge Preview']
+
+const HintContainer = styled(Box)(({ theme }) => ({
+  alignItems: 'center',
+  display: 'flex',
+  flex: '1',
+  gap: theme.spacing(2),
+  border: '1px solid grey',
+  padding: theme.spacing(1.5),
+  borderRadius: theme.spacing(1),
+  margin: 'auto',
+}))
 
 export default function StepHeader({
   color,
@@ -53,16 +65,6 @@ export default function StepHeader({
         {t('badge.model.mint.title')}
       </Typography>
 
-      <MarkdownTypography textAlign="justify" variant="body3" width="85%">
-        {t(`badge.model.mint.steps.${currentStep}.subTitle`, {
-          badgeName: badgeModelMetadata?.name,
-          creatorContact: `mailto:${badgeCreatorMetadata.data?.content?.email}`,
-          badgeCreatorName: badgeCreatorMetadata.data?.content?.name,
-          curationDocsUrl: DOCS_URL + '/thebadge-documentation/protocol-mechanics/challenge',
-          costDocsUrls: DOCS_URL + '/thebadge-documentation/protocol-mechanics/challenge',
-        })}
-      </MarkdownTypography>
-
       <Box display="flex" flex="1" width="100%">
         <Stepper
           activeStep={currentStep}
@@ -93,6 +95,31 @@ export default function StepHeader({
             </Step>
           ))}
         </Stepper>
+      </Box>
+
+      <Box display="flex" flex="1" gap={8} px="10%">
+        <MarkdownTypography textAlign="justify" variant="body2" width="65%">
+          {t(`badge.model.mint.steps.${currentStep}.subTitle`, {
+            badgeName: badgeModelMetadata?.name,
+            creatorContact: `mailto:${badgeCreatorMetadata.data?.content?.email}`,
+            badgeCreatorName: badgeCreatorMetadata.data?.content?.name,
+            curationDocsUrl: DOCS_URL + '/thebadge-documentation/protocol-mechanics/challenge',
+            costDocsUrls: DOCS_URL + '/thebadge-documentation/protocol-mechanics/challenge',
+          })}
+        </MarkdownTypography>
+
+        {currentStep !== 5 && (
+          <HintContainer>
+            <TipsAndUpdatesOutlinedIcon color="info" />
+            <MarkdownTypography variant="caption">
+              {t(`badge.model.mint.steps.${currentStep}.hint`, {
+                docsUrl: DOCS_URL + '/thebadge-documentation/protocol-mechanics/how-it-works',
+                createBadgeTypeDocs:
+                  DOCS_URL + '/thebadge-documentation/protocol-mechanics/how-it-works',
+              })}
+            </MarkdownTypography>
+          </HintContainer>
+        )}
       </Box>
     </Stack>
   )
