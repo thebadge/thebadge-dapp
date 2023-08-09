@@ -254,7 +254,7 @@
           "challengePeriodDuration": "Challenge period duration",
           "rigorousness": "Rigorousness",
           "validFor": "Expiration time",
-          "mintCost": "Mint cost"
+          "mintFee": "Mint fee"
         },
         "evidence": {
 

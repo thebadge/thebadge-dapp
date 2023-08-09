@@ -19,15 +19,19 @@ export const CustomOptionPaper = styled(Box, {
   transition: 'all .3s cubic-bezier(0.65, 0, 0.35, 1)',
   borderWidth: '1px',
   borderStyle: 'solid',
+  opacity: 0.5,
   borderRadius: theme.spacing(1),
   borderColor: alpha(color, 0.8),
   background: alpha(color, 0.2),
   '&:hover': {
     boxShadow: '0px 0px 8px 0px rgba(255, 255, 255, 0.50)',
     borderColor: color,
+    opacity: 0.75,
   },
   ...(selected
     ? {
+        // Important is used to override the lower opacity on hover effect
+        opacity: '1 !important',
         boxShadow: '0px 0px 8px 0px rgba(255, 255, 255, 0.70)',
       }
     : {}),
