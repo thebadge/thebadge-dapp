@@ -201,7 +201,7 @@ function ChallengeModalContent({ badgeId, onClose }: { badgeId: string; onClose:
       <SafeSuspense fallback={<Skeleton variant={'text'} width={500} />}>
         <CurationCriteriaLink badgeModelId={badgeModelId} />
       </SafeSuspense>
-      <Container sx={{ flexDirection: 'row', display: 'flex', alignItems: 'center', gap: 1 }}>
+      <Container sx={{ flexDirection: 'row', display: 'flex', justifyContent: 'center', gap: 1 }}>
         <FindInPageOutlinedIcon />
         <Typography component="p" variant="body2">
           {t('badge.challenge.modal.explainWhy')}
