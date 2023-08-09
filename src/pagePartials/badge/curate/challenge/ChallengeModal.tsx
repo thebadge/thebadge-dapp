@@ -26,10 +26,12 @@ import { TextArea } from '@/src/components/form/TextArea'
 import { TextField } from '@/src/components/form/TextField'
 import { LongTextSchema, OptionalFileSchema } from '@/src/components/form/helpers/customSchemas'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
-import { useChallengeCost } from '@/src/hooks/kleros/useChallengeBaseDeposits'
+import { useChallengeCost } from '@/src/hooks/kleros/useChallengeCost'
+import { useRemovalCost } from '@/src/hooks/kleros/useRemovalCost'
 import useTCRContractInstance from '@/src/hooks/kleros/useTCRContractInstance'
 import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
 import { useBadgeKlerosMetadata } from '@/src/hooks/subgraph/useBadgeKlerosMetadata'
+import { TimeLeft, useDate } from '@/src/hooks/useDate'
 import useTransaction from '@/src/hooks/useTransaction'
 import CurationCriteriaLink from '@/src/pagePartials/badge/curate/CurationCriteriaLink'
 import ChallengeCost from '@/src/pagePartials/badge/curate/challenge/ChallengeCost'
@@ -111,9 +113,10 @@ function ChallengeModalContent({ badgeId, onClose }: { badgeId: string; onClose:
   const badgeById = useBadgeById(badgeId)
   const badgeKlerosMetadata = useBadgeKlerosMetadata(badgeId)
   const challengeCost = useChallengeCost(badgeId)
+  const removalCost = useRemovalCost(badgeId)
+  const { getTimeLeftToExpire, timestampToDate } = useDate()
 
   const badge = badgeById.data
-
   if (!badge) {
     throw 'There was an error fetching the badge, try again in some minutes.'
   }
@@ -122,6 +125,10 @@ function ChallengeModalContent({ badgeId, onClose }: { badgeId: string; onClose:
   const tcrContractInstance = useTCRContractInstance(badgeModelId)
 
   async function onSubmit(data: z.infer<typeof ChallengeSchema>) {
+    if (!badge || !badge.status) {
+      throw 'There was an error fetching the badge, try again in some minutes.'
+    }
+
     const { description, title } = data
     // Use NextJs dynamic import to reduce the bundle size
     const { createAndUploadChallengeEvidence } = await import(
@@ -135,33 +142,49 @@ function ChallengeModalContent({ badgeId, onClose }: { badgeId: string; onClose:
     )
 
     const transaction = await sendTx(() => {
-      if (
-        badge?.status === BadgeStatus.Challenged ||
-        badge?.status === BadgeStatus.RequestRemoval
-      ) {
-        return tcrContractInstance.submitEvidence(
-          badgeKlerosMetadata.data?.itemID,
-          evidenceIPFSHash,
-        )
+      if (!badgeKlerosMetadata || !badgeKlerosMetadata.data) {
+        throw 'There was an error fetching the badge metadata or the badge is not a klerosBadge, try again in some minutes.'
       }
-      if (badge?.status === BadgeStatus.Approved) {
-        return tcrContractInstance.removeItem(badgeKlerosMetadata.data?.itemID, evidenceIPFSHash, {
-          value: challengeCost.data,
-        })
-      } else {
-        // BadgeStatus.Requested
-        return tcrContractInstance.challengeRequest(
-          badgeKlerosMetadata.data?.itemID,
-          evidenceIPFSHash,
-          {
-            value: challengeCost.data,
-          },
-        )
+      const dueDate: Date = timestampToDate(badgeKlerosMetadata.data.reviewDueDate)
+      const timeLeft: TimeLeft = getTimeLeftToExpire(dueDate)
+      switch (badge.status) {
+        case BadgeStatus.Absent:
+          throw 'There was an error fetching the badge status, try again in some minutes.'
+        case BadgeStatus.Requested:
+          // If the badge finished its reviewPeriod but it was not claimed they are in an intermediate status: "Claimable", therefore neither challenge or removeItem is possible
+          // This logic should never be executed, the frontend should filter badges in this intermediate state, but I throw an exception here just in case.
+          if (timeLeft.quantity === 0) {
+            throw new Error(
+              'The badge was not claimed, challenge an unclaimed badge is not possible.',
+            )
+          }
+          // If the badge is on review period, we generate a challenge request in TCR
+          return tcrContractInstance.challengeRequest(
+            badgeKlerosMetadata.data.itemID,
+            evidenceIPFSHash,
+            {
+              value: challengeCost.data,
+            },
+          )
+        case BadgeStatus.Approved:
+          // If the badge is on the list, we generate a removeItem request in TCR
+          return tcrContractInstance.removeItem(badgeKlerosMetadata.data.itemID, evidenceIPFSHash, {
+            value: removalCost.data,
+          })
+        case BadgeStatus.RequestRemoval:
+        case BadgeStatus.Challenged:
+          // If the badge is already challenged or a removal request was generated, only adding more evidence is possible.
+          return tcrContractInstance.submitEvidence(
+            badgeKlerosMetadata.data?.itemID,
+            evidenceIPFSHash,
+          )
       }
     })
 
     onClose()
-    await transaction.wait()
+    if (transaction) {
+      await transaction.wait()
+    }
   }
 
   return (
