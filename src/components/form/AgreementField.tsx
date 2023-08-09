@@ -53,6 +53,7 @@ export function AgreementField({
       </Box>
       <Stack flexDirection="row" flexWrap="wrap" justifyContent="center">
         <FormField
+          alignItems="center"
           formControl={
             <MUICheckbox
               checked={!!value}

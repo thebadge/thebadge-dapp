@@ -7,7 +7,9 @@ export type Creator = {
   terms: boolean
   discord?: string
   twitter?: string
+  website?: string
   logo?: BackendFileResponse
+  preferContactMethod: 'email' | 'website' | 'twitter' | 'discord'
 }
 
 export type CreatorMetadata = {
@@ -17,5 +19,8 @@ export type CreatorMetadata = {
   logo?: BackendFileResponse
   discord?: string
   twitter?: string
+  website?: string
+
   terms: boolean
+  preferContactMethod: 'email' | 'website' | 'twitter' | 'discord'
 }

@@ -183,20 +183,30 @@
   "creator": {
     "register": {
       "title": "Become a Badge Creator",
+      "subTitle": "Do you want to design and publish custom badges that other users can apply for to verify real-world information? Also, you could set the price for the badges you create and receive a share of the fee when users apply for them...So please, complete the form and let´s start creating!",
+      "submit": "Submit",
       "form": {
-        "termsConditions": "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet. Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitationam consequat sunt nostrud amet.Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit.\n\nExercitation veniam consequat sunt nostrud ame.Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia cosequat duis enim velit mollit. Exercitation veniam consquat sunt nosrud amet. Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.Amet minim mollit non deserunt ullaco est sit aliqua dolor do amet sint. Velit icia conseuat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet."
-      },
-      "steps": [
-        {
-          "subTitle": "Do you want to design and publish custom badges that other users can apply for to verify real-world information? Also, you could set the price for the badges you create and receive a share of the fee when users apply for them... So please, complete the form and let´s start creating!"
+        "accountDetails": {
+          "title": "Account details",
+          "logo": "Profile Photo",
+          "description": "Bio",
+          "displayName": "Display Name"
         },
-        {
-          "subTitle": "Please complete at least one contact channel, it will be used to send you information about your badges and will be the main contact channel for your badge users in case they have questions about the curation criteria."
+        "contactData": {
+          "title": "Contact information",
+          "email":  "Email",
+          "twitter": "Twitter",
+          "discord":  "Discord",
+          "website": "Website",
+          "preferContactMethod": "Choose your favorite means of contact:"
         },
-        {
-          "subTitle": ""
+        "termsConditions": {
+          "youAgree": "By continuing, you agree to our ",
+          "termsOfUse": "terms of use",
+          "and": " and ",
+          "privacy": "privacy policy"
         }
-      ]
+      }
     }
   },
   "curator": {},
