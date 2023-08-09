@@ -25,7 +25,7 @@
       "button": "BECOME A CREATOR"
     },
     "thirdParty": {
-      "title1": "Are you willing to emit on-chan certificates as a ",
+      "title1": "Are you willing to emit on-chain certificates as a ",
       "title2": "third-party entity?",
       "step1": "Also known as \"Blockchain certifications as a service\". These are badges generated and\n        backed by a public or private entity. Entities that are willing to generate these badges\n have to be registered on the platform before they can start emitting them.",
       "learnMore": "Learn more",
@@ -317,7 +317,7 @@
       "modal": {
         "challenge": "Challenge Badge",
         "remove": "Remove Badge",
-        "explainWhy": "Explain de jurors why do you think this items should de removed.",
+        "explainWhy": "Explain the jurors why do you think this badge should be removed.",
         "readCriteria": "Read the ",
         "curationCriteria": "Curation Criteria",
         "toAvoid": " to avoid wrong challenge requests.",
