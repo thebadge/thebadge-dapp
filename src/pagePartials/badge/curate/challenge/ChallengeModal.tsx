@@ -26,7 +26,6 @@ import { TextArea } from '@/src/components/form/TextArea'
 import { TextField } from '@/src/components/form/TextField'
 import { LongTextSchema, OptionalFileSchema } from '@/src/components/form/helpers/customSchemas'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
-import { useChallengeCost } from '@/src/hooks/kleros/useChallengeCost'
 import { useRemovalCost } from '@/src/hooks/kleros/useRemovalCost'
 import useTCRContractInstance from '@/src/hooks/kleros/useTCRContractInstance'
 import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
@@ -112,7 +111,7 @@ function ChallengeModalContent({ badgeId, onClose }: { badgeId: string; onClose:
 
   const badgeById = useBadgeById(badgeId)
   const badgeKlerosMetadata = useBadgeKlerosMetadata(badgeId)
-  const challengeCost = useChallengeCost(badgeId)
+  //const challengeCost = useChallengeCost(badgeId)
   const removalCost = useRemovalCost(badgeId)
   const { getTimeLeftToExpire, timestampToDate } = useDate()
 
@@ -163,7 +162,7 @@ function ChallengeModalContent({ badgeId, onClose }: { badgeId: string; onClose:
             badgeKlerosMetadata.data.itemID,
             evidenceIPFSHash,
             {
-              value: challengeCost.data,
+              value: '20000000000000000', //challengeCost.data,
             },
           )
         case BadgeStatus.Approved:
