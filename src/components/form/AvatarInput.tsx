@@ -77,7 +77,6 @@ export function AvatarInput({ error, label, onChange, value }: AvatarInputProps)
   useEffect(() => {
     if (!value) {
       const image = convertCanvasToImageType()
-      console.log('converted icon')
       onChange(image)
       setImages(image ? [image] : [])
       setIsCustom(false)
