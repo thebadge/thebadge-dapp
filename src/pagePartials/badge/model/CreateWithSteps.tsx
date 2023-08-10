@@ -83,7 +83,6 @@ export default function CreateWithSteps({
     <FormProvider {...methods}>
       <StepPrompt hasUnsavedChanges={methods.formState.isDirty} />
       <StepHeader
-        color="purple"
         completedSteps={completed}
         currentStep={currentStep}
         onStepNavigation={onStepNavigation}
