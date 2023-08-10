@@ -18,6 +18,7 @@ gql`
     reviewDueDate
     requests {
       type
+      challenger
     }
     badge {
       id
