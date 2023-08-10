@@ -336,6 +336,19 @@
   },
   {
     "inputs": [],
+    "name": "SUSPENDER_ROLE",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "UPGRADER_ROLE",
     "outputs": [
       {
@@ -598,6 +611,11 @@
         "internalType": "uint256",
         "name": "deposit",
         "type": "uint256"
+      },
+      {
+        "internalType": "bool",
+        "name": "initialized",
+        "type": "bool"
       }
     ],
     "stateMutability": "view",

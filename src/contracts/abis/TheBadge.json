@@ -11,6 +11,11 @@
   },
   {
     "inputs": [],
+    "name": "TheBadge__badgeModel_badgeModelNotFound",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "TheBadge__createBadgeModel_controllerIsPaused",
     "type": "error"
   },
@@ -31,7 +36,7 @@
   },
   {
     "inputs": [],
-    "name": "TheBadge__onlyController_senderIsNotTheController",
+    "name": "TheBadge__onlyCreator_creatorIsSuspended",
     "type": "error"
   },
   {
@@ -47,6 +52,11 @@
   {
     "inputs": [],
     "name": "TheBadge__registerCreator_wrongValue",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "TheBadge__requestBadge_badgeModelIsSuspended",
     "type": "error"
   },
   {
@@ -87,11 +97,6 @@
   {
     "inputs": [],
     "name": "TheBadge__setControllerStatus_notFound",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "TheBadge__updateBadgeModelFee_badgeModelNotFound",
     "type": "error"
   },
   {
@@ -660,6 +665,19 @@
   },
   {
     "inputs": [],
+    "name": "SUSPENDER_ROLE",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "UPGRADER_ROLE",
     "outputs": [
       {
@@ -687,27 +705,40 @@
   {
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "name": "badge",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "badgeModelId",
-        "type": "uint256"
+        "internalType": "string",
+        "name": "controllerName",
+        "type": "string"
       },
       {
         "internalType": "address",
-        "name": "account",
+        "name": "controllerAddress",
+        "type": "address"
+      }
+    ],
+    "name": "addBadgeModelController",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "name": "badgeModelControllers",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "controller",
         "type": "address"
       },
       {
-        "internalType": "uint256",
-        "name": "dueDate",
-        "type": "uint256"
+        "internalType": "bool",
+        "name": "paused",
+        "type": "bool"
       },
       {
         "internalType": "bool",
@@ -726,7 +757,7 @@
         "type": "uint256"
       }
     ],
-    "name": "badgeModel",
+    "name": "badgeModels",
     "outputs": [
       {
         "internalType": "address",
@@ -770,35 +801,6 @@
   {
     "inputs": [
       {
-        "internalType": "string",
-        "name": "",
-        "type": "string"
-      }
-    ],
-    "name": "badgeModelController",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "controller",
-        "type": "address"
-      },
-      {
-        "internalType": "bool",
-        "name": "paused",
-        "type": "bool"
-      },
-      {
-        "internalType": "bool",
-        "name": "initialized",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
@@ -820,6 +822,40 @@
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "badges",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "badgeModelId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "dueDate",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bool",
+        "name": "initialized",
+        "type": "bool"
       }
     ],
     "stateMutability": "view",
@@ -972,6 +1008,11 @@
       },
       {
         "internalType": "bool",
+        "name": "suspended",
+        "type": "bool"
+      },
+      {
+        "internalType": "bool",
         "name": "initialized",
         "type": "bool"
       }
@@ -1090,6 +1131,25 @@
       }
     ],
     "name": "isApprovedForAll",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "badgeModelId",
+        "type": "uint256"
+      }
+    ],
+    "name": "isBadgeModelSuspended",
     "outputs": [
       {
         "internalType": "bool",
@@ -1368,24 +1428,6 @@
   {
     "inputs": [
       {
-        "internalType": "string",
-        "name": "controllerName",
-        "type": "string"
-      },
-      {
-        "internalType": "address",
-        "name": "controllerAddress",
-        "type": "address"
-      }
-    ],
-    "name": "setBadgeModelController",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
         "internalType": "bytes4",
         "name": "interfaceId",
         "type": "bytes4"
@@ -1410,10 +1452,21 @@
     "type": "function"
   },
   {
-    "inputs": [],
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_creator",
+        "type": "address"
+      },
+      {
+        "internalType": "bool",
+        "name": "suspended",
+        "type": "bool"
+      }
+    ],
     "name": "suspendBadgeModelCreator",
     "outputs": [],
-    "stateMutability": "view",
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -1433,11 +1486,6 @@
       {
         "internalType": "uint256",
         "name": "mintCreatorFee",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "validFor",
         "type": "uint256"
       },
       {
@@ -1482,7 +1530,20 @@
         "type": "uint256"
       }
     ],
-    "name": "updateBadgeModelFee",
+    "name": "updateBadgeModelProtocolFee",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_createBadgeModelValue",
+        "type": "uint256"
+      }
+    ],
+    "name": "updateCreateBadgeModelProtocolFee",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1493,19 +1554,22 @@
         "internalType": "uint256",
         "name": "_mintBadgeDefaultFee",
         "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_createBadgeModelValue",
-        "type": "uint256"
-      },
+      }
+    ],
+    "name": "updateMintBadgeDefaultProtocolFee",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
       {
         "internalType": "uint256",
         "name": "_registerCreatorValue",
         "type": "uint256"
       }
     ],
-    "name": "updateProtocolValues",
+    "name": "updateRegisterCreatorProtocolFee",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
