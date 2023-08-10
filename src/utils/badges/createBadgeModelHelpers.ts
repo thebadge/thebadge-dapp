@@ -6,6 +6,7 @@ import { z } from 'zod'
 import { DeltaPDFSchema } from '@/src/components/form/helpers/customSchemas'
 import { APP_URL } from '@/src/constants/common'
 import { BadgeModelCriteriaType } from '@/src/pagePartials/badge/model/schema/CreateModelSchema'
+import { convertHashToValidIPFSKlerosHash } from '@/src/utils/fileUtils'
 import ipfsUpload from '@/src/utils/ipfsUpload'
 import {
   KlerosListStructure,
@@ -100,8 +101,10 @@ export async function createAndUploadClearingAndRegistrationFilesForKleros(
   })
 
   return {
-    clearingIPFSHash: `ipfs://${clearingIPFSUploaded.result?.ipfsHash}`,
-    registrationIPFSHash: `ipfs://${registrationIPFSUploaded.result?.ipfsHash}`,
+    clearingIPFSHash: convertHashToValidIPFSKlerosHash(clearingIPFSUploaded.result?.ipfsHash),
+    registrationIPFSHash: convertHashToValidIPFSKlerosHash(
+      registrationIPFSUploaded.result?.ipfsHash,
+    ),
   }
 }
 

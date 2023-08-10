@@ -7,7 +7,7 @@ import { ImageType } from 'react-images-uploading'
 
 import { FileInput } from '@/src/components/form/FileInput'
 import { CRITERIA_TEMPLATE_URL } from '@/src/constants/common'
-import { addToJsonPrototype } from '@/src/utils/fileUtilts'
+import { addToJsonPrototype } from '@/src/utils/fileUtils'
 
 export default function PDFRequirementInput({
   error,

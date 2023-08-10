@@ -1,4 +1,5 @@
 import { APP_URL } from '@/src/constants/common'
+import { convertHashToValidIPFSKlerosHash } from '@/src/utils/fileUtils'
 import ipfsUpload from '@/src/utils/ipfsUpload'
 import { KlerosListStructure } from '@/src/utils/kleros/generateKlerosListMetaEvidence'
 import {
@@ -44,7 +45,7 @@ export async function createAndUploadBadgeEvidence(
     filePaths: filePaths,
   })
 
-  return `ipfs://${evidenceIPFSUploaded.result?.ipfsHash}`
+  return convertHashToValidIPFSKlerosHash(evidenceIPFSUploaded.result?.ipfsHash)
 }
 
 export function createKlerosValuesObject(
