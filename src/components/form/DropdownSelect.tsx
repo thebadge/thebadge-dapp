@@ -1,7 +1,8 @@
 import React, { ChangeEvent } from 'react'
 
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
-import { TextField, Tooltip, Typography } from '@mui/material'
+import { TextField, Theme, Tooltip, Typography } from '@mui/material'
+import { SxProps } from '@mui/system'
 import { useDescription, useTsController } from '@ts-react/form'
 import { FieldError } from 'react-hook-form'
 import { ZodSchema, z } from 'zod'
@@ -18,6 +19,7 @@ type DropdownSelectProps<T> = {
   options: string[]
   native?: boolean
   disabled?: boolean
+  sx?: SxProps<Theme>
 }
 export function DropdownSelect<T>({
   disabled,
@@ -27,6 +29,7 @@ export function DropdownSelect<T>({
   onChange,
   options,
   placeholder,
+  sx,
   value,
 }: DropdownSelectProps<T>) {
   function handleChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
@@ -71,6 +74,7 @@ export function DropdownSelect<T>({
       }
       onChange={handleChange}
       select
+      sx={sx}
       value={value || ''}
       variant="standard"
     >
