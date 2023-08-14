@@ -153,9 +153,9 @@
     },
     "badgesToCurate": "Browse other badges to curate",
     "createdBadges": "Earn by creating new badges",
-    "tab1": "MY BADGES",
-    "tab2": "CURATED BADGES",
-    "tab3": "CREATED BADGES",
+    "tab1": "My badges",
+    "tab2": "Curated badges",
+    "tab3": "Created badges",
     "badgesIAmReviewing": {
       "title": "Badges I am reviewing",
       "previewTitle": "Challenged Badge",

@@ -35,7 +35,10 @@ const Profile = () => {
       <Stack sx={{ mb: 6, gap: 4, alignItems: 'center' }}>
         <Box display="flex" flex={1} flexDirection="row" justifyContent="space-evenly" width="100%">
           <LinkWithTranslation pathname={`/profile`}>
-            <Typography color={!selectedFilter ? 'text.primary' : 'text.disabled'}>
+            <Typography
+              color={!selectedFilter ? 'text.primary' : 'text.disabled'}
+              textTransform="uppercase"
+            >
               {t('profile.tab1')}
             </Typography>
           </LinkWithTranslation>
@@ -49,6 +52,7 @@ const Profile = () => {
                   ? 'text.primary'
                   : 'text.disabled'
               }
+              textTransform="uppercase"
             >
               {t('profile.tab2')}
             </Typography>
@@ -62,6 +66,7 @@ const Profile = () => {
                 color={
                   selectedFilter === ProfileFilter.CREATED_BADGES ? 'text.primary' : 'text.disabled'
                 }
+                textTransform="uppercase"
               >
                 {t('profile.tab3')}
               </Typography>
