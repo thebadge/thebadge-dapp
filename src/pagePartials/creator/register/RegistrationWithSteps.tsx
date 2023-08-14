@@ -45,8 +45,6 @@ export default function RegistrationWithSteps({
     mode: 'onChange',
   })
 
-  console.warn('Debugging: formState.errors', methods.formState.errors)
-
   return (
     <FormProvider {...methods}>
       <StepPrompt hasUnsavedChanges={methods.formState.isDirty} />
