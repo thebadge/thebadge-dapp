@@ -242,6 +242,10 @@
           {
             "subTitle": "**4**. You have to define the fields your badge minters will have to complete in order to accomplish your badge curation criteria. The curation criteria should match with the fields you are requesting for your users and should complain with TheBadge badge [model criteria]({{criteriaDocsUrl}}), otherwise, your badge model will be rejected. ",
             "hint": "For examples or more details about how to create a good badge model, please check our [docs]({{createBadgeTypeDocs}})."
+          },
+          {
+            "subTitle": "**5**. Please review that the information is correct, if you agree, create your badge model by submitting the transaction.",
+            "hint": "For examples or more details about how to create a good badge model, please check our [docs]({{createBadgeTypeDocs}})."
 
           }
         ],
