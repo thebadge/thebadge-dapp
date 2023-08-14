@@ -99,12 +99,16 @@ function AddEvidenceModalContent({ badgeId, onClose }: { badgeId: string; onClos
         {t('badge.addEvidence.modal.title')}
       </Typography>
       <SafeSuspense fallback={<Skeleton sx={{ margin: 'auto' }} variant={'text'} width={500} />}>
-        <CurationCriteriaLink badgeModelId={badgeModelId} type="addEvidence" />
+        <CurationCriteriaLink
+          badgeModelId={badgeModelId}
+          isRemoval={badge.status === BadgeStatus.RequestRemoval}
+          type="addEvidence"
+        />
       </SafeSuspense>
       <Box sx={{ flexDirection: 'row', display: 'flex', justifyContent: 'left', gap: 1 }}>
         <FindInPageOutlinedIcon />
         <Typography component="p" variant="body2">
-          {badge.status === BadgeStatus.Approved
+          {badge.status === BadgeStatus.RequestRemoval
             ? t('badge.addEvidence.modal.explainWhyRemoval')
             : t('badge.addEvidence.modal.explainWhyChallenge')}
         </Typography>

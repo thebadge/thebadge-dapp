@@ -11,6 +11,7 @@ import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import TBSwiper from '@/src/components/helpers/TBSwiper'
 import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
 import { useEvidenceBadgeKlerosMetadata } from '@/src/hooks/subgraph/useBadgeKlerosMetadata'
+import useIsClaimable from '@/src/hooks/subgraph/useIsClaimable'
 import CurationCriteriaLink from '@/src/pagePartials/badge/curate/CurationCriteriaLink'
 import { useCurateProvider } from '@/src/providers/curateProvider'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
@@ -35,6 +36,7 @@ function CurateModalContent({ badgeId, onClose }: { badgeId: string; onClose: ()
   const { address } = useWeb3Connection()
   const { addMoreEvidence, challenge } = useCurateProvider()
 
+  const isClaimable = useIsClaimable(badgeId)
   const badgeById = useBadgeById(badgeId)
   const badge = badgeById.data
 
@@ -90,6 +92,15 @@ function CurateModalContent({ badgeId, onClose }: { badgeId: string; onClose: ()
       </Box>
     )) || []
 
+  const getTooltipText = () => {
+    if (address === ownerAddress) {
+      return t('badge.curate.modal.ownBadgeChallenge')
+    }
+    if (isClaimable) {
+      return t('badge.curate.modal.notClaimedBadge')
+    }
+    return ''
+  }
   return (
     <Stack
       sx={{
@@ -148,15 +159,12 @@ function CurateModalContent({ badgeId, onClose }: { badgeId: string; onClose: ()
         </Box>
 
         <Box mt={2}>
-          <Tooltip
-            arrow
-            title={address === ownerAddress ? t('badge.curate.modal.ownBadgeChallenge') : ''}
-          >
+          <Tooltip arrow title={getTooltipText()}>
             {/* A disabled element does not fire events. So we need a wrapper to use the tooltip, also ButtonV2 doesn't forward the ref */}
             <Box>
               <ButtonV2
                 backgroundColor={colors.redError}
-                disabled={address === ownerAddress}
+                disabled={address === ownerAddress || isClaimable}
                 fontColor={colors.white}
                 onClick={onButtonClick}
               >

@@ -87,3 +87,11 @@ export const formatTimestamp = (
   if (format !== null) return format
   return ''
 }
+
+export const isBeforeToday = (timestamp?: string | number) => {
+  if (!timestamp) {
+    return false
+  }
+  // Check if now is after the give timestamp
+  return dayjs().isAfter(dayjs.unix(Number(timestamp)))
+}

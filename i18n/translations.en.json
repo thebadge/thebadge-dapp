@@ -375,6 +375,7 @@
         "viewEvidence": "View raw evidence (.json)",
         "curationCriteria": "Curation Criteria",
         "ownBadgeChallenge": "You can't do a challenge to your own badge",
+        "notClaimedBadge": "You can't do a challenge to a badge that is not yet claimed",
         "challengeButton": "Challenge",
         "addMoreEvidence": "Add more evidence"
       },
