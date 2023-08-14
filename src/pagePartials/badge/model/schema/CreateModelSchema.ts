@@ -50,7 +50,7 @@ export const CreateModelSchema = z.object({
   criteria: BadgeModelCriteriaSchema,
   challengePeriodDuration: ChallengePeriodTypeSchema,
   rigorousness: SeverityTypeSchema,
-  mintCost: TokenInputSchema,
+  mintFee: TokenInputSchema,
   validFor: ExpirationTypeSchema,
   // ------ EVIDENCE FORM FIELD ------
   badgeMetadataColumns: KlerosDynamicFields,

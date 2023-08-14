@@ -90,7 +90,7 @@ export function SeveritySelector({
 
   const [optionSelectedAuxIndex, setOptionSelectedAuxIndex] = useState<number>(1)
 
-  const [enableAdvance, setAdvanceMode] = useState<boolean>(false)
+  const [enableAdvance, setAdvanceMode] = useState<boolean>(true)
 
   const hasInternalError = error?.amountOfJurors || error?.challengeBounty
 

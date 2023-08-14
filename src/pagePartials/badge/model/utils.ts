@@ -9,7 +9,7 @@ const STEP_1 = [
   'backgroundImage',
   'template',
 ]
-const STEP_2 = ['criteriaFileUri', 'criteria', 'rigorousness', 'mintCost', 'validFor']
+const STEP_2 = ['criteriaFileUri', 'criteria', 'rigorousness', 'mintFee', 'validFor']
 const STEP_3 = ['badgeMetadataColumns']
 export const FIELDS_TO_VALIDATE_ON_STEP = [STEP_0, STEP_1, STEP_2, STEP_3]
 export const CREATE_MODEL_STEPS_AMOUNT = 5

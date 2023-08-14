@@ -77,13 +77,10 @@ export default function CreateWithSteps({
     }
   }
 
-  console.warn('Debugging: formState.errors', methods.formState.errors)
-
   return (
     <FormProvider {...methods}>
       <StepPrompt hasUnsavedChanges={methods.formState.isDirty} />
       <StepHeader
-        color="purple"
         completedSteps={completed}
         currentStep={currentStep}
         onStepNavigation={onStepNavigation}
