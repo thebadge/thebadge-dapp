@@ -201,6 +201,7 @@
           "preferContactMethod": "Choose your favorite means of contact:"
         },
         "termsConditions": {
+          "readAndAgree": "I have read and agree",
           "youAgree": "By continuing, you agree to our ",
           "termsOfUse": "terms of use",
           "and": " and ",
