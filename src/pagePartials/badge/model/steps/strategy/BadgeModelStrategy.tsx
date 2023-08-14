@@ -8,6 +8,7 @@ import { ExpirationField } from '@/src/components/form/ExpirationField'
 import { PeriodSelector } from '@/src/components/form/PeriodSelector'
 import { SeveritySelector } from '@/src/components/form/SeveritySelector'
 import { TokenInput } from '@/src/components/form/TokenInput'
+import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { getNetworkConfig } from '@/src/config/web3'
 import { CreateModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateModelSchema'
 import RequirementInput from '@/src/pagePartials/badge/model/steps/strategy/RequirementInput'
@@ -40,12 +41,14 @@ export default function BadgeModelStrategy() {
         name={'rigorousness'}
         render={({ field: { onChange, value }, fieldState: { error } }) => {
           return (
-            <SeveritySelector
-              error={error}
-              label={t('badge.model.create.strategy.rigorousness')}
-              onChange={onChange}
-              value={value}
-            />
+            <SafeSuspense>
+              <SeveritySelector
+                error={error}
+                label={t('badge.model.create.strategy.rigorousness')}
+                onChange={onChange}
+                value={value}
+              />
+            </SafeSuspense>
           )
         }}
       />

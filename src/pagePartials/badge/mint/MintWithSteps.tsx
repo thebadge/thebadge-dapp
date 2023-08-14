@@ -82,7 +82,6 @@ export default function MintWithSteps({
     <FormProvider {...methods}>
       <StepPrompt hasUnsavedChanges={methods.formState.isDirty} />
       <StepHeader
-        color="blue"
         completedSteps={completed}
         currentStep={currentStep}
         onStepNavigation={onStepNavigation}
