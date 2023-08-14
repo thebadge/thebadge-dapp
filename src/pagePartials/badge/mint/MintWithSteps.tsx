@@ -78,8 +78,6 @@ export default function MintWithSteps({
     }
   }
 
-  console.warn('Debugging: formState.errors', methods.formState.errors)
-
   return (
     <FormProvider {...methods}>
       <StepPrompt hasUnsavedChanges={methods.formState.isDirty} />

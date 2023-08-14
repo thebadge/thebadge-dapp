@@ -28,7 +28,7 @@ export default function TermsAndConditions() {
                 sx={{ width: 'fit-content' }}
               />
             }
-            label={'I have read and agree'}
+            label={t('creator.register.form.termsConditions.readAndAgree')}
             labelPosition={'left'}
             status={error ? TextFieldStatus.error : TextFieldStatus.success}
             statusText={error?.message}
