@@ -40,7 +40,7 @@ export default function StepHeader({
 
   return (
     <Stack sx={{ display: 'flex', flexDirection: 'column', mb: 6, gap: 4, alignItems: 'center' }}>
-      <Typography color={color} textAlign="center" variant="title2">
+      <Typography color={colors.purple} textAlign="center" variant="title2">
         {t('badge.model.create.title')}
       </Typography>
 
