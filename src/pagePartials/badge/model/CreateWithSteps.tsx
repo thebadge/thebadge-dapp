@@ -77,8 +77,6 @@ export default function CreateWithSteps({
     }
   }
 
-  console.warn('Debugging: formState.errors', methods.formState.errors)
-
   return (
     <FormProvider {...methods}>
       <StepPrompt hasUnsavedChanges={methods.formState.isDirty} />

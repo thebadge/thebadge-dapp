@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
-import FileUploadIcon from '@mui/icons-material/FileUpload'
+import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined'
 import { AvatarProps, Box, Container, IconButton, Avatar as MUIAvatar, styled } from '@mui/material'
 import { colors } from '@thebadge/ui-library'
 import { useDescription, useTsController } from '@ts-react/form'
@@ -77,6 +77,7 @@ export function AvatarInput({ error, label, onChange, value }: AvatarInputProps)
   useEffect(() => {
     if (!value) {
       const image = convertCanvasToImageType()
+      console.log('converted icon')
       onChange(image)
       setImages(image ? [image] : [])
       setIsCustom(false)
@@ -88,7 +89,7 @@ export function AvatarInput({ error, label, onChange, value }: AvatarInputProps)
     if (!canvas) return null
     const canvasData = new Blob([canvas.toDataURL()], { type: 'image/png' })
     return {
-      data_url: canvas.toDataURL(),
+      base64File: canvas.toDataURL(),
       file: new File([canvasData], 'profile.png', { type: 'image/png' }),
     }
   }
@@ -129,7 +130,7 @@ export function AvatarInput({ error, label, onChange, value }: AvatarInputProps)
                         ref={avatarRef}
                         {...dragProps}
                       >
-                        <img alt="" src={image['data_url']} width="150" />
+                        <img alt="" src={image['base64File']} width="150" />
                       </Avatar>
                       <Box
                         alignItems="center"
@@ -137,6 +138,7 @@ export function AvatarInput({ error, label, onChange, value }: AvatarInputProps)
                         flexDirection="row"
                         justifyContent="space-evenly"
                         marginLeft={2}
+                        marginTop={2}
                       >
                         <Label>{label}</Label>
                         <IconButton
@@ -145,7 +147,7 @@ export function AvatarInput({ error, label, onChange, value }: AvatarInputProps)
                           component="label"
                           onClick={() => onImageUpdate(index)}
                         >
-                          <FileUploadIcon color="white" />
+                          <FileUploadOutlinedIcon color="white" />
                         </IconButton>
 
                         {isCustom && (

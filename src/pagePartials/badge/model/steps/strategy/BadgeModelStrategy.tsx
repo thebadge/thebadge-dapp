@@ -67,13 +67,13 @@ export default function BadgeModelStrategy() {
         <Stack flex="1" gap={4} justifyContent="flex-end">
           <Controller
             control={control}
-            name={'mintCost'}
+            name={'mintFee'}
             render={({ field: { onChange, value }, fieldState: { error } }) => (
               <TokenInput
                 decimals={18}
                 error={error}
                 hiddenBalance={true}
-                label={t('badge.model.create.strategy.mintCost')}
+                label={t('badge.model.create.strategy.mintFee')}
                 onChange={onChange}
                 symbol={networkConfig.token}
                 value={value}

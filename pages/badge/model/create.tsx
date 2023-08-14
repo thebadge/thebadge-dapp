@@ -80,7 +80,7 @@ const CreateBadgeType: NextPageWithLayout = () => {
           {
             metadata: badgeModelMetadataIPFSHash,
             controllerName: 'kleros', // TODO kleros is hardcoded as controller for now
-            mintCreatorFee: data.mintCost,
+            mintCreatorFee: data.mintFee,
             validFor: data.validFor, // in seconds, 0 infinite
           },
           klerosBadgeModelControllerDataEncoded,
