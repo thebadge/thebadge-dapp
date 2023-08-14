@@ -31,5 +31,5 @@ export function cleanHash(hash: string) {
  */
 export function convertHashToValidIPFSKlerosHash(hash?: string) {
   // Expected hash as example: ipfs://ipfs/QmSaqcFHpTBP4Ks1DoLuE4yjDSWcr4xBxsnRvW3k8EFc6F
-  return `ipfs://ipfs/${hash}`
+  return `ipfs/${hash}`
 }

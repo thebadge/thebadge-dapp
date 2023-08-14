@@ -13,6 +13,8 @@ export type KlerosListStructure = {
   question: string
   fileURI: BackendFileUpload | BackendFileResponse
   evidenceDisplayInterfaceURI: string
+  dynamicScriptURI?: string
+  dynamicScriptRequiredParams?: string[]
   metadata: {
     tcrTitle: string
     tcrDescription: string
@@ -61,6 +63,8 @@ export function generateKlerosListMetaEvidence(
     question: `Does the ${badgeName} comply with the required criteria?`,
     fileURI,
     evidenceDisplayInterfaceURI,
+    dynamicScriptURI: 'ipfs/QmRHjhpTvYQ3uLRWxEMh4zen7kmwZGPz7vLkYxLpssf1Jz',
+    dynamicScriptRequiredParams: ['disputeID', 'arbitrableChainID', 'arbitrableContractAddress'],
     metadata: {
       tcrTitle: badgeTypeName,
       tcrDescription: badgeTypeDescription,
@@ -89,6 +93,8 @@ export function generateKlerosListMetaEvidence(
     question: `Does the ${badgeName} comply with the required criteria?`,
     fileURI,
     evidenceDisplayInterfaceURI,
+    dynamicScriptURI: 'ipfs/QmRHjhpTvYQ3uLRWxEMh4zen7kmwZGPz7vLkYxLpssf1Jz',
+    dynamicScriptRequiredParams: ['disputeID', 'arbitrableChainID', 'arbitrableContractAddress'],
     metadata: {
       tcrTitle: badgeTypeName,
       tcrDescription: badgeTypeDescription,
