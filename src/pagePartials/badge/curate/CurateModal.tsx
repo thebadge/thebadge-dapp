@@ -45,9 +45,7 @@ function CurateModalContent({ badgeId, onClose }: { badgeId: string; onClose: ()
   }
 
   const onButtonClick = () => {
-    badge?.status === BadgeStatus.Challenged
-      ? addMoreEvidence(badge.badgeModel.id)
-      : challenge(badge.badgeModel.id)
+    badge?.status === BadgeStatus.Challenged ? addMoreEvidence(badge.id) : challenge(badge.id)
     onClose()
   }
 
