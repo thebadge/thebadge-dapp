@@ -30,6 +30,9 @@ export function secondsToDays(periodDuration: number) {
   return periodDuration ? periodDuration / 60 / 60 / 24 : 0
 }
 
+export function secondsToMinutes(periodDuration: number) {
+  return periodDuration ? periodDuration / 60 : 0
+}
 /**
  * By default expect Unix Timestamp (seconds)
  * @param timestamp

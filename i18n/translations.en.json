@@ -350,14 +350,22 @@
       "modal": {
         "challenge": "Challenge Badge",
         "remove": "Remove Badge",
-        "explainWhy": "Explain the jurors why do you think this badge should be removed.",
-        "readCriteria": "Read the ",
-        "curationCriteria": "Curation Criteria",
-        "toAvoid": " to avoid wrong challenge requests.",
+        "explainWhyRemoval": "Explain the jurors why do you think this badge should be removed.",
+        "explainWhyChallenge": "Explain the jurors why do you think this badge should be rejected.",
         "deposit": "Total deposit required",
         "depositValue": "{{value}} {{symbol}}",
-        "depositWarning": "Note that this is a deposit, not a fee and it will be reimbursed if the removal is accepted. The challenge period last {{period}} days.",
+        "depositWarning": "Note that this is a deposit, not a fee and it will be reimbursed if the removal is accepted. The challenge period last {{period}} {{timeUnit}}."
+      },
+      "evidenceForm": {
+        "title": "Title",
+        "description": "Description",
+        "attachment": "Attachment",
         "submit": "Submit"
+      },
+      "criteriaLink": {
+        "readCriteria": "Read the ",
+        "curationCriteria": "Curation Criteria",
+        "toAvoid": " to avoid wrong challenge requests."
       }
     },
     "curate": {
@@ -367,7 +375,31 @@
         "viewEvidence": "View raw evidence (.json)",
         "curationCriteria": "Curation Criteria",
         "ownBadgeChallenge": "You can't do a challenge to your own badge",
-        "challengeButton": "CHALLENGE"
+        "challengeButton": "Challenge",
+        "addMoreEvidence": "Add more evidence"
+      },
+      "criteriaLink": {
+        "readCriteria": "Read the ",
+        "curationCriteria": "Curation Criteria",
+        "toAvoid": " to avoid wrong challenge requests."
+      }
+    },
+    "addEvidence": {
+      "modal": {
+        "title": "Add Evidence",
+        "explainWhyRemoval": "Explain the jurors why do you think this badge should be removed.",
+        "explainWhyChallenge": "Explain the jurors why do you think this badge should be rejected."
+      },
+      "evidenceForm": {
+        "title": "Title",
+        "description": "Description",
+        "attachment": "Attachment",
+        "submit": "Submit"
+      },
+      "criteriaLink": {
+        "readCriteria": "Read the ",
+        "curationCriteria": "Curation Criteria",
+        "toAvoid": " to avoid wrong evidence submission."
       }
     }
   },

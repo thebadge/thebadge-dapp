@@ -5,7 +5,13 @@ import { useTranslation } from 'next-export-i18n'
 
 import { useRegistrationBadgeModelKlerosMetadata } from '@/src/hooks/subgraph/useBadgeModelKlerosMetadata'
 
-export default function CurationCriteriaLink({ badgeModelId }: { badgeModelId: string }) {
+export default function CurationCriteriaLink({
+  badgeModelId,
+  type,
+}: {
+  badgeModelId: string
+  type: 'challenge' | 'addEvidence' | 'curate'
+}) {
   const { t } = useTranslation()
 
   const badgeModelKlerosData = useRegistrationBadgeModelKlerosMetadata(badgeModelId)
@@ -24,17 +30,17 @@ export default function CurationCriteriaLink({ badgeModelId }: { badgeModelId: s
     's3Url' in badgeModelMetadata.fileURI ? badgeModelMetadata.fileURI.s3Url : ''
 
   return (
-    <Typography fontSize={14} variant="dAppBody1">
-      {t('badge.challenge.modal.readCriteria')}
+    <Typography fontSize={14} textAlign="center" variant="dAppBody1">
+      {t(`badge.${type}.criteriaLink.readCriteria`)}
       <a
         href={badgeCriteria}
         rel="noreferrer"
         style={{ textDecoration: 'underline' }}
         target={'_blank'}
       >
-        {t('badge.challenge.modal.curationCriteria')}
+        {t(`badge.${type}.criteriaLink.curationCriteria`)}
       </a>
-      {t('badge.challenge.modal.toAvoid')}
+      {t(`badge.${type}.criteriaLink.toAvoid`)}
     </Typography>
   )
 }
