@@ -8,7 +8,6 @@ import { useTranslation } from 'next-export-i18n'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { getNetworkConfig } from '@/src/config/web3'
-import { useBadgeModelKlerosMetadata } from '@/src/hooks/subgraph/useBadgeModelKlerosMetadata'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
 import CreatorInfoSmallPreview from '@/src/pagePartials/badge/explorer/addons/CreatorInfoSmallPreview'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
@@ -22,7 +21,6 @@ export default function BadgeModelInfoPreview({ badgeModel }: { badgeModel: Badg
   const networkConfig = getNetworkConfig(appChainId)
 
   const resBadgeModelMetadata = useS3Metadata<{ content: BadgeModelMetadata }>(badgeModel.uri || '')
-  const badgeModelKlerosMetadata = useBadgeModelKlerosMetadata(badgeModel.id)
   const badgeMetadata = resBadgeModelMetadata.data?.content
 
   return (
@@ -50,8 +48,7 @@ export default function BadgeModelInfoPreview({ badgeModel }: { badgeModel: Badg
         <Typography fontWeight="bold" variant="dAppTitle2">
           {t('explorer.preview.badge.mintCost')}
           <Typography component="span" sx={{ ml: 1 }} variant="dAppTitle2">
-            {formatUnits(badgeModelKlerosMetadata.data?.submissionBaseDeposit, 18)}{' '}
-            {networkConfig.token}
+            {formatUnits(badgeModel.creatorFee, 18)} {networkConfig.token}
           </Typography>
         </Typography>
 

@@ -37,6 +37,7 @@ export const MY_CREATED_BADGE_TYPES = gql`
         controllerType
         badgesMintedAmount
         creatorFee
+        protocolFeeInBps
       }
       statistics {
         creatorStatistic {

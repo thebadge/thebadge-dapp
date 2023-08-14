@@ -52,7 +52,9 @@ const Register: NextPageWithLayout = () => {
         return theBadge.registerBadgeModelCreator(creatorMetadataIPFSHash)
       })
 
-      await transaction.wait()
+      if (transaction) {
+        await transaction.wait()
+      }
     } catch (e) {
       // Do nothing
     }

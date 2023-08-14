@@ -16,6 +16,13 @@ gql`
       creatorFee
       validFor
       badgesMintedAmount
+      badgeModelKleros {
+        tcrList
+        challengePeriodDuration
+      }
+    }
+    badgeKlerosMetaData {
+      reviewDueDate
     }
   }
 `

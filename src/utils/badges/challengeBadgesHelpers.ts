@@ -1,3 +1,4 @@
+import { convertHashToValidIPFSKlerosHash } from '@/src/utils/fileUtils'
 import ipfsUpload from '@/src/utils/ipfsUpload'
 
 export async function createAndUploadChallengeEvidence(
@@ -20,5 +21,5 @@ export async function createAndUploadChallengeEvidence(
     filePaths: attachment ? ['fileURI'] : [],
   })
 
-  return `ipfs://${evidenceIPFSUploaded.result?.ipfsHash}`
+  return convertHashToValidIPFSKlerosHash(evidenceIPFSUploaded.result?.ipfsHash)
 }

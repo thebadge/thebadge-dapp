@@ -1,7 +1,7 @@
 import { Box, Typography, styled } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
 
-import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
+import { useProtocolStatistic } from '@/src/hooks/subgraph/useProtocolStatistic'
 import StatisticDisplay from '@/src/pagePartials/home/statistics/StatisticDisplay'
 import StatisticDoubleDisplay from '@/src/pagePartials/home/statistics/StatisticDoubleDisplay'
 
@@ -18,8 +18,7 @@ const Container = styled(Box)(({ theme }) => ({
 
 export default function ProtocolStatistics() {
   const { t } = useTranslation()
-  const gql = useSubgraph()
-  const protocolStatistic = gql.useProtocolStatistic()
+  const protocolStatistic = useProtocolStatistic()
 
   return (
     <>
@@ -29,30 +28,30 @@ export default function ProtocolStatistics() {
       <Container>
         <StatisticDisplay
           label={t('home.statistics.created')}
-          number={protocolStatistic.data?.protocolStatistic?.badgesMintedAmount}
+          number={protocolStatistic.data?.badgesMintedAmount}
         />
 
         <StatisticDisplay
           label={t('home.statistics.models')}
-          number={protocolStatistic.data?.protocolStatistic?.badgeModelsCreatedAmount}
+          number={protocolStatistic.data?.badgeModelsCreatedAmount}
           transparent
         />
 
         <StatisticDisplay
           label={t('home.statistics.challenged')}
-          number={protocolStatistic.data?.protocolStatistic?.badgesChallengedAmount}
+          number={protocolStatistic.data?.badgesChallengedAmount}
         />
 
         <StatisticDoubleDisplay
           primaryLabel={t('home.statistics.owners')}
-          primaryNumber={protocolStatistic.data?.protocolStatistic?.badgesOwnersAmount}
+          primaryNumber={protocolStatistic.data?.badgesOwnersAmount}
           secondaryLabel={t('home.statistics.creators')}
-          secondaryNumber={protocolStatistic.data?.protocolStatistic?.badgeCreatorsAmount}
+          secondaryNumber={protocolStatistic.data?.badgeCreatorsAmount}
           transparent
         />
         <StatisticDisplay
           label={t('home.statistics.curators')}
-          number={protocolStatistic.data?.protocolStatistic?.badgeCuratorsAmount}
+          number={protocolStatistic.data?.badgeCuratorsAmount}
         />
       </Container>
     </>
