@@ -175,6 +175,10 @@ export async function encodeKlerosBadgeModelControllerData(
   return klerosBadgeModelControllerDataEncoded
 }
 
+export const encodeIpfsEvidence = (ipfsEvidenceHash: string): string => {
+  return defaultAbiCoder.encode([`tuple(string)`], [[ipfsEvidenceHash]])
+}
+
 async function transformDeltaToPDF(pdfValues: z.infer<typeof DeltaPDFSchema>) {
   if (!pdfValues) return ''
   // Use NextJs dynamic import to reduce the bundle size
