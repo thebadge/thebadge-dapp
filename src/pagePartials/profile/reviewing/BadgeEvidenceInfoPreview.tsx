@@ -58,8 +58,7 @@ export default function BadgeReviewingInfoPreview({ badge }: { badge: Badge }) {
       </Stack>
 
       <Stack gap={2}>
-        <Typography variant="body3">{t('profile.badgesIAmReviewing.lastActivity')}</Typography>
-        <EvidencesList badgeId={badge.id} />
+        <EvidencesList badgeId={badge.id} showLastActivity />
         <Divider color={colors.white} />
       </Stack>
 
