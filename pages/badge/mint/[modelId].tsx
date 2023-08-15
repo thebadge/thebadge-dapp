@@ -2,8 +2,6 @@ import { useRouter } from 'next/router'
 import * as React from 'react'
 import { useEffect } from 'react'
 
-import { defaultAbiCoder } from 'ethers/lib/utils'
-
 import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
@@ -17,6 +15,7 @@ import { cleanMintFormValues } from '@/src/pagePartials/badge/mint/utils'
 import { PreventActionIfBadgeTypePaused } from '@/src/pagePartials/errors/preventActionIfPaused'
 import { RequiredNotHaveBadge } from '@/src/pagePartials/errors/requiredNotHaveBadge'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+import { encodeIpfsEvidence } from '@/src/utils/badges/createBadgeModelHelpers'
 import { BadgeModelMetadata } from '@/types/badges/BadgeMetadata'
 import { TheBadge__factory } from '@/types/generated/typechain'
 import { MetadataColumn } from '@/types/kleros/types'
@@ -82,10 +81,7 @@ const MintBadgeType: NextPageWithLayout = () => {
           { imageBase64File: previewImage },
         )
 
-        const klerosBadgeModelControllerDataEncoded = defaultAbiCoder.encode(
-          [`tuple(string)`],
-          [[evidenceIPFSHash]],
-        )
+        const klerosBadgeModelControllerDataEncoded = encodeIpfsEvidence(evidenceIPFSHash)
 
         // If social login relay tx
         // @todo (agustin) add more validations, also on backend, user should be authenticated
@@ -94,7 +90,7 @@ const MintBadgeType: NextPageWithLayout = () => {
             badgeModelId,
             address,
             badgeMetadataIPFSHash,
-            klerosControllerDataEncoded: klerosBadgeModelControllerDataEncoded,
+            klerosBadgeModelControllerDataEncoded,
             overrides: {
               value: mintValue,
             },
