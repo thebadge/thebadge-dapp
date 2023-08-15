@@ -316,9 +316,11 @@
       }
     },
     "viewBadge": {
+      "id:": "Badge ID: {{id}}#",
       "issueBy": "Issued by: {{issuer}}",
-      "claims": " # badges claimed",
+      "claims": " {{amount}} # badges claimed",
       "checkHowElse": "Check who else claimed it. ",
+      "seeAll": "See All",
       "challengeStatus": {
         "title": "Challenge Status",
         "challenged": "CHALLENGED",

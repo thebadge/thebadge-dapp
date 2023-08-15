@@ -57,7 +57,7 @@ export default function BadgeOwnedPreview() {
               {badgeModelMetadata?.name}
             </Typography>
             <Typography sx={{ color: colors.green, fontWeight: 'bold' }} variant="caption">
-              Badge model ID: {badgeModel?.id}
+              {t('badge.viewBadge.id', { id: badgeId })}
             </Typography>
           </Stack>
           <Divider color={colors.white} />
@@ -74,13 +74,14 @@ export default function BadgeOwnedPreview() {
             }}
             variant="body4"
           >
-            {badgeModel?.badgesMintedAmount}
-            {t('badge.viewBadge.claims')}
+            {t('badge.viewBadge.claims', { amount: badgeModel?.badgesMintedAmount })}
           </Typography>
           <Box alignItems="center" display="flex" justifyContent="space-between">
             <Typography variant="body4">
               {t('badge.viewBadge.checkHowElse')}
-              <LinkWithTranslation pathname="/badge/explorer">SEE ALL</LinkWithTranslation>
+              <LinkWithTranslation pathname="/badge/explorer">
+                {t('badge.viewBadge.seeAll').toUpperCase()}
+              </LinkWithTranslation>
             </Typography>
             <IconButton aria-label="Share badge preview" component="label" onClick={handleShare}>
               <ShareOutlinedIcon />
