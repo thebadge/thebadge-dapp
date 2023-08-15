@@ -37,6 +37,16 @@ export const MODEL_CREATION_CACHE_EXPIRATION_MS = process.env.MODEL_CREATION_CAC
 
 export const DEFAULT_COURT_ID = process.env.NEXT_PUBLIC_KLEROS_DEFAULT_COURT || '1'
 
+// Kleros Court Case display config
+export const DYNAMIC_SCRIPT_IPFS_HASH =
+  process.env.NEXT_PUBLIC_DYNAMIC_SCRIPT_IPFS_HASH ||
+  'QmRHjhpTvYQ3uLRWxEMh4zen7kmwZGPz7vLkYxLpssf1Jz'
+
+// Kleros Court evidence display config
+export const EVIDENCE_DISPLAY_INTERFACE_IPFS_HASH =
+  process.env.NEXT_PUBLIC_EVIDENCE_DISPLAY_INTERFACE_IPFS_HASH ||
+  'QmQjJio59WkrQDzPC5kSP3EiGaqrWxjGfkvhmD2mWwm41M'
+
 /**** Severity *****/
 export const SEVERITY_NORMAL_JURORS = +(
   process.env.NEXT_PUBLIC_BADGE_MODEL_SEVERITY_NORMAL_JURORS || 1

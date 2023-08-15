@@ -1,3 +1,7 @@
+import {
+  DYNAMIC_SCRIPT_IPFS_HASH,
+  EVIDENCE_DISPLAY_INTERFACE_IPFS_HASH,
+} from '@/src/constants/common'
 import { MetadataColumn } from '@/types/kleros/types'
 import { BackendFileResponse, BackendFileUpload } from '@/types/utils'
 
@@ -41,11 +45,7 @@ export function generateKlerosListMetaEvidence(
   requireRemovalEvidence = true,
   relTcrDisabled = true, // research about it
   category = 'Curated Lists',
-  evidenceDisplayInterfaceURI = '/ipfs/QmQjJio59WkrQDzPC5kSP3EiGaqrWxjGfkvhmD2mWwm41M/index.html',
 ): { registration: KlerosListStructure; clearing: KlerosListStructure } {
-  // TODO
-  // check max items indexed = 3
-
   const itemNamePlural = `${badgeName}s`
 
   const registration: KlerosListStructure = {
@@ -62,8 +62,8 @@ export function generateKlerosListMetaEvidence(
     category,
     question: `Does the ${badgeName} comply with the required criteria?`,
     fileURI,
-    evidenceDisplayInterfaceURI,
-    dynamicScriptURI: 'ipfs/QmRHjhpTvYQ3uLRWxEMh4zen7kmwZGPz7vLkYxLpssf1Jz',
+    evidenceDisplayInterfaceURI: `/ipfs/${EVIDENCE_DISPLAY_INTERFACE_IPFS_HASH}/index.html`,
+    dynamicScriptURI: `ipfs/${DYNAMIC_SCRIPT_IPFS_HASH}`,
     dynamicScriptRequiredParams: ['disputeID', 'arbitrableChainID', 'arbitrableContractAddress'],
     metadata: {
       tcrTitle: badgeTypeName,
@@ -92,8 +92,8 @@ export function generateKlerosListMetaEvidence(
     category,
     question: `Does the ${badgeName} comply with the required criteria?`,
     fileURI,
-    evidenceDisplayInterfaceURI,
-    dynamicScriptURI: 'ipfs/QmRHjhpTvYQ3uLRWxEMh4zen7kmwZGPz7vLkYxLpssf1Jz',
+    evidenceDisplayInterfaceURI: `/ipfs/${EVIDENCE_DISPLAY_INTERFACE_IPFS_HASH}/index.html`,
+    dynamicScriptURI: `ipfs/${DYNAMIC_SCRIPT_IPFS_HASH}`,
     dynamicScriptRequiredParams: ['disputeID', 'arbitrableChainID', 'arbitrableContractAddress'],
     metadata: {
       tcrTitle: badgeTypeName,
