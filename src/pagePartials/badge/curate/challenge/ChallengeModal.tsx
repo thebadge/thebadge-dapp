@@ -125,7 +125,11 @@ function ChallengeModalContent({ badgeId, onClose }: { badgeId: string; onClose:
           : t('badge.challenge.modal.challenge')}
       </Typography>
       <SafeSuspense fallback={<Skeleton sx={{ margin: 'auto' }} variant={'text'} width={500} />}>
-        <CurationCriteriaLink badgeModelId={badgeModelId} type="challenge" />
+        <CurationCriteriaLink
+          badgeModelId={badgeModelId}
+          isRemoval={badge.status === BadgeStatus.Approved}
+          type="challenge"
+        />
       </SafeSuspense>
       <Box sx={{ flexDirection: 'row', display: 'flex', justifyContent: 'left', gap: 1 }}>
         <FindInPageOutlinedIcon />
