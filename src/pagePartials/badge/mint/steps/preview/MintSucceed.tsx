@@ -1,5 +1,6 @@
 import * as React from 'react'
 
+import { Stack } from '@mui/material'
 import { BadgePreview } from '@thebadge/ui-library'
 
 import { APP_URL } from '@/src/constants/common'
@@ -27,16 +28,18 @@ export default function MintSucceed() {
   )
 
   return (
-    <BadgePreview
-      animationEffects={['wobble', 'grow', 'glare']}
-      animationOnHover
-      badgeBackgroundUrl={getBackgroundBadgeUrl(backgroundType?.value)}
-      badgeUrl={`${APP_URL}/${modelId}/${address}`}
-      category={badgeModelMetadata?.name}
-      description={badgeModelMetadata?.description}
-      imageUrl={badgeLogoImage?.s3Url}
-      size="medium"
-      textContrast={textContrast?.value || 'light-withTextBackground'}
-    />
+    <Stack alignItems="center">
+      <BadgePreview
+        animationEffects={['wobble', 'grow', 'glare']}
+        animationOnHover
+        badgeBackgroundUrl={getBackgroundBadgeUrl(backgroundType?.value)}
+        badgeUrl={`${APP_URL}/${modelId}/${address}`}
+        category={badgeModelMetadata?.name}
+        description={badgeModelMetadata?.description}
+        imageUrl={badgeLogoImage?.s3Url}
+        size="medium"
+        textContrast={textContrast?.value || 'light-withTextBackground'}
+      />
+    </Stack>
   )
 }

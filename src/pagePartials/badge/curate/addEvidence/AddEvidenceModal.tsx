@@ -7,15 +7,17 @@ import { z } from 'zod'
 
 import TBModal from '@/src/components/common/TBModal'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
-import useTCRContractInstance from '@/src/hooks/kleros/useTCRContractInstance'
 import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
 import { useBadgeKlerosMetadata } from '@/src/hooks/subgraph/useBadgeKlerosMetadata'
+import { useContractInstance } from '@/src/hooks/useContractInstance'
 import useTransaction from '@/src/hooks/useTransaction'
 import CurationCriteriaLink from '@/src/pagePartials/badge/curate/CurationCriteriaLink'
 import EvidenceForm, {
   EvidenceSchema,
 } from '@/src/pagePartials/badge/curate/evidenceForm/EvidenceForm'
+import { encodeIpfsEvidence } from '@/src/utils/badges/createBadgeModelHelpers'
 import { BadgeStatus } from '@/types/generated/subgraph'
+import { TheBadge__factory } from '@/types/generated/typechain'
 
 type AddEvidenceModalProps = {
   open: boolean
@@ -43,7 +45,7 @@ function AddEvidenceModalContent({ badgeId, onClose }: { badgeId: string; onClos
   }
 
   const badgeModelId = badge.badgeModel.id
-  const tcrContractInstance = useTCRContractInstance(badgeModelId)
+  const theBadge = useContractInstance(TheBadge__factory, 'TheBadge')
 
   async function onSubmit(data: z.infer<typeof EvidenceSchema>) {
     if (!badge || !badge.status) {
@@ -71,10 +73,7 @@ function AddEvidenceModalContent({ badgeId, onClose }: { badgeId: string; onClos
           throw 'There was an error fetching the badge status, try again in some minutes.'
         case BadgeStatus.Challenged:
           // If the badge is already challenged or a removal request was generated, only adding more evidence is possible.
-          return tcrContractInstance.submitEvidence(
-            badgeKlerosMetadata.data?.itemID,
-            evidenceIPFSHash,
-          )
+          return theBadge.submitEvidence(badgeId, encodeIpfsEvidence(evidenceIPFSHash))
         default:
           throw new Error(
             'The badge status doesnt allow add more evidence, make a challenge first.',

@@ -9,9 +9,9 @@ import TBModal from '@/src/components/common/TBModal'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { useChallengeCost } from '@/src/hooks/kleros/useChallengeCost'
 import { useRemovalCost } from '@/src/hooks/kleros/useRemovalCost'
-import useTCRContractInstance from '@/src/hooks/kleros/useTCRContractInstance'
 import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
 import { useBadgeKlerosMetadata } from '@/src/hooks/subgraph/useBadgeKlerosMetadata'
+import { useContractInstance } from '@/src/hooks/useContractInstance'
 import { TimeLeft, useDate } from '@/src/hooks/useDate'
 import useTransaction from '@/src/hooks/useTransaction'
 import CurationCriteriaLink from '@/src/pagePartials/badge/curate/CurationCriteriaLink'
@@ -19,7 +19,9 @@ import ChallengeCost from '@/src/pagePartials/badge/curate/challenge/ChallengeCo
 import EvidenceForm, {
   EvidenceSchema,
 } from '@/src/pagePartials/badge/curate/evidenceForm/EvidenceForm'
+import { encodeIpfsEvidence } from '@/src/utils/badges/createBadgeModelHelpers'
 import { BadgeStatus } from '@/types/generated/subgraph'
+import { TheBadge__factory } from '@/types/generated/typechain'
 
 type ChallengeModalProps = {
   open: boolean
@@ -51,7 +53,7 @@ function ChallengeModalContent({ badgeId, onClose }: { badgeId: string; onClose:
   }
 
   const badgeModelId = badge.badgeModel.id
-  const tcrContractInstance = useTCRContractInstance(badgeModelId)
+  const theBadge = useContractInstance(TheBadge__factory, 'TheBadge')
 
   async function onSubmit(data: z.infer<typeof EvidenceSchema>) {
     if (!badge || !badge.status) {
@@ -86,16 +88,12 @@ function ChallengeModalContent({ badgeId, onClose }: { badgeId: string; onClose:
             )
           }
           // If the badge is on review period, we generate a challenge request in TCR
-          return tcrContractInstance.challengeRequest(
-            badgeKlerosMetadata.data.itemID,
-            evidenceIPFSHash,
-            {
-              value: challengeCost.data,
-            },
-          )
+          return theBadge.challenge(badgeId, encodeIpfsEvidence(evidenceIPFSHash), {
+            value: challengeCost.data,
+          })
         case BadgeStatus.Approved:
           // If the badge is on the list, we generate a removeItem request in TCR
-          return tcrContractInstance.removeItem(badgeKlerosMetadata.data.itemID, evidenceIPFSHash, {
+          return theBadge.removeItem(badgeId, encodeIpfsEvidence(evidenceIPFSHash), {
             value: removalCost.data,
           })
         case BadgeStatus.Absent:

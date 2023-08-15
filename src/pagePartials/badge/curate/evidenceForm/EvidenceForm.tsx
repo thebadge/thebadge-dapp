@@ -28,11 +28,10 @@ type EvidenceFormProps = {
 export default function EvidenceForm({ onSubmit, showCostComponent, type }: EvidenceFormProps) {
   const { t } = useTranslation()
 
-  const { control, formState, handleSubmit } = useForm<z.infer<typeof EvidenceSchema>>({
+  const { control, handleSubmit } = useForm<z.infer<typeof EvidenceSchema>>({
     resolver: zodResolver(EvidenceSchema),
   })
 
-  console.log(formState)
   return (
     <Stack
       sx={{
@@ -95,7 +94,7 @@ export default function EvidenceForm({ onSubmit, showCostComponent, type }: Evid
       <Box display="flex" mt={4}>
         <Button
           color="error"
-          onClick={handleSubmit(onSubmit, (a) => console.log(a))}
+          onClick={handleSubmit(onSubmit)}
           sx={{ borderRadius: 3, ml: 'auto' }}
           variant="contained"
         >
