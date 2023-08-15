@@ -10,6 +10,7 @@ import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
 import { useRegistrationBadgeModelKlerosMetadata } from '@/src/hooks/subgraph/useBadgeModelKlerosMetadata'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { MintBadgeSchemaType } from '@/src/pagePartials/badge/mint/schema/MintBadgeSchema'
+import { secondsToDays, secondsToMinutes } from '@/src/utils/dateUtils'
 import { isTestnet } from '@/src/utils/network'
 import { Creator } from '@/types/badges/Creator'
 
@@ -33,6 +34,10 @@ export default function HowItWorks() {
   const badgeCriteria =
     's3Url' in badgeModelKlerosMetadata.fileURI ? badgeModelKlerosMetadata.fileURI.s3Url : ''
 
+  const challengePeriodDuration = isTestnet
+    ? secondsToMinutes(klerosBadgeModel.data?.challengePeriodDuration)
+    : secondsToDays(klerosBadgeModel.data?.challengePeriodDuration)
+
   return (
     <Controller
       control={control}
@@ -44,8 +49,7 @@ export default function HowItWorks() {
             badgeCreatorProfileLink: '/profile/' + badgeModelData.data?.badgeModel?.creator.id,
             curationDocsUrl: DOCS_URL + '/thebadge-documentation/protocol-mechanics/challenge',
             curationCriteriaUrl: badgeCriteria,
-            challengePeriodDuration:
-              (klerosBadgeModel?.data?.challengePeriodDuration / 60 / 60) * (isTestnet ? 60 : 1),
+            challengePeriodDuration,
             timeUnit: isTestnet ? 'minutes' : 'days',
           })}
           color="blue"

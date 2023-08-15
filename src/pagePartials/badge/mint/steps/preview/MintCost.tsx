@@ -11,6 +11,7 @@ import { DOCS_URL } from '@/src/constants/common'
 import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import { useRegistrationBadgeModelKlerosMetadata } from '@/src/hooks/subgraph/useBadgeModelKlerosMetadata'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+import { secondsToDays, secondsToMinutes } from '@/src/utils/dateUtils'
 import { isTestnet } from '@/src/utils/network'
 
 type Props = {
@@ -35,8 +36,6 @@ export default function MintCost({ costs }: Props) {
     throw `There was an error trying to fetch the metadata for the badge model`
   }
 
-  const challengePeriodDuration = badgeModelKlerosData.data?.challengePeriodDuration
-
   const badgeModelMetadata = badgeModelKlerosData.data?.badgeModelKlerosRegistrationMetadata
 
   if (!badgeModelMetadata) {
@@ -45,6 +44,10 @@ export default function MintCost({ costs }: Props) {
 
   const badgeCriteria =
     's3Url' in badgeModelMetadata.fileURI ? badgeModelMetadata.fileURI.s3Url : ''
+
+  const challengePeriodDuration = isTestnet
+    ? secondsToMinutes(badgeModelKlerosData.data?.challengePeriodDuration)
+    : secondsToDays(badgeModelKlerosData.data?.challengePeriodDuration)
 
   return (
     <Stack
@@ -79,7 +82,7 @@ export default function MintCost({ costs }: Props) {
           >
             {t('badge.model.mint.depositDisclaimer', {
               docsUrl: DOCS_URL + '/thebadge-documentation/protocol-mechanics/challenge',
-              challengePeriodDuration: (challengePeriodDuration / 60 / 60) * (isTestnet ? 60 : 1),
+              challengePeriodDuration,
               timeUnit: isTestnet ? 'minutes' : 'days',
             })}
           </MarkdownTypography>

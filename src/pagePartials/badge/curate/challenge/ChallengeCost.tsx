@@ -10,7 +10,8 @@ import { getNetworkConfig } from '@/src/config/web3'
 import { useChallengeCost } from '@/src/hooks/kleros/useChallengeCost'
 import { useRegistrationBadgeModelKlerosMetadata } from '@/src/hooks/subgraph/useBadgeModelKlerosMetadata'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
-import { secondsToDays } from '@/src/utils/dateUtils'
+import { secondsToDays, secondsToMinutes } from '@/src/utils/dateUtils'
+import { isTestnet } from '@/src/utils/network'
 
 export default function ChallengeCost({
   badgeId,
@@ -33,9 +34,9 @@ export default function ChallengeCost({
     throw 'There was not possible to get challenge cost. Try again in some minutes.'
   }
 
-  const challengePeriodDurationInDays = secondsToDays(
-    badgeModelKlerosData.data?.challengePeriodDuration,
-  )
+  const challengePeriodDuration = isTestnet
+    ? secondsToMinutes(badgeModelKlerosData.data?.challengePeriodDuration)
+    : secondsToDays(badgeModelKlerosData.data?.challengePeriodDuration)
 
   return (
     <Box display="flex" flex={1} gap={4}>
@@ -62,7 +63,8 @@ export default function ChallengeCost({
           variant="dAppBody1"
         >
           {t('badge.challenge.modal.depositWarning', {
-            period: challengePeriodDurationInDays,
+            period: challengePeriodDuration,
+            timeUnit: isTestnet ? 'minutes' : 'days',
           })}
         </Typography>
       </Box>

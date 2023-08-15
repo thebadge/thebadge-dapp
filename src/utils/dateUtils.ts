@@ -30,6 +30,9 @@ export function secondsToDays(periodDuration: number) {
   return periodDuration ? periodDuration / 60 / 60 / 24 : 0
 }
 
+export function secondsToMinutes(periodDuration: number) {
+  return periodDuration ? periodDuration / 60 : 0
+}
 /**
  * By default expect Unix Timestamp (seconds)
  * @param timestamp
@@ -83,4 +86,12 @@ export const formatTimestamp = (
   const format = dayjs.unix(Number(timestamp)).format(dateFormat)
   if (format !== null) return format
   return ''
+}
+
+export const isBeforeToday = (timestamp?: string | number) => {
+  if (!timestamp) {
+    return false
+  }
+  // Check if now is after the give timestamp
+  return dayjs().isAfter(dayjs.unix(Number(timestamp)))
 }

@@ -18,7 +18,7 @@ import { Badge, KlerosBadgeRequest, KlerosRequestType } from '@/types/generated/
 export default function BadgeReviewingInfoPreview({ badge }: { badge: Badge }) {
   const { t } = useTranslation()
   const router = useRouter()
-  const { challenge } = useCurateProvider()
+  const { addMoreEvidence } = useCurateProvider()
 
   const badgeKlerosMetadata = useEvidenceBadgeKlerosMetadata(badge?.id)
   const badgeEvidence = badgeKlerosMetadata.data?.requestBadgeEvidence
@@ -74,7 +74,7 @@ export default function BadgeReviewingInfoPreview({ badge }: { badge: Badge }) {
         <ButtonV2
           backgroundColor={colors.transparent}
           fontColor={colors.white}
-          onClick={() => challenge(badge?.id)}
+          onClick={() => addMoreEvidence(badge?.id)}
           variant="outlined"
         >
           {t('profile.badgesIAmReviewing.addEvidence')}

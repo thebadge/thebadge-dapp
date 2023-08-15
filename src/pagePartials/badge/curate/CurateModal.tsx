@@ -1,44 +1,22 @@
 import React from 'react'
 
-import CloseIcon from '@mui/icons-material/Close'
-import { Box, IconButton, Modal, Skeleton, Stack, Tooltip, Typography, styled } from '@mui/material'
+import { Box, Skeleton, Stack, Tooltip, Typography } from '@mui/material'
 import { ButtonV2, colors } from '@thebadge/ui-library'
-import { gradients } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 
+import TBModal from '@/src/components/common/TBModal'
 import DisplayEvidenceField from '@/src/components/displayEvidence/DisplayEvidenceField'
 import { Address } from '@/src/components/helpers/Address'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import TBSwiper from '@/src/components/helpers/TBSwiper'
 import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
 import { useEvidenceBadgeKlerosMetadata } from '@/src/hooks/subgraph/useBadgeKlerosMetadata'
+import useIsClaimable from '@/src/hooks/subgraph/useIsClaimable'
 import CurationCriteriaLink from '@/src/pagePartials/badge/curate/CurationCriteriaLink'
-import { RequiredConnection } from '@/src/pagePartials/errors/requiredConnection'
 import { useCurateProvider } from '@/src/providers/curateProvider'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { getEvidenceValue } from '@/src/utils/kleros/getEvidenceValue'
-
-const ModalBody = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: '70%',
-  maxWidth: '850px',
-  minHeight: '50%',
-  background:
-    theme.palette.mode === 'light'
-      ? gradients.gradientBackgroundLight
-      : gradients.gradientBackgroundDark,
-  borderRadius: theme.spacing(1),
-  boxShadow: `0px 0px 20px rgba(255, 255, 255, 0.6)`,
-  padding: theme.spacing(4),
-  '& .MuiContainer-root': {
-    maxWidth: '100%',
-  },
-}))
+import { BadgeStatus } from '@/types/generated/subgraph'
 
 type CurateModalProps = {
   open: boolean
@@ -47,45 +25,28 @@ type CurateModalProps = {
 }
 export default function CurateModal({ badgeId, onClose, open }: CurateModalProps) {
   return (
-    <Modal
-      aria-describedby="modal-modal-description"
-      aria-labelledby="modal-modal-title"
-      onClose={onClose}
-      open={open}
-    >
-      <Box>
-        <RequiredConnection noCloseButton>
-          <ModalBody>
-            <IconButton
-              aria-label="close curate modal"
-              color="secondary"
-              component="label"
-              onClick={onClose}
-              sx={{ position: 'absolute', right: 8, top: 8 }}
-            >
-              <CloseIcon color="white" />
-            </IconButton>
-
-            <SafeSuspense>
-              <CurateModalContent badgeId={badgeId} onClose={onClose} />
-            </SafeSuspense>
-          </ModalBody>
-        </RequiredConnection>
-      </Box>
-    </Modal>
+    <TBModal closeButtonAriaLabel="Close curate modal" onClose={onClose} open={open}>
+      <CurateModalContent badgeId={badgeId} onClose={onClose} />
+    </TBModal>
   )
 }
 
 function CurateModalContent({ badgeId, onClose }: { badgeId: string; onClose: () => void }) {
   const { t } = useTranslation()
   const { address } = useWeb3Connection()
-  const { challenge } = useCurateProvider()
+  const { addMoreEvidence, challenge } = useCurateProvider()
 
+  const isClaimable = useIsClaimable(badgeId)
   const badgeById = useBadgeById(badgeId)
   const badge = badgeById.data
 
   if (!badge) {
     throw 'There was an error fetching the badge, try again in some minutes.'
+  }
+
+  const onButtonClick = () => {
+    badge?.status === BadgeStatus.Challenged ? addMoreEvidence(badge.id) : challenge(badge.id)
+    onClose()
   }
 
   const badgeModelId = badge.badgeModel.id
@@ -129,6 +90,15 @@ function CurateModalContent({ badgeId, onClose }: { badgeId: string; onClose: ()
       </Box>
     )) || []
 
+  const getTooltipText = () => {
+    if (address === ownerAddress) {
+      return t('badge.curate.modal.ownBadgeChallenge')
+    }
+    if (isClaimable) {
+      return t('badge.curate.modal.notClaimedBadge')
+    }
+    return ''
+  }
   return (
     <Stack
       sx={{
@@ -179,28 +149,28 @@ function CurateModalContent({ badgeId, onClose }: { badgeId: string; onClose: ()
         }}
       >
         <Box mt={4}>
-          <SafeSuspense fallback={<Skeleton variant={'text'} width={500} />}>
-            <CurationCriteriaLink badgeModelId={badgeModelId} />
+          <SafeSuspense
+            fallback={<Skeleton sx={{ margin: 'auto' }} variant={'text'} width={500} />}
+          >
+            <CurationCriteriaLink badgeModelId={badgeModelId} type="curate" />
           </SafeSuspense>
         </Box>
 
         <Box mt={2}>
-          <Tooltip
-            arrow
-            title={address === ownerAddress ? t('badge.curate.modal.ownBadgeChallenge') : ''}
-          >
+          <Tooltip arrow title={getTooltipText()}>
             {/* A disabled element does not fire events. So we need a wrapper to use the tooltip, also ButtonV2 doesn't forward the ref */}
             <Box>
               <ButtonV2
                 backgroundColor={colors.redError}
-                disabled={address === ownerAddress}
+                disabled={address === ownerAddress || isClaimable}
                 fontColor={colors.white}
-                onClick={() => {
-                  challenge(badgeModelId)
-                  onClose()
-                }}
+                onClick={onButtonClick}
               >
-                <Typography>{t('badge.curate.modal.challengeButton')}</Typography>
+                <Typography>
+                  {badge?.status === BadgeStatus.Challenged
+                    ? t('badge.curate.modal.addMoreEvidence')
+                    : t('badge.curate.modal.challengeButton')}
+                </Typography>
               </ButtonV2>
             </Box>
           </Tooltip>

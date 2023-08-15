@@ -22,7 +22,7 @@ const DisplayWrapper = styled(Box)(({ theme }) => ({
 
 export default function ChallengeStatus() {
   const { t } = useTranslation()
-  const { challenge } = useCurateProvider()
+  const { addMoreEvidence } = useCurateProvider()
 
   const badgeId = useBadgeIdParam()
   if (!badgeId) {
@@ -45,7 +45,7 @@ export default function ChallengeStatus() {
         </Typography>
         <Button
           color="error"
-          onClick={() => challenge(badgeId)}
+          onClick={() => addMoreEvidence(badgeId)}
           size="medium"
           sx={{ fontSize: '11px !important', borderRadius: 2 }}
           variant="outlined"

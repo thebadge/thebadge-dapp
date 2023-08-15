@@ -7,43 +7,35 @@ import { z } from 'zod'
 
 import TBModal from '@/src/components/common/TBModal'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
-import { useChallengeCost } from '@/src/hooks/kleros/useChallengeCost'
-import { useRemovalCost } from '@/src/hooks/kleros/useRemovalCost'
 import useTCRContractInstance from '@/src/hooks/kleros/useTCRContractInstance'
 import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
 import { useBadgeKlerosMetadata } from '@/src/hooks/subgraph/useBadgeKlerosMetadata'
-import { TimeLeft, useDate } from '@/src/hooks/useDate'
 import useTransaction from '@/src/hooks/useTransaction'
 import CurationCriteriaLink from '@/src/pagePartials/badge/curate/CurationCriteriaLink'
-import ChallengeCost from '@/src/pagePartials/badge/curate/challenge/ChallengeCost'
 import EvidenceForm, {
   EvidenceSchema,
 } from '@/src/pagePartials/badge/curate/evidenceForm/EvidenceForm'
 import { BadgeStatus } from '@/types/generated/subgraph'
 
-type ChallengeModalProps = {
+type AddEvidenceModalProps = {
   open: boolean
   onClose: () => void
   badgeId: string
 }
-
-export default function ChallengeModal({ badgeId, onClose, open }: ChallengeModalProps) {
+export default function AddEvidenceModal({ badgeId, onClose, open }: AddEvidenceModalProps) {
   return (
-    <TBModal closeButtonAriaLabel="Close challenge modal" onClose={onClose} open={open}>
-      <ChallengeModalContent badgeId={badgeId} onClose={onClose} />
+    <TBModal closeButtonAriaLabel="Close add evidence modal" onClose={onClose} open={open}>
+      <AddEvidenceModalContent badgeId={badgeId} onClose={onClose} />
     </TBModal>
   )
 }
 
-function ChallengeModalContent({ badgeId, onClose }: { badgeId: string; onClose: () => void }) {
+function AddEvidenceModalContent({ badgeId, onClose }: { badgeId: string; onClose: () => void }) {
   const { t } = useTranslation()
   const { sendTx } = useTransaction()
 
   const badgeById = useBadgeById(badgeId)
   const badgeKlerosMetadata = useBadgeKlerosMetadata(badgeId)
-  const challengeCost = useChallengeCost(badgeId)
-  const removalCost = useRemovalCost(badgeId)
-  const { getTimeLeftToExpire, timestampToDate } = useDate()
 
   const badge = badgeById.data
   if (!badge) {
@@ -74,35 +66,19 @@ function ChallengeModalContent({ badgeId, onClose }: { badgeId: string; onClose:
       if (!badgeKlerosMetadata || !badgeKlerosMetadata.data) {
         throw 'There was an error fetching the badge metadata or the badge is not a klerosBadge, try again in some minutes.'
       }
-      const dueDate: Date = timestampToDate(badgeKlerosMetadata.data.reviewDueDate)
-      const timeLeft: TimeLeft = getTimeLeftToExpire(dueDate)
       switch (badge.status) {
-        case BadgeStatus.Requested:
-          // If the badge finished its reviewPeriod but it was not claimed they are in an intermediate status: "Claimable", therefore neither challenge or removeItem is possible
-          // This logic should never be executed, the frontend should filter badges in this intermediate state, but I throw an exception here just in case.
-          if (timeLeft.quantity === 0) {
-            throw new Error(
-              'The badge was not claimed, challenge an unclaimed badge is not possible.',
-            )
-          }
-          // If the badge is on review period, we generate a challenge request in TCR
-          return tcrContractInstance.challengeRequest(
-            badgeKlerosMetadata.data.itemID,
-            evidenceIPFSHash,
-            {
-              value: challengeCost.data,
-            },
-          )
-        case BadgeStatus.Approved:
-          // If the badge is on the list, we generate a removeItem request in TCR
-          return tcrContractInstance.removeItem(badgeKlerosMetadata.data.itemID, evidenceIPFSHash, {
-            value: removalCost.data,
-          })
         case BadgeStatus.Absent:
           throw 'There was an error fetching the badge status, try again in some minutes.'
-        case BadgeStatus.RequestRemoval:
         case BadgeStatus.Challenged:
-          throw new Error('The badge is already challenged. You cant challenge it again')
+          // If the badge is already challenged or a removal request was generated, only adding more evidence is possible.
+          return tcrContractInstance.submitEvidence(
+            badgeKlerosMetadata.data?.itemID,
+            evidenceIPFSHash,
+          )
+        default:
+          throw new Error(
+            'The badge status doesnt allow add more evidence, make a challenge first.',
+          )
       }
     })
 
@@ -120,34 +96,24 @@ function ChallengeModalContent({ badgeId, onClose }: { badgeId: string; onClose:
       }}
     >
       <Typography color="error" id="tbmodal-title" textAlign="center" variant="dAppHeadline2">
-        {badge.status === BadgeStatus.Approved
-          ? t('badge.challenge.modal.remove')
-          : t('badge.challenge.modal.challenge')}
+        {t('badge.addEvidence.modal.title')}
       </Typography>
       <SafeSuspense fallback={<Skeleton sx={{ margin: 'auto' }} variant={'text'} width={500} />}>
         <CurationCriteriaLink
           badgeModelId={badgeModelId}
-          isRemoval={badge.status === BadgeStatus.Approved}
-          type="challenge"
+          isRemoval={badge.status === BadgeStatus.RequestRemoval}
+          type="addEvidence"
         />
       </SafeSuspense>
       <Box sx={{ flexDirection: 'row', display: 'flex', justifyContent: 'left', gap: 1 }}>
         <FindInPageOutlinedIcon />
         <Typography component="p" variant="body2">
-          {badge.status === BadgeStatus.Approved
-            ? t('badge.challenge.modal.explainWhyRemoval')
-            : t('badge.challenge.modal.explainWhyChallenge')}
+          {badge.status === BadgeStatus.RequestRemoval
+            ? t('badge.addEvidence.modal.explainWhyRemoval')
+            : t('badge.addEvidence.modal.explainWhyChallenge')}
         </Typography>
       </Box>
-      <EvidenceForm
-        onSubmit={onSubmit}
-        showCostComponent={
-          <SafeSuspense>
-            <ChallengeCost badgeId={badge.id} badgeModelId={badgeModelId} />
-          </SafeSuspense>
-        }
-        type="challenge"
-      />
+      <EvidenceForm onSubmit={onSubmit} type="addEvidence" />
     </Stack>
   )
 }

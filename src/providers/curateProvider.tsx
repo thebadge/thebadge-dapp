@@ -1,11 +1,13 @@
-import React, { useContext, useState } from 'react'
+import React, { useCallback, useContext, useState } from 'react'
 
 import CurateModal from '@/src/pagePartials/badge/curate/CurateModal'
+import AddEvidenceModal from '@/src/pagePartials/badge/curate/addEvidence/AddEvidenceModal'
 import ChallengeModal from '@/src/pagePartials/badge/curate/challenge/ChallengeModal'
 
 type CurateContextType = {
   curate: (badgeId: string) => void
   challenge: (badgeId: string) => void
+  addMoreEvidence: (badgeId: string) => void
 }
 
 const CurateContext = React.createContext<CurateContextType>({
@@ -15,33 +17,47 @@ const CurateContext = React.createContext<CurateContextType>({
   challenge: () => {
     // Empty function
   },
+  addMoreEvidence: () => {
+    // Empty function
+  },
 })
 
 export default function CurateContextProvider({ children }: { children: React.ReactNode }) {
   const [curateModalOpen, setCurateModalOpen] = useState(false)
+  const [addEvidenceModalOpen, setAddEvidenceModalOpen] = useState(false)
+  const [challengeModalOpen, setChallengeModalOpen] = useState(false)
+
   const [badgeId, setBadgeId] = useState('')
 
-  const [challengeModalOpen, setChallengeModalOpen] = useState(false)
-  function challenge(badgeId: string) {
+  const challenge = useCallback((badgeId: string) => {
     setChallengeModalOpen(true)
     setBadgeId(badgeId)
-  }
+  }, [])
 
-  function handleCloseChallenge() {
+  const addMoreEvidence = useCallback((badgeId: string) => {
+    setAddEvidenceModalOpen(true)
+    setBadgeId(badgeId)
+  }, [])
+
+  const handleCloseChallenge = useCallback(() => {
     setChallengeModalOpen(false)
-  }
+  }, [])
 
-  function curate(badgeId: string) {
+  const curate = useCallback((badgeId: string) => {
     setCurateModalOpen(true)
     setBadgeId(badgeId)
-  }
+  }, [])
 
-  function handleCloseCurate() {
+  const handleCloseCurate = useCallback(() => {
     setCurateModalOpen(false)
-  }
+  }, [])
+
+  const handleCloseAddEvidence = useCallback(() => {
+    setAddEvidenceModalOpen(false)
+  }, [])
 
   return (
-    <CurateContext.Provider value={{ curate, challenge }}>
+    <CurateContext.Provider value={{ curate, challenge, addMoreEvidence }}>
       {challengeModalOpen && (
         <ChallengeModal
           badgeId={badgeId}
@@ -51,6 +67,13 @@ export default function CurateContextProvider({ children }: { children: React.Re
       )}
       {curateModalOpen && (
         <CurateModal badgeId={badgeId} onClose={handleCloseCurate} open={curateModalOpen} />
+      )}
+      {addEvidenceModalOpen && (
+        <AddEvidenceModal
+          badgeId={badgeId}
+          onClose={handleCloseAddEvidence}
+          open={addEvidenceModalOpen}
+        />
       )}
       {children}
     </CurateContext.Provider>
