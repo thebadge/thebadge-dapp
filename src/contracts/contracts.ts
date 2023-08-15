@@ -1,20 +1,19 @@
 import Kleros from './abis/Kleros.json'
 import KlerosBadgeModelController from './abis/KlerosBadgeModelController.json'
-import TCR from './abis/TCR.json'
 import TheBadge from './abis/TheBadge.json'
 import { Chains } from '@/src/config/web3'
 
 export const contracts = {
   TheBadge: {
     address: {
-      [Chains.goerli]: '0xeCc0B0B2715bc6b6a0E42Eb9A7139aE28A360045',
+      [Chains.goerli]: '0xC11a50CAe9730920BC951DAaf235d80C455fBC52',
       [Chains.gnosis]: 'null',
     },
     abi: TheBadge,
   },
   KlerosBadgeModelController: {
     address: {
-      [Chains.goerli]: '0x84a93d11E9973826095ED7D0a0388949Eed38d63',
+      [Chains.goerli]: '0x6854a34ee046BFdd611fe9893C504482df280964',
       [Chains.gnosis]: 'null',
     },
     abi: KlerosBadgeModelController,
@@ -25,13 +24,6 @@ export const contracts = {
       [Chains.gnosis]: 'null',
     },
     abi: Kleros,
-  },
-  TCR: {
-    address: {
-      [Chains.goerli]: 'null',
-      [Chains.gnosis]: 'null',
-    },
-    abi: TCR,
   },
 } as const
 
