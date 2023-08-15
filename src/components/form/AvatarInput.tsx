@@ -77,7 +77,6 @@ export function AvatarInput({ error, label, onChange, value }: AvatarInputProps)
   useEffect(() => {
     if (!value) {
       const image = convertCanvasToImageType()
-      console.log('converted icon')
       onChange(image)
       setImages(image ? [image] : [])
       setIsCustom(false)
@@ -104,7 +103,7 @@ export function AvatarInput({ error, label, onChange, value }: AvatarInputProps)
         formControl={
           <Container maxWidth="md" sx={{ display: 'flex', width: '100%' }}>
             <ImageUploading
-              dataURLKey="data_url"
+              dataURLKey="base64File"
               maxNumber={maxNumber}
               onChange={handleOnChange}
               value={images}

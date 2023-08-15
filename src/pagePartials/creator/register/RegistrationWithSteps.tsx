@@ -41,6 +41,9 @@ export default function RegistrationWithSteps({
 
   const methods = useForm<z.infer<typeof CreatorRegisterSchema>>({
     resolver: zodResolver(CreatorRegisterSchema),
+    defaultValues: {
+      preferContactMethod: 'email',
+    },
     reValidateMode: 'onChange',
     mode: 'onChange',
   })
