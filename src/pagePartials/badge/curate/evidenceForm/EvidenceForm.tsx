@@ -40,29 +40,39 @@ export default function EvidenceForm({ onSubmit, showCostComponent, type }: Evid
     >
       <Controller
         control={control}
-        name={t(`badge.${type}.evidenceForm.title`)}
-        render={({ field: { name, onChange, value }, fieldState: { error } }) => (
-          <TextField error={error} label={name} onChange={onChange} value={value} />
+        name={'title'}
+        render={({ field: { onChange, value }, fieldState: { error } }) => (
+          <TextField
+            error={error}
+            label={t(`badge.${type}.evidenceForm.title`)}
+            onChange={onChange}
+            value={value}
+          />
         )}
       />
       <Box display="flex" gap={3} mb={4}>
         <Box display="flex" flex={1} sx={{ '& > *': { flex: 1 } }}>
           <Controller
             control={control}
-            name={t(`badge.${type}.evidenceForm.description`)}
-            render={({ field: { name, onChange, value }, fieldState: { error } }) => (
-              <TextArea error={error} label={name} onChange={onChange} value={value} />
+            name={'description'}
+            render={({ field: { onChange, value }, fieldState: { error } }) => (
+              <TextArea
+                error={error}
+                label={t(`badge.${type}.evidenceForm.description`)}
+                onChange={onChange}
+                value={value}
+              />
             )}
           />
         </Box>
         <Box display="flex" flex={1} mb={2}>
           <Controller
             control={control}
-            name={t(`badge.${type}.evidenceForm.attachment`)}
-            render={({ field: { name, onChange, value }, fieldState: { error } }) => (
+            name={'attachment'}
+            render={({ field: { onChange, value }, fieldState: { error } }) => (
               <FileInput
                 error={error}
-                label={name}
+                label={t(`badge.${type}.evidenceForm.attachment`)}
                 onChange={(value: ImageType | null) => {
                   if (value) {
                     // We change the structure a little bit to have it ready to push to the backend
