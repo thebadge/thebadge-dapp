@@ -2,7 +2,8 @@ import { useMemo } from 'react'
 import * as React from 'react'
 
 import { Timeline } from '@mui/lab'
-import { Box } from '@mui/material'
+import { Stack, Typography } from '@mui/material'
+import { useTranslation } from 'next-export-i18n'
 
 import { useBadgeKlerosMetadata } from '@/src/hooks/subgraph/useBadgeKlerosMetadata'
 import EvidenceItem from '@/src/pagePartials/badge/preview/addons/EvidenceItem'
@@ -15,6 +16,7 @@ export default function EvidencesList({
   badgeId: string
   showLastActivity?: boolean
 }) {
+  const { t } = useTranslation()
   const badgeKlerosMetadata = useBadgeKlerosMetadata(badgeId)
 
   const activeRequest = badgeKlerosMetadata.data?.requests[
@@ -36,13 +38,19 @@ export default function EvidencesList({
   }, [activeRequest.evidences, isRegistration, showLastActivity])
 
   return (
-    <Box
+    <Stack
       sx={{
+        gap: 2,
         '& .MuiTimelineItem-missingOppositeContent:before': {
           display: 'none',
         },
       }}
     >
+      <Typography variant="dAppTitle1">
+        {showLastActivity
+          ? t('badge.viewBadge.evidence.lastActivity')
+          : t('badge.viewBadge.evidence.evidenceActivity')}
+      </Typography>
       <Timeline>
         {isRegistration && (
           <EvidenceItem isRegistrationEvidence item={activeRequest.evidences[0]} />
@@ -51,6 +59,6 @@ export default function EvidencesList({
           <EvidenceItem isLast={index === array.length - 1} item={item} key={item.id + index} />
         ))}
       </Timeline>
-    </Box>
+    </Stack>
   )
 }

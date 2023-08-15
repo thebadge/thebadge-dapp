@@ -337,6 +337,8 @@
         "file": "File:"
       },
       "evidence": {
+        "lastActivity": "Last Activity",
+        "evidenceActivity": "Evidence Activity",
         "submission": "Submission Evidence",
         "submittedBy": "Submitted {{at}} by {{submitter}}"
       },

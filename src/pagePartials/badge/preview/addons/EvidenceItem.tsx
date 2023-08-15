@@ -1,14 +1,10 @@
 import * as React from 'react'
 
+import EventAvailableOutlinedIcon from '@mui/icons-material/EventAvailableOutlined'
 import FilePresentOutlinedIcon from '@mui/icons-material/FilePresentOutlined'
-import {
-  TimelineConnector,
-  TimelineContent,
-  TimelineDot,
-  TimelineItem,
-  TimelineSeparator,
-} from '@mui/lab'
-import { Box, IconButton, Paper, Typography } from '@mui/material'
+import { TimelineContent, TimelineDot, TimelineItem, TimelineSeparator } from '@mui/lab'
+import { Box, Divider, IconButton, Stack, Typography } from '@mui/material'
+import { colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 
 import useS3Metadata from '@/src/hooks/useS3Metadata'
@@ -40,20 +36,21 @@ export default function EvidenceItem({ isLast, isRegistrationEvidence, item }: E
   return (
     <TimelineItem>
       <TimelineSeparator>
-        <TimelineDot color={'info'} />
-        {isLast ? null : <TimelineConnector />}
+        <TimelineDot sx={{ mt: '3px', backgroundColor: 'transparent' }}>
+          <EventAvailableOutlinedIcon sx={{ color: 'white' }} />
+        </TimelineDot>
       </TimelineSeparator>
 
       <TimelineContent
         sx={{
-          gap: 1,
+          gap: 2,
           display: 'flex',
           flexDirection: 'column',
         }}
       >
-        <Paper elevation={4} sx={{ p: 1 }}>
+        <Stack gap={1}>
           <Box display="flex" flexWrap="wrap" justifyContent="space-between">
-            <Typography variant="body1">
+            <Typography variant="title1">
               {isRegistrationEvidence ? t('badge.viewBadge.evidence.submission') : evidence?.title}
             </Typography>
             {(isRegistrationEvidence || evidence?.fileURI) && (
@@ -62,25 +59,28 @@ export default function EvidenceItem({ isLast, isRegistrationEvidence, item }: E
               </IconButton>
             )}
           </Box>
-          <Typography
-            sx={{
-              color: 'text.secondary',
-              display: '-webkit-box',
-              lineBreak: 'anywhere',
-            }}
-            variant="subtitle2"
-          >
-            {evidence?.description}
-          </Typography>
-        </Paper>
-        <Box display="flex">
+          {evidence?.description && (
+            <Typography
+              sx={{
+                color: 'text.secondary',
+                display: '-webkit-box',
+                lineBreak: 'anywhere',
+              }}
+              variant="subtitle2"
+            >
+              {evidence?.description}
+            </Typography>
+          )}
+        </Stack>
+        <Stack>
           <Typography variant="subtitle2">
             {t('badge.viewBadge.evidence.submittedBy', {
               at: formatTimestamp(timestamp),
               submitter: truncateStringInTheMiddle(sender, 8, 6),
             })}
           </Typography>
-        </Box>
+        </Stack>
+        {!isLast && <Divider color={colors.white} />}
       </TimelineContent>
     </TimelineItem>
   )
