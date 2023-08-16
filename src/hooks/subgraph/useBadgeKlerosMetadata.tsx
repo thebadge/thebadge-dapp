@@ -5,7 +5,7 @@ import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import { getFromIPFS } from '@/src/hooks/subgraph/utils'
 import { BadgeEvidenceMetadata } from '@/types/badges/BadgeMetadata'
-import { KlerosRequestType } from '@/types/generated/subgraph'
+import { KlerosBadgeRequest, KlerosRequestType } from '@/types/generated/subgraph'
 
 /**
  * The BadgeKlerosMetadata provides additional information about a Badge within the Kleros system.
@@ -61,6 +61,14 @@ export function useEvidenceBadgeKlerosMetadata(badgeId: string, options?: BadgeM
         requestBadgeEvidence,
         requestBadgeEvidenceRawUrl,
       }
+    },
+    {
+      refreshInterval: (data) => {
+        const activeRequest = data?.requests[data?.requests.length - 1] as KlerosBadgeRequest
+
+        if (activeRequest.disputeID) return 0 // Stop refreshing
+        return 5000 // If there is no disputeID re-try in 5sec
+      },
     },
   )
 }
