@@ -12,6 +12,7 @@ import { ChipPropsColorOverrides } from '@mui/material/Chip/Chip'
 import { OverridableStringUnion } from '@mui/types'
 import { colors } from '@thebadge/ui-library'
 import dayjs from 'dayjs'
+import { useTranslation } from 'next-export-i18n'
 import Sticky from 'react-sticky-el'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
@@ -82,6 +83,8 @@ export default function FilteredList({
   showTextSearch = true,
   ...props
 }: FilteredListProps) {
+  const { t } = useTranslation()
+
   const { mode } = useColorMode()
   const defaultSelectedFilters = useMemo(() => filters.filter((f) => f.defaultSelected), [filters])
   const [selectedFilters, setSelectedFilters] = useState<ListFilter[]>(defaultSelectedFilters)
@@ -171,7 +174,7 @@ export default function FilteredList({
           {props.categories ? (
             <TBadgeSelect
               items={props.categories}
-              label={'Category'}
+              label={t('filteredList.category')}
               onChange={(e) => handleSelectCategory(e.target.value)}
               selectedItem={selectedCategory}
             />
@@ -181,7 +184,7 @@ export default function FilteredList({
           {showTextSearch && (
             <TBSearchField
               disabled={!!props.disableEdit}
-              label={props.searchInputLabel || 'Text Search'}
+              label={props.searchInputLabel || t('filteredList.textSearch')}
               onSearch={(searchValue) => onStringSearch(searchValue)}
             />
           )}
@@ -191,7 +194,8 @@ export default function FilteredList({
 
       <Stack my={1}>
         <LastUpdateTypography ml="auto" onClick={refresh}>
-          Last update: <TimeAgo timestamp={lastSearchTimestamp} />
+          {t('filteredList.lastUpdated')}
+          <TimeAgo timestamp={lastSearchTimestamp} />
         </LastUpdateTypography>
       </Stack>
       <Box display="flex" id="preview" mt={4}>

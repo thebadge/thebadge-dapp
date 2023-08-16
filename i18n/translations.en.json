@@ -492,6 +492,11 @@
     "done": "Transaction done",
     "failed": "Transaction failed"
   },
+  "filteredList": {
+    "category": "Category",
+    "textSearch": "Text Search",
+    "lastUpdated": "Last update:"
+  },
   "web3Onboard": {
     "connect": {
       "selectingWallet": {
