@@ -7,7 +7,7 @@ export default function ViewEvidenceButton({ evidenceUrl }: { evidenceUrl?: stri
   const { t } = useTranslation()
 
   return (
-    <Box alignItems="flex-end" display="flex">
+    <Box alignItems="flex-end" display="flex" mb="3px">
       <Typography fontSize={14} sx={{ '&:hover': { textDecoration: 'underline' } }} variant="body4">
         <a href={evidenceUrl} rel="noreferrer" target="_blank">
           {t('explorer.curate.viewEvidence')}
