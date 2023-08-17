@@ -8,7 +8,7 @@ gql`
     }
     isVerified
     isCreator
-    creatorUri
+    metadataUri
   }
 `
 
@@ -17,7 +17,7 @@ gql`
     id
     isVerified
     isCreator
-    creatorUri
+    metadataUri
     badges {
       ...UserBadges
     }

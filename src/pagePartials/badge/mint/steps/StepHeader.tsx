@@ -28,7 +28,7 @@ export default function StepHeader({
   const badgeModelData = useBadgeModel(modelId)
 
   const badgeCreatorMetadata = useS3Metadata<{ content: Creator }>(
-    badgeModelData.data?.badgeModel?.creator.creatorUri || '',
+    badgeModelData.data?.badgeModel?.creator.metadataUri || '',
   )
 
   if (!badgeCreatorMetadata || !badgeModelData) {
