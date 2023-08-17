@@ -27,7 +27,7 @@ export default function BadgeRequesterPreview({
   return (
     <TBUserInfoSmallPreview
       color={colors.purple}
-      isVerified={owner?.data?.isVerified}
+      isVerified={false} // TODO: refactor with a hook
       label={t('explorer.curate.requester')}
       metadata={ownerMetadata}
       userAddress={ownerAddress}

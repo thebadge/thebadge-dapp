@@ -34,7 +34,7 @@ export default function InfoPreview({ address }: Props) {
   return (
     <InfoPreviewContainer>
       <TBUserAvatar
-        isVerified={user?.isVerified}
+        isVerified={false} // TODO: refactor with a hook
         size={hasCustomProfileData ? 170 : 90}
         src={creatorMetadata?.logo?.s3Url}
       />

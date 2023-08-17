@@ -19,7 +19,7 @@ export default function BadgeOwnerPreview({ ownerAddress }: { ownerAddress: stri
   return (
     <TBUserInfoExpandablePreview
       color={colors.purple}
-      isVerified={owner?.data?.isVerified}
+      isVerified={false} // TODO: refactor with a hook
       metadata={ownerMetadata}
       userAddress={ownerAddress}
     />

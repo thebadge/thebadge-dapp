@@ -24,7 +24,7 @@ export default function CreatorInfoSmallPreview({ creator }: { creator: User }) 
 
       <TBUserInfoSmallPreview
         color={colors.purple}
-        isVerified={creator?.isVerified}
+        isVerified={false} // TODO: refactor with a hook
         metadata={creatorMetadata}
         userAddress={creator.id}
       />
