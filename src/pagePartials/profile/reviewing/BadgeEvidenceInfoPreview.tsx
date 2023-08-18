@@ -1,7 +1,7 @@
 import { useRouter } from 'next/navigation'
 import React from 'react'
 
-import { Alert, Box, Divider, Stack, Typography } from '@mui/material'
+import { Alert, Box, Divider, Skeleton, Stack, Typography } from '@mui/material'
 import { ButtonV2, colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 
@@ -11,7 +11,7 @@ import BadgeIdDisplay from '@/src/pagePartials/badge/explorer/addons/BadgeIdDisp
 import { ListingCriteriaPreview } from '@/src/pagePartials/badge/explorer/addons/ListingCriteriaPreview'
 import ViewEvidenceButton from '@/src/pagePartials/badge/explorer/addons/ViewEvidenceButton'
 import EvidencesList from '@/src/pagePartials/badge/preview/addons/EvidencesList'
-import DisputeIdDisplay from '@/src/pagePartials/profile/reviewing/addons/DisputeIdDisplay'
+import DisputeDisplay from '@/src/pagePartials/profile/reviewing/addons/DisputeDisplay'
 import { useCurateProvider } from '@/src/providers/curateProvider'
 import { Badge, KlerosBadgeRequest, KlerosRequestType } from '@/types/generated/subgraph'
 
@@ -45,7 +45,11 @@ export default function BadgeReviewingInfoPreview({ badge }: { badge: Badge }) {
 
       <Box alignContent="center" display="flex" flex={1} justifyContent="space-between">
         <BadgeIdDisplay id={badge?.id} />
-        <DisputeIdDisplay disputeId={activeRequest.disputeID} />
+        {activeRequest.disputeID ? (
+          <DisputeDisplay disputeId={activeRequest.disputeID} />
+        ) : (
+          <Skeleton height={28} variant="rounded" width={120} />
+        )}
       </Box>
 
       {/* Badge Evidence */}
