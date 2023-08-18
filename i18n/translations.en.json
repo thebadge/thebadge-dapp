@@ -158,10 +158,12 @@
     "tab3": "Created badges",
     "badgesIAmReviewing": {
       "title": "Badges I am reviewing",
+      "seeDispute": "See dispute",
+      "seeDisputeTooltip": "When you raise a challenge, a kleros dispute is created to resolve it and you can see how its going on the Kleros Court",
       "previewTitle": "Challenged Badge",
       "noResults": "There are no badges you are already reviewing...",
       "addEvidence": "Add more evidence",
-      "viewAll": "View All",
+      "viewAll": "View details",
       "lastActivity": "Last Activity",
       "submissionChallenge": "You have challenged the submission of this badge",
       "removalChallenge": "You have requested the removal of this badge"
@@ -489,6 +491,11 @@
     "confirmation": "Waiting confirmation",
     "done": "Transaction done",
     "failed": "Transaction failed"
+  },
+  "filteredList": {
+    "category": "Category",
+    "textSearch": "Text Search",
+    "lastUpdated": "Last update:"
   },
   "web3Onboard": {
     "connect": {

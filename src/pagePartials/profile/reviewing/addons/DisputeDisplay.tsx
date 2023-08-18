@@ -1,7 +1,7 @@
 import React from 'react'
 
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
-import { Box, Tooltip, Typography, alpha, styled } from '@mui/material'
+import { Box, Tooltip, Typography, styled } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
 
 import ExternalLink from '@/src/components/helpers/ExternalLink'
@@ -12,19 +12,19 @@ const Container = styled(Box)(({ theme }) => ({
   flexWrap: 'wrap',
   alignItems: 'center',
   borderRadius: theme.spacing(1),
-  border: `0.5px solid ${theme.palette.error.main}`,
-  background: alpha(theme.palette.error.main, 0.1),
   padding: theme.spacing(0.5, 1),
 }))
 
-const StyledTypography = styled(Typography)(({ theme }) => ({
-  color: theme.palette.error.main,
+const StyledTypography = styled(Typography)(() => ({
   display: 'inline-flex',
   alignItems: 'center',
   fontSize: '14px !important',
+  '&:hover': {
+    textDecoration: 'underline',
+  },
 }))
 
-export default function DisputeIdDisplay({ disputeId }: { disputeId?: string }) {
+export default function DisputeDisplay({ disputeId }: { disputeId?: string }) {
   const { t } = useTranslation()
 
   if (!disputeId) return null
@@ -33,12 +33,12 @@ export default function DisputeIdDisplay({ disputeId }: { disputeId?: string }) 
       <StyledTypography variant="body4">
         <ExternalLink
           href={`${KLEROS_COURT_URL}/cases/${disputeId}`}
-          label={disputeId}
+          label={t('profile.badgesIAmReviewing.seeDispute')}
           showCopyButton={false}
           showExternalLink={false}
         />
       </StyledTypography>
-      <Tooltip arrow title={t('explorer.curate.disputeId')}>
+      <Tooltip arrow title={t('profile.badgesIAmReviewing.seeDisputeTooltip')}>
         <InfoOutlinedIcon color="white" sx={{ ml: 1, width: '20px', height: '20px' }} />
       </Tooltip>
     </Container>
