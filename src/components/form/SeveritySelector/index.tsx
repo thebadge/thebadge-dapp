@@ -84,6 +84,7 @@ export function SeveritySelector({
   /**
    * Default Kleros court to use when creating a new badge model.
    * TODO: we should set a default court in the short-circuit to the Kleros's  general court.
+   * TODO: Maybe use and env var?
    * In advance mode the user should be able to select the court.
    */
   const feeForJuror = useJurorFee(DEFAULT_COURT_ID)
@@ -91,8 +92,6 @@ export function SeveritySelector({
   const [optionSelectedAuxIndex, setOptionSelectedAuxIndex] = useState<number>(1)
 
   const [enableAdvance, setAdvanceMode] = useState<boolean>(true)
-
-  const hasInternalError = error?.amountOfJurors || error?.challengeBounty
 
   const hasInternalError = error?.amountOfJurors || error?.challengeBounty
 

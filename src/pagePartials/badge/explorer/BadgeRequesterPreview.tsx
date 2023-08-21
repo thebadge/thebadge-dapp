@@ -79,7 +79,7 @@ export default function BadgeRequesterPreview({
   }
 
   const owner = useUserById(ownerAddress)
-  const resMetadata = useS3Metadata<{ content: CreatorMetadata }>(owner.data?.creatorUri || '')
+  const resMetadata = useS3Metadata<{ content: CreatorMetadata }>(owner.data?.metadataUri || '')
   const ownerMetadata = resMetadata.data?.content
 
   return (
@@ -110,7 +110,7 @@ export default function BadgeRequesterPreview({
                 </Box>
               </Tooltip>
             }
-            invisible={!owner.data?.isVerified}
+            /*  TODO: FIX          invisible={!owner.data?.isVerified}*/
             overlap="circular"
           >
             {ownerMetadata?.logo ? (
