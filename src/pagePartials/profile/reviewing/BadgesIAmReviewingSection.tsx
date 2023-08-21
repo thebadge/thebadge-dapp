@@ -1,9 +1,10 @@
+import { useRouter } from 'next/navigation'
 import React, { RefObject, createRef, useState } from 'react'
 
 import ArrowBackIosOutlinedIcon from '@mui/icons-material/ArrowBackIosOutlined'
 import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined'
 import { Box, IconButton, Stack, Typography } from '@mui/material'
-import { colors } from '@thebadge/ui-library'
+import { ButtonV2, colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 
 import { NoResultsAnimated } from '@/src/components/assets/animated/NoResults'
@@ -39,6 +40,7 @@ const filters: Array<ListFilter> = [
 export default function BadgesIAmReviewingSection() {
   const { t } = useTranslation()
   const { address } = useWeb3Connection()
+  const router = useRouter()
   const gql = useSubgraph()
 
   const [badgesIamReviewing, setItems] = useState<Badge[]>([])
@@ -134,6 +136,14 @@ export default function BadgesIAmReviewingSection() {
         ) : (
           <Stack>
             <NoResultsAnimated errorText={t('profile.badgesIAmReviewing.noResults')} />
+            <ButtonV2
+              backgroundColor={colors.transparent}
+              fontColor={colors.green}
+              onClick={() => router.push('/badge/mint')}
+              sx={{ m: 'auto' }}
+            >
+              <Typography>{t('profile.badgesIAmReviewing.curate')}</Typography>
+            </ButtonV2>
           </Stack>
         )}
       </FilteredList>

@@ -87,6 +87,7 @@ const ExploreBadgeTypes: NextPageWithLayout = () => {
         preview={renderSelectedBadgePreview()}
         search={search}
         title={t('explorer.title')}
+        titleColor={colors.blue}
       >
         {badgeModels.length > 0 ? (
           badgeModels.map((bt, i) => {
