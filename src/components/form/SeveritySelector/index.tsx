@@ -94,6 +94,8 @@ export function SeveritySelector({
 
   const hasInternalError = error?.amountOfJurors || error?.challengeBounty
 
+  const hasInternalError = error?.amountOfJurors || error?.challengeBounty
+
   const handleChange = (e: Event, newValue: number | number[]) => {
     if (!Array.isArray(newValue)) {
       setOptionSelectedAuxIndex(newValue)
