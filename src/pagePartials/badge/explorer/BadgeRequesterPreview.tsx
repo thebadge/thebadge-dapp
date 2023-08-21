@@ -29,6 +29,7 @@ import { useUserById } from '@/src/hooks/subgraph/useUserById'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { truncateStringInTheMiddle } from '@/src/utils/strings'
 import { CreatorMetadata } from '@/types/badges/Creator'
+import useIsUserVerified from '@/src/hooks/theBadge/useIsUserVerified'
 
 const Wrapper = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -81,6 +82,7 @@ export default function BadgeRequesterPreview({
   const owner = useUserById(ownerAddress)
   const resMetadata = useS3Metadata<{ content: CreatorMetadata }>(owner.data?.metadataUri || '')
   const ownerMetadata = resMetadata.data?.content
+  const isVerified = useIsUserVerified(ownerAddress, 'kleros')
 
   return (
     <>
@@ -110,7 +112,7 @@ export default function BadgeRequesterPreview({
                 </Box>
               </Tooltip>
             }
-            /*  TODO: FIX          invisible={!owner.data?.isVerified}*/
+            invisible={!isVerified.data}
             overlap="circular"
           >
             {ownerMetadata?.logo ? (
