@@ -20,7 +20,10 @@ import EvidenceForm, {
   EvidenceSchema,
 } from '@/src/pagePartials/badge/curate/evidenceForm/EvidenceForm'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
-import { saveChallengedBadgeId } from '@/src/utils/badges/challengeBadgesHelpers'
+import {
+  removeChallengedBadgeId,
+  saveChallengedBadgeId,
+} from '@/src/utils/badges/challengeBadgesHelpers'
 import { encodeIpfsEvidence } from '@/src/utils/badges/createBadgeModelHelpers'
 import { BadgeStatus } from '@/types/generated/subgraph'
 import { TheBadge__factory } from '@/types/generated/typechain'
@@ -109,8 +112,9 @@ function ChallengeModalContent({ badgeId, onClose }: { badgeId: string; onClose:
 
     onClose()
     if (transaction) {
-      await transaction.wait()
       saveChallengedBadgeId(badgeId, address)
+      // If the TX fails, we remove the badge from the array
+      await transaction.wait().catch(() => removeChallengedBadgeId(badgeId, address))
     }
   }
 

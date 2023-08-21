@@ -40,3 +40,13 @@ export function getChallengedBadgesId(userAddress: string | null): string[] {
   const key = `${userAddress}:challengedBadges`
   return JSON.parse(sessionStorage.getItem(key) ?? '[]')
 }
+
+export function removeChallengedBadgeId(badgeIdToRemove: string, userAddress: string | null) {
+  const existingSessionValue = getChallengedBadgesId(userAddress)
+  const key = `${userAddress}:challengedBadges`
+
+  sessionStorage.setItem(
+    key,
+    JSON.stringify(existingSessionValue.filter((id) => id !== badgeIdToRemove)),
+  )
+}
