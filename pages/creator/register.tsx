@@ -49,7 +49,7 @@ const Register: NextPageWithLayout = () => {
           '@/src/utils/creator/registerHelpers'
         )
         const creatorMetadataIPFSHash = await createAndUploadCreatorMetadata(data)
-        return theBadge.registerBadgeModelCreator(creatorMetadataIPFSHash)
+        return theBadge.registerUser(creatorMetadataIPFSHash, false)
       })
 
       if (transaction) {

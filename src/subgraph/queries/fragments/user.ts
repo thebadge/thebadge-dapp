@@ -6,18 +6,16 @@ gql`
     statistics {
       mintedBadgesAmount
     }
-    isVerified
     isCreator
-    creatorUri
+    metadataUri
   }
 `
 
 gql`
   fragment UserWithBadges on User {
     id
-    isVerified
     isCreator
-    creatorUri
+    metadataUri
     badges {
       ...UserBadges
     }

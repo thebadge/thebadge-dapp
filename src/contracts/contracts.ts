@@ -5,7 +5,7 @@ import { Chains } from '@/src/config/web3'
 export const contracts = {
   TheBadge: {
     address: {
-      [Chains.goerli]: '0xC11a50CAe9730920BC951DAaf235d80C455fBC52',
+      [Chains.goerli]: '0xa86D1858D751A2f71231456fC136c4837aD76009',
       [Chains.gnosis]: 'null',
     },
     abi: TheBadge,

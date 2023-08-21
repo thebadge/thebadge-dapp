@@ -12,7 +12,7 @@ import { User } from '@/types/generated/subgraph'
 export default function CreatorInfoSmallPreview({ creator }: { creator: User }) {
   const { t } = useTranslation()
 
-  const resCreatorMetadata = useS3Metadata<{ content: CreatorMetadata }>(creator.creatorUri || '')
+  const resCreatorMetadata = useS3Metadata<{ content: CreatorMetadata }>(creator.metadataUri || '')
   const creatorMetadata = resCreatorMetadata.data?.content
 
   /* Creator info */
@@ -24,7 +24,7 @@ export default function CreatorInfoSmallPreview({ creator }: { creator: User }) 
 
       <TBUserInfoSmallPreview
         color={colors.purple}
-        isVerified={creator?.isVerified}
+        isVerified={false} // TODO: refactor with a hook
         metadata={creatorMetadata}
         userAddress={creator.id}
       />

@@ -21,13 +21,13 @@ export default function BadgeRequesterPreview({
   }
 
   const owner = useUserById(ownerAddress)
-  const resMetadata = useS3Metadata<{ content: CreatorMetadata }>(owner.data?.creatorUri || '')
+  const resMetadata = useS3Metadata<{ content: CreatorMetadata }>(owner.data?.metadataUri || '')
   const ownerMetadata = resMetadata.data?.content
 
   return (
     <TBUserInfoSmallPreview
       color={colors.purple}
-      isVerified={owner?.data?.isVerified}
+      isVerified={false} // TODO: refactor with a hook
       label={t('explorer.curate.requester')}
       metadata={ownerMetadata}
       userAddress={ownerAddress}

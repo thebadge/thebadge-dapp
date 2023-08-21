@@ -26,7 +26,7 @@ export default function InfoPreview({ address }: Props) {
 
   const userResponse = useUserById(address)
   const user = userResponse.data
-  const resCreatorMetadata = useS3Metadata<{ content: CreatorMetadata }>(user?.creatorUri || '')
+  const resCreatorMetadata = useS3Metadata<{ content: CreatorMetadata }>(user?.metadataUri || '')
   const creatorMetadata = resCreatorMetadata.data?.content
 
   const hasCustomProfileData = !!creatorMetadata
@@ -34,7 +34,7 @@ export default function InfoPreview({ address }: Props) {
   return (
     <InfoPreviewContainer>
       <TBUserAvatar
-        isVerified={user?.isVerified}
+        isVerified={false} // TODO: refactor with a hook
         size={hasCustomProfileData ? 170 : 90}
         src={creatorMetadata?.logo?.s3Url}
       />

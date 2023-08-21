@@ -13,13 +13,13 @@ export default function BadgeOwnerPreview({ ownerAddress }: { ownerAddress: stri
   }
 
   const owner = useUserById(ownerAddress)
-  const resMetadata = useS3Metadata<{ content: CreatorMetadata }>(owner.data?.creatorUri || '')
+  const resMetadata = useS3Metadata<{ content: CreatorMetadata }>(owner.data?.metadataUri || '')
   const ownerMetadata = resMetadata.data?.content
 
   return (
     <TBUserInfoExpandablePreview
       color={colors.purple}
-      isVerified={owner?.data?.isVerified}
+      isVerified={false} // TODO: refactor with a hook
       metadata={ownerMetadata}
       userAddress={ownerAddress}
     />
