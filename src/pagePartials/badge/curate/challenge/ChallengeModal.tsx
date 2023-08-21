@@ -19,6 +19,8 @@ import ChallengeCost from '@/src/pagePartials/badge/curate/challenge/ChallengeCo
 import EvidenceForm, {
   EvidenceSchema,
 } from '@/src/pagePartials/badge/curate/evidenceForm/EvidenceForm'
+import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+import { saveChallengedBadgeId } from '@/src/utils/badges/challengeBadgesHelpers'
 import { encodeIpfsEvidence } from '@/src/utils/badges/createBadgeModelHelpers'
 import { BadgeStatus } from '@/types/generated/subgraph'
 import { TheBadge__factory } from '@/types/generated/typechain'
@@ -39,6 +41,7 @@ export default function ChallengeModal({ badgeId, onClose, open }: ChallengeModa
 
 function ChallengeModalContent({ badgeId, onClose }: { badgeId: string; onClose: () => void }) {
   const { t } = useTranslation()
+  const { address } = useWeb3Connection()
   const { sendTx } = useTransaction()
 
   const badgeById = useBadgeById(badgeId)
@@ -107,6 +110,7 @@ function ChallengeModalContent({ badgeId, onClose }: { badgeId: string; onClose:
     onClose()
     if (transaction) {
       await transaction.wait()
+      saveChallengedBadgeId(badgeId, address)
     }
   }
 

@@ -8,6 +8,8 @@ export const BADGES_METADATA_USER_CHALLENGED = gql`
         requests_: { challenger: $userAddress }
         badge_: { status_in: [Challenged, RequestRemoval] }
       }
+      orderBy: reviewDueDate
+      orderDirection: desc
     ) {
       ...BadgeKlerosMetadataWithBadge
     }
