@@ -1,4 +1,4 @@
-import { PaletteMode, ThemeOptions, Typography } from '@mui/material'
+import { PaletteMode, Theme, ThemeOptions, Typography } from '@mui/material'
 import { TypographyOptions } from '@mui/material/styles/createTypography'
 import { colors, darkTheme, lightTheme } from '@thebadge/ui-library'
 import { Mulish } from 'next/font/google'
@@ -57,4 +57,25 @@ export function overrideFontFamily(theme: ThemeOptions, fontFamily: string): Typ
   })
 
   return overrideTypography
+}
+
+export function configureThemeComponentes(theme: Theme) {
+  const lightMode = theme.palette.mode === 'light'
+
+  return {
+    ...theme,
+    components: {
+      MuiTooltip: {
+        styleOverrides: {
+          tooltip: {
+            lineHeight: '150%',
+            backgroundColor: theme.palette.grey[lightMode ? 800 : 700],
+          },
+          arrow: {
+            color: theme.palette.grey[lightMode ? 800 : 700],
+          },
+        },
+      },
+    },
+  }
 }
