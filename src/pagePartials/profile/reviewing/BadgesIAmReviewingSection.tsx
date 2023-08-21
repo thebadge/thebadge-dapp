@@ -79,14 +79,14 @@ export default function BadgesIAmReviewingSection() {
     // this is done to prevent the use of @live on queries, that would make it refresh
     // continuously, in the other hand these methods only refresh until it get all the recently challenged badges
     const pendingBadgesReviewedToFetch = getChallengedBadgesId(address)
-    const missingBadges = badgesIamReviewing.filter(
-      (badge) => !pendingBadgesReviewedToFetch.includes(badge.id),
+    const badgesIamReviewingIds = badgesIamReviewing.map((badge) => badge.id)
+    // Filter the pendingBadgesReviewedToFetch that are not inside badgesIamReviewingIds
+    const stillMissingBadges = pendingBadgesReviewedToFetch.filter(
+      (pendingId) => !badgesIamReviewingIds.includes(pendingId),
     )
-    updateChallengedBadgesId(
-      missingBadges.map((badge) => badge.id),
-      address,
-    )
-    if (missingBadges.length > 0) {
+    updateChallengedBadgesId(stillMissingBadges, address)
+    // If there are missing badges, we call the search again in a few
+    if (stillMissingBadges.length > 0) {
       setTimeout(() => {
         search(selectedFilters, selectedCategory, textSearch)
       }, 15000)
