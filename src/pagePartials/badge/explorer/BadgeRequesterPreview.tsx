@@ -26,10 +26,10 @@ import { Address } from '@/src/components/helpers/Address'
 import VerifiedCreator from '@/src/components/icons/VerifiedCreator'
 import { APP_URL } from '@/src/constants/common'
 import { useUserById } from '@/src/hooks/subgraph/useUserById'
+import useIsUserVerified from '@/src/hooks/theBadge/useIsUserVerified'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { truncateStringInTheMiddle } from '@/src/utils/strings'
 import { CreatorMetadata } from '@/types/badges/Creator'
-import useIsUserVerified from '@/src/hooks/theBadge/useIsUserVerified'
 
 const Wrapper = styled(Box)(({ theme }) => ({
   display: 'flex',
