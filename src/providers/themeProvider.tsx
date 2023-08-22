@@ -8,7 +8,7 @@ import {
   responsiveFontSizes,
 } from '@mui/material'
 
-import { getTheme, getTypographyVariants } from '@/src/theme/theme'
+import { configureThemeComponentes, getTheme, getTypographyVariants } from '@/src/theme/theme'
 import { ThemeType } from '@/src/theme/types'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -41,11 +41,13 @@ const ThemeContextProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const theme = useMemo(() => {
     const theme = getTheme(mode)
     const variants = getTypographyVariants(theme)
-    return responsiveFontSizes(createTheme(theme), {
+    const createdTheme = responsiveFontSizes(createTheme(theme), {
       disableAlign: true,
       factor: 1.4,
       variants,
     })
+
+    return configureThemeComponentes(createdTheme)
   }, [mode])
 
   return (
