@@ -19,6 +19,10 @@ import useListItemNavigation from '@/src/hooks/useListItemNavigation'
 import MiniBadgeModelPreview from '@/src/pagePartials/badge/MiniBadgeModelPreview'
 import BadgeReviewingInfoPreview from '@/src/pagePartials/profile/reviewing/BadgeEvidenceInfoPreview'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+import {
+  getChallengedBadgesId,
+  updateChallengedBadgesId,
+} from '@/src/utils/badges/challengeBadgesHelpers'
 import { Badge } from '@/types/generated/subgraph'
 
 const filters: Array<ListFilter> = [
@@ -71,6 +75,22 @@ export default function BadgesIAmReviewingSection() {
 
     setItems(badgesIamReviewing)
     setLoading(false)
+    // Validate if the response has the badges that the user has challenged recently
+    // this is done to prevent the use of @live on queries, that would make it refresh
+    // continuously, in the other hand these methods only refresh until it get all the recently challenged badges
+    const pendingBadgesReviewedToFetch = getChallengedBadgesId(address)
+    const badgesIamReviewingIds = badgesIamReviewing.map((badge) => badge.id)
+    // Filter the pendingBadgesReviewedToFetch that are not inside badgesIamReviewingIds
+    const stillMissingBadges = pendingBadgesReviewedToFetch.filter(
+      (pendingId) => !badgesIamReviewingIds.includes(pendingId),
+    )
+    updateChallengedBadgesId(stillMissingBadges, address)
+    // If there are missing badges, we call the search again in a few
+    if (stillMissingBadges.length > 0) {
+      setTimeout(() => {
+        search(selectedFilters, selectedCategory, textSearch)
+      }, 15000)
+    }
   }
 
   function renderSelectedBadgePreview() {
