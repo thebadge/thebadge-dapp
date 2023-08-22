@@ -103,7 +103,7 @@ export default function BadgesYouOwnList({ address }: Props) {
             <ButtonV2
               backgroundColor={colors.transparent}
               fontColor={colors.blue}
-              onClick={() => router.push('/badge/mint')}
+              onClick={() => router.push('/badge/explorer')}
               sx={{ m: 'auto' }}
             >
               <Typography>{t('profile.badgesYouOwn.mint')}</Typography>

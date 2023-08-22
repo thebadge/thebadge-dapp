@@ -139,7 +139,7 @@ export default function BadgesIAmReviewingSection() {
             <ButtonV2
               backgroundColor={colors.transparent}
               fontColor={colors.green}
-              onClick={() => router.push('/badge/mint')}
+              onClick={() => router.push('/badge/curate')}
               sx={{ m: 'auto' }}
             >
               <Typography>{t('profile.badgesIAmReviewing.curate')}</Typography>
