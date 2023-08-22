@@ -5,6 +5,7 @@ import { BackendResponse } from '@/types/utils'
 type Args<T = Record<string, unknown>> = {
   attributes: T
   filePaths?: string[]
+  needKlerosPath?: boolean
 }
 
 export default async function ipfsUpload<T>(

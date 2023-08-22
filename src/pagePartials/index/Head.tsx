@@ -23,6 +23,9 @@ export const Head = () => {
       <meta content="summary_large_image" name="twitter:card" />
       <meta content={title} name="twitter:site" />
       <meta content={twitterHandle} name="twitter:creator" />
+
+      {/*!--link manifest.json --*/}
+      <link href="/manifest.json" rel="manifest" />
     </NextHead>
   )
 }

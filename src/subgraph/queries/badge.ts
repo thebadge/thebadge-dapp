@@ -72,7 +72,7 @@ export const BADGES_USER_CAN_REVIEW_SMALL_SET = gql`
         account_not: $userAddress
       }
     ) {
-      ...BadgeWithJustIds
+      ...BadgesInReview
     }
   }
 `

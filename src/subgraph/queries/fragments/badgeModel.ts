@@ -11,7 +11,7 @@ gql`
     badgesMintedAmount
     creator {
       id
-      creatorUri
+      metadataUri
     }
   }
 `

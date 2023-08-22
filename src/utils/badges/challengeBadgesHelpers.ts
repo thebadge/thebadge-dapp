@@ -1,3 +1,4 @@
+import { convertHashToValidIPFSKlerosHash } from '@/src/utils/fileUtils'
 import ipfsUpload from '@/src/utils/ipfsUpload'
 
 export async function createAndUploadChallengeEvidence(
@@ -20,5 +21,32 @@ export async function createAndUploadChallengeEvidence(
     filePaths: attachment ? ['fileURI'] : [],
   })
 
-  return `ipfs://${evidenceIPFSUploaded.result?.ipfsHash}`
+  return convertHashToValidIPFSKlerosHash(evidenceIPFSUploaded.result?.ipfsHash)
+}
+
+export function saveChallengedBadgeId(badgeId: string, userAddress: string | null) {
+  const existingSessionValue = getChallengedBadgesId(userAddress)
+  const key = `${userAddress}:challengedBadges`
+
+  sessionStorage.setItem(key, JSON.stringify([badgeId, ...existingSessionValue]))
+}
+
+export function updateChallengedBadgesId(badgesId: string[], userAddress: string | null) {
+  const key = `${userAddress}:challengedBadges`
+  sessionStorage.setItem(key, JSON.stringify(badgesId))
+}
+
+export function getChallengedBadgesId(userAddress: string | null): string[] {
+  const key = `${userAddress}:challengedBadges`
+  return JSON.parse(sessionStorage.getItem(key) ?? '[]')
+}
+
+export function removeChallengedBadgeId(badgeIdToRemove: string, userAddress: string | null) {
+  const existingSessionValue = getChallengedBadgesId(userAddress)
+  const key = `${userAddress}:challengedBadges`
+
+  sessionStorage.setItem(
+    key,
+    JSON.stringify(existingSessionValue.filter((id) => id !== badgeIdToRemove)),
+  )
 }

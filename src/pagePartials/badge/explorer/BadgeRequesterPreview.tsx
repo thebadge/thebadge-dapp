@@ -26,6 +26,7 @@ import { Address } from '@/src/components/helpers/Address'
 import VerifiedCreator from '@/src/components/icons/VerifiedCreator'
 import { APP_URL } from '@/src/constants/common'
 import { useUserById } from '@/src/hooks/subgraph/useUserById'
+import useIsUserVerified from '@/src/hooks/theBadge/useIsUserVerified'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { truncateStringInTheMiddle } from '@/src/utils/strings'
 import { CreatorMetadata } from '@/types/badges/Creator'
@@ -79,8 +80,9 @@ export default function BadgeRequesterPreview({
   }
 
   const owner = useUserById(ownerAddress)
-  const resMetadata = useS3Metadata<{ content: CreatorMetadata }>(owner.data?.creatorUri || '')
+  const resMetadata = useS3Metadata<{ content: CreatorMetadata }>(owner.data?.metadataUri || '')
   const ownerMetadata = resMetadata.data?.content
+  const isVerified = useIsUserVerified(ownerAddress, 'kleros')
 
   return (
     <>
@@ -110,7 +112,7 @@ export default function BadgeRequesterPreview({
                 </Box>
               </Tooltip>
             }
-            invisible={!owner.data?.isVerified}
+            invisible={!isVerified.data}
             overlap="circular"
           >
             {ownerMetadata?.logo ? (

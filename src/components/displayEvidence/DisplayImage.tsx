@@ -55,7 +55,7 @@ export function DisplayImage({ label, placeholder, value }: DisplayImageProps) {
             )}
           </Box>
         }
-        label={<Typography>{label}</Typography>}
+        label={<Typography variant="subtitle2">{label}</Typography>}
         labelPosition={'top-left'}
       />
       <Divider color={colors.white} sx={{ mt: -1 }} />

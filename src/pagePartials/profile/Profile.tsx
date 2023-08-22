@@ -28,10 +28,17 @@ const Profile = () => {
 
   return (
     <SafeSuspense>
+      <SafeSuspense fallback={<InfoPreviewSkeleton />}>
+        <InfoPreview address={user?.id || ''} />
+      </SafeSuspense>
+
       <Stack sx={{ mb: 6, gap: 4, alignItems: 'center' }}>
         <Box display="flex" flex={1} flexDirection="row" justifyContent="space-evenly" width="100%">
           <LinkWithTranslation pathname={`/profile`}>
-            <Typography color={!selectedFilter ? 'text.primary' : 'text.disabled'}>
+            <Typography
+              color={!selectedFilter ? 'text.primary' : 'text.disabled'}
+              textTransform="uppercase"
+            >
               {t('profile.tab1')}
             </Typography>
           </LinkWithTranslation>
@@ -45,30 +52,27 @@ const Profile = () => {
                   ? 'text.primary'
                   : 'text.disabled'
               }
+              textTransform="uppercase"
             >
               {t('profile.tab2')}
             </Typography>
           </LinkWithTranslation>
-          {user?.isCreator && (
-            <LinkWithTranslation
-              pathname={`/profile`}
-              queryParams={{ filter: ProfileFilter.CREATED_BADGES }}
+          <LinkWithTranslation
+            pathname={`/profile`}
+            queryParams={{ filter: ProfileFilter.CREATED_BADGES }}
+          >
+            <Typography
+              color={
+                selectedFilter === ProfileFilter.CREATED_BADGES ? 'text.primary' : 'text.disabled'
+              }
+              textTransform="uppercase"
             >
-              <Typography
-                color={
-                  selectedFilter === ProfileFilter.CREATED_BADGES ? 'text.primary' : 'text.disabled'
-                }
-              >
-                {t('profile.tab3')}
-              </Typography>
-            </LinkWithTranslation>
-          )}
+              {t('profile.tab3')}
+            </Typography>
+          </LinkWithTranslation>
         </Box>
       </Stack>
 
-      <SafeSuspense fallback={<InfoPreviewSkeleton />}>
-        <InfoPreview address={user?.id || ''} />
-      </SafeSuspense>
       {!selectedFilter && <MyProfileSection />}
       {selectedFilter === ProfileFilter.BADGES_I_AM_REVIEWING && <BadgesIAmReviewingSection />}
       {selectedFilter === ProfileFilter.CREATED_BADGES && <BadgesCreatedSection />}

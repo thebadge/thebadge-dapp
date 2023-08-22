@@ -45,7 +45,7 @@ export function DisplayFile({ label, placeholder, value }: DisplayFileProps) {
   return (
     <>
       <Wrapper>
-        <Typography>
+        <Typography variant="subtitle2">
           {label}
           {placeholder && (
             <Tooltip arrow title={placeholder}>

@@ -31,7 +31,8 @@ const Content = styled(Box)(({ theme }) => ({
 const StyledBody = styled(Box)(() => ({
   display: 'flex',
   flex: 1,
-  minHeight: `calc(100vh - ${HEADER_HEIGHT}px - ${FOOTER_HEIGHT}px)`,
+  height: `calc(100svh - ${HEADER_HEIGHT}px - ${FOOTER_HEIGHT}px)`,
+  minHeight: `80svh`,
 }))
 
 type DefaultLayoutProps = {

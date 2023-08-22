@@ -26,6 +26,10 @@ export default function useTransaction() {
     notifyWaitingForTxMined,
   } = useTransactionNotification()
 
+  const resetTxState = useCallback(() => {
+    setTransactionState(TransactionStates.none)
+  }, [])
+
   const waitForTxExecution = useCallback(
     (tx: ContractTransaction) => {
       notifyWaitingForTxMined(tx.hash)
@@ -41,9 +45,7 @@ export default function useTransaction() {
             e.data?.code || e.code,
             e.data,
           )
-
           console.error(error)
-
           setTransactionState(TransactionStates.failed)
           notifyTxMined(tx.hash)
         })
@@ -88,16 +90,14 @@ export default function useTransaction() {
         return receipt
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (e: any) {
-        setTransactionState(TransactionStates.failed)
-        console.error(e)
         const error = new TransactionError(
           e.data?.message || e.message || 'Unable to decode revert reason',
           e.data?.code || e.code,
           e.data,
         )
-
+        console.error(error)
+        setTransactionState(TransactionStates.failed)
         notifyRejectSignature(error.code === 4001 ? 'User denied signature' : error.message)
-        throw error
       }
     },
     [isAppConnected, notifyWaitingForSignature, waitForTxExecution, notifyRejectSignature],
@@ -126,21 +126,20 @@ export default function useTransaction() {
         if (result.txHash) {
           await waitForAsyncTxExecution(result.txHash)
         }
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (e: any) {
-        setTransactionState(TransactionStates.failed)
-        console.error(e)
         const error = new TransactionError(
           e.data?.message || e.message || 'Unable to decode revert reason',
           e.data?.code || e.code,
           e.data,
         )
-
+        console.error(error)
+        setTransactionState(TransactionStates.failed)
         notifyRejectSignature(error.code === 4001 ? 'User denied signature' : error.message)
-        throw error
       }
     },
     [isAppConnected, notifyWaitingForSignature, waitForAsyncTxExecution, notifyRejectSignature],
   )
 
-  return { state, sendTx, sendRelayTx }
+  return { state, sendTx, sendRelayTx, resetTxState }
 }

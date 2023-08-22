@@ -4,7 +4,7 @@ import { OverridableStringUnion } from '@mui/types'
 import { useTranslation } from 'next-export-i18n'
 import { useFormContext } from 'react-hook-form'
 
-import { saveFormValues } from '../utils'
+import { CREATE_MODEL_STEPS_AMOUNT, saveFormValues } from '../utils'
 import { PreventActionWithoutConnection } from '@/src/pagePartials/errors/preventActionWithoutConnection'
 
 export const StepButton = styled(Button)(({ theme }) => ({
@@ -32,7 +32,7 @@ export default function StepFooter({
 
   const canGoBack = currentStep !== 0
   const backButtonDisabled = currentStep === 0
-  const isLastStep = currentStep === 4
+  const isLastStep = currentStep === CREATE_MODEL_STEPS_AMOUNT - 1
 
   function onBack() {
     saveFormValues(getValues())

@@ -12,16 +12,19 @@ import {
 export const Chains = {
   //mainnet: 1,
   goerli: 5,
+  sepolia: 11155111,
   gnosis: 100,
 } as const
 
 export const providerChains: ProviderChains = {
   [RPCProviders.infura]: {
     [Chains.goerli]: 'goerli',
+    [Chains.sepolia]: 'sepolia',
     [Chains.gnosis]: 'gnosis',
   },
   [RPCProviders.alchemy]: {
     [Chains.goerli]: 'eth-goerli',
+    [Chains.sepolia]: 'eth-sepolia',
     [Chains.gnosis]: 'xDai-gnosis',
   },
 }
@@ -83,6 +86,16 @@ export const chainsConfig: Record<ChainsValues, ChainConfig> = {
     chainIdHex: '0x5',
     rpcUrl: getProviderUrl(Chains.goerli),
     blockExplorerUrls: ['https://goerli.etherscan.io/'],
+    token: 'ETH',
+  },
+  [Chains.sepolia]: {
+    id: Chains.sepolia,
+    name: 'Ethereum Sepolia',
+    shortName: 'sepoliaeth',
+    chainId: Chains.sepolia,
+    chainIdHex: '0xaa36a7',
+    rpcUrl: getProviderUrl(Chains.sepolia),
+    blockExplorerUrls: ['https://sepolia.etherscan.io/'],
     token: 'ETH',
   },
   [Chains.gnosis]: {

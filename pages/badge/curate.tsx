@@ -1,8 +1,8 @@
-import React, { RefObject, createRef, useCallback, useEffect, useState } from 'react'
+import React, { RefObject, createRef, useState } from 'react'
 
 import ArrowBackIosOutlinedIcon from '@mui/icons-material/ArrowBackIosOutlined'
 import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined'
-import { Box, IconButton, Stack, Typography } from '@mui/material'
+import { Box, IconButton, Stack, Typography, styled } from '@mui/material'
 import { colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 
@@ -16,13 +16,22 @@ import InViewPort from '@/src/components/helpers/InViewPort'
 import SafeSuspense, { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import { ADDRESS_PREFIX, nowInSeconds } from '@/src/constants/helpers'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
-import { useKeyPress } from '@/src/hooks/useKeypress'
+import useListItemNavigation from '@/src/hooks/useListItemNavigation'
 import MiniBadgeModelPreview from '@/src/pagePartials/badge/MiniBadgeModelPreview'
 import BadgeEvidenceInfoPreview from '@/src/pagePartials/badge/explorer/BadgeEvidenceInfoPreview'
+import TimeLeftDisplay from '@/src/pagePartials/badge/explorer/addons/TimeLeftDisplay'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import getHighlightColorByStatus from '@/src/utils/badges/getHighlightColorByStatus'
 import { Badge, BadgeStatus } from '@/types/generated/subgraph'
 import { NextPageWithLayout } from '@/types/next'
+
+const TimeLeftContainer = styled(Box)(() => ({
+  position: 'absolute',
+  zIndex: 1,
+  top: '6px',
+  left: '50%',
+  transform: 'translate(-50%, 0)',
+}))
 
 const now = nowInSeconds()
 
@@ -45,30 +54,18 @@ const CurateBadges: NextPageWithLayout = () => {
   const { t } = useTranslation()
   const gql = useSubgraph()
   const { address } = useWeb3Connection()
-  const leftPress = useKeyPress('ArrowLeft')
-  const rightPress = useKeyPress('ArrowRight')
 
   const [badges, setBadges] = useState<Badge[]>([])
   const [loading, setLoading] = useState<boolean>(false)
   const [selectedBadgeIndex, setSelectedBadgeIndex] = useState<number>(0)
 
   const badgesElementRefs: RefObject<HTMLLIElement>[] = badges.map(() => createRef<HTMLLIElement>())
-
-  const selectPreviousBadge = useCallback(() => {
-    if (!badges.length) return
-    setSelectedBadgeIndex((prevIndex) => {
-      if (prevIndex === 0) return badges.length - 1
-      return prevIndex - 1
-    })
-  }, [badges.length])
-
-  const selectNextBadge = useCallback(() => {
-    if (!badges.length) return
-    setSelectedBadgeIndex((prevIndex) => {
-      if (prevIndex === badges.length - 1) return 0
-      return prevIndex + 1
-    })
-  }, [badges.length])
+  const { selectNext, selectPrevious } = useListItemNavigation(
+    setSelectedBadgeIndex,
+    badgesElementRefs,
+    selectedBadgeIndex,
+    badges.length,
+  )
 
   const search = async (
     selectedFilters: Array<ListFilter>,
@@ -88,7 +85,6 @@ const CurateBadges: NextPageWithLayout = () => {
     const badges = (badgesUserCanReview.badges as Badge[]) || []
     setSelectedBadgeIndex(0)
     setBadges(badges)
-
     setLoading(false)
   }
 
@@ -101,10 +97,10 @@ const CurateBadges: NextPageWithLayout = () => {
             {t('explorer.curate.title')}
           </Typography>
           <Box>
-            <IconButton onClick={selectPreviousBadge}>
+            <IconButton onClick={selectPrevious}>
               <ArrowBackIosOutlinedIcon color="green" />
             </IconButton>
-            <IconButton onClick={selectNextBadge}>
+            <IconButton onClick={selectNext}>
               <ArrowForwardIosOutlinedIcon color="green" />
             </IconButton>
           </Box>
@@ -115,26 +111,6 @@ const CurateBadges: NextPageWithLayout = () => {
       </>
     )
   }
-
-  useEffect(() => {
-    // Each time that a new item is selected, we scroll to it
-    if (badgesElementRefs[selectedBadgeIndex]?.current) {
-      window.scrollTo({
-        top:
-          (badgesElementRefs[selectedBadgeIndex].current?.offsetTop || 0) -
-          (badgesElementRefs[selectedBadgeIndex].current?.offsetHeight || 0),
-        behavior: 'smooth',
-      })
-    }
-  }, [badgesElementRefs, selectedBadgeIndex])
-
-  useEffect(() => {
-    if (leftPress) selectPreviousBadge()
-  }, [leftPress, selectPreviousBadge])
-
-  useEffect(() => {
-    if (rightPress) selectNextBadge()
-  }, [rightPress, selectNextBadge])
 
   return (
     <>
@@ -159,6 +135,12 @@ const CurateBadges: NextPageWithLayout = () => {
                     ref={badgesElementRefs[i]}
                     selected={isSelected}
                   >
+                    <TimeLeftContainer>
+                      <TimeLeftDisplay
+                        reviewDueDate={badge?.badgeKlerosMetaData?.reviewDueDate}
+                        smallView
+                      />
+                    </TimeLeftContainer>
                     <MiniBadgeModelPreview
                       buttonTitle={t('curateExplorer.button')}
                       disableAnimations

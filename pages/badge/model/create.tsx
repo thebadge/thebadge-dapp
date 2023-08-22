@@ -11,7 +11,7 @@ import { TheBadge__factory } from '@/types/generated/typechain'
 import { NextPageWithLayout } from '@/types/next'
 
 const CreateBadgeType: NextPageWithLayout = () => {
-  const { sendTx, state: transactionState } = useTransaction()
+  const { resetTxState, sendTx, state: transactionState } = useTransaction()
 
   const { address, appChainId, readOnlyAppProvider } = useWeb3Connection()
   const theBadge = useContractInstance(TheBadge__factory, 'TheBadge')
@@ -40,7 +40,7 @@ const CreateBadgeType: NextPageWithLayout = () => {
         const {
           createAndUploadBadgeModelMetadata,
           createAndUploadClearingAndRegistrationFilesForKleros,
-          encodeKlerosControllerData,
+          encodeKlerosBadgeModelControllerData,
         } = await import('@/src/utils/badges/createBadgeModelHelpers')
 
         const { clearingIPFSHash, registrationIPFSHash } =
@@ -60,7 +60,7 @@ const CreateBadgeType: NextPageWithLayout = () => {
           textContrast,
         )
 
-        const klerosControllerDataEncoded = encodeKlerosControllerData(
+        const klerosBadgeModelControllerDataEncoded = encodeKlerosBadgeModelControllerData(
           address as string,
           contracts.Kleros.address[appChainId],
           readOnlyAppProvider,
@@ -80,20 +80,23 @@ const CreateBadgeType: NextPageWithLayout = () => {
           {
             metadata: badgeModelMetadataIPFSHash,
             controllerName: 'kleros', // TODO kleros is hardcoded as controller for now
-            mintCreatorFee: data.mintCost,
+            mintCreatorFee: data.mintFee,
             validFor: data.validFor, // in seconds, 0 infinite
           },
-          klerosControllerDataEncoded,
+          klerosBadgeModelControllerDataEncoded,
         )
       })
-
-      await transaction.wait()
+      if (transaction) {
+        await transaction.wait()
+      }
     } catch (e) {
       // Do nothing
     }
   }
 
-  return <CreateWithSteps onSubmit={onSubmit} txState={transactionState} />
+  return (
+    <CreateWithSteps onSubmit={onSubmit} resetTxState={resetTxState} txState={transactionState} />
+  )
 }
 
 export default withPageGenericSuspense(CreateBadgeType)

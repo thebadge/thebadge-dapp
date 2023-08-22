@@ -1,12 +1,22 @@
-import React, { PropsWithChildren, ReactNode, useEffect, useState } from 'react'
+import React, {
+  PropsWithChildren,
+  ReactNode,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react'
 
 import { Box, Chip, Divider, Stack, Typography, styled } from '@mui/material'
 import { ChipPropsColorOverrides } from '@mui/material/Chip/Chip'
 import { OverridableStringUnion } from '@mui/types'
 import { colors } from '@thebadge/ui-library'
+import dayjs from 'dayjs'
+import { useTranslation } from 'next-export-i18n'
 import Sticky from 'react-sticky-el'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
+import TimeAgo from '@/src/components/helpers/TimeAgo'
 import { Loading } from '@/src/components/loading/Loading'
 import { SpinnerColors } from '@/src/components/loading/Spinner'
 import TBSearchField from '@/src/components/select/SearchField'
@@ -58,26 +68,49 @@ const FilteredListHeaderBox = styled(Box)(({ theme }) => ({
   alignItems: 'center',
 }))
 
+const LastUpdateTypography = styled(Typography)(() => ({
+  display: 'inline-flex',
+  alignItems: 'center',
+  fontSize: '14px !important',
+  '&:hover': {
+    textDecoration: 'underline',
+  },
+  cursor: 'pointer',
+}))
+
 export default function FilteredList({
   filters = [],
   showTextSearch = true,
   ...props
 }: FilteredListProps) {
+  const { t } = useTranslation()
+
   const { mode } = useColorMode()
-  const defaultSelectedFilters = filters.filter((f) => f.defaultSelected)
+  const defaultSelectedFilters = useMemo(() => filters.filter((f) => f.defaultSelected), [filters])
   const [selectedFilters, setSelectedFilters] = useState<ListFilter[]>(defaultSelectedFilters)
   const [selectedCategory, setSelectedCategory] = useState<string>('')
   const [initialLoadDone, setInitialLoadDone] = useState<boolean>(false)
+  const [lastSearchTimestamp, setLastSearchTimestamp] = useState<number | undefined>()
+
+  const onSearch = useCallback(
+    async (selectedFilters = defaultSelectedFilters, selectedCategory = '', textSearch = '') => {
+      await props.search(selectedFilters, selectedCategory, textSearch)
+      setLastSearchTimestamp(dayjs().unix())
+    },
+    [defaultSelectedFilters, props],
+  )
 
   useEffect(() => {
     if (!initialLoadDone) {
-      props.search(defaultSelectedFilters, '', '')
+      onSearch()
       setInitialLoadDone(true)
     }
-  }, [props, initialLoadDone, defaultSelectedFilters])
+  }, [initialLoadDone, onSearch])
 
   const onStringSearch = (textSearch?: string) =>
-    props.search(selectedFilters, selectedCategory, textSearch)
+    onSearch(selectedFilters, selectedCategory, textSearch)
+
+  const refresh = () => onSearch(selectedFilters, selectedCategory)
 
   const isFilterSelected = (filter: ListFilter) => {
     return !!selectedFilters.find((f) => f.title === filter.title)
@@ -87,20 +120,20 @@ export default function FilteredList({
     if (!isFilterSelected(filter)) {
       const newSelectedFilters = selectedFilters.concat(filter)
       setSelectedFilters(() => newSelectedFilters)
-      props.search(newSelectedFilters, selectedCategory)
+      onSearch(newSelectedFilters, selectedCategory)
     }
   }
   const handleRemoveFilter = (filter: ListFilter) => {
     if (!filter.fixed) {
       const newSelectedFilters = selectedFilters.filter((f) => f.title !== filter.title)
       setSelectedFilters(newSelectedFilters)
-      props.search(newSelectedFilters, selectedCategory)
+      onSearch(newSelectedFilters, selectedCategory)
     }
   }
 
   const handleSelectCategory = (selectedCategory: string) => {
     setSelectedCategory(selectedCategory)
-    props.search(selectedFilters, selectedCategory)
+    onSearch(selectedFilters, selectedCategory)
   }
 
   return (
@@ -141,7 +174,7 @@ export default function FilteredList({
           {props.categories ? (
             <TBadgeSelect
               items={props.categories}
-              label={'Category'}
+              label={t('filteredList.category')}
               onChange={(e) => handleSelectCategory(e.target.value)}
               selectedItem={selectedCategory}
             />
@@ -151,7 +184,7 @@ export default function FilteredList({
           {showTextSearch && (
             <TBSearchField
               disabled={!!props.disableEdit}
-              label={props.searchInputLabel || 'Text Search'}
+              label={props.searchInputLabel || t('filteredList.textSearch')}
               onSearch={(searchValue) => onStringSearch(searchValue)}
             />
           )}
@@ -159,6 +192,12 @@ export default function FilteredList({
       </FilteredListHeaderBox>
       <Divider color={mode === 'dark' ? 'white' : 'black'} sx={{ borderWidth: '1px' }} />
 
+      <Stack my={1}>
+        <LastUpdateTypography ml="auto" onClick={refresh}>
+          {t('filteredList.lastUpdated')}
+          <TimeAgo timestamp={lastSearchTimestamp} />
+        </LastUpdateTypography>
+      </Stack>
       <Box display="flex" id="preview" mt={4}>
         <Box flex="3">
           {props.loading ? (

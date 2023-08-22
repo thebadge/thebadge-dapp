@@ -1,7 +1,9 @@
+import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 
+import { AddressZero } from '@ethersproject/constants'
 import { Box, Stack, Typography, styled } from '@mui/material'
-import { colors } from '@thebadge/ui-library'
+import { ButtonV2, colors } from '@thebadge/ui-library'
 import { formatUnits } from 'ethers/lib/utils'
 import { useTranslation } from 'next-export-i18n'
 
@@ -34,11 +36,11 @@ const StyledBadgeContainer = styled(MiniBadgePreviewContainer)(({ theme }) => {
 
 export default function BadgesCreatedSection() {
   const { t } = useTranslation()
+  const router = useRouter()
   const { address } = useWeb3Connection()
   const [items, setItems] = useState<React.ReactNode[]>([])
   const [loading, setLoading] = useState<boolean>(false)
   const gql = useSubgraph()
-  if (!address) return null
 
   const search = async (
     selectedFilters: Array<ListFilter>,
@@ -47,12 +49,10 @@ export default function BadgesCreatedSection() {
   ) => {
     setLoading(true)
     // TODO filter badges with: selectedFilters, selectedCategory, textSearch
-    const userCreatedBadges = await gql.userCreatedBadges({ ownerAddress: address })
+    const userCreatedBadges = await gql.userCreatedBadges({ ownerAddress: address ?? AddressZero })
     const badgeModels = userCreatedBadges?.user?.createdBadgeModels || []
 
     const badgesLayouts = badgeModels.map((badgeModel) => {
-      // TODO Add mintcost
-      const mintCost = '100000000000000' //badgeModel.mintCost;
       return (
         <StyledBadgeContainer highlightColor={colors.pink} key={badgeModel.id}>
           <MiniBadgeModelPreview
@@ -62,7 +62,8 @@ export default function BadgesCreatedSection() {
           />
           <Box id="badge-info">
             <Typography variant="body4">
-              {t('profile.badgesCreated.explorerBadgeCost')} {formatUnits(mintCost, 18)}
+              {t('profile.badgesCreated.explorerBadgeCost')}{' '}
+              {formatUnits(badgeModel.creatorFee, 18)}
             </Typography>
             <Typography variant="body4">
               {t('profile.badgesCreated.explorerBadgeMinted')} {badgeModel.badgesMintedAmount}
@@ -81,7 +82,6 @@ export default function BadgesCreatedSection() {
   return (
     <RequiredCreatorAccess>
       <FilteredList
-        // categories={['Category 1', 'Category 2', 'Category 3']}
         filters={[]}
         loading={loading}
         loadingColor={'primary'}
@@ -95,6 +95,14 @@ export default function BadgesCreatedSection() {
         ) : (
           <Stack>
             <NoResultsAnimated errorText={t('profile.badgesCreated.badgesCreatedNoResults')} />
+            <ButtonV2
+              backgroundColor={colors.transparent}
+              fontColor={colors.pink}
+              onClick={() => router.push('/badge/model/create')}
+              sx={{ m: 'auto' }}
+            >
+              <Typography>{t('profile.badgesYouOwn.create')}</Typography>
+            </ButtonV2>
           </Stack>
         )}
       </FilteredList>

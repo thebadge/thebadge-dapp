@@ -12,7 +12,7 @@ import {
   BADGE_MODEL_BACKGROUNDS,
   BADGE_MODEL_TEXT_CONTRAST,
 } from '@/src/pagePartials/badge/model/steps/uiBasics/BadgeModelUIBasics'
-import { cleanFormValues } from '@/src/pagePartials/badge/model/utils'
+import { cleanCreateModelFormValues } from '@/src/pagePartials/badge/model/utils'
 import { ProfileFilter } from '@/src/pagePartials/profile/Profile'
 
 const BoxShadow = styled(Box)(({ theme }) => ({
@@ -34,7 +34,7 @@ export default function BadgeModelCreated() {
   const watchedBackground = watch('backgroundImage')
 
   useEffect(() => {
-    return () => cleanFormValues()
+    return () => cleanCreateModelFormValues()
   }, [])
 
   return (

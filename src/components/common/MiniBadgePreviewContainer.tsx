@@ -4,11 +4,12 @@ import { Box, Skeleton, alpha, styled } from '@mui/material'
 
 export const MiniBadgePreviewContainer = styled(Box, {
   shouldForwardProp: (pN) => pN !== 'highlightColor' && pN !== 'selected',
-})(({ highlightColor, selected }: { highlightColor: string; selected?: boolean }) => ({
+})<{ highlightColor: string; selected?: boolean }>(({ highlightColor, selected, theme }) => ({
   position: 'relative',
   maxWidth: '250px',
   overflow: 'hidden',
   transition: 'all 0.5s',
+  borderRadius: theme.spacing(1),
   '&:hover': {
     background: alpha(highlightColor, 0.2),
     scale: '0.98',

@@ -3,13 +3,15 @@ import React from 'react'
 import ReportProblemOutlinedIcon from '@mui/icons-material/ReportProblemOutlined'
 import { Box, Stack, Typography } from '@mui/material'
 import { formatUnits } from 'ethers/lib/utils'
+import { useTranslation } from 'next-export-i18n'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { getNetworkConfig } from '@/src/config/web3'
-import { useChallengeCost } from '@/src/hooks/kleros/useChallengeBaseDeposits'
+import { useChallengeCost } from '@/src/hooks/kleros/useChallengeCost'
 import { useRegistrationBadgeModelKlerosMetadata } from '@/src/hooks/subgraph/useBadgeModelKlerosMetadata'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
-import { secondsToDays } from '@/src/utils/dateUtils'
+import { secondsToDays, secondsToMinutes } from '@/src/utils/dateUtils'
+import { isTestnet } from '@/src/utils/network'
 
 export default function ChallengeCost({
   badgeId,
@@ -18,6 +20,7 @@ export default function ChallengeCost({
   badgeModelId: string
   badgeId: string
 }) {
+  const { t } = useTranslation()
   const { appChainId } = useWeb3Connection()
   const networkConfig = getNetworkConfig(appChainId)
 
@@ -31,9 +34,9 @@ export default function ChallengeCost({
     throw 'There was not possible to get challenge cost. Try again in some minutes.'
   }
 
-  const challengePeriodDurationInDays = secondsToDays(
-    badgeModelKlerosData.data?.challengePeriodDuration,
-  )
+  const challengePeriodDuration = isTestnet
+    ? secondsToMinutes(badgeModelKlerosData.data?.challengePeriodDuration)
+    : secondsToDays(badgeModelKlerosData.data?.challengePeriodDuration)
 
   return (
     <Box display="flex" flex={1} gap={4}>
@@ -42,11 +45,13 @@ export default function ChallengeCost({
         gap={2}
         sx={{ borderBottom: '1px solid white', justifyContent: 'flex-end', pb: 2 }}
       >
-        <Typography variant="dAppBody1">Total deposit required</Typography>
+        <Typography variant="dAppBody1">{t('badge.challenge.modal.deposit')}</Typography>
         <SafeSuspense>
           <Typography>
-            {formatUnits(challengeCost.data, 18)}
-            {networkConfig.token}
+            {t('badge.challenge.modal.depositValue', {
+              value: formatUnits(challengeCost.data, 18),
+              symbol: networkConfig.token,
+            })}
           </Typography>
         </SafeSuspense>
       </Stack>
@@ -57,7 +62,10 @@ export default function ChallengeCost({
           sx={{ display: 'flex', alignItems: 'center' }}
           variant="dAppBody1"
         >
-          {`Note that this is a deposit, not a fee and it will be reimbursed if the removal is accepted. The challenge period last ${challengePeriodDurationInDays} days.`}
+          {t('badge.challenge.modal.depositWarning', {
+            period: challengePeriodDuration,
+            timeUnit: isTestnet ? 'minutes' : 'days',
+          })}
         </Typography>
       </Box>
     </Box>

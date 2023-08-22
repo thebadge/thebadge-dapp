@@ -5,11 +5,11 @@ import {
   IconGithub,
   IconMedium,
   IconTwitter,
-  LogoTheBadgeWithText,
   colors,
 } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 
+import { LogoWithText } from '@/src/components/common/Logo'
 import {
   DISCORD_URL,
   DOCS_URL,
@@ -119,7 +119,7 @@ export const Footer: React.FC = () => {
                 </Typography>
               </Stack>
             </Box>
-            {!isMobile && <LogoTheBadgeWithText fill={iconColor} size={120} />}
+            {!isMobile && <LogoWithText color={iconColor} size={120} />}
           </Box>
           <Box
             display={'flex'}

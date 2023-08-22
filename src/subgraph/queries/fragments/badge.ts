@@ -5,7 +5,7 @@ gql`
     id
     status
     uri
-    validFor
+    validUntil
     account {
       id
     }
@@ -16,6 +16,13 @@ gql`
       creatorFee
       validFor
       badgesMintedAmount
+      badgeModelKleros {
+        tcrList
+        challengePeriodDuration
+      }
+    }
+    badgeKlerosMetaData {
+      reviewDueDate
     }
   }
 `
@@ -34,6 +41,7 @@ gql`
       controllerType
       validFor
       badgeModelKleros {
+        tcrList
         challengePeriodDuration
       }
     }
@@ -63,6 +71,9 @@ gql`
         tcrList
         registrationUri
       }
+    }
+    badgeKlerosMetaData {
+      reviewDueDate
     }
   }
 `

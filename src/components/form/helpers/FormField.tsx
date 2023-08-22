@@ -21,7 +21,16 @@ export const FormField: React.FC<{
   labelPosition?: 'top' | 'left' | 'top-left'
   status?: TextFieldStatus | undefined
   statusText?: string
-}> = ({ formControl, label, labelPosition = 'top', status, statusText = ' ', ...restProps }) => {
+  alignItems?: string
+}> = ({
+  alignItems,
+  formControl,
+  label,
+  labelPosition = 'top',
+  status,
+  statusText = ' ',
+  ...restProps
+}) => {
   const control = useMemo(
     () =>
       cloneElement(formControl, {
@@ -40,7 +49,7 @@ export const FormField: React.FC<{
           minWidth: '100%',
           maxWidth: '100%',
           justifyContent: 'center',
-          alignItems: labelPosition.includes('left') ? 'flex-start' : 'center',
+          alignItems: alignItems || (labelPosition.includes('left') ? 'flex-start' : 'center'),
         }}
       >
         {label && <Label>{label}</Label>}

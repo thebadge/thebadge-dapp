@@ -4,6 +4,7 @@ import { BackendFileResponse, BackendFileUpload, IPFSHash, NFTAttribute } from '
 export type BadgeEvidenceMetadata = {
   columns: MetadataColumn[]
   values: Record<string, any>
+  submittedAt: number
 }
 
 export type BadgeModelMetadata<T = IPFSHash | BackendFileResponse | BackendFileUpload> = {
@@ -21,4 +22,19 @@ export type BadgeMetadata<T = IPFSHash | BackendFileResponse | BackendFileUpload
   external_link: string
   image: T
   attributes?: NFTAttribute[]
+}
+
+export enum BadgeNFTAttributesType {
+  Background = 'Background',
+  TextContrast = 'TextContrast',
+}
+
+export type EvidenceMetadata = {
+  title: string
+  description: string
+  // Attached file evidence
+  fileURI?: string
+  fileTypeExtension?: string
+  // File Mimetype
+  type?: string
 }

@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from 'axios'
 
 import { BACKEND_URL } from '@/src/constants/common'
+import { cleanHash } from '@/src/utils/fileUtils'
 import { BackendResponse } from '@/types/utils'
 
 /**
@@ -13,7 +14,7 @@ import { BackendResponse } from '@/types/utils'
 // eslint-disable-next-line @typescript-eslint/ban-types
 export async function getFromIPFS<T, X = {}>(hash?: string) {
   if (!hash) return
-  const cleanedHash = hash.replace(/^ipfs?:\/\//, '')
+  const cleanedHash = cleanHash(hash as string)
   if (!cleanedHash) return
 
   const cachedResponse = getCacheResponse<BackendResponse<{ content: T } & X>>(

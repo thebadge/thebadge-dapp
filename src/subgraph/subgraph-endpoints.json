@@ -1,6 +1,9 @@
 {
   "5": {
-    "theBadge": "https://api.thegraph.com/subgraphs/name/thebadgeadmin/dev"
+    "theBadge": "https://api.thegraph.com/subgraphs/name/thebadgeadmin/develop"
+  },
+  "11155111": {
+    "theBadge": "https://api.studio.thegraph.com/query/51391/thebadge-dev/version/latest"
   },
   "100": {
     "theBadge": ""

@@ -6,8 +6,8 @@ import { FormProvider, SubmitHandler, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import StepHeader from './steps/StepHeader'
-import StepPrompt from './steps/StepPrompt'
 import { FIELDS_TO_VALIDATE_ON_STEP, defaultValues } from './utils'
+import StepPrompt from '@/src/components/form/formWithSteps/StepPrompt'
 import { TransactionLoading } from '@/src/components/loading/TransactionLoading'
 import { TransactionStates } from '@/src/hooks/useTransaction'
 import { useTriggerRHF } from '@/src/hooks/useTriggerRHF'
@@ -26,10 +26,12 @@ import BadgeModelUIBasics from '@/src/pagePartials/badge/model/steps/uiBasics/Ba
 type CreateModelStepsProps = {
   onSubmit: SubmitHandler<CreateModelSchemaType>
   txState: TransactionStates
+  resetTxState: VoidFunction
 }
 
 export default function CreateWithSteps({
   onSubmit,
+  resetTxState,
   txState = TransactionStates.none,
 }: CreateModelStepsProps) {
   const [currentStep, setCurrentStep] = useState(0)
@@ -75,8 +77,6 @@ export default function CreateWithSteps({
     }
   }
 
-  console.warn('Debugging: formState.errors', methods.formState.errors)
-
   return (
     <FormProvider {...methods}>
       <StepPrompt hasUnsavedChanges={methods.formState.isDirty} />
@@ -87,7 +87,7 @@ export default function CreateWithSteps({
       />
       <Container maxWidth="md" sx={{ minHeight: '50vh' }}>
         {txState !== TransactionStates.none && txState !== TransactionStates.success && (
-          <TransactionLoading state={txState} />
+          <TransactionLoading resetTxState={resetTxState} state={txState} />
         )}
         {txState === TransactionStates.success && <BadgeModelCreated />}
         {txState === TransactionStates.none && (
@@ -100,6 +100,7 @@ export default function CreateWithSteps({
               {currentStep === 4 && <BadgeModelConfirmation />}
 
               <StepFooter
+                color="purple"
                 currentStep={currentStep}
                 onBackCallback={onBackCallback}
                 onNextCallback={onNextCallback}
