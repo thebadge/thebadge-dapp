@@ -30,7 +30,6 @@ export default function InfoPreview({ address }: Props) {
   const resCreatorMetadata = useS3Metadata<{ content: CreatorMetadata }>(user?.metadataUri || '')
   const creatorMetadata = resCreatorMetadata.data?.content
   const isVerified = useIsUserVerified(address, 'kleros')
-
   const hasCustomProfileData = !!creatorMetadata
 
   return (
