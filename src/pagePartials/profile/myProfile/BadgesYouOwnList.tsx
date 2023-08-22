@@ -1,26 +1,23 @@
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 
-import { Box, Stack } from '@mui/material'
+import { Box, Stack, Typography } from '@mui/material'
+import { ButtonV2, colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 
 import { NoResultsAnimated } from '@/src/components/assets/animated/NoResults'
 import FilteredList, { ListFilter } from '@/src/components/helpers/FilteredList'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
-import { useContractInstance } from '@/src/hooks/useContractInstance'
-import useTransaction from '@/src/hooks/useTransaction'
 import MiniBadgeModelPreview from '@/src/pagePartials/badge/MiniBadgeModelPreview'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import getHighlightColorByStatus from '@/src/utils/badges/getHighlightColorByStatus'
 import { BadgeStatus, Badge_Filter } from '@/types/generated/subgraph'
-import { TheBadge__factory } from '@/types/generated/typechain'
 
 type Props = {
   address: string
 }
 export default function BadgesYouOwnList({ address }: Props) {
   const { t } = useTranslation()
-  const { sendTx } = useTransaction()
   const router = useRouter()
   const { address: connectedWalletAddress } = useWeb3Connection()
 
@@ -29,16 +26,7 @@ export default function BadgesYouOwnList({ address }: Props) {
   const [items, setItems] = useState<React.ReactNode[]>([])
   const [loading, setLoading] = useState<boolean>(false)
 
-  const theBadge = useContractInstance(TheBadge__factory, 'TheBadge')
   const gql = useSubgraph()
-
-  async function handleClaimIt(badgeId: string, address: string) {
-    const transaction = await sendTx(() => theBadge.claim(badgeId, '0x'))
-
-    if (transaction) {
-      await transaction.wait()
-    }
-  }
 
   const filters: Array<ListFilter<BadgeStatus>> = [
     {
@@ -96,7 +84,6 @@ export default function BadgesYouOwnList({ address }: Props) {
 
   return (
     <FilteredList
-      // categories={['Category 1', 'Category 2', 'Category 3']}
       filters={filters}
       loading={loading}
       loadingColor={'blue'}
@@ -105,13 +92,23 @@ export default function BadgesYouOwnList({ address }: Props) {
       title={
         isLoggedInUser ? t('profile.badgesYouOwn.title') : t('profile.badgesYouOwn.shared_title')
       }
-      titleColor={'blue'}
+      titleColor={colors.blue}
     >
       {items.length > 0 ? (
         items
       ) : (
         <Stack>
           <NoResultsAnimated errorText={t('profile.badgesYouOwn.noResults')} />
+          {isLoggedInUser && (
+            <ButtonV2
+              backgroundColor={colors.transparent}
+              fontColor={colors.blue}
+              onClick={() => router.push('/badge/explorer')}
+              sx={{ m: 'auto' }}
+            >
+              <Typography>{t('profile.badgesYouOwn.mint')}</Typography>
+            </ButtonV2>
+          )}
         </Stack>
       )}
     </FilteredList>

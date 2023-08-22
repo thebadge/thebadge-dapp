@@ -143,13 +143,15 @@
     "badgesYouOwn": {
       "title": "Badges that you own",
       "shared_title": "Badges that the user own",
-      "noResults": "You don't have any badges that match these filters..."
+      "noResults": "You don't have any badges that match these filters...",
+      "mint": "Mint a badge"
     },
     "badgesCreated": {
       "title": "Created badge models",
       "badgesCreatedNoResults": "You don't have any badge models created...",
       "explorerBadgeCost": "Cost:",
-      "explorerBadgeMinted": "Minted: "
+      "explorerBadgeMinted": "Minted: ",
+      "create": "Create a Badge Model"
     },
     "badgesToCurate": "Browse other badges to curate",
     "createdBadges": "Earn by creating new badges",
@@ -166,7 +168,8 @@
       "viewAll": "View details",
       "lastActivity": "Last Activity",
       "submissionChallenge": "You have challenged the submission of this badge",
-      "removalChallenge": "You have requested the removal of this badge"
+      "removalChallenge": "You have requested the removal of this badge",
+      "curate": "Curate a badge"
     },
     "verified": "Verified user"
   },
