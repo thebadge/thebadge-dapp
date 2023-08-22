@@ -2,59 +2,72 @@ import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 
 import { ethers } from 'ethers'
+import { z } from 'zod'
 
 import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
 import useTransaction, { TransactionStates } from '@/src/hooks/useTransaction'
-import RegistrationWithSteps from '@/src/pagePartials/creator/register/RegistrationWithSteps'
-import { CreatorRegisterSchemaType } from '@/src/pagePartials/creator/register/schema/CreatorRegisterSchema'
+import RegistrationSteps, {
+  RegisterCuratorSchemaStep1,
+  RegisterCuratorSchemaStep2,
+  RegisterCuratorSchemaStep3,
+} from '@/src/pagePartials/creator/register/RegistrationSteps'
 import { PreventActionIfRegisterPaused } from '@/src/pagePartials/errors/preventActionIfPaused'
-import { ProfileFilter } from '@/src/pagePartials/profile/Profile'
+import { RequiredConnection } from '@/src/pagePartials/errors/requiredConnection'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+import ipfsUpload from '@/src/utils/ipfsUpload'
 import { TheBadge__factory } from '@/types/generated/typechain'
 import { NextPageWithLayout } from '@/types/next'
 
+// Merge all in one schema
+export const RegisterCuratorSchema = z
+  .object({})
+  .merge(RegisterCuratorSchemaStep1)
+  .merge(RegisterCuratorSchemaStep2)
+  .merge(RegisterCuratorSchemaStep3)
+
 const Register: NextPageWithLayout = () => {
-  const router = useRouter()
   const { address } = useWeb3Connection()
-  const { resetTxState, sendTx, state } = useTransaction()
-  const theBadge = useContractInstance(TheBadge__factory, 'TheBadge')
-  const gql = useSubgraph()
+  const router = useRouter()
+  const { sendTx, state } = useTransaction()
 
   useEffect(() => {
     // Redirect to the creator profile section
     if (state === TransactionStates.success) {
-      router.push(`/profile?filter=${ProfileFilter.CREATED_BADGES}`)
+      router.push(`/profile?filter=createdBadges`)
     }
   }, [router, state])
 
+  const theBadge = useContractInstance(TheBadge__factory, 'TheBadge')
+
+  const gql = useSubgraph()
   const userProfile = gql.useUserById({
     id: address || ethers.constants.AddressZero,
   })
 
   if (userProfile.data?.user?.isCreator) {
-    router.push(`/profile?filter=${ProfileFilter.CREATED_BADGES}`)
+    router.push('/profile?filter=createdBadges')
   }
 
-  async function onSubmit(data: CreatorRegisterSchemaType) {
+  async function onSubmit(data: z.infer<typeof RegisterCuratorSchema>) {
     if (!address) {
       throw Error('Web3 address not provided')
     }
+    const uploadedInfo = await ipfsUpload({
+      attributes: {
+        ...data,
+        logo: { mimeType: data.logo?.file.type, base64File: data.logo?.data_url },
+      },
+      filePaths: ['logo'],
+    })
 
     try {
-      const transaction = await sendTx(async () => {
-        // Use NextJs dynamic import to reduce the bundle size
-        const { createAndUploadCreatorMetadata } = await import(
-          '@/src/utils/creator/registerHelpers'
-        )
-        const creatorMetadataIPFSHash = await createAndUploadCreatorMetadata(data)
-        return theBadge.registerUser(creatorMetadataIPFSHash, false)
-      })
+      const transaction = await sendTx(() =>
+        theBadge.registerBadgeModelCreator(`ipfs://${uploadedInfo.result?.ipfsHash}`),
+      )
 
-      if (transaction) {
-        await transaction.wait()
-      }
+      await transaction.wait()
     } catch (e) {
       // Do nothing
     }
@@ -62,7 +75,9 @@ const Register: NextPageWithLayout = () => {
 
   return (
     <PreventActionIfRegisterPaused>
-      <RegistrationWithSteps onSubmit={onSubmit} resetTxState={resetTxState} txState={state} />
+      <RequiredConnection>
+        <RegistrationSteps onSubmit={onSubmit} txState={state} />
+      </RequiredConnection>
     </PreventActionIfRegisterPaused>
   )
 }

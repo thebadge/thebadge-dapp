@@ -3,54 +3,41 @@ import React from 'react'
 import { Typography } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
 
-import {
-  useRegistrationBadgeModelKlerosMetadata,
-  useRemovalBadgeModelKlerosMetadata,
-} from '@/src/hooks/subgraph/useBadgeModelKlerosMetadata'
+import useBadgeModel from '@/src/hooks/subgraph/useBadgeType'
 
-export default function CurationCriteriaLink({
-  badgeModelId,
-  isRemoval,
-  type,
-}: {
-  badgeModelId: string
-  type: 'challenge' | 'addEvidence' | 'curate'
-  isRemoval?: boolean
-}) {
+export default function CurationCriteriaLink({ badgeTypeId }: { badgeTypeId: string }) {
   const { t } = useTranslation()
 
-  const badgeModelRegistrationKlerosData = useRegistrationBadgeModelKlerosMetadata(badgeModelId)
-  const badgeModelRemovalKlerosData = useRemovalBadgeModelKlerosMetadata(badgeModelId)
+  const badgeTypeData = useBadgeModel(badgeTypeId)
 
-  if (!badgeModelRemovalKlerosData.data && !badgeModelRegistrationKlerosData.data) {
-    throw `There was an error trying to fetch the metadata for the badge model`
+  if (
+    badgeTypeData.error ||
+    !badgeTypeData.data?.badgeModel ||
+    !badgeTypeData.data?.badgeTypeMetadata
+  ) {
+    throw `There was an error trying to fetch the metadata for the badge type`
   }
 
-  const badgeRegistrationMetadata =
-    badgeModelRegistrationKlerosData.data?.badgeModelKlerosRegistrationMetadata
-  const badgeRemovalMetadata = badgeModelRemovalKlerosData.data?.badgeModelKlerosRemovalMetadata
+  const badgeTypeMetadata = badgeTypeData.data?.badgeTypeMetadata
 
-  if (!badgeRegistrationMetadata || !badgeRemovalMetadata) {
+  if (!badgeTypeMetadata) {
     throw 'There was not possible to get the needed metadata. Try again in some minutes.'
   }
 
-  const badgeRegistrationCriteria =
-    's3Url' in badgeRegistrationMetadata.fileURI ? badgeRegistrationMetadata.fileURI.s3Url : ''
-  const badgeRemovalCriteria =
-    's3Url' in badgeRemovalMetadata.fileURI ? badgeRemovalMetadata.fileURI.s3Url : ''
+  const badgeCriteria = 's3Url' in badgeTypeMetadata.fileURI ? badgeTypeMetadata.fileURI.s3Url : ''
 
   return (
-    <Typography fontSize={14} textAlign="center" variant="dAppBody1">
-      {t(`badge.${type}.criteriaLink.readCriteria`)}
+    <Typography fontSize={14} variant="dAppBody1">
+      {t('badge.challenge.modal.readCriteria')}
       <a
-        href={isRemoval ? badgeRemovalCriteria : badgeRegistrationCriteria}
+        href={badgeCriteria}
         rel="noreferrer"
         style={{ textDecoration: 'underline' }}
         target={'_blank'}
       >
-        {t(`badge.${type}.criteriaLink.curationCriteria`)}
+        {t('badge.challenge.modal.curationCriteria')}
       </a>
-      {t(`badge.${type}.criteriaLink.toAvoid`)}
+      {t('badge.challenge.modal.toAvoid')}
     </Typography>
   )
 }

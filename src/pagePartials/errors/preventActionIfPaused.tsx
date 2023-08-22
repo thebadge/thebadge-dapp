@@ -1,10 +1,10 @@
+import { useRouter } from 'next/router'
 import React, { ReactElement } from 'react'
 
 import { styled } from '@mui/material'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
-import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
-import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
+import useBadgeModel from '@/src/hooks/subgraph/useBadgeType'
 import ActionIsPaused from '@/src/pagePartials/errors/displays/AcctionIsPaused'
 
 const Wrapper = styled('div')`
@@ -21,10 +21,12 @@ type Props = {
 }
 
 export const PreventActionIfBadgeTypePaused: React.FC<Props> = ({ children, minHeight }) => {
-  const badgeModelId = useModelIdParam()
-  const badgeModel = useBadgeModel(badgeModelId)
+  const router = useRouter()
 
-  if (badgeModel.data?.badgeModel.paused) {
+  const badgeTypeId = router.query.typeId as string
+  const badgeType = useBadgeModel(badgeTypeId)
+
+  if (badgeType.data?.badgeModel.paused) {
     return (
       <Wrapper style={{ minHeight }}>
         <ActionIsPaused />
