@@ -10,6 +10,7 @@ import { useTranslation } from 'next-export-i18n'
 import TBUserAvatar from '@/src/components/common/TBUserAvatar'
 import { Address } from '@/src/components/helpers/Address'
 import { useUserById } from '@/src/hooks/subgraph/useUserById'
+import useIsUserVerified from '@/src/hooks/theBadge/useIsUserVerified'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { InfoPreviewContainer } from '@/src/pagePartials/profile/userInfo/InfoPreviewContainer'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
@@ -28,13 +29,14 @@ export default function InfoPreview({ address }: Props) {
   const user = userResponse.data
   const resCreatorMetadata = useS3Metadata<{ content: CreatorMetadata }>(user?.metadataUri || '')
   const creatorMetadata = resCreatorMetadata.data?.content
+  const isVerified = useIsUserVerified(address, 'kleros')
 
   const hasCustomProfileData = !!creatorMetadata
 
   return (
     <InfoPreviewContainer>
       <TBUserAvatar
-        isVerified={false} // TODO: refactor with a hook
+        isVerified={isVerified.data}
         size={hasCustomProfileData ? 170 : 90}
         src={creatorMetadata?.logo?.s3Url}
       />
