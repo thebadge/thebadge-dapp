@@ -7,6 +7,6 @@ export default function useIsUserVerified(userAddress: string, controller: strin
   const theBadge = useContractInstance(TheBadge__factory, 'TheBadge')
   return useSWR(
     [`isUserVerified:${userAddress}-${controller}`, userAddress, controller],
-    ([userAddress, controller]) => theBadge.isUserVerified(userAddress, controller),
+    ([, userAddress, controller]) => theBadge.isUserVerified(userAddress, controller),
   )
 }
