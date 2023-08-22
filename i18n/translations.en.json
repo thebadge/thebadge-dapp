@@ -150,7 +150,8 @@
       "title": "Created badge models",
       "badgesCreatedNoResults": "You don't have any badge models created...",
       "explorerBadgeCost": "Cost:",
-      "explorerBadgeMinted": "Minted: "
+      "explorerBadgeMinted": "Minted: ",
+      "create": "Create a Badge Model"
     },
     "badgesToCurate": "Browse other badges to curate",
     "createdBadges": "Earn by creating new badges",

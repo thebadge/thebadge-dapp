@@ -57,21 +57,19 @@ const Profile = () => {
               {t('profile.tab2')}
             </Typography>
           </LinkWithTranslation>
-          {user?.isCreator && (
-            <LinkWithTranslation
-              pathname={`/profile`}
-              queryParams={{ filter: ProfileFilter.CREATED_BADGES }}
+          <LinkWithTranslation
+            pathname={`/profile`}
+            queryParams={{ filter: ProfileFilter.CREATED_BADGES }}
+          >
+            <Typography
+              color={
+                selectedFilter === ProfileFilter.CREATED_BADGES ? 'text.primary' : 'text.disabled'
+              }
+              textTransform="uppercase"
             >
-              <Typography
-                color={
-                  selectedFilter === ProfileFilter.CREATED_BADGES ? 'text.primary' : 'text.disabled'
-                }
-                textTransform="uppercase"
-              >
-                {t('profile.tab3')}
-              </Typography>
-            </LinkWithTranslation>
-          )}
+              {t('profile.tab3')}
+            </Typography>
+          </LinkWithTranslation>
         </Box>
       </Stack>
 
