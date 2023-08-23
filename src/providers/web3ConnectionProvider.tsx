@@ -122,7 +122,7 @@ export function initOnboard() {
         enabled: false,
       },
       mobile: {
-        enabled: false,
+        enabled: true,
       },
     },
     i18n: {
