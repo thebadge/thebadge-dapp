@@ -50,7 +50,6 @@ export default function WelcomeDecoration() {
 
   return (
     <BoxBorderGradient
-      animated
       borderWidth="4px"
       gradient={gradients.gradient0}
       sx={{

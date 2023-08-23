@@ -112,7 +112,8 @@ export function initOnboard() {
     },
     appMetadata: {
       name: appName || '',
-      icon: '/favicon/favicon.svg', // brand icon
+      icon: '/favicon/favicon-32x32.png',
+      logo: '/favicon/favicon.svg',
       description: 'The Badge DApp',
       recommendedInjectedWallets: [{ name: 'MetaMask', url: 'https://metamask.io' }],
     },
