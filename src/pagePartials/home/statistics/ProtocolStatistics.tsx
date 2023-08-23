@@ -2,22 +2,27 @@ import { Box, Typography, styled } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
 
 import { useProtocolStatistic } from '@/src/hooks/subgraph/useProtocolStatistic'
+import { useSizeSM } from '@/src/hooks/useSize'
 import StatisticDisplay from '@/src/pagePartials/home/statistics/StatisticDisplay'
 import StatisticDoubleDisplay from '@/src/pagePartials/home/statistics/StatisticDoubleDisplay'
 
-const Container = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  padding: theme.spacing(4, 2),
-  gap: theme.spacing(2),
-  justifyContent: 'space-between',
-  flexDirection: 'row',
-  borderRadius: theme.spacing(2),
-  background:
-    'linear-gradient(90deg, #008362 0%, #5BBCAD 21.88%, #002CBF 51.56%, #B74AD6 76.04%, #891CFB 100%)',
-}))
+const Container = styled(Box, { shouldForwardProp: (prop) => prop !== 'isMobile' })(
+  ({ isMobile, theme }) => ({
+    display: 'flex',
+    padding: theme.spacing(4, 2),
+    gap: theme.spacing(2),
+    justifyContent: 'space-between',
+    flexDirection: isMobile ? 'column' : 'row',
+    borderRadius: theme.spacing(2),
+    background:
+      'linear-gradient(90deg, #008362 0%, #5BBCAD 21.88%, #002CBF 51.56%, #B74AD6 76.04%, #891CFB 100%)',
+  }),
+)
 
 export default function ProtocolStatistics() {
   const { t } = useTranslation()
+  const isMobile = useSizeSM()
+
   const protocolStatistic = useProtocolStatistic()
 
   return (
@@ -25,7 +30,7 @@ export default function ProtocolStatistics() {
       <Typography fontWeight={600} mb={4} mt={8} textAlign="center" variant="title2">
         {t('home.statistics.title')}
       </Typography>
-      <Container>
+      <Container isMobile={isMobile}>
         <StatisticDisplay
           label={t('home.statistics.created')}
           number={protocolStatistic.data?.badgesMintedAmount}
