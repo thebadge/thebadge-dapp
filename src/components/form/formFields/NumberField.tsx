@@ -3,12 +3,9 @@ import * as React from 'react'
 
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import { TextField as MUITextField, Stack, Tooltip } from '@mui/material'
-import { useDescription, useTsController } from '@ts-react/form'
 import { BigNumberInput } from 'big-number-input'
 import { formatUnits } from 'ethers/lib/utils'
 import { FieldError } from 'react-hook-form'
-
-import { convertToFieldError } from '@/src/components/form/helpers/validators'
 
 type NumberFieldProps = {
   decimals?: number
@@ -68,30 +65,6 @@ export function NumberField({
         </Stack>
       )}
       value={stringValue}
-    />
-  )
-}
-
-/**
- * Component wrapped to be used with @ts-react/form
- *
- */
-export default function NumberFieldWithTSForm({ decimals = 0 }: { decimals?: number }) {
-  const { error, field } = useTsController<number>()
-  const { label, placeholder } = useDescription()
-
-  function onChange(value: any) {
-    field.onChange(value)
-  }
-
-  return (
-    <NumberField
-      decimals={decimals}
-      error={error ? convertToFieldError(error) : undefined}
-      label={label}
-      onChange={onChange}
-      placeholder={placeholder}
-      value={field.value}
     />
   )
 }

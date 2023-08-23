@@ -12,25 +12,16 @@ import {
   Tooltip,
   styled,
 } from '@mui/material'
-import { useDescription, useTsController } from '@ts-react/form'
 import dayjs from 'dayjs'
 import { useTranslation } from 'next-export-i18n'
 import { FieldError } from 'react-hook-form'
 import { z } from 'zod'
 
 import { ExpirationTypeSchema } from '@/src/components/form/helpers/customSchemas'
-import { convertToFieldError } from '@/src/components/form/helpers/validators'
 import { Disable } from '@/src/components/helpers/DisableElements'
 
 type TimeUnit = 'day' | 'month' | 'year'
 const options = ['day', 'month', 'year']
-
-const Wrapper = styled(Box)(() => ({
-  display: 'flex',
-  flexDirection: 'row',
-  justifyContent: 'center',
-  position: 'relative',
-}))
 
 const InputWrapper = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -169,31 +160,6 @@ export function ExpirationField({
         </InputWrapper>
       </Disable>
     </Stack>
-  )
-}
-
-/**
- * Component wrapped to be used with @ts-react/form
- *
- */
-export default function ExpirationFieldWithTSForm() {
-  const { error, field } = useTsController<z.infer<typeof ExpirationTypeSchema>>()
-  const { label, placeholder } = useDescription()
-
-  function onChange(value: number) {
-    field.onChange(value)
-  }
-
-  return (
-    <Wrapper>
-      <ExpirationField
-        error={error ? convertToFieldError(error) : undefined}
-        label={label}
-        onChange={onChange}
-        placeholder={placeholder}
-        value={field.value}
-      />
-    </Wrapper>
   )
 }
 

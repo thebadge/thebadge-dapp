@@ -5,7 +5,7 @@ import { useTranslation } from 'next-export-i18n'
 import { Controller, useFormContext } from 'react-hook-form'
 
 import { CreatorRegisterSchemaType } from '../../schema/CreatorRegisterSchema'
-import { TextFieldStatus } from '@/src/components/form/TextField'
+import { TextFieldStatus } from '@/src/components/form/formFields/TextField'
 import { FormField } from '@/src/components/form/helpers/FormField'
 
 export default function TermsAndConditions() {

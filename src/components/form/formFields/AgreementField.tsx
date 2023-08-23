@@ -4,13 +4,11 @@ import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import { Box, Divider, Checkbox as MUICheckbox, Stack, Tooltip, Typography } from '@mui/material'
 import { CheckboxPropsColorOverrides } from '@mui/material/Checkbox/Checkbox'
 import { OverridableStringUnion } from '@mui/types'
-import { useDescription, useTsController } from '@ts-react/form'
 import { FieldError } from 'react-hook-form'
 
 import MarkdownTypography from '@/src/components/common/MarkdownTypography'
-import { TextFieldStatus } from '@/src/components/form/TextField'
+import { TextFieldStatus } from '@/src/components/form/formFields/TextField'
 import { FormField } from '@/src/components/form/helpers/FormField'
-import { convertToFieldError } from '@/src/components/form/helpers/validators'
 
 type AgreementFieldProps = {
   error?: FieldError
@@ -86,39 +84,5 @@ export function AgreementField({
       </Typography>
       <Divider sx={{ borderWidth: '1px' }} />
     </Stack>
-  )
-}
-
-/**
- * Component wrapped to be used with @ts-react/form
- *
- */
-export default function AgreementFieldWithTSForm({
-  agreementText,
-  color,
-}: {
-  agreementText: string
-  color: OverridableStringUnion<
-    'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning' | 'default',
-    CheckboxPropsColorOverrides
-  >
-}) {
-  const { error, field } = useTsController<boolean>()
-  const { label, placeholder } = useDescription()
-
-  function onChange(value: boolean) {
-    field.onChange(value)
-  }
-
-  return (
-    <AgreementField
-      agreementText={agreementText}
-      color={color}
-      error={error ? convertToFieldError(error) : undefined}
-      label={label}
-      onChange={onChange}
-      placeholder={placeholder}
-      value={field.value}
-    />
   )
 }

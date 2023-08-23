@@ -3,7 +3,7 @@ import React from 'react'
 import { useTranslation } from 'next-export-i18n'
 import { Controller, useFormContext } from 'react-hook-form'
 
-import { AgreementField } from '@/src/components/form/AgreementField'
+import { AgreementField } from '@/src/components/form/formFields/AgreementField'
 import { DOCS_URL } from '@/src/constants/common'
 import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'

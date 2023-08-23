@@ -9,16 +9,16 @@ import { HTML5Backend } from 'react-dnd-html5-backend'
 import { Controller, FieldError, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-import { DropdownSelect } from '@/src/components/form/DropdownSelect'
-import { TextArea } from '@/src/components/form/TextArea'
-import { TextField, TextFieldStatus } from '@/src/components/form/TextField'
+import { DropdownSelect } from '@/src/components/form/formFields/DropdownSelect'
+import FormFieldItem from '@/src/components/form/formFields/KlerosDynamicFormCreatorField/FormFieldItem'
+import { TextArea } from '@/src/components/form/formFields/TextArea'
+import { TextField, TextFieldStatus } from '@/src/components/form/formFields/TextField'
 import { FormStatus } from '@/src/components/form/helpers/FormStatus'
 import {
   KlerosDynamicFields,
   KlerosFormFieldSchema,
 } from '@/src/components/form/helpers/customSchemas'
 import { convertToFieldError } from '@/src/components/form/helpers/validators'
-import FormFieldItem from '@/src/components/form/klerosDynamicFormField/FormFieldItem'
 import { KLEROS_LIST_TYPES, KLEROS_LIST_TYPES_KEYS } from '@/types/kleros/types'
 
 const Wrapper = styled(Box)(({ theme }) => ({
