@@ -17,6 +17,7 @@ import walletConnectModule from '@web3-onboard/walletconnect'
 import web3authModule from '@web3-onboard/web3auth'
 import { UserInfo } from '@web3auth/base'
 import { Web3Auth } from '@web3auth/modal'
+import { useTranslation } from 'next-export-i18n'
 import nullthrows from 'nullthrows'
 
 import translate from '@/i18n'
@@ -175,6 +176,8 @@ type Props = {
 initOnboard()
 
 export default function Web3ConnectionProvider({ children }: Props) {
+  const { t } = useTranslation()
+
   const [{ connecting: connectingWallet, wallet }, connect, disconnect] = useConnectWallet()
   const [{ chains, connectedChain, settingChain }, setChain] = useSetChain()
   const connectedWallets = useWallets()
@@ -297,7 +300,7 @@ export default function Web3ConnectionProvider({ children }: Props) {
         )
         // Find the button that represents the social login and update the name
         if (buttonWithName && buttonWithName.innerHTML === 'Web3Auth') {
-          buttonWithName.innerHTML = 'Social Login'
+          buttonWithName.innerHTML = t('web3Onboard.socialLogin')
         }
       }
     }
