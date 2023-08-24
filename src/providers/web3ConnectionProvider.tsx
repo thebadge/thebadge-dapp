@@ -3,6 +3,7 @@ import {
   ReactNode,
   SetStateAction,
   createContext,
+  useCallback,
   useContext,
   useEffect,
   useMemo,
@@ -203,13 +204,36 @@ export default function Web3ConnectionProvider({ children }: Props) {
     [appChainId],
   )
 
+  const renameWeb3Auth = useCallback(() => {
+    // Disclaimer: This is not the most fancy way to do it, but as the library
+    // doesn't allow us to change the names, we need to do it by hand
+    const onboardElement = document.querySelector('body > onboard-v2')
+    if (!onboardElement) return
+    // Get the array of elements that represent each wallet connection
+    const buttonsElements = onboardElement.shadowRoot?.querySelector(
+      'section > div > div > div > div > div > div > div.content.flex.flex-column > div.scroll-container > div > div > div',
+    )
+    if (buttonsElements) {
+      // Iterate over each button
+      for (let i = 0; i < buttonsElements.children.length; i++) {
+        const buttonWithName = buttonsElements.children[i].querySelector(
+          'div > button > div > div.name',
+        )
+        // Find the button that represents the social login and update the name
+        if (buttonWithName && buttonWithName.innerHTML === 'Web3Auth') {
+          buttonWithName.innerHTML = t('web3Onboard.socialLogin')
+        }
+      }
+    }
+  }, [t])
+
   useEffect(() => {
     if (connectingWallet && window) {
       setTimeout(() => {
         renameWeb3Auth()
       }, 200)
     }
-  }, [connectingWallet])
+  }, [connectingWallet, renameWeb3Auth])
 
   useEffect(() => {
     if (isWalletNetworkSupported && walletChainId) {
@@ -282,29 +306,6 @@ export default function Web3ConnectionProvider({ children }: Props) {
       return `${url}${type}/${hash}`
     }
   }, [appChainId])
-
-  function renameWeb3Auth() {
-    // Disclaimer: This is not the most fancy way to do it, but as the library
-    // doesn't allow us to change the names, we need to do it by hand
-    const onboardElement = document.querySelector('body > onboard-v2')
-    if (!onboardElement) return
-    // Get the array of elements that represent each wallet connection
-    const buttonsElements = onboardElement.shadowRoot?.querySelector(
-      'section > div > div > div > div > div > div > div.content.flex.flex-column > div.scroll-container > div > div > div',
-    )
-    if (buttonsElements) {
-      // Iterate over each button
-      for (let i = 0; i < buttonsElements.children.length; i++) {
-        const buttonWithName = buttonsElements.children[i].querySelector(
-          'div > button > div > div.name',
-        )
-        // Find the button that represents the social login and update the name
-        if (buttonWithName && buttonWithName.innerHTML === 'Web3Auth') {
-          buttonWithName.innerHTML = t('web3Onboard.socialLogin')
-        }
-      }
-    }
-  }
 
   const handleDisconnectWallet = async () => {
     if (wallet) {
