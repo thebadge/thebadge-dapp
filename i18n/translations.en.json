@@ -1,6 +1,7 @@
 {
   "home": {
-    "title": "Welcome to TheBadge!",
+    "welcome": "Welcome to \n",
+    "title": "TheBadge!",
     "subtitle": "DECENTRALIZED CERTIFICATION PLATFORM",
     "certificationProcess": {
       "title": "FULL CERTIFICATION PROCESS TUTORIAL",

@@ -2,7 +2,9 @@ import { Stack, Typography, alpha, styled } from '@mui/material'
 
 import StatisticCounterUp from '@/src/pagePartials/home/statistics/StatisticCounterUp'
 
-const StatisticContainer = styled(Stack)<{ transparent?: boolean }>(({ theme, transparent }) => ({
+const StatisticContainer = styled(Stack, { shouldForwardProp: (prop) => prop !== 'transparent' })<{
+  transparent?: boolean
+}>(({ theme, transparent }) => ({
   display: 'flex',
   gap: theme.spacing(1),
   padding: theme.spacing(2),

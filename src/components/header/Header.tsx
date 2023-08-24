@@ -1,5 +1,3 @@
-import { useRouter } from 'next/router'
-
 import { Box, styled } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
 
@@ -8,6 +6,7 @@ import ActionButtons from '@/src/components/header/ActionButtons'
 import ConnectWalletButton from '@/src/components/header/ConnectWalletButton'
 import { UserDropdown } from '@/src/components/header/UserDropdown'
 import WrongNetwork from '@/src/components/utils/WrongNetwork'
+import { useSizeSM } from '@/src/hooks/useSize'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 
 const HeaderContainer = styled(Box)(({ theme }) => ({
@@ -28,8 +27,8 @@ const HeaderContainer = styled(Box)(({ theme }) => ({
 }))
 
 const Header = () => {
+  const isMobile = useSizeSM()
   const { connectWallet, isWalletConnected } = useWeb3Connection()
-  const router = useRouter()
   const { t } = useTranslation()
 
   return (
@@ -44,8 +43,8 @@ const Header = () => {
       </Box>
       <Box display="flex">
         <WrongNetwork />
-        {isWalletConnected && <UserDropdown />}
-        {!isWalletConnected && (
+        {isWalletConnected && !isMobile && <UserDropdown />}
+        {!isWalletConnected && !isMobile && (
           <Box display="flex" gap={2}>
             <ActionButtons />
             <ConnectWalletButton onClick={connectWallet}>

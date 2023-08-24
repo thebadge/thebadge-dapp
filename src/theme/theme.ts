@@ -48,7 +48,10 @@ export function getTypographyVariants(theme: ThemeOptions) {
 }
 
 export function overrideFontFamily(theme: ThemeOptions, fontFamily: string): TypographyOptions {
-  const overrideTypography: TypographyOptions = { ...theme.typography } as TypographyOptions
+  const overrideTypography: TypographyOptions = {
+    ...theme.typography,
+    fontFamily,
+  } as TypographyOptions
   const variants = getTypographyVariants(theme)
   variants.forEach((variantKey) => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
