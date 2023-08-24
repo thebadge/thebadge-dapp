@@ -3,6 +3,7 @@ import {
   ReactNode,
   SetStateAction,
   createContext,
+  useCallback,
   useContext,
   useEffect,
   useMemo,
@@ -17,6 +18,7 @@ import walletConnectModule from '@web3-onboard/walletconnect'
 import web3authModule from '@web3-onboard/web3auth'
 import { UserInfo } from '@web3auth/base'
 import { Web3Auth } from '@web3auth/modal'
+import { useTranslation } from 'next-export-i18n'
 import nullthrows from 'nullthrows'
 
 import translate from '@/i18n'
@@ -175,6 +177,8 @@ type Props = {
 initOnboard()
 
 export default function Web3ConnectionProvider({ children }: Props) {
+  const { t } = useTranslation()
+
   const [{ connecting: connectingWallet, wallet }, connect, disconnect] = useConnectWallet()
   const [{ chains, connectedChain, settingChain }, setChain] = useSetChain()
   const connectedWallets = useWallets()
@@ -200,13 +204,36 @@ export default function Web3ConnectionProvider({ children }: Props) {
     [appChainId],
   )
 
+  const renameWeb3Auth = useCallback(() => {
+    // Disclaimer: This is not the most fancy way to do it, but as the library
+    // doesn't allow us to change the names, we need to do it by hand
+    const onboardElement = document.querySelector('body > onboard-v2')
+    if (!onboardElement) return
+    // Get the array of elements that represent each wallet connection
+    const buttonsElements = onboardElement.shadowRoot?.querySelector(
+      'section > div > div > div > div > div > div > div.content.flex.flex-column > div.scroll-container > div > div > div',
+    )
+    if (buttonsElements) {
+      // Iterate over each button
+      for (let i = 0; i < buttonsElements.children.length; i++) {
+        const buttonWithName = buttonsElements.children[i].querySelector(
+          'div > button > div > div.name',
+        )
+        // Find the button that represents the social login and update the name
+        if (buttonWithName && buttonWithName.innerHTML === 'Web3Auth') {
+          buttonWithName.innerHTML = t('web3Onboard.socialLogin')
+        }
+      }
+    }
+  }, [t])
+
   useEffect(() => {
     if (connectingWallet && window) {
       setTimeout(() => {
         renameWeb3Auth()
       }, 200)
     }
-  }, [connectingWallet])
+  }, [connectingWallet, renameWeb3Auth])
 
   useEffect(() => {
     if (isWalletNetworkSupported && walletChainId) {
@@ -279,27 +306,6 @@ export default function Web3ConnectionProvider({ children }: Props) {
       return `${url}${type}/${hash}`
     }
   }, [appChainId])
-
-  function renameWeb3Auth() {
-    // Disclaimer: This is not the most fancy way to do it, but as the library
-    // doesn't allow us to change the names, we need to do it by hand
-    const onboardElement = document.querySelector('body > onboard-v2')
-    if (!onboardElement) return
-    // In case that we decide to add a new wallet, maybe we will to change this
-    // approach to something clever, like getting the array of buttons and find the web3Auth one
-    let web3AuthButtonElement = onboardElement.shadowRoot?.querySelector(
-      'section > div > div > div > div > div > div > div.content.flex.flex-column.svelte-b3j15j > div.scroll-container.svelte-b3j15j > div > div > div > div:nth-child(3) > button > div > div.name.svelte-1vlog3j',
-    )
-
-    if (!web3AuthButtonElement) {
-      // Check if it's on the second position (in case that MM is not available)
-      web3AuthButtonElement = onboardElement.shadowRoot?.querySelector(
-        'section > div > div > div > div > div > div > div.content.flex.flex-column.svelte-b3j15j > div.scroll-container.svelte-b3j15j > div > div > div > div:nth-child(2) > button > div > div.name.svelte-1vlog3j',
-      )
-      if (!web3AuthButtonElement) return
-    }
-    web3AuthButtonElement.innerHTML = 'Social login'
-  }
 
   const handleDisconnectWallet = async () => {
     if (wallet) {
