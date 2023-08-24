@@ -288,20 +288,22 @@ export default function Web3ConnectionProvider({ children }: Props) {
     // doesn't allow us to change the names, we need to do it by hand
     const onboardElement = document.querySelector('body > onboard-v2')
     if (!onboardElement) return
-    // In case that we decide to add a new wallet, maybe we will to change this
-    // approach to something clever, like getting the array of buttons and find the web3Auth one
-    let web3AuthButtonElement = onboardElement.shadowRoot?.querySelector(
-      'section > div > div > div > div > div > div > div.content.flex.flex-column.svelte-b3j15j > div.scroll-container.svelte-b3j15j > div > div > div > div:nth-child(3) > button > div > div.name.svelte-1vlog3j',
+    // Get the array of elements that represent each wallet connection
+    const buttonsElements = onboardElement.shadowRoot?.querySelector(
+      'section > div > div > div > div > div > div > div.content.flex.flex-column.svelte-b3j15j > div.scroll-container.svelte-b3j15j > div > div > div',
     )
-
-    if (!web3AuthButtonElement) {
-      // Check if it's on the second position (in case that MM is not available)
-      web3AuthButtonElement = onboardElement.shadowRoot?.querySelector(
-        'section > div > div > div > div > div > div > div.content.flex.flex-column.svelte-b3j15j > div.scroll-container.svelte-b3j15j > div > div > div > div:nth-child(2) > button > div > div.name.svelte-1vlog3j',
-      )
-      if (!web3AuthButtonElement) return
+    if (buttonsElements) {
+      // Iterate over each button
+      for (let i = 0; i < buttonsElements.children.length; i++) {
+        const buttonWithName = buttonsElements.children[i].querySelector(
+          'div > button > div > div.name.svelte-1vlog3j',
+        )
+        // Find the button that represents the social login and update the name
+        if (buttonWithName && buttonWithName.innerHTML === 'Web3Auth') {
+          buttonWithName.innerHTML = 'Social Login'
+        }
+      }
     }
-    web3AuthButtonElement.innerHTML = 'Social login'
   }
 
   const handleDisconnectWallet = async () => {
