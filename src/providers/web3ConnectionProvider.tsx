@@ -285,7 +285,6 @@ export default function Web3ConnectionProvider({ children }: Props) {
     // doesn't allow us to change the names, we need to do it by hand
     const onboardElement = document.querySelector('body > onboard-v2')
     if (!onboardElement) return
-    if (!onboardElement) return
     // Get the array of elements that represent each wallet connection
     const buttonsElements = onboardElement.shadowRoot?.querySelector(
       'section > div > div > div > div > div > div > div.content.flex.flex-column > div.scroll-container > div > div > div',
