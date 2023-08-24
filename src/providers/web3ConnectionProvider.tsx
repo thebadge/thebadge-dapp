@@ -290,13 +290,13 @@ export default function Web3ConnectionProvider({ children }: Props) {
     if (!onboardElement) return
     // Get the array of elements that represent each wallet connection
     const buttonsElements = onboardElement.shadowRoot?.querySelector(
-      'section > div > div > div > div > div > div > div.content.flex.flex-column.svelte-b3j15j > div.scroll-container.svelte-b3j15j > div > div > div',
+      'section > div > div > div > div > div > div > div.content.flex.flex-column > div.scroll-container > div > div > div',
     )
     if (buttonsElements) {
       // Iterate over each button
       for (let i = 0; i < buttonsElements.children.length; i++) {
         const buttonWithName = buttonsElements.children[i].querySelector(
-          'div > button > div > div.name.svelte-1vlog3j',
+          'div > button > div > div.name',
         )
         // Find the button that represents the social login and update the name
         if (buttonWithName && buttonWithName.innerHTML === 'Web3Auth') {
