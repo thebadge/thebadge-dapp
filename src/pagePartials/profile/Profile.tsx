@@ -5,12 +5,12 @@ import { useTranslation } from 'next-export-i18n'
 
 import LinkWithTranslation from '@/src/components/helpers/LinkWithTranslation'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
-import { useCurrentUser } from '@/src/hooks/subgraph/useCurrentUser'
 import BadgesCreatedSection from '@/src/pagePartials/profile/created/BadgesCreatedSection'
 import MyProfileSection from '@/src/pagePartials/profile/myProfile/MyProfileSection'
 import BadgesIAmReviewingSection from '@/src/pagePartials/profile/reviewing/BadgesIAmReviewingSection'
 import InfoPreview from '@/src/pagePartials/profile/userInfo/InfoPreview'
 import { InfoPreviewSkeleton } from '@/src/pagePartials/profile/userInfo/InfoPreview.skeleton'
+import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 
 export enum ProfileFilter {
   BADGES_I_AM_REVIEWING = 'badgesIAmReviewing',
@@ -23,13 +23,12 @@ const Profile = () => {
   const params = useSearchParams()
   const selectedFilter = params.get('filter')
 
-  const userData = useCurrentUser()
-  const user = userData.data
+  const { address: connectedWalletAddress } = useWeb3Connection()
 
   return (
     <SafeSuspense>
       <SafeSuspense fallback={<InfoPreviewSkeleton />}>
-        <InfoPreview address={user?.id || ''} />
+        <InfoPreview address={connectedWalletAddress || ''} />
       </SafeSuspense>
 
       <Stack sx={{ mb: 6, gap: 4, alignItems: 'center' }}>
