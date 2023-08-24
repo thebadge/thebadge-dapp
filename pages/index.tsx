@@ -1,11 +1,10 @@
-import { Box, Typography, useTheme } from '@mui/material'
+import { Box, useTheme } from '@mui/material'
 import { SectionLayout, colors, gradients } from '@thebadge/ui-library'
-import { useTranslation } from 'next-export-i18n'
 
 import BadgeCreator from '@/src/pagePartials/home/BadgeCreator'
-import CertificationProcess from '@/src/pagePartials/home/CertificationProcess'
 import FrequentlyQuestions from '@/src/pagePartials/home/FrequentQuestions'
 import ThirdParty from '@/src/pagePartials/home/ThirdParty'
+import WelcomeDecoration from '@/src/pagePartials/home/WelcomeDecoration'
 import ClaimBadges from '@/src/pagePartials/home/carousels/ClaimBadges'
 import EarnByCurating from '@/src/pagePartials/home/carousels/EarnByCurating'
 import ProtocolStatistics from '@/src/pagePartials/home/statistics/ProtocolStatistics'
@@ -15,22 +14,13 @@ import { NextPageWithLayout } from '@/types/next'
 
 const Home: NextPageWithLayout = () => {
   const { homeSection } = useSectionReferences()
-  const { t } = useTranslation()
   const theme = useTheme()
   const { mode } = useColorMode()
   const isDarkMode = mode === 'dark'
 
   return (
     <Box display="flex" flexDirection="column" ref={homeSection}>
-      <Typography component="h1" marginBottom={2} textAlign="center" variant="dAppHeadline1">
-        {t('home.title')}
-      </Typography>
-      <Typography component="h2" marginBottom={10} textAlign="center" variant="dAppTitle2">
-        {t('home.subtitle')}
-      </Typography>
-
-      {/* Certification process */}
-      <CertificationProcess />
+      <WelcomeDecoration />
 
       {/* Claim badges */}
       <SectionLayout

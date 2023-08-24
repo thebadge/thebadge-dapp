@@ -14,10 +14,14 @@ const Container = styled(Box)(({ theme }) => ({
   borderRadius: theme.spacing(2),
   background:
     'linear-gradient(90deg, #008362 0%, #5BBCAD 21.88%, #002CBF 51.56%, #B74AD6 76.04%, #891CFB 100%)',
+  [theme.breakpoints.down('sm')]: {
+    flexDirection: 'column',
+  },
 }))
 
 export default function ProtocolStatistics() {
   const { t } = useTranslation()
+
   const protocolStatistic = useProtocolStatistic()
 
   return (
