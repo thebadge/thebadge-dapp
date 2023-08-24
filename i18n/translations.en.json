@@ -322,7 +322,7 @@
       }
     },
     "viewBadge": {
-      "id:": "Badge ID: {{id}}#",
+      "id": "Badge ID: #{{id}}",
       "issueBy": "Issued by: {{issuer}}",
       "claims": " {{amount}} # badges claimed",
       "checkHowElse": "Check who else claimed it. ",
