@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { colors } from '@thebadge/ui-library'
+import { useTranslation } from 'next-export-i18n'
 
 import TBUserInfoExpandablePreview from '@/src/components/common/TBUserInfoMenuPreview'
 import { useUserById } from '@/src/hooks/subgraph/useUserById'
@@ -9,6 +10,8 @@ import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { CreatorMetadata } from '@/types/badges/Creator'
 
 export default function BadgeOwnerPreview({ ownerAddress }: { ownerAddress: string }) {
+  const { t } = useTranslation()
+
   if (!ownerAddress) {
     throw `No ownerAddress provided`
   }
@@ -22,6 +25,7 @@ export default function BadgeOwnerPreview({ ownerAddress }: { ownerAddress: stri
     <TBUserInfoExpandablePreview
       color={colors.purple}
       isVerified={isVerified.data}
+      label={t('badge.viewBadge.owner.address')}
       metadata={ownerMetadata}
       userAddress={ownerAddress}
     />
