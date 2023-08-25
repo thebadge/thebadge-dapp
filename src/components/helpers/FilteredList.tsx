@@ -21,6 +21,7 @@ import { Loading } from '@/src/components/loading/Loading'
 import { SpinnerColors } from '@/src/components/loading/Spinner'
 import TBSearchField from '@/src/components/select/SearchField'
 import TBadgeSelect from '@/src/components/select/Select'
+import useChainId from '@/src/hooks/theBadge/useChainId'
 import { useColorMode } from '@/src/providers/themeProvider'
 
 export type ListFilter<K = unknown> = {
@@ -86,6 +87,8 @@ export default function FilteredList({
   const { t } = useTranslation()
 
   const { mode } = useColorMode()
+  const chainId = useChainId()
+
   const defaultSelectedFilters = useMemo(() => filters.filter((f) => f.defaultSelected), [filters])
   const [selectedFilters, setSelectedFilters] = useState<ListFilter[]>(defaultSelectedFilters)
   const [selectedCategory, setSelectedCategory] = useState<string>('')
@@ -111,6 +114,12 @@ export default function FilteredList({
     onSearch(selectedFilters, selectedCategory, textSearch)
 
   const refresh = () => onSearch(selectedFilters, selectedCategory)
+
+  useEffect(() => {
+    // Not the best, but it's working... Feel free to recommend something better
+    refresh()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [chainId])
 
   const isFilterSelected = (filter: ListFilter) => {
     return !!selectedFilters.find((f) => f.title === filter.title)

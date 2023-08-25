@@ -2,6 +2,7 @@ import useSWR from 'swr'
 
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import { getFromIPFS } from '@/src/hooks/subgraph/utils'
+import useChainId from '@/src/hooks/theBadge/useChainId'
 import { BadgeModelMetadata } from '@/types/badges/BadgeMetadata'
 import { BackendFileResponse } from '@/types/utils'
 
@@ -12,7 +13,9 @@ import { BackendFileResponse } from '@/types/utils'
  */
 export default function useBadgeModel(id: string) {
   const gql = useSubgraph()
-  return useSWR(id.length ? [`BadgeModel:${id}`, id] : null, async ([, _id]) => {
+  const chainId = useChainId()
+
+  return useSWR(id.length ? [`BadgeModel:${id}`, id, chainId] : null, async ([, _id]) => {
     const response = await gql.badgeModelById({ id: _id })
 
     const badgeModelData = response.badgeModel
