@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router'
 import {
   Dispatch,
   ReactNode,
@@ -7,6 +8,7 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from 'react'
 
@@ -178,11 +180,13 @@ initOnboard()
 
 export default function Web3ConnectionProvider({ children }: Props) {
   const { t } = useTranslation()
+  const router = useRouter()
 
   const [{ connecting: connectingWallet, wallet }, connect, disconnect] = useConnectWallet()
   const [{ chains, connectedChain, settingChain }, setChain] = useSetChain()
   const connectedWallets = useWallets()
 
+  const previousChainId = useRef(INITIAL_APP_CHAIN_ID)
   const [appChainId, setAppChainId] = useState(INITIAL_APP_CHAIN_ID)
   const [address, setAddress] = useState<string | null>(null)
   const [isSocialWallet, setIsSocialWallet] = useState<boolean>(false)
@@ -228,6 +232,14 @@ export default function Web3ConnectionProvider({ children }: Props) {
   }, [t])
 
   useEffect(() => {
+    const connectedChainId = hexToNumber(wallet?.chains[0].id)
+    console.log({ previousChainId: previousChainId.current, connectedChainId })
+    if (previousChainId.current !== connectedChainId) {
+      // TODO DO something to update the query data
+    }
+  }, [router, wallet?.chains])
+
+  useEffect(() => {
     if (connectingWallet && window) {
       setTimeout(() => {
         renameWeb3Auth()
@@ -238,6 +250,7 @@ export default function Web3ConnectionProvider({ children }: Props) {
   useEffect(() => {
     if (isWalletNetworkSupported && walletChainId) {
       setAppChainId(walletChainId as SetStateAction<ChainsValues>)
+      previousChainId.current = walletChainId as ChainsValues
     }
   }, [walletChainId, isWalletNetworkSupported])
 
