@@ -32,6 +32,7 @@ const ExploreBadgeTypes: NextPageWithLayout = () => {
   const badgeModelsElementRefs: RefObject<HTMLLIElement>[] = badgeModels.map(() =>
     createRef<HTMLLIElement>(),
   )
+
   const { selectNext, selectPrevious } = useListItemNavigation(
     setSelectedBadgeModel,
     badgeModelsElementRefs,

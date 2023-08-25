@@ -232,14 +232,6 @@ export default function Web3ConnectionProvider({ children }: Props) {
   }, [t])
 
   useEffect(() => {
-    const connectedChainId = hexToNumber(wallet?.chains[0].id)
-    console.log({ previousChainId: previousChainId.current, connectedChainId })
-    if (previousChainId.current !== connectedChainId) {
-      // TODO DO something to update the query data
-    }
-  }, [router, wallet?.chains])
-
-  useEffect(() => {
     if (connectingWallet && window) {
       setTimeout(() => {
         renameWeb3Auth()
@@ -248,11 +240,14 @@ export default function Web3ConnectionProvider({ children }: Props) {
   }, [connectingWallet, renameWeb3Auth])
 
   useEffect(() => {
-    if (isWalletNetworkSupported && walletChainId) {
-      setAppChainId(walletChainId as SetStateAction<ChainsValues>)
-      previousChainId.current = walletChainId as ChainsValues
+    if (isWalletNetworkSupported && wallet?.chains) {
+      const connectedChainId = wallet?.chains
+        ? hexToNumber(wallet?.chains[0].id)
+        : INITIAL_APP_CHAIN_ID
+      setAppChainId(connectedChainId as ChainsValues)
+      previousChainId.current = connectedChainId as ChainsValues
     }
-  }, [walletChainId, isWalletNetworkSupported])
+  }, [wallet?.chains, isWalletNetworkSupported])
 
   // Save connected wallets to localstorage
   useEffect(() => {
