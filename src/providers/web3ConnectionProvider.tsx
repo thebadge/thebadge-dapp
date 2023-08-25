@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router'
 import {
   Dispatch,
   ReactNode,
@@ -7,6 +8,7 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from 'react'
 
@@ -178,11 +180,13 @@ initOnboard()
 
 export default function Web3ConnectionProvider({ children }: Props) {
   const { t } = useTranslation()
+  const router = useRouter()
 
   const [{ connecting: connectingWallet, wallet }, connect, disconnect] = useConnectWallet()
   const [{ chains, connectedChain, settingChain }, setChain] = useSetChain()
   const connectedWallets = useWallets()
 
+  const previousChainId = useRef(INITIAL_APP_CHAIN_ID)
   const [appChainId, setAppChainId] = useState(INITIAL_APP_CHAIN_ID)
   const [address, setAddress] = useState<string | null>(null)
   const [isSocialWallet, setIsSocialWallet] = useState<boolean>(false)
@@ -236,10 +240,14 @@ export default function Web3ConnectionProvider({ children }: Props) {
   }, [connectingWallet, renameWeb3Auth])
 
   useEffect(() => {
-    if (isWalletNetworkSupported && walletChainId) {
-      setAppChainId(walletChainId as SetStateAction<ChainsValues>)
+    if (isWalletNetworkSupported && wallet?.chains) {
+      const connectedChainId = wallet?.chains
+        ? hexToNumber(wallet?.chains[0].id)
+        : INITIAL_APP_CHAIN_ID
+      setAppChainId(connectedChainId as ChainsValues)
+      previousChainId.current = connectedChainId as ChainsValues
     }
-  }, [walletChainId, isWalletNetworkSupported])
+  }, [wallet?.chains, isWalletNetworkSupported])
 
   // Save connected wallets to localstorage
   useEffect(() => {

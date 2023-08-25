@@ -1,13 +1,12 @@
 import useSWR from 'swr'
 
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+import useChainId from '@/src/hooks/theBadge/useChainId'
 
 export const useProtocolStatistic = () => {
-  const { address } = useWeb3Connection()
   const gql = useSubgraph()
-
-  return useSWR(address ? `protocolStatistic:${address}` : null, async (_: string) => {
+  const chainId = useChainId()
+  return useSWR([`protocolStatistic:`, chainId], async () => {
     const protocolStatisticsData = await gql.protocolStatistics()
 
     return protocolStatisticsData.protocolStatistics[0]
