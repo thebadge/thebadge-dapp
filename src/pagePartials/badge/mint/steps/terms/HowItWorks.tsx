@@ -23,6 +23,7 @@ export default function HowItWorks() {
   const klerosBadgeModel = useRegistrationBadgeModelKlerosMetadata(modelId)
 
   const badgeModelKlerosMetadata = klerosBadgeModel.data?.badgeModelKlerosRegistrationMetadata
+  const badgeCriteria = klerosBadgeModel.data?.badgeRegistrationCriteria
   const badgeCreatorMetadata = useS3Metadata<{ content: Creator }>(
     badgeModelData.data?.badgeModel?.creator.metadataUri || '',
   )
@@ -30,9 +31,6 @@ export default function HowItWorks() {
   if (!badgeCreatorMetadata || !badgeModelKlerosMetadata) {
     throw `There was an error trying to fetch the metadata for the badge model`
   }
-
-  const badgeCriteria =
-    's3Url' in badgeModelKlerosMetadata.fileURI ? badgeModelKlerosMetadata.fileURI.s3Url : ''
 
   const challengePeriodDuration = isTestnet
     ? secondsToMinutes(klerosBadgeModel.data?.challengePeriodDuration)

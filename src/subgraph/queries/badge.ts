@@ -112,3 +112,29 @@ export const BADGE_BY_USER_BY_MODEL_ID = gql`
     }
   }
 `
+
+export const BADGE_BY_DISPUTE_ID = gql`
+  query badgeByDisputeId($disputeId: BigInt!) {
+    klerosBadgeRequests(where: { disputeID: $disputeId }) {
+      badgeKlerosMetaData {
+        badge {
+          id
+          uri
+          validUntil
+          createdTxHash
+          createdAt
+          badgeModel {
+            id
+            uri
+            badgeModelKleros {
+              removalUri
+              registrationUri
+            }
+          }
+        }
+      }
+      requester
+      challenger
+    }
+  }
+`

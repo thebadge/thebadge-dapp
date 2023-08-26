@@ -34,10 +34,8 @@ export default function CurationCriteriaLink({
     throw 'There was not possible to get the needed metadata. Try again in some minutes.'
   }
 
-  const badgeRegistrationCriteria =
-    's3Url' in badgeRegistrationMetadata.fileURI ? badgeRegistrationMetadata.fileURI.s3Url : ''
-  const badgeRemovalCriteria =
-    's3Url' in badgeRemovalMetadata.fileURI ? badgeRemovalMetadata.fileURI.s3Url : ''
+  const badgeRegistrationCriteria = badgeModelRegistrationKlerosData.data?.badgeRegistrationCriteria
+  const badgeRemovalCriteria = badgeModelRemovalKlerosData.data?.badgeRemovalCriteria
 
   return (
     <Typography fontSize={14} textAlign="center" variant="dAppBody1">
