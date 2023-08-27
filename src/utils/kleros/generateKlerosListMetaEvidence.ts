@@ -1,7 +1,4 @@
-import {
-  DYNAMIC_SCRIPT_IPFS_HASH,
-  EVIDENCE_DISPLAY_INTERFACE_IPFS_HASH,
-} from '@/src/constants/common'
+import { DYNAMIC_SCRIPT_IPFS_HASH } from '@/src/constants/common'
 import { MetadataColumn } from '@/types/kleros/types'
 import { BackendFileResponse, BackendFileUpload } from '@/types/utils'
 
@@ -66,7 +63,7 @@ export function generateKlerosListMetaEvidence(
     question: `Does the ${badgeName} comply with the required criteria?`,
     fileURI: criteriaFile,
     fileTypeExtension: 'pdf',
-    evidenceDisplayInterfaceURI: `/ipfs/${EVIDENCE_DISPLAY_INTERFACE_IPFS_HASH}/index.html`,
+    evidenceDisplayInterfaceURI: `https://thebadge-dapp-git-improve-meta-evidence-thebadge.vercel.app/evidence`,
     dynamicScriptURI: `ipfs/${DYNAMIC_SCRIPT_IPFS_HASH}`,
     dynamicScriptRequiredParams: ['disputeID', 'arbitrableChainID', 'arbitrableContractAddress'],
     metadata: {
@@ -97,7 +94,7 @@ export function generateKlerosListMetaEvidence(
     question: `Does the ${badgeName} comply with the required criteria?`,
     fileURI: criteriaFile,
     fileTypeExtension: 'pdf',
-    evidenceDisplayInterfaceURI: `/ipfs/${EVIDENCE_DISPLAY_INTERFACE_IPFS_HASH}/index.html`,
+    evidenceDisplayInterfaceURI: `https://thebadge-dapp-git-improve-meta-evidence-thebadge.vercel.app/evidence`,
     dynamicScriptURI: `ipfs/${DYNAMIC_SCRIPT_IPFS_HASH}`,
     dynamicScriptRequiredParams: ['disputeID', 'arbitrableChainID', 'arbitrableContractAddress'],
     metadata: {

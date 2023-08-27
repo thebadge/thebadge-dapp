@@ -60,6 +60,13 @@ const EvidenceIframe: NextPageWithLayout = () => {
       arbitrableChainID,
       arbitrableJsonRpcUrl,
     })
+    console.log('Parameters', {
+      arbitrableContractAddress,
+      arbitratorContractAddress,
+      disputeID,
+      arbitrableChainID,
+      arbitrableJsonRpcUrl,
+    })
   }, [parameters])
 
   return (
