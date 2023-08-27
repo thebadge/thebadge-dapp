@@ -105,10 +105,12 @@ function TBDataView({
 
   return (
     <Container>
-      <Container>
+      <Container p={0}>
         <Typography sx={{ fontSize: '14px !important' }}>Submitted Badge Evidence</Typography>
         <SafeSuspense>
-          <BadgeEvidenceDisplay badgeId={graphQueryResult.data?.badge?.id || ''} />
+          {graphQueryResult.data?.badge?.id && (
+            <BadgeEvidenceDisplay badgeId={graphQueryResult.data?.badge?.id} />
+          )}
         </SafeSuspense>
       </Container>
       <Container
