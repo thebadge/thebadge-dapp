@@ -1,6 +1,6 @@
 import { ReactElement, useEffect, useState } from 'react'
 
-import { Button, Stack } from '@mui/material'
+import { Button, Stack, Typography } from '@mui/material'
 import { colors } from '@thebadge/ui-library'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
@@ -104,12 +104,16 @@ function OpenTBViewButton({
         padding: 2,
         margin: 2,
         borderRadius: 1,
+        gap: 2,
       }}
     >
+      <Typography>You can see more information about this dispute on TheBadge App</Typography>
       <Button
         onClick={handleViewBadgeClick}
         sx={{
           borderRadius: 2,
+          textTransform: 'none',
+          width: 'fit-content',
         }}
         variant="text"
       >
