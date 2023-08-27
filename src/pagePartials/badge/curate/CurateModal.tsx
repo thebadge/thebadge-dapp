@@ -5,17 +5,15 @@ import { ButtonV2, colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 
 import TBModal from '@/src/components/common/TBModal'
-import DisplayEvidenceField from '@/src/components/displayEvidence/DisplayEvidenceField'
 import { Address } from '@/src/components/helpers/Address'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
-import TBSwiper from '@/src/components/helpers/TBSwiper'
 import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
 import { useEvidenceBadgeKlerosMetadata } from '@/src/hooks/subgraph/useBadgeKlerosMetadata'
 import useIsClaimable from '@/src/hooks/subgraph/useIsClaimable'
 import CurationCriteriaLink from '@/src/pagePartials/badge/curate/CurationCriteriaLink'
+import BadgeEvidenceDisplay from '@/src/pagePartials/badge/curate/viewEvidence/BadgeEvidenceDisplay'
 import { useCurateProvider } from '@/src/providers/curateProvider'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
-import { getEvidenceValue } from '@/src/utils/kleros/getEvidenceValue'
 import { BadgeStatus } from '@/types/generated/subgraph'
 
 type CurateModalProps = {
@@ -53,42 +51,10 @@ function CurateModalContent({ badgeId, onClose }: { badgeId: string; onClose: ()
   const ownerAddress = badge.account.id
 
   const badgeKlerosMetadata = useEvidenceBadgeKlerosMetadata(badgeId)
-  const badgeEvidence = badgeKlerosMetadata.data?.requestBadgeEvidence
 
-  if (!badgeEvidence || !badgeKlerosMetadata.data?.requestBadgeEvidenceRawUrl) {
+  if (!badgeKlerosMetadata.data?.requestBadgeEvidenceRawUrl) {
     throw 'There was an error fetching the badge evidence, try again in some minutes.'
   }
-
-  const evidenceItems: React.ReactNode[] =
-    badgeEvidence?.columns.map((column, index) => (
-      <Box
-        key={'evidence-' + index}
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          flexDirection: 'column',
-          marginTop: 4,
-          marginBottom: 4,
-          width: '100%',
-          '> *': {
-            width: '90%',
-            display: 'flex',
-          },
-        }}
-      >
-        <SafeSuspense>
-          <DisplayEvidenceField
-            columnItem={column}
-            value={getEvidenceValue(
-              badgeEvidence?.values,
-              badgeEvidence?.columns,
-              column.label,
-              column.type,
-            )}
-          />
-        </SafeSuspense>
-      </Box>
-    )) || []
 
   const getTooltipText = () => {
     if (address === ownerAddress) {
@@ -99,6 +65,7 @@ function CurateModalContent({ badgeId, onClose }: { badgeId: string; onClose: ()
     }
     return ''
   }
+
   return (
     <Stack
       sx={{
@@ -138,7 +105,7 @@ function CurateModalContent({ badgeId, onClose }: { badgeId: string; onClose: ()
         </Box>
       </Box>
 
-      <TBSwiper items={evidenceItems} maxSlidesPerView={1} spaceBetween={8} />
+      <BadgeEvidenceDisplay badgeId={badgeId} />
 
       <Stack
         alignItems={'center'}

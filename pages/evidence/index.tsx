@@ -6,6 +6,7 @@ import { colors } from '@thebadge/ui-library'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { APP_URL } from '@/src/constants/common'
 import useBadgeByDisputeId from '@/src/hooks/subgraph/useBadgeByDisputeId'
+import BadgeEvidenceDisplay from '@/src/pagePartials/badge/curate/viewEvidence/BadgeEvidenceDisplay'
 import { useColorMode } from '@/src/providers/themeProvider'
 import { NextPageWithLayout } from '@/types/next'
 
@@ -107,6 +108,8 @@ function OpenTBViewButton({
         gap: 2,
       }}
     >
+      <BadgeEvidenceDisplay badgeId={graphQueryResult.data?.badge?.id || ''} />
+
       <Typography sx={{ fontSize: '14px' }}>
         You can see more information about this dispute on TheBadge App
       </Typography>
