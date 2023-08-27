@@ -1,12 +1,10 @@
-import { ReactElement, useEffect, useMemo, useState } from 'react'
-
-import { ThemeProvider, createTheme, responsiveFontSizes } from '@mui/material'
+import { ReactElement, useEffect, useState } from 'react'
 
 import ExternalLink from '@/src/components/helpers/ExternalLink'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { APP_URL } from '@/src/constants/common'
 import useBadgeByDisputeId from '@/src/hooks/subgraph/useBadgeByDisputeId'
-import { configureThemeComponentes, getTheme, getTypographyVariants } from '@/src/theme/theme'
+import { useColorMode } from '@/src/providers/themeProvider'
 import { NextPageWithLayout } from '@/types/next'
 
 type InjectedParams = {
@@ -32,6 +30,12 @@ type InjectedParams = {
  **/
 const EvidenceIframe: NextPageWithLayout = () => {
   const [parameters, setParameters] = useState<InjectedParams>()
+  const { mode, setColorMode } = useColorMode()
+
+  useEffect(() => {
+    if (mode !== 'light') setColorMode('light')
+  }, [mode, setColorMode])
+
   // Read query parameters.
   useEffect(() => {
     if (window.location.search[0] !== '?' || parameters) return
@@ -65,28 +69,14 @@ const EvidenceIframe: NextPageWithLayout = () => {
     })
   }, [parameters])
 
-  const theme = useMemo(() => {
-    const theme = getTheme('light')
-    const variants = getTypographyVariants(theme)
-    const createdTheme = responsiveFontSizes(createTheme(theme), {
-      disableAlign: true,
-      factor: 1.4,
-      variants,
-    })
-
-    return configureThemeComponentes(createdTheme)
-  }, [])
-
   return (
     <>
-      <ThemeProvider theme={theme}>
-        <SafeSuspense>
-          <OpenTBViewButton
-            arbitrableChainID={parameters?.arbitrableChainID}
-            disputeID={parameters?.disputeID}
-          />
-        </SafeSuspense>
-      </ThemeProvider>
+      <SafeSuspense>
+        <OpenTBViewButton
+          arbitrableChainID={parameters?.arbitrableChainID}
+          disputeID={parameters?.disputeID}
+        />
+      </SafeSuspense>
     </>
   )
 }
