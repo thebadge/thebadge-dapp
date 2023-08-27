@@ -1,11 +1,12 @@
-import { ReactElement, useEffect, useState } from 'react'
+import React, { ReactElement, useEffect, useState } from 'react'
 
-import { Button, Stack, Typography, styled } from '@mui/material'
+import { Button, Skeleton, Stack, Typography, styled } from '@mui/material'
 import { colors } from '@thebadge/ui-library'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { APP_URL } from '@/src/constants/common'
 import useBadgeByDisputeId from '@/src/hooks/subgraph/useBadgeByDisputeId'
+import CurationCriteriaLink from '@/src/pagePartials/badge/curate/CurationCriteriaLink'
 import BadgeEvidenceDisplay from '@/src/pagePartials/badge/curate/viewEvidence/BadgeEvidenceDisplay'
 import { useColorMode } from '@/src/providers/themeProvider'
 import { NextPageWithLayout } from '@/types/next'
@@ -106,7 +107,19 @@ function TBDataView({
   return (
     <Container>
       <Container p={0}>
-        <Typography sx={{ fontSize: '14px !important' }}>Submitted Badge Evidence</Typography>
+        <Typography sx={{ fontSize: '14px !important' }}>
+          Submitted Badge Evidence
+          <SafeSuspense
+            fallback={<Skeleton sx={{ margin: 'auto' }} variant={'text'} width={500} />}
+          >
+            {graphQueryResult.data?.badgeModel?.id && (
+              <CurationCriteriaLink
+                badgeModelId={graphQueryResult.data?.badgeModel?.id}
+                type="curate"
+              />
+            )}
+          </SafeSuspense>
+        </Typography>
         <SafeSuspense>
           {graphQueryResult.data?.badge?.id && (
             <BadgeEvidenceDisplay badgeId={graphQueryResult.data?.badge?.id} />
