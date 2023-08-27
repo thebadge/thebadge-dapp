@@ -121,7 +121,7 @@ function TBDataView({
           You can see more information about this dispute on TheBadge App
         </Typography>
         <Button
-          color="secondary"
+          color="blue"
           onClick={handleViewBadgeClick}
           sx={{
             borderRadius: 2,
