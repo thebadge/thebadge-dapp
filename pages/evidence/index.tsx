@@ -1,6 +1,6 @@
 import { ReactElement, useEffect, useState } from 'react'
 
-import { Button, Stack, Typography } from '@mui/material'
+import { Button, Stack, Typography, styled } from '@mui/material'
 import { colors } from '@thebadge/ui-library'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
@@ -26,6 +26,11 @@ type InjectedParams = {
   //the URL of JSON RPC endpoint connecting to a node on the network. It MUST be pointing to a node from the same chain identified by arbitrableChainID.
   arbitrableJsonRpcUrl: string
 }
+
+const Container = styled(Stack)(({ theme }) => ({
+  gap: theme.spacing(2),
+  padding: theme.spacing(2),
+}))
 
 /**
  * Evidence Iframe used on Kleros Court to display a link to our preview page,
@@ -75,7 +80,7 @@ const EvidenceIframe: NextPageWithLayout = () => {
   return (
     <>
       <SafeSuspense>
-        <OpenTBViewButton
+        <TBDataView
           arbitrableChainID={parameters?.arbitrableChainID}
           disputeID={parameters?.disputeID}
         />
@@ -84,7 +89,7 @@ const EvidenceIframe: NextPageWithLayout = () => {
   )
 }
 
-function OpenTBViewButton({
+function TBDataView({
   arbitrableChainID,
   disputeID,
 }: {
@@ -99,18 +104,17 @@ function OpenTBViewButton({
   }
 
   return (
-    <Stack gap={2}>
-      <Stack gap={2}>
+    <Container>
+      <Container>
         <Typography sx={{ fontSize: '14px !important' }}>Submitted Badge Evidence</Typography>
-        <BadgeEvidenceDisplay badgeId={graphQueryResult.data?.badge?.id || ''} />
-      </Stack>
-      <Stack
+        <SafeSuspense>
+          <BadgeEvidenceDisplay badgeId={graphQueryResult.data?.badge?.id || ''} />
+        </SafeSuspense>
+      </Container>
+      <Container
         sx={{
           border: `1px solid ${colors.greyBackground}`,
-          padding: 2,
-          margin: 2,
           borderRadius: 1,
-          gap: 2,
         }}
       >
         <Typography sx={{ fontSize: '14px !important' }}>
@@ -129,8 +133,8 @@ function OpenTBViewButton({
         >
           View details on TheBadge App
         </Button>
-      </Stack>
-    </Stack>
+      </Container>
+    </Container>
   )
 }
 
