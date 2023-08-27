@@ -99,32 +99,37 @@ function OpenTBViewButton({
   }
 
   return (
-    <Stack
-      sx={{
-        border: `1px solid ${colors.greyBackground}`,
-        padding: 2,
-        margin: 2,
-        borderRadius: 1,
-        gap: 2,
-      }}
-    >
-      <BadgeEvidenceDisplay badgeId={graphQueryResult.data?.badge?.id || ''} />
-
-      <Typography sx={{ fontSize: '14px' }}>
-        You can see more information about this dispute on TheBadge App
-      </Typography>
-      <Button
-        onClick={handleViewBadgeClick}
+    <Stack gap={2}>
+      <Stack gap={2}>
+        <Typography sx={{ fontSize: '14px !important' }}>Submitted Badge Evidence</Typography>
+        <BadgeEvidenceDisplay badgeId={graphQueryResult.data?.badge?.id || ''} />
+      </Stack>
+      <Stack
         sx={{
-          borderRadius: 2,
-          textTransform: 'none',
-          width: 'fit-content',
-          fontSize: '16px',
+          border: `1px solid ${colors.greyBackground}`,
+          padding: 2,
+          margin: 2,
+          borderRadius: 1,
+          gap: 2,
         }}
-        variant="text"
       >
-        Open TheBadge view page
-      </Button>
+        <Typography sx={{ fontSize: '14px !important' }}>
+          You can see more information about this dispute on TheBadge App
+        </Typography>
+        <Button
+          color="secondary"
+          onClick={handleViewBadgeClick}
+          sx={{
+            borderRadius: 2,
+            textTransform: 'none',
+            width: 'fit-content',
+            fontSize: '16px !important',
+          }}
+          variant="text"
+        >
+          View details on TheBadge App
+        </Button>
+      </Stack>
     </Stack>
   )
 }
