@@ -1,7 +1,7 @@
 import { ReactElement, useEffect, useState } from 'react'
 
-import { Stack } from '@mui/material'
-import { ButtonV2, colors } from '@thebadge/ui-library'
+import { Button, Stack } from '@mui/material'
+import { colors } from '@thebadge/ui-library'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { APP_URL } from '@/src/constants/common'
@@ -98,19 +98,23 @@ function OpenTBViewButton({
   }
 
   return (
-    <Stack>
-      <ButtonV2
-        backgroundColor={colors.transparent}
-        fontColor={colors.blue}
+    <Stack
+      sx={{
+        border: `1px solid ${colors.greyBackground}`,
+        padding: 2,
+        margin: 2,
+        borderRadius: 1,
+      }}
+    >
+      <Button
         onClick={handleViewBadgeClick}
         sx={{
           borderRadius: 2,
-          m: 'auto',
         }}
-        variant="outlined"
+        variant="text"
       >
         Open TheBadge view page
-      </ButtonV2>
+      </Button>
     </Stack>
   )
 }
