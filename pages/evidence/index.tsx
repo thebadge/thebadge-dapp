@@ -1,6 +1,8 @@
 import { ReactElement, useEffect, useState } from 'react'
 
-import ExternalLink from '@/src/components/helpers/ExternalLink'
+import { Stack } from '@mui/material'
+import { ButtonV2, colors } from '@thebadge/ui-library'
+
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { APP_URL } from '@/src/constants/common'
 import useBadgeByDisputeId from '@/src/hooks/subgraph/useBadgeByDisputeId'
@@ -90,9 +92,27 @@ function OpenTBViewButton({
 }) {
   const graphQueryResult = useBadgeByDisputeId(arbitrableChainID, disputeID)
 
-  const linkToSubmissionView = APP_URL + `/badge/preview/${graphQueryResult.data?.badge?.id}`
+  function handleViewBadgeClick() {
+    const linkToSubmissionView = APP_URL + `/badge/preview/${graphQueryResult.data?.badge?.id}`
+    window.open(`${linkToSubmissionView}`, '_ blank')
+  }
 
-  return <ExternalLink href={`${linkToSubmissionView}`} label="Open TheBadge view page" />
+  return (
+    <Stack>
+      <ButtonV2
+        backgroundColor={colors.transparent}
+        fontColor={colors.blue}
+        onClick={handleViewBadgeClick}
+        sx={{
+          borderRadius: 2,
+          m: 'auto',
+        }}
+        variant="outlined"
+      >
+        Open TheBadge view page
+      </ButtonV2>
+    </Stack>
+  )
 }
 
 EvidenceIframe.getLayout = (page: ReactElement) => <>{page}</>
