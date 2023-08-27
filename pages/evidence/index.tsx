@@ -1,8 +1,12 @@
-import { ReactElement, useEffect, useState } from 'react'
+import { ReactElement, useEffect, useMemo, useState } from 'react'
 
+import { ThemeProvider, createTheme, responsiveFontSizes } from '@mui/material'
+
+import ExternalLink from '@/src/components/helpers/ExternalLink'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { APP_URL } from '@/src/constants/common'
 import useBadgeByDisputeId from '@/src/hooks/subgraph/useBadgeByDisputeId'
+import { configureThemeComponentes, getTheme, getTypographyVariants } from '@/src/theme/theme'
 import { NextPageWithLayout } from '@/types/next'
 
 type InjectedParams = {
@@ -28,7 +32,6 @@ type InjectedParams = {
  **/
 const EvidenceIframe: NextPageWithLayout = () => {
   const [parameters, setParameters] = useState<InjectedParams>()
-
   // Read query parameters.
   useEffect(() => {
     if (window.location.search[0] !== '?' || parameters) return
@@ -60,23 +63,30 @@ const EvidenceIframe: NextPageWithLayout = () => {
       arbitrableChainID,
       arbitrableJsonRpcUrl,
     })
-    console.log('Parameters', {
-      arbitrableContractAddress,
-      arbitratorContractAddress,
-      disputeID,
-      arbitrableChainID,
-      arbitrableJsonRpcUrl,
-    })
   }, [parameters])
+
+  const theme = useMemo(() => {
+    const theme = getTheme('light')
+    const variants = getTypographyVariants(theme)
+    const createdTheme = responsiveFontSizes(createTheme(theme), {
+      disableAlign: true,
+      factor: 1.4,
+      variants,
+    })
+
+    return configureThemeComponentes(createdTheme)
+  }, [])
 
   return (
     <>
-      <SafeSuspense>
-        <OpenTBViewButton
-          arbitrableChainID={parameters?.arbitratorChainID}
-          disputeID={parameters?.disputeID}
-        />
-      </SafeSuspense>
+      <ThemeProvider theme={theme}>
+        <SafeSuspense>
+          <OpenTBViewButton
+            arbitrableChainID={parameters?.arbitrableChainID}
+            disputeID={parameters?.disputeID}
+          />
+        </SafeSuspense>
+      </ThemeProvider>
     </>
   )
 }
@@ -92,11 +102,7 @@ function OpenTBViewButton({
 
   const linkToSubmissionView = APP_URL + `/badge/preview/${graphQueryResult.data?.badge?.id}`
 
-  return (
-    <a href={`${linkToSubmissionView}`} rel="noopener noreferrer" target="_blank">
-      Open TheBadge view page
-    </a>
-  )
+  return <ExternalLink href={`${linkToSubmissionView}`} label="Open TheBadge view page" />
 }
 
 EvidenceIframe.getLayout = (page: ReactElement) => <>{page}</>
