@@ -108,7 +108,7 @@ function TBDataView({
     <Container>
       <Container p={0}>
         <Typography sx={{ fontSize: '14px !important' }}>
-          Submitted Badge Evidence - Don't forget to read the
+          Submitted Badge Evidence -
           <SafeSuspense
             fallback={<Skeleton sx={{ margin: 'auto' }} variant={'text'} width={500} />}
           >
