@@ -25,7 +25,6 @@ import { FormField } from '@/src/components/form/helpers/FormField'
 import { FormStatus } from '@/src/components/form/helpers/FormStatus'
 import { SeverityTypeSchema } from '@/src/components/form/helpers/customSchemas'
 import { convertToFieldError } from '@/src/components/form/helpers/validators'
-import { Disable } from '@/src/components/helpers/DisableElements'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { DEFAULT_COURT_ID } from '@/src/constants/common'
 import { useJurorFee } from '@/src/hooks/kleros/useJurorFee'
@@ -123,25 +122,23 @@ export function SeveritySelector({
       <FormField
         formControl={
           <Box display="flex" flex={1} flexDirection="column" width="100%">
-            <Disable disabled={enableAdvance} sx={{ width: '100%' }}>
-              <CustomSlider
-                aria-label="Severity-court"
-                color="secondary"
-                defaultValue={30}
-                getAriaValueText={valuetext}
-                marks={marks}
-                max={5}
-                min={1}
-                onChange={handleChange}
-                step={2}
-                sx={{
-                  minWidth: '200px',
-                }}
-                value={optionSelectedAuxIndex}
-                valueLabelDisplay="auto"
-                valueLabelFormat={valueLabelFormat}
-              />
-            </Disable>
+            <CustomSlider
+              aria-label="Severity-court"
+              color="secondary"
+              defaultValue={30}
+              getAriaValueText={valuetext}
+              marks={marks}
+              max={5}
+              min={1}
+              onChange={handleChange}
+              step={2}
+              sx={{
+                minWidth: '200px',
+              }}
+              value={optionSelectedAuxIndex}
+              valueLabelDisplay="auto"
+              valueLabelFormat={valueLabelFormat}
+            />
           </Box>
         }
         label={

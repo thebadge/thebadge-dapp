@@ -22,11 +22,12 @@ export function CheckBox({ error, label, onChange, placeholder, value }: CheckBo
 
   return (
     <FormField
+      alignItems="center"
       formControl={
         <MUICheckbox checked={!!value} onChange={handleChange} sx={{ width: 'fit-content' }} />
       }
       label={
-        <Typography>
+        <Typography color="text.disabled">
           {label}
           {placeholder && (
             <Tooltip arrow title={placeholder}>
@@ -38,7 +39,6 @@ export function CheckBox({ error, label, onChange, placeholder, value }: CheckBo
       labelPosition={'left'}
       status={error ? TextFieldStatus.error : TextFieldStatus.success}
       statusText={error?.message}
-      sx={{ alignItems: 'center' }}
     />
   )
 }

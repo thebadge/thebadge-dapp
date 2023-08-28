@@ -3,6 +3,7 @@ import * as React from 'react'
 import { useDescription, useTsController } from '@ts-react/form'
 
 import { TextField } from '@/src/components/form/formFields/TextField'
+import { TSFormField } from '@/src/components/form/formFields/tsFormFields/addons/TSFormField'
 import { TSFormFieldHint } from '@/src/components/form/formFields/tsFormFields/addons/TSFormFieldHint'
 import { TSFormFieldWrapper } from '@/src/components/form/formFields/tsFormFields/addons/TSFormFieldWrapper'
 import { convertToFieldError } from '@/src/components/form/helpers/validators'
@@ -21,13 +22,15 @@ export function TextFieldWithTSForm() {
 
   return (
     <TSFormFieldWrapper>
-      <TSFormFieldHint label={placeholder} />
-      <TextField
-        error={error ? convertToFieldError(error) : undefined}
-        label={label}
-        onChange={onChange}
-        value={field.value}
-      />
+      <TSFormFieldHint description={placeholder} label={label} />
+      <TSFormField>
+        <TextField
+          error={error ? convertToFieldError(error) : undefined}
+          label={label}
+          onChange={onChange}
+          value={field.value}
+        />
+      </TSFormField>
     </TSFormFieldWrapper>
   )
 }

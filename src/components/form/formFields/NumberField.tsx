@@ -44,7 +44,7 @@ export function NumberField({
       decimals={decimals}
       onChange={handleOnChange}
       renderInput={(props) => (
-        <Stack>
+        <Stack flex={1}>
           <MUITextField
             InputProps={{
               endAdornment: placeholder ? (

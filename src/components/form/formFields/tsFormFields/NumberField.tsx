@@ -3,6 +3,7 @@ import * as React from 'react'
 import { useDescription, useTsController } from '@ts-react/form'
 
 import { NumberField } from '@/src/components/form/formFields/NumberField'
+import { TSFormField } from '@/src/components/form/formFields/tsFormFields/addons/TSFormField'
 import { TSFormFieldHint } from '@/src/components/form/formFields/tsFormFields/addons/TSFormFieldHint'
 import { TSFormFieldWrapper } from '@/src/components/form/formFields/tsFormFields/addons/TSFormFieldWrapper'
 import { convertToFieldError } from '@/src/components/form/helpers/validators'
@@ -21,14 +22,16 @@ export default function NumberFieldWithTSForm({ decimals = 0 }: { decimals?: num
 
   return (
     <TSFormFieldWrapper>
-      <TSFormFieldHint label={placeholder} />
-      <NumberField
-        decimals={decimals}
-        error={error ? convertToFieldError(error) : undefined}
-        label={label}
-        onChange={onChange}
-        value={field.value}
-      />
+      <TSFormFieldHint description={placeholder} label={label} />
+      <TSFormField>
+        <NumberField
+          decimals={decimals}
+          error={error ? convertToFieldError(error) : undefined}
+          label={label}
+          onChange={onChange}
+          value={field.value}
+        />
+      </TSFormField>
     </TSFormFieldWrapper>
   )
 }

@@ -1,27 +1,29 @@
 import * as React from 'react'
 
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
-import { Box, Typography, styled } from '@mui/material'
+import { Stack, Tooltip, Typography, styled } from '@mui/material'
+import { useTranslation } from 'next-export-i18n'
 
-const HintContainer = styled(Box)(({ theme }) => ({
-  alignItems: 'center',
+const HintContainer = styled(Stack)(({ theme }) => ({
   display: 'flex',
   flex: '1',
-  gap: theme.spacing(2),
-  border: '1px solid grey',
+  gap: theme.spacing(1),
   padding: theme.spacing(1.5),
-  borderRadius: theme.spacing(1),
-  opacity: 0.6,
-  '&:hover': {
-    opacity: 1,
-  },
+  alignItems: 'flex-start',
+  textAlign: 'left',
+  margin: 'auto',
+  cursor: 'help',
 }))
 
-export function TSFormFieldHint({ label }: { label?: string }) {
+export function TSFormFieldHint({ description, label }: { label?: string; description?: string }) {
+  const { t } = useTranslation()
   return (
-    <HintContainer>
-      <InfoOutlinedIcon />
-      <Typography>{label}</Typography>
-    </HintContainer>
+    <Tooltip arrow placement="right" title={t('badge.model.mint.formHelpText')}>
+      <HintContainer>
+        <Typography fontWeight="700" variant="subtitle1">
+          {label}
+        </Typography>
+        <Typography variant="body4">{description}</Typography>
+      </HintContainer>
+    </Tooltip>
   )
 }

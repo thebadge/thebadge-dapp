@@ -5,6 +5,7 @@ import { ImageType } from 'react-images-uploading'
 import { z } from 'zod'
 
 import { ImageInput } from '@/src/components/form/formFields/ImageInput'
+import { TSFormField } from '@/src/components/form/formFields/tsFormFields/addons/TSFormField'
 import { TSFormFieldHint } from '@/src/components/form/formFields/tsFormFields/addons/TSFormFieldHint'
 import { TSFormFieldWrapper } from '@/src/components/form/formFields/tsFormFields/addons/TSFormFieldWrapper'
 import { ImageSchema } from '@/src/components/form/helpers/customSchemas'
@@ -20,21 +21,23 @@ export default function ImageInputWithTSForm() {
 
   return (
     <TSFormFieldWrapper>
-      <TSFormFieldHint label={placeholder} />
-      <ImageInput
-        error={error ? convertToFieldError(error) : undefined}
-        label={label}
-        onChange={(value: ImageType | null) => {
-          if (value) {
-            // We change the structure a little bit to have it ready to push to the backend
-            field.onChange({
-              mimeType: value.file?.type,
-              base64File: value.base64File,
-            })
-          } else field.onChange(null)
-        }}
-        value={field.value}
-      />
+      <TSFormFieldHint description={placeholder} label={label} />
+      <TSFormField>
+        <ImageInput
+          error={error ? convertToFieldError(error) : undefined}
+          label={label}
+          onChange={(value: ImageType | null) => {
+            if (value) {
+              // We change the structure a little bit to have it ready to push to the backend
+              field.onChange({
+                mimeType: value.file?.type,
+                base64File: value.base64File,
+              })
+            } else field.onChange(null)
+          }}
+          value={field.value}
+        />
+      </TSFormField>
     </TSFormFieldWrapper>
   )
 }
