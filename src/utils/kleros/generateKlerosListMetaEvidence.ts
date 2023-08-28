@@ -63,7 +63,7 @@ export function generateKlerosListMetaEvidence(
     question: `Does the ${badgeName} comply with the required criteria?`,
     fileURI: criteriaFile,
     fileTypeExtension: 'pdf',
-    evidenceDisplayInterfaceURI: `https://thebadge-dapp-git-improve-meta-evidence-thebadge.vercel.app/evidence`,
+    evidenceDisplayInterfaceURI: `${window.location.origin}/evidence`,
     dynamicScriptURI: `ipfs/${DYNAMIC_SCRIPT_IPFS_HASH}`,
     dynamicScriptRequiredParams: ['disputeID', 'arbitrableChainID', 'arbitrableContractAddress'],
     metadata: {
@@ -94,7 +94,7 @@ export function generateKlerosListMetaEvidence(
     question: `Does the ${badgeName} comply with the required criteria?`,
     fileURI: criteriaFile,
     fileTypeExtension: 'pdf',
-    evidenceDisplayInterfaceURI: `https://thebadge-dapp-git-improve-meta-evidence-thebadge.vercel.app/evidence`,
+    evidenceDisplayInterfaceURI: `${window.location.origin}/evidence`,
     dynamicScriptURI: `ipfs/${DYNAMIC_SCRIPT_IPFS_HASH}`,
     dynamicScriptRequiredParams: ['disputeID', 'arbitrableChainID', 'arbitrableContractAddress'],
     metadata: {
