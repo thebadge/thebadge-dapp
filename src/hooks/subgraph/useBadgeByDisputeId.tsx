@@ -8,10 +8,6 @@ export default function useBadgeByDisputeId(appChainId?: number, disputeId?: str
     ? getSubgraphSdkByNetwork(appChainId as ChainsValues, SubgraphName.TheBadge)
     : null
 
-  console.log('Parameters', {
-    appChainId,
-    disputeId,
-  })
   return useSWR(
     appChainId && disputeId ? [`badgeByDisputeId:${disputeId}`, disputeId, appChainId] : null,
     async ([, _disputeId]) => {

@@ -56,25 +56,13 @@ export function useRegistrationBadgeModelKlerosMetadata(
       : null,
     async ([,]) => {
       const badgeModelKlerosData = badgeModelKlerosMetadata.data
-      console.log(badgeModelKlerosData)
       const res = await getFromIPFS<KlerosListStructure>(badgeModelKlerosData?.registrationUri)
-      console.log(res)
 
       const badgeModelKlerosRegistrationMetadata = res ? res.data.result?.content : null
 
-      let badgeRegistrationCriteria = ''
-      if (badgeModelKlerosRegistrationMetadata?.fileURI) {
-        badgeRegistrationCriteria =
-          's3Url' in badgeModelKlerosRegistrationMetadata.fileURI
-            ? badgeModelKlerosRegistrationMetadata.fileURI.s3Url
-            : ''
-      }
-      if (
-        badgeModelKlerosRegistrationMetadata?.fileHash &&
-        typeof badgeModelKlerosRegistrationMetadata.fileHash === 'string'
-      ) {
-        badgeRegistrationCriteria = badgeModelKlerosRegistrationMetadata.fileHash
-      }
+      const badgeRegistrationCriteria = getCriteriaFileFromMetaEvidence(
+        badgeModelKlerosRegistrationMetadata,
+      )
 
       return {
         ...badgeModelKlerosData,
@@ -121,19 +109,7 @@ export function useRemovalBadgeModelKlerosMetadata(
 
       const badgeModelKlerosRemovalMetadata = res ? res.data.result?.content : null
 
-      let badgeRemovalCriteria = ''
-      if (badgeModelKlerosRemovalMetadata?.fileURI) {
-        badgeRemovalCriteria =
-          's3Url' in badgeModelKlerosRemovalMetadata.fileURI
-            ? badgeModelKlerosRemovalMetadata.fileURI.s3Url
-            : ''
-      }
-      if (
-        badgeModelKlerosRemovalMetadata?.fileHash &&
-        typeof badgeModelKlerosRemovalMetadata.fileHash === 'string'
-      ) {
-        badgeRemovalCriteria = badgeModelKlerosRemovalMetadata.fileHash
-      }
+      const badgeRemovalCriteria = getCriteriaFileFromMetaEvidence(badgeModelKlerosRemovalMetadata)
 
       return {
         ...badgeModelKlerosData,
@@ -142,4 +118,25 @@ export function useRemovalBadgeModelKlerosMetadata(
       }
     },
   )
+}
+
+function getCriteriaFileFromMetaEvidence(
+  badgeModelKlerosMetaEvidence: KlerosListStructure | null | undefined,
+) {
+  let criteria = ''
+
+  if (badgeModelKlerosMetaEvidence?.fileURI) {
+    criteria =
+      's3Url' in badgeModelKlerosMetaEvidence.fileURI
+        ? badgeModelKlerosMetaEvidence.fileURI.s3Url
+        : ''
+  }
+  if (
+    badgeModelKlerosMetaEvidence?.fileHash &&
+    typeof badgeModelKlerosMetaEvidence.fileHash === 'string'
+  ) {
+    criteria = badgeModelKlerosMetaEvidence.fileHash
+  }
+
+  return criteria
 }

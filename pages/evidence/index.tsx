@@ -1,7 +1,7 @@
 import React, { ReactElement, useEffect, useState } from 'react'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
-import TBDataView from '@/src/pagePartials/evidence/TBDataView'
+import CourtEvidenceDataView from '@/src/pagePartials/evidence/CourtEvidenceDataView'
 import { useColorMode } from '@/src/providers/themeProvider'
 import { NextPageWithLayout } from '@/types/next'
 
@@ -70,7 +70,7 @@ const EvidenceIframe: NextPageWithLayout = () => {
   return (
     <>
       <SafeSuspense>
-        <TBDataView
+        <CourtEvidenceDataView
           arbitrableChainID={parameters?.arbitrableChainID}
           disputeID={parameters?.disputeID}
         />

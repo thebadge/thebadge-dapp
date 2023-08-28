@@ -14,7 +14,7 @@ const Container = styled(Stack)(({ theme }) => ({
   padding: theme.spacing(2),
 }))
 
-export default function TBDataView({
+export default function CourtEvidenceDataView({
   arbitrableChainID,
   disputeID,
 }: {
