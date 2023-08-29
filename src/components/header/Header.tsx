@@ -1,4 +1,7 @@
+import { useEffect } from 'react'
+
 import { Box, styled } from '@mui/material'
+import { useAccountCenter } from '@web3-onboard/react'
 import { useTranslation } from 'next-export-i18n'
 
 import { LogoWithText } from '@/src/components/common/Logo'
@@ -28,8 +31,13 @@ const HeaderContainer = styled(Box)(({ theme }) => ({
 
 const Header = () => {
   const isMobile = useSizeSM()
+  const updateAccountCenter = useAccountCenter()
   const { connectWallet, isWalletConnected } = useWeb3Connection()
   const { t } = useTranslation()
+
+  useEffect(() => {
+    updateAccountCenter({ enabled: isMobile })
+  }, [isMobile, updateAccountCenter])
 
   return (
     <HeaderContainer id="header-container">
@@ -44,9 +52,9 @@ const Header = () => {
       <Box display="flex">
         <WrongNetwork />
         {isWalletConnected && !isMobile && <UserDropdown />}
-        {!isWalletConnected && !isMobile && (
+        {!isWalletConnected && (
           <Box display="flex" gap={2}>
-            <ActionButtons />
+            {!isMobile && <ActionButtons />}
             <ConnectWalletButton onClick={connectWallet}>
               {t('header.wallet.connect')}
             </ConnectWalletButton>

@@ -25,4 +25,5 @@ select:-webkit-autofill:focus {
 :root {
     /* @web3-onboard/walletconnect style configuration */
     --onboard-modal-z-index: 13001;
+    --account-center-z-index: 13001;
 }

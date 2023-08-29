@@ -6,6 +6,7 @@ import Headroom from 'react-headroom'
 import Header from '@/src/components/header/Header'
 import { Footer } from '@/src/components/layout/Footer'
 import MainMenu from '@/src/components/navigation/MainMenu'
+import { useSizeSM } from '@/src/hooks/useSize'
 import CurateContextProvider from '@/src/providers/curateProvider'
 import { useColorMode } from '@/src/providers/themeProvider'
 
@@ -48,6 +49,7 @@ const NavigationRoom = styled(Box)(({ theme }) => ({
 
 export default function DefaultLayout({ children }: DefaultLayoutProps) {
   const theme = useTheme()
+  const isMobile = useSizeSM()
   const { mode } = useColorMode()
 
   return (
@@ -70,9 +72,11 @@ export default function DefaultLayout({ children }: DefaultLayoutProps) {
           />
 
           <StyledBody>
-            <NavigationRoom>
-              <MainMenu />
-            </NavigationRoom>
+            {!isMobile && (
+              <NavigationRoom>
+                <MainMenu />
+              </NavigationRoom>
+            )}
             <Container
               maxWidth={'lg'}
               sx={{
