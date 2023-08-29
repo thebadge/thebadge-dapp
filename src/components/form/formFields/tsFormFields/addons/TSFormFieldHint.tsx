@@ -12,6 +12,9 @@ const HintContainer = styled(Stack)(({ theme }) => ({
   textAlign: 'left',
   margin: 'auto',
   cursor: 'help',
+  [theme.breakpoints.down('sm')]: {
+    padding: theme.spacing(1.5, 0, 0.5, 0),
+  },
 }))
 
 export function TSFormFieldHint({ description, label }: { label?: string; description?: string }) {

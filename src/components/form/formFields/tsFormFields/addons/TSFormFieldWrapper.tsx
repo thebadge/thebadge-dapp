@@ -5,4 +5,8 @@ export const TSFormFieldWrapper = styled(Stack)(({ theme }) => ({
   flex: 1,
   flexDirection: 'row',
   rowGap: theme.spacing(0.5),
+  [theme.breakpoints.down('sm')]: {
+    flexDirection: 'column',
+    rowGap: 0,
+  },
 }))
