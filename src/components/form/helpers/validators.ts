@@ -1,5 +1,4 @@
 import { FieldError } from 'react-hook-form'
-import { ErrorOption } from 'react-hook-form/dist/types/errors'
 import { ZodType, z } from 'zod'
 
 import {
@@ -53,12 +52,6 @@ function getZValidator(fieldType: KLEROS_LIST_TYPES) {
     case KLEROS_LIST_TYPES.RICH_ADDRESS:
       return AddressSchema
   }
-}
-
-// Properties needed to do error handling inside the Form Field component
-export type ErrorHelperProps = {
-  setError: (error: ErrorOption) => void
-  cleanError: () => void
 }
 
 export function isMetadataColumnArray(obj: any): obj is MetadataColumn[] {

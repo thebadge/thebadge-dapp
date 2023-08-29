@@ -6,15 +6,11 @@ import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf'
 import { Box, IconButton, Stack, Tooltip, Typography, styled } from '@mui/material'
 import { colors } from '@thebadge/ui-library'
-import { useDescription, useTsController } from '@ts-react/form'
 import { FieldError } from 'react-hook-form'
 import ImageUploading, { ImageListType, ImageType } from 'react-images-uploading'
-import { z } from 'zod'
 
-import { TextFieldStatus } from '@/src/components/form/TextField'
+import { TextFieldStatus } from '@/src/components/form/formFields/TextField'
 import { FormField } from '@/src/components/form/helpers/FormField'
-import { FileSchema } from '@/src/components/form/helpers/customSchemas'
-import { convertToFieldError } from '@/src/components/form/helpers/validators'
 
 const Wrapper = styled(Box, {
   shouldForwardProp: (propName) => propName !== 'error',
@@ -33,7 +29,7 @@ const FileDrop = styled(Box, {
 })<{
   isDragging?: boolean
   error?: boolean
-}>(({ error, isDragging, theme }) => ({
+}>(() => ({
   cursor: 'pointer',
   display: 'flex',
   alignItems: 'center',
@@ -158,32 +154,5 @@ export function FileInput({
         statusText={error?.message}
       />
     </Wrapper>
-  )
-}
-
-/**
- * Component wrapped to be used with @ts-react/form
- */
-export default function FileInputWithTSForm() {
-  const { error, field } = useTsController<z.infer<typeof FileSchema>>()
-  const { label, placeholder } = useDescription()
-
-  return (
-    <FileInput
-      error={error ? convertToFieldError(error) : undefined}
-      label={label}
-      onChange={(value: ImageType | null) => {
-        if (value) {
-          // We change the structure a little bit to have it ready to push to the backend
-          field.onChange({
-            mimeType: value.file?.type,
-            base64File: value.base64File,
-            file: value.file,
-          })
-        } else field.onChange(null)
-      }}
-      placeholder={placeholder}
-      value={field.value}
-    />
   )
 }

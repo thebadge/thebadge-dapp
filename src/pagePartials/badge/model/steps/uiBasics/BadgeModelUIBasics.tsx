@@ -6,10 +6,10 @@ import { useTranslation } from 'next-export-i18n'
 import { Controller, useFormContext } from 'react-hook-form'
 import { ImageType } from 'react-images-uploading'
 
-import { DropdownSelect } from '@/src/components/form/DropdownSelect'
-import { ImageInput } from '@/src/components/form/ImageInput'
-import { TextArea } from '@/src/components/form/TextArea'
-import { TextField } from '@/src/components/form/TextField'
+import { DropdownSelect } from '@/src/components/form/formFields/DropdownSelect'
+import { ImageInput } from '@/src/components/form/formFields/ImageInput'
+import { TextArea } from '@/src/components/form/formFields/TextArea'
+import { TextField } from '@/src/components/form/formFields/TextField'
 import { CreateModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateModelSchema'
 
 const BoxShadow = styled(Box)(({ theme }) => ({

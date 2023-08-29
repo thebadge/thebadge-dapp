@@ -6,8 +6,6 @@ import StepButton from '@mui/material/StepButton'
 import Stepper from '@mui/material/Stepper'
 import { colors } from '@thebadge/ui-library'
 
-import { useSizeSM } from '@/src/hooks/useSize'
-
 export default function StepHeaderStepper({
   color,
   completedSteps,
@@ -21,15 +19,13 @@ export default function StepHeaderStepper({
   steps: string[]
   color?: string
 }) {
-  const isMobile = useSizeSM()
-
   return (
     <Box display="flex" flex="1" width="100%">
       <Stepper
         activeStep={currentStep}
         alternativeLabel
         nonLinear
-        orientation={isMobile ? 'vertical' : 'horizontal'}
+        orientation="horizontal"
         sx={{
           width: '100%',
         }}

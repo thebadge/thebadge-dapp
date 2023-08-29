@@ -298,6 +298,7 @@
         "makeSure": "Make sure your submission complies with the ",
         "curationCriteria": "Curation Criteria",
         "avoidChallenges": " to avoid challenges.",
+        "formHelpText": "Follow the instructions that the creator has made to help you in the form fill.",
         "steps": [
           {
             "subTitle": "**1**. You are starting the certification process for obtaining a {{badgeName}}. Please read the following instructions carefully in order to be able to complete the process correctly, if you have any doubts please check the [docs](https://docs.thebadge.xyz) or get in contact with the [certificate creator]({{creatorContact}}).",
@@ -322,7 +323,7 @@
       }
     },
     "viewBadge": {
-      "id:": "Badge ID: {{id}}#",
+      "id": "Badge ID: #{{id}}",
       "issueBy": "Issued by: {{issuer}}",
       "claims": " {{amount}} # badges claimed",
       "checkHowElse": "Check who else claimed it. ",
@@ -523,6 +524,7 @@
         "whyDontISeeMyWallet": "Why don't I see my wallet?",
         "learnMore": "Click here to learn more"
       }
-    }
+    },
+    "socialLogin": "Social Login"
   }
 }

@@ -5,9 +5,9 @@ import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 
 export default function useIsCreator(address?: string): SWRResponse<boolean> {
   const gql = useSubgraph()
-  const { address: connectedAddress } = useWeb3Connection()
+  const { address: connectedAddress, appChainId } = useWeb3Connection()
   return useSWR(
-    address || connectedAddress ? `isCreator:${address || connectedAddress}` : null,
+    address || connectedAddress ? [`isCreator:${address || connectedAddress}`, appChainId] : null,
     async () => {
       const userById = await gql.userById({ id: address || connectedAddress || '' })
       return !!userById.user?.isCreator

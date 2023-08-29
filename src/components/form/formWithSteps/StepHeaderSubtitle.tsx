@@ -5,6 +5,20 @@ import { Box, styled } from '@mui/material'
 
 import MarkdownTypography from '@/src/components/common/MarkdownTypography'
 
+const SubtitleContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flex: '1',
+  gap: theme.spacing(8),
+  paddingLeft: '10%',
+  paddingRight: '10%',
+  [theme.breakpoints.down('sm')]: {
+    paddingLeft: '5%',
+    paddingRight: '5%',
+    gap: theme.spacing(2),
+    flexDirection: 'column',
+  },
+}))
+
 const HintContainer = styled(Box)(({ theme }) => ({
   alignItems: 'center',
   display: 'flex',
@@ -14,6 +28,14 @@ const HintContainer = styled(Box)(({ theme }) => ({
   padding: theme.spacing(1.5),
   borderRadius: theme.spacing(1),
   margin: 'auto',
+}))
+
+const SubtitleTypography = styled(MarkdownTypography)(({ theme }) => ({
+  width: '65%',
+  textAlign: 'justify',
+  [theme.breakpoints.down('sm')]: {
+    width: '100%',
+  },
 }))
 
 export default function StepHeaderSubtitle({
@@ -26,10 +48,8 @@ export default function StepHeaderSubtitle({
   showHint?: boolean
 }) {
   return (
-    <Box display="flex" flex="1" gap={8} px="10%">
-      <MarkdownTypography textAlign="justify" variant="body2" width="65%">
-        {subTitle}
-      </MarkdownTypography>
+    <SubtitleContainer>
+      <SubtitleTypography variant="body2">{subTitle}</SubtitleTypography>
 
       {showHint && hint && (
         <HintContainer>
@@ -37,6 +57,6 @@ export default function StepHeaderSubtitle({
           <MarkdownTypography variant="caption">{hint}</MarkdownTypography>
         </HintContainer>
       )}
-    </Box>
+    </SubtitleContainer>
   )
 }

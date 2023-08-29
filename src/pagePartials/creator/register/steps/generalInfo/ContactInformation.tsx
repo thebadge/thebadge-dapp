@@ -5,8 +5,8 @@ import { useTranslation } from 'next-export-i18n'
 import { Controller, useFormContext } from 'react-hook-form'
 
 import { CONTACT_METHODS, CreatorRegisterSchemaType } from '../../schema/CreatorRegisterSchema'
-import { DropdownSelect } from '@/src/components/form/DropdownSelect'
-import { TextField } from '@/src/components/form/TextField'
+import { DropdownSelect } from '@/src/components/form/formFields/DropdownSelect'
+import { TextField } from '@/src/components/form/formFields/TextField'
 
 export default function ContactInformation() {
   const { t } = useTranslation()

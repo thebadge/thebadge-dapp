@@ -3,6 +3,7 @@ import useSWR from 'swr'
 import { BadgeModelHooksOptions } from '@/src/hooks/subgraph/types'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import { getFromIPFS } from '@/src/hooks/subgraph/utils'
+import useChainId from '@/src/hooks/theBadge/useChainId'
 import { KlerosListStructure } from '@/src/utils/kleros/generateKlerosListMetaEvidence'
 
 /**
@@ -18,8 +19,10 @@ export function useBadgeModelKlerosMetadata(
   // It's going to do the fetch if it has ID and skip option on false
   const fetchIt = !options?.skip && badgeModelId.length
   const gql = useSubgraph()
+  const chainId = useChainId()
+
   return useSWR(
-    fetchIt ? [`BadgeModelKlerosMetadata:${badgeModelId}`, badgeModelId] : null,
+    fetchIt ? [`BadgeModelKlerosMetadata:${badgeModelId}`, badgeModelId, chainId] : null,
     async ([, _id]) => {
       const badgeModelKleros = await gql.badgeModelKlerosMetadataById({ id: _id })
 
@@ -38,6 +41,7 @@ export function useRegistrationBadgeModelKlerosMetadata(
   badgeModelId: string,
   options?: BadgeModelHooksOptions,
 ) {
+  const chainId = useChainId()
   const badgeModelKlerosMetadata = useBadgeModelKlerosMetadata(badgeModelId, options)
   // It's going to do the fetch if it has ID and skip option on false
   const fetchIt = !options?.skip && badgeModelId.length
@@ -47,6 +51,7 @@ export function useRegistrationBadgeModelKlerosMetadata(
           `RegistrationBadgeModelKlerosMetadata:${badgeModelId}`,
           badgeModelId,
           badgeModelKlerosMetadata.data?.id,
+          chainId,
         ]
       : null,
     async ([,]) => {
@@ -74,6 +79,7 @@ export function useRemovalBadgeModelKlerosMetadata(
   badgeModelId: string,
   options?: BadgeModelHooksOptions,
 ) {
+  const chainId = useChainId()
   const badgeModelKlerosMetadata = useBadgeModelKlerosMetadata(badgeModelId, options)
   // It's going to do the fetch if it has ID and skip option on false
   const fetchIt = !options?.skip && badgeModelId.length
@@ -83,6 +89,7 @@ export function useRemovalBadgeModelKlerosMetadata(
           `RemovalBadgeModelKlerosMetadata:${badgeModelId}`,
           badgeModelId,
           badgeModelKlerosMetadata.data?.id,
+          chainId,
         ]
       : null,
     async ([,]) => {

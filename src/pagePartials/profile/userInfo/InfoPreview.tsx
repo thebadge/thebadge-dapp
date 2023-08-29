@@ -5,7 +5,6 @@ import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined'
 import TwitterIcon from '@mui/icons-material/Twitter'
 import { Box, IconButton, Stack, Typography } from '@mui/material'
 import { IconDiscord } from '@thebadge/ui-library'
-import { useTranslation } from 'next-export-i18n'
 
 import TBUserAvatar from '@/src/components/common/TBUserAvatar'
 import { Address } from '@/src/components/helpers/Address'
@@ -20,7 +19,6 @@ type Props = {
   address: string
 }
 export default function InfoPreview({ address }: Props) {
-  const { t } = useTranslation()
   const { address: connectedWalletAddress } = useWeb3Connection()
 
   const isLoggedInUser = connectedWalletAddress === address

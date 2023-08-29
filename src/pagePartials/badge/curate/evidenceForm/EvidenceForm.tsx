@@ -8,9 +8,9 @@ import { Controller, useForm } from 'react-hook-form'
 import { ImageType } from 'react-images-uploading'
 import { z } from 'zod'
 
-import { FileInput } from '@/src/components/form/FileInput'
-import { TextArea } from '@/src/components/form/TextArea'
-import { TextField } from '@/src/components/form/TextField'
+import { FileInput } from '@/src/components/form/formFields/FileInput'
+import { TextArea } from '@/src/components/form/formFields/TextArea'
+import { TextField } from '@/src/components/form/formFields/TextField'
 import { LongTextSchema, OptionalFileSchema } from '@/src/components/form/helpers/customSchemas'
 
 export const EvidenceSchema = z.object({

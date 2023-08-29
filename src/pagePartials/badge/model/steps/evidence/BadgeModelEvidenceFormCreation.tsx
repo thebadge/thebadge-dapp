@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Controller, useFormContext } from 'react-hook-form'
 
-import { KlerosDynamicFieldsCreator } from '@/src/components/form/klerosDynamicFormField/FormFieldCreator'
+import { KlerosDynamicFieldsCreator } from '@/src/components/form/formFields/KlerosDynamicFormCreatorField/FormFieldCreator'
 import { CreateModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateModelSchema'
 
 export default function BadgeModelEvidenceFormCreation() {

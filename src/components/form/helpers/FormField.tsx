@@ -1,10 +1,11 @@
 import React, { cloneElement, useMemo } from 'react'
 
-import { Box, styled } from '@mui/material'
+import { Box, Theme, styled } from '@mui/material'
+import { SxProps } from '@mui/system'
 
 import { FormStatus } from './FormStatus'
 import { Label } from './Label'
-import { TextFieldStatus } from '../TextField'
+import { TextFieldStatus } from '../formFields/TextField'
 
 const StyledBox = styled(Box)<{ status?: TextFieldStatus }>(() => ({
   display: 'flex',
@@ -22,6 +23,7 @@ export const FormField: React.FC<{
   status?: TextFieldStatus | undefined
   statusText?: string
   alignItems?: string
+  sx?: SxProps<Theme>
 }> = ({
   alignItems,
   formControl,

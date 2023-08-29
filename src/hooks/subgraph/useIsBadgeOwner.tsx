@@ -1,6 +1,7 @@
 import useSWR from 'swr'
 
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
+import useChainId from '@/src/hooks/theBadge/useChainId'
 
 /**
  * Hook to determine badge ownership, we utilize the potential Owner Address and the badgeModelId. By querying the SG,
@@ -31,9 +32,11 @@ export function useBadgeOwnershipData(badgeModelId: string, ownerAddress: string
  */
 function useBadgesOwnedByModelId(badgeModelId: string, ownerAddress: string | null) {
   const gql = useSubgraph()
+  const chainId = useChainId()
+
   return useSWR(
     badgeModelId.length && ownerAddress?.length
-      ? [`OwnedBadges:${badgeModelId}:${ownerAddress}`, ownerAddress]
+      ? [`OwnedBadges:${badgeModelId}:${ownerAddress}`, ownerAddress, chainId]
       : null,
     async ([,]) => {
       const badgeResponse = await gql.userBadgeByModelId({

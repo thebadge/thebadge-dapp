@@ -4,6 +4,7 @@ import { BadgeModelHooksOptions } from '@/src/hooks/subgraph/types'
 import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import { getFromIPFS } from '@/src/hooks/subgraph/utils'
+import useChainId from '@/src/hooks/theBadge/useChainId'
 import { BadgeEvidenceMetadata } from '@/types/badges/BadgeMetadata'
 import { KlerosBadgeRequest, KlerosRequestType } from '@/types/generated/subgraph'
 
@@ -17,11 +18,16 @@ export function useBadgeKlerosMetadata(badgeId: string, options?: BadgeModelHook
   // It's going to do the fetch if it has ID and skip option on false
   const fetchIt = !options?.skip && badgeId.length
   const gql = useSubgraph()
-  return useSWR(fetchIt ? [`BadgeKlerosMetadata:${badgeId}`, badgeId] : null, async ([, _id]) => {
-    const badgeKleros = await gql.badgeKlerosMetadataById({ id: _id })
+  const chainId = useChainId()
 
-    return badgeKleros.badgeKlerosMetaData
-  })
+  return useSWR(
+    fetchIt ? [`BadgeKlerosMetadata:${badgeId}`, badgeId, chainId] : null,
+    async ([, _id]) => {
+      const badgeKleros = await gql.badgeKlerosMetadataById({ id: _id })
+
+      return badgeKleros.badgeKlerosMetaData
+    },
+  )
 }
 
 /**
@@ -31,12 +37,13 @@ export function useBadgeKlerosMetadata(badgeId: string, options?: BadgeModelHook
  * @param options
  */
 export function useEvidenceBadgeKlerosMetadata(badgeId: string, options?: BadgeModelHooksOptions) {
+  const chainId = useChainId()
   const badge = useBadgeById(badgeId)
   const badgeKlerosMetadata = useBadgeKlerosMetadata(badgeId, options)
   // It's going to do the fetch if it has ID and skip option on false
   const fetchIt = !options?.skip && badgeId.length
   return useSWR(
-    fetchIt ? [`EvidenceBadgeKlerosMetadata:${badgeId}`, badgeId, badge.data?.id] : null,
+    fetchIt ? [`EvidenceBadgeKlerosMetadata:${badgeId}`, badgeId, badge.data?.id, chainId] : null,
     async ([,]) => {
       if (!badgeKlerosMetadata.data?.requests) {
         throw 'There was not possible to get the needed metadata. Try again in some minutes.'

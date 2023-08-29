@@ -4,17 +4,13 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
 import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined'
 import { AvatarProps, Box, Container, IconButton, Avatar as MUIAvatar, styled } from '@mui/material'
 import { colors } from '@thebadge/ui-library'
-import { useDescription, useTsController } from '@ts-react/form'
 import Blockies from 'react-18-blockies'
 import { FieldError } from 'react-hook-form'
 import ImageUploading, { ImageListType, ImageType } from 'react-images-uploading'
-import { z } from 'zod'
 
-import { TextFieldStatus } from '@/src/components/form/TextField'
+import { TextFieldStatus } from '@/src/components/form/formFields/TextField'
 import { FormField } from '@/src/components/form/helpers/FormField'
 import { Label } from '@/src/components/form/helpers/Label'
-import { ImageSchema } from '@/src/components/form/helpers/customSchemas'
-import { convertToFieldError } from '@/src/components/form/helpers/validators'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 
 const Wrapper = styled(Box)(({ theme }) => ({
@@ -181,34 +177,5 @@ export function AvatarInput({ error, label, onChange, value }: AvatarInputProps)
         statusText={error?.message}
       />
     </Wrapper>
-  )
-}
-
-/**
- * Component wrapped to be used with @ts-react/form
- *
- */
-export default function AvatarInputWithTSForm() {
-  const { error, field } = useTsController<z.infer<typeof ImageSchema>>()
-  const { label, placeholder } = useDescription()
-
-  function onChange(value: z.infer<typeof ImageSchema>) {
-    if (value) {
-      // We change the structure a little bit to have it ready to push to the backend
-      field.onChange({
-        mimeType: value.file?.type,
-        base64File: value.data_url,
-      })
-    } else field.onChange(null)
-  }
-
-  return (
-    <AvatarInput
-      error={error ? convertToFieldError(error) : undefined}
-      label={label}
-      onChange={onChange}
-      placeholder={placeholder}
-      value={field.value ? { dataURL: field.value.base64File, file: undefined } : undefined}
-    />
   )
 }
