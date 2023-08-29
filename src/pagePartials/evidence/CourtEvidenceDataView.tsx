@@ -3,6 +3,7 @@ import React from 'react'
 
 import { Button, Skeleton, Stack, Typography, styled } from '@mui/material'
 import { colors } from '@thebadge/ui-library'
+import { useTranslation } from 'next-export-i18n'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import useBadgeByDisputeId from '@/src/hooks/subgraph/useBadgeByDisputeId'
@@ -21,6 +22,8 @@ export default function CourtEvidenceDataView({
   arbitrableChainID: number | undefined
   disputeID: string | undefined
 }) {
+  const { t } = useTranslation()
+
   const router = useRouter()
   const graphQueryResult = useBadgeByDisputeId(arbitrableChainID, disputeID)
 
@@ -34,7 +37,7 @@ export default function CourtEvidenceDataView({
     <Container>
       <Container p={0}>
         <Typography sx={{ fontSize: '14px !important' }}>
-          Submitted Badge Evidence -
+          {t('klerosCourt.evidence.title')}
           <SafeSuspense
             fallback={<Skeleton sx={{ margin: 'auto' }} variant={'text'} width={500} />}
           >
@@ -59,7 +62,7 @@ export default function CourtEvidenceDataView({
         }}
       >
         <Typography sx={{ fontSize: '14px !important' }}>
-          You can see more information about this dispute on TheBadge App
+          {t('klerosCourt.evidence.seeMore')}
         </Typography>
         <Button
           color="blue"
@@ -72,7 +75,7 @@ export default function CourtEvidenceDataView({
           }}
           variant="text"
         >
-          View details on TheBadge App
+          {t('klerosCourt.evidence.viewDetails')}
         </Button>
       </Container>
     </Container>
