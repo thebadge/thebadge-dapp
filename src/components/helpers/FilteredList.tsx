@@ -1,11 +1,4 @@
-import React, {
-  PropsWithChildren,
-  ReactNode,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react'
+import React, { PropsWithChildren, ReactNode, useCallback, useEffect, useState } from 'react'
 
 import { Box, Chip, Divider, Stack, Typography, styled } from '@mui/material'
 import { ChipPropsColorOverrides } from '@mui/material/Chip/Chip'
@@ -21,6 +14,7 @@ import { Loading } from '@/src/components/loading/Loading'
 import { SpinnerColors } from '@/src/components/loading/Spinner'
 import TBSearchField from '@/src/components/select/SearchField'
 import TBadgeSelect from '@/src/components/select/Select'
+import useSelectedFilters from '@/src/hooks/nextjs/useSelectedFilters'
 import useChainId from '@/src/hooks/theBadge/useChainId'
 import { useColorMode } from '@/src/providers/themeProvider'
 
@@ -37,6 +31,7 @@ export type ListFilter<K = unknown> = {
 
 // TODO: It would be nice to add K to ListFilter here, but it exceeds my TS know
 type FilteredListProps = PropsWithChildren & {
+  id: string
   title: string
   titleColor?: string
   filters?: Array<ListFilter>
@@ -81,6 +76,7 @@ const LastUpdateTypography = styled(Typography)(() => ({
 
 export default function FilteredList({
   filters = [],
+  id,
   showTextSearch = true,
   ...props
 }: FilteredListProps) {
@@ -89,18 +85,17 @@ export default function FilteredList({
   const { mode } = useColorMode()
   const chainId = useChainId()
 
-  const defaultSelectedFilters = useMemo(() => filters.filter((f) => f.defaultSelected), [filters])
-  const [selectedFilters, setSelectedFilters] = useState<ListFilter[]>(defaultSelectedFilters)
+  const { selectedFilters, setSelectedFilters } = useSelectedFilters({ listId: id, filters })
   const [selectedCategory, setSelectedCategory] = useState<string>('')
   const [initialLoadDone, setInitialLoadDone] = useState<boolean>(false)
   const [lastSearchTimestamp, setLastSearchTimestamp] = useState<number | undefined>()
 
   const onSearch = useCallback(
-    async (selectedFilters = defaultSelectedFilters, selectedCategory = '', textSearch = '') => {
-      await props.search(selectedFilters, selectedCategory, textSearch)
+    async (filters = selectedFilters, selectedCategory = '', textSearch = '') => {
+      await props.search(filters, selectedCategory, textSearch)
       setLastSearchTimestamp(dayjs().unix())
     },
-    [defaultSelectedFilters, props],
+    [props, selectedFilters],
   )
 
   useEffect(() => {
@@ -128,7 +123,7 @@ export default function FilteredList({
   const handleSelectFilter = (filter: ListFilter) => {
     if (!isFilterSelected(filter)) {
       const newSelectedFilters = selectedFilters.concat(filter)
-      setSelectedFilters(() => newSelectedFilters)
+      setSelectedFilters(newSelectedFilters)
       onSearch(newSelectedFilters, selectedCategory)
     }
   }

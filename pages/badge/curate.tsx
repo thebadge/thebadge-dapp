@@ -116,6 +116,7 @@ const CurateBadges: NextPageWithLayout = () => {
     <>
       <FilteredList
         filters={filters}
+        id="curation-list"
         loading={loading}
         loadingColor={'green'}
         preview={renderSelectedBadgePreview()}

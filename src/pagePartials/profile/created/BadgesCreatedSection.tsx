@@ -82,7 +82,7 @@ export default function BadgesCreatedSection() {
   return (
     <RequiredCreatorAccess>
       <FilteredList
-        filters={[]}
+        id="created-badges-explorer-list"
         loading={loading}
         loadingColor={'primary'}
         search={search}

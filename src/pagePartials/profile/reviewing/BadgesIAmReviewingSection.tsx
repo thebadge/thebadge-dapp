@@ -123,6 +123,7 @@ export default function BadgesIAmReviewingSection() {
       <FilteredList
         disableEdit
         filters={filters}
+        id="reviewing-badges-explorer-list"
         loading={loading}
         loadingColor={'green'}
         preview={renderSelectedBadgePreview()}

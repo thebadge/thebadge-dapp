@@ -85,6 +85,7 @@ export default function BadgesYouOwnList({ address }: Props) {
   return (
     <FilteredList
       filters={filters}
+      id="owned-badges-explorer-list"
       loading={loading}
       loadingColor={'blue'}
       search={search}
