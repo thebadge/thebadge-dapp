@@ -52,13 +52,11 @@ export default function MintCost({ costs }: Props) {
   }
 
   const badgeModelMetadata = badgeModelKlerosData.data?.badgeModelKlerosRegistrationMetadata
+  const badgeCriteria = badgeModelKlerosData.data?.badgeRegistrationCriteria
 
   if (!badgeModelMetadata) {
     throw 'There was not possible to get the needed metadata. Try again in some minutes.'
   }
-
-  const badgeCriteria =
-    's3Url' in badgeModelMetadata.fileURI ? badgeModelMetadata.fileURI.s3Url : ''
 
   const challengePeriodDuration = isTestnet
     ? secondsToMinutes(badgeModelKlerosData.data?.challengePeriodDuration)

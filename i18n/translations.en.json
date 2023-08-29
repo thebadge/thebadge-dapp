@@ -484,6 +484,13 @@
       "court": "Court:"
     }
   },
+  "klerosCourt": {
+    "evidence": {
+      "title": "Submitted Badge Evidence -",
+      "seeMore": "You can see more information about this dispute on TheBadge App",
+      "viewDetails": "View details on TheBadge App"
+    }
+  },
   "acceptanceCriteria": {
     "create": "Create the acceptance criteria"
   },

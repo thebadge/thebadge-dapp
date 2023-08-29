@@ -12,9 +12,11 @@ import { configureThemeComponentes, getTheme, getTypographyVariants } from '@/sr
 import { ThemeType } from '@/src/theme/types'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const ColorModeContext = createContext<{ toggleColorMode: () => void; mode: PaletteMode }>(
-  {} as any,
-)
+const ColorModeContext = createContext<{
+  toggleColorMode: () => void
+  mode: PaletteMode
+  setColorMode: (value: PaletteMode) => void
+}>({} as any)
 
 export function useColorMode() {
   return useContext(ColorModeContext)
@@ -34,6 +36,7 @@ const ThemeContextProvider: React.FC<PropsWithChildren> = ({ children }) => {
       // The dark mode switch would invoke this method
       toggleColorMode: () =>
         setMode((prevMode: PaletteMode) => (prevMode === 'light' ? 'dark' : 'light')),
+      setColorMode: setMode,
     }),
     [mode],
   )
