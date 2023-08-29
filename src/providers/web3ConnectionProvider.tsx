@@ -13,6 +13,7 @@ import {
 } from 'react'
 
 import { JsonRpcProvider, Web3Provider } from '@ethersproject/providers'
+import { getPublicCompressed } from '@toruslabs/eccrypto'
 import { OnboardAPI, WalletState } from '@web3-onboard/core'
 import injectedModule from '@web3-onboard/injected-wallets'
 import mewWalletModule from '@web3-onboard/mew-wallet'
@@ -168,6 +169,7 @@ export type Web3Context = {
   web3Provider: Web3Provider | null
   web3AuthInstance: Web3Auth | null
   userSocialInfo: Partial<UserInfo> | undefined
+  appPubKey: string | null
 }
 
 export type Web3Connected = RequiredNonNull<Web3Context>
@@ -195,6 +197,7 @@ export default function Web3ConnectionProvider({ children }: Props) {
   const [isSocialWallet, setIsSocialWallet] = useState<boolean>(false)
   const [web3AuthInstance, setWeb3AuthInstance] = useState<Web3Auth | null>(null)
   const [userSocialInfo, setUserSocialInfo] = useState<Partial<UserInfo> | undefined>(undefined)
+  const [appPubKey, setAppPubKey] = useState<string | null>(null)
 
   const web3Provider = wallet?.provider != null ? new Web3Provider(wallet.provider) : null
 
@@ -292,8 +295,23 @@ export default function Web3ConnectionProvider({ children }: Props) {
       const userInfo = await web3AuthInstance?.getUserInfo()
       setUserSocialInfo(userInfo)
     }
+    // Recovers the web3Auth user's pub key in order to validate the user on the backend
+    const fetchAppPubKey = async () => {
+      if (!web3AuthInstance) {
+        return
+      }
+      // If we support non-emv chains this should be private_key
+      const appScopedPrivKey = (await web3AuthInstance.provider?.request({
+        method: 'eth_private_key',
+      })) as string
+      const appPubKey = getPublicCompressed(
+        Buffer.from(appScopedPrivKey.padStart(64, '0'), 'hex'),
+      ).toString('hex')
+      setAppPubKey(appPubKey)
+    }
     if (web3AuthInstance && isSocialWallet) {
       fetchUserInfo()
+      fetchAppPubKey()
     }
   }, [isSocialWallet, web3AuthInstance])
 
@@ -354,6 +372,7 @@ export default function Web3ConnectionProvider({ children }: Props) {
     web3Provider,
     web3AuthInstance,
     userSocialInfo,
+    appPubKey,
   }
 
   return <Web3ContextConnection.Provider value={value}>{children}</Web3ContextConnection.Provider>
