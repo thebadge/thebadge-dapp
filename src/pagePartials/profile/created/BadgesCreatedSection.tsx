@@ -101,7 +101,7 @@ export default function BadgesCreatedSection() {
               onClick={() => router.push('/badge/model/create')}
               sx={{ m: 'auto' }}
             >
-              <Typography>{t('profile.badgesYouOwn.create')}</Typography>
+              <Typography>{t('profile.badgesCreated.create')}</Typography>
             </ButtonV2>
           </Stack>
         )}

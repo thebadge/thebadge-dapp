@@ -5,7 +5,7 @@ import { Button, Typography } from '@mui/material'
 import { FieldError } from 'react-hook-form'
 import { ImageType } from 'react-images-uploading'
 
-import { FileInput } from '@/src/components/form/FileInput'
+import { FileInput } from '@/src/components/form/formFields/FileInput'
 import { CRITERIA_TEMPLATE_URL } from '@/src/constants/common'
 import { addToJsonPrototype } from '@/src/utils/fileUtils'
 

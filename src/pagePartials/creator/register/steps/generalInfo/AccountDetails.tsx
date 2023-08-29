@@ -6,9 +6,9 @@ import { Controller, useFormContext } from 'react-hook-form'
 import { ImageType } from 'react-images-uploading'
 
 import { CreatorRegisterSchemaType } from '../../schema/CreatorRegisterSchema'
-import { AvatarInput } from '@/src/components/form/AvatarInput'
-import { TextArea } from '@/src/components/form/TextArea'
-import { TextField } from '@/src/components/form/TextField'
+import { AvatarInput } from '@/src/components/form/formFields/AvatarInput'
+import { TextArea } from '@/src/components/form/formFields/TextArea'
+import { TextField } from '@/src/components/form/formFields/TextField'
 
 export default function AccountDetails() {
   const { t } = useTranslation()

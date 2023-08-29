@@ -3,7 +3,7 @@ import { createTsForm } from '@ts-react/form'
 
 import { getFormLayout } from '@/src/components/form/customForms/getFormLayout'
 import { CustomFormProps } from '@/src/components/form/customForms/type'
-import { mappingSchemaToComponents } from '@/src/components/form/helpers/schemaToComponent'
+import { mappingSchemaToComponents } from '@/src/components/form/formFields/tsFormFields/schemaToComponent'
 
 export const FormButton = styled(Button)(({ theme }) => ({
   borderRadius: theme.spacing(1.25),

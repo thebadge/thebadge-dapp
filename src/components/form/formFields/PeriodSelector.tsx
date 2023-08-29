@@ -5,7 +5,7 @@ import { Box, Slider, Tooltip, Typography, styled } from '@mui/material'
 import { gradients } from '@thebadge/ui-library'
 import { FieldError } from 'react-hook-form'
 
-import { TextFieldStatus } from '@/src/components/form/TextField'
+import { TextFieldStatus } from '@/src/components/form/formFields/TextField'
 import { FormField } from '@/src/components/form/helpers/FormField'
 
 const Wrapper = styled(Box)(() => ({
