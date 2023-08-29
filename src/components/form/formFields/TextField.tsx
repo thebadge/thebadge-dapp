@@ -2,10 +2,7 @@ import * as React from 'react'
 
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import { Box, TextField as MUITextField, Tooltip, styled } from '@mui/material'
-import { useDescription, useTsController } from '@ts-react/form'
 import { FieldError } from 'react-hook-form'
-
-import { convertToFieldError } from '@/src/components/form/helpers/validators'
 
 export enum TextFieldStatus {
   error = 'error',
@@ -50,30 +47,5 @@ export function TextField({ error, label, onChange, placeholder, value }: TextFi
       value={value ? value : ''}
       variant={'standard'}
     />
-  )
-}
-
-/**
- * Component wrapped to be used with @ts-react/form
- *
- */
-export default function TextFieldWithTSForm() {
-  const { error, field } = useTsController<string>()
-  const { label, placeholder } = useDescription()
-
-  function onChange(e: any) {
-    field.onChange(e.target.value)
-  }
-
-  return (
-    <Wrapper>
-      <TextField
-        error={error ? convertToFieldError(error) : undefined}
-        label={label}
-        onChange={onChange}
-        placeholder={placeholder}
-        value={field.value}
-      />
-    </Wrapper>
   )
 }

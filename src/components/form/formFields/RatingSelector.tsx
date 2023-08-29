@@ -4,14 +4,12 @@ import { SyntheticEvent, useState } from 'react'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import StarIcon from '@mui/icons-material/Star'
 import { Box, Rating, Tooltip, Typography } from '@mui/material'
-import { useDescription, useTsController } from '@ts-react/form'
 import { FieldError } from 'react-hook-form'
 import { z } from 'zod'
 
-import { TextFieldStatus } from '@/src/components/form/TextField'
+import { TextFieldStatus } from '@/src/components/form/formFields/TextField'
 import { FormField } from '@/src/components/form/helpers/FormField'
 import { SeverityTypeSchema } from '@/src/components/form/helpers/customSchemas'
-import { convertToFieldError } from '@/src/components/form/helpers/validators'
 import { Severity, Severity_Keys } from '@/types/utils'
 
 type RatingSelectorProps = {
@@ -69,29 +67,6 @@ export function RatingSelector({ error, label, onChange, placeholder }: RatingSe
       labelPosition={'top'}
       status={error ? TextFieldStatus.error : TextFieldStatus.success}
       statusText={error?.message}
-    />
-  )
-}
-
-/**
- * Component wrapped to be used with @ts-react/form
- *
- */
-export default function RatingSelectorWithTSForm() {
-  const { error, field } = useTsController<z.infer<typeof SeverityTypeSchema>>()
-  const { label, placeholder } = useDescription()
-
-  function onChange(value: any) {
-    field.onChange(value)
-  }
-
-  return (
-    <RatingSelector
-      error={error ? convertToFieldError(error) : undefined}
-      label={label}
-      onChange={onChange}
-      placeholder={placeholder}
-      value={field.value}
     />
   )
 }

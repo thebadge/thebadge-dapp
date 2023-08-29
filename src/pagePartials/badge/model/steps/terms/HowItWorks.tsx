@@ -3,7 +3,7 @@ import React from 'react'
 import { useTranslation } from 'next-export-i18n'
 import { Controller, useFormContext } from 'react-hook-form'
 
-import { AgreementField } from '@/src/components/form/AgreementField'
+import { AgreementField } from '@/src/components/form/formFields/AgreementField'
 import { DISCORD_URL, DOCS_URL } from '@/src/constants/common'
 import { CreateModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateModelSchema'
 

@@ -3,11 +3,8 @@ import React, { ChangeEvent } from 'react'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import { TextField, Theme, Tooltip, Typography } from '@mui/material'
 import { SxProps } from '@mui/system'
-import { useDescription, useTsController } from '@ts-react/form'
 import { FieldError } from 'react-hook-form'
-import { ZodSchema, z } from 'zod'
 
-import { convertToFieldError } from '@/src/components/form/helpers/validators'
 import { capitalizeFirstLetter } from '@/src/utils/strings'
 
 type DropdownSelectProps<T> = {
@@ -86,35 +83,5 @@ export function DropdownSelect<T>({
         )
       })}
     </TextField>
-  )
-}
-
-/**
- * Component wrapped to be used with @ts-react/form
- *
- */
-export default function DropdownSelectWithTSForm({
-  options,
-  schema, // Receives schema as prop, to be able to use the same dropdown with different schemas
-}: {
-  options: string[]
-  schema: ZodSchema
-}) {
-  const { error, field } = useTsController<z.infer<typeof schema>>()
-  const { label, placeholder } = useDescription()
-
-  function onChange(value: z.infer<typeof schema>) {
-    field.onChange(value)
-  }
-
-  return (
-    <DropdownSelect
-      error={error ? convertToFieldError(error) : undefined}
-      label={label}
-      onChange={onChange}
-      options={options}
-      placeholder={placeholder}
-      value={field.value}
-    />
   )
 }

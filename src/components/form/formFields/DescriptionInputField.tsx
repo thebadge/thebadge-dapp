@@ -1,21 +1,11 @@
 import * as React from 'react'
 
 import { Box, TextField as MUITextField, Typography, styled } from '@mui/material'
-import { useDescription, useTsController } from '@ts-react/form'
 import { FieldError } from 'react-hook-form'
 import { z } from 'zod'
 
 import { DescriptionTextSchema } from '@/src/components/form/helpers/customSchemas'
-import { convertToFieldError } from '@/src/components/form/helpers/validators'
 import { ENRICH_TEXT_VARIABLES } from '@/src/utils/enrichTextWithValues'
-
-const Wrapper = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  position: 'relative',
-  rowGap: theme.spacing(1),
-  gridColumn: 'auto',
-}))
 
 const StyledTextField = styled(MUITextField)(({ theme }) => ({
   margin: theme.spacing(0),
@@ -89,30 +79,5 @@ export function DescriptionInputField({
         variant={'standard'}
       />
     </>
-  )
-}
-
-/**
- * Component wrapped to be used with @ts-react/form
- *
- */
-export default function DescriptionInputFieldWithTSForm() {
-  const { error, field } = useTsController<z.infer<typeof DescriptionTextSchema>>()
-  const { label, placeholder } = useDescription()
-
-  function onChange(value: string) {
-    field.onChange(value)
-  }
-
-  return (
-    <Wrapper>
-      <DescriptionInputField
-        error={error ? convertToFieldError(error) : undefined}
-        label={label}
-        onChange={onChange}
-        placeholder={placeholder}
-        value={field.value}
-      />
-    </Wrapper>
   )
 }

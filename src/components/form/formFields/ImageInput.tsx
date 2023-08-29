@@ -15,16 +15,12 @@ import {
   styled,
 } from '@mui/material'
 import { colors } from '@thebadge/ui-library'
-import { useDescription, useTsController } from '@ts-react/form'
 import { FieldError } from 'react-hook-form'
 import ImageUploading, { ImageListType, ImageType } from 'react-images-uploading'
-import { z } from 'zod'
 
-import UploadIllustration from '../assets/UploadIllustration'
-import { TextFieldStatus } from '@/src/components/form/TextField'
+import UploadIllustration from '../../assets/UploadIllustration'
+import { TextFieldStatus } from '@/src/components/form/formFields/TextField'
 import { FormField } from '@/src/components/form/helpers/FormField'
-import { ImageSchema } from '@/src/components/form/helpers/customSchemas'
-import { convertToFieldError } from '@/src/components/form/helpers/validators'
 
 const Wrapper = styled(Box, {
   shouldForwardProp: (propName) => propName !== 'error',
@@ -203,32 +199,5 @@ export function ImageInput({ error, label, onChange, placeholder, value }: Image
         statusText={error?.message}
       />
     </Wrapper>
-  )
-}
-
-/**
- * Component wrapped to be used with @ts-react/form
- *
- */
-export default function ImageInputWithTSForm() {
-  const { error, field } = useTsController<z.infer<typeof ImageSchema>>()
-  const { label, placeholder } = useDescription()
-
-  return (
-    <ImageInput
-      error={error ? convertToFieldError(error) : undefined}
-      label={label}
-      onChange={(value: ImageType | null) => {
-        if (value) {
-          // We change the structure a little bit to have it ready to push to the backend
-          field.onChange({
-            mimeType: value.file?.type,
-            base64File: value.base64File,
-          })
-        } else field.onChange(null)
-      }}
-      placeholder={placeholder}
-      value={field.value}
-    />
   )
 }

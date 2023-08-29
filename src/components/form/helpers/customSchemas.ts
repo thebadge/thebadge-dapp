@@ -70,7 +70,6 @@ export const EmailSchema = createUniqueFieldSchema(
 )
 
 export const TokenInputSchema = z.string({ required_error: 'Is required' })
-export const TokenInputSchemaBranded = createUniqueFieldSchema(TokenInputSchema, 'TokenInputSchema')
 
 export const NumberSchema = createUniqueFieldSchema(
   z.number({
@@ -164,10 +163,6 @@ export const ExpirationTypeSchema = z.number({
   required_error: 'Is required',
   invalid_type_error: 'Must enter an amount of days',
 })
-export const ExpirationTypeSchemaBranded = createUniqueFieldSchema(
-  ExpirationTypeSchema,
-  'ExpirationTypeSchema',
-)
 
 export const ChallengePeriodTypeSchema = createUniqueFieldSchema(
   z

@@ -1,20 +1,19 @@
-import { Box, styled } from '@mui/material'
+import { Stack, styled } from '@mui/material'
 
 import { DataGrid } from '@/src/components/form/customForms/type'
 
-const FlexFormContainer = styled(Box, {
+const FlexFormContainer = styled(Stack, {
   shouldForwardProp: (propName: string) =>
     propName !== 'gridColumns' && propName !== 'gridStructure' && propName !== 'rowHeight',
 })<{ gridStructure?: DataGrid[] }>(({ theme }) => ({
-  display: 'flex',
-  flexFlow: 'row wrap',
   justifyContent: 'center',
-  gap: theme.spacing(2),
-  alignItems: 'flex-end',
+  gap: theme.spacing(3),
+  alignItems: 'flex-start',
   margin: theme.spacing(2, 0),
   '& > *': {
     display: 'flex',
-    flex: '1 1 40%',
+    flex: '1',
+    width: '100%',
   },
 }))
 
