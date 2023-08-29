@@ -18,6 +18,7 @@ const SubtitleContainer = styled(Box)(({ theme }) => ({
     flexDirection: 'column',
   },
 }))
+
 const HintContainer = styled(Box)(({ theme }) => ({
   alignItems: 'center',
   display: 'flex',
@@ -27,6 +28,14 @@ const HintContainer = styled(Box)(({ theme }) => ({
   padding: theme.spacing(1.5),
   borderRadius: theme.spacing(1),
   margin: 'auto',
+}))
+
+const SubtitleTypography = styled(MarkdownTypography)(({ theme }) => ({
+  width: '65%',
+  textAlign: 'justify',
+  [theme.breakpoints.down('sm')]: {
+    width: '100%',
+  },
 }))
 
 export default function StepHeaderSubtitle({
@@ -40,9 +49,7 @@ export default function StepHeaderSubtitle({
 }) {
   return (
     <SubtitleContainer>
-      <MarkdownTypography textAlign="justify" variant="body2" width="65%">
-        {subTitle}
-      </MarkdownTypography>
+      <SubtitleTypography variant="body2">{subTitle}</SubtitleTypography>
 
       {showHint && hint && (
         <HintContainer>
