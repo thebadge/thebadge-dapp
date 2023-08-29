@@ -15,6 +15,7 @@ import {
 import { JsonRpcProvider, Web3Provider } from '@ethersproject/providers'
 import { OnboardAPI, WalletState } from '@web3-onboard/core'
 import injectedModule from '@web3-onboard/injected-wallets'
+import mewWalletModule from '@web3-onboard/mew-wallet'
 import { init, useConnectWallet, useSetChain, useWallets } from '@web3-onboard/react'
 import walletConnectModule from '@web3-onboard/walletconnect'
 import web3authModule from '@web3-onboard/web3auth'
@@ -65,6 +66,7 @@ const wcInitOptions = {
    */
   requiredChains: [Chains.goerli, Chains.gnosis],
 }
+const mewWallet = mewWalletModule()
 const walletConnect = walletConnectModule(wcInitOptions)
 const web3auth = web3authModule({
   clientId: isTestnet ? WEB3_AUTH_CLIENT_ID_TESTNET : WEB3_AUTH_CLIENT_ID_PRODUCTION, // Client ID from Web3Auth Dashboard
@@ -109,14 +111,15 @@ export function initOnboard() {
   if (typeof window === 'undefined' || window?.onboard || onBoardApi) return
 
   onBoardApi = init({
-    wallets: [injected, walletConnect, web3auth],
+    wallets: [injected, walletConnect, web3auth, mewWallet],
     chains: chainsForOnboard,
     notify: {
       enabled: false,
     },
     appMetadata: {
       name: appName || '',
-      icon: '/favicon/favicon.svg', // brand icon
+      icon: '/favicon/favicon-32x32.png',
+      logo: '/favicon/favicon.svg',
       description: 'The Badge DApp',
       recommendedInjectedWallets: [{ name: 'MetaMask', url: 'https://metamask.io' }],
     },
@@ -126,7 +129,7 @@ export function initOnboard() {
         enabled: false,
       },
       mobile: {
-        enabled: false,
+        enabled: true,
       },
     },
     i18n: {
