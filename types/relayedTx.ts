@@ -16,6 +16,8 @@ export interface RelayedTx {
 
   signature: string
 
+  appPubKey: string
+
   userAccount: {
     userSocialInfo: Partial<UserInfo>
     address: string

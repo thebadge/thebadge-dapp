@@ -23,7 +23,8 @@ import { NextPageWithLayout } from '@/types/next'
 import { SupportedRelayMethods } from '@/types/relayedTx'
 
 const MintBadgeType: NextPageWithLayout = () => {
-  const { address, appChainId, isSocialWallet, userSocialInfo, web3Provider } = useWeb3Connection()
+  const { address, appChainId, appPubKey, isSocialWallet, userSocialInfo, web3Provider } =
+    useWeb3Connection()
   const theBadge = useContractInstance(TheBadge__factory, 'TheBadge')
   const { resetTxState, sendRelayTx, sendTx, state } = useTransaction()
   const router = useRouter()
@@ -84,8 +85,7 @@ const MintBadgeType: NextPageWithLayout = () => {
         const klerosBadgeModelControllerDataEncoded = encodeIpfsEvidence(evidenceIPFSHash)
 
         // If social login relay tx
-        // @todo (agustin) add more validations, also on backend, user should be authenticated
-        if (isSocialWallet && address && userSocialInfo) {
+        if (isSocialWallet && address && userSocialInfo && appPubKey) {
           const data = JSON.stringify({
             badgeModelId,
             address,
@@ -113,6 +113,7 @@ const MintBadgeType: NextPageWithLayout = () => {
               address,
               userSocialInfo,
             },
+            appPubKey,
           })
         }
         // If user is not social logged, just send the tx
