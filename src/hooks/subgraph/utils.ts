@@ -15,7 +15,10 @@ import { BackendResponse } from '@/types/utils'
 export async function getFromIPFS<T, X = {}>(hash?: string) {
   if (!hash) return
   const cleanedHash = cleanHash(hash as string)
-  if (!cleanedHash) return
+  if (!cleanedHash) {
+    console.warn('Invalid hash provided on getFromIPFS', { hash })
+    return
+  }
 
   const cachedResponse = getCacheResponse<BackendResponse<{ content: T } & X>>(
     `${BACKEND_URL}/api/ipfs/${cleanedHash}`,

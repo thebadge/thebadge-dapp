@@ -77,7 +77,7 @@ export async function createAndUploadClearingAndRegistrationFilesForKleros(
   // If the user has made the criteria on our own text area, we need to convert it to PDF on Base64
   if (badgeModelCriteria.criteriaDeltaText) {
     badgeModelCriteriaFile.base64File = await transformDeltaToPDF(
-      badgeModelCriteria.criteriaDeltaText.delta,
+      badgeModelCriteria.criteriaDeltaText,
     )
   }
 
@@ -90,17 +90,22 @@ export async function createAndUploadClearingAndRegistrationFilesForKleros(
     badgeModelLogoUri,
   )
 
-  const registrationIPFSUploaded = await ipfsUpload<KlerosListStructure>({
+  const registrationIPFSUploadedPromise = ipfsUpload<KlerosListStructure>({
     attributes: registration,
     filePaths: ['fileURI', 'metadata.logoURI'],
     needKlerosPath: true,
   })
 
-  const clearingIPFSUploaded = await ipfsUpload<KlerosListStructure>({
+  const clearingIPFSUploadedPromise = ipfsUpload<KlerosListStructure>({
     attributes: clearing,
     filePaths: ['fileURI', 'metadata.logoURI'],
     needKlerosPath: true,
   })
+
+  const [registrationIPFSUploaded, clearingIPFSUploaded] = await Promise.all([
+    registrationIPFSUploadedPromise,
+    clearingIPFSUploadedPromise,
+  ])
 
   return {
     clearingIPFSHash: convertHashToValidIPFSKlerosHash(clearingIPFSUploaded.result?.ipfsHash),

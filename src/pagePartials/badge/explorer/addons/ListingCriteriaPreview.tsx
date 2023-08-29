@@ -9,13 +9,10 @@ import { useRegistrationBadgeModelKlerosMetadata } from '@/src/hooks/subgraph/us
 export function ListingCriteriaPreview({ badgeModelId }: { badgeModelId: string }) {
   const badgeModelKlerosData = useRegistrationBadgeModelKlerosMetadata(badgeModelId)
   const badgeModelKlerosMetadata = badgeModelKlerosData.data?.badgeModelKlerosRegistrationMetadata
-
+  const badgeCriteriaUrl = badgeModelKlerosData.data?.badgeRegistrationCriteria
   if (!badgeModelKlerosMetadata) {
     throw 'There was an error with the metadata. Try again in some minutes.'
   }
-
-  const badgeCriteriaUrl =
-    's3Url' in badgeModelKlerosMetadata.fileURI ? badgeModelKlerosMetadata?.fileURI.s3Url : ''
 
   return (
     <>
