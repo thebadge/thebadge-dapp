@@ -31,7 +31,8 @@ export type ListFilter<K = unknown> = {
 
 // TODO: It would be nice to add K to ListFilter here, but it exceeds my TS know
 type FilteredListProps = PropsWithChildren & {
-  id: string
+  // listId is used to store the selected filters by the user
+  listId?: string
   title: string
   titleColor?: string
   filters?: Array<ListFilter>
@@ -76,7 +77,7 @@ const LastUpdateTypography = styled(Typography)(() => ({
 
 export default function FilteredList({
   filters = [],
-  id,
+  listId,
   showTextSearch = true,
   ...props
 }: FilteredListProps) {
@@ -85,7 +86,7 @@ export default function FilteredList({
   const { mode } = useColorMode()
   const chainId = useChainId()
 
-  const { selectedFilters, setSelectedFilters } = useSelectedFilters({ listId: id, filters })
+  const { selectedFilters, setSelectedFilters } = useSelectedFilters({ listId, filters })
   const [selectedCategory, setSelectedCategory] = useState<string>('')
   const [initialLoadDone, setInitialLoadDone] = useState<boolean>(false)
   const [lastSearchTimestamp, setLastSearchTimestamp] = useState<number | undefined>()

@@ -26,7 +26,7 @@ import {
 } from '@/src/utils/badges/challengeBadgesHelpers'
 import { Badge } from '@/types/generated/subgraph'
 
-const filters: Array<ListFilter> = [
+const filters: Array<ListFilter<'In Review' | 'Challenged'>> = [
   {
     title: 'In Review',
     color: 'green',
@@ -123,7 +123,6 @@ export default function BadgesIAmReviewingSection() {
       <FilteredList
         disableEdit
         filters={filters}
-        id="reviewing-badges-explorer-list"
         loading={loading}
         loadingColor={'green'}
         preview={renderSelectedBadgePreview()}

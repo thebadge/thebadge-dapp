@@ -83,7 +83,6 @@ const ExploreBadgeTypes: NextPageWithLayout = () => {
   return (
     <>
       <FilteredList
-        id="mint-explorer-list"
         loading={loading}
         loadingColor={'blue'}
         preview={renderSelectedBadgePreview()}

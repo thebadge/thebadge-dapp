@@ -7,7 +7,7 @@ export default function useSelectedFilters({
   filters,
   listId,
 }: {
-  listId: string
+  listId: string | undefined
   filters: Array<ListFilter>
 }) {
   const { address } = useWeb3Connection()
@@ -29,7 +29,10 @@ export default function useSelectedFilters({
   return { selectedFilters, setSelectedFilters }
 }
 
-function getStoredColumnVisibility(listId: string, address: string | null): ListFilter[] | null {
+function getStoredColumnVisibility(
+  listId: string | undefined,
+  address: string | null,
+): ListFilter[] | null {
   if (!listId) return null
   const stored = localStorage.getItem(`${listId}-selectedFilters-${address ?? ''}`)
   if (stored) return JSON.parse(stored) as ListFilter[]
