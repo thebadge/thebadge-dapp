@@ -38,6 +38,7 @@ export default function SafeSuspense({
         <GeneralError error={error} resetErrorBoundary={resetErrorBoundary} />
       )}
       onError={(error, info) => isDev && console.error(error, info)}
+      resetKeys={[children]}
     >
       <Suspense fallback={fallback}>{children}</Suspense>
     </ErrorBoundary>
@@ -59,6 +60,7 @@ export function withPageGenericSuspense<TProps>(
         <GeneralPageError error={error} resetErrorBoundary={resetErrorBoundary} />
       )}
       onError={(error, info) => isDev && console.error(error, info)}
+      resetKeys={[Page]}
     >
       <Suspense
         fallback={
