@@ -86,7 +86,6 @@ const ExploreBadgeTypes: NextPageWithLayout = () => {
   return (
     <>
       <FilteredList
-        id="model-explorer-list"
         loading={loading}
         loadingColor={'blue'}
         preview={renderSelectedBadgePreview()}
