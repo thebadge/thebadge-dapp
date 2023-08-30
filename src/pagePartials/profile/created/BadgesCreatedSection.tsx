@@ -82,7 +82,6 @@ export default function BadgesCreatedSection() {
   return (
     <RequiredCreatorAccess>
       <FilteredList
-        filters={[]}
         loading={loading}
         loadingColor={'primary'}
         search={search}
