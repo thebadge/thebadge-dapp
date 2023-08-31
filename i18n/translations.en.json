@@ -70,8 +70,6 @@
       "owners": "Badge\nOwners",
       "creators": "Badge\nCreators",
       "curators": "Badge Curators"
-
-
     }
   },
   "header": {
@@ -172,7 +170,22 @@
       "removalChallenge": "You have requested the removal of this badge",
       "curate": "Curate a badge"
     },
-    "verified": "Verified user"
+    "verified": "Verified user",
+    "statistics": {
+      "title": "Statistics",
+      "lastUpdated": "Last update",
+      "creator": {
+        "title": "Creator",
+        "amountModelCreated": "Amount of model created",
+        "amountOfMinters": "Amount of user that mint your badges",
+        "uniqueMinters": "Number of unique minters",
+        "totalEarned": "Total fee earned",
+        "rankingPosition": "Position in creators ranking",
+        "mostMinted": "Most minted badge",
+        "totalMinted": "Amount of badges model minted",
+        "ranking": "Ranking #{{position}}"
+      }
+    }
   },
   "errors": {
     "connectWallet": "Connect your wallet",

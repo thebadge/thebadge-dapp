@@ -12,3 +12,16 @@ export const PROTOCOL_STATISTICS = gql`
     }
   }
 `
+export const CREATOR_STATISTICS = gql`
+  query creatorStatistics($address: ID!) {
+    creatorStatistic(id: $address) {
+      allTimeBadgeMinters
+      allTimeBadgeMintersAmount
+      createdBadgeModelsAmount
+      createdBadgeModelsMintedAmount
+      mostPopularCreatedBadge
+      id
+      totalFeesEarned
+    }
+  }
+`

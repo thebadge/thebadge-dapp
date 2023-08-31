@@ -8,6 +8,7 @@ import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import BadgesCreatedSection from '@/src/pagePartials/profile/created/BadgesCreatedSection'
 import MyProfileSection from '@/src/pagePartials/profile/myProfile/MyProfileSection'
 import BadgesIAmReviewingSection from '@/src/pagePartials/profile/reviewing/BadgesIAmReviewingSection'
+import CreatorStatistics from '@/src/pagePartials/profile/statistics/creator/CreatorStatistics'
 import InfoPreview from '@/src/pagePartials/profile/userInfo/InfoPreview'
 import { InfoPreviewSkeleton } from '@/src/pagePartials/profile/userInfo/InfoPreview.skeleton'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
@@ -72,6 +73,7 @@ const Profile = () => {
         </Box>
       </Stack>
 
+      <CreatorStatistics />
       {!selectedFilter && <MyProfileSection />}
       {selectedFilter === ProfileFilter.BADGES_I_AM_REVIEWING && <BadgesIAmReviewingSection />}
       {selectedFilter === ProfileFilter.CREATED_BADGES && <BadgesCreatedSection />}
