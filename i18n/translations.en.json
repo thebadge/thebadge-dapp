@@ -184,6 +184,24 @@
         "mostMinted": "Most minted badge",
         "totalMinted": "Amount of badges model minted",
         "ranking": "Ranking #{{position}}"
+      },
+      "curator": {
+        "title": "Curator",
+        "amountChallengesMade": "Number of challenges made",
+        "amountChallengesWon": "Number of challenges won ",
+        "amountChallengesLost": "Number of challenges lost ",
+        "avgFeeWon": "AVG of fees earned by challenges made ",
+        "percentageWon": "% of challenges won",
+        "rankingPosition": "Position in curators ranking",
+        "ranking": "Ranking #{{position}}"
+      },
+      "user": {
+        "title": "Badge User",
+        "amountChallengesWon":"Number of challenges won",
+        "amountChallengesReceived": "Number of challenges received",
+        "minted": "Amount of badges minted",
+        "withoutLost": "Days without challenges",
+        "rankingPosition": "Position in curators ranking"
       }
     }
   },

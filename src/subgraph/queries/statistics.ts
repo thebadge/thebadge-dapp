@@ -25,3 +25,29 @@ export const CREATOR_STATISTICS = gql`
     }
   }
 `
+
+export const CURATOR_STATISTICS = gql`
+  query curatorStatistics($address: ID!) {
+    curatorStatistic(id: $address) {
+      challengesMadeAmount
+      challengesMadeLostAmount
+      challengesMadeRejectedAmount
+      challengesMadeWonAmount
+      id
+    }
+  }
+`
+
+export const USER_STATISTICS = gql`
+  query userStatistics($address: ID!) {
+    userStatistic(id: $address) {
+      challengesReceivedAmount
+      challengesReceivedLostAmount
+      challengesReceivedRejectedAmount
+      challengesReceivedWonAmount
+      id
+      mintedBadgesAmount
+      timeOfLastChallengeReceived
+    }
+  }
+`

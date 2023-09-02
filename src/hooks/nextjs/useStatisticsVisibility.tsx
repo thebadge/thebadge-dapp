@@ -43,7 +43,11 @@ export default function useStatisticVisibility(
           ...(deselectColumn && { [deselectColumn]: !prev[deselectColumn] }),
           [columnName]: !prev[columnName],
         }
-        localStorage.setItem(`${category}-statisticVisibility-${address}`, JSON.stringify(newValue))
+        // TODO Swap it to localstorage later, we want it to be clean start btw each test
+        sessionStorage.setItem(
+          `${category}-statisticVisibility-${address}`,
+          JSON.stringify(newValue),
+        )
         return newValue
       })
       setStack(() => [columnName, ...stack])
@@ -65,7 +69,7 @@ function getStoredStatisticVisibility(
   address: string | null,
 ): StatisticVisibility | null {
   if (!address) return null
-  const stored = localStorage.getItem(`${category}-statisticVisibility-${address}`)
+  const stored = sessionStorage.getItem(`${category}-statisticVisibility-${address}`)
   if (stored) return JSON.parse(stored) as StatisticVisibility
   return null
 }
