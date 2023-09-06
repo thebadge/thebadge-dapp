@@ -176,20 +176,20 @@
       "lastUpdated": "Last update",
       "creator": {
         "title": "Creator",
-        "amountModelCreated": "Amount of model created",
-        "amountOfMinters": "Amount of user that mint your badges",
+        "amountModelCreated": "Models created",
+        "amountOfMinters": "Users that minted your badges",
         "uniqueMinters": "Number of unique minters",
         "totalEarned": "Total fee earned",
         "rankingPosition": "Position in creators ranking",
         "mostMinted": "Most minted badge",
-        "totalMinted": "Amount of badges model minted",
+        "totalMinted": "Badges minted",
         "ranking": "Ranking #{{position}}"
       },
       "curator": {
         "title": "Curator",
-        "amountChallengesMade": "Number of challenges made",
-        "amountChallengesWon": "Number of challenges won ",
-        "amountChallengesLost": "Number of challenges lost ",
+        "amountChallengesMade": "Challenges made",
+        "amountChallengesWon": "Challenges won ",
+        "amountChallengesLost": "Challenges lost ",
         "avgFeeWon": "AVG of fees earned by challenges made ",
         "percentageWon": "% of challenges won",
         "rankingPosition": "Position in curators ranking",
@@ -197,9 +197,9 @@
       },
       "user": {
         "title": "Badge User",
-        "amountChallengesWon":"Number of challenges won",
-        "amountChallengesReceived": "Number of challenges received",
-        "minted": "Amount of badges minted",
+        "amountChallengesWon":"Challenges won",
+        "amountChallengesReceived": "Challenges received",
+        "minted": "Badges minted",
         "withoutLost": "Days without challenges",
         "rankingPosition": "Position in curators ranking"
       }
