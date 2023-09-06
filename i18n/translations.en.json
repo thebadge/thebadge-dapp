@@ -70,8 +70,6 @@
       "owners": "Badge\nOwners",
       "creators": "Badge\nCreators",
       "curators": "Badge Curators"
-
-
     }
   },
   "header": {
@@ -172,7 +170,40 @@
       "removalChallenge": "You have requested the removal of this badge",
       "curate": "Curate a badge"
     },
-    "verified": "Verified user"
+    "verified": "Verified user",
+    "statistics": {
+      "title": "Statistics",
+      "lastUpdated": "Last update",
+      "creator": {
+        "title": "Creator",
+        "amountModelCreated": "Models created",
+        "amountOfMinters": "Users that minted your badges",
+        "uniqueMinters": "Unique minters",
+        "totalEarned": "Total fee earned",
+        "rankingPosition": "Position in creators ranking",
+        "mostMinted": "Most minted badge",
+        "totalMinted": "Badges minted",
+        "ranking": "Ranking #{{position}}"
+      },
+      "curator": {
+        "title": "Curator",
+        "amountChallengesMade": "Challenges made",
+        "amountChallengesWon": "Challenges won ",
+        "amountChallengesLost": "Challenges lost ",
+        "avgFeeWon": "AVG of fees earned by challenges made ",
+        "percentageWon": "% of challenges won",
+        "rankingPosition": "Position in curators ranking",
+        "ranking": "Ranking #{{position}}"
+      },
+      "user": {
+        "title": "Badge User",
+        "amountChallengesWon":"Challenges won",
+        "amountChallengesReceived": "Challenges received",
+        "minted": "Badges minted",
+        "withoutLost": "Days without challenges",
+        "rankingPosition": "Position in curators ranking"
+      }
+    }
   },
   "errors": {
     "connectWallet": "Connect your wallet",
