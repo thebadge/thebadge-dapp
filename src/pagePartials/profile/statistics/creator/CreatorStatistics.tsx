@@ -14,9 +14,9 @@ import CreatorStatisticContent from '@/src/pagePartials/profile/statistics/creat
 
 export enum CreatorStatistic {
   fee = 'Fees collected per badge',
-  amount = 'Amount of badge types created ',
-  minters = 'Amount of users that minted badges types',
-  minted = 'Amount of badges types minted',
+  amount = 'Badge models created ',
+  minters = 'Users that minted badges',
+  minted = 'Badges minted',
   mostMinted = 'Most popular badge model',
   ranking = 'Position in creators ranking',
 }
