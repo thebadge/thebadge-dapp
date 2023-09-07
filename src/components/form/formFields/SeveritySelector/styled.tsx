@@ -75,3 +75,11 @@ export const Title = styled(Typography)(() => ({
   fontSize: '14px !important',
   textAlign: 'left',
 }))
+
+export const DisplayLabel = styled(Typography)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'row',
+  minWidth: '25%',
+  gap: theme.spacing(1),
+  fontSize: '14px !important',
+}))

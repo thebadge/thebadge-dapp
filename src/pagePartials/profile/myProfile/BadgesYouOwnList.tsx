@@ -85,6 +85,7 @@ export default function BadgesYouOwnList({ address }: Props) {
   return (
     <FilteredList
       filters={filters}
+      listId={isLoggedInUser ? 'owned-badges-explorer-list' : 'preview-badges-explorer-list'}
       loading={loading}
       loadingColor={'blue'}
       search={search}
