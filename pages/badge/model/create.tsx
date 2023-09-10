@@ -7,14 +7,14 @@ import useTransaction from '@/src/hooks/useTransaction'
 import CreateWithSteps from '@/src/pagePartials/badge/model/CreateWithSteps'
 import { CreateModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateModelSchema'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
-import { TheBadge__factory } from '@/types/generated/typechain'
+import { TheBadgeModels__factory } from '@/types/generated/typechain'
 import { NextPageWithLayout } from '@/types/next'
 
 const CreateBadgeType: NextPageWithLayout = () => {
   const { resetTxState, sendTx, state: transactionState } = useTransaction()
 
   const { address, appChainId, readOnlyAppProvider } = useWeb3Connection()
-  const theBadge = useContractInstance(TheBadge__factory, 'TheBadge')
+  const theBadgeModels = useContractInstance(TheBadgeModels__factory, 'TheBadgeModels')
 
   const onSubmit = async (data: CreateModelSchemaType) => {
     const {
@@ -76,7 +76,7 @@ const CreateBadgeType: NextPageWithLayout = () => {
           challengePeriodDuration,
         )
 
-        return theBadge.createBadgeModel(
+        return theBadgeModels.createBadgeModel(
           {
             metadata: badgeModelMetadataIPFSHash,
             controllerName: 'kleros', // TODO kleros is hardcoded as controller for now
