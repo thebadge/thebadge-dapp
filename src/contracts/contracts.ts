@@ -5,7 +5,7 @@ import { Chains } from '@/src/config/web3'
 export const contracts = {
   TheBadge: {
     address: {
-      [Chains.goerli]: '0x51729CD6225C5B5dCfe381F509d0d61249158861',
+      [Chains.goerli]: '0x641063Acf18E0D24d3F39bF2caaEEB461F7364Dd',
       [Chains.sepolia]: '0xec5b3e3E14D201D47fC7b7fE0F6Fc7833783A248',
       [Chains.gnosis]: 'null',
     },
@@ -13,7 +13,7 @@ export const contracts = {
   },
   TheBadgeUsers: {
     address: {
-      [Chains.goerli]: '0xBc3bb63D2295e4eC65c22BdD89F7Cc287dcD93Bb',
+      [Chains.goerli]: '0x02D3ADB3eD0aBf35118C4EbB2aA4900141ea2E6F',
       [Chains.sepolia]: 'null',
       [Chains.gnosis]: 'null',
     },
@@ -21,7 +21,7 @@ export const contracts = {
   },
   TheBadgeModels: {
     address: {
-      [Chains.goerli]: '0x3cbdE3195832c01639704536079F7328e79f0206',
+      [Chains.goerli]: '0x5691238636b924d16192283854d97872b08272aA',
       [Chains.sepolia]: 'null',
       [Chains.gnosis]: 'null',
     },

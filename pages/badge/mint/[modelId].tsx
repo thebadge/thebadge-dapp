@@ -22,7 +22,7 @@ import { MetadataColumn } from '@/types/kleros/types'
 import { NextPageWithLayout } from '@/types/next'
 import { SupportedRelayMethods } from '@/types/relayedTx'
 
-const MintBadgeType: NextPageWithLayout = () => {
+const MintBadgeModel: NextPageWithLayout = () => {
   const { address, appChainId, appPubKey, isSocialWallet, userSocialInfo, web3Provider } =
     useWeb3Connection()
   const theBadge = useContractInstance(TheBadge__factory, 'TheBadge')
@@ -146,4 +146,4 @@ const MintBadgeType: NextPageWithLayout = () => {
   )
 }
 
-export default withPageGenericSuspense(MintBadgeType)
+export default withPageGenericSuspense(MintBadgeModel)
