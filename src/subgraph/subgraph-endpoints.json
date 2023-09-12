@@ -1,9 +1,9 @@
 {
   "5": {
-    "theBadge": "https://api.thegraph.com/subgraphs/name/thebadgeadmin/develop"
+    "theBadge": "https://api.thegraph.com/subgraphs/name/thebadgeadmin/thebadge-goerli-staging"
   },
   "11155111": {
-    "theBadge": "https://api.studio.thegraph.com/query/51391/thebadge-dev/version/latest"
+    "theBadge": "https://api.studio.thegraph.com/query/51391/thebadge-sepolia-staging/version/latest"
   },
   "100": {
     "theBadge": ""
