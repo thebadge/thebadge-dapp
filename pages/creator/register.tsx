@@ -12,14 +12,14 @@ import { CreatorRegisterSchemaType } from '@/src/pagePartials/creator/register/s
 import { PreventActionIfRegisterPaused } from '@/src/pagePartials/errors/preventActionIfPaused'
 import { ProfileFilter } from '@/src/pagePartials/profile/Profile'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
-import { TheBadge__factory } from '@/types/generated/typechain'
+import { TheBadgeUsers__factory } from '@/types/generated/typechain'
 import { NextPageWithLayout } from '@/types/next'
 
 const Register: NextPageWithLayout = () => {
   const router = useRouter()
   const { address } = useWeb3Connection()
   const { resetTxState, sendTx, state } = useTransaction()
-  const theBadge = useContractInstance(TheBadge__factory, 'TheBadge')
+  const theBadgeUsers = useContractInstance(TheBadgeUsers__factory, 'TheBadgeUsers')
   const gql = useSubgraph()
 
   useEffect(() => {
@@ -49,7 +49,7 @@ const Register: NextPageWithLayout = () => {
           '@/src/utils/creator/registerHelpers'
         )
         const creatorMetadataIPFSHash = await createAndUploadCreatorMetadata(data)
-        return theBadge.registerUser(creatorMetadataIPFSHash, false)
+        return theBadgeUsers.registerUser(creatorMetadataIPFSHash, false)
       })
 
       if (transaction) {
