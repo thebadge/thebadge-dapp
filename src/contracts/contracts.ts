@@ -5,11 +5,27 @@ import { Chains } from '@/src/config/web3'
 export const contracts = {
   TheBadge: {
     address: {
-      [Chains.goerli]: '0xa86D1858D751A2f71231456fC136c4837aD76009',
-      [Chains.sepolia]: '0xec5b3e3E14D201D47fC7b7fE0F6Fc7833783A248',
+      [Chains.goerli]: '0x86F127fef233C799f2aA130cCc919045f954957d',
+      [Chains.sepolia]: '0x83701fe7a462bD714A9006a9FF604367C24613E3',
       [Chains.gnosis]: 'null',
     },
-    abi: TheBadge,
+    abi: TheBadge.abi,
+  },
+  TheBadgeUsers: {
+    address: {
+      [Chains.goerli]: '0x196EF38Eca64a6FEa6E6Fc8AdF85Ac1BE44f4804',
+      [Chains.sepolia]: '0x5E7c648EE852241f145e1d480932C091979883D1',
+      [Chains.gnosis]: 'null',
+    },
+    abi: TheBadge.abi,
+  },
+  TheBadgeModels: {
+    address: {
+      [Chains.goerli]: '0x20933724e3C2F177d8Cfe4b1CEEF829A17aD883B',
+      [Chains.sepolia]: '0x5df8183d0B77Bea3B72391eB0c4c873d2fdDC6f2',
+      [Chains.gnosis]: 'null',
+    },
+    abi: TheBadge.abi,
   },
   Kleros: {
     address: {
