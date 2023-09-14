@@ -1,11 +1,13 @@
-import React, { useContext, useState } from 'react'
+import React, { useCallback, useContext, useState } from 'react'
 
 import CurateModal from '@/src/pagePartials/badge/curate/CurateModal'
+import AddEvidenceModal from '@/src/pagePartials/badge/curate/addEvidence/AddEvidenceModal'
 import ChallengeModal from '@/src/pagePartials/badge/curate/challenge/ChallengeModal'
 
 type CurateContextType = {
-  curate: (typeId: string, address: string) => void
-  challenge: (typeId: string, address: string) => void
+  curate: (badgeId: string) => void
+  challenge: (badgeId: string) => void
+  addMoreEvidence: (badgeId: string) => void
 }
 
 const CurateContext = React.createContext<CurateContextType>({
@@ -15,50 +17,62 @@ const CurateContext = React.createContext<CurateContextType>({
   challenge: () => {
     // Empty function
   },
+  addMoreEvidence: () => {
+    // Empty function
+  },
 })
 
 export default function CurateContextProvider({ children }: { children: React.ReactNode }) {
   const [curateModalOpen, setCurateModalOpen] = useState(false)
-  const [badgeTypeId, setBadgeTypeId] = useState('')
-  const [ownerAddress, setOwnerAddress] = useState('')
-
+  const [addEvidenceModalOpen, setAddEvidenceModalOpen] = useState(false)
   const [challengeModalOpen, setChallengeModalOpen] = useState(false)
-  function challenge(typeId: string, address: string) {
+
+  const [badgeId, setBadgeId] = useState('')
+
+  const challenge = useCallback((badgeId: string) => {
     setChallengeModalOpen(true)
-    setOwnerAddress(address)
-    setBadgeTypeId(typeId)
-  }
+    setBadgeId(badgeId)
+  }, [])
 
-  function handleCloseChallenge() {
+  const addMoreEvidence = useCallback((badgeId: string) => {
+    setAddEvidenceModalOpen(true)
+    setBadgeId(badgeId)
+  }, [])
+
+  const handleCloseChallenge = useCallback(() => {
     setChallengeModalOpen(false)
-  }
+  }, [])
 
-  function curate(typeId: string, address: string) {
+  const curate = useCallback((badgeId: string) => {
     setCurateModalOpen(true)
-    setOwnerAddress(address)
-    setBadgeTypeId(typeId)
-  }
+    setBadgeId(badgeId)
+  }, [])
 
-  function handleCloseCurate() {
+  const handleCloseCurate = useCallback(() => {
     setCurateModalOpen(false)
-  }
+  }, [])
+
+  const handleCloseAddEvidence = useCallback(() => {
+    setAddEvidenceModalOpen(false)
+  }, [])
 
   return (
-    <CurateContext.Provider value={{ curate, challenge }}>
+    <CurateContext.Provider value={{ curate, challenge, addMoreEvidence }}>
       {challengeModalOpen && (
         <ChallengeModal
-          badgeTypeId={badgeTypeId}
+          badgeId={badgeId}
           onClose={handleCloseChallenge}
           open={challengeModalOpen}
-          ownerAddress={ownerAddress}
         />
       )}
       {curateModalOpen && (
-        <CurateModal
-          badgeTypeId={badgeTypeId}
-          onClose={handleCloseCurate}
-          open={curateModalOpen}
-          ownerAddress={ownerAddress}
+        <CurateModal badgeId={badgeId} onClose={handleCloseCurate} open={curateModalOpen} />
+      )}
+      {addEvidenceModalOpen && (
+        <AddEvidenceModal
+          badgeId={badgeId}
+          onClose={handleCloseAddEvidence}
+          open={addEvidenceModalOpen}
         />
       )}
       {children}

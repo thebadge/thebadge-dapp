@@ -2,7 +2,7 @@ import * as React from 'react'
 
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import { Box, Divider, Tooltip, Typography, styled } from '@mui/material'
-import { colors } from 'thebadge-ui-library'
+import { colors } from '@thebadge/ui-library'
 
 import { FormField } from '@/src/components/form/helpers/FormField'
 import { Address } from '@/src/components/helpers/Address'
@@ -33,7 +33,7 @@ export function DisplayAddress({ label, placeholder, value }: DisplayAddressProp
             )}
           </Box>
         }
-        label={<Typography>{label}</Typography>}
+        label={<Typography variant="subtitle2">{label}</Typography>}
         labelPosition={'top-left'}
       />
       <Divider color={colors.white} sx={{ mt: -1 }} />

@@ -4,9 +4,11 @@ import React from 'react'
 import CloseIcon from '@mui/icons-material/Close'
 import ReportProblemOutlinedIcon from '@mui/icons-material/ReportProblemOutlined'
 import { Box, IconButton, Stack, Typography, styled } from '@mui/material'
+import { ButtonV2, colors, gradients } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
-import { ButtonV2, colors, gradients } from 'thebadge-ui-library'
 
+import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
+import { useBadgeOwnershipData } from '@/src/hooks/subgraph/useIsBadgeOwner'
 import { useColorMode } from '@/src/providers/themeProvider'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 
@@ -25,20 +27,27 @@ const ModalBody = styled(Box)(({ theme }) => ({
       ? gradients.gradientBackgroundLight
       : gradients.gradientBackgroundDark,
   borderRadius: theme.spacing(1),
-  boxShadow: `0px 0px 20px rgba(255, 255, 255, 0.6)`,
+  boxShadow: `0px 0px 15px rgba(255, 255, 255, 0.4)`,
   padding: theme.spacing(4),
   '& .MuiContainer-root': {
     maxWidth: '100%',
   },
 }))
 
-export default function AlreadyOwnThisBadgeError() {
+export default function AlreadyOwnThisBadgeError({ onClose }: { onClose: VoidFunction }) {
   const { t } = useTranslation()
   const { mode } = useColorMode()
   const router = useRouter()
   const { address } = useWeb3Connection()
+  const badgeModelId = useModelIdParam()
 
-  const badgeTypeId = router.query.typeId as string
+  const ownedBadges = useBadgeOwnershipData(badgeModelId, address as string)
+
+  if (!ownedBadges || !ownedBadges.length) {
+    // This case it would never happen, but it's the safest way to proceed
+    onClose()
+    return null
+  }
 
   return (
     <ModalBody>
@@ -46,7 +55,7 @@ export default function AlreadyOwnThisBadgeError() {
         aria-label="close you already own this badge modal"
         color="secondary"
         component="label"
-        onClick={() => router.push(`/`)}
+        onClick={onClose}
         sx={{ position: 'absolute', right: 8, top: 8 }}
       >
         <CloseIcon color="white" />
@@ -62,13 +71,24 @@ export default function AlreadyOwnThisBadgeError() {
         <ButtonV2
           backgroundColor={colors.transparent}
           fontColor={mode === 'light' ? colors.blackText : colors.white}
-          onClick={() => router.push(`/badge/${badgeTypeId}/${address}`)}
+          onClick={() => router.push(`/badge/preview/${ownedBadges[0].id}`)}
           sx={{
             borderRadius: '10px',
             fontSize: '14px !important',
           }}
         >
           Go to it
+        </ButtonV2>
+
+        <ButtonV2
+          fontColor={mode === 'light' ? colors.blackText : colors.white}
+          onClick={onClose}
+          sx={{
+            borderRadius: '10px',
+            fontSize: '14px !important',
+          }}
+        >
+          Continue anyways
         </ButtonV2>
       </Stack>
     </ModalBody>

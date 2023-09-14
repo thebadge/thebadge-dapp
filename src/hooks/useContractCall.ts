@@ -32,5 +32,8 @@ export function useContractCall<
     options,
   )
 
-  return [error ? { data: null, error } : { data, error: null }, refetch]
+  return [
+    error ? { data: null, error } : { data, error: null },
+    refetch,
+  ] as unknown as MySWRResponse<TupleReturnType<MyContract, Writeable<Calls>>>
 }

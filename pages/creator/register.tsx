@@ -2,72 +2,59 @@ import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 
 import { ethers } from 'ethers'
-import { z } from 'zod'
 
 import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
 import useTransaction, { TransactionStates } from '@/src/hooks/useTransaction'
-import RegistrationSteps, {
-  RegisterCuratorSchemaStep1,
-  RegisterCuratorSchemaStep2,
-  RegisterCuratorSchemaStep3,
-} from '@/src/pagePartials/creator/register/RegistrationSteps'
+import RegistrationWithSteps from '@/src/pagePartials/creator/register/RegistrationWithSteps'
+import { CreatorRegisterSchemaType } from '@/src/pagePartials/creator/register/schema/CreatorRegisterSchema'
 import { PreventActionIfRegisterPaused } from '@/src/pagePartials/errors/preventActionIfPaused'
-import { RequiredConnection } from '@/src/pagePartials/errors/requiredConnection'
+import { ProfileFilter } from '@/src/pagePartials/profile/Profile'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
-import ipfsUpload from '@/src/utils/ipfsUpload'
-import { TheBadge__factory } from '@/types/generated/typechain'
+import { TheBadgeUsers__factory } from '@/types/generated/typechain'
 import { NextPageWithLayout } from '@/types/next'
 
-// Merge all in one schema
-export const RegisterCuratorSchema = z
-  .object({})
-  .merge(RegisterCuratorSchemaStep1)
-  .merge(RegisterCuratorSchemaStep2)
-  .merge(RegisterCuratorSchemaStep3)
-
 const Register: NextPageWithLayout = () => {
-  const { address } = useWeb3Connection()
   const router = useRouter()
-  const { sendTx, state } = useTransaction()
+  const { address } = useWeb3Connection()
+  const { resetTxState, sendTx, state } = useTransaction()
+  const theBadgeUsers = useContractInstance(TheBadgeUsers__factory, 'TheBadgeUsers')
+  const gql = useSubgraph()
 
   useEffect(() => {
     // Redirect to the creator profile section
     if (state === TransactionStates.success) {
-      router.push(`/profile?filter=createdBadges`)
+      router.push(`/profile?filter=${ProfileFilter.CREATED_BADGES}`)
     }
   }, [router, state])
 
-  const theBadge = useContractInstance(TheBadge__factory, 'TheBadge')
-
-  const gql = useSubgraph()
   const userProfile = gql.useUserById({
     id: address || ethers.constants.AddressZero,
   })
 
   if (userProfile.data?.user?.isCreator) {
-    router.push('/profile?filter=createdBadges')
+    router.push(`/profile?filter=${ProfileFilter.CREATED_BADGES}`)
   }
 
-  async function onSubmit(data: z.infer<typeof RegisterCuratorSchema>) {
+  async function onSubmit(data: CreatorRegisterSchemaType) {
     if (!address) {
       throw Error('Web3 address not provided')
     }
-    const uploadedInfo = await ipfsUpload({
-      attributes: {
-        ...data,
-        logo: { mimeType: data.logo?.file.type, base64File: data.logo?.data_url },
-      },
-      filePaths: ['logo'],
-    })
 
     try {
-      const transaction = await sendTx(() =>
-        theBadge.registerEmitter(address, `ipfs://${uploadedInfo.result?.ipfsHash}`),
-      )
+      const transaction = await sendTx(async () => {
+        // Use NextJs dynamic import to reduce the bundle size
+        const { createAndUploadCreatorMetadata } = await import(
+          '@/src/utils/creator/registerHelpers'
+        )
+        const creatorMetadataIPFSHash = await createAndUploadCreatorMetadata(data)
+        return theBadgeUsers.registerUser(creatorMetadataIPFSHash, false)
+      })
 
-      await transaction.wait()
+      if (transaction) {
+        await transaction.wait()
+      }
     } catch (e) {
       // Do nothing
     }
@@ -75,9 +62,7 @@ const Register: NextPageWithLayout = () => {
 
   return (
     <PreventActionIfRegisterPaused>
-      <RequiredConnection>
-        <RegistrationSteps onSubmit={onSubmit} txState={state} />
-      </RequiredConnection>
+      <RegistrationWithSteps onSubmit={onSubmit} resetTxState={resetTxState} txState={state} />
     </PreventActionIfRegisterPaused>
   )
 }

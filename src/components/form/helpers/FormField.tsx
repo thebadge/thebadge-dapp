@@ -1,10 +1,11 @@
 import React, { cloneElement, useMemo } from 'react'
 
-import { Box, styled } from '@mui/material'
+import { Box, Theme, styled } from '@mui/material'
+import { SxProps } from '@mui/system'
 
-import { TextFieldStatus } from '../TextField'
 import { FormStatus } from './FormStatus'
 import { Label } from './Label'
+import { TextFieldStatus } from '../formFields/TextField'
 
 const StyledBox = styled(Box)<{ status?: TextFieldStatus }>(() => ({
   display: 'flex',
@@ -21,7 +22,17 @@ export const FormField: React.FC<{
   labelPosition?: 'top' | 'left' | 'top-left'
   status?: TextFieldStatus | undefined
   statusText?: string
-}> = ({ formControl, label, labelPosition = 'top', status, statusText = ' ', ...restProps }) => {
+  alignItems?: string
+  sx?: SxProps<Theme>
+}> = ({
+  alignItems,
+  formControl,
+  label,
+  labelPosition = 'top',
+  status,
+  statusText = ' ',
+  ...restProps
+}) => {
   const control = useMemo(
     () =>
       cloneElement(formControl, {
@@ -40,7 +51,7 @@ export const FormField: React.FC<{
           minWidth: '100%',
           maxWidth: '100%',
           justifyContent: 'center',
-          alignItems: labelPosition.includes('left') ? 'flex-start' : 'center',
+          alignItems: alignItems || (labelPosition.includes('left') ? 'flex-start' : 'center'),
         }}
       >
         {label && <Label>{label}</Label>}

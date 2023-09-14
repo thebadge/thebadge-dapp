@@ -21,7 +21,6 @@ module.exports = {
     }
   },
   plugins: [
-    'react-hooks',
     '@typescript-eslint',
     'sort-destructure-keys',
     'jsx-a11y',
@@ -32,11 +31,11 @@ module.exports = {
     'next/core-web-vitals',
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
-    'plugin:react-hooks/recommended',
     'plugin:import/typescript',
     'plugin:jsx-a11y/recommended',
     'prettier',
     'plugin:prettier/recommended',
+    "next"
   ],
   rules: {
     'import/extensions': 0,

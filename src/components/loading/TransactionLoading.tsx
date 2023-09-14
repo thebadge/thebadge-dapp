@@ -1,6 +1,8 @@
-import { DOMAttributes, HTMLAttributes } from 'react'
+import React, { DOMAttributes, HTMLAttributes } from 'react'
 
 import { Box, Typography, styled } from '@mui/material'
+import { ButtonV2, colors } from '@thebadge/ui-library'
+import { useTranslation } from 'next-export-i18n'
 
 import { LoadingArrow } from '@/src/components/loading/animated/LoadingArrow'
 import { LoadingCheck } from '@/src/components/loading/animated/LoadingCheck'
@@ -20,8 +22,12 @@ const Wrapper = styled(Box)`
 
 interface Props extends DOMAttributes<HTMLDivElement>, HTMLAttributes<HTMLDivElement> {
   state: TransactionStates
+  resetTxState?: VoidFunction
 }
-export const TransactionLoading: React.FC<Props> = ({ state, ...restProps }) => {
+
+export const TransactionLoading: React.FC<Props> = ({ resetTxState, state, ...restProps }) => {
+  const { t } = useTranslation()
+
   function renderState(state: TransactionStates) {
     switch (state) {
       case TransactionStates.none:
@@ -29,29 +35,38 @@ export const TransactionLoading: React.FC<Props> = ({ state, ...restProps }) => 
       case TransactionStates.waitingSignature:
         return (
           <>
-            <Typography variant="dAppTitle1">Waiting signature</Typography>
+            <Typography variant="dAppTitle1">{t('transactionLoading.signature')}</Typography>
             <LoadingArrow />
           </>
         )
       case TransactionStates.waitingMined:
         return (
           <>
-            <Typography variant="dAppTitle1">Waiting confirmation</Typography>
+            <Typography variant="dAppTitle1">{t('transactionLoading.confirmation')}</Typography>
             <LoadingDots />
           </>
         )
       case TransactionStates.success:
         return (
           <>
-            <Typography variant="dAppTitle1">Transaction done</Typography>
+            <Typography variant="dAppTitle1">{t('transactionLoading.done')}</Typography>
             <LoadingCheck />
           </>
         )
       case TransactionStates.failed:
         return (
           <>
-            <Typography variant="dAppTitle1">Transaction failed</Typography>
+            <Typography variant="dAppTitle1">{t('transactionLoading.failed')}</Typography>
             <LoadingFailed />
+            {resetTxState && (
+              <ButtonV2
+                backgroundColor={colors.transparent}
+                fontColor={colors.green}
+                onClick={resetTxState}
+              >
+                <Typography>Try again</Typography>
+              </ButtonV2>
+            )}
           </>
         )
     }

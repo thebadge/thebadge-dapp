@@ -1,19 +1,24 @@
-import React, { PropsWithChildren, ReactNode, useEffect, useState } from 'react'
+import React, { PropsWithChildren, ReactNode, useCallback, useEffect, useState } from 'react'
 
 import { Box, Chip, Divider, Stack, Typography, styled } from '@mui/material'
 import { ChipPropsColorOverrides } from '@mui/material/Chip/Chip'
 import { OverridableStringUnion } from '@mui/types'
+import { colors } from '@thebadge/ui-library'
+import dayjs from 'dayjs'
+import { useTranslation } from 'next-export-i18n'
 import Sticky from 'react-sticky-el'
-import { colors } from 'thebadge-ui-library'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
+import TimeAgo from '@/src/components/helpers/TimeAgo'
 import { Loading } from '@/src/components/loading/Loading'
 import { SpinnerColors } from '@/src/components/loading/Spinner'
 import TBSearchField from '@/src/components/select/SearchField'
 import TBadgeSelect from '@/src/components/select/Select'
+import useSelectedFilters from '@/src/hooks/nextjs/useSelectedFilters'
+import useChainId from '@/src/hooks/theBadge/useChainId'
 import { useColorMode } from '@/src/providers/themeProvider'
 
-export type ListFilter = {
+export type ListFilter<K = unknown> = {
   title: string
   color?: OverridableStringUnion<
     'default' | 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning',
@@ -21,9 +26,13 @@ export type ListFilter = {
   >
   defaultSelected?: boolean // default is false
   fixed?: boolean // if true, cannot be deselected, default is false
+  key?: K // the key to be used in the search function
 }
 
+// TODO: It would be nice to add K to ListFilter here, but it exceeds my TS know
 type FilteredListProps = PropsWithChildren & {
+  // listId is used to store the selected filters by the user
+  listId?: string
   title: string
   titleColor?: string
   filters?: Array<ListFilter>
@@ -37,6 +46,8 @@ type FilteredListProps = PropsWithChildren & {
   loadingColor?: SpinnerColors
   disableEdit?: boolean
   preview?: ReactNode | undefined
+  searchInputLabel?: string
+  showTextSearch?: boolean
 }
 
 const ItemsGridBox = styled(Box)(({ theme }) => ({
@@ -54,23 +65,57 @@ const FilteredListHeaderBox = styled(Box)(({ theme }) => ({
   alignItems: 'center',
 }))
 
-export default function FilteredList({ filters = [], ...props }: FilteredListProps) {
+const LastUpdateTypography = styled(Typography)(() => ({
+  display: 'inline-flex',
+  alignItems: 'center',
+  fontSize: '14px !important',
+  '&:hover': {
+    textDecoration: 'underline',
+  },
+  cursor: 'pointer',
+}))
+
+export default function FilteredList({
+  filters = [],
+  listId,
+  showTextSearch = true,
+  ...props
+}: FilteredListProps) {
+  const { t } = useTranslation()
+
   const { mode } = useColorMode()
-  const defaultSelectedFilters = filters.filter((f) => f.defaultSelected)
-  const [selectedFilters, setSelectedFilters] = useState<ListFilter[]>(defaultSelectedFilters)
+  const chainId = useChainId()
+
+  const { selectedFilters, setSelectedFilters } = useSelectedFilters({ listId, filters })
   const [selectedCategory, setSelectedCategory] = useState<string>('')
   const [initialLoadDone, setInitialLoadDone] = useState<boolean>(false)
+  const [lastSearchTimestamp, setLastSearchTimestamp] = useState<number | undefined>()
+
+  const onSearch = useCallback(
+    async (filters = selectedFilters, selectedCategory = '', textSearch = '') => {
+      await props.search(filters, selectedCategory, textSearch)
+      setLastSearchTimestamp(dayjs().unix())
+    },
+    [props, selectedFilters],
+  )
 
   useEffect(() => {
     if (!initialLoadDone) {
-      props.search(defaultSelectedFilters, '', '')
+      onSearch()
       setInitialLoadDone(true)
     }
-  }, [props, initialLoadDone, defaultSelectedFilters])
+  }, [initialLoadDone, onSearch])
 
-  const search = (textSearch?: string) => {
-    props.search(selectedFilters, selectedCategory, textSearch)
-  }
+  const onStringSearch = (textSearch?: string) =>
+    onSearch(selectedFilters, selectedCategory, textSearch)
+
+  const refresh = () => onSearch(selectedFilters, selectedCategory)
+
+  useEffect(() => {
+    // Not the best, but it's working... Feel free to recommend something better
+    refresh()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [chainId])
 
   const isFilterSelected = (filter: ListFilter) => {
     return !!selectedFilters.find((f) => f.title === filter.title)
@@ -79,21 +124,21 @@ export default function FilteredList({ filters = [], ...props }: FilteredListPro
   const handleSelectFilter = (filter: ListFilter) => {
     if (!isFilterSelected(filter)) {
       const newSelectedFilters = selectedFilters.concat(filter)
-      setSelectedFilters(() => newSelectedFilters)
-      props.search(newSelectedFilters, selectedCategory)
+      setSelectedFilters(newSelectedFilters)
+      onSearch(newSelectedFilters, selectedCategory)
     }
   }
   const handleRemoveFilter = (filter: ListFilter) => {
     if (!filter.fixed) {
       const newSelectedFilters = selectedFilters.filter((f) => f.title !== filter.title)
       setSelectedFilters(newSelectedFilters)
-      props.search(newSelectedFilters, selectedCategory)
+      onSearch(newSelectedFilters, selectedCategory)
     }
   }
 
   const handleSelectCategory = (selectedCategory: string) => {
     setSelectedCategory(selectedCategory)
-    props.search(selectedFilters, selectedCategory)
+    onSearch(selectedFilters, selectedCategory)
   }
 
   return (
@@ -134,22 +179,30 @@ export default function FilteredList({ filters = [], ...props }: FilteredListPro
           {props.categories ? (
             <TBadgeSelect
               items={props.categories}
-              label={'Category'}
+              label={t('filteredList.category')}
               onChange={(e) => handleSelectCategory(e.target.value)}
               selectedItem={selectedCategory}
             />
           ) : null}
 
           {/* text search */}
-          <TBSearchField
-            disabled={!!props.disableEdit}
-            label="Text Search"
-            onSearch={(searchValue) => search(searchValue)}
-          />
+          {showTextSearch && (
+            <TBSearchField
+              disabled={!!props.disableEdit}
+              label={props.searchInputLabel || t('filteredList.textSearch')}
+              onSearch={(searchValue) => onStringSearch(searchValue)}
+            />
+          )}
         </Box>
       </FilteredListHeaderBox>
       <Divider color={mode === 'dark' ? 'white' : 'black'} sx={{ borderWidth: '1px' }} />
 
+      <Stack my={1}>
+        <LastUpdateTypography ml="auto" onClick={refresh}>
+          {t('filteredList.lastUpdated')}
+          <TimeAgo timestamp={lastSearchTimestamp} />
+        </LastUpdateTypography>
+      </Stack>
       <Box display="flex" id="preview" mt={4}>
         <Box flex="3">
           {props.loading ? (

@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router'
 import { useState } from 'react'
 
 import { styled } from '@mui/material'
@@ -51,15 +52,20 @@ const CopyButton = styled('button')`
 interface Props {
   address: string
   showExternalLink?: boolean
+  isUserAddress?: boolean
   showCopyButton?: boolean
+  truncate?: boolean
 }
 
 export const Address: React.FC<Props> = ({
   address,
+  isUserAddress = false,
   showCopyButton = true,
   showExternalLink = true,
+  truncate = true,
   ...restProps
 }) => {
+  const router = useRouter()
   const { getExplorerUrl } = useWeb3Connection()
   const [toastId, setToastId] = useState('')
 
@@ -78,10 +84,14 @@ export const Address: React.FC<Props> = ({
     )
   }
 
+  function getProfileUrl() {
+    return `${router.basePath}/profile/${address}`
+  }
+
   return (
     <Wrapper {...restProps}>
-      <ExternalLink href={getExplorerUrl(address)}>
-        {truncateStringInTheMiddle(address, 8, 6)}
+      <ExternalLink href={isUserAddress ? getProfileUrl() : getExplorerUrl(address)}>
+        {truncate ? truncateStringInTheMiddle(address, 8, 6) : address}
       </ExternalLink>
       {showCopyButton && (
         <CopyButton onClick={() => copyAddress(address)}>

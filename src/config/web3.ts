@@ -12,16 +12,20 @@ import {
 export const Chains = {
   //mainnet: 1,
   goerli: 5,
+  sepolia: 11155111,
+  gnosis: 100,
 } as const
 
 export const providerChains: ProviderChains = {
   [RPCProviders.infura]: {
-    //[Chains.mainnet]: 'mainnet',
     [Chains.goerli]: 'goerli',
+    [Chains.sepolia]: 'sepolia',
+    [Chains.gnosis]: 'gnosis',
   },
   [RPCProviders.alchemy]: {
-    //[Chains.mainnet]: 'eth-mainnet',
     [Chains.goerli]: 'eth-goerli',
+    [Chains.sepolia]: 'eth-sepolia',
+    [Chains.gnosis]: 'xDai-gnosis',
   },
 }
 
@@ -67,6 +71,12 @@ export const INITIAL_APP_CHAIN_ID = Number(
   process.env.NEXT_PUBLIC_DEFAULT_CHAIN_ID || isGitHubActionBuild ? '5' : '42',
 ) as ChainsValues
 
+export const WALLET_CONNECT_ID = Number(
+  process.env.NEXT_PUBLIC_WALLET_CONNECT || isGitHubActionBuild
+    ? 'test'
+    : process.env.NEXT_PUBLIC_WALLET_CONNECT,
+) as ChainsValues
+
 export const chainsConfig: Record<ChainsValues, ChainConfig> = {
   [Chains.goerli]: {
     id: Chains.goerli,
@@ -77,6 +87,26 @@ export const chainsConfig: Record<ChainsValues, ChainConfig> = {
     rpcUrl: getProviderUrl(Chains.goerli),
     blockExplorerUrls: ['https://goerli.etherscan.io/'],
     token: 'ETH',
+  },
+  [Chains.sepolia]: {
+    id: Chains.sepolia,
+    name: 'Ethereum Sepolia',
+    shortName: 'sepoliaeth',
+    chainId: Chains.sepolia,
+    chainIdHex: '0xaa36a7',
+    rpcUrl: getProviderUrl(Chains.sepolia),
+    blockExplorerUrls: ['https://sepolia.etherscan.io/'],
+    token: 'ETH',
+  },
+  [Chains.gnosis]: {
+    id: Chains.gnosis,
+    name: 'Gnosis Chain',
+    shortName: 'xDai',
+    chainId: Chains.gnosis,
+    chainIdHex: '0x64',
+    rpcUrl: getProviderUrl(Chains.gnosis),
+    blockExplorerUrls: ['https://gnosisscan.io/'],
+    token: 'xDAI',
   },
   // [Chains.mainnet]: {
   //   id: Chains.mainnet,

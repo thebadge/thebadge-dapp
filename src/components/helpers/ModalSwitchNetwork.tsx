@@ -30,7 +30,6 @@ export const ModalSwitchNetwork: React.FC<ModalSwitchNetwork> = ({ onClose, ...r
                 color="primary"
                 key={index}
                 onClick={() => {
-                  setAppChainId(item.chainId)
                   pushNetwork({ chainId: item.chainIdHex })
                   onClose()
                 }}

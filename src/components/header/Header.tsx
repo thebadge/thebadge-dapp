@@ -1,12 +1,15 @@
-import { useRouter } from 'next/router'
+import { useEffect } from 'react'
 
 import { Box, styled } from '@mui/material'
+import { useAccountCenter } from '@web3-onboard/react'
 import { useTranslation } from 'next-export-i18n'
-import { LogoTheBadgeWithText } from 'thebadge-ui-library'
 
+import { LogoWithText } from '@/src/components/common/Logo'
+import ActionButtons from '@/src/components/header/ActionButtons'
 import ConnectWalletButton from '@/src/components/header/ConnectWalletButton'
 import { UserDropdown } from '@/src/components/header/UserDropdown'
 import WrongNetwork from '@/src/components/utils/WrongNetwork'
+import { useSizeSM } from '@/src/hooks/useSize'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 
 const HeaderContainer = styled(Box)(({ theme }) => ({
@@ -18,8 +21,8 @@ const HeaderContainer = styled(Box)(({ theme }) => ({
   transform: 'translateX(-50%)',
   paddingTop: theme.spacing(2),
   paddingBottom: theme.spacing(2),
-  paddingLeft: '5%',
-  paddingRight: 'calc(5% - 16px)',
+  paddingLeft: 'calc(5% - 32px)',
+  paddingRight: 'calc(5% - 32px)',
   [theme.breakpoints.down('sm')]: {
     flex: 1,
   },
@@ -27,9 +30,14 @@ const HeaderContainer = styled(Box)(({ theme }) => ({
 }))
 
 const Header = () => {
+  const isMobile = useSizeSM()
+  const updateAccountCenter = useAccountCenter()
   const { connectWallet, isWalletConnected } = useWeb3Connection()
-  const router = useRouter()
   const { t } = useTranslation()
+
+  useEffect(() => {
+    updateAccountCenter({ enabled: isMobile })
+  }, [isMobile, updateAccountCenter])
 
   return (
     <HeaderContainer id="header-container">
@@ -39,17 +47,18 @@ const Header = () => {
           flex: 1,
         }}
       >
-        <Box onClick={() => router.push('/')} sx={{ cursor: 'pointer', width: 'fit-content' }}>
-          <LogoTheBadgeWithText size={100} />
-        </Box>
+        <LogoWithText />
       </Box>
       <Box display="flex">
         <WrongNetwork />
-        {isWalletConnected && <UserDropdown />}
+        {isWalletConnected && !isMobile && <UserDropdown />}
         {!isWalletConnected && (
-          <ConnectWalletButton onClick={connectWallet}>
-            {t('header.wallet.connect')}
-          </ConnectWalletButton>
+          <Box display="flex" gap={2}>
+            {!isMobile && <ActionButtons />}
+            <ConnectWalletButton onClick={connectWallet}>
+              {t('header.wallet.connect')}
+            </ConnectWalletButton>
+          </Box>
         )}
       </Box>
     </HeaderContainer>

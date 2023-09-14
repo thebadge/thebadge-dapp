@@ -1,7 +1,7 @@
-import { PaletteMode, ThemeOptions, Typography } from '@mui/material'
+import { PaletteMode, Theme, ThemeOptions, Typography } from '@mui/material'
 import { TypographyOptions } from '@mui/material/styles/createTypography'
-import { Mulish } from '@next/font/google'
-import { colors, darkTheme, lightTheme } from 'thebadge-ui-library'
+import { colors, darkTheme, lightTheme } from '@thebadge/ui-library'
+import { Mulish } from 'next/font/google'
 
 const mulishFont = Mulish({
   weight: ['300', '400', '500', '600', '700', '800', '900'],
@@ -48,7 +48,10 @@ export function getTypographyVariants(theme: ThemeOptions) {
 }
 
 export function overrideFontFamily(theme: ThemeOptions, fontFamily: string): TypographyOptions {
-  const overrideTypography: TypographyOptions = { ...theme.typography } as TypographyOptions
+  const overrideTypography: TypographyOptions = {
+    ...theme.typography,
+    fontFamily,
+  } as TypographyOptions
   const variants = getTypographyVariants(theme)
   variants.forEach((variantKey) => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -57,4 +60,25 @@ export function overrideFontFamily(theme: ThemeOptions, fontFamily: string): Typ
   })
 
   return overrideTypography
+}
+
+export function configureThemeComponentes(theme: Theme) {
+  const lightMode = theme.palette.mode === 'light'
+
+  return {
+    ...theme,
+    components: {
+      MuiTooltip: {
+        styleOverrides: {
+          tooltip: {
+            lineHeight: '150%',
+            backgroundColor: theme.palette.grey[lightMode ? 800 : 700],
+          },
+          arrow: {
+            color: theme.palette.grey[lightMode ? 800 : 700],
+          },
+        },
+      },
+    },
+  }
 }

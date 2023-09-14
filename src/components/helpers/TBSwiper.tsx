@@ -30,7 +30,16 @@ type TBSwiperProps = {
   noArrows?: boolean
 } & SwiperProps
 
-export default function TBSwiper(props: TBSwiperProps) {
+export default function TBSwiper({
+  items,
+  itemsScale,
+  leftPadding,
+  maxSlidesPerView,
+  noArrows,
+  rightPadding,
+  spaceBetween,
+  ...props
+}: TBSwiperProps) {
   const swiperId = 'id' + Math.random().toString(16).slice(2)
   const theme = useTheme()
   const sm = useSizeSM()
@@ -38,7 +47,7 @@ export default function TBSwiper(props: TBSwiperProps) {
   const lg = useSizeLG()
 
   const amountItems = () => {
-    const maxItems = props.maxSlidesPerView || 4
+    const maxItems = maxSlidesPerView || 4
     if (sm) {
       return 1
     } else if (md) {
@@ -59,11 +68,11 @@ export default function TBSwiper(props: TBSwiperProps) {
         width: '100%',
       }}
     >
-      {!props.noArrows && (
+      {!noArrows && (
         <ArrowBackIosIcon
           className={'tb-swiper-button-prev-' + swiperId}
           sx={{
-            mr: props.leftPadding || '0.5rem',
+            mr: leftPadding || '0.5rem',
             height: '35px',
             width: '35px',
             animation: `${growEffect} 1s infinite alternate ${theme.transitions.easing.easeInOut}`,
@@ -80,20 +89,20 @@ export default function TBSwiper(props: TBSwiperProps) {
         }}
         pagination={{ clickable: true }}
         slidesPerView={amountItems()}
-        spaceBetween={props.spaceBetween || 25}
+        spaceBetween={spaceBetween || 25}
         {...props}
       >
-        {props.items.map((item, index) => (
+        {items.map((item, index) => (
           <SwiperSlide key={'swiper-slide-' + swiperId + '-' + index}>
-            <Box sx={{ scale: props.itemsScale || '1' }}>{item}</Box>
+            <Box sx={{ scale: itemsScale || '1' }}>{item}</Box>
           </SwiperSlide>
         ))}
       </Swiper>
-      {!props.noArrows && (
+      {!noArrows && (
         <ArrowForwardIosIcon
           className={'tb-swiper-button-next-' + swiperId}
           sx={{
-            ml: props.rightPadding || '0.5rem',
+            ml: rightPadding || '0.5rem',
             height: '35px',
             width: '35px',
             animation: `${growEffect} 1s infinite alternate ${theme.transitions.easing.easeInOut}`,

@@ -3,7 +3,7 @@ import { createTsForm } from '@ts-react/form'
 
 import { getFormLayout } from '@/src/components/form/customForms/getFormLayout'
 import { CustomFormProps } from '@/src/components/form/customForms/type'
-import { mappingSchemaToComponents } from '@/src/components/form/helpers/schemaToComponent'
+import { mappingSchemaToComponents } from '@/src/components/form/formFields/tsFormFields/schemaToComponent'
 
 export const FormButton = styled(Button)(({ theme }) => ({
   borderRadius: theme.spacing(1.25),
@@ -12,29 +12,31 @@ export const FormButton = styled(Button)(({ theme }) => ({
 }))
 
 function MyCustomFormComponent({
-  submitButton = { disabled: false, label: 'Submit', ref: undefined },
   backButton = { disabled: false, label: 'Back', ref: undefined },
+  buttonsSx,
   children,
   color,
+  containerSx,
   draggable,
   gridStructure,
   layout = 'flex',
   onBack,
   onSubmit,
   rowHeight,
+  submitButton = { disabled: false, label: 'Submit', ref: undefined },
 }: CustomFormProps) {
   if (layout !== 'gridResponsive' && gridStructure) {
     throw new Error(`gridStructure must be provided only on layout = 'gridResponsive'`)
   }
   const Layout = getFormLayout(layout)
   return (
-    <Container maxWidth="md" sx={{ display: 'flex', width: '100%' }}>
+    <Container maxWidth="md" sx={{ display: 'flex', width: '100%', ...containerSx }}>
       <form onSubmit={onSubmit} style={{ display: 'flex', flexDirection: 'column' }}>
         {/* children are you form field components */}
         <Layout draggable={draggable} gridStructure={gridStructure} rowHeight={rowHeight}>
           {children}
         </Layout>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2, ...buttonsSx }}>
           {onBack && (
             <FormButton
               color={color || 'primary'}
@@ -65,29 +67,31 @@ function MyCustomFormComponent({
  * want to avoid the use of type=submit and also the user of another Form Tag
  */
 function MyCustomFormComponentWithoutSubmit({
-  submitButton = { disabled: false, label: 'Submit', ref: undefined },
   backButton = { disabled: false, label: 'Back', ref: undefined },
+  buttonsSx,
   children,
   color,
+  containerSx,
   draggable,
   gridStructure,
   layout = 'flex',
   onBack,
   onSubmit,
   rowHeight,
+  submitButton = { disabled: false, label: 'Submit', ref: undefined },
 }: CustomFormProps) {
   if (layout !== 'gridResponsive' && gridStructure) {
     throw new Error(`gridStructure must be provided only on layout = 'gridResponsive'`)
   }
   const Layout = getFormLayout(layout)
   return (
-    <Container maxWidth="md" sx={{ display: 'flex', width: '100%' }}>
+    <Container maxWidth="md" sx={{ display: 'flex', width: '100%', ...containerSx }}>
       <Box style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
         {/* children are you form field components */}
         <Layout draggable={draggable} gridStructure={gridStructure} rowHeight={rowHeight}>
           {children}
         </Layout>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2, ...buttonsSx }}>
           {onBack && (
             <FormButton
               color={color || 'primary'}

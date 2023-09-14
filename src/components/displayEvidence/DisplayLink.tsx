@@ -2,11 +2,11 @@ import * as React from 'react'
 
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import { Box, Divider, Tooltip, Typography, styled } from '@mui/material'
-import { colors } from 'thebadge-ui-library'
+import { colors } from '@thebadge/ui-library'
 
 import { FormField } from '@/src/components/form/helpers/FormField'
 
-const Wrapper = styled(Box)(({ theme }) => ({
+const Wrapper = styled(Box)(() => ({
   display: 'flex',
   flexDirection: 'column',
   position: 'relative',
@@ -46,7 +46,7 @@ export function DisplayLink({ label, placeholder, value }: DisplayLinkProps) {
             )}
           </Typography>
         }
-        label={<Typography>{label}</Typography>}
+        label={<Typography variant="subtitle2">{label}</Typography>}
         labelPosition={'top-left'}
       />
       <Divider color={colors.white} sx={{ mt: -1 }} />

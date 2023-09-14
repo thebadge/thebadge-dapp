@@ -1,5 +1,4 @@
 import { FieldError } from 'react-hook-form'
-import { ErrorOption } from 'react-hook-form/dist/types/errors'
 import { ZodType, z } from 'zod'
 
 import {
@@ -55,12 +54,6 @@ function getZValidator(fieldType: KLEROS_LIST_TYPES) {
   }
 }
 
-// Properties needed to do error handling inside the Form Field component
-export type ErrorHelperProps = {
-  setError: (error: ErrorOption) => void
-  cleanError: () => void
-}
-
 export function isMetadataColumnArray(obj: any): obj is MetadataColumn[] {
   if (obj !== null && typeof obj === 'object' && obj.length > 0) {
     return 'type' in obj[0]
@@ -71,9 +64,8 @@ export function isMetadataColumnArray(obj: any): obj is MetadataColumn[] {
 export default function klerosSchemaFactory(fields: MetadataColumn[]) {
   const shape: { [key: string]: ZodType } = {}
   fields.forEach((field, i) => {
-    shape[`${field.type}-${i}`] = getZValidator(field.type).describe(
-      `${field.label} // ${field.description}`,
-    )
+    // If we change this "shape" key values, we need to update the createKlerosValuesObject on mintHelpers.ts
+    shape[`${i}`] = getZValidator(field.type).describe(`${field.label} // ${field.description}`)
     //Magic explained here: https://github.com/iway1/react-ts-form#qol
   })
   return shape

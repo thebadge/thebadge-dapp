@@ -23,7 +23,7 @@ export function DisplayBoolean({ label, placeholder, value }: DisplayBooleanProp
         />
       }
       label={
-        <Typography>
+        <Typography variant="subtitle2">
           {label}
           {placeholder && (
             <Tooltip arrow title={placeholder}>

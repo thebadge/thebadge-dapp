@@ -1,11 +1,12 @@
 import { Box, Container, styled, useTheme } from '@mui/material'
 import { PaletteColorOptions } from '@mui/material/styles/createPalette'
+import { BackgroundGradient } from '@thebadge/ui-library'
 import Headroom from 'react-headroom'
-import { BackgroundGradient } from 'thebadge-ui-library'
 
 import Header from '@/src/components/header/Header'
 import { Footer } from '@/src/components/layout/Footer'
 import MainMenu from '@/src/components/navigation/MainMenu'
+import { useSizeSM } from '@/src/hooks/useSize'
 import CurateContextProvider from '@/src/providers/curateProvider'
 import { useColorMode } from '@/src/providers/themeProvider'
 
@@ -31,7 +32,8 @@ const Content = styled(Box)(({ theme }) => ({
 const StyledBody = styled(Box)(() => ({
   display: 'flex',
   flex: 1,
-  minHeight: `calc(100vh - ${HEADER_HEIGHT}px - ${FOOTER_HEIGHT}px)`,
+  height: `calc(100svh - ${HEADER_HEIGHT}px - ${FOOTER_HEIGHT}px)`,
+  minHeight: `80svh`,
 }))
 
 type DefaultLayoutProps = {
@@ -47,6 +49,7 @@ const NavigationRoom = styled(Box)(({ theme }) => ({
 
 export default function DefaultLayout({ children }: DefaultLayoutProps) {
   const theme = useTheme()
+  const isMobile = useSizeSM()
   const { mode } = useColorMode()
 
   return (
@@ -67,16 +70,19 @@ export default function DefaultLayout({ children }: DefaultLayoutProps) {
           <BackgroundGradient
             gradient={theme.palette?.backgroundGradient[mode as keyof PaletteColorOptions]}
           />
+
           <StyledBody>
-            <NavigationRoom>
-              <MainMenu />
-            </NavigationRoom>
+            {!isMobile && (
+              <NavigationRoom>
+                <MainMenu />
+              </NavigationRoom>
+            )}
             <Container
               maxWidth={'lg'}
               sx={{
                 display: 'flex',
                 flexDirection: 'column',
-                margin: theme.spacing(6, 'auto', 12),
+                margin: theme.spacing(6, 'auto', 0),
               }}
             >
               {children}

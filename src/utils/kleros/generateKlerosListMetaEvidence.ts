@@ -1,6 +1,8 @@
+import { DYNAMIC_SCRIPT_IPFS_HASH } from '@/src/constants/common'
 import { MetadataColumn } from '@/types/kleros/types'
 import { BackendFileResponse, BackendFileUpload } from '@/types/utils'
 
+// https://github.com/ethereum/EIPs/issues/1497
 export type KlerosListStructure = {
   name: string
   title: string
@@ -11,8 +13,12 @@ export type KlerosListStructure = {
   }
   category: string
   question: string
-  fileURI: BackendFileUpload | BackendFileResponse
+  fileURI?: BackendFileUpload | BackendFileResponse
+  fileHash?: string
+  fileTypeExtension: string
   evidenceDisplayInterfaceURI: string
+  dynamicScriptURI?: string
+  dynamicScriptRequiredParams?: string[]
   metadata: {
     tcrTitle: string
     tcrDescription: string
@@ -31,25 +37,21 @@ export type KlerosListStructure = {
 
 export function generateKlerosListMetaEvidence(
   badgeName: string,
-  fileURI: BackendFileUpload,
+  criteriaFile: BackendFileUpload,
   badgeTypeName: string,
   badgeTypeDescription: string,
   badgeMetadataColumns: MetadataColumn[],
   logoURI: BackendFileUpload,
   requireRemovalEvidence = true,
   relTcrDisabled = true, // research about it
-  category = 'Curated Lists',
-  evidenceDisplayInterfaceURI = '/ipfs/QmQjJio59WkrQDzPC5kSP3EiGaqrWxjGfkvhmD2mWwm41M/index.html',
+  category = 'Badge Dispute',
 ): { registration: KlerosListStructure; clearing: KlerosListStructure } {
-  // TODO
-  // check max items indexed = 3
-
   const itemNamePlural = `${badgeName}s`
 
   const registration: KlerosListStructure = {
     name: badgeTypeName,
-    title: `${badgeTypeName} evidences.`,
-    description: `Add the evidence of the badge ${badgeName} to the list of evidences of ${badgeTypeName}.`,
+    title: `${badgeTypeName} evidences is valid according to the ruling file?`,
+    description: `The evidence provided on the badge ${badgeName} need to be what the ${badgeTypeName} ruling file ask for.`,
     rulingOptions: {
       titles: ['Yes, Add It', "No, Don't Add It"],
       descriptions: [
@@ -59,8 +61,11 @@ export function generateKlerosListMetaEvidence(
     },
     category,
     question: `Does the ${badgeName} comply with the required criteria?`,
-    fileURI,
-    evidenceDisplayInterfaceURI,
+    fileURI: criteriaFile,
+    fileTypeExtension: 'pdf',
+    evidenceDisplayInterfaceURI: `${window.location.origin}/evidence`,
+    dynamicScriptURI: `ipfs/${DYNAMIC_SCRIPT_IPFS_HASH}`,
+    dynamicScriptRequiredParams: ['disputeID', 'arbitrableChainID', 'arbitrableContractAddress'],
     metadata: {
       tcrTitle: badgeTypeName,
       tcrDescription: badgeTypeDescription,
@@ -77,7 +82,7 @@ export function generateKlerosListMetaEvidence(
   const clearing: KlerosListStructure = {
     name: badgeTypeName,
     title: `Remove a ${badgeName} from ${itemNamePlural}`,
-    description: `Someone requested to remove a ${badgeName} to ${itemNamePlural}`,
+    description: `Someone requested to remove a ${badgeName} from the list of ${itemNamePlural}, because it doesnt complain with the required criteria on the ruling file`,
     rulingOptions: {
       titles: ['Yes, Remove It', "No, Don't Remove It"],
       descriptions: [
@@ -87,8 +92,11 @@ export function generateKlerosListMetaEvidence(
     },
     category,
     question: `Does the ${badgeName} comply with the required criteria?`,
-    fileURI,
-    evidenceDisplayInterfaceURI,
+    fileURI: criteriaFile,
+    fileTypeExtension: 'pdf',
+    evidenceDisplayInterfaceURI: `${window.location.origin}/evidence`,
+    dynamicScriptURI: `ipfs/${DYNAMIC_SCRIPT_IPFS_HASH}`,
+    dynamicScriptRequiredParams: ['disputeID', 'arbitrableChainID', 'arbitrableContractAddress'],
     metadata: {
       tcrTitle: badgeTypeName,
       tcrDescription: badgeTypeDescription,
