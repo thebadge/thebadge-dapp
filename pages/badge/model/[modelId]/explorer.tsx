@@ -22,7 +22,7 @@ import BadgeEvidenceInfoPreview from '@/src/pagePartials/badge/explorer/BadgeEvi
 import { Badge } from '@/types/generated/subgraph'
 import { NextPageWithLayout } from '@/types/next'
 
-const ExploreBadgeTypes: NextPageWithLayout = () => {
+const ExploreBadgeModels: NextPageWithLayout = () => {
   const { t } = useTranslation()
   const gql = useSubgraph()
   const badgeModelId = useModelIdParam()
@@ -120,4 +120,4 @@ const ExploreBadgeTypes: NextPageWithLayout = () => {
   )
 }
 
-export default withPageGenericSuspense(ExploreBadgeTypes, { spinner: { color: 'blue' } })
+export default withPageGenericSuspense(ExploreBadgeModels, { spinner: { color: 'blue' } })
