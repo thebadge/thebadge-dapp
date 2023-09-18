@@ -181,7 +181,11 @@ export async function encodeKlerosBadgeModelControllerData(
 }
 
 export const encodeIpfsEvidence = (ipfsEvidenceHash: string): string => {
-  return defaultAbiCoder.encode([`tuple(string)`], [[ipfsEvidenceHash]])
+  return defaultAbiCoder.encode([`tuple(address)`], [[ipfsEvidenceHash]])
+}
+
+export const encodeIpfsBadgeMetadata = (badgeMetadataIpsHash: string): string => {
+  return defaultAbiCoder.encode([`tuple(string)`], [[badgeMetadataIpsHash]])
 }
 
 async function transformDeltaToPDF(pdfValues: z.infer<typeof DeltaPDFSchema>) {
