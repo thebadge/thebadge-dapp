@@ -3,6 +3,7 @@ import * as React from 'react'
 import { useEffect } from 'react'
 
 import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
+import { notify } from '@/src/components/toast/Toast'
 import { ZERO_ADDRESS } from '@/src/constants/bigNumber'
 import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
@@ -15,13 +16,15 @@ import { cleanMintFormValues } from '@/src/pagePartials/badge/mint/utils'
 import { PreventActionIfBadgeTypePaused } from '@/src/pagePartials/errors/preventActionIfPaused'
 import { RequiredNotHaveBadge } from '@/src/pagePartials/errors/requiredNotHaveBadge'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
-import { encodeIpfsBadgeMetadata } from '@/src/utils/badges/createBadgeModelHelpers'
+import { getBadgeIdFromTxHash, sendEmailClaim } from '@/src/utils/relayTx'
 import { BadgeModelMetadata } from '@/types/badges/BadgeMetadata'
 import { TheBadge__factory } from '@/types/generated/typechain'
 import { NextPageWithLayout } from '@/types/next'
+import { ToastStates } from '@/types/toast'
 
 const MintThirdPartyBadgeModel: NextPageWithLayout = () => {
-  const { appPubKey, isSocialWallet, userSocialInfo } = useWeb3Connection()
+  const { appChainId, appPubKey, isSocialWallet, readOnlyAppProvider, userSocialInfo } =
+    useWeb3Connection()
   const theBadge = useContractInstance(TheBadge__factory, 'TheBadge')
   const { resetTxState, sendTx, state } = useTransaction()
   const router = useRouter()
@@ -50,14 +53,18 @@ const MintThirdPartyBadgeModel: NextPageWithLayout = () => {
   }
 
   async function onSubmit(data: MintThirdPartySchemaType) {
+    const { address, email, preferMintMethod, previewImage } = data
+
     try {
       // Start transaction to show the loading state when we create the files
       // and configs
       const transaction = await sendTx(async () => {
-        const { address, preferMintMethod, previewImage } = data
         // Use NextJs dynamic import to reduce the bundle size
         const { createAndUploadThirdPartyBadgeMetadata } = await import(
           '@/src/utils/badges/mintHelpers'
+        )
+        const { encodeIpfsBadgeMetadata } = await import(
+          '@/src/utils/badges/createBadgeModelHelpers'
         )
 
         const badgeMetadataIPFSHash = await createAndUploadThirdPartyBadgeMetadata(
@@ -84,7 +91,24 @@ const MintThirdPartyBadgeModel: NextPageWithLayout = () => {
         )
       })
       if (transaction) {
-        await transaction.wait()
+        const { transactionHash } = await transaction.wait()
+        const badgeId = await getBadgeIdFromTxHash(transactionHash, readOnlyAppProvider)
+        // TODO This should be done async, notifying the relayer before sending the tx, or asking the relayer to send the tx
+        if (preferMintMethod === 'email' && badgeId) {
+          await sendEmailClaim({
+            networkId: appChainId.toString(),
+            mintTxHash: transactionHash,
+            badgeId,
+            badgeModelId: Number(badgeModelId),
+            emailClaimer: email,
+          })
+          notify({
+            id: transactionHash,
+            type: ToastStates.info,
+            message: `Email successfully sent to: ${email}`,
+            position: 'top-right',
+          })
+        }
       }
       cleanMintFormValues(badgeModelId)
     } catch (e) {
