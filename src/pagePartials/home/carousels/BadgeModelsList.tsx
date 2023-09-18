@@ -27,7 +27,7 @@ export default function BadgeModelsList() {
       return (
         <Box
           key={badgeModel.id}
-          onClick={() => router.push(`/badge/mint/${badgeModel.id}`)}
+          onClick={() => router.push(`/badge/mint/${badgeModel.controllerType}/${badgeModel.id}`)}
           sx={{ height: '100%', display: 'flex' }}
         >
           <InViewPort minHeight={300} minWidth={180}>

@@ -72,7 +72,7 @@ export default function BadgeModelInfoPreview({ badgeModel }: { badgeModel: Badg
 
         <ButtonV2
           backgroundColor={colors.blue}
-          onClick={() => router.push(`/badge/mint/${badgeModel.id}`)}
+          onClick={() => router.push(`/badge/mint/${badgeModel.controllerType}/${badgeModel.id}`)}
           sx={{ ml: 'auto' }}
           variant="contained"
         >

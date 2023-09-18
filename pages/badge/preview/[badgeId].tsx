@@ -58,7 +58,9 @@ const ViewBadge: NextPageWithLayout = () => {
                   backgroundColor={colors.transparent}
                   disabled={address === ownerAddress}
                   fontColor={mode === 'light' ? colors.blackText : colors.white}
-                  onClick={() => router.push(`/badge/mint/${badgeModelId}`)}
+                  onClick={() =>
+                    router.push(`/badge/mint/${badge?.badgeModel.controllerType}/${badgeModelId}`)
+                  }
                   sx={{
                     borderRadius: '10px',
                     fontSize: '11px !important',
