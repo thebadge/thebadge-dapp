@@ -3,6 +3,7 @@ import * as React from 'react'
 import { useEffect } from 'react'
 
 import MintKlerosBadgeModel from '@/pages/badge/mint/[controllerType]/[modelId]/mintKleros'
+import MintThirdPartyBadgeModel from '@/pages/badge/mint/[controllerType]/[modelId]/mintThirdParty'
 import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import useControllerTypeParam from '@/src/hooks/nextjs/useControllerTypeParam'
 import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
@@ -14,7 +15,6 @@ const MintBadgeModel: NextPageWithLayout = () => {
   const router = useRouter()
   const badgeModelId = useModelIdParam()
   const controllerType = useControllerTypeParam()
-  console.log('model id', badgeModelId, 'type', controllerType)
 
   if (!badgeModelId) {
     throw `No modelId provided as URL query param`
@@ -36,7 +36,7 @@ const MintBadgeModel: NextPageWithLayout = () => {
       return <MintKlerosBadgeModel />
     }
     case 'thirdparty': {
-      return <div>third party</div>
+      return <MintThirdPartyBadgeModel />
     }
     default: {
       throw `Route does not exists`
