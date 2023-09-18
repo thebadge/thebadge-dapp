@@ -3,9 +3,9 @@ import * as React from 'react'
 import { useEffect } from 'react'
 
 import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
+import useControllerTypeParam from '@/src/hooks/nextjs/useControllerTypeParam'
 import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
-import { useRegistrationBadgeModelKlerosMetadata } from '@/src/hooks/subgraph/useBadgeModelKlerosMetadata'
 import useMintValue from '@/src/hooks/theBadge/useMintValue'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
 import useTransaction, { TransactionStates } from '@/src/hooks/useTransaction'
@@ -15,23 +15,30 @@ import { cleanMintFormValues } from '@/src/pagePartials/badge/mint/utils'
 import { PreventActionIfBadgeTypePaused } from '@/src/pagePartials/errors/preventActionIfPaused'
 import { RequiredNotHaveBadge } from '@/src/pagePartials/errors/requiredNotHaveBadge'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
-import { encodeIpfsEvidence } from '@/src/utils/badges/createBadgeModelHelpers'
 import { BadgeModelMetadata } from '@/types/badges/BadgeMetadata'
 import { TheBadge__factory } from '@/types/generated/typechain'
-import { MetadataColumn } from '@/types/kleros/types'
 import { NextPageWithLayout } from '@/types/next'
 import { SupportedRelayMethods } from '@/types/relayedTx'
+import { encodeIpfsEvidence } from '@/src/utils/badges/createBadgeModelHelpers'
 
-const MintBadgeModel: NextPageWithLayout = () => {
+const MintThirdPartyBadgeModel: NextPageWithLayout = () => {
   const { address, appChainId, appPubKey, isSocialWallet, userSocialInfo, web3Provider } =
     useWeb3Connection()
   const theBadge = useContractInstance(TheBadge__factory, 'TheBadge')
   const { resetTxState, sendRelayTx, sendTx, state } = useTransaction()
   const router = useRouter()
   const badgeModelId = useModelIdParam()
+  const controllerType = useControllerTypeParam()
+  console.log('test1')
+  const test = encodeIpfsEvidence('0x0dc0dfD22C6Beab74672EADE5F9Be5234AAa43cC')
+  console.log('Test!', test)
 
   if (!badgeModelId) {
     throw `No modelId provided us URL query param`
+  }
+
+  if (!controllerType) {
+    throw `No controllerType provided us URL query param`
   }
 
   useEffect(() => {
@@ -42,15 +49,12 @@ const MintBadgeModel: NextPageWithLayout = () => {
   }, [router, state])
 
   const badgeModel = useBadgeModel(badgeModelId)
-  const badgeModelKleros = useRegistrationBadgeModelKlerosMetadata(badgeModelId)
+  console.log('MintThirdPartyBadgeModel', badgeModel.data)
 
-  const klerosBadgeMetadata = badgeModelKleros.data?.badgeModelKlerosRegistrationMetadata
-
-  if (badgeModel.error || !klerosBadgeMetadata || !badgeModel.data) {
+  if (badgeModel.error || !badgeModel.data) {
     throw `There was an error trying to fetch the metadata for the badge model`
   }
 
-  // Get kleros deposit value for the badge model
   const { data: mintValue } = useMintValue(badgeModelId)
   if (!mintValue) {
     throw `There was not possible to get the value to mint a badge for the badge model: ${badgeModelId}`
@@ -61,20 +65,9 @@ const MintBadgeModel: NextPageWithLayout = () => {
       // Start transaction to show the loading state when we create the files
       // and configs
       const transaction = await sendTx(async () => {
-        const { evidence, previewImage } = data
+        const { previewImage } = data
         // Use NextJs dynamic import to reduce the bundle size
-        const {
-          createAndUploadBadgeEvidence,
-          createAndUploadBadgeMetadata,
-          createKlerosValuesObject,
-        } = await import('@/src/utils/badges/mintHelpers')
-
-        const values = createKlerosValuesObject(evidence, klerosBadgeMetadata)
-
-        const evidenceIPFSHash = await createAndUploadBadgeEvidence(
-          klerosBadgeMetadata?.metadata.columns as MetadataColumn[],
-          values,
-        )
+        const { createAndUploadBadgeMetadata } = await import('@/src/utils/badges/mintHelpers')
 
         const badgeMetadataIPFSHash = await createAndUploadBadgeMetadata(
           badgeModel.data?.badgeModelMetadata as BadgeModelMetadata,
@@ -82,15 +75,12 @@ const MintBadgeModel: NextPageWithLayout = () => {
           { imageBase64File: previewImage },
         )
 
-        const klerosBadgeModelControllerDataEncoded = encodeIpfsEvidence(evidenceIPFSHash)
-
         // If social login relay tx
         if (isSocialWallet && address && userSocialInfo && appPubKey) {
           const data = JSON.stringify({
             badgeModelId,
             address,
             badgeMetadataIPFSHash,
-            klerosBadgeModelControllerDataEncoded,
             overrides: {
               value: mintValue,
             },
@@ -117,15 +107,9 @@ const MintBadgeModel: NextPageWithLayout = () => {
           })
         }
         // If user is not social logged, just send the tx
-        return theBadge.mint(
-          badgeModelId,
-          address as string,
-          badgeMetadataIPFSHash,
-          klerosBadgeModelControllerDataEncoded,
-          {
-            value: mintValue,
-          },
-        )
+        return theBadge.mint(badgeModelId, address as string, badgeMetadataIPFSHash, '0x', {
+          value: mintValue,
+        })
       })
       if (transaction) {
         await transaction.wait()
@@ -146,4 +130,4 @@ const MintBadgeModel: NextPageWithLayout = () => {
   )
 }
 
-export default withPageGenericSuspense(MintBadgeModel)
+export default withPageGenericSuspense(MintThirdPartyBadgeModel)
