@@ -28,7 +28,7 @@ type MintStepsProps = {
   resetTxState: VoidFunction
 }
 
-export default function MintWithSteps({
+export default function MintKlerosWithSteps({
   onSubmit,
   resetTxState,
   txState = TransactionStates.none,

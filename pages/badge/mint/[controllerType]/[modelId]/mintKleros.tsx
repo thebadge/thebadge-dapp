@@ -9,7 +9,7 @@ import { useRegistrationBadgeModelKlerosMetadata } from '@/src/hooks/subgraph/us
 import useMintValue from '@/src/hooks/theBadge/useMintValue'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
 import useTransaction, { TransactionStates } from '@/src/hooks/useTransaction'
-import MintWithSteps from '@/src/pagePartials/badge/mint/MintWithSteps'
+import MintKlerosWithSteps from '@/src/pagePartials/badge/mint/MintKlerosWithSteps'
 import { MintBadgeSchemaType } from '@/src/pagePartials/badge/mint/schema/MintBadgeSchema'
 import { cleanMintFormValues } from '@/src/pagePartials/badge/mint/utils'
 import { PreventActionIfBadgeTypePaused } from '@/src/pagePartials/errors/preventActionIfPaused'
@@ -140,7 +140,7 @@ const MintKlerosBadgeModel: NextPageWithLayout = () => {
   return (
     <PreventActionIfBadgeTypePaused>
       <RequiredNotHaveBadge>
-        <MintWithSteps onSubmit={onSubmit} resetTxState={resetTxState} txState={state} />
+        <MintKlerosWithSteps onSubmit={onSubmit} resetTxState={resetTxState} txState={state} />
       </RequiredNotHaveBadge>
     </PreventActionIfBadgeTypePaused>
   )
