@@ -4,12 +4,8 @@ import { styled } from '@mui/material'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import useClaimUUIDParam from '@/src/hooks/nextjs/useClaimUUIDParam'
-import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
-import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
-import useS3Metadata from '@/src/hooks/useS3Metadata'
 import ClaimUUIDIsInvalid from '@/src/pagePartials/errors/displays/ClaimUUIDIsInvalid'
 import { checkClaimUUIDValid } from '@/src/utils/relayTx'
-import { Creator } from '@/types/badges/Creator'
 
 const Wrapper = styled('div')`
   display: flex;
@@ -22,9 +18,14 @@ const Wrapper = styled('div')`
 type Props = {
   children: ReactElement
   minHeight?: number
+  creatorEmail: string
 }
 
-export const PreventActionIfClaimUUIDInvalid: React.FC<Props> = ({ children, minHeight }) => {
+export const PreventActionIfClaimUUIDInvalid: React.FC<Props> = ({
+  children,
+  creatorEmail,
+  minHeight,
+}) => {
   const [isClaimUUIDValid, setIsClaimUUIDValid] = useState(false)
   const claimUUID = useClaimUUIDParam()
 
@@ -36,23 +37,10 @@ export const PreventActionIfClaimUUIDInvalid: React.FC<Props> = ({ children, min
     checkInvalidUUID()
   }, [claimUUID])
 
-  const modelId = useModelIdParam()
-  const badgeModelData = useBadgeModel(modelId)
-
-  const badgeCreatorMetadata = useS3Metadata<{ content: Creator }>(
-    badgeModelData.data?.badgeModel?.creator.metadataUri || '',
-  )
-
-  if (!badgeCreatorMetadata || !badgeModelData) {
-    throw `There was an error trying to fetch the metadata for the badge model`
-  }
-
   if (!isClaimUUIDValid) {
     return (
       <Wrapper style={{ minHeight }}>
-        <ClaimUUIDIsInvalid
-          creatorContact={`mailto:${badgeCreatorMetadata.data?.content?.email}`}
-        />
+        <ClaimUUIDIsInvalid creatorContact={`mailto:${creatorEmail}`} />
       </Wrapper>
     )
   }
