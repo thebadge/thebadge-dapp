@@ -6,7 +6,6 @@ import { FormProvider, SubmitHandler, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import StepFooter from './steps/StepFooter'
-import StepHeader from './steps/StepHeader'
 import { defaultValues } from './utils'
 import StepPrompt from '@/src/components/form/formWithSteps/StepPrompt'
 import { TransactionLoading } from '@/src/components/loading/TransactionLoading'
@@ -17,6 +16,7 @@ import {
   MintThirdPartySchema,
   MintThirdPartySchemaType,
 } from '@/src/pagePartials/badge/mint/schema/MintThirdPartySchema'
+import StepHeaderThirdParty from '@/src/pagePartials/badge/mint/steps/StepHeaderThirdParty'
 import FormThirdParty from '@/src/pagePartials/badge/mint/steps/dynamicForm/FormThirdParty'
 import MintSucceed from '@/src/pagePartials/badge/mint/steps/preview/MintSucceed'
 import SubmitPreviewThirdParty from '@/src/pagePartials/badge/mint/steps/preview/SubmitPreviewThirdParty'
@@ -87,7 +87,7 @@ export default function MintThirdPartyWithSteps({
   return (
     <FormProvider {...methods}>
       <StepPrompt hasUnsavedChanges={methods.formState.isDirty} />
-      <StepHeader
+      <StepHeaderThirdParty
         completedSteps={completed}
         currentStep={currentStep}
         onStepNavigation={onStepNavigation}
