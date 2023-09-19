@@ -61,3 +61,17 @@ export const getBadgeIdFromTxHash = async (
   }
   return badgeId as number
 }
+
+export const checkClaimUUIDValid = async (claimUUID: string): Promise<boolean> => {
+  try {
+    const res = await axios.get<BackendResponse<boolean>>(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/thirdPartyController/claim/valid/${claimUUID}`,
+    )
+    if (res.data.error || !res.data.result) {
+      return false
+    }
+    return res.data.result
+  } catch (error) {
+    return false
+  }
+}
