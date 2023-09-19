@@ -185,7 +185,6 @@ initOnboard()
 
 export default function Web3ConnectionProvider({ children }: Props) {
   const { t } = useTranslation()
-  const router = useRouter()
 
   const [{ connecting: connectingWallet, wallet }, connect, disconnect] = useConnectWallet()
   const [{ chains, connectedChain, settingChain }, setChain] = useSetChain()
