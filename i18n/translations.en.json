@@ -215,7 +215,9 @@
     "pausedActionSubtitle": "Please, head over to our Discord channel for more information.",
     "outOfService": "Oops, something went wrong!",
     "outOfServiceSubtitle": "Please, head over to our Discord channel for more information.",
-    "outOfServiceErrorCode": "Error code: `{{errorCode}}`"
+    "outOfServiceErrorCode": "Error code: `{{errorCode}}`",
+    "claimUUIDInvalid": "The badge is invalid or the claim period has been expired",
+    "claimUUIDInvalidSubtitle": "Please, head over to our [discord channel]({{discordUrl}}) or contact the [creator]({{creatorContact}}) for more information."
   },
   "creator": {
     "register": {
@@ -351,6 +353,24 @@
         "back": "Back",
         "next": "Next",
         "submit": "Submit"
+      },
+      "claim": {
+        "thirdParty": {
+          "header": {
+            "title": "Claim your badge",
+            "subTitle": "You have received a badge from [{{creatorName}}]({{creatorProfileUrl}}). Please complete the following form to receive it.",
+            "titleSuccess": "Your badge has been successfully claimed!"
+          },
+          "body": {
+            "title": "Please fill up with your Ethereum Address",
+            "addressPlaceholder": "address"
+          },
+          "preview": {
+            "title": "This is how your new Badge is going to look like:",
+            "goToProfile": "Check your new badge",
+            "submit": "Submit"
+          }
+        }
       }
     },
     "viewBadge": {
