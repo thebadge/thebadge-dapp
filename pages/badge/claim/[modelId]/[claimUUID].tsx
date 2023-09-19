@@ -67,7 +67,8 @@ const ClaimBadge: NextPageWithLayout = () => {
   const onSubmit = async () => {
     const inputValid = await isValidStep()
     if (inputValid) {
-      await sendRequest(() => sendClaimRequest(claimUUID, '0x'))
+      const { claimAddress } = methods.getValues()
+      await sendRequest(() => sendClaimRequest(claimUUID, claimAddress))
     }
   }
 
