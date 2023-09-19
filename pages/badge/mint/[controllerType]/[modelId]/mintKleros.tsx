@@ -12,7 +12,7 @@ import useTransaction, { TransactionStates } from '@/src/hooks/useTransaction'
 import MintKlerosWithSteps from '@/src/pagePartials/badge/mint/MintKlerosWithSteps'
 import { MintBadgeSchemaType } from '@/src/pagePartials/badge/mint/schema/MintBadgeSchema'
 import { cleanMintFormValues } from '@/src/pagePartials/badge/mint/utils'
-import { PreventActionIfBadgeTypePaused } from '@/src/pagePartials/errors/preventActionIfPaused'
+import { PreventActionIfBadgeModelPaused } from '@/src/pagePartials/errors/preventActionIfPaused'
 import { RequiredNotHaveBadge } from '@/src/pagePartials/errors/requiredNotHaveBadge'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { encodeIpfsEvidence } from '@/src/utils/badges/createBadgeModelHelpers'
@@ -138,11 +138,11 @@ const MintKlerosBadgeModel: NextPageWithLayout = () => {
   }
 
   return (
-    <PreventActionIfBadgeTypePaused>
-      <RequiredNotHaveBadge>
+    <PreventActionIfBadgeModelPaused>
+      <RequiredNotHaveBadge ownerAddress={address}>
         <MintKlerosWithSteps onSubmit={onSubmit} resetTxState={resetTxState} txState={state} />
       </RequiredNotHaveBadge>
-    </PreventActionIfBadgeTypePaused>
+    </PreventActionIfBadgeModelPaused>
   )
 }
 
