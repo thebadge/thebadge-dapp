@@ -217,7 +217,9 @@
     "outOfServiceSubtitle": "Please, head over to our Discord channel for more information.",
     "outOfServiceErrorCode": "Error code: `{{errorCode}}`",
     "claimUUIDInvalid": "The badge is invalid or the claim period has been expired",
-    "claimUUIDInvalidSubtitle": "Please, head over to our [discord channel]({{discordUrl}}) or contact the [creator]({{creatorContact}}) for more information."
+    "claimUUIDInvalidSubtitle": "Please, head over to our [discord channel]({{discordUrl}}) or contact the [creator]({{creatorContact}}) for more information.",
+    "noTheBadgeModelCreator": "You are not the owner of this badge model",
+    "noTheBadgeModelCreatorSubtitle": "In order to mint badges of this model you will have to connect with the account owner"
   },
   "creator": {
     "register": {

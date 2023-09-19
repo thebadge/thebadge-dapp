@@ -31,8 +31,6 @@ export interface EmailClaimTx {
 
   mintTxHash: string
 
-  badgeId: number
-
   badgeModelId: number
 
   emailClaimer: string

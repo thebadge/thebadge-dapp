@@ -27,42 +27,6 @@ export const sendEmailClaim = async (
   return res.data
 }
 
-// TODO: This should be moved to the relayer
-export const getBadgeIdFromTxHash = async (
-  txHash: string,
-  readOnlyAppProvider: JsonRpcProvider,
-): Promise<number> => {
-  let badgeId: number | null = null
-
-  try {
-    const { logs } = await readOnlyAppProvider.getTransactionReceipt(txHash)
-
-    // Event signature for the "TransferSingle" event
-    const transferSingleEventSignature = 'TransferSingle(address,address,address,uint256,uint256)'
-
-    const transferEncodedSignature = ethers.utils.id(transferSingleEventSignature)
-    // Parse logs for the "TransferSingle" event
-    logs.forEach((log) => {
-      try {
-        const eventSignature = log.topics[0]
-        if (eventSignature.toLowerCase() === transferEncodedSignature.toLowerCase()) {
-          // Extract the NFT ID from the log data (assuming it's a uint256)
-          const nftId = BigInt(log.data)
-          badgeId = Number(nftId.toString())
-          return nftId
-        }
-      } catch (error) {}
-    })
-  } catch (error: unknown) {
-    console.error('Error reading logs:', error)
-    throw new Error('No transfer event found!')
-  }
-  if (!badgeId) {
-    throw new Error('No badgeId found!')
-  }
-  return badgeId as number
-}
-
 export const checkClaimUUIDValid = async (claimUUID: string): Promise<boolean> => {
   try {
     const res = await axios.get<BackendResponse<boolean>>(
