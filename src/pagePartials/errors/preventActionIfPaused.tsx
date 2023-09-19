@@ -20,7 +20,7 @@ type Props = {
   minHeight?: number
 }
 
-export const PreventActionIfBadgeTypePaused: React.FC<Props> = ({ children, minHeight }) => {
+export const PreventActionIfBadgeModelPaused: React.FC<Props> = ({ children, minHeight }) => {
   const badgeModelId = useModelIdParam()
   const badgeModel = useBadgeModel(badgeModelId)
 
