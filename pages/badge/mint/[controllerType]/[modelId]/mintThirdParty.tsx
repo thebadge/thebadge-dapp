@@ -13,10 +13,10 @@ import useTransaction, { TransactionStates } from '@/src/hooks/useTransaction'
 import MintThirdPartyWithSteps from '@/src/pagePartials/badge/mint/MintThirdPartyWithSteps'
 import { MintThirdPartySchemaType } from '@/src/pagePartials/badge/mint/schema/MintThirdPartySchema'
 import { cleanMintFormValues } from '@/src/pagePartials/badge/mint/utils'
-import { PreventActionIfBadgeTypePaused } from '@/src/pagePartials/errors/preventActionIfPaused'
-import { RequiredNotHaveBadge } from '@/src/pagePartials/errors/requiredNotHaveBadge'
+import { PreventActionIfNoBadgeModelCreator } from '@/src/pagePartials/errors/preventActionIfNoBadgeModelCreator'
+import { PreventActionIfBadgeModelPaused } from '@/src/pagePartials/errors/preventActionIfPaused'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
-import { getBadgeIdFromTxHash, sendEmailClaim } from '@/src/utils/relayTx'
+import { sendEmailClaim } from '@/src/utils/relayTx'
 import { BadgeModelMetadata } from '@/types/badges/BadgeMetadata'
 import { TheBadge__factory } from '@/types/generated/typechain'
 import { NextPageWithLayout } from '@/types/next'
@@ -92,13 +92,12 @@ const MintThirdPartyBadgeModel: NextPageWithLayout = () => {
       })
       if (transaction) {
         const { transactionHash } = await transaction.wait()
-        const badgeId = await getBadgeIdFromTxHash(transactionHash, readOnlyAppProvider)
+
         // TODO This should be done async, notifying the relayer before sending the tx, or asking the relayer to send the tx
-        if (preferMintMethod === 'email' && badgeId) {
+        if (preferMintMethod === 'email') {
           await sendEmailClaim({
             networkId: appChainId.toString(),
             mintTxHash: transactionHash,
-            badgeId,
             badgeModelId: Number(badgeModelId),
             emailClaimer: email,
           })
@@ -118,11 +117,11 @@ const MintThirdPartyBadgeModel: NextPageWithLayout = () => {
   }
 
   return (
-    <PreventActionIfBadgeTypePaused>
-      <RequiredNotHaveBadge>
+    <PreventActionIfBadgeModelPaused>
+      <PreventActionIfNoBadgeModelCreator>
         <MintThirdPartyWithSteps onSubmit={onSubmit} resetTxState={resetTxState} txState={state} />
-      </RequiredNotHaveBadge>
-    </PreventActionIfBadgeTypePaused>
+      </PreventActionIfNoBadgeModelCreator>
+    </PreventActionIfBadgeModelPaused>
   )
 }
 
