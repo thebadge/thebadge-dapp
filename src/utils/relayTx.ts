@@ -2,7 +2,8 @@ import { JsonRpcProvider } from '@ethersproject/providers'
 import axios from 'axios'
 import { ethers } from 'ethers'
 
-import { EmailClaimTx, RelayedTx } from '@/types/relayedTx'
+import { ZERO_ADDRESS } from '@/src/constants/bigNumber'
+import { EmailClaimTx, RelayedTx, RelayedTxResult } from '@/types/relayedTx'
 import { BackendResponse } from '@/types/utils'
 
 export const sendTxToRelayer = async (
@@ -73,5 +74,27 @@ export const checkClaimUUIDValid = async (claimUUID: string): Promise<boolean> =
     return res.data.result
   } catch (error) {
     return false
+  }
+}
+
+export const sendClaimRequest = async (
+  claimUUID: string,
+  claimAddress: string,
+): Promise<RelayedTxResult> => {
+  const res = await axios.post<BackendResponse<{ txHash: string }>>(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/thirdPartyController/claim`,
+    { claimUUID, claimAddress },
+  )
+  if (res.data && res.data.result) {
+    return {
+      txHash: res.data.result.txHash,
+      valid: true,
+      errorMessage: res.data.message || '',
+    }
+  }
+  return {
+    txHash: ZERO_ADDRESS,
+    valid: false,
+    errorMessage: res.data.message || '',
   }
 }

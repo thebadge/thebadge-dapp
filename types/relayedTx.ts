@@ -37,3 +37,13 @@ export interface EmailClaimTx {
 
   emailClaimer: string
 }
+
+export interface RelayedTxResult {
+  txHash: string | null
+  valid: boolean
+  errorMessage: string
+}
+
+export interface RelayMethod {
+  (): Promise<RelayedTxResult>
+}
