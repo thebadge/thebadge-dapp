@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import React, { useState } from 'react'
+import React, { RefObject, useRef, useState } from 'react'
 
 import {
   Avatar,
@@ -54,15 +54,15 @@ const StyledBadge = styled(Badge)<{ state?: 'ok' | 'error' }>(({ state, theme })
 export const UserDropdown: React.FC = () => {
   const router = useRouter()
   const { address, disconnectWallet, isWalletNetworkSupported } = useWeb3Connection()
-
+  const [open, setOpen] = useState(false)
   const [showNetworkModal, setShowNetworkModal] = useState(false)
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const open = Boolean(anchorEl)
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget)
+  const anchorElRef: RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null)
+
+  const handleClick = () => {
+    setOpen(true)
   }
   const handleClose = () => {
-    setAnchorEl(null)
+    setOpen(false)
   }
 
   const logout = async () => {
@@ -79,7 +79,7 @@ export const UserDropdown: React.FC = () => {
   return (
     <>
       <ActionButtons />
-      <Tooltip arrow title="Account settings">
+      <Tooltip arrow ref={anchorElRef} title="Account settings">
         <IconButton
           aria-controls={open ? 'account-menu' : undefined}
           aria-expanded={open ? 'true' : undefined}
@@ -99,7 +99,7 @@ export const UserDropdown: React.FC = () => {
         </IconButton>
       </Tooltip>
       <Menu
-        anchorEl={anchorEl}
+        anchorEl={anchorElRef.current}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
         id="account-menu"
         onClick={handleClose}
