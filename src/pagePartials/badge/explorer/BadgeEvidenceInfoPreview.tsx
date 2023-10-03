@@ -16,7 +16,7 @@ import ViewEvidenceButton from '@/src/pagePartials/badge/explorer/addons/ViewEvi
 import { useCurateProvider } from '@/src/providers/curateProvider'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { getEvidenceValue } from '@/src/utils/kleros/getEvidenceValue'
-import { Badge } from '@/types/generated/subgraph'
+import { Badge, BadgeStatus } from '@/types/generated/subgraph'
 
 export default function BadgeEvidenceInfoPreview({ badge }: { badge: Badge }) {
   const { t } = useTranslation()
@@ -26,6 +26,7 @@ export default function BadgeEvidenceInfoPreview({ badge }: { badge: Badge }) {
 
   const badgeKlerosMetadata = useEvidenceBadgeKlerosMetadata(badge?.id)
   const badgeEvidence = badgeKlerosMetadata.data?.requestBadgeEvidence
+  const showTimeLeft = badge.status !== BadgeStatus.Approved
 
   if (!badgeEvidence || !badgeKlerosMetadata.data?.requestBadgeEvidenceRawUrl) {
     throw 'There was an error fetching the badge evidence, try again in some minutes.'
@@ -45,7 +46,9 @@ export default function BadgeEvidenceInfoPreview({ badge }: { badge: Badge }) {
     <Stack gap={4} p={1}>
       <Box alignContent="center" display="flex" flex={1} justifyContent="space-between">
         <BadgeIdDisplay id={badge?.id} />
-        <TimeLeftDisplay reviewDueDate={badge?.badgeKlerosMetaData?.reviewDueDate} />
+        {showTimeLeft && (
+          <TimeLeftDisplay reviewDueDate={badge?.badgeKlerosMetaData?.reviewDueDate} />
+        )}
       </Box>
 
       {/* Badge Receiver Address */}
