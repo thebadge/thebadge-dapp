@@ -11,14 +11,14 @@ export const MINT_STEPS_AMOUNT = 3
 
 export const FORM_STORE_KEY = 'mint-badge'
 
-export function saveFormValues(values: Record<string, any>) {
+export function saveFormValues(values: Record<string, any>, modelId: string) {
   const ONE_DAY = 24 * 60 * 60 * 1000 /* ms */
   const expiration = MODEL_CREATION_CACHE_EXPIRATION_MS
     ? +MODEL_CREATION_CACHE_EXPIRATION_MS
     : ONE_DAY
 
   localStorage.setItem(
-    FORM_STORE_KEY,
+    FORM_STORE_KEY + `-${modelId}`,
     JSON.stringify({ expirationTime: Date.now() + expiration, values }),
   )
 }
