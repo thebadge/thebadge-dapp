@@ -49,7 +49,9 @@ export default function BadgesYouOwnList({ address }: Props) {
 
   const search = async (
     selectedFilters: Array<ListFilter>,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     selectedCategory: string,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     textSearch?: string,
   ) => {
     setLoading(true)

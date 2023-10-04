@@ -17,7 +17,7 @@ const NetworkButtons = styled(Box)(() => ({}))
 type ModalSwitchNetwork = Omit<ModalProps, 'children'> & { onClose: () => void }
 
 export const ModalSwitchNetwork: React.FC<ModalSwitchNetwork> = ({ onClose, ...restProps }) => {
-  const { pushNetwork, setAppChainId } = useWeb3Connection()
+  const { pushNetwork } = useWeb3Connection()
   const chainOptions = Object.values(chainsConfig)
 
   return (

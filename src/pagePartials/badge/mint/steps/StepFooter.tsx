@@ -5,7 +5,6 @@ import { useTranslation } from 'next-export-i18n'
 import { useFormContext } from 'react-hook-form'
 
 import { MINT_STEPS_AMOUNT, saveFormValues } from '../utils'
-import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import { MintBadgeSchemaType } from '@/src/pagePartials/badge/mint/schema/MintBadgeSchema'
 import { PreventActionWithoutConnection } from '@/src/pagePartials/errors/preventActionWithoutConnection'
 
@@ -30,7 +29,6 @@ export default function StepFooter({
   onBackCallback: VoidFunction
 }) {
   const { t } = useTranslation()
-  const modelId = useModelIdParam()
   const { getValues, watch } = useFormContext<MintBadgeSchemaType>()
 
   const canGoBack = currentStep !== 0
@@ -40,12 +38,12 @@ export default function StepFooter({
   const imageHasBeenGenerated = watch('previewImage')
 
   function onBack() {
-    saveFormValues(getValues(), modelId)
+    saveFormValues(getValues())
     if (onBackCallback) onBackCallback()
   }
 
   function onNext() {
-    saveFormValues(getValues(), modelId)
+    saveFormValues(getValues())
     if (onNextCallback) onNextCallback()
   }
 
