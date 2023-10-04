@@ -78,7 +78,7 @@ const CurateBadges: NextPageWithLayout = () => {
 
     const badgesUserCanReview = await gql.badgesUserCanReviewSmallSet({
       userAddress: address || '',
-      date: selectedFilters.some((f) => f.key == BadgeStatus.Approved) ? 0 : now,
+      date: now,
       statuses: selectedFilters.map((f) => f.key) as Array<BadgeStatus>,
       badgeReceiver: textSearch ? textSearch.toLowerCase() : ADDRESS_PREFIX,
     })
@@ -126,6 +126,7 @@ const CurateBadges: NextPageWithLayout = () => {
         {badges.length > 0 ? (
           badges.map((badge, i) => {
             const isSelected = badge.id === badges[selectedBadgeIndex]?.id
+            const showTimeLeft = badge.status !== BadgeStatus.Approved
 
             return (
               <InViewPort key={badge.id} minHeight={300} minWidth={180}>
@@ -135,12 +136,14 @@ const CurateBadges: NextPageWithLayout = () => {
                     ref={badgesElementRefs[i]}
                     selected={isSelected}
                   >
-                    <TimeLeftContainer>
-                      <TimeLeftDisplay
-                        reviewDueDate={badge?.badgeKlerosMetaData?.reviewDueDate}
-                        smallView
-                      />
-                    </TimeLeftContainer>
+                    {showTimeLeft && (
+                      <TimeLeftContainer>
+                        <TimeLeftDisplay
+                          reviewDueDate={badge?.badgeKlerosMetaData?.reviewDueDate}
+                          smallView
+                        />
+                      </TimeLeftContainer>
+                    )}
                     <MiniBadgeModelPreview
                       buttonTitle={t('curateExplorer.button')}
                       disableAnimations
