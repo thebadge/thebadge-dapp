@@ -97,7 +97,7 @@ export default function CreatorStatisticContent({
                 sx={{ color: colors.purple, position: 'absolute', top: 8, left: 8 }}
               />
               <Typography sx={{ fontSize: '48px !important', fontWeight: 900 }}>
-                {creatorStatistic?.createdBadgeModelsAmount}
+                {creatorStatistic?.createdBadgeModelsAmount || 0}
               </Typography>
               <Typography sx={{ textAlign: 'center', color: colors.purple }}>
                 {t('profile.statistics.creator.amountModelCreated')}

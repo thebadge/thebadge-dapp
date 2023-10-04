@@ -26,6 +26,8 @@ export default function UserStatisticContent({
 
   const userStatistic = statistics.data?.userStatistic
 
+  console.log('challengesReceivedAmount', userStatistic?.challengesReceivedAmount)
+
   return (
     <StatisticsContainer>
       <Table sx={{ width: 'inherit', flex: 3 }}>
@@ -82,12 +84,24 @@ export default function UserStatisticContent({
               <BalanceOutlinedIcon
                 sx={{ color: theme.palette.text.primary, position: 'absolute', top: 8, left: 8 }}
               />
-              <Typography sx={{ fontSize: '48px !important', fontWeight: 900 }}>
-                {timeAgoFrom(userStatistic?.timeOfLastChallengeReceived || 0)}
-              </Typography>
-              <Typography sx={{ textAlign: 'center', color: 'text.primary' }}>
-                {t('profile.statistics.user.withoutLost')}
-              </Typography>
+              {userStatistic?.challengesReceivedAmount > 0 &&
+              userStatistic?.timeOfLastChallengeReceived ? (
+                <>
+                  <Typography sx={{ fontSize: '48px !important', fontWeight: 900 }}>
+                    {timeAgoFrom(userStatistic?.timeOfLastChallengeReceived || 0)}
+                  </Typography>
+                  <Typography sx={{ textAlign: 'center', color: 'text.primary' }}>
+                    {t('profile.statistics.user.withoutLost')}
+                  </Typography>
+                </>
+              ) : (
+                <>
+                  <Typography sx={{ fontSize: '48px !important', fontWeight: 900 }}>0</Typography>
+                  <Typography sx={{ textAlign: 'center', color: 'text.primary' }}>
+                    {t('profile.statistics.user.amountChallengesReceived')}
+                  </Typography>
+                </>
+              )}
             </StatisticSquare>
           </Stack>
         )}
