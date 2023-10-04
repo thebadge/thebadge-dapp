@@ -6,6 +6,7 @@ import { useContractInstance } from '@/src/hooks/useContractInstance'
 import useTransaction from '@/src/hooks/useTransaction'
 import CreateWithSteps from '@/src/pagePartials/badge/model/CreateWithSteps'
 import { CreateModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateModelSchema'
+import { BADGE_MODEL_TEXT_CONTRAST } from '@/src/pagePartials/badge/model/steps/uiBasics/BadgeModelUIBasics'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { TheBadgeModels__factory } from '@/types/generated/typechain'
 import { NextPageWithLayout } from '@/types/next'
@@ -57,7 +58,7 @@ const CreateBadgeType: NextPageWithLayout = () => {
           description,
           badgeModelLogoUri,
           backgroundImage,
-          textContrast,
+          BADGE_MODEL_TEXT_CONTRAST[textContrast],
         )
 
         const klerosBadgeModelControllerDataEncoded = encodeKlerosBadgeModelControllerData(
