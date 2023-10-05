@@ -9,9 +9,8 @@ import { Box, Stack, Table, TableBody, Typography, useTheme } from '@mui/materia
 import { useTranslation } from 'next-export-i18n'
 
 import { StatisticSquare, StatisticsContainer } from '../addons/styled'
-import { getNetworkConfig } from '@/src/config/web3'
 import { StatisticVisibility } from '@/src/hooks/nextjs/useStatisticsVisibility'
-import useUserStatistics from '@/src/hooks/subgraph/useUserrStatistics'
+import useUserStatistics from '@/src/hooks/subgraph/useUserStatistics'
 import StatisticRow from '@/src/pagePartials/profile/statistics/addons/StatisticRow'
 import { UserStatistic } from '@/src/pagePartials/profile/statistics/user/UserStatistics'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
@@ -24,7 +23,6 @@ export default function UserStatisticContent({
   const { t } = useTranslation()
   const theme = useTheme()
   const { appChainId } = useWeb3Connection()
-  const networkConfig = getNetworkConfig(appChainId)
 
   const statistics = useUserStatistics()
 

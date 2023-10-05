@@ -54,12 +54,12 @@ export function secondsToMinutes(periodDuration: number) {
  * @param timestamp
  */
 export const timeAgoFrom = (timestamp?: string | number) => {
-  if (!timestamp) {
-    return ''
+  if (!timestamp || !Number(timestamp)) {
+    return '-'
   }
   const format = dayjs.unix(Number(timestamp)).fromNow(true)
   if (format !== null) return format
-  return ''
+  return '-'
 }
 
 /**
@@ -67,12 +67,12 @@ export const timeAgoFrom = (timestamp?: string | number) => {
  * @param timestamp
  */
 export const timeLeftTo = (timestamp?: string | number) => {
-  if (!timestamp) {
-    return ''
+  if (!timestamp || !Number(timestamp)) {
+    return '-'
   }
   const format = dayjs().to(dayjs.unix(Number(timestamp)), true)
   if (format !== null) return format
-  return ''
+  return '-'
 }
 
 /**
@@ -80,32 +80,33 @@ export const timeLeftTo = (timestamp?: string | number) => {
  * @param timestamp
  */
 export const timeLeftToShort = (timestamp?: string | number) => {
-  if (!timestamp) {
-    return ''
+  if (!timestamp || !Number(timestamp)) {
+    return '-'
   }
   const format = dayjs().to(dayjs.unix(Number(timestamp)), true)
   if (format !== null) return format
-  return ''
+  return '-'
 }
 
 /**
- * By default expect Unix Timestamp (seconds)
+ * By default, expect Unix Timestamp (seconds)
  * @param timestamp
+ * @param dateFormat 'MMM DD, YYYY [at] hh:mm A'
  */
 export const formatTimestamp = (
   timestamp?: string | number,
   dateFormat = 'MMM DD, YYYY [at] hh:mm A',
 ) => {
-  if (!timestamp) {
-    return ''
+  if (!timestamp || !Number(timestamp)) {
+    return '-'
   }
   const format = dayjs.unix(Number(timestamp)).format(dateFormat)
   if (format !== null) return format
-  return ''
+  return '-'
 }
 
 export const isBeforeToday = (timestamp?: string | number) => {
-  if (!timestamp) {
+  if (!timestamp || !Number(timestamp)) {
     return false
   }
   // Check if now is after the give timestamp
