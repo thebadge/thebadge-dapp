@@ -1,20 +1,13 @@
 import * as React from 'react'
 
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
-import { Box, TextField as MUITextField, Tooltip, styled } from '@mui/material'
+import { TextField as MUITextField, Tooltip, styled } from '@mui/material'
 import { FieldError } from 'react-hook-form'
 
 export enum TextFieldStatus {
   error = 'error',
   success = 'success',
 }
-
-const Wrapper = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  position: 'relative',
-  rowGap: theme.spacing(1),
-}))
 
 const StyledTextField = styled(MUITextField)(({ theme }) => ({
   margin: theme.spacing(0),

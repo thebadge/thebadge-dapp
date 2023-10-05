@@ -41,8 +41,11 @@ const ExploreBadgeTypes: NextPageWithLayout = () => {
   )
 
   const search = async (
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     selectedFilters: Array<ListFilter>,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     selectedCategory: string,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     textSearch?: string,
   ) => {
     setLoading(true)
