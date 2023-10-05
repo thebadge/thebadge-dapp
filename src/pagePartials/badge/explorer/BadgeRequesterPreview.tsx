@@ -1,4 +1,3 @@
-import { useRouter } from 'next/router'
 import React, { useRef, useState } from 'react'
 
 import AddRoundedIcon from '@mui/icons-material/AddRounded'
@@ -62,7 +61,6 @@ export default function BadgeRequesterPreview({
   ownerAddress: string
   color?: string
 }) {
-  const router = useRouter()
   const { t } = useTranslation()
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLDivElement>(null)

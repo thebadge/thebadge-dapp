@@ -19,16 +19,6 @@ import { DEFAULT_COURT_ID } from '@/src/constants/common'
 import { useJurorFee } from '@/src/hooks/kleros/useJurorFee'
 import { Severity } from '@/types/utils'
 
-// TODO Do it with HTML to have a better look and feel
-const numberOfJurorExplanations =
-  'This determines how many jurors will be drawn in the first round of any eventual disputes involving your list. In general, a standard number is 3. In cases where the decision is straightforward and not much effort is required, one juror might be sufficient. In situations where significant effort is required to review the case, it can be better to require more jurors. However, if you set a higher number of initial jurors, this will result in larger deposits being required by users which may result in a lower amount of submissions.'
-const feePerJurorExplanation =
-  'The fees works as incentive for each juror, and it is determined by the court'
-const challengeBountyExplanation =
-  'This is the part of the deposit that is awarded to successful challengers. If the value is too low, challengers may not have enough incentive to look for flaws in the submissions and bad ones could make it through. If it is too high, submitters may not have enough incentive to send items which may result in an empty list.'
-const baseDepositExplanation =
-  'These are the funds users will have to deposit in order to make a submission into the list, which are sufficient to cover both arbitration costs paid to jurors and the rewards that users earn for a successful challenge. If the deposit is too low, incorrect submissions may not be flagged for dispute which could result in incorrect items being accepted in the list. If the deposit is too high, challengers will be likely to catch most malicious submissions, but people will only rarely submit to your list (so you may end up having a list that is difficult to attack but largely empty).'
-
 export default function SeveritySelectorAdvanceView({
   onChange,
   onOptionSelectedChange,
@@ -127,7 +117,7 @@ export default function SeveritySelectorAdvanceView({
             </DisplayLabel>
 
             <DisplayLabel>
-              <Tooltip arrow title={feePerJurorExplanation}>
+              <Tooltip arrow title={t('severity.display.feePerJurorExplanation')}>
                 <InfoOutlinedIcon sx={{ mr: 0.5 }} />
               </Tooltip>
               <strong>{t('severity.display.feePerJuror')}</strong> {feeForJurorDisplayValue}

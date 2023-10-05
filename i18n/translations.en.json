@@ -200,7 +200,7 @@
         "amountChallengesWon":"Challenges won",
         "amountChallengesReceived": "Challenges received",
         "minted": "Badges minted",
-        "withoutLost": "Days without challenges",
+        "withoutLost": "without received challenges",
         "rankingPosition": "Position in curators ranking"
       }
     }
