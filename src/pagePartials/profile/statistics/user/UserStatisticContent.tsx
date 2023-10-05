@@ -14,6 +14,7 @@ import useUserStatistics from '@/src/hooks/subgraph/useUserStatistics'
 import StatisticRow from '@/src/pagePartials/profile/statistics/addons/StatisticRow'
 import { UserStatistic } from '@/src/pagePartials/profile/statistics/user/UserStatistics'
 import { timeAgoFrom } from '@/src/utils/dateUtils'
+
 export default function UserStatisticContent({
   statisticVisibility,
 }: {
@@ -21,13 +22,10 @@ export default function UserStatisticContent({
 }) {
   const { t } = useTranslation()
   const theme = useTheme()
-  const { appChainId } = useWeb3Connection()
 
   const statistics = useUserStatistics()
 
   const userStatistic = statistics.data?.userStatistic
-
-  console.log('challengesReceivedAmount', userStatistic?.challengesReceivedAmount)
 
   return (
     <StatisticsContainer>
