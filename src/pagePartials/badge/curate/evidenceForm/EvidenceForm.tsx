@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Box, Button, Divider, Stack } from '@mui/material'
+import { LoadingButton } from '@mui/lab'
+import { Box, Divider, Stack } from '@mui/material'
 import { colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 import { Controller, useForm } from 'react-hook-form'
@@ -27,10 +28,16 @@ type EvidenceFormProps = {
 
 export default function EvidenceForm({ onSubmit, showCostComponent, type }: EvidenceFormProps) {
   const { t } = useTranslation()
-
+  const [submitting, setSubmitting] = useState(false)
   const { control, handleSubmit } = useForm<z.infer<typeof EvidenceSchema>>({
     resolver: zodResolver(EvidenceSchema),
   })
+
+  const submitHandler = async () => {
+    setSubmitting(true)
+    await handleSubmit(onSubmit)()
+    setSubmitting(false)
+  }
 
   return (
     <Stack
@@ -78,7 +85,7 @@ export default function EvidenceForm({ onSubmit, showCostComponent, type }: Evid
                     // We change the structure a little bit to have it ready to push to the backend
                     onChange({
                       mimeType: value.file?.type,
-                      base64File: value.data_url,
+                      base64File: value.base64File,
                     })
                   } else onChange(null)
                 }}
@@ -92,14 +99,15 @@ export default function EvidenceForm({ onSubmit, showCostComponent, type }: Evid
       {showCostComponent}
       <Divider color={colors.white} sx={{ mt: showCostComponent ? 8 : 1 }} />
       <Box display="flex" mt={4}>
-        <Button
+        <LoadingButton
           color="error"
-          onClick={handleSubmit(onSubmit)}
+          loading={submitting}
+          onClick={submitHandler}
           sx={{ borderRadius: 3, ml: 'auto' }}
           variant="contained"
         >
           {t(`badge.${type}.evidenceForm.submit`)}
-        </Button>
+        </LoadingButton>
       </Box>
     </Stack>
   )
