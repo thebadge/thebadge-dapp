@@ -65,16 +65,6 @@ const FilteredListHeaderBox = styled(Box)(({ theme }) => ({
   alignItems: 'center',
 }))
 
-const LastUpdateTypography = styled(Typography)(() => ({
-  display: 'inline-flex',
-  alignItems: 'center',
-  fontSize: '14px !important',
-  '&:hover': {
-    textDecoration: 'underline',
-  },
-  cursor: 'pointer',
-}))
-
 export default function FilteredList({
   filters = [],
   listId,

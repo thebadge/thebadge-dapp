@@ -4,22 +4,12 @@ import * as React from 'react'
 import ExpandLessOutlinedIcon from '@mui/icons-material/ExpandLessOutlined'
 import ExpandMoreOutlinedIcon from '@mui/icons-material/ExpandMoreOutlined'
 import TrendingUpOutlinedIcon from '@mui/icons-material/TrendingUpOutlined'
-import { Box, IconButton, Typography, styled } from '@mui/material'
+import { Box, IconButton, Typography } from '@mui/material'
 import { colors } from '@thebadge/ui-library'
 import dayjs from 'dayjs'
 import { useTranslation } from 'next-export-i18n'
 
 import LastUpdated from '@/src/components/common/LastUpdated'
-
-const LastUpdateTypography = styled(Typography)(() => ({
-  display: 'inline-flex',
-  alignItems: 'center',
-  fontSize: '14px !important',
-  '&:hover': {
-    textDecoration: 'underline',
-  },
-  cursor: 'pointer',
-}))
 
 export default function StatisticsHeader({
   color = colors.purple,
