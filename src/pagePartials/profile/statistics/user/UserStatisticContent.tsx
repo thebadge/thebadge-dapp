@@ -93,7 +93,7 @@ export default function UserStatisticContent({
           </Stack>
         )}
 
-        {statisticVisibility[UserStatistic.amountWithoutChallenge] && (
+        {statisticVisibility[UserStatistic.challengesReceivedAmount] && (
           <Stack flex="1" minWidth="160px">
             <StatisticSquare color={theme.palette.text.primary}>
               <BalanceOutlinedIcon
