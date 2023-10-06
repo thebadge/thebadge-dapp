@@ -173,7 +173,7 @@
     "verified": "Verified user",
     "statistics": {
       "title": "Statistics",
-      "lastUpdated": "Last update",
+      "lastUpdated": "Updated:",
       "creator": {
         "title": "Creator",
         "amountModelCreated": "Models created",
@@ -544,7 +544,7 @@
   "filteredList": {
     "category": "Category",
     "textSearch": "Text Search",
-    "lastUpdated": "Last update:"
+    "lastUpdated": "Updated:"
   },
   "web3Onboard": {
     "connect": {

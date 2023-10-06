@@ -4,12 +4,12 @@ import * as React from 'react'
 import ExpandLessOutlinedIcon from '@mui/icons-material/ExpandLessOutlined'
 import ExpandMoreOutlinedIcon from '@mui/icons-material/ExpandMoreOutlined'
 import TrendingUpOutlinedIcon from '@mui/icons-material/TrendingUpOutlined'
-import { Box, IconButton, Stack, Typography, styled } from '@mui/material'
+import { Box, IconButton, Typography, styled } from '@mui/material'
 import { colors } from '@thebadge/ui-library'
 import dayjs from 'dayjs'
 import { useTranslation } from 'next-export-i18n'
 
-import TimeAgo from '@/src/components/helpers/TimeAgo'
+import LastUpdated from '@/src/components/common/LastUpdated'
 
 const LastUpdateTypography = styled(Typography)(() => ({
   display: 'inline-flex',
@@ -53,12 +53,12 @@ export default function StatisticsHeader({
       </Box>
 
       <Box display="flex" gap={1}>
-        <Stack my={1}>
-          <LastUpdateTypography ml="auto" onClick={refresh}>
-            {t('profile.statistics.lastUpdated')}
-            <TimeAgo timestamp={lastSearchTimestamp} />
-          </LastUpdateTypography>
-        </Stack>
+        <LastUpdated
+          label={t('profile.statistics.lastUpdated')}
+          lastSearchTimestamp={lastSearchTimestamp}
+          onClick={refresh}
+        />
+
         <IconButton onClick={onClose}>
           {open ? (
             <ExpandLessOutlinedIcon sx={{ color, margin: 'auto' }} />
