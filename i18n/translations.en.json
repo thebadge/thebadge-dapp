@@ -160,7 +160,7 @@
     "badgesIAmReviewing": {
       "title": "Badges I am reviewing",
       "seeDispute": "See dispute",
-      "seeDisputeTooltip": "When you raise a challenge, a kleros dispute is created to resolve it and you can see how its going on the Kleros Court",
+      "seeDisputeTooltip": "When you raise a challenge, a kleros dispute is created to resolve it and you can see how it's going on the Kleros Court",
       "previewTitle": "Challenged Badge",
       "noResults": "There are no badges you are already reviewing...",
       "addEvidence": "Add more evidence",
@@ -266,7 +266,7 @@
         "steps": [
           {
             "subTitle": " **1**. You are starting the process of creating a new badge model. Please read the following instructions carefully in order to be able to complete the process correctly.",
-            "hint": "You can click on the links bellow, and read more about this process on the docs."
+            "hint": "You can click on the links below, and read more about this process on the docs."
           },
           {
             "subTitle": " **2**. Let's start with the look and feel of your badge, so please complete the following form until you are happy with how your badge is going to looks like",
@@ -518,7 +518,7 @@
       "baseDeposit": "Base deposit:",
       "baseDepositExplanation": "These are the funds users will have to deposit in order to make a submission into the list, which are sufficient to cover both arbitration costs paid to jurors and the rewards that users earn for a successful challenge. If the deposit is too low, incorrect submissions may not be flagged for dispute which could result in incorrect items being accepted in the list. If the deposit is too high, challengers will be likely to catch most malicious submissions, but people will only rarely submit to your list (so you may end up having a list that is difficult to attack but largely empty).",
       "court": "Court:",
-      "courtExplanation": "This is the Court where the case will be resolved is a challenges is made."
+      "courtExplanation": "This is the Court where the case will be resolved if a challenge is made."
     }
   },
   "klerosCourt": {
