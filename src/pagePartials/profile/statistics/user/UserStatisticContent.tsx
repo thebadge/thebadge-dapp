@@ -83,24 +83,28 @@ export default function UserStatisticContent({
               <BalanceOutlinedIcon
                 sx={{ color: theme.palette.text.primary, position: 'absolute', top: 8, left: 8 }}
               />
-              {userStatistic?.challengesReceivedAmount > 0 &&
-              userStatistic?.timeOfLastChallengeReceived ? (
-                <>
-                  <Typography sx={{ fontSize: '48px !important', fontWeight: 900 }}>
-                    {timeAgoFrom(userStatistic?.timeOfLastChallengeReceived || 0)}
-                  </Typography>
-                  <Typography sx={{ textAlign: 'center', color: 'text.primary' }}>
-                    {t('profile.statistics.user.withoutLost')}
-                  </Typography>
-                </>
-              ) : (
-                <>
-                  <Typography sx={{ fontSize: '48px !important', fontWeight: 900 }}>0</Typography>
-                  <Typography sx={{ textAlign: 'center', color: 'text.primary' }}>
-                    {t('profile.statistics.user.amountChallengesReceived')}
-                  </Typography>
-                </>
-              )}
+              <Typography sx={{ fontSize: '48px !important', fontWeight: 900 }}>
+                {timeAgoFrom(userStatistic?.timeOfLastChallengeReceived || 0)}
+              </Typography>
+              <Typography sx={{ textAlign: 'center', color: 'text.primary' }}>
+                {t('profile.statistics.user.withoutLost')}
+              </Typography>
+            </StatisticSquare>
+          </Stack>
+        )}
+
+        {statisticVisibility[UserStatistic.amountWithoutChallenge] && (
+          <Stack flex="1" minWidth="160px">
+            <StatisticSquare color={theme.palette.text.primary}>
+              <BalanceOutlinedIcon
+                sx={{ color: theme.palette.text.primary, position: 'absolute', top: 8, left: 8 }}
+              />
+              <Typography sx={{ fontSize: '48px !important', fontWeight: 900 }}>
+                {userStatistic?.challengesReceivedAmount || 0}
+              </Typography>
+              <Typography sx={{ textAlign: 'center', color: 'text.primary' }}>
+                {t('profile.statistics.user.amountChallengesReceived')}
+              </Typography>
             </StatisticSquare>
           </Stack>
         )}

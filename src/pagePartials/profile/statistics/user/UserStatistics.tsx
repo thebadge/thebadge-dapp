@@ -16,6 +16,7 @@ export enum UserStatistic {
   amountMinted = 'Badges minted',
   amountWithoutChallenge = 'Days without challenges',
   amountChallengeLost = 'Challenges lost',
+  challengesReceivedAmount = 'Challenges received',
 }
 
 export const UserStatisticDefaultVisibility = {
