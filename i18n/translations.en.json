@@ -176,12 +176,13 @@
       "lastUpdated": "Last update",
       "creator": {
         "title": "Creator",
-        "amountModelCreated": "Models created",
-        "amountOfMinters": "Users that minted your badges",
+        "amountModelsCreated": "Models created",
+        "amountOfMinters": "Users that minted your models",
         "uniqueMinters": "Unique minters",
+        "earnedPerModel": "Fees collected per model",
         "totalEarned": "Total fee earned",
         "rankingPosition": "Position in creators ranking",
-        "mostMinted": "Most minted badge",
+        "mostMinted": "Most minted model",
         "totalMinted": "Badges minted",
         "ranking": "Ranking #{{position}}"
       },

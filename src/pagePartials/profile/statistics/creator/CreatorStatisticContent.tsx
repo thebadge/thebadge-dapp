@@ -43,7 +43,7 @@ export default function CreatorStatisticContent({
           <StatisticRow
             color={colors.purple}
             icon={<MilitaryTechOutlinedIcon sx={{ color: colors.purple }} />}
-            label={t('profile.statistics.creator.amountModelCreated')}
+            label={t('profile.statistics.creator.amountModelsCreated')}
             value={`${creatorStatistic?.createdBadgeModelsAmount || 0}`}
           />
           <StatisticRow
@@ -79,12 +79,14 @@ export default function CreatorStatisticContent({
               <Typography sx={{ fontSize: '48px !important', fontWeight: 900 }}>
                 {formatUnits(
                   BigNumber.from(creatorStatistic?.totalFeesEarned || ZERO_BN).div(
-                    creatorStatistic?.createdBadgeModelsMintedAmount || 1,
+                    creatorStatistic?.createdBadgeModelsMintedAmount > 0
+                      ? creatorStatistic?.createdBadgeModelsMintedAmount
+                      : 1,
                   ),
                 )}
               </Typography>
               <Typography sx={{ textAlign: 'center', color: 'text.primary' }}>
-                Fees collected <br /> per badge
+                {t('profile.statistics.creator.earnedPerModel')}
               </Typography>
             </StatisticSquare>
           </Stack>
@@ -99,8 +101,8 @@ export default function CreatorStatisticContent({
               <Typography sx={{ fontSize: '48px !important', fontWeight: 900 }}>
                 {creatorStatistic?.createdBadgeModelsAmount || 0}
               </Typography>
-              <Typography sx={{ textAlign: 'center', color: colors.purple }}>
-                {t('profile.statistics.creator.amountModelCreated')}
+              <Typography sx={{ textAlign: 'center', color: 'text.primary' }}>
+                {t('profile.statistics.creator.amountModelsCreated')}
               </Typography>
             </StatisticSquare>
           </Stack>
@@ -115,7 +117,7 @@ export default function CreatorStatisticContent({
               <Typography sx={{ fontSize: '48px !important', fontWeight: 900 }}>
                 {creatorStatistic?.mostPopularCreatedBadge}
               </Typography>
-              <Typography sx={{ textAlign: 'center', color: colors.purple }}>
+              <Typography sx={{ textAlign: 'center', color: 'text.primary' }}>
                 {t('profile.statistics.creator.amountOfMinters')}
               </Typography>
             </StatisticSquare>
@@ -128,7 +130,7 @@ export default function CreatorStatisticContent({
               <Typography sx={{ fontSize: '48px !important', fontWeight: 900 }}>
                 {creatorStatistic?.createdBadgeModelsMintedAmount}
               </Typography>
-              <Typography sx={{ textAlign: 'center', color: colors.purple }}>
+              <Typography sx={{ textAlign: 'center', color: 'text.primary' }}>
                 {t('profile.statistics.creator.totalMinted')}
               </Typography>
             </StatisticSquare>
@@ -144,7 +146,7 @@ export default function CreatorStatisticContent({
               <Typography sx={{ fontSize: '48px !important', fontWeight: 900 }}>
                 {creatorStatistic?.mostPopularCreatedBadge}
               </Typography>
-              <Typography sx={{ textAlign: 'center', color: colors.purple }}>
+              <Typography sx={{ textAlign: 'center', color: 'text.primary' }}>
                 {t('profile.statistics.creator.mostMinted')}
               </Typography>
             </StatisticSquare>
@@ -155,7 +157,7 @@ export default function CreatorStatisticContent({
           <Stack flex="1" minWidth="160px">
             <StatisticSquare color={colors.purple}>
               <MilitaryTechOutlinedIcon sx={{ color: colors.purple, fontSize: '4rem' }} />
-              <Typography sx={{ textAlign: 'center', color: colors.purple }}>
+              <Typography sx={{ textAlign: 'center', color: 'text.primary' }}>
                 {t('profile.statistics.creator.ranking', { position: 7 })}
               </Typography>
             </StatisticSquare>
