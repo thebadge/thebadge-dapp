@@ -6,7 +6,9 @@ import { SxProps } from '@mui/system'
 
 import { DisableOverlay, DisableWrapper } from '@/src/components/helpers/DisableElements'
 import { chainsConfig } from '@/src/config/web3'
+import useIsCreator from '@/src/hooks/subgraph/useIsCreator'
 import ConnectWalletActionError from '@/src/pagePartials/errors/displays/ConnectWalletActionError'
+import { RequiredCreatorAccess } from '@/src/pagePartials/errors/requiresCreatorAccess'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 
 const Wrapper = styled('div')`
@@ -20,15 +22,18 @@ const Wrapper = styled('div')`
 type RequiredConnectionProps = {
   children: ReactElement | ReactNode
   minHeight?: number
+  needCreatorConnected?: boolean
   sx?: SxProps<Theme>
 }
 
 const PreventActionWithoutConnection: React.FC<RequiredConnectionProps> = ({
   children,
   minHeight,
+  needCreatorConnected,
   ...restProps
 }) => {
   const { address, appChainId, isWalletConnected, pushNetwork, walletChainId } = useWeb3Connection()
+  const { data: isCreator } = useIsCreator()
   const isConnected = isWalletConnected && address
   const isWrongNetwork = isConnected && walletChainId !== appChainId
 
@@ -55,6 +60,17 @@ const PreventActionWithoutConnection: React.FC<RequiredConnectionProps> = ({
           <DisableOverlay />
         </DisableWrapper>
       </Wrapper>
+    )
+  }
+
+  if (needCreatorConnected && !isCreator) {
+    return (
+      <RequiredCreatorAccess>
+        <DisableWrapper onClick={(e) => e.stopPropagation()} sx={{ mt: 2 }}>
+          {children}
+          <DisableOverlay />
+        </DisableWrapper>
+      </RequiredCreatorAccess>
     )
   }
 
