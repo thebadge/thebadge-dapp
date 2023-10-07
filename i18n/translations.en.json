@@ -295,6 +295,18 @@
           "backgroundImage": "Background",
           "template": "Template (Not implemented yet)"
         },
+        "formField": {
+          "name": "Field name",
+          "type": "Field type",
+          "selectType": "Select a type",
+          "description": "Description",
+          "addField": "+ Add Field",
+          "columns": {
+            "name": "Name",
+            "description": "Description",
+            "type": "Type"
+          }
+        },
         "strategy": {
           "challengePeriodDuration": "Challenge period duration",
           "rigorousness": "Rigorousness",
