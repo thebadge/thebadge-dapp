@@ -83,12 +83,20 @@ export default function UserStatisticContent({
               <BalanceOutlinedIcon
                 sx={{ color: theme.palette.text.primary, position: 'absolute', top: 8, left: 8 }}
               />
-              <Typography sx={{ fontSize: '48px !important', fontWeight: 900 }}>
-                {timeAgoFrom(userStatistic?.timeOfLastChallengeReceived || 0)}
-              </Typography>
-              <Typography sx={{ textAlign: 'center', color: 'text.primary' }}>
-                {t('profile.statistics.user.withoutLost')}
-              </Typography>
+              {userStatistic?.timeOfLastChallengeReceived &&
+              userStatistic?.timeOfLastChallengeReceived !== '0' ? (
+                <>
+                  {timeAgoFrom(userStatistic?.timeOfLastChallengeReceived || 0)}
+                  <Typography sx={{ fontSize: '48px !important', fontWeight: 900 }}></Typography>
+                  <Typography sx={{ textAlign: 'center', color: 'text.primary' }}>
+                    {t('profile.statistics.user.withoutLost')}
+                  </Typography>
+                </>
+              ) : (
+                <Typography sx={{ textAlign: 'center', color: 'text.primary' }}>
+                  {t('profile.statistics.user.neverChallenged')}
+                </Typography>
+              )}
             </StatisticSquare>
           </Stack>
         )}
