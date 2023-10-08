@@ -22,14 +22,14 @@ const Wrapper = styled('div')`
 type RequiredConnectionProps = {
   children: ReactElement | ReactNode
   minHeight?: number
-  needCreatorConnected?: boolean
+  onlyCreator?: boolean
   sx?: SxProps<Theme>
 }
 
 const PreventActionWithoutConnection: React.FC<RequiredConnectionProps> = ({
   children,
   minHeight,
-  needCreatorConnected,
+  onlyCreator,
   ...restProps
 }) => {
   const { address, appChainId, isWalletConnected, pushNetwork, walletChainId } = useWeb3Connection()
@@ -63,7 +63,7 @@ const PreventActionWithoutConnection: React.FC<RequiredConnectionProps> = ({
     )
   }
 
-  if (needCreatorConnected && !isCreator) {
+  if (onlyCreator && !isCreator) {
     return (
       <RequiredCreatorAccess>
         <DisableWrapper onClick={(e) => e.stopPropagation()} sx={{ mt: 2 }}>
