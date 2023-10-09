@@ -176,10 +176,11 @@
       "lastUpdated": "Updated:",
       "creator": {
         "title": "Creator",
-        "amountModelCreated": "Models created",
+        "amountModelsCreated": "Badges created",
         "amountOfMinters": "Users that minted your badges",
         "uniqueMinters": "Unique minters",
-        "totalEarned": "Total fee earned",
+        "earnedPerModel": "Fees collected per badge",
+        "totalEarned": "Total fees earned",
         "rankingPosition": "Position in creators ranking",
         "mostMinted": "Most minted badge",
         "totalMinted": "Badges minted",
@@ -293,6 +294,18 @@
           "textContrast": "Text color",
           "backgroundImage": "Background",
           "template": "Template (Not implemented yet)"
+        },
+        "formField": {
+          "name": "Field name",
+          "type": "Field type",
+          "selectType": "Select a type",
+          "description": "Description",
+          "addField": "+ Add Field",
+          "columns": {
+            "name": "Name",
+            "description": "Description",
+            "type": "Type"
+          }
         },
         "strategy": {
           "challengePeriodDuration": "Challenge period duration",

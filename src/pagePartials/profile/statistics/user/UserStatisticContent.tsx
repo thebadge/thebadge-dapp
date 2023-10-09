@@ -26,8 +26,6 @@ export default function UserStatisticContent({
 
   const userStatistic = statistics.data?.userStatistic
 
-  console.log('challengesReceivedAmount', userStatistic?.challengesReceivedAmount)
-
   return (
     <StatisticsContainer>
       <Table sx={{ width: 'inherit', flex: 3 }}>
