@@ -7,7 +7,11 @@ export default function useCreatorStatistics() {
   const { address, appChainId } = useWeb3Connection()
 
   const gql = useSubgraph()
-  return useSWR(address ? [`creatorStatistics`, address, appChainId] : null, ([, _address]) => {
-    return gql.creatorStatistics({ address: _address })
-  })
+  return useSWR(
+    address ? [`creatorStatistics`, address, appChainId] : null,
+    ([, _address]) => {
+      return gql.creatorStatistics({ address: _address })
+    },
+    { revalidateOnMount: true },
+  )
 }
