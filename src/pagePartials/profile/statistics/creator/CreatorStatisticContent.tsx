@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import * as React from 'react'
 
 import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange'
@@ -21,6 +22,7 @@ import { StatisticVisibility } from '@/src/hooks/nextjs/useStatisticsVisibility'
 import useCreatorStatistics from '@/src/hooks/subgraph/useCreatorStatistics'
 import StatisticRow from '@/src/pagePartials/profile/statistics/addons/StatisticRow'
 import { CreatorStatistic } from '@/src/pagePartials/profile/statistics/creator/CreatorStatistics'
+import { useProfileProvider } from '@/src/providers/ProfileProvider'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 
 export default function CreatorStatisticContent({
@@ -31,10 +33,14 @@ export default function CreatorStatisticContent({
   const { t } = useTranslation()
   const { appChainId } = useWeb3Connection()
   const networkConfig = getNetworkConfig(appChainId)
+  const { refreshWatcher } = useProfileProvider()
 
-  const statistics = useCreatorStatistics()
+  const { data, mutate } = useCreatorStatistics()
+  const creatorStatistic = data?.creatorStatistic
 
-  const creatorStatistic = statistics.data?.creatorStatistic
+  useEffect(() => {
+    mutate()
+  }, [mutate, refreshWatcher])
 
   return (
     <StatisticsContainer>
