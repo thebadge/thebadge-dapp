@@ -62,7 +62,8 @@ const MenuItemContainer = styled('div')<MenuItemElement>(({ type }) => ({
 
   ...(type === 'small'
     ? {
-        left: '0.75rem',
+        display: 'flex',
+        justifyContent: 'center',
         top: '0.75rem',
         height: '1.5rem',
       }
@@ -310,24 +311,26 @@ export default function MainMenu({ ...restProps }) {
       (item.validation === undefined || item.validation) && (
         <MenuItemContainer key={'menuItem-' + itemIndex} type={item.type}>
           <Tooltip arrow placement="right" title={item.title}>
-            <MenuItemBox
-              disableRipple={true}
-              disabled={!!item.disabled}
-              onClick={() => onMenuItemClick(item, itemIndex)}
-              sx={{
-                '&.Mui-focusVisible': {
-                  background: `${getMenuItemHoverBackgroundColor(item.type)}`,
-                },
-              }}
-            >
-              <MenuItem
+            <div>
+              <MenuItemBox
+                disableRipple={true}
                 disabled={!!item.disabled}
-                selected={selectedElement === itemIndex}
-                type={item.type}
+                onClick={() => onMenuItemClick(item, itemIndex)}
+                sx={{
+                  '&.Mui-focusVisible': {
+                    background: `${getMenuItemHoverBackgroundColor(item.type)}`,
+                  },
+                }}
               >
-                {item.icon}
-              </MenuItem>
-            </MenuItemBox>
+                <MenuItem
+                  disabled={!!item.disabled}
+                  selected={selectedElement === itemIndex}
+                  type={item.type}
+                >
+                  {item.icon}
+                </MenuItem>
+              </MenuItemBox>
+            </div>
           </Tooltip>
           {item.subItems && selectedElement === itemIndex ? renderSubItems(item, itemIndex) : null}
         </MenuItemContainer>

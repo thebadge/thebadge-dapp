@@ -95,7 +95,8 @@ module.exports = {
       { functions: false, classes: false, variables: true },
     ],
     '@typescript-eslint/explicit-module-boundary-types': 'off',
-    "no-constant-binary-expression": "error"
+    "no-constant-binary-expression": "error",
+    "@typescript-eslint/no-unused-vars": "error",
   },
   globals: {
     "React": "writable"

@@ -8,8 +8,8 @@ import dayjs from 'dayjs'
 import { useTranslation } from 'next-export-i18n'
 import Sticky from 'react-sticky-el'
 
+import LastUpdated from '@/src/components/common/LastUpdated'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
-import TimeAgo from '@/src/components/helpers/TimeAgo'
 import { Loading } from '@/src/components/loading/Loading'
 import { SpinnerColors } from '@/src/components/loading/Spinner'
 import TBSearchField from '@/src/components/select/SearchField'
@@ -63,16 +63,6 @@ const FilteredListHeaderBox = styled(Box)(({ theme }) => ({
   marginBottom: theme.spacing(1),
   justifyContent: 'space-between',
   alignItems: 'center',
-}))
-
-const LastUpdateTypography = styled(Typography)(() => ({
-  display: 'inline-flex',
-  alignItems: 'center',
-  fontSize: '14px !important',
-  '&:hover': {
-    textDecoration: 'underline',
-  },
-  cursor: 'pointer',
 }))
 
 export default function FilteredList({
@@ -197,12 +187,12 @@ export default function FilteredList({
       </FilteredListHeaderBox>
       <Divider color={mode === 'dark' ? 'white' : 'black'} sx={{ borderWidth: '1px' }} />
 
-      <Stack my={1}>
-        <LastUpdateTypography ml="auto" onClick={refresh}>
-          {t('filteredList.lastUpdated')}
-          <TimeAgo timestamp={lastSearchTimestamp} />
-        </LastUpdateTypography>
-      </Stack>
+      <LastUpdated
+        label={t('filteredList.lastUpdated')}
+        lastSearchTimestamp={lastSearchTimestamp}
+        onClick={refresh}
+      />
+
       <Box display="flex" id="preview" mt={4}>
         <Box flex="3">
           {props.loading ? (

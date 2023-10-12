@@ -7,7 +7,11 @@ export default function useCuratorStatistics() {
   const { address, appChainId } = useWeb3Connection()
 
   const gql = useSubgraph()
-  return useSWR(address ? [`curatorStatistics`, address, appChainId] : null, ([, _address]) => {
-    return gql.curatorStatistics({ address: _address })
-  })
+  return useSWR(
+    address ? [`curatorStatistics`, address, appChainId] : null,
+    ([, _address]) => {
+      return gql.curatorStatistics({ address: _address })
+    },
+    { revalidateOnMount: true },
+  )
 }

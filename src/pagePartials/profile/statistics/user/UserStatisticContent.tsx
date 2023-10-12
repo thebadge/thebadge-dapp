@@ -9,13 +9,12 @@ import { Box, Stack, Table, TableBody, Typography, useTheme } from '@mui/materia
 import { useTranslation } from 'next-export-i18n'
 
 import { StatisticSquare, StatisticsContainer } from '../addons/styled'
-import { getNetworkConfig } from '@/src/config/web3'
 import { StatisticVisibility } from '@/src/hooks/nextjs/useStatisticsVisibility'
-import useUserStatistics from '@/src/hooks/subgraph/useUserrStatistics'
+import useUserStatistics from '@/src/hooks/subgraph/useUserStatistics'
 import StatisticRow from '@/src/pagePartials/profile/statistics/addons/StatisticRow'
 import { UserStatistic } from '@/src/pagePartials/profile/statistics/user/UserStatistics'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { timeAgoFrom } from '@/src/utils/dateUtils'
+
 export default function UserStatisticContent({
   statisticVisibility,
 }: {
@@ -23,8 +22,6 @@ export default function UserStatisticContent({
 }) {
   const { t } = useTranslation()
   const theme = useTheme()
-  const { appChainId } = useWeb3Connection()
-  const networkConfig = getNetworkConfig(appChainId)
 
   const statistics = useUserStatistics()
 
@@ -86,11 +83,35 @@ export default function UserStatisticContent({
               <BalanceOutlinedIcon
                 sx={{ color: theme.palette.text.primary, position: 'absolute', top: 8, left: 8 }}
               />
+              {userStatistic?.timeOfLastChallengeReceived &&
+              userStatistic?.timeOfLastChallengeReceived !== '0' ? (
+                <>
+                  {timeAgoFrom(userStatistic?.timeOfLastChallengeReceived || 0)}
+                  <Typography sx={{ fontSize: '48px !important', fontWeight: 900 }}></Typography>
+                  <Typography sx={{ textAlign: 'center', color: 'text.primary' }}>
+                    {t('profile.statistics.user.withoutLost')}
+                  </Typography>
+                </>
+              ) : (
+                <Typography sx={{ textAlign: 'center', color: 'text.primary' }}>
+                  {t('profile.statistics.user.neverChallenged')}
+                </Typography>
+              )}
+            </StatisticSquare>
+          </Stack>
+        )}
+
+        {statisticVisibility[UserStatistic.challengesReceivedAmount] && (
+          <Stack flex="1" minWidth="160px">
+            <StatisticSquare color={theme.palette.text.primary}>
+              <BalanceOutlinedIcon
+                sx={{ color: theme.palette.text.primary, position: 'absolute', top: 8, left: 8 }}
+              />
               <Typography sx={{ fontSize: '48px !important', fontWeight: 900 }}>
-                {timeAgoFrom(userStatistic?.timeOfLastChallengeReceived || 0)}
+                {userStatistic?.challengesReceivedAmount || 0}
               </Typography>
               <Typography sx={{ textAlign: 'center', color: 'text.primary' }}>
-                {t('profile.statistics.user.withoutLost')}
+                {t('profile.statistics.user.amountChallengesReceived')}
               </Typography>
             </StatisticSquare>
           </Stack>

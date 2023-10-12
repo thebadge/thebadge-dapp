@@ -18,7 +18,7 @@ export function saveFormValues(values: Record<string, any>, modelId: string) {
     : ONE_DAY
 
   localStorage.setItem(
-    FORM_STORE_KEY,
+    FORM_STORE_KEY + `-${modelId}`,
     JSON.stringify({ expirationTime: Date.now() + expiration, values }),
   )
 }

@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Box, Button, Stack, Typography, styled } from '@mui/material'
 import { useTsController } from '@ts-react/form'
 import update from 'immutability-helper'
+import { useTranslation } from 'next-export-i18n'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { Controller, FieldError, useForm } from 'react-hook-form'
@@ -38,6 +39,8 @@ type Props = {
 }
 
 export function KlerosDynamicFieldsCreator({ error, ...props }: Props) {
+  const { t } = useTranslation()
+
   // Need to type the useForm call accordingly
   const form = useForm<z.infer<typeof KlerosFormFieldSchema>>({
     resolver: zodResolver(KlerosFormFieldSchema),
@@ -106,7 +109,12 @@ export function KlerosDynamicFieldsCreator({ error, ...props }: Props) {
             control={control}
             name={'label'}
             render={({ field: { onChange, value }, fieldState: { error } }) => (
-              <TextField error={error} label={'Field name'} onChange={onChange} value={value} />
+              <TextField
+                error={error}
+                label={t('badge.model.formField.name')}
+                onChange={onChange}
+                value={value}
+              />
             )}
           />
           <Controller
@@ -115,9 +123,9 @@ export function KlerosDynamicFieldsCreator({ error, ...props }: Props) {
             render={({ field: { onChange, value }, fieldState: { error } }) => (
               <DropdownSelect<typeof value>
                 error={error}
-                label={'Field Type'}
+                label={t('badge.model.formField.type')}
                 onChange={onChange}
-                options={['Select a type', ...KLEROS_LIST_TYPES_KEYS]}
+                options={[t('badge.model.formField.selectType'), ...KLEROS_LIST_TYPES_KEYS]}
                 value={value || ' '}
               />
             )}
@@ -126,8 +134,13 @@ export function KlerosDynamicFieldsCreator({ error, ...props }: Props) {
         <Controller
           control={control}
           name={'description'}
-          render={({ field: { name, onChange, value }, fieldState: { error } }) => (
-            <TextArea error={error} label={name} onChange={onChange} value={value} />
+          render={({ field: { onChange, value }, fieldState: { error } }) => (
+            <TextArea
+              error={error}
+              label={t('badge.model.formField.description')}
+              onChange={onChange}
+              value={value}
+            />
           )}
         />
         <Button
@@ -135,22 +148,22 @@ export function KlerosDynamicFieldsCreator({ error, ...props }: Props) {
           sx={{ borderRadius: 3, ml: 'auto', fontSize: '12px !important' }}
           variant="contained"
         >
-          + Add Field
+          {t('badge.model.formField.addField')}
         </Button>
       </Stack>
       {error && <FormStatus status={TextFieldStatus.error}>{error.message}</FormStatus>}
       <Box mt={2}>
         <Box sx={{ display: 'flex', justifyContent: 'space-evenly', mb: 4, ml: 5, mr: 5 }}>
           <Typography sx={{ flex: 2 }} variant="subtitle1">
-            Name
+            {t('badge.model.formField.columns.name')}
           </Typography>
 
           <Typography sx={{ flex: 3 }} variant="subtitle1">
-            Description
+            {t('badge.model.formField.columns.description')}
           </Typography>
 
           <Typography sx={{ flex: 1 }} variant="subtitle1">
-            Type
+            {t('badge.model.formField.columns.type')}
           </Typography>
         </Box>
         <Box sx={{ overflowY: 'auto' }}>

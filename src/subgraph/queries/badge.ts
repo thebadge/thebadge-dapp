@@ -17,24 +17,6 @@ export const BADGES_IN_REVIEW_AND_CHALLENGED = gql`
   }
 `
 
-export const BADGES_IN_REVIEW_SMALL_SET = gql`
-  query badgesInReviewSmallSet(
-    $date: BigInt!
-    $statuses: [BadgeStatus!]!
-    $badgeReceiver: String!
-  ) {
-    badges(
-      where: {
-        badgeKlerosMetaData_: { reviewDueDate_gt: $date }
-        status_in: $statuses
-        account_starts_with: $badgeReceiver
-      }
-    ) {
-      ...BadgeWithJustIds
-    }
-  }
-`
-
 export const MY_BADGES = gql`
   query myBadges($wallet: String!) {
     badges(where: { account: $wallet }) {
@@ -66,10 +48,24 @@ export const BADGES_USER_CAN_REVIEW_SMALL_SET = gql`
   ) {
     badges(
       where: {
-        badgeKlerosMetaData_: { reviewDueDate_gt: $date }
-        status_in: $statuses
-        account_starts_with: $badgeReceiver
-        account_not: $userAddress
+        or: [
+          {
+            # This state filter all the Requested status badges (ready to be curated)
+            # that is in the rage of the reviewDueDate
+            badgeKlerosMetaData_: { reviewDueDate_gt: $date }
+            status: Requested
+            account_starts_with: $badgeReceiver
+            account_not: $userAddress
+          }
+          {
+            # This state filter all the badges that are not on Requested status,
+            # bc the Requested ones need to check the reviewDueDate_gt
+            status_in: $statuses
+            status_not: Requested
+            account_starts_with: $badgeReceiver
+            account_not: $userAddress
+          }
+        ]
       }
     ) {
       ...BadgesInReview
