@@ -7,7 +7,6 @@ import { colors, gradients } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 
 import { BadgeAnimatedLogo } from '@/src/components/assets/animated/BadgeAnimatedLogo'
-import { useSectionReferences } from '@/src/providers/referencesProvider'
 import ConnectWalletButton from '@/src/components/header/ConnectWalletButton'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 
@@ -54,7 +53,7 @@ export default function NotTheBadgeModelCreatorError() {
         <Typography color={colors.purple} variant="dAppHeadline2">
           {t('errors.noTheBadgeModelCreator')}
         </Typography>
-        <Typography variant="body4" mb={4}>
+        <Typography mb={4} variant="body4">
           {t('errors.noTheBadgeModelCreatorSubtitle')}
         </Typography>
         <ConnectWalletButton onClick={connectWallet}>

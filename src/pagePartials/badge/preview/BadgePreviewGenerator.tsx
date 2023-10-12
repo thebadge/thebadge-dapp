@@ -20,10 +20,10 @@ type BadgePreviewGeneratorProps = {
 
 export const BadgePreviewGenerator = ({
   badgePreviewRef,
+  badgeUrl,
   modelId,
   setValue,
   title,
-  badgeUrl,
 }: BadgePreviewGeneratorProps) => {
   const badgeModelData = useBadgeModel(modelId)
   const badgeModelMetadata = badgeModelData.data?.badgeModelMetadata
@@ -59,10 +59,10 @@ export const BadgePreviewGenerator = ({
           animationEffects={['wobble', 'grow', 'glare']}
           animationOnHover
           badgeBackgroundUrl={getBackgroundBadgeUrl(backgroundType?.value)}
+          badgeUrl={badgeUrl}
           category={badgeModelMetadata?.name}
           description={badgeModelMetadata?.description}
           imageUrl={badgeLogoImage?.s3Url}
-          badgeUrl={badgeUrl}
           size="medium"
           textContrast={textContrast?.value || 'light-withTextBackground'}
         />

@@ -1,6 +1,4 @@
-import { JsonRpcProvider } from '@ethersproject/providers'
 import axios from 'axios'
-import { ethers } from 'ethers'
 
 import { ZERO_ADDRESS } from '@/src/constants/bigNumber'
 import { EmailClaimTx, RelayedTx, RelayedTxResult } from '@/types/relayedTx'

@@ -3,12 +3,13 @@ import * as React from 'react'
 import { Box, Stack, Typography, styled } from '@mui/material'
 import { colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
+import { useFormContext } from 'react-hook-form'
 
 import { getNetworkConfig } from '@/src/config/web3'
 import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
-import { useFormContext } from 'react-hook-form'
 import { MintThirdPartySchemaType } from '@/src/pagePartials/badge/mint/schema/MintThirdPartySchema'
+import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+
 type Props = {
   costs: {
     totalMintCost: string

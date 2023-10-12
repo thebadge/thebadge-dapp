@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import { Box, Stack, Typography } from '@mui/material'
+import { Box, Stack } from '@mui/material'
 import { formatUnits } from 'ethers/lib/utils'
 import { useTranslation } from 'next-export-i18n'
 import { useFormContext } from 'react-hook-form'
