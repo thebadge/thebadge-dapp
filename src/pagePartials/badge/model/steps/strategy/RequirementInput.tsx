@@ -16,7 +16,7 @@ export default function RequirementInput() {
   const { t } = useTranslation()
   const { control } = useFormContext<CreateModelSchemaType>()
 
-  const [enableTextEditor, setEnableTextEditor] = useState(false)
+  const [enableTextEditor, setEnableTextEditor] = useState(true) // default is true
 
   function toggleTextEditor() {
     setEnableTextEditor((prev) => !prev)
@@ -44,7 +44,10 @@ export default function RequirementInput() {
               textAlign="center"
               variant="body4"
             >
-              Switch back to <span style={{ textDecoration: 'underline' }}>text editor</span>.
+              {t('acceptanceCriteria.switchBackTo')}{' '}
+              <span style={{ textDecoration: 'underline' }}>
+                {t('acceptanceCriteria.textEditor')}
+              </span>
             </Typography>
           </Collapse>
         )}
@@ -88,7 +91,8 @@ export default function RequirementInput() {
               textAlign="center"
               variant="body4"
             >
-              Upload criteria as <span style={{ textDecoration: 'underline' }}>PDF</span>.
+              {t('acceptanceCriteria.uploadCriteriaAs')}{' '}
+              <span style={{ textDecoration: 'underline' }}>{t('acceptanceCriteria.pdf')}</span>
             </Typography>
           </Collapse>
         )}

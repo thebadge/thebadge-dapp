@@ -543,7 +543,11 @@
     }
   },
   "acceptanceCriteria": {
-    "create": "Create the acceptance criteria"
+    "create": "Create the acceptance criteria",
+    "switchBackTo": "Switch back to",
+    "textEditor": "text editor",
+    "uploadCriteriaAs": "Upload criteria as",
+    "pdf": "PDF"
   },
   "expirationField": {
     "enable": "Enable expiration time",
