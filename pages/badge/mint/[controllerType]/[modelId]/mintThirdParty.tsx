@@ -23,8 +23,7 @@ import { NextPageWithLayout } from '@/types/next'
 import { ToastStates } from '@/types/toast'
 
 const MintThirdPartyBadgeModel: NextPageWithLayout = () => {
-  const { appChainId, appPubKey, isSocialWallet, readOnlyAppProvider, userSocialInfo } =
-    useWeb3Connection()
+  const { appChainId, appPubKey, isSocialWallet, userSocialInfo } = useWeb3Connection()
   const theBadge = useContractInstance(TheBadge__factory, 'TheBadge')
   const { resetTxState, sendTx, state } = useTransaction()
   const router = useRouter()
