@@ -1,4 +1,3 @@
-import { useTranslation } from "next-export-i18n";
 import React, { useCallback, useState } from 'react'
 
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
@@ -7,6 +6,7 @@ import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf'
 import { Box, IconButton, Stack, Tooltip, Typography, styled } from '@mui/material'
 import { colors } from '@thebadge/ui-library'
+import { useTranslation } from 'next-export-i18n'
 import { FieldError } from 'react-hook-form'
 import ImageUploading, { ImageListType, ImageType } from 'react-images-uploading'
 
