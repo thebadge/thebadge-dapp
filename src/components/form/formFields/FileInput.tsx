@@ -1,3 +1,4 @@
+import { useTranslation } from "next-export-i18n";
 import React, { useCallback, useState } from 'react'
 
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
@@ -59,6 +60,7 @@ export function FileInput({
   placeholder,
   value,
 }: FileInputProps) {
+  const { t } = useTranslation()
   const [files, setFiles] = useState<ImageListType>(value ? [value] : [])
   const maxNumber = 1
 
@@ -130,8 +132,8 @@ export function FileInput({
                   ))}
                   {errors && (
                     <div>
-                      {errors.acceptType && <span>Your selected file type is not allow</span>}
-                      {errors.maxFileSize && <span>Selected file size exceed maxFileSize</span>}
+                      {errors.acceptType && <span>{t('errors.fileType')}</span>}
+                      {errors.maxFileSize && <span>{t('errors.fileMaxSize')}</span>}
                     </div>
                   )}
                 </Stack>

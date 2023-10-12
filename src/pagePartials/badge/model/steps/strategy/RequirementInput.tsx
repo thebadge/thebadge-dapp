@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { Collapse, FormHelperText, Typography } from '@mui/material'
+import { Box, Collapse, FormHelperText, Typography } from '@mui/material'
 import { Editor } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 import { DeltaStatic, Sources } from 'quill'
@@ -37,18 +37,20 @@ export default function RequirementInput() {
                 <PDFRequirementInput error={error} onChange={onChange} value={value} />
               )}
             />
-            <Typography
-              fontSize={'14px !important'}
-              onClick={toggleTextEditor}
-              sx={{ cursor: 'pointer' }}
-              textAlign="center"
-              variant="body4"
-            >
-              {t('acceptanceCriteria.switchBackTo')}{' '}
-              <span style={{ textDecoration: 'underline' }}>
-                {t('acceptanceCriteria.textEditor')}
-              </span>
-            </Typography>
+            <Box marginTop={2}>
+              <Typography
+                fontSize={'14px !important'}
+                onClick={toggleTextEditor}
+                sx={{ cursor: 'pointer' }}
+                textAlign="center"
+                variant="body4"
+              >
+                {t('acceptanceCriteria.switchBackTo')}{' '}
+                <span style={{ textDecoration: 'underline' }}>
+                  {t('acceptanceCriteria.textEditor')}
+                </span>
+              </Typography>
+            </Box>
           </Collapse>
         )}
         {enableTextEditor && (
@@ -84,16 +86,18 @@ export default function RequirementInput() {
                 />
               )}
             />
-            <Typography
-              fontSize={'14px !important'}
-              onClick={toggleTextEditor}
-              sx={{ cursor: 'pointer' }}
-              textAlign="center"
-              variant="body4"
-            >
-              {t('acceptanceCriteria.uploadCriteriaAs')}{' '}
-              <span style={{ textDecoration: 'underline' }}>{t('acceptanceCriteria.pdf')}</span>
-            </Typography>
+            <Box marginTop={2}>
+              <Typography
+                fontSize={'14px !important'}
+                onClick={toggleTextEditor}
+                sx={{ cursor: 'pointer' }}
+                textAlign="center"
+                variant="body4"
+              >
+                {t('acceptanceCriteria.uploadCriteriaAs')}{' '}
+                <span style={{ textDecoration: 'underline' }}>{t('acceptanceCriteria.pdf')}</span>
+              </Typography>
+            </Box>
           </Collapse>
         )}
       </TransitionGroup>

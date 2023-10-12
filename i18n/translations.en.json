@@ -217,7 +217,9 @@
     "pausedActionSubtitle": "Please, head over to our Discord channel for more information.",
     "outOfService": "Oops, something went wrong!",
     "outOfServiceSubtitle": "Please, head over to our Discord channel for more information.",
-    "outOfServiceErrorCode": "Error code: `{{errorCode}}`"
+    "outOfServiceErrorCode": "Error code: `{{errorCode}}`",
+    "fileType": "The selected file's type is not allowed",
+    "fileMaxSize": "The selected file's size exceeds maxFileSize"
   },
   "creator": {
     "register": {
