@@ -10,21 +10,31 @@ import dayjs from 'dayjs'
 import { useTranslation } from 'next-export-i18n'
 
 import LastUpdated from '@/src/components/common/LastUpdated'
+import { useProfileProvider } from '@/src/providers/ProfileProvider'
 
 export default function StatisticsHeader({
   color = colors.purple,
   onClose,
+  onRefresh,
   open,
 }: {
   color?: string
   open: boolean
   onClose: VoidFunction
+  onRefresh?: () => Promise<void>
 }) {
   const { t } = useTranslation()
+  const { refreshTrigger } = useProfileProvider()
+
   const [lastSearchTimestamp, setLastSearchTimestamp] = useState<number>(dayjs().unix())
 
-  // TODO add refresh logic
-  const refresh = () => setLastSearchTimestamp(dayjs().unix())
+  const refresh = async () => {
+    refreshTrigger()
+    if (onRefresh) {
+      await onRefresh()
+    }
+    setLastSearchTimestamp(dayjs().unix())
+  }
 
   return (
     <Box
