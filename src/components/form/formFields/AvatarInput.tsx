@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react'
 
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
 import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined'
-import { AvatarProps, Box, Container, IconButton, Avatar as MUIAvatar, styled } from '@mui/material'
+import { AvatarProps, Box, IconButton, Avatar as MUIAvatar, Stack, styled } from '@mui/material'
 import { colors } from '@thebadge/ui-library'
 import Blockies from 'react-18-blockies'
 import { FieldError } from 'react-hook-form'
@@ -46,9 +46,10 @@ type AvatarInputProps = {
   onChange: (image: ImageType | null) => void
   placeholder?: string
   value: ImageType | undefined
+  size?: number
 }
 
-export function AvatarInput({ error, label, onChange, value }: AvatarInputProps) {
+export function AvatarInput({ error, label, onChange, size, value }: AvatarInputProps) {
   const { address } = useWeb3Connection()
 
   const [images, setImages] = useState<ImageListType>(value ? [value] : [])
@@ -97,7 +98,7 @@ export function AvatarInput({ error, label, onChange, value }: AvatarInputProps)
     <Wrapper>
       <FormField
         formControl={
-          <Container maxWidth="md" sx={{ display: 'flex', width: '100%' }}>
+          <Stack maxWidth="md" sx={{ display: 'flex', width: '100%' }}>
             <ImageUploading
               dataURLKey="base64File"
               maxNumber={maxNumber}
@@ -109,7 +110,15 @@ export function AvatarInput({ error, label, onChange, value }: AvatarInputProps)
                 // the file from the canvas
                 <Box display="flex" flexDirection="column" sx={{ flex: 1 }}>
                   {imageList.length === 0 && (
-                    <Avatar isDragging={isDragging} ref={avatarRef} {...dragProps}>
+                    <Avatar
+                      isDragging={isDragging}
+                      ref={avatarRef}
+                      {...dragProps}
+                      sx={{
+                        width: size,
+                        height: size,
+                      }}
+                    >
                       {blockiesAvatar}
                     </Avatar>
                   )}
@@ -124,8 +133,12 @@ export function AvatarInput({ error, label, onChange, value }: AvatarInputProps)
                         onClick={() => onImageUpdate(index)}
                         ref={avatarRef}
                         {...dragProps}
+                        sx={{
+                          width: size,
+                          height: size,
+                        }}
                       >
-                        <img alt="" src={image['base64File']} width="150" />
+                        <img alt="" src={image['base64File']} width={size || '150'} />
                       </Avatar>
                       <Box
                         alignItems="center"
@@ -171,7 +184,7 @@ export function AvatarInput({ error, label, onChange, value }: AvatarInputProps)
                 </Box>
               )}
             </ImageUploading>
-          </Container>
+          </Stack>
         }
         status={error ? TextFieldStatus.error : TextFieldStatus.success}
         statusText={error?.message}

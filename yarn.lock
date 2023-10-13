@@ -10086,6 +10086,11 @@ react-18-blockies@^1.0.6:
   resolved "https://registry.yarnpkg.com/react-18-blockies/-/react-18-blockies-1.0.6.tgz#595367c6657d33a1edba3d3ba1dcef0b895c13f4"
   integrity sha512-MPdEdfYm8wO2XEdTDEpwIJJBE0/zdkmZqGbEcypK6EV+nKeqE4qGs6XfBAs6VcrSkZ0ssu8jZNd0qXrplruVqg==
 
+react-animate-height@^3.2.2:
+  version "3.2.2"
+  resolved "https://registry.yarnpkg.com/react-animate-height/-/react-animate-height-3.2.2.tgz#ae15d3ef6396f45140c60af4081d43d7dd093cda"
+  integrity sha512-uUOS+RhYVgyJEWcuAJgelVwhcJ2chsMk7HZCpu+wtjSlFAGSFsHU0r4lMTt47HQ1RdQfI5MmFRt43yHTP9lfmQ==
+
 react-countdown@^2.3.5:
   version "2.3.5"
   resolved "https://registry.yarnpkg.com/react-countdown/-/react-countdown-2.3.5.tgz#70c035b5cbc7e8fdb4ad91fe5f44afd7a7933a68"

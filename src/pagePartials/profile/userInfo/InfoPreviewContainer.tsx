@@ -9,5 +9,4 @@ export const InfoPreviewContainer = styled(Box)(({ theme }) => ({
   borderRadius: '16px 16px 0px 0px',
   padding: theme.spacing(4),
   gap: theme.spacing(5),
-  marginBottom: theme.spacing(6),
 }))
