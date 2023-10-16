@@ -8,6 +8,7 @@ import { useTranslation } from 'next-export-i18n'
 
 import { BadgeAnimatedLogo } from '@/src/components/assets/animated/BadgeAnimatedLogo'
 import { useSectionReferences } from '@/src/providers/referencesProvider'
+import { generateBaseUrl } from '@/src/utils/navigation/generateUrl'
 
 const ModalBody = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -41,7 +42,7 @@ export default function NotACreatorError() {
         aria-label="close not registered creator modal"
         color="secondary"
         component="label"
-        onClick={() => router.push('/')}
+        onClick={() => router.push(generateBaseUrl())}
         sx={{ position: 'absolute', right: 8, top: 8 }}
       >
         <CloseIcon color="white" />

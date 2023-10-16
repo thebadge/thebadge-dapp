@@ -9,6 +9,7 @@ import { APP_URL } from '@/src/constants/common'
 import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
 import { getBackgroundBadgeUrl } from '@/src/utils/badges/getBackgroundBadgeUrl'
+import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 import { BadgeNFTAttributesType } from '@/types/badges/BadgeMetadata'
 
 type StepsClaimThirdPartySucceedProps = {
@@ -42,7 +43,7 @@ export default function StepsClaimThirdPartySucceed({
   )
 
   const handleSubmit = () => {
-    router.push(`/profile/${claimAddress}`)
+    router.push(generateProfileUrl({ address: claimAddress }))
   }
 
   return (

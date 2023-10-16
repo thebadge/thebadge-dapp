@@ -16,6 +16,7 @@ import { useSizeLG, useSizeMD } from '@/src/hooks/useSize'
 import BadgeModelPreview from '@/src/pagePartials/badge/BadgeModelPreview'
 import { useProfileProvider } from '@/src/providers/ProfileProvider'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+import { generateBadgePreviewUrl } from '@/src/utils/navigation/generateUrl'
 
 const now = nowInSeconds()
 const nowPlusOneMonth = nowPlusOneMonthInSeconds()
@@ -51,7 +52,7 @@ export default function NearToExpireList() {
             <SafeSuspense color={'purple'}>
               <Box sx={{ width: 'fit-content' }}>
                 <Box
-                  onClick={() => router.push(`/badge/preview/${badge.id}`)}
+                  onClick={() => router.push(generateBadgePreviewUrl(badge.id))}
                   sx={{ cursor: 'pointer' }}
                 >
                   <TimeToExpireBadgeOverlay

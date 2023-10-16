@@ -16,6 +16,7 @@ import { cleanMintFormValues } from '@/src/pagePartials/badge/mint/utils'
 import { PreventActionIfNoBadgeModelCreator } from '@/src/pagePartials/errors/preventActionIfNoBadgeModelCreator'
 import { PreventActionIfBadgeModelPaused } from '@/src/pagePartials/errors/preventActionIfPaused'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 import { sendEmailClaim } from '@/src/utils/relayTx'
 import { BadgeModelMetadata } from '@/types/badges/BadgeMetadata'
 import { TheBadge__factory } from '@/types/generated/typechain'
@@ -36,7 +37,7 @@ const MintThirdPartyBadgeModel: NextPageWithLayout = () => {
   useEffect(() => {
     // Redirect to the profile
     if (state === TransactionStates.success) {
-      router.push(`/profile`)
+      router.push(generateProfileUrl())
     }
   }, [router, state])
 
@@ -52,7 +53,7 @@ const MintThirdPartyBadgeModel: NextPageWithLayout = () => {
   }
 
   async function onSubmit(data: MintThirdPartySchemaType) {
-    const { address, email, preferMintMethod, previewImage } = data
+    const { destination, preferMintMethod, previewImage } = data
 
     try {
       // Start transaction to show the loading state when we create the files
@@ -73,14 +74,14 @@ const MintThirdPartyBadgeModel: NextPageWithLayout = () => {
         )
 
         // If social login relay tx
-        if (isSocialWallet && address && userSocialInfo && appPubKey) {
+        if (isSocialWallet && destination && userSocialInfo && appPubKey) {
           // TODO Implement social login (or maybe create a hook that encapsulates this logic)
         }
 
         // If user is not social logged, just send the tx
         return theBadge.mint(
           badgeModelId,
-          preferMintMethod === 'email' ? ZERO_ADDRESS : address,
+          preferMintMethod === 'email' ? ZERO_ADDRESS : destination,
           badgeMetadataIPFSHash,
           // TODO Check if this makes sense or not
           encodeIpfsBadgeMetadata(badgeMetadataIPFSHash),
@@ -98,12 +99,12 @@ const MintThirdPartyBadgeModel: NextPageWithLayout = () => {
             networkId: appChainId.toString(),
             mintTxHash: transactionHash,
             badgeModelId: Number(badgeModelId),
-            emailClaimer: email,
+            emailClaimer: destination,
           })
           notify({
             id: transactionHash,
             type: ToastStates.info,
-            message: `Email successfully sent to: ${email}`,
+            message: `Email successfully sent to: ${destination}`,
             position: 'top-right',
           })
         }
