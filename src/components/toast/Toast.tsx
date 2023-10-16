@@ -74,9 +74,10 @@ const notify = ({
   position?: ToastPosition
 }) =>
   toast.custom((t: Toast) => ToastTypes[type]({ t, explorerUrl, message, title }), { id, position })
-const Toast = (position: ToastPosition) => (
+
+const Toast = (props: { position?: ToastPosition }) => (
   <Toaster
-    position={position}
+    position={props.position || 'bottom-right'}
     toastOptions={{
       duration: 10000,
     }}
