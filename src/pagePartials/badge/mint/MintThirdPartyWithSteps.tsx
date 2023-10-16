@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Container, Stack } from '@mui/material'
@@ -29,7 +29,8 @@ type MintStepsProps = {
 }
 
 const STEP_0 = ['terms']
-const STEP_1: string[] = ['email', 'address', 'preferMintMethod']
+// Use undefined to trigger a full schema validation, that makes the .superRefine logic to be executed
+const STEP_1 = undefined
 const STEP_2 = ['previewImage']
 
 const FIELDS_TO_VALIDATE_ON_STEP = [STEP_0, STEP_1, STEP_2]
@@ -54,6 +55,13 @@ export default function MintThirdPartyWithSteps({
   })
 
   const triggerValidation = useTriggerRHF(methods)
+  const watchedPreferMintMethod = methods.watch('preferMintMethod')
+
+  useEffect(() => {
+    // Each time that the preferMintMethod changes, we wan to trigger the validation
+    triggerValidation(STEP_1)
+  }, [triggerValidation, watchedPreferMintMethod])
+
   async function isValidStep() {
     return await triggerValidation(FIELDS_TO_VALIDATE_ON_STEP[currentStep])
   }
