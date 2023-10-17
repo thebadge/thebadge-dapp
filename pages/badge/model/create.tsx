@@ -11,7 +11,7 @@ import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { TheBadgeModels__factory } from '@/types/generated/typechain'
 import { NextPageWithLayout } from '@/types/next'
 
-const CreateBadgeType: NextPageWithLayout = () => {
+const CreateBadgeModel: NextPageWithLayout = () => {
   const { resetTxState, sendTx, state: transactionState } = useTransaction()
 
   const { address, appChainId, readOnlyAppProvider } = useWeb3Connection()
@@ -53,29 +53,31 @@ const CreateBadgeType: NextPageWithLayout = () => {
             badgeMetadataColumns,
           )
 
-        const badgeModelMetadataIPFSHash = createAndUploadBadgeModelMetadata(
-          name,
-          description,
-          badgeModelLogoUri,
-          backgroundImage,
-          BADGE_MODEL_TEXT_CONTRAST[textContrast],
-        )
-
-        const klerosBadgeModelControllerDataEncoded = encodeKlerosBadgeModelControllerData(
-          address as string,
-          contracts.Kleros.address[appChainId],
-          readOnlyAppProvider,
-          rigorousness,
-          /**
-           * Default Kleros court to use when creating a new badge model.
-           * TODO: we should set a default court in the short-circuit to the Kleros's  general court.
-           * In advance mode the user should be able to select the court.
-           */
-          DEFAULT_COURT_ID,
-          registrationIPFSHash,
-          clearingIPFSHash,
-          challengePeriodDuration,
-        )
+        const [badgeModelMetadataIPFSHash, klerosBadgeModelControllerDataEncoded] =
+          await Promise.all([
+            createAndUploadBadgeModelMetadata(
+              name,
+              description,
+              badgeModelLogoUri,
+              backgroundImage,
+              BADGE_MODEL_TEXT_CONTRAST[textContrast],
+            ),
+            encodeKlerosBadgeModelControllerData(
+              address as string,
+              contracts.Kleros.address[appChainId],
+              readOnlyAppProvider,
+              rigorousness,
+              /**
+               * Default Kleros court to use when creating a new badge model.
+               * TODO: we should set a default court in the short-circuit to the Kleros's  general court.
+               * In advance mode the user should be able to select the court.
+               */
+              DEFAULT_COURT_ID,
+              registrationIPFSHash,
+              clearingIPFSHash,
+              challengePeriodDuration,
+            ),
+          ])
 
         return theBadgeModels.createBadgeModel(
           {
@@ -85,6 +87,9 @@ const CreateBadgeType: NextPageWithLayout = () => {
             validFor: data.validFor, // in seconds, 0 infinite
           },
           klerosBadgeModelControllerDataEncoded,
+          {
+            value: 0,
+          },
         )
       })
       if (transaction) {
@@ -100,4 +105,4 @@ const CreateBadgeType: NextPageWithLayout = () => {
   )
 }
 
-export default withPageGenericSuspense(CreateBadgeType)
+export default withPageGenericSuspense(CreateBadgeModel)
