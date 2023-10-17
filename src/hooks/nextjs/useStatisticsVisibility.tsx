@@ -22,6 +22,7 @@ export default function useStatisticVisibility(
 
   useEffect(() => {
     if (stack.length === 0) {
+      console.log('useEffect')
       // Fulfill helper stack to keep just 2 items select
       Object.keys(statisticVisibility).map((keyName) => {
         if (statisticVisibility[keyName]) setStack((prevState) => [keyName, ...prevState])
@@ -29,13 +30,15 @@ export default function useStatisticVisibility(
     }
   }, [stack.length, statisticVisibility])
 
+  console.log('stack', stack)
+
   const toggleStatisticVisibility = useCallback(
     (columnName: string) => {
       // If the column toggle is on the stack, we ignore it
       if (stack.includes(columnName)) return
 
       // If we already have 2 select items, we want to deselect one
-      const deselectColumn = stack.length === 2 ? stack.pop() : ''
+      const deselectColumn = stack.length === 2 ? stack.pop() : undefined
 
       setStatisticVisibility((prev) => {
         const newValue = {
@@ -50,7 +53,10 @@ export default function useStatisticVisibility(
         )
         return newValue
       })
-      setStack(() => [columnName, ...stack])
+      setStack((prevState) => {
+        if (stack.length === 2) return [columnName, prevState[0]]
+        return [columnName, ...prevState]
+      })
     },
     [address, category, stack],
   )

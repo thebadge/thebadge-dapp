@@ -198,12 +198,31 @@
       },
       "user": {
         "title": "Badge User",
-        "amountChallengesWon":"Challenges won",
+        "amountChallengesWon": "Challenges won",
         "amountChallengesReceived": "Challenges received",
         "minted": "Badges minted",
         "withoutLost": "without received challenges",
         "neverChallenged": "You've never received a challenge",
         "rankingPosition": "Position in curators ranking"
+      },
+      "visibility": {
+        "totalFeesEarnedPerBadge": "Fees collected per badge",
+        "createdBadgeModelsAmount": "Badge models created",
+        "createdBadgeModelsMintedAmount": "Amount of minted badges",
+        "allTimeBadgeMintersAmount": "Users that minted badges",
+        "amountOfMinters": "Badges minted",
+        "mostPopularCreatedBadge": "Most popular badge model",
+        "creatorsRanking": "Position in creators ranking",
+        "challengesMadeAmount": "Challenges made",
+        "challengesMadeWonAmount": "Challenges won",
+        "challengesMadeLostAmount": "Challenges lost",
+        "percentageWonPercentage": "% of challenges won",
+        "averageFeeGain": "AVG of fees earned by challenges made",
+        "curatorsRanking": "Position in curators ranking",
+        "mintedBadgesAmount": "Badges minted",
+        "timeOfLastChallengeReceived": "Days without challenges",
+        "amountChallengeLost": "challengesReceivedLostAmount",
+        "challengesReceivedAmount": "challengesReceivedAmount"
       }
     }
   },
@@ -235,9 +254,9 @@
         },
         "contactData": {
           "title": "Contact information",
-          "email":  "Email",
+          "email": "Email",
           "twitter": "Twitter",
-          "discord":  "Discord",
+          "discord": "Discord",
           "website": "Website",
           "preferContactMethod": "Choose your favorite means of contact:"
         },
@@ -287,7 +306,6 @@
           {
             "subTitle": "**5**. Please review that the information is correct, if you agree, create your badge model by submitting the transaction.",
             "hint": "For examples or more details about how to create a good badge model, please check our [docs]({{createBadgeTypeDocs}})."
-
           }
         ],
         "uiBasics": {
@@ -317,7 +335,6 @@
           "mintFee": "Mint fee"
         },
         "evidence": {
-
         },
         "confirmation": {
           "youAgree": "By continuing, you agree to our ",
@@ -515,7 +532,7 @@
       "toExpire": "to expire"
     }
   },
-  "externalLink" : {
+  "externalLink": {
     "copied": "Link copied"
   },
   "severity": {
