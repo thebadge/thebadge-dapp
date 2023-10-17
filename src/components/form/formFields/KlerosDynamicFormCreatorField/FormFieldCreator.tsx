@@ -111,7 +111,7 @@ export function KlerosDynamicFieldsCreator({ error, ...props }: Props) {
             render={({ field: { onChange, value }, fieldState: { error } }) => (
               <TextField
                 error={error}
-                label={t('badge.model.formField.name')}
+                label={t('badge.model.create.formField.name')}
                 onChange={onChange}
                 value={value}
               />
@@ -123,9 +123,9 @@ export function KlerosDynamicFieldsCreator({ error, ...props }: Props) {
             render={({ field: { onChange, value }, fieldState: { error } }) => (
               <DropdownSelect<typeof value>
                 error={error}
-                label={t('badge.model.formField.type')}
+                label={t('badge.model.create.formField.type')}
                 onChange={onChange}
-                options={[t('badge.model.formField.selectType'), ...KLEROS_LIST_TYPES_KEYS]}
+                options={[t('badge.model.create.formField.selectType'), ...KLEROS_LIST_TYPES_KEYS]}
                 value={value || ' '}
               />
             )}
@@ -137,7 +137,7 @@ export function KlerosDynamicFieldsCreator({ error, ...props }: Props) {
           render={({ field: { onChange, value }, fieldState: { error } }) => (
             <TextArea
               error={error}
-              label={t('badge.model.formField.description')}
+              label={t('badge.model.create.formField.description')}
               onChange={onChange}
               value={value}
             />
@@ -148,22 +148,22 @@ export function KlerosDynamicFieldsCreator({ error, ...props }: Props) {
           sx={{ borderRadius: 3, ml: 'auto', fontSize: '12px !important' }}
           variant="contained"
         >
-          {t('badge.model.formField.addField')}
+          {t('badge.model.create.formField.addField')}
         </Button>
       </Stack>
       {error && <FormStatus status={TextFieldStatus.error}>{error.message}</FormStatus>}
       <Box mt={2}>
         <Box sx={{ display: 'flex', justifyContent: 'space-evenly', mb: 4, ml: 5, mr: 5 }}>
           <Typography sx={{ flex: 2 }} variant="subtitle1">
-            {t('badge.model.formField.columns.name')}
+            {t('badge.model.create.formField.columns.name')}
           </Typography>
 
           <Typography sx={{ flex: 3 }} variant="subtitle1">
-            {t('badge.model.formField.columns.description')}
+            {t('badge.model.create.formField.columns.description')}
           </Typography>
 
           <Typography sx={{ flex: 1 }} variant="subtitle1">
-            {t('badge.model.formField.columns.type')}
+            {t('badge.model.create.formField.columns.type')}
           </Typography>
         </Box>
         <Box sx={{ overflowY: 'auto' }}>
