@@ -9,20 +9,21 @@ import { useRegistrationBadgeModelKlerosMetadata } from '@/src/hooks/subgraph/us
 import useMintValue from '@/src/hooks/theBadge/useMintValue'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
 import useTransaction, { TransactionStates } from '@/src/hooks/useTransaction'
-import MintKlerosWithSteps from '@/src/pagePartials/badge/mint/MintKlerosWithSteps'
+import MintCommunityWithSteps from '@/src/pagePartials/badge/mint/MintCommunityWithSteps'
 import { MintBadgeSchemaType } from '@/src/pagePartials/badge/mint/schema/MintBadgeSchema'
 import { cleanMintFormValues } from '@/src/pagePartials/badge/mint/utils'
 import { PreventActionIfBadgeModelPaused } from '@/src/pagePartials/errors/preventActionIfPaused'
 import { RequiredNotHaveBadge } from '@/src/pagePartials/errors/requiredNotHaveBadge'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { encodeIpfsEvidence } from '@/src/utils/badges/createBadgeModelHelpers'
+import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 import { BadgeModelMetadata } from '@/types/badges/BadgeMetadata'
 import { TheBadge__factory } from '@/types/generated/typechain'
 import { MetadataColumn } from '@/types/kleros/types'
 import { NextPageWithLayout } from '@/types/next'
 import { SupportedRelayMethods } from '@/types/relayedTx'
 
-const MintKlerosBadgeModel: NextPageWithLayout = () => {
+const MintCommunityBadgeModel: NextPageWithLayout = () => {
   const { address, appChainId, appPubKey, isSocialWallet, userSocialInfo, web3Provider } =
     useWeb3Connection()
   const theBadge = useContractInstance(TheBadge__factory, 'TheBadge')
@@ -37,7 +38,7 @@ const MintKlerosBadgeModel: NextPageWithLayout = () => {
   useEffect(() => {
     // Redirect to the profile
     if (state === TransactionStates.success) {
-      router.push(`/profile`)
+      router.push(generateProfileUrl())
     }
   }, [router, state])
 
@@ -142,10 +143,10 @@ const MintKlerosBadgeModel: NextPageWithLayout = () => {
   return (
     <PreventActionIfBadgeModelPaused>
       <RequiredNotHaveBadge ownerAddress={address}>
-        <MintKlerosWithSteps onSubmit={onSubmit} resetTxState={resetTxState} txState={state} />
+        <MintCommunityWithSteps onSubmit={onSubmit} resetTxState={resetTxState} txState={state} />
       </RequiredNotHaveBadge>
     </PreventActionIfBadgeModelPaused>
   )
 }
 
-export default withPageGenericSuspense(MintKlerosBadgeModel)
+export default withPageGenericSuspense(MintCommunityBadgeModel)

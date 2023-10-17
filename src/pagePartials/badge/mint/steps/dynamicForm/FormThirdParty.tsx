@@ -35,39 +35,23 @@ export default function FormThirdParty() {
             </Box>
           )}
         />
-        {watchedPreferMintMethod === 'address' ? (
-          <Box display="flex" flexDirection="row" gap={5} justifyContent="space-between">
-            <Controller
-              control={control}
-              name={'address'}
-              render={({ field: { onChange, value }, fieldState: { error } }) => (
-                <TextField
-                  error={error}
-                  label={'Users ethereum address'}
-                  onChange={onChange}
-                  value={value}
-                />
-              )}
-            />
-          </Box>
-        ) : (
-          <Box display="flex" flexDirection="row" gap={5} justifyContent="space-between">
-            <Stack flex="1" gap={2}>
-              <Controller
-                control={control}
-                name={'email'}
-                render={({ field: { onChange, value }, fieldState: { error } }) => (
-                  <TextField
-                    error={error}
-                    label={'Users email'}
-                    onChange={onChange}
-                    value={value}
-                  />
-                )}
+
+        <Box display="flex" flexDirection="row" gap={5} justifyContent="space-between">
+          <Controller
+            control={control}
+            name={'destination'}
+            render={({ field: { onChange, value }, fieldState: { error } }) => (
+              <TextField
+                error={error}
+                label={
+                  watchedPreferMintMethod === 'address' ? 'Users ethereum address' : 'Users email'
+                }
+                onChange={onChange}
+                value={value}
               />
-            </Stack>
-          </Box>
-        )}
+            )}
+          />
+        </Box>
       </Stack>
     </>
   )

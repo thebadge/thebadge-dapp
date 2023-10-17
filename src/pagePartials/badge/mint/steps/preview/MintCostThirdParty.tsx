@@ -3,11 +3,9 @@ import * as React from 'react'
 import { Box, Stack, Typography, styled } from '@mui/material'
 import { colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
-import { useFormContext } from 'react-hook-form'
 
 import { getNetworkConfig } from '@/src/config/web3'
 import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
-import { MintThirdPartySchemaType } from '@/src/pagePartials/badge/mint/schema/MintThirdPartySchema'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 
 type Props = {
@@ -36,29 +34,8 @@ export default function MintCostThirdParty({ costs }: Props) {
   const networkConfig = getNetworkConfig(appChainId)
   const modelId = useModelIdParam()
 
-  const { watch } = useFormContext<MintThirdPartySchemaType>()
-
-  const watchedPreferMintMethod = watch('preferMintMethod')
-  const watchedEmail = watch('email')
-  const watchedAddress = watch('address')
-
   if (!modelId) {
     throw `No modelId provided as URL query param`
-  }
-
-  switch (watchedPreferMintMethod) {
-    case 'email': {
-      if (!watchedEmail) {
-        throw `No email to mint badge defined`
-      }
-      break
-    }
-    case 'address': {
-      if (!watchedAddress) {
-        throw `No address to mint badge defined`
-      }
-      break
-    }
   }
 
   return (

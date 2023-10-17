@@ -7,6 +7,7 @@ import { colors, gradients } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 
 import { PauseAnimated } from '@/src/components/assets/animated/PauseAnimated'
+import { generateBaseUrl } from '@/src/utils/navigation/generateUrl'
 
 const ModalBody = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -39,7 +40,7 @@ export default function ActionIsPaused() {
         aria-label="close paused action modal"
         color="secondary"
         component="label"
-        onClick={() => router.push('/')}
+        onClick={() => router.push(generateBaseUrl())}
         sx={{ position: 'absolute', right: 8, top: 8 }}
       >
         <CloseIcon color="white" />

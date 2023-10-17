@@ -9,6 +9,7 @@ import { useTranslation } from 'next-export-i18n'
 import { BadgeAnimatedLogo } from '@/src/components/assets/animated/BadgeAnimatedLogo'
 import ConnectWalletButton from '@/src/components/header/ConnectWalletButton'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+import { generateBaseUrl } from '@/src/utils/navigation/generateUrl'
 
 const ModalBody = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -42,7 +43,7 @@ export default function NotTheBadgeModelCreatorError() {
         aria-label="close not registered creator modal"
         color="secondary"
         component="label"
-        onClick={() => router.push('/')}
+        onClick={() => router.push(generateBaseUrl())}
         sx={{ position: 'absolute', right: 8, top: 8 }}
       >
         <CloseIcon color="white" />

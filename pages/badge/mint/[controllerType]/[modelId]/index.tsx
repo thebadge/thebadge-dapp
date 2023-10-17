@@ -2,12 +2,14 @@ import { useRouter } from 'next/router'
 import * as React from 'react'
 import { useEffect } from 'react'
 
-import MintKlerosBadgeModel from '@/pages/badge/mint/[controllerType]/[modelId]/mintKleros'
-import MintThirdPartyBadgeModel from '@/pages/badge/mint/[controllerType]/[modelId]/mintThirdParty'
 import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import useControllerTypeParam from '@/src/hooks/nextjs/useControllerTypeParam'
 import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import useTransaction, { TransactionStates } from '@/src/hooks/useTransaction'
+import MintKlerosBadgeModel from '@/src/pagePartials/badge/mint/MintCommunityBadgeModel'
+import MintThirdPartyBadgeModel from '@/src/pagePartials/badge/mint/MintThirdPartyBadgeModel'
+import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
+import { BadgeModelControllerType } from '@/types/badges/BadgeModel'
 import { NextPageWithLayout } from '@/types/next'
 
 const MintBadgeModel: NextPageWithLayout = () => {
@@ -27,15 +29,15 @@ const MintBadgeModel: NextPageWithLayout = () => {
   useEffect(() => {
     // Redirect to the profile
     if (state === TransactionStates.success) {
-      router.push(`/profile`)
+      router.push(generateProfileUrl())
     }
   }, [router, state])
 
   switch (controllerType.toLowerCase()) {
-    case 'kleros': {
+    case BadgeModelControllerType.Community: {
       return <MintKlerosBadgeModel />
     }
-    case 'thirdparty': {
+    case BadgeModelControllerType.ThirdParty: {
       return <MintThirdPartyBadgeModel />
     }
     default: {

@@ -13,6 +13,7 @@ import ChallengeStatus from '@/src/pagePartials/badge/preview/ChallengeStatus'
 import { useCurateProvider } from '@/src/providers/curateProvider'
 import { useColorMode } from '@/src/providers/themeProvider'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+import { generateMintUrl } from '@/src/utils/navigation/generateUrl'
 import { BadgeStatus } from '@/types/generated/subgraph'
 import { NextPageWithLayout } from '@/types/next'
 
@@ -59,7 +60,7 @@ const ViewBadge: NextPageWithLayout = () => {
                   disabled={address === ownerAddress}
                   fontColor={mode === 'light' ? colors.blackText : colors.white}
                   onClick={() =>
-                    router.push(`/badge/mint/${badge?.badgeModel.controllerType}/${badgeModelId}`)
+                    router.push(generateMintUrl(badge?.badgeModel.controllerType, badgeModelId))
                   }
                   sx={{
                     borderRadius: '10px',

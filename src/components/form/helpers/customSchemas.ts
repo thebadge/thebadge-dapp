@@ -69,37 +69,6 @@ export const EmailSchema = createUniqueFieldSchema(
   'EmailSchema',
 )
 
-// TODO This should be merge with EmailSchema, now I made it like this to avoid generating bugs in another inputs fields
-export const EmailSchemaThirdParty = createUniqueFieldSchema(
-  z
-    .string({ required_error: 'Is required' })
-    .refine(
-      (data) => {
-        return data ? isEmail(data) : false
-      },
-      {
-        message: 'Must be a valid email addresses.',
-      },
-    )
-    .optional(),
-  'EmailSchema',
-)
-
-export const AddressSchemaThirdParty = createUniqueFieldSchema(
-  z
-    .string({ required_error: 'Is required' })
-    .refine(
-      (address) => {
-        return address ? isAddress(address) : false
-      },
-      {
-        message: 'Address must be an valid Ethereum addresses.',
-      },
-    )
-    .optional(),
-  'AddressSchema',
-)
-
 export const TokenInputSchema = z.string({ required_error: 'Is required' })
 
 export const NumberSchema = createUniqueFieldSchema(
