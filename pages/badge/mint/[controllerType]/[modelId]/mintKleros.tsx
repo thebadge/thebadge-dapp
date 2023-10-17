@@ -71,16 +71,17 @@ const MintKlerosBadgeModel: NextPageWithLayout = () => {
 
         const values = createKlerosValuesObject(evidence, klerosBadgeMetadata)
 
-        const evidenceIPFSHash = await createAndUploadBadgeEvidence(
-          klerosBadgeMetadata?.metadata.columns as MetadataColumn[],
-          values,
-        )
-
-        const badgeMetadataIPFSHash = await createAndUploadBadgeMetadata(
-          badgeModel.data?.badgeModelMetadata as BadgeModelMetadata,
-          address as string,
-          { imageBase64File: previewImage },
-        )
+        const [evidenceIPFSHash, badgeMetadataIPFSHash] = await Promise.all([
+          createAndUploadBadgeEvidence(
+            klerosBadgeMetadata?.metadata.columns as MetadataColumn[],
+            values,
+          ),
+          createAndUploadBadgeMetadata(
+            badgeModel.data?.badgeModelMetadata as BadgeModelMetadata,
+            address as string,
+            { imageBase64File: previewImage },
+          ),
+        ])
 
         const klerosBadgeModelControllerDataEncoded = encodeIpfsEvidence(evidenceIPFSHash)
 
@@ -116,6 +117,7 @@ const MintKlerosBadgeModel: NextPageWithLayout = () => {
             appPubKey,
           })
         }
+
         // If user is not social logged, just send the tx
         return theBadge.mint(
           badgeModelId,
