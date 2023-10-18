@@ -221,8 +221,8 @@
         "curatorsRanking": "Position in curators ranking",
         "mintedBadgesAmount": "Badges minted",
         "timeOfLastChallengeReceived": "Days without challenges",
-        "amountChallengeLost": "challengesReceivedLostAmount",
-        "challengesReceivedAmount": "challengesReceivedAmount"
+        "challengesReceivedLostAmount": "Challenges lost",
+        "challengesReceivedAmount": "Challenges received"
       }
     }
   },

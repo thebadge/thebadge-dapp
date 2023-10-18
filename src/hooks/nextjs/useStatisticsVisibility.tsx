@@ -54,8 +54,7 @@ export default function useStatisticVisibility(
         return newValue
       })
       setStack((prevState) => {
-        if (stack.length === 2) return [columnName, prevState[0]]
-        return [columnName, ...prevState]
+        return [columnName, prevState[0]]
       })
     },
     [address, category, stack],
