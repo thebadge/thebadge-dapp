@@ -5,7 +5,7 @@ import { ContractTransaction } from '@ethersproject/contracts'
 import { useTransactionNotification } from '@/src/providers/TransactionNotificationProvider'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { TransactionError } from '@/src/utils/TransactionError'
-import sendTxToRelayer from '@/src/utils/relayTx'
+import { sendTxToRelayer } from '@/src/utils/relayTx'
 import { RelayedTx } from '@/types/relayedTx'
 
 export enum TransactionStates {

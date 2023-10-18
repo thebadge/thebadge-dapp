@@ -12,6 +12,7 @@ import { nowInSeconds } from '@/src/constants/helpers'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import BadgeModelPreview from '@/src/pagePartials/badge/BadgeModelPreview'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+import { generateBadgePreviewUrl } from '@/src/utils/navigation/generateUrl'
 
 const now = nowInSeconds()
 export default function BadgesInReviewSwiper() {
@@ -25,7 +26,7 @@ export default function BadgesInReviewSwiper() {
       return (
         <Box
           key={badgeInReview.id}
-          onClick={() => router.push(`/badge/preview/${badgeInReview.id}`)}
+          onClick={() => router.push(generateBadgePreviewUrl(badgeInReview.id))}
           sx={{ height: '100%', display: 'flex' }}
         >
           <InViewPort minHeight={300}>

@@ -14,6 +14,7 @@ import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import MiniBadgeModelPreview from '@/src/pagePartials/badge/MiniBadgeModelPreview'
 import { RequiredCreatorAccess } from '@/src/pagePartials/errors/requiresCreatorAccess'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+import { generateBadgeModelCreate } from '@/src/utils/navigation/generateUrl'
 
 const StyledBadgeContainer = styled(MiniBadgePreviewContainer)(({ theme }) => {
   return {
@@ -100,7 +101,7 @@ export default function BadgesCreatedSection() {
             <ButtonV2
               backgroundColor={colors.transparent}
               fontColor={colors.pink}
-              onClick={() => router.push('/badge/model/create')}
+              onClick={() => router.push(generateBadgeModelCreate())}
               sx={{ m: 'auto' }}
             >
               <Typography>{t('profile.badgesCreated.create')}</Typography>

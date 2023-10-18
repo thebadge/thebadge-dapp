@@ -11,6 +11,7 @@ import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import MiniBadgeModelPreview from '@/src/pagePartials/badge/MiniBadgeModelPreview'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import getHighlightColorByStatus from '@/src/utils/badges/getHighlightColorByStatus'
+import { generateBadgeExplorer, generateBadgePreviewUrl } from '@/src/utils/navigation/generateUrl'
 import { BadgeStatus, Badge_Filter } from '@/types/generated/subgraph'
 
 type Props = {
@@ -69,7 +70,7 @@ export default function BadgesYouOwnList({ address }: Props) {
     const badgesLayouts = badges.map((badge) => {
       // TODO Use badge status to add claim or change the highlight color
       return (
-        <Box key={badge.id} onClick={() => router.push(`/badge/preview/${badge.id}`)}>
+        <Box key={badge.id} onClick={() => router.push(generateBadgePreviewUrl(badge.id))}>
           <MiniBadgeModelPreview
             highlightColor={getHighlightColorByStatus(badge.status)}
             metadata={badge.badgeModel?.uri}
@@ -106,7 +107,7 @@ export default function BadgesYouOwnList({ address }: Props) {
             <ButtonV2
               backgroundColor={colors.transparent}
               fontColor={colors.blue}
-              onClick={() => router.push('/badge/explorer')}
+              onClick={() => router.push(generateBadgeExplorer())}
               sx={{ m: 'auto' }}
             >
               <Typography>{t('profile.badgesYouOwn.mint')}</Typography>

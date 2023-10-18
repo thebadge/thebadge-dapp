@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Container, Stack } from '@mui/material'
@@ -6,29 +6,36 @@ import { FormProvider, SubmitHandler, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import StepFooter from './steps/StepFooter'
-import StepHeader from './steps/StepHeader'
-import { FIELDS_TO_VALIDATE_ON_STEP, defaultValues } from './utils'
+import { defaultValues } from './utils'
 import StepPrompt from '@/src/components/form/formWithSteps/StepPrompt'
 import { TransactionLoading } from '@/src/components/loading/TransactionLoading'
 import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import { TransactionStates } from '@/src/hooks/useTransaction'
 import { useTriggerRHF } from '@/src/hooks/useTriggerRHF'
 import {
-  MintBadgeSchema,
-  MintBadgeSchemaType,
-} from '@/src/pagePartials/badge/mint/schema/MintBadgeSchema'
-import DynamicForm from '@/src/pagePartials/badge/mint/steps/dynamicForm/DynamicEvidenceForm'
+  MintThirdPartySchema,
+  MintThirdPartySchemaType,
+} from '@/src/pagePartials/badge/mint/schema/MintThirdPartySchema'
+import StepHeaderThirdParty from '@/src/pagePartials/badge/mint/steps/StepHeaderThirdParty'
+import FormThirdParty from '@/src/pagePartials/badge/mint/steps/dynamicForm/FormThirdParty'
 import MintSucceed from '@/src/pagePartials/badge/mint/steps/preview/MintSucceed'
-import SubmitPreview from '@/src/pagePartials/badge/mint/steps/preview/SubmitPreview'
-import HowItWorks from '@/src/pagePartials/badge/mint/steps/terms/HowItWorks'
+import SubmitPreviewThirdParty from '@/src/pagePartials/badge/mint/steps/preview/SubmitPreviewThirdParty'
+import HowItWorksThirdParty from '@/src/pagePartials/badge/mint/steps/terms/HowItWorksThirdParty'
 
 type MintStepsProps = {
-  onSubmit: SubmitHandler<MintBadgeSchemaType>
+  onSubmit: SubmitHandler<MintThirdPartySchemaType>
   txState: TransactionStates
   resetTxState: VoidFunction
 }
 
-export default function MintWithSteps({
+const STEP_0 = ['terms']
+// Use undefined to trigger a full schema validation, that makes the .superRefine logic to be executed
+const STEP_1 = undefined
+const STEP_2 = ['previewImage']
+
+const FIELDS_TO_VALIDATE_ON_STEP = [STEP_0, STEP_1, STEP_2]
+
+export default function MintThirdPartyWithSteps({
   onSubmit,
   resetTxState,
   txState = TransactionStates.none,
@@ -40,14 +47,21 @@ export default function MintWithSteps({
   // Naive completed step implementation
   const [completed, setCompleted] = useState<Record<string, boolean>>({})
 
-  const methods = useForm<z.infer<typeof MintBadgeSchema>>({
-    resolver: zodResolver(MintBadgeSchema),
+  const methods = useForm<z.infer<typeof MintThirdPartySchema>>({
+    resolver: zodResolver(MintThirdPartySchema),
     defaultValues: defaultValues(modelId),
     reValidateMode: 'onChange',
     mode: 'onChange',
   })
 
   const triggerValidation = useTriggerRHF(methods)
+  const watchedPreferMintMethod = methods.watch('preferMintMethod')
+
+  useEffect(() => {
+    // Each time that the preferMintMethod changes, we wan to trigger the validation
+    triggerValidation(STEP_1)
+  }, [triggerValidation, watchedPreferMintMethod])
+
   async function isValidStep() {
     return await triggerValidation(FIELDS_TO_VALIDATE_ON_STEP[currentStep])
   }
@@ -81,7 +95,7 @@ export default function MintWithSteps({
   return (
     <FormProvider {...methods}>
       <StepPrompt hasUnsavedChanges={methods.formState.isDirty} />
-      <StepHeader
+      <StepHeaderThirdParty
         completedSteps={completed}
         currentStep={currentStep}
         onStepNavigation={onStepNavigation}
@@ -94,21 +108,16 @@ export default function MintWithSteps({
         {txState === TransactionStates.none && (
           <form onSubmit={methods.handleSubmit(onSubmit)}>
             <Stack gap={3}>
-              {currentStep === 0 && <HowItWorks />}
-              {currentStep === 1 && (
-                <DynamicForm onBackCallback={onBackCallback} onNextCallback={onNextCallback} />
-              )}
-              {currentStep === 2 && <SubmitPreview badgePreviewRef={badgePreviewRef} />}
+              {currentStep === 0 && <HowItWorksThirdParty />}
+              {currentStep === 1 && <FormThirdParty />}
+              {currentStep === 2 && <SubmitPreviewThirdParty badgePreviewRef={badgePreviewRef} />}
 
-              {/* We disable the footer on the dynamic form, bc its need to handle his own footer */}
-              {currentStep !== 1 && (
-                <StepFooter
-                  color="blue"
-                  currentStep={currentStep}
-                  onBackCallback={onBackCallback}
-                  onNextCallback={onNextCallback}
-                />
-              )}
+              <StepFooter
+                color="blue"
+                currentStep={currentStep}
+                onBackCallback={onBackCallback}
+                onNextCallback={onNextCallback}
+              />
             </Stack>
           </form>
         )}
