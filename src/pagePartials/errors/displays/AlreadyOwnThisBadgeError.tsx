@@ -11,6 +11,7 @@ import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import { useBadgeOwnershipData } from '@/src/hooks/subgraph/useIsBadgeOwner'
 import { useColorMode } from '@/src/providers/themeProvider'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+import { generateBadgePreviewUrl } from '@/src/utils/navigation/generateUrl'
 
 const ModalBody = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -71,7 +72,7 @@ export default function AlreadyOwnThisBadgeError({ onClose }: { onClose: VoidFun
         <ButtonV2
           backgroundColor={colors.transparent}
           fontColor={mode === 'light' ? colors.blackText : colors.white}
-          onClick={() => router.push(`/badge/preview/${ownedBadges[0].id}`)}
+          onClick={() => router.push(generateBadgePreviewUrl(ownedBadges[0].id))}
           sx={{
             borderRadius: '10px',
             fontSize: '14px !important',

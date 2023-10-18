@@ -7,6 +7,9 @@ import { colors, gradients } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 
 import { PauseAnimated } from '@/src/components/assets/animated/PauseAnimated'
+import ModalSubtitle from '@/src/components/modal/ModalSubtitle'
+import { DISCORD_URL } from '@/src/constants/common'
+import { generateBaseUrl } from '@/src/utils/navigation/generateUrl'
 
 const ModalBody = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -29,7 +32,12 @@ const ModalBody = styled(Box)(({ theme }) => ({
     maxWidth: '100%',
   },
 }))
-export default function ActionIsPaused() {
+
+type ClaimUUIDIsInvalidProps = {
+  creatorContact: string
+}
+
+export default function ClaimUUIDIsInvalid({ creatorContact }: ClaimUUIDIsInvalidProps) {
   const { t } = useTranslation()
   const router = useRouter()
 
@@ -39,7 +47,7 @@ export default function ActionIsPaused() {
         aria-label="close paused action modal"
         color="secondary"
         component="label"
-        onClick={() => router.push('/')}
+        onClick={() => router.push(generateBaseUrl())}
         sx={{ position: 'absolute', right: 8, top: 8 }}
       >
         <CloseIcon color="white" />
@@ -47,10 +55,17 @@ export default function ActionIsPaused() {
 
       <Stack alignItems="center" gap={1} justifyContent="center" m="auto">
         <PauseAnimated />
-        <Typography color={colors.green} variant="dAppHeadline2">
-          {t('errors.pausedAction')}
+        <Typography align="center" color={colors.green} mt={4} variant="dAppHeadline2">
+          {t('errors.claimUUIDInvalid')}
         </Typography>
-        <Typography variant="body4">{t('errors.pausedActionSubtitle')}</Typography>
+        <ModalSubtitle
+          hint={''}
+          showHint={false}
+          subTitle={t(`errors.claimUUIDInvalidSubtitle`, {
+            creatorContact,
+            discordUrl: DISCORD_URL,
+          })}
+        />
       </Stack>
     </ModalBody>
   )

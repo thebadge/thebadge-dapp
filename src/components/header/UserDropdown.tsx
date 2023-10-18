@@ -20,6 +20,7 @@ import ActionButtons from '@/src/components/header/ActionButtons'
 import { ModalSwitchNetwork } from '@/src/components/helpers/ModalSwitchNetwork'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+import { generateBaseUrl, generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 import { truncateStringInTheMiddle } from '@/src/utils/strings'
 
 const StyledBadge = styled(Badge)<{ state?: 'ok' | 'error' }>(({ state, theme }) => ({
@@ -67,7 +68,7 @@ export const UserDropdown: React.FC = () => {
 
   const logout = async () => {
     await disconnectWallet()
-    router.push('/')
+    router.push(generateBaseUrl())
   }
 
   const blockiesIcon = (
@@ -138,7 +139,7 @@ export const UserDropdown: React.FC = () => {
         <MenuItem>
           Connected {address ? <>{truncateStringInTheMiddle(address, 8, 4)}</> : 'Error'}
         </MenuItem>
-        <MenuItem onClick={() => router.push('/profile')}>
+        <MenuItem onClick={() => router.push(generateProfileUrl())}>
           <Avatar>{blockiesIcon} </Avatar> Profile
         </MenuItem>
         <Divider />
