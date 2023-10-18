@@ -7,6 +7,7 @@ import { useTranslation } from 'next-export-i18n'
 
 import { DOCS_URL } from '@/src/constants/common'
 import { useSectionReferences } from '@/src/providers/referencesProvider'
+import { generateCreatorRegisterUrl } from '@/src/utils/navigation/generateUrl'
 
 export default function BadgeCreator() {
   const { becomeACreatorSection } = useSectionReferences()
@@ -75,7 +76,7 @@ export default function BadgeCreator() {
       <ButtonV2
         backgroundColor={colors.pink}
         fontColor={colors.white}
-        onClick={() => router.push('/creator/register')}
+        onClick={() => router.push(generateCreatorRegisterUrl())}
         sx={{
           mt: 4,
           borderRadius: '10px',

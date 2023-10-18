@@ -12,6 +12,7 @@ import { CreatorRegisterSchemaType } from '@/src/pagePartials/creator/register/s
 import { PreventActionIfRegisterPaused } from '@/src/pagePartials/errors/preventActionIfPaused'
 import { ProfileFilter } from '@/src/pagePartials/profile/Profile'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 import { TheBadgeUsers__factory } from '@/types/generated/typechain'
 import { NextPageWithLayout } from '@/types/next'
 
@@ -25,7 +26,7 @@ const Register: NextPageWithLayout = () => {
   useEffect(() => {
     // Redirect to the creator profile section
     if (state === TransactionStates.success) {
-      router.push(`/profile?filter=${ProfileFilter.CREATED_BADGES}`)
+      router.push(generateProfileUrl({ filter: ProfileFilter.CREATED_BADGES }))
     }
   }, [router, state])
 
@@ -34,7 +35,7 @@ const Register: NextPageWithLayout = () => {
   })
 
   if (userProfile.data?.user?.isCreator) {
-    router.push(`/profile?filter=${ProfileFilter.CREATED_BADGES}`)
+    router.push(generateProfileUrl({ filter: ProfileFilter.CREATED_BADGES }))
   }
 
   async function onSubmit(data: CreatorRegisterSchemaType) {

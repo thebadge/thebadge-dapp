@@ -5,24 +5,24 @@ import { Chains } from '@/src/config/web3'
 export const contracts = {
   TheBadge: {
     address: {
-      [Chains.goerli]: '0x86F127fef233C799f2aA130cCc919045f954957d',
-      [Chains.sepolia]: '0x83701fe7a462bD714A9006a9FF604367C24613E3',
+      [Chains.goerli]: '0xF118b243eBBAB8166D23Eb98Ace86fEFdE62A748',
+      [Chains.sepolia]: '0x70d6b6cdB3ce3FE21EefE4F967Bb2d8e12E0F701',
       [Chains.gnosis]: 'null',
     },
     abi: TheBadge.abi,
   },
   TheBadgeUsers: {
     address: {
-      [Chains.goerli]: '0x196EF38Eca64a6FEa6E6Fc8AdF85Ac1BE44f4804',
-      [Chains.sepolia]: '0x5E7c648EE852241f145e1d480932C091979883D1',
+      [Chains.goerli]: '0x5Db75bA250eE4B675D9C7627BC11F2BC3b8c099f',
+      [Chains.sepolia]: '0x38779E2d51181b461234B85Ee8D49cc2D24F2895',
       [Chains.gnosis]: 'null',
     },
     abi: TheBadge.abi,
   },
   TheBadgeModels: {
     address: {
-      [Chains.goerli]: '0x20933724e3C2F177d8Cfe4b1CEEF829A17aD883B',
-      [Chains.sepolia]: '0x5df8183d0B77Bea3B72391eB0c4c873d2fdDC6f2',
+      [Chains.goerli]: '0xBaF92b831Ed905F791355fe9ECF0fce144712bdb',
+      [Chains.sepolia]: '0xB7a687C965EF94478FB9a19812086B43A1Ca6ddb',
       [Chains.gnosis]: 'null',
     },
     abi: TheBadge.abi,

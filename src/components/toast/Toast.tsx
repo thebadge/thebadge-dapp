@@ -1,4 +1,4 @@
-import { Toast, Toaster, toast } from 'react-hot-toast'
+import { Toast, ToastPosition, Toaster, toast } from 'react-hot-toast'
 
 import { Failed as FailedIcon } from '@/src/components/assets/Failed'
 import { Success as SuccessIcon } from '@/src/components/assets/Success'
@@ -62,6 +62,7 @@ const notify = ({
   explorerUrl,
   id,
   message,
+  position = 'bottom-right',
   title,
   type,
 }: {
@@ -70,11 +71,13 @@ const notify = ({
   title?: string
   type: ToastStates
   id?: string | undefined
-}) => toast.custom((t: Toast) => ToastTypes[type]({ t, explorerUrl, message, title }), { id })
+  position?: ToastPosition
+}) =>
+  toast.custom((t: Toast) => ToastTypes[type]({ t, explorerUrl, message, title }), { id, position })
 
-const Toast = () => (
+const Toast = (props: { position?: ToastPosition }) => (
   <Toaster
-    position="bottom-right"
+    position={props.position || 'bottom-right'}
     toastOptions={{
       duration: 10000,
     }}
