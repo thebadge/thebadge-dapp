@@ -24,6 +24,7 @@ import {
   getChallengedBadgesId,
   updateChallengedBadgesId,
 } from '@/src/utils/badges/challengeBadgesHelpers'
+import { generateBadgeCurate } from '@/src/utils/navigation/generateUrl'
 import { Badge } from '@/types/generated/subgraph'
 
 const filters: Array<ListFilter<'In Review' | 'Challenged'>> = [
@@ -159,7 +160,7 @@ export default function BadgesIAmReviewingSection() {
             <ButtonV2
               backgroundColor={colors.transparent}
               fontColor={colors.green}
-              onClick={() => router.push('/badge/curate')}
+              onClick={() => router.push(generateBadgeCurate())}
               sx={{ m: 'auto' }}
             >
               <Typography>{t('profile.badgesIAmReviewing.curate')}</Typography>

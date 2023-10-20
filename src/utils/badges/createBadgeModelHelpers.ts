@@ -1,5 +1,5 @@
 import { JsonRpcProvider } from '@ethersproject/providers'
-import { BigNumberish, constants } from 'ethers'
+import { BigNumberish } from 'ethers'
 import { defaultAbiCoder } from 'ethers/lib/utils'
 import { z } from 'zod'
 
@@ -143,10 +143,9 @@ export async function encodeKlerosBadgeModelControllerData(
   // Received challengePeriodDuration is considered in Dev = minutes and in Prod = Days
   const challengeDurationInSeconds = challengePeriodDuration * (isTestnet ? 1 / 60 : 24) * 60 * 60
 
-  const klerosBadgeModelControllerDataEncoded = defaultAbiCoder.encode(
+  return defaultAbiCoder.encode(
     [
       `tuple(
-          address,
           address,
           uint256,
           uint256,
@@ -160,7 +159,6 @@ export async function encodeKlerosBadgeModelControllerData(
     [
       [
         creatorAddress, // governor
-        constants.AddressZero, // admin
         courtId,
         numberOfJurors,
         registrationIPFSHash,
@@ -176,12 +174,14 @@ export async function encodeKlerosBadgeModelControllerData(
       ],
     ],
   )
-
-  return klerosBadgeModelControllerDataEncoded
 }
 
 export const encodeIpfsEvidence = (ipfsEvidenceHash: string): string => {
   return defaultAbiCoder.encode([`tuple(string)`], [[ipfsEvidenceHash]])
+}
+
+export const encodeIpfsBadgeMetadata = (badgeMetadataIpsHash: string): string => {
+  return defaultAbiCoder.encode([`tuple(string)`], [[badgeMetadataIpsHash]])
 }
 
 async function transformDeltaToPDF(pdfValues: z.infer<typeof DeltaPDFSchema>) {
