@@ -22,15 +22,12 @@ export default function useStatisticVisibility(
 
   useEffect(() => {
     if (stack.length === 0) {
-      console.log('useEffect')
       // Fulfill helper stack to keep just 2 items select
       Object.keys(statisticVisibility).map((keyName) => {
         if (statisticVisibility[keyName]) setStack((prevState) => [keyName, ...prevState])
       })
     }
   }, [stack.length, statisticVisibility])
-
-  console.log('stack', stack)
 
   const toggleStatisticVisibility = useCallback(
     (columnName: string) => {
