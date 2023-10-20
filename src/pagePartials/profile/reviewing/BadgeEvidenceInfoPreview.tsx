@@ -13,6 +13,7 @@ import ViewEvidenceButton from '@/src/pagePartials/badge/explorer/addons/ViewEvi
 import EvidencesList from '@/src/pagePartials/badge/preview/addons/EvidencesList'
 import DisputeDisplay from '@/src/pagePartials/profile/reviewing/addons/DisputeDisplay'
 import { useCurateProvider } from '@/src/providers/curateProvider'
+import { generateBadgePreviewUrl } from '@/src/utils/navigation/generateUrl'
 import { Badge, KlerosBadgeRequest, KlerosRequestType } from '@/types/generated/subgraph'
 
 export default function BadgeReviewingInfoPreview({ badge }: { badge: Badge }) {
@@ -70,7 +71,7 @@ export default function BadgeReviewingInfoPreview({ badge }: { badge: Badge }) {
         <ButtonV2
           backgroundColor={colors.transparent}
           fontColor={colors.white}
-          onClick={() => router.push(`/badge/preview/${badge.id}`)}
+          onClick={() => router.push(generateBadgePreviewUrl(badge.id))}
         >
           {t('profile.badgesIAmReviewing.viewAll')}
         </ButtonV2>

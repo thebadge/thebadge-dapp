@@ -10,6 +10,28 @@ import {
 import { MetadataColumn } from '@/types/kleros/types'
 import { BackendFileUpload } from '@/types/utils'
 
+export async function createAndUploadThirdPartyBadgeMetadata(
+  badgeModelMetadata: BadgeModelMetadata,
+  badgeModelId: string,
+  additionalArgs: {
+    imageBase64File: string
+  },
+) {
+  const badgeMetadataIPFSUploaded = await ipfsUpload<BadgeMetadata<BackendFileUpload>>({
+    attributes: {
+      name: badgeModelMetadata?.name || '',
+      description: badgeModelMetadata?.description || '',
+      // TODO: This will point to the model not to the badge because is still not being created, we need to check if this url makes sense or not
+      external_link: `${APP_URL}/badge/preview/${badgeModelId}`,
+      attributes: [],
+      image: { mimeType: 'image/png', base64File: additionalArgs.imageBase64File },
+    },
+    filePaths: ['image'],
+  })
+
+  return `ipfs://${badgeMetadataIPFSUploaded.result?.ipfsHash}`
+}
+
 export async function createAndUploadBadgeMetadata(
   badgeModelMetadata: BadgeModelMetadata,
   minterAddress: string,

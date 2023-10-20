@@ -35,6 +35,7 @@ export default function CreatorStatistics() {
 
   const [open, setOpen] = useState(true)
   const [anchorEl, setAnchorEl] = useState<Element | null>(null)
+
   const { statisticVisibility, toggleStatisticVisibility } = useStatisticVisibility(
     'creator',
     CreatorStatisticDefaultVisibility,

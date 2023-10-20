@@ -9,20 +9,21 @@ import { useRegistrationBadgeModelKlerosMetadata } from '@/src/hooks/subgraph/us
 import useMintValue from '@/src/hooks/theBadge/useMintValue'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
 import useTransaction, { TransactionStates } from '@/src/hooks/useTransaction'
-import MintWithSteps from '@/src/pagePartials/badge/mint/MintWithSteps'
+import MintCommunityWithSteps from '@/src/pagePartials/badge/mint/MintCommunityWithSteps'
 import { MintBadgeSchemaType } from '@/src/pagePartials/badge/mint/schema/MintBadgeSchema'
 import { cleanMintFormValues } from '@/src/pagePartials/badge/mint/utils'
-import { PreventActionIfBadgeTypePaused } from '@/src/pagePartials/errors/preventActionIfPaused'
+import { PreventActionIfBadgeModelPaused } from '@/src/pagePartials/errors/preventActionIfPaused'
 import { RequiredNotHaveBadge } from '@/src/pagePartials/errors/requiredNotHaveBadge'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { encodeIpfsEvidence } from '@/src/utils/badges/createBadgeModelHelpers'
+import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 import { BadgeModelMetadata } from '@/types/badges/BadgeMetadata'
 import { TheBadge__factory } from '@/types/generated/typechain'
 import { MetadataColumn } from '@/types/kleros/types'
 import { NextPageWithLayout } from '@/types/next'
 import { SupportedRelayMethods } from '@/types/relayedTx'
 
-const MintBadgeModel: NextPageWithLayout = () => {
+const MintCommunityBadgeModel: NextPageWithLayout = () => {
   const { address, appChainId, appPubKey, isSocialWallet, userSocialInfo, web3Provider } =
     useWeb3Connection()
   const theBadge = useContractInstance(TheBadge__factory, 'TheBadge')
@@ -37,7 +38,7 @@ const MintBadgeModel: NextPageWithLayout = () => {
   useEffect(() => {
     // Redirect to the profile
     if (state === TransactionStates.success) {
-      router.push(`/profile`)
+      router.push(generateProfileUrl())
     }
   }, [router, state])
 
@@ -71,16 +72,17 @@ const MintBadgeModel: NextPageWithLayout = () => {
 
         const values = createKlerosValuesObject(evidence, klerosBadgeMetadata)
 
-        const evidenceIPFSHash = await createAndUploadBadgeEvidence(
-          klerosBadgeMetadata?.metadata.columns as MetadataColumn[],
-          values,
-        )
-
-        const badgeMetadataIPFSHash = await createAndUploadBadgeMetadata(
-          badgeModel.data?.badgeModelMetadata as BadgeModelMetadata,
-          address as string,
-          { imageBase64File: previewImage },
-        )
+        const [evidenceIPFSHash, badgeMetadataIPFSHash] = await Promise.all([
+          createAndUploadBadgeEvidence(
+            klerosBadgeMetadata?.metadata.columns as MetadataColumn[],
+            values,
+          ),
+          createAndUploadBadgeMetadata(
+            badgeModel.data?.badgeModelMetadata as BadgeModelMetadata,
+            address as string,
+            { imageBase64File: previewImage },
+          ),
+        ])
 
         const klerosBadgeModelControllerDataEncoded = encodeIpfsEvidence(evidenceIPFSHash)
 
@@ -116,6 +118,7 @@ const MintBadgeModel: NextPageWithLayout = () => {
             appPubKey,
           })
         }
+
         // If user is not social logged, just send the tx
         return theBadge.mint(
           badgeModelId,
@@ -138,12 +141,12 @@ const MintBadgeModel: NextPageWithLayout = () => {
   }
 
   return (
-    <PreventActionIfBadgeTypePaused>
-      <RequiredNotHaveBadge>
-        <MintWithSteps onSubmit={onSubmit} resetTxState={resetTxState} txState={state} />
+    <PreventActionIfBadgeModelPaused>
+      <RequiredNotHaveBadge ownerAddress={address}>
+        <MintCommunityWithSteps onSubmit={onSubmit} resetTxState={resetTxState} txState={state} />
       </RequiredNotHaveBadge>
-    </PreventActionIfBadgeTypePaused>
+    </PreventActionIfBadgeModelPaused>
   )
 }
 
-export default withPageGenericSuspense(MintBadgeModel)
+export default withPageGenericSuspense(MintCommunityBadgeModel)

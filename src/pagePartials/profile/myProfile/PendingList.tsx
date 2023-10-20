@@ -1,5 +1,5 @@
 import { useRouter } from 'next/navigation'
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 
 import { Box, Tooltip } from '@mui/material'
 import { ButtonV2, EmptyBadgePreview, PendingBadgeOverlay, colors } from '@thebadge/ui-library'
@@ -15,7 +15,9 @@ import { TimeLeft, useDate } from '@/src/hooks/useDate'
 import { useSizeLG } from '@/src/hooks/useSize'
 import useTransaction from '@/src/hooks/useTransaction'
 import BadgeModelPreview from '@/src/pagePartials/badge/BadgeModelPreview'
+import { useProfileProvider } from '@/src/providers/ProfileProvider'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+import { generateBadgePreviewUrl } from '@/src/utils/navigation/generateUrl'
 import { TheBadge__factory } from '@/types/generated/typechain'
 
 export default function PendingList() {
@@ -25,10 +27,16 @@ export default function PendingList() {
   const gql = useSubgraph()
   const { getPendingTimeProgressPercentage, getTimeLeft, timestampToDate } = useDate()
   const { address: ownerAddress } = useWeb3Connection()
-  const badgesInReviewAndChallenged = gql.useUserBadgesInReview({
+  const { refreshWatcher } = useProfileProvider()
+
+  const { mutate, ...badgesInReviewAndChallenged } = gql.useUserBadgesInReview({
     ownerAddress: ownerAddress || '',
   })
   const theBadge = useContractInstance(TheBadge__factory, 'TheBadge')
+
+  useEffect(() => {
+    mutate()
+  }, [mutate, refreshWatcher])
 
   const badgesList = useMemo(() => {
     const badges = badgesInReviewAndChallenged.data?.user?.badges?.map((badge) => {
@@ -54,7 +62,7 @@ export default function PendingList() {
             <SafeSuspense color={'green'}>
               <Box sx={{ width: 'fit-content' }}>
                 <Box
-                  onClick={() => router.push(`/badge/preview/${badge.id}`)}
+                  onClick={() => router.push(generateBadgePreviewUrl(badge.id))}
                   sx={{ cursor: 'pointer' }}
                 >
                   <PendingBadgeOverlay

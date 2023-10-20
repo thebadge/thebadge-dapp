@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import * as React from 'react'
 
 import BalanceOutlinedIcon from '@mui/icons-material/BalanceOutlined'
@@ -13,6 +14,7 @@ import { StatisticVisibility } from '@/src/hooks/nextjs/useStatisticsVisibility'
 import useUserStatistics from '@/src/hooks/subgraph/useUserStatistics'
 import StatisticRow from '@/src/pagePartials/profile/statistics/addons/StatisticRow'
 import { UserStatistic } from '@/src/pagePartials/profile/statistics/user/UserStatistics'
+import { useProfileProvider } from '@/src/providers/ProfileProvider'
 import { timeAgoFrom } from '@/src/utils/dateUtils'
 
 export default function UserStatisticContent({
@@ -22,10 +24,14 @@ export default function UserStatisticContent({
 }) {
   const { t } = useTranslation()
   const theme = useTheme()
+  const { refreshWatcher } = useProfileProvider()
 
-  const statistics = useUserStatistics()
+  const { data, mutate } = useUserStatistics()
+  const userStatistic = data?.userStatistic
 
-  const userStatistic = statistics.data?.userStatistic
+  useEffect(() => {
+    mutate()
+  }, [mutate, refreshWatcher])
 
   return (
     <StatisticsContainer>

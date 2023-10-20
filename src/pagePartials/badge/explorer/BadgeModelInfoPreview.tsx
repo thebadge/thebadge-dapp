@@ -11,6 +11,7 @@ import { getNetworkConfig } from '@/src/config/web3'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
 import CreatorInfoSmallPreview from '@/src/pagePartials/badge/explorer/addons/CreatorInfoSmallPreview'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+import { generateMintUrl, generateModelExplorerUrl } from '@/src/utils/navigation/generateUrl'
 import { BadgeModelMetadata } from '@/types/badges/BadgeMetadata'
 import { BadgeModel } from '@/types/generated/subgraph'
 
@@ -64,7 +65,7 @@ export default function BadgeModelInfoPreview({ badgeModel }: { badgeModel: Badg
       <Box display="flex" flex="1" justifyContent="space-between">
         <ButtonV2
           backgroundColor={colors.transparent}
-          onClick={() => router.push(`/badge/model/${badgeModel.id}/explorer`)}
+          onClick={() => router.push(generateModelExplorerUrl(badgeModel.id))}
           variant="outlined"
         >
           {t('explorer.preview.badge.showOthers')}
@@ -72,7 +73,7 @@ export default function BadgeModelInfoPreview({ badgeModel }: { badgeModel: Badg
 
         <ButtonV2
           backgroundColor={colors.blue}
-          onClick={() => router.push(`/badge/mint/${badgeModel.id}`)}
+          onClick={() => router.push(generateMintUrl(badgeModel.controllerType, badgeModel.id))}
           sx={{ ml: 'auto' }}
           variant="contained"
         >

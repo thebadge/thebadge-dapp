@@ -15,6 +15,7 @@ import CuratorStatistics from '@/src/pagePartials/profile/statistics/curator/Cur
 import UserStatistics from '@/src/pagePartials/profile/statistics/user/UserStatistics'
 import InfoPreview from '@/src/pagePartials/profile/userInfo/InfoPreview'
 import { InfoPreviewSkeleton } from '@/src/pagePartials/profile/userInfo/InfoPreview.skeleton'
+import ProfileContextProvider from '@/src/providers/ProfileProvider'
 import { useSectionReferences } from '@/src/providers/referencesProvider'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 
@@ -63,63 +64,71 @@ const Profile = () => {
   )
 
   return (
-    <SafeSuspense>
-      <SafeSuspense fallback={<InfoPreviewSkeleton />}>
-        <InfoPreview address={connectedWalletAddress || ''} />
-      </SafeSuspense>
+    <ProfileContextProvider>
+      <SafeSuspense>
+        <SafeSuspense fallback={<InfoPreviewSkeleton />}>
+          <InfoPreview address={connectedWalletAddress || ''} />
+        </SafeSuspense>
 
-      <Stack sx={{ mb: 6, gap: 4, alignItems: 'center' }}>
-        <Box display="flex" flex={1} flexDirection="row" justifyContent="space-evenly" width="100%">
-          {/* my badges */}
-          <LinkWithTranslation pathname={`/profile`}>{mainProfileTab}</LinkWithTranslation>
-
-          {/* curated badges */}
-          <LinkWithTranslation
-            pathname={`/profile`}
-            queryParams={{ filter: ProfileFilter.BADGES_I_AM_REVIEWING }}
+        <Stack sx={{ mb: 6, gap: 4, alignItems: 'center' }}>
+          <Box
+            display="flex"
+            flex={1}
+            flexDirection="row"
+            justifyContent="space-evenly"
+            width="100%"
           >
-            {curatedBadgesTab}
-          </LinkWithTranslation>
+            {/* my badges */}
+            <LinkWithTranslation pathname={`/profile`}>{mainProfileTab}</LinkWithTranslation>
 
-          {/* created badges */}
-          {!user?.isCreator ? (
-            <Tooltip
-              arrow
-              title={
-                <>
-                  {t('header.tooltips.becomeACreator.prefixText')}
-                  <Box
-                    onClick={() => scrollTo('/', becomeACreatorSection)}
-                    style={{ cursor: 'pointer', textDecoration: 'underline' }}
-                  >
-                    {t('header.tooltips.becomeACreator.link')}
-                  </Box>
-                </>
-              }
-            >
-              <span>{createdBadgesTab}</span>
-            </Tooltip>
-          ) : (
+            {/* curated badges */}
             <LinkWithTranslation
               pathname={`/profile`}
-              queryParams={{ filter: user?.isCreator ? ProfileFilter.CREATED_BADGES : '' }}
+              queryParams={{ filter: ProfileFilter.BADGES_I_AM_REVIEWING }}
             >
-              {createdBadgesTab}
+              {curatedBadgesTab}
             </LinkWithTranslation>
-          )}
-        </Box>
-      </Stack>
 
-      {/* Statistics */}
-      {selectedFilter === ProfileFilter.CREATED_BADGES && <CreatorStatistics />}
-      {selectedFilter === ProfileFilter.BADGES_I_AM_REVIEWING && <CuratorStatistics />}
-      {!selectedFilter && <UserStatistics />}
+            {/* created badges */}
+            {!user?.isCreator ? (
+              <Tooltip
+                arrow
+                title={
+                  <>
+                    {t('header.tooltips.becomeACreator.prefixText')}
+                    <Box
+                      onClick={() => scrollTo('/', becomeACreatorSection)}
+                      style={{ cursor: 'pointer', textDecoration: 'underline' }}
+                    >
+                      {t('header.tooltips.becomeACreator.link')}
+                    </Box>
+                  </>
+                }
+              >
+                <span>{createdBadgesTab}</span>
+              </Tooltip>
+            ) : (
+              <LinkWithTranslation
+                pathname={`/profile`}
+                queryParams={{ filter: user?.isCreator ? ProfileFilter.CREATED_BADGES : '' }}
+              >
+                {createdBadgesTab}
+              </LinkWithTranslation>
+            )}
+          </Box>
+        </Stack>
 
-      {/* Profile Content */}
-      {!selectedFilter && <MyProfileSection />}
-      {selectedFilter === ProfileFilter.BADGES_I_AM_REVIEWING && <BadgesIAmReviewingSection />}
-      {selectedFilter === ProfileFilter.CREATED_BADGES && <BadgesCreatedSection />}
-    </SafeSuspense>
+        {/* Statistics */}
+        {selectedFilter === ProfileFilter.CREATED_BADGES && <CreatorStatistics />}
+        {selectedFilter === ProfileFilter.BADGES_I_AM_REVIEWING && <CuratorStatistics />}
+        {!selectedFilter && <UserStatistics />}
+
+        {/* Profile Content */}
+        {!selectedFilter && <MyProfileSection />}
+        {selectedFilter === ProfileFilter.BADGES_I_AM_REVIEWING && <BadgesIAmReviewingSection />}
+        {selectedFilter === ProfileFilter.CREATED_BADGES && <BadgesCreatedSection />}
+      </SafeSuspense>
+    </ProfileContextProvider>
   )
 }
 

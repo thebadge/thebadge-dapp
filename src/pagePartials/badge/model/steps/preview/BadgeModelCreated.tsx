@@ -14,6 +14,7 @@ import {
 } from '@/src/pagePartials/badge/model/steps/uiBasics/BadgeModelUIBasics'
 import { cleanCreateModelFormValues } from '@/src/pagePartials/badge/model/utils'
 import { ProfileFilter } from '@/src/pagePartials/profile/Profile'
+import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 
 const BoxShadow = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -60,7 +61,7 @@ export default function BadgeModelCreated() {
       </Stack>
       <StepButton
         color={'primary'}
-        onClick={() => router.push(`/profile?filter=${ProfileFilter.CREATED_BADGES}`)}
+        onClick={() => router.push(generateProfileUrl({ filter: ProfileFilter.CREATED_BADGES }))}
         sx={{ m: 'auto' }}
         variant="contained"
       >

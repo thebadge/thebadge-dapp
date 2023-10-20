@@ -5,7 +5,7 @@ import { styled } from '@mui/material'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
-import ActionIsPaused from '@/src/pagePartials/errors/displays/AcctionIsPaused'
+import ActionIsPaused from '@/src/pagePartials/errors/displays/ActionIsPaused'
 
 const Wrapper = styled('div')`
   display: flex;
@@ -20,7 +20,7 @@ type Props = {
   minHeight?: number
 }
 
-export const PreventActionIfBadgeTypePaused: React.FC<Props> = ({ children, minHeight }) => {
+export const PreventActionIfBadgeModelPaused: React.FC<Props> = ({ children, minHeight }) => {
   const badgeModelId = useModelIdParam()
   const { data } = useBadgeModel(badgeModelId)
 

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Box, Stack } from '@mui/material'
+import { Box, Divider, Stack } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
 import { Controller, useFormContext } from 'react-hook-form'
 
@@ -36,6 +36,7 @@ export default function BadgeModelStrategy() {
           />
         )}
       />
+      <Divider />
       <Controller
         control={control}
         name={'rigorousness'}
@@ -52,7 +53,16 @@ export default function BadgeModelStrategy() {
           )
         }}
       />
-      <Box display="flex" flexDirection="row" gap={5} justifyContent="space-between">
+
+      <Divider />
+
+      <Box
+        display="flex"
+        flexDirection="row"
+        gap={5}
+        justifyContent="space-between"
+        paddingBottom={2}
+      >
         <Stack flex="1" gap={4}>
           <Controller
             control={control}
@@ -85,6 +95,9 @@ export default function BadgeModelStrategy() {
           />
         </Stack>
       </Box>
+
+      <Divider />
+
       <RequirementInput />
     </>
   )
