@@ -57,7 +57,7 @@ export default function InfoPreviewEdit({ address, onClose }: Props) {
   })
 
   async function onSubmit(data: EditProfileSchemaType) {
-    if (!address) {
+    if (!address || !creatorMetadata) {
       throw Error('Web3 address not provided')
     }
 
@@ -90,7 +90,8 @@ export default function InfoPreviewEdit({ address, onClose }: Props) {
         render={({ field: { onChange, value }, fieldState: { error } }) => (
           <AvatarInput
             error={error}
-            label={'Edit Photo'}
+            label="Change Photo"
+            labelPosition="hover"
             onChange={(value: ImageType | null) => {
               if (value) {
                 // We change the structure a little bit to have it ready to push to the backend

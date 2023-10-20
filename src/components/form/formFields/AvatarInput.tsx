@@ -40,6 +40,26 @@ const Avatar = styled(MUIAvatar, { shouldForwardProp: (propName) => propName !==
   },
 }))
 
+const LabelContainer = styled(Box, { shouldForwardProp: (pN) => pN !== 'labelPosition' })<{
+  labelPosition: 'bottom' | 'hover'
+}>(({ labelPosition, theme }) => ({
+  alignItems: 'center',
+  display: 'flex',
+  flexDirection: 'row',
+  justifyContent: 'space-evenly',
+  marginLeft: theme.spacing(2),
+  marginTop: theme.spacing(2),
+  ...(labelPosition === 'hover' && {
+    position: 'absolute',
+    margin: 0,
+    top: '55%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: '100%',
+    flexDirection: 'column',
+  }),
+}))
+
 type AvatarInputProps = {
   error?: FieldError
   label?: string
@@ -47,9 +67,17 @@ type AvatarInputProps = {
   placeholder?: string
   value: ImageType | undefined
   size?: number
+  labelPosition?: 'bottom' | 'hover'
 }
 
-export function AvatarInput({ error, label, onChange, size, value }: AvatarInputProps) {
+export function AvatarInput({
+  error,
+  label,
+  labelPosition = 'bottom',
+  onChange,
+  size,
+  value,
+}: AvatarInputProps) {
   const { address } = useWeb3Connection()
 
   const [images, setImages] = useState<ImageListType>(value ? [value] : [])
@@ -126,7 +154,12 @@ export function AvatarInput({ error, label, onChange, size, value }: AvatarInput
                     <Box
                       className="image-item"
                       key={index}
-                      sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+                      sx={{
+                        display: 'flex',
+                        position: 'relative',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                      }}
                     >
                       <Avatar
                         isDragging={isDragging}
@@ -140,14 +173,7 @@ export function AvatarInput({ error, label, onChange, size, value }: AvatarInput
                       >
                         <img alt="" src={image['base64File']} width={size || '150'} />
                       </Avatar>
-                      <Box
-                        alignItems="center"
-                        display="flex"
-                        flexDirection="row"
-                        justifyContent="space-evenly"
-                        marginLeft={2}
-                        marginTop={2}
-                      >
+                      <LabelContainer labelPosition={labelPosition}>
                         <Label>{label}</Label>
                         <IconButton
                           aria-label="upload avatar"
@@ -168,7 +194,7 @@ export function AvatarInput({ error, label, onChange, size, value }: AvatarInput
                             <DeleteOutlineIcon />
                           </IconButton>
                         )}
-                      </Box>
+                      </LabelContainer>
                     </Box>
                   ))}
                   {errors && (
