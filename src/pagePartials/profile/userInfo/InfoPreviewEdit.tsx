@@ -19,6 +19,7 @@ import { useContractInstance } from '@/src/hooks/useContractInstance'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
 import useTransaction from '@/src/hooks/useTransaction'
 import {
+  CreatorRegisterSchemaType,
   EditProfileSchema,
   EditProfileSchemaType,
 } from '@/src/pagePartials/creator/register/schema/CreatorRegisterSchema'
@@ -73,7 +74,7 @@ export default function InfoPreviewEdit({ address }: Props) {
   }
 
   async function onSubmit(data: EditProfileSchemaType) {
-    if (!address || !creatorMetadata) {
+    if (!address || !creatorMetadata || !data) {
       throw Error('Web3 address not provided')
     }
 
@@ -85,7 +86,13 @@ export default function InfoPreviewEdit({ address }: Props) {
         )
 
         // Use previous data as default, and override with new values
-        const userMetadataIPFSHash = await createAndUploadCreatorMetadata(creatorMetadata)
+        const upsertCreatorData = {
+          ...creatorMetadata,
+          ...data,
+          logo: creatorMetadata?.logo?.ipfs,
+        } as CreatorRegisterSchemaType
+
+        const userMetadataIPFSHash = await createAndUploadCreatorMetadata(upsertCreatorData, false)
 
         return theBadgeUsers.updateUser(address, userMetadataIPFSHash)
       })
