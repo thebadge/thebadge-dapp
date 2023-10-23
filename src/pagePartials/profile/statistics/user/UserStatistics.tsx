@@ -13,10 +13,10 @@ import { StatisticVisibilityToggle } from '@/src/pagePartials/profile/statistics
 import UserStatisticContent from '@/src/pagePartials/profile/statistics/user/UserStatisticContent'
 
 export enum UserStatistic {
-  amountMinted = 'Badges minted',
-  amountWithoutChallenge = 'Days without challenges',
-  amountChallengeLost = 'Challenges lost',
-  challengesReceivedAmount = 'Challenges received',
+  amountMinted = 'mintedBadgesAmount',
+  amountWithoutChallenge = 'timeOfLastChallengeReceived',
+  amountChallengeLost = 'challengesReceivedLostAmount',
+  challengesReceivedAmount = 'challengesReceivedAmount',
 }
 
 export const UserStatisticDefaultVisibility = {

@@ -35,7 +35,7 @@ export default function useStatisticVisibility(
       if (stack.includes(columnName)) return
 
       // If we already have 2 select items, we want to deselect one
-      const deselectColumn = stack.length === 2 ? stack.pop() : ''
+      const deselectColumn = stack.length === 2 ? stack.pop() : undefined
 
       setStatisticVisibility((prev) => {
         const newValue = {
@@ -50,7 +50,9 @@ export default function useStatisticVisibility(
         )
         return newValue
       })
-      setStack(() => [columnName, ...stack])
+      setStack((prevState) => {
+        return [columnName, prevState[0]]
+      })
     },
     [address, category, stack],
   )
