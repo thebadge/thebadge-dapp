@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined'
+import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined'
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined'
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined'
 import TwitterIcon from '@mui/icons-material/Twitter'
@@ -21,6 +22,7 @@ import {
   EditProfileSchema,
   EditProfileSchemaType,
 } from '@/src/pagePartials/creator/register/schema/CreatorRegisterSchema'
+import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { CreatorMetadata } from '@/types/badges/Creator'
 import { TheBadgeUsers__factory } from '@/types/generated/typechain'
 
@@ -33,11 +35,16 @@ const TextFieldContainer = styled(Box)(({ theme }) => ({
 
 type Props = {
   address: string
-  onClose: VoidFunction
 }
 
-export default function InfoPreviewEdit({ address, onClose }: Props) {
+export default function InfoPreviewEdit({ address }: Props) {
   const { sendTx } = useTransaction()
+  const { address: connectedWalletAddress } = useWeb3Connection()
+
+  const isLoggedInUser = connectedWalletAddress === address
+
+  const [readView, setReadView] = useState(true)
+
   const theBadgeUsers = useContractInstance(TheBadgeUsers__factory, 'TheBadgeUsers')
 
   const { data } = useUserById(address)
@@ -45,7 +52,7 @@ export default function InfoPreviewEdit({ address, onClose }: Props) {
   const resCreatorMetadata = useS3Metadata<{ content: CreatorMetadata }>(data?.metadataUri || '')
   const creatorMetadata = resCreatorMetadata.data?.content
 
-  const { control, handleSubmit } = useForm<EditProfileSchemaType>({
+  const { control, handleSubmit, reset } = useForm<EditProfileSchemaType>({
     resolver: zodResolver(EditProfileSchema),
     defaultValues: {
       ...creatorMetadata,
@@ -55,6 +62,15 @@ export default function InfoPreviewEdit({ address, onClose }: Props) {
     reValidateMode: 'onChange',
     mode: 'onChange',
   })
+
+  function onClose() {
+    reset()
+    setReadView(true)
+  }
+
+  function onEdit() {
+    setReadView(false)
+  }
 
   async function onSubmit(data: EditProfileSchemaType) {
     if (!address || !creatorMetadata) {
@@ -112,7 +128,12 @@ export default function InfoPreviewEdit({ address, onClose }: Props) {
             control={control}
             name={'name'}
             render={({ field: { onChange, value }, fieldState: { error } }) => (
-              <TBEditableTypography error={error} onChange={onChange} variant="dAppHeadline2">
+              <TBEditableTypography
+                disabled={readView}
+                error={error}
+                onChange={onChange}
+                variant="dAppHeadline2"
+              >
                 {value}
               </TBEditableTypography>
             )}
@@ -122,42 +143,63 @@ export default function InfoPreviewEdit({ address, onClose }: Props) {
 
         <Box display="flex">
           <Stack flex="1" gap={1} height="100%" justifyContent="space-evenly" overflow="auto">
-            <TextFieldContainer>
-              <EmailOutlinedIcon sx={{ mr: 1 }} />
-              <Controller
-                control={control}
-                name={'email'}
-                render={({ field: { onChange, value }, fieldState: { error } }) => (
-                  <TBEditableTypography error={error} onChange={onChange} variant="dAppTitle2">
-                    {value}
-                  </TBEditableTypography>
-                )}
-              />
-            </TextFieldContainer>
-            <TextFieldContainer>
-              <TwitterIcon sx={{ mr: 1 }} />
-              <Controller
-                control={control}
-                name={'twitter'}
-                render={({ field: { onChange, value }, fieldState: { error } }) => (
-                  <TBEditableTypography error={error} onChange={onChange} variant="dAppTitle2">
-                    {value}
-                  </TBEditableTypography>
-                )}
-              />
-            </TextFieldContainer>
-            <TextFieldContainer>
-              <IconDiscord sx={{ mr: 1 }} />
-              <Controller
-                control={control}
-                name={'discord'}
-                render={({ field: { onChange, value }, fieldState: { error } }) => (
-                  <TBEditableTypography error={error} onChange={onChange} variant="dAppTitle2">
-                    {value}
-                  </TBEditableTypography>
-                )}
-              />
-            </TextFieldContainer>
+            {(creatorMetadata?.email || !readView) && (
+              <TextFieldContainer>
+                <EmailOutlinedIcon sx={{ mr: 1 }} />
+                <Controller
+                  control={control}
+                  name={'email'}
+                  render={({ field: { onChange, value }, fieldState: { error } }) => (
+                    <TBEditableTypography
+                      disabled={readView}
+                      error={error}
+                      onChange={onChange}
+                      variant="dAppTitle2"
+                    >
+                      {value}
+                    </TBEditableTypography>
+                  )}
+                />
+              </TextFieldContainer>
+            )}
+            {(creatorMetadata?.twitter || !readView) && (
+              <TextFieldContainer>
+                <TwitterIcon sx={{ mr: 1 }} />
+                <Controller
+                  control={control}
+                  name={'twitter'}
+                  render={({ field: { onChange, value }, fieldState: { error } }) => (
+                    <TBEditableTypography
+                      disabled={readView}
+                      error={error}
+                      onChange={onChange}
+                      variant="dAppTitle2"
+                    >
+                      {value}
+                    </TBEditableTypography>
+                  )}
+                />
+              </TextFieldContainer>
+            )}
+            {(creatorMetadata?.discord || !readView) && (
+              <TextFieldContainer>
+                <IconDiscord sx={{ mr: 1 }} />
+                <Controller
+                  control={control}
+                  name={'discord'}
+                  render={({ field: { onChange, value }, fieldState: { error } }) => (
+                    <TBEditableTypography
+                      disabled={readView}
+                      error={error}
+                      onChange={onChange}
+                      variant="dAppTitle2"
+                    >
+                      {value}
+                    </TBEditableTypography>
+                  )}
+                />
+              </TextFieldContainer>
+            )}
           </Stack>
           <Stack
             borderLeft="1px solid white"
@@ -171,7 +213,13 @@ export default function InfoPreviewEdit({ address, onClose }: Props) {
               control={control}
               name={'description'}
               render={({ field: { onChange, value }, fieldState: { error } }) => (
-                <TBEditableTypography error={error} multiline onChange={onChange} variant="body4">
+                <TBEditableTypography
+                  disabled={readView}
+                  error={error}
+                  multiline
+                  onChange={onChange}
+                  variant="body4"
+                >
                   {value}
                 </TBEditableTypography>
               )}
@@ -180,15 +228,24 @@ export default function InfoPreviewEdit({ address, onClose }: Props) {
         </Box>
       </Stack>
 
-      <IconButton
-        onClick={handleSubmit(onSubmit)}
-        sx={{ position: 'absolute', right: 24, top: 24 }}
-      >
-        <SaveOutlinedIcon />
-      </IconButton>
-      <IconButton onClick={onClose} sx={{ position: 'absolute', right: 48, top: 24 }}>
-        <CancelOutlinedIcon />
-      </IconButton>
+      {!readView && (
+        <>
+          <IconButton
+            onClick={handleSubmit(onSubmit)}
+            sx={{ position: 'absolute', right: 24, top: 24 }}
+          >
+            <SaveOutlinedIcon />
+          </IconButton>
+          <IconButton onClick={onClose} sx={{ position: 'absolute', right: 48, top: 24 }}>
+            <CancelOutlinedIcon />
+          </IconButton>
+        </>
+      )}
+      {isLoggedInUser && readView && (
+        <IconButton onClick={onEdit} sx={{ position: 'absolute', right: 24, top: 24 }}>
+          <CreateOutlinedIcon />
+        </IconButton>
+      )}
     </>
   )
 }

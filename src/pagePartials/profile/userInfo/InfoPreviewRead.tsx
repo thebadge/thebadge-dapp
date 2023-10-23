@@ -1,9 +1,8 @@
 import React from 'react'
 
-import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined'
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined'
 import TwitterIcon from '@mui/icons-material/Twitter'
-import { Box, IconButton, Stack, Typography } from '@mui/material'
+import { Box, Stack, Typography } from '@mui/material'
 import { IconDiscord } from '@thebadge/ui-library'
 
 import TBUserAvatar from '@/src/components/common/TBUserAvatar'
@@ -11,18 +10,13 @@ import { Address } from '@/src/components/helpers/Address'
 import { useUserById } from '@/src/hooks/subgraph/useUserById'
 import useIsUserVerified from '@/src/hooks/theBadge/useIsUserVerified'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { CreatorMetadata } from '@/types/badges/Creator'
 
 type Props = {
   address: string
-  onEdit: VoidFunction
 }
 
-export default function InfoPreviewRead({ address, onEdit }: Props) {
-  const { address: connectedWalletAddress } = useWeb3Connection()
-  const isLoggedInUser = connectedWalletAddress === address
-
+export default function InfoPreviewRead({ address }: Props) {
   const userResponse = useUserById(address)
   const user = userResponse.data
   const resCreatorMetadata = useS3Metadata<{ content: CreatorMetadata }>(user?.metadataUri || '')
@@ -40,7 +34,7 @@ export default function InfoPreviewRead({ address, onEdit }: Props) {
       <Stack flex="5" justifyContent="space-between" overflow="auto">
         <Stack gap={1}>
           <Typography variant="dAppHeadline2">{creatorMetadata?.name}</Typography>
-          <Address address={address || user?.id || connectedWalletAddress || ''} truncate={false} />
+          <Address address={address || user?.id || ''} truncate={false} />
         </Stack>
         {hasCustomProfileData && (
           <Box display="flex">
@@ -77,11 +71,6 @@ export default function InfoPreviewRead({ address, onEdit }: Props) {
           </Box>
         )}
       </Stack>
-      {isLoggedInUser && (
-        <IconButton onClick={onEdit} sx={{ position: 'absolute', right: 24, top: 24 }}>
-          <CreateOutlinedIcon />
-        </IconButton>
-      )}
     </>
   )
 }

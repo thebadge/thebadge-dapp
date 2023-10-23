@@ -5,14 +5,11 @@ import AnimateHeight, { Height } from 'react-animate-height'
 
 import { InfoPreviewContainer } from '@/src/pagePartials/profile/userInfo/InfoPreviewContainer'
 import InfoPreviewEdit from '@/src/pagePartials/profile/userInfo/InfoPreviewEdit'
-import InfoPreviewRead from '@/src/pagePartials/profile/userInfo/InfoPreviewRead'
 
 type Props = {
   address: string
 }
 export default function InfoPreview({ address }: Props) {
-  const [editView, setEditView] = useState(false)
-
   const [height, setHeight] = useState<Height>('auto')
   const contentDiv = useRef<HTMLDivElement | null>(null)
 
@@ -35,11 +32,7 @@ export default function InfoPreview({ address }: Props) {
         style={{ padding: 10 }}
       >
         <InfoPreviewContainer>
-          {editView ? (
-            <InfoPreviewEdit address={address} onClose={() => setEditView(false)} />
-          ) : (
-            <InfoPreviewRead address={address} onEdit={() => setEditView(true)} />
-          )}
+          <InfoPreviewEdit address={address} />
         </InfoPreviewContainer>
       </AnimateHeight>
     </Stack>

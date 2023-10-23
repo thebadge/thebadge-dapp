@@ -23,15 +23,16 @@ const StyledInputBase = styled(InputBase)(({ error, theme }) => ({
   '&::after': {
     content: '""',
     position: 'absolute',
-    width: '0px',
-    height: '2px',
+    width: 0,
+    height: 1,
     background: theme.palette.secondary.light,
     transition: 'all 0.5s',
-    bottom: 0,
+    bottom: -1,
     left: '50%',
   },
   input: {
     padding: 0,
+    height: 'inherit',
   },
 }))
 
@@ -44,6 +45,7 @@ export interface EditableTypographyProps {
   multiline?: InputBaseProps['multiline']
   minRows?: InputBaseProps['minRows']
   maxRows?: InputBaseProps['maxRows']
+  disabled?: InputBaseProps['disabled']
 }
 
 const InputBaseWithChildren = ({
@@ -77,6 +79,7 @@ const InputBaseWithChildren = ({
  */
 export default function TBEditableTypography({
   children,
+  disabled,
   onChange: propsOnChange,
   ...props
 }: EditableTypographyProps & Omit<TypographyProps, 'onChange'>) {
@@ -93,6 +96,9 @@ export default function TBEditableTypography({
     onChange(e.target.value)
   }
 
+  if (disabled) {
+    return <Typography {...props}>{children || internalValue}</Typography>
+  }
   return (
     <Typography {...props} component={InputBaseWithChildren} onChange={handleChange}>
       {children || internalValue}
