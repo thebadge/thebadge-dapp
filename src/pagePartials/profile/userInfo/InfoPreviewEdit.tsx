@@ -74,7 +74,7 @@ export default function InfoPreviewEdit({ address }: Props) {
   }
 
   async function onSubmit(data: EditProfileSchemaType) {
-    if (!address || !creatorMetadata || !data) {
+    if (!address || !creatorMetadata) {
       throw Error('Web3 address not provided')
     }
 
@@ -85,14 +85,20 @@ export default function InfoPreviewEdit({ address }: Props) {
           '@/src/utils/creator/registerHelpers'
         )
 
+        // If data has the base64File, the user had uploaded a new logo
+        const logoHasChange = !!data.logo.base64File
+
         // Use previous data as default, and override with new values
         const upsertCreatorData = {
           ...creatorMetadata,
           ...data,
-          logo: creatorMetadata?.logo?.ipfs,
+          ...(!logoHasChange && { logo: creatorMetadata?.logo?.ipfs }),
         } as CreatorRegisterSchemaType
 
-        const userMetadataIPFSHash = await createAndUploadCreatorMetadata(upsertCreatorData, false)
+        const userMetadataIPFSHash = await createAndUploadCreatorMetadata(
+          upsertCreatorData,
+          logoHasChange,
+        )
 
         return theBadgeUsers.updateUser(address, userMetadataIPFSHash)
       })
