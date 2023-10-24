@@ -12,7 +12,7 @@ import ChallengedStatusLogo from '@/src/pagePartials/badge/preview/addons/Challe
 import { BadgeStatus } from '@/types/generated/subgraph'
 import { ToastStates } from '@/types/toast'
 
-export default function BadgeOwnedPreview() {
+export default function BadgeOwnedPreviewMobile() {
   const { t } = useTranslation()
 
   const badgeId = useBadgeIdParam()
@@ -35,58 +35,69 @@ export default function BadgeOwnedPreview() {
   return (
     <>
       {badge?.status === BadgeStatus.Challenged && <ChallengedStatusLogo />}
-
-      <Box display="flex" flex={1} gap={8} justifyContent="space-between" my={4}>
-        {/* Badge Image */}
-        <Box display="flex" flex={1}>
-          <BadgeModelPreview effects metadata={badgeModel?.uri} />
-        </Box>
-
-        {/* Badge Metadata */}
-        <Stack flex={2} gap={2} justifyContent="space-between">
-          <Stack gap={3}>
-            <Typography
-              sx={{
-                color: colors.green,
-                textShadow: '0px 0px 7px rgba(51, 255, 204, 0.6)',
-              }}
-              variant="dAppTitle3"
-            >
-              {badgeModelMetadata?.name}
-            </Typography>
-            <Typography sx={{ color: colors.green, fontWeight: 'bold' }} variant="caption">
-              {t('badge.viewBadge.id', { id: badgeId })}
-            </Typography>
-          </Stack>
-          <Divider color={colors.white} />
-          <Stack gap={4} minHeight="50%">
-            <Typography variant="body2">
-              {t('badge.viewBadge.issueBy', { issuer: 'TheBadge' })}
-            </Typography>
-            <Typography variant="dAppBody1">{badgeModelMetadata?.description}</Typography>
-          </Stack>
-          <Divider color={colors.white} />
+      <Stack gap={4} my={4}>
+        {/* Badge Title and ID */}
+        <Stack gap={3}>
           <Typography
             sx={{
               color: colors.green,
+              textShadow: '0px 0px 7px rgba(51, 255, 204, 0.6)',
             }}
-            variant="body4"
+            textAlign="center"
+            variant="dAppTitle3"
           >
-            {t('badge.viewBadge.claims', { amount: badgeModel?.badgesMintedAmount })}
+            {badgeModelMetadata?.name}
           </Typography>
+          <Typography
+            sx={{ color: colors.green, fontWeight: 'bold' }}
+            textAlign="center"
+            variant="caption"
+          >
+            {t('badge.viewBadge.id', { id: badgeId })}
+          </Typography>
+        </Stack>
+
+        {/* Badge Image */}
+        <Stack alignItems="center">
+          <BadgeModelPreview effects metadata={badgeModel?.uri} />
+        </Stack>
+
+        <Stack flex={2} gap={2} justifyContent="space-between">
+          <Stack gap={4} minHeight="50%">
+            {/* Issued By and Share */}
+            <Box alignItems="center" display="flex" justifyContent="space-between">
+              <Typography variant="body2">
+                {t('badge.viewBadge.issueBy', { issuer: 'TheBadge' })}
+              </Typography>
+              <IconButton aria-label="Share badge preview" component="label" onClick={handleShare}>
+                <ShareOutlinedIcon />
+              </IconButton>
+            </Box>
+
+            <Typography variant="dAppBody1">{badgeModelMetadata?.description}</Typography>
+          </Stack>
+          <Divider color={colors.white} />
+
+          {/* Number of claims and see all */}
           <Box alignItems="center" display="flex" justifyContent="space-between">
+            <Typography
+              sx={{
+                color: colors.green,
+              }}
+              variant="body4"
+            >
+              {t('badge.viewBadge.claims', { amount: badgeModel?.badgesMintedAmount })}
+            </Typography>
+
             <Typography variant="body4">
               {t('badge.viewBadge.checkHowElse')}
               <LinkWithTranslation pathname="/badge/explorer">
                 {t('badge.viewBadge.seeAll').toUpperCase()}
               </LinkWithTranslation>
             </Typography>
-            <IconButton aria-label="Share badge preview" component="label" onClick={handleShare}>
-              <ShareOutlinedIcon />
-            </IconButton>
           </Box>
         </Stack>
-      </Box>
+      </Stack>
     </>
   )
 }

@@ -7,7 +7,9 @@ import { useTranslation } from 'next-export-i18n'
 import SafeSuspense, { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import useBadgeIdParam from '@/src/hooks/nextjs/useBadgeIdParam'
 import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
+import { useSizeSM } from '@/src/hooks/useSize'
 import BadgeOwnedPreview from '@/src/pagePartials/badge/preview/BadgeOwnedPreview'
+import BadgeOwnedPreviewMobile from '@/src/pagePartials/badge/preview/BadgeOwnedPreviewMobile'
 import BadgeOwnerPreview from '@/src/pagePartials/badge/preview/BadgeOwnerPreview'
 import ChallengeStatus from '@/src/pagePartials/badge/preview/ChallengeStatus'
 import { useCurateProvider } from '@/src/providers/curateProvider'
@@ -23,6 +25,7 @@ const ViewBadge: NextPageWithLayout = () => {
   const { curate } = useCurateProvider()
   const router = useRouter()
   const { mode } = useColorMode()
+  const isMobile = useSizeSM()
 
   const badgeId = useBadgeIdParam()
   if (!badgeId) {
@@ -41,69 +44,71 @@ const ViewBadge: NextPageWithLayout = () => {
   return (
     <Box sx={{ position: 'relative' }}>
       <Stack maxWidth={900} mx={'auto'}>
-        <BadgeOwnedPreview />
+        {isMobile ? <BadgeOwnedPreviewMobile /> : <BadgeOwnedPreview />}
         <Box display="flex" gap={8}>
-          <Box
-            alignItems="center"
-            display="flex"
-            flex="1"
-            justifyContent="space-between"
-            maxWidth={300}
-          >
-            <Tooltip
-              arrow
-              title={address === ownerAddress ? t('badge.mintButtonDisabledTooltip') : ''}
+          {!isMobile && (
+            <Box
+              alignItems="center"
+              display="flex"
+              flex="1"
+              justifyContent="space-between"
+              maxWidth={300}
             >
-              <div>
-                <ButtonV2
-                  backgroundColor={colors.transparent}
-                  disabled={address === ownerAddress}
-                  fontColor={mode === 'light' ? colors.blackText : colors.white}
-                  onClick={() =>
-                    router.push(generateMintUrl(badge?.badgeModel.controllerType, badgeModelId))
-                  }
-                  sx={{
-                    borderRadius: '10px',
-                    fontSize: '11px !important',
-                    padding: '0.5rem 1rem !important',
-                    height: 'fit-content !important',
-                    lineHeight: '14px',
-                    fontWeight: 700,
-                    boxShadow: 'none',
-                    textTransform: 'uppercase',
-                  }}
-                >
-                  {t('badge.mintButton')}
-                </ButtonV2>
-              </div>
-            </Tooltip>
-            <Tooltip
-              arrow
-              title={address === ownerAddress ? t('badge.curateButtonDisabledTooltip') : ''}
-            >
-              <div>
-                <ButtonV2
-                  backgroundColor={colors.greenLogo}
-                  disabled={address === ownerAddress}
-                  fontColor={colors.blackText}
-                  onClick={() => curate(badgeId)}
-                  sx={{
-                    borderRadius: '10px',
-                    fontSize: '11px !important',
-                    padding: '0.5rem 1rem !important',
-                    height: 'fit-content !important',
-                    lineHeight: '14px',
-                    fontWeight: 700,
-                    boxShadow: 'none',
-                    textTransform: 'uppercase',
-                  }}
-                  variant="contained"
-                >
-                  {t('badge.curateButton')}
-                </ButtonV2>
-              </div>
-            </Tooltip>
-          </Box>
+              <Tooltip
+                arrow
+                title={address === ownerAddress ? t('badge.mintButtonDisabledTooltip') : ''}
+              >
+                <div>
+                  <ButtonV2
+                    backgroundColor={colors.transparent}
+                    disabled={address === ownerAddress}
+                    fontColor={mode === 'light' ? colors.blackText : colors.white}
+                    onClick={() =>
+                      router.push(generateMintUrl(badge?.badgeModel.controllerType, badgeModelId))
+                    }
+                    sx={{
+                      borderRadius: '10px',
+                      fontSize: '11px !important',
+                      padding: '0.5rem 1rem !important',
+                      height: 'fit-content !important',
+                      lineHeight: '14px',
+                      fontWeight: 700,
+                      boxShadow: 'none',
+                      textTransform: 'uppercase',
+                    }}
+                  >
+                    {t('badge.mintButton')}
+                  </ButtonV2>
+                </div>
+              </Tooltip>
+              <Tooltip
+                arrow
+                title={address === ownerAddress ? t('badge.curateButtonDisabledTooltip') : ''}
+              >
+                <div>
+                  <ButtonV2
+                    backgroundColor={colors.greenLogo}
+                    disabled={address === ownerAddress}
+                    fontColor={colors.blackText}
+                    onClick={() => curate(badgeId)}
+                    sx={{
+                      borderRadius: '10px',
+                      fontSize: '11px !important',
+                      padding: '0.5rem 1rem !important',
+                      height: 'fit-content !important',
+                      lineHeight: '14px',
+                      fontWeight: 700,
+                      boxShadow: 'none',
+                      textTransform: 'uppercase',
+                    }}
+                    variant="contained"
+                  >
+                    {t('badge.curateButton')}
+                  </ButtonV2>
+                </div>
+              </Tooltip>
+            </Box>
+          )}
           <SafeSuspense>
             <BadgeOwnerPreview ownerAddress={ownerAddress} />
           </SafeSuspense>
