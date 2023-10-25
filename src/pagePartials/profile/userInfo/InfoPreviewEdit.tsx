@@ -100,7 +100,7 @@ export default function InfoPreviewEdit({ address }: Props) {
           logoHasChange,
         )
 
-        return theBadgeUsers.updateUser(address, userMetadataIPFSHash)
+        return theBadgeUsers.updateProfile(userMetadataIPFSHash)
       })
 
       if (transaction) {
