@@ -9,6 +9,7 @@ import ExternalLink from '@/src/components/helpers/ExternalLink'
 import { KLEROS_COURT_URL } from '@/src/constants/common'
 import useBadgeIdParam from '@/src/hooks/nextjs/useBadgeIdParam'
 import { useBadgeKlerosMetadata } from '@/src/hooks/subgraph/useBadgeKlerosMetadata'
+import { useSizeSM } from '@/src/hooks/useSize'
 import EvidencesList from '@/src/pagePartials/badge/preview/addons/EvidencesList'
 import { useCurateProvider } from '@/src/providers/curateProvider'
 import { KlerosBadgeRequest, KlerosRequestType } from '@/types/generated/subgraph'
@@ -24,6 +25,8 @@ export default function ChallengeStatus() {
   const { t } = useTranslation()
   const { addMoreEvidence } = useCurateProvider()
 
+  const isMobile = useSizeSM()
+
   const badgeId = useBadgeIdParam()
   if (!badgeId) {
     throw `No badgeId provided us URL query param`
@@ -37,8 +40,8 @@ export default function ChallengeStatus() {
   const isRegistration = activeRequest.type === KlerosRequestType.Registration
 
   return (
-    <Stack gap={3} mt={5}>
-      <Divider color={colors.white} />
+    <Stack gap={3} mt={isMobile ? 7 : 5}>
+      {!isMobile && <Divider color={colors.white} />}
       <Box display="flex" justifyContent="space-between">
         <Typography color={'#FF4949'} variant="dAppTitle1">
           {t('badge.viewBadge.challengeStatus.title')}

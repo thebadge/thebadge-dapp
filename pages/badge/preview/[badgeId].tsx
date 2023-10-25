@@ -9,9 +9,9 @@ import useBadgeIdParam from '@/src/hooks/nextjs/useBadgeIdParam'
 import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
 import { useSizeSM } from '@/src/hooks/useSize'
 import BadgeOwnedPreview from '@/src/pagePartials/badge/preview/BadgeOwnedPreview'
-import BadgeOwnedPreviewMobile from '@/src/pagePartials/badge/preview/BadgeOwnedPreviewMobile'
 import BadgeOwnerPreview from '@/src/pagePartials/badge/preview/BadgeOwnerPreview'
 import ChallengeStatus from '@/src/pagePartials/badge/preview/ChallengeStatus'
+import ChallengedStatusLogo from '@/src/pagePartials/badge/preview/addons/ChallengedStatusLogo'
 import { useCurateProvider } from '@/src/providers/curateProvider'
 import { useColorMode } from '@/src/providers/themeProvider'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
@@ -44,7 +44,9 @@ const ViewBadge: NextPageWithLayout = () => {
   return (
     <Box sx={{ position: 'relative' }}>
       <Stack maxWidth={900} mx={'auto'}>
-        {isMobile ? <BadgeOwnedPreviewMobile /> : <BadgeOwnedPreview />}
+        {badge?.status === BadgeStatus.Challenged && <ChallengedStatusLogo />}
+
+        <BadgeOwnedPreview />
         <Box display="flex" gap={8}>
           {!isMobile && (
             <Box
