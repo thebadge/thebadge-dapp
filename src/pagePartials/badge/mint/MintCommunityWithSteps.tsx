@@ -71,6 +71,11 @@ export default function MintCommunityWithSteps({
     // Safeguard to prevent navigation on Transaction
     if (txState !== TransactionStates.none) return
     const isValid = await isValidStep()
+    // Allow go back
+    if (currentStep > stepNumber) {
+      setCurrentStep(stepNumber)
+      return
+    }
     // Only allows one step further or to a completed steps
     if (isValid && (stepNumber <= currentStep + 1 || completed[stepNumber])) {
       setCompleted((prev) => ({ ...prev, [currentStep]: true }))

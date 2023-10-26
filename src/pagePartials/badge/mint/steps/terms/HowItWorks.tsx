@@ -1,10 +1,14 @@
 import React from 'react'
 
+import WarningAmberOutlinedIcon from '@mui/icons-material/WarningAmberOutlined'
+import { Box, Link, Stack, styled } from '@mui/material'
+import { colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 import { Controller, useFormContext } from 'react-hook-form'
 
-import { AgreementField } from '@/src/components/form/formFields/AgreementField'
-import { DOCS_URL } from '@/src/constants/common'
+import HowItWorksStep from '@/src/components/common/HowItWorksStep'
+import { AgreementCheckbox } from '@/src/components/form/formFields/AgreementCheckbox'
+import { DOCUMENTATION_URL } from '@/src/constants/common'
 import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
 import { useRegistrationBadgeModelKlerosMetadata } from '@/src/hooks/subgraph/useBadgeModelKlerosMetadata'
@@ -13,6 +17,14 @@ import { MintBadgeSchemaType } from '@/src/pagePartials/badge/mint/schema/MintBa
 import { secondsToDays, secondsToMinutes } from '@/src/utils/dateUtils'
 import { isTestnet } from '@/src/utils/network'
 import { Creator } from '@/types/badges/Creator'
+
+const CriteriaLink = styled(Link)(() => ({
+  color: colors.green,
+  fontWeight: 700,
+  '&:hover': {
+    color: colors.green,
+  },
+}))
 
 export default function HowItWorks() {
   const { t } = useTranslation()
@@ -37,25 +49,49 @@ export default function HowItWorks() {
     : secondsToDays(klerosBadgeModel.data?.challengePeriodDuration)
 
   return (
-    <Controller
-      control={control}
-      name={'howItWorks'}
-      render={({ field: { onChange, value }, fieldState: { error } }) => (
-        <AgreementField
-          agreementText={t('badge.model.mint.helpSteps', {
+    <Stack gap={8} mt={4}>
+      <Stack gap={6}>
+        <Box display="flex" gap={1}>
+          <WarningAmberOutlinedIcon color="green" />
+          <CriteriaLink href={badgeCriteria} underline="hover">
+            Please, view badge application requirements PDF here
+          </CriteriaLink>
+        </Box>
+
+        <HowItWorksStep
+          index={1}
+          text={t(`badge.model.mint.helpSteps.${0}`, {
             badgeCreatorName: badgeCreatorMetadata.data?.content?.name,
             badgeCreatorProfileLink: '/profile/' + badgeModelData.data?.badgeModel?.creator.id,
-            curationDocsUrl: DOCS_URL + '/thebadge-documentation/protocol-mechanics/challenge',
+          })}
+        />
+        <HowItWorksStep
+          index={2}
+          text={t(`badge.model.mint.helpSteps.${1}`, {
+            curationDocsUrl: DOCUMENTATION_URL + '/protocol-mechanics/challenge',
+          })}
+        />
+        <HowItWorksStep
+          index={3}
+          text={t(`badge.model.mint.helpSteps.${2}`, {
             curationCriteriaUrl: badgeCriteria,
+          })}
+        />
+        <HowItWorksStep
+          index={4}
+          text={t(`badge.model.mint.helpSteps.${3}`, {
             challengePeriodDuration,
             timeUnit: isTestnet ? 'minutes' : 'days',
           })}
-          color="blue"
-          error={error}
-          onChange={onChange}
-          value={value}
         />
-      )}
-    />
+      </Stack>
+      <Controller
+        control={control}
+        name={'howItWorks'}
+        render={({ field: { onChange, value }, fieldState: { error } }) => (
+          <AgreementCheckbox color="blue" error={error} onChange={onChange} value={value} />
+        )}
+      />
+    </Stack>
   )
 }
