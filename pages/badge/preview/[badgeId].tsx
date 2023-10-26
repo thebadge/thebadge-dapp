@@ -1,5 +1,4 @@
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
 import * as React from 'react'
 
 import { Box, Stack, Tooltip } from '@mui/material'
@@ -28,12 +27,6 @@ const ViewBadge: NextPageWithLayout = () => {
   const router = useRouter()
   const { mode } = useColorMode()
   const isMobile = useSizeSM()
-
-  const [selectedTab, setSelectedTab] = useState(0)
-
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setSelectedTab(newValue)
-  }
 
   const badgeId = useBadgeIdParam()
   if (!badgeId) {
