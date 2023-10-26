@@ -62,12 +62,9 @@ export const TwitterSchema = createUniqueFieldSchema(
   'TwitterSchema',
 )
 
-export const EmailSchema = createUniqueFieldSchema(
-  z.string({ required_error: 'Is required' }).refine(isEmail, {
-    message: 'Must be a valid email addresses.',
-  }),
-  'EmailSchema',
-)
+export const EmailSchema = z.string({ required_error: 'Is required' }).refine(isEmail, {
+  message: 'Must be a valid email addresses.',
+})
 
 export const TokenInputSchema = z.string({ required_error: 'Is required' })
 
