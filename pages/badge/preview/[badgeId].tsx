@@ -1,4 +1,6 @@
 import { useRouter } from 'next/navigation'
+import { useState } from 'react'
+import * as React from 'react'
 
 import { Box, Stack, Tooltip } from '@mui/material'
 import { ButtonV2, colors } from '@thebadge/ui-library'
@@ -10,7 +12,7 @@ import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
 import { useSizeSM } from '@/src/hooks/useSize'
 import BadgeOwnedPreview from '@/src/pagePartials/badge/preview/BadgeOwnedPreview'
 import BadgeOwnerPreview from '@/src/pagePartials/badge/preview/BadgeOwnerPreview'
-import ChallengeStatus from '@/src/pagePartials/badge/preview/ChallengeStatus'
+import BadgeStatusAndEvidence from '@/src/pagePartials/badge/preview/BadgeStatusAndEvidence'
 import ChallengedStatusLogo from '@/src/pagePartials/badge/preview/addons/ChallengedStatusLogo'
 import { useCurateProvider } from '@/src/providers/curateProvider'
 import { useColorMode } from '@/src/providers/themeProvider'
@@ -26,6 +28,12 @@ const ViewBadge: NextPageWithLayout = () => {
   const router = useRouter()
   const { mode } = useColorMode()
   const isMobile = useSizeSM()
+
+  const [selectedTab, setSelectedTab] = useState(0)
+
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setSelectedTab(newValue)
+  }
 
   const badgeId = useBadgeIdParam()
   if (!badgeId) {
@@ -45,7 +53,6 @@ const ViewBadge: NextPageWithLayout = () => {
     <Box sx={{ position: 'relative' }}>
       <Stack maxWidth={900} mx={'auto'}>
         {badge?.status === BadgeStatus.Challenged && <ChallengedStatusLogo />}
-
         <BadgeOwnedPreview />
         <Box display="flex" gap={8}>
           {!isMobile && (
@@ -115,11 +122,9 @@ const ViewBadge: NextPageWithLayout = () => {
             <BadgeOwnerPreview ownerAddress={ownerAddress} />
           </SafeSuspense>
         </Box>
-        {badge.status === BadgeStatus.Challenged && (
-          <SafeSuspense>
-            <ChallengeStatus />
-          </SafeSuspense>
-        )}
+        <SafeSuspense>
+          <BadgeStatusAndEvidence />
+        </SafeSuspense>
       </Stack>
     </Box>
   )
