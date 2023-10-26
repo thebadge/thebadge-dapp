@@ -31,7 +31,11 @@ export default function BadgesInReviewSwiper() {
         >
           <InViewPort minHeight={300}>
             <SafeSuspense>
-              <BadgeModelPreview metadata={badgeInReview.badgeModel?.uri} size="small" />
+              <BadgeModelPreview
+                clickable={true}
+                metadata={badgeInReview.badgeModel?.uri}
+                size="small"
+              />
             </SafeSuspense>
           </InViewPort>
         </Box>
