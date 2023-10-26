@@ -12,9 +12,11 @@ import { Controller, useForm } from 'react-hook-form'
 import { ImageType } from 'react-images-uploading'
 
 import TBEditableTypography from '@/src/components/common/TBEditableTypography'
+import TBUserAvatar from '@/src/components/common/TBUserAvatar'
 import { AvatarInput } from '@/src/components/form/formFields/AvatarInput'
 import { Address } from '@/src/components/helpers/Address'
 import { useUserById } from '@/src/hooks/subgraph/useUserById'
+import useIsUserVerified from '@/src/hooks/theBadge/useIsUserVerified'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
 import useTransaction from '@/src/hooks/useTransaction'
@@ -49,6 +51,7 @@ export default function InfoPreviewEdit({ address }: Props) {
   const theBadgeUsers = useContractInstance(TheBadgeUsers__factory, 'TheBadgeUsers')
 
   const { data } = useUserById(address)
+  const isVerified = useIsUserVerified(address, 'kleros')
 
   const resCreatorMetadata = useS3Metadata<{ content: CreatorMetadata }>(data?.metadataUri || '')
   const creatorMetadata = resCreatorMetadata.data?.content
@@ -80,6 +83,7 @@ export default function InfoPreviewEdit({ address }: Props) {
 
     try {
       const transaction = await sendTx(async () => {
+        setReadView(true)
         // Use NextJs dynamic import to reduce the bundle size
         const { createAndUploadCreatorMetadata } = await import(
           '@/src/utils/creator/registerHelpers'
@@ -107,34 +111,47 @@ export default function InfoPreviewEdit({ address }: Props) {
         await transaction.wait()
       }
     } catch (e) {
+      setReadView(false)
       // Do nothing
     }
   }
 
   return (
     <>
-      <Controller
-        control={control}
-        name={'logo'}
-        render={({ field: { onChange, value }, fieldState: { error } }) => (
-          <AvatarInput
-            error={error}
-            label="Change Photo"
-            labelPosition="hover"
-            onChange={(value: ImageType | null) => {
-              if (value) {
-                // We change the structure a little bit to have it ready to push to the backend
-                onChange({
-                  mimeType: value.file?.type,
-                  base64File: value.base64File,
-                })
-              } else onChange(null)
-            }}
-            size={170}
-            value={value}
+      {readView && (
+        <Stack my={0.5}>
+          <TBUserAvatar
+            isVerified={isVerified.data}
+            size={creatorMetadata ? 171 : 90}
+            src={creatorMetadata?.logo?.s3Url}
           />
-        )}
-      />
+        </Stack>
+      )}
+      {!readView && (
+        <Controller
+          control={control}
+          name={'logo'}
+          render={({ field: { onChange, value }, fieldState: { error } }) => (
+            <AvatarInput
+              error={error}
+              label="Change Photo"
+              labelPosition="hover"
+              onChange={(value: ImageType | null) => {
+                if (value) {
+                  // We change the structure a little bit to have it ready to push to the backend
+                  onChange({
+                    mimeType: value.file?.type,
+                    base64File: value.base64File,
+                  })
+                } else onChange(null)
+              }}
+              size={170}
+              value={value}
+            />
+          )}
+        />
+      )}
+
       <Stack flex="5" gap={2} justifyContent="space-between" overflow="auto">
         <Stack gap={1} pr={2}>
           <Controller

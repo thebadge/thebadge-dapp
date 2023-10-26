@@ -31,7 +31,7 @@ const Avatar = styled(MUIAvatar, { shouldForwardProp: (propName) => propName !==
 >(({ isDragging }) => ({
   width: 150,
   height: 150,
-  borderWidth: 1,
+  borderWidth: isDragging ? 1 : 0,
   borderColor: isDragging ? colors.green : 'transparent',
   borderStyle: 'dashed',
   '& .blockies-avatar': {
