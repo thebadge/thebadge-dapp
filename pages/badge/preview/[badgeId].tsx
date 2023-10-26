@@ -68,6 +68,7 @@ const ViewBadge: NextPageWithLayout = () => {
             justifyContent="space-between"
             maxWidth={300}
           >
+            {/* Show mint button if this is not the own badge */}
             {address !== ownerAddress ? (
               <ButtonV2
                 backgroundColor={colors.transparent}
@@ -91,7 +92,8 @@ const ViewBadge: NextPageWithLayout = () => {
               </ButtonV2>
             ) : null}
 
-            {address !== ownerAddress ? (
+            {/* Show curate button if this is not the own badge and its not already challenged */}
+            {address !== ownerAddress && badgeStatus !== BadgeStatus.Challenged ? (
               <ButtonV2
                 backgroundColor={colors.greenLogo}
                 disabled={address === ownerAddress}
@@ -113,6 +115,7 @@ const ViewBadge: NextPageWithLayout = () => {
               </ButtonV2>
             ) : null}
 
+            {/* Show claim button if it is an own badge, it has status requested and the review time finished */}
             {address === ownerAddress &&
             badgeStatus === BadgeStatus.Requested &&
             badgeReviewTimeFinished ? (
