@@ -2823,10 +2823,10 @@
     quilljs-parser "^1.0.14"
     ts-node-dev "^2.0.0"
 
-"@thebadge/ui-library@^1.8.5":
-  version "1.8.5"
-  resolved "https://registry.yarnpkg.com/@thebadge/ui-library/-/ui-library-1.8.5.tgz#50b61c1e1584287a93d793dd256093fadb4b77f5"
-  integrity sha512-JblTGFQM3wsLmCpeXwosUFM9YDRlFH+xikvQbU1g8tc7zMq2qI2rYGteD36D9Rig0s+vP+ACLQNkWm84dGlkZw==
+"@thebadge/ui-library@^1.8.6":
+  version "1.8.6"
+  resolved "https://registry.yarnpkg.com/@thebadge/ui-library/-/ui-library-1.8.6.tgz#605621b35714011ccf962f82767bcb7cb4a028e5"
+  integrity sha512-DgowJG4/8SjoR+f/PjKZRrng81zBRXewAMCF5pwA4aNiVwawnjQwtsZB5aP7tiLCr1onHSxeezIFfm8feSuyEg==
   dependencies:
     "@emotion/react" "^11.10.5"
     "@emotion/server" "^11.10.0"
@@ -10111,6 +10111,11 @@ react-18-blockies@^1.0.6:
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/react-18-blockies/-/react-18-blockies-1.0.6.tgz#595367c6657d33a1edba3d3ba1dcef0b895c13f4"
   integrity sha512-MPdEdfYm8wO2XEdTDEpwIJJBE0/zdkmZqGbEcypK6EV+nKeqE4qGs6XfBAs6VcrSkZ0ssu8jZNd0qXrplruVqg==
+
+react-animate-height@^3.2.2:
+  version "3.2.2"
+  resolved "https://registry.yarnpkg.com/react-animate-height/-/react-animate-height-3.2.2.tgz#ae15d3ef6396f45140c60af4081d43d7dd093cda"
+  integrity sha512-uUOS+RhYVgyJEWcuAJgelVwhcJ2chsMk7HZCpu+wtjSlFAGSFsHU0r4lMTt47HQ1RdQfI5MmFRt43yHTP9lfmQ==
 
 react-countdown@^2.3.5:
   version "2.3.5"

@@ -39,4 +39,29 @@ export const CreatorRegisterSchema = z.object({
   terms: AgreementSchema,
 })
 
+export const EditProfileSchema = z.object({
+  // General Info
+  name: z
+    .string()
+    .min(
+      MIN_DISPLAY_NAME_CHARACTERS,
+      `The display name should be at least  ${MIN_DISPLAY_NAME_CHARACTERS} characters.`,
+    )
+    .max(
+      MAX_DISPLAY_NAME_CHARACTERS,
+      `The display name should be short than ${MAX_DISPLAY_NAME_CHARACTERS} characters.`,
+    ),
+  description: LongTextSchema,
+  logo: AvatarSchema.optional(), // Image Schema MUST BE the created one
+
+  // Contact method
+  email: EmailSchema,
+  website: z.string().optional(),
+  twitter: TwitterSchema.optional(),
+  discord: z.string().optional(),
+
+  preferContactMethod: z.enum(CONTACT_METHODS),
+})
+
 export type CreatorRegisterSchemaType = z.infer<typeof CreatorRegisterSchema>
+export type EditProfileSchemaType = z.infer<typeof EditProfileSchema>
