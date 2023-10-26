@@ -75,7 +75,8 @@ export const useDate = () => {
       const now = new Date().getTime()
       const timeLeftInSeconds = (dueDate.getTime() - now) / MS_PER_SECOND
       const secondsOfProgressDone = pendingTimeDurationSeconds - timeLeftInSeconds
-      return Math.floor((100 / pendingTimeDurationSeconds) * secondsOfProgressDone)
+      const percentage = Math.floor((100 / pendingTimeDurationSeconds) * secondsOfProgressDone)
+      return percentage > 100 ? 100 : percentage
     },
     [],
   )

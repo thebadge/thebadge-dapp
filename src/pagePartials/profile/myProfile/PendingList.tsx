@@ -10,8 +10,8 @@ import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import TBSwiper from '@/src/components/helpers/TBSwiper'
 import { fillListWithPlaceholders } from '@/src/components/utils/emptyBadges'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
+import useBadge, { ReviewBadge } from '@/src/hooks/theBadge/useBadge'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
-import { TimeLeft, useDate } from '@/src/hooks/useDate'
 import { useSizeLG } from '@/src/hooks/useSize'
 import useTransaction from '@/src/hooks/useTransaction'
 import BadgeModelPreview from '@/src/pagePartials/badge/BadgeModelPreview'
@@ -25,11 +25,11 @@ export default function PendingList() {
   const { sendTx } = useTransaction()
   const router = useRouter()
   const gql = useSubgraph()
-  const { getPendingTimeProgressPercentage, getTimeLeft, timestampToDate } = useDate()
+  const { getBadgeReviewStatus } = useBadge()
   const { address: ownerAddress } = useWeb3Connection()
   const { refreshWatcher } = useProfileProvider()
 
-  const { mutate, ...badgesInReviewAndChallenged } = gql.useUserBadgesInReview({
+  const { mutate, ...badgesInReview } = gql.useUserBadgesInReview({
     ownerAddress: ownerAddress || '',
   })
   const theBadge = useContractInstance(TheBadge__factory, 'TheBadge')
@@ -39,14 +39,9 @@ export default function PendingList() {
   }, [mutate, refreshWatcher])
 
   const badgesList = useMemo(() => {
-    const badges = badgesInReviewAndChallenged.data?.user?.badges?.map((badge) => {
-      const dueDate: Date = timestampToDate(badge.badgeKlerosMetaData?.reviewDueDate)
-      const pendingTimeDurationSeconds: number =
-        badge.badgeModel.badgeModelKleros?.challengePeriodDuration
-      const timeLeft: TimeLeft = getTimeLeft(dueDate)
-      const progressPercentage = getPendingTimeProgressPercentage(
-        dueDate,
-        pendingTimeDurationSeconds,
+    const badges = badgesInReview.data?.user?.badges?.map((badge) => {
+      const { reviewProgressPercentage, reviewTimeFinished, reviewTimeLeft } = getBadgeReviewStatus(
+        badge as ReviewBadge,
       )
 
       async function handleClaimBadge(badgeId: string) {
@@ -67,18 +62,18 @@ export default function PendingList() {
                 >
                   <PendingBadgeOverlay
                     badge={<BadgeModelPreview metadata={badge.badgeModel?.uri} size="small" />}
-                    percentage={progressPercentage}
-                    timeLeft={timeLeft}
+                    percentage={reviewProgressPercentage}
+                    timeLeft={reviewTimeLeft}
                   />
                 </Box>
                 <Tooltip
                   arrow
-                  title={progressPercentage < 100 ? t('badge.claimButtonDisabledTooltip') : ''}
+                  title={!reviewTimeFinished ? t('badge.claimButtonDisabledTooltip') : ''}
                 >
                   <div>
                     <ButtonV2
                       backgroundColor={colors.blue}
-                      disabled={progressPercentage < 100}
+                      disabled={!reviewTimeFinished}
                       fontColor={colors.white}
                       onClick={() => handleClaimBadge(badge.id)}
                       sx={{
@@ -113,16 +108,7 @@ export default function PendingList() {
       </div>,
       2,
     )
-  }, [
-    badgesInReviewAndChallenged.data?.user?.badges,
-    getPendingTimeProgressPercentage,
-    getTimeLeft,
-    theBadge,
-    router,
-    sendTx,
-    t,
-    timestampToDate,
-  ])
+  }, [badgesInReview.data?.user?.badges, getBadgeReviewStatus, t, sendTx, theBadge, router])
 
   return (
     <TBSwiper
