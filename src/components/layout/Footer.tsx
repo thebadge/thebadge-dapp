@@ -31,6 +31,15 @@ const SocialContainer = styled(Box)(({ theme }) => ({
   columnGap: theme.spacing(2),
 }))
 
+const ColumnsContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  gap: theme.spacing(8),
+  [theme.breakpoints.down('sm')]: {
+    gap: theme.spacing(1),
+    justifyContent: 'space-between',
+  },
+}))
+
 export const Footer: React.FC = () => {
   const isMobile = useSizeSM()
 
@@ -47,9 +56,9 @@ export const Footer: React.FC = () => {
       <Container>
         <Stack sx={{ justifyContent: 'center', gap: 5, mb: 5 }}>
           <Divider color={mode === 'dark' ? 'white' : 'black'} sx={{ borderWidth: '1px' }} />
-          <Box sx={{ display: 'flex', flex: 1, justifyContent: 'space-between' }}>
-            <Box sx={{ display: 'flex', gap: 8 }}>
-              <Stack gap={1.5}>
+          <Box sx={!isMobile ? { display: 'flex', flex: 1, justifyContent: 'space-between' } : {}}>
+            <ColumnsContainer>
+              <Stack flex="1 0 110px" gap={1.5}>
                 <Typography color={colors.white} fontWeight="800" variant="h6">
                   {t('footer.about.title')}
                 </Typography>
@@ -81,7 +90,7 @@ export const Footer: React.FC = () => {
                   {t('footer.about.items.2.title')}
                 </Typography>
               </Stack>
-              <Stack gap={1.5}>
+              <Stack flex="1 0 110px" gap={1.5}>
                 <Typography color={colors.white} fontWeight="800" variant="h6">
                   {t('footer.help.title')}
                 </Typography>
@@ -104,7 +113,7 @@ export const Footer: React.FC = () => {
                   {t('footer.help.items.1.title')}
                 </Typography>
               </Stack>
-              <Stack gap={1.5}>
+              <Stack flex="1 0 110px" gap={1.5}>
                 <Typography color={colors.white} fontWeight="800" variant="h6">
                   {t('footer.legal.title')}
                 </Typography>
@@ -118,7 +127,7 @@ export const Footer: React.FC = () => {
                   {t('footer.legal.items.0.title')}
                 </Typography>
               </Stack>
-            </Box>
+            </ColumnsContainer>
             {!isMobile && <LogoWithText color={iconColor} size={120} />}
           </Box>
           <Box

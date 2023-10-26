@@ -130,7 +130,7 @@ function ChallengeModalContent({ badgeId, onClose }: { badgeId: string; onClose:
           ? t('badge.challenge.modal.remove')
           : t('badge.challenge.modal.challenge')}
       </Typography>
-      <SafeSuspense fallback={<Skeleton sx={{ margin: 'auto' }} variant={'text'} width={500} />}>
+      <SafeSuspense fallback={<Skeleton sx={{ margin: 'auto' }} variant={'text'} width="75%" />}>
         <CurationCriteriaLink
           badgeModelId={badgeModelId}
           isRemoval={badge.status === BadgeStatus.Approved}
