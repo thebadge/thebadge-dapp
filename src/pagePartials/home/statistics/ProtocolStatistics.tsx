@@ -31,7 +31,7 @@ export default function ProtocolStatistics() {
       </Typography>
       <Container>
         <StatisticDisplay
-          label={t('home.statistics.created')}
+          label={t('home.statistics.minted')}
           number={protocolStatistic.data?.badgesMintedAmount}
         />
 

@@ -64,7 +64,7 @@
     },
     "statistics": {
       "title": "Protocol statistics",
-      "created": "Badges Created",
+      "minted": "Badges Issued",
       "models": "Badge Models",
       "challenged": "Badges Challenged",
       "owners": "Badge\nOwners",
