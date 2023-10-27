@@ -2,6 +2,7 @@ import { useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/router'
 
 import SharedProfile from '@/src/pagePartials/profile/SharedProfile'
+import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 import { NextPageWithLayout } from '@/types/next'
 
 const SharedProfilePage: NextPageWithLayout = () => {
@@ -11,7 +12,7 @@ const SharedProfilePage: NextPageWithLayout = () => {
   const addressOnUrl = searchParams.get('address')?.toLowerCase()
 
   if (!addressOnUrl) {
-    router.replace(`/profile`)
+    router.replace(generateProfileUrl())
     return null
   }
 

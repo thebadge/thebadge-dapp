@@ -8,7 +8,11 @@ import { useTranslation } from 'next-export-i18n'
 import { useCurrentUser } from '@/src/hooks/subgraph/useCurrentUser'
 import { useSectionReferences } from '@/src/providers/referencesProvider'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
-import { generateCreatorRegisterUrl } from '@/src/utils/navigation/generateUrl'
+import {
+  generateBadgeCurate,
+  generateBadgeModelCreate,
+  generateCreatorRegisterUrl,
+} from '@/src/utils/navigation/generateUrl'
 
 const StyledButton = styled(Button)<{ border?: string }>(({ border }) => ({
   color: 'white',
@@ -53,13 +57,13 @@ export default function ActionButtons() {
     t('header.buttons.curate'),
     colors.greenLogo,
     false,
-    '/badge/curate',
+    generateBadgeCurate(),
   )
   const createButton = menuButton(
     t('header.buttons.create'),
     colors.pink,
     isWalletConnected && !user?.isCreator,
-    '/badge/model/create',
+    generateBadgeModelCreate(),
   )
 
   return (

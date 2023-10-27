@@ -2,6 +2,7 @@ import { APP_URL } from '@/src/constants/common'
 import { convertHashToValidIPFSKlerosHash } from '@/src/utils/fileUtils'
 import ipfsUpload from '@/src/utils/ipfsUpload'
 import { KlerosListStructure } from '@/src/utils/kleros/generateKlerosListMetaEvidence'
+import { generateBadgePreviewUrl, generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 import {
   BadgeEvidenceMetadata,
   BadgeMetadata,
@@ -22,7 +23,7 @@ export async function createAndUploadThirdPartyBadgeMetadata(
       name: badgeModelMetadata?.name || '',
       description: badgeModelMetadata?.description || '',
       // TODO: This will point to the model not to the badge because is still not being created, we need to check if this url makes sense or not
-      external_link: `${APP_URL}/badge/preview/${badgeModelId}`,
+      external_link: APP_URL + generateBadgePreviewUrl(badgeModelId),
       attributes: [],
       image: { mimeType: 'image/png', base64File: additionalArgs.imageBase64File },
     },
@@ -43,7 +44,7 @@ export async function createAndUploadBadgeMetadata(
     attributes: {
       name: badgeModelMetadata?.name || '',
       description: badgeModelMetadata?.description || '',
-      external_link: `${APP_URL}/profile/${minterAddress}`,
+      external_link: APP_URL + generateProfileUrl({ address: minterAddress }),
       attributes: [],
       image: { mimeType: 'image/png', base64File: additionalArgs.imageBase64File },
     },

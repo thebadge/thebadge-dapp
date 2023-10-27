@@ -20,6 +20,7 @@ import {
   getMenuItemHoverBackgroundColor,
 } from '@/src/components/navigation/MainMenu.utils'
 import { useSectionReferences } from '@/src/providers/referencesProvider'
+import { generateBaseUrl } from '@/src/utils/navigation/generateUrl'
 
 const MenuContainer = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -190,7 +191,7 @@ export default function MainMenu({ ...restProps }) {
   const navigateTo = async (link: any, openInNewTab?: boolean) => {
     if (link) {
       if (link.current) {
-        scrollTo('/', link)
+        scrollTo(generateBaseUrl(), link)
       } else {
         if (openInNewTab) {
           window.open(link)

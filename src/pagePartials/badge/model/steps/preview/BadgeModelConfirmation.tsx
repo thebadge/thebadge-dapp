@@ -10,6 +10,10 @@ import {
   BADGE_MODEL_BACKGROUNDS,
   BADGE_MODEL_TEXT_CONTRAST,
 } from '@/src/pagePartials/badge/model/steps/uiBasics/BadgeModelUIBasics'
+import {
+  generateLegalPrivacyPolicyUrl,
+  generateLegalTermsUrl,
+} from '@/src/utils/navigation/generateUrl'
 const BoxShadow = styled(Box)(({ theme }) => ({
   display: 'flex',
   justifyContent: 'center',
@@ -49,11 +53,11 @@ export default function BadgeModelConfirmation() {
           variant="body4"
         >
           {t('badge.model.create.confirmation.youAgree')}
-          <a href="/legal/terms" target="_blank">
+          <a href={generateLegalTermsUrl()} target="_blank">
             {t('badge.model.create.confirmation.termsOfUse')}
           </a>
           {t('badge.model.create.confirmation.and')}
-          <a href="/legal/privacy-policy" target="_blank">
+          <a href={generateLegalPrivacyPolicyUrl()} target="_blank">
             {t('badge.model.create.confirmation.privacy')}
           </a>
           .
