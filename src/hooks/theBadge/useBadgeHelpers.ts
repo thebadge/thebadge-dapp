@@ -1,4 +1,4 @@
-import { TimeLeft, useDate } from '@/src/hooks/useDate'
+import { TimeLeft, useDateHelpers } from '@/src/hooks/useDateHelpers'
 import { BadgeStatus } from '@/types/generated/subgraph'
 
 export type ReviewBadge = {
@@ -24,8 +24,8 @@ type UseBadgeReturn = {
   getBadgeReviewStatus: (badge: ReviewBadge) => BadgeReviewStatus
 }
 
-export default function useBadge(): UseBadgeReturn {
-  const { getPendingTimeProgressPercentage, getTimeLeft, timestampToDate } = useDate()
+export default function useBadgeHelpers(): UseBadgeReturn {
+  const { getPendingTimeProgressPercentage, getTimeLeft, timestampToDate } = useDateHelpers()
 
   function getBadgeReviewStatus(badge: ReviewBadge): BadgeReviewStatus {
     const dueDate: Date = timestampToDate(badge.badgeKlerosMetaData?.reviewDueDate)

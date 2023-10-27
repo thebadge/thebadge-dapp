@@ -11,7 +11,7 @@ import { useChallengeCost } from '@/src/hooks/kleros/useChallengeCost'
 import { useRemovalCost } from '@/src/hooks/kleros/useRemovalCost'
 import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
 import { useBadgeKlerosMetadata } from '@/src/hooks/subgraph/useBadgeKlerosMetadata'
-import useBadge, { ReviewBadge } from '@/src/hooks/theBadge/useBadge'
+import useBadgeHelpers, { ReviewBadge } from '@/src/hooks/theBadge/useBadgeHelpers'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
 import useTransaction from '@/src/hooks/useTransaction'
 import CurationCriteriaLink from '@/src/pagePartials/badge/curate/CurationCriteriaLink'
@@ -51,7 +51,7 @@ function ChallengeModalContent({ badgeId, onClose }: { badgeId: string; onClose:
   const badgeKlerosMetadata = useBadgeKlerosMetadata(badgeId)
   const challengeCost = useChallengeCost(badgeId)
   const removalCost = useRemovalCost(badgeId)
-  const { getBadgeReviewStatus } = useBadge()
+  const { getBadgeReviewStatus } = useBadgeHelpers()
 
   const badge = badgeById.data
   if (!badge) {

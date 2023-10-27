@@ -10,7 +10,7 @@ import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import TBSwiper from '@/src/components/helpers/TBSwiper'
 import { fillListWithPlaceholders } from '@/src/components/utils/emptyBadges'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
-import useBadge, { ReviewBadge } from '@/src/hooks/theBadge/useBadge'
+import useBadgeHelpers, { ReviewBadge } from '@/src/hooks/theBadge/useBadgeHelpers'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
 import { useSizeLG } from '@/src/hooks/useSize'
 import useTransaction from '@/src/hooks/useTransaction'
@@ -25,7 +25,7 @@ export default function PendingList() {
   const { sendTx } = useTransaction()
   const router = useRouter()
   const gql = useSubgraph()
-  const { getBadgeReviewStatus } = useBadge()
+  const { getBadgeReviewStatus } = useBadgeHelpers()
   const { address: ownerAddress } = useWeb3Connection()
   const { refreshWatcher } = useProfileProvider()
 

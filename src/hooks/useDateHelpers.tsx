@@ -13,7 +13,7 @@ export const MS_PER_MINUTE = MS_PER_SECOND * 60
 export const MS_PER_HOUR = MS_PER_MINUTE * 60
 export const MS_PER_DAY = MS_PER_HOUR * 24
 
-export const useDate = () => {
+export const useDateHelpers = () => {
   const { t } = useTranslation()
 
   const timestampToDate = useCallback((timestamp: number): Date => {
