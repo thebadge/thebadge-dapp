@@ -45,7 +45,7 @@ export default function ChallengeStatus() {
   const isRegistration = activeRequest.type === KlerosRequestType.Registration
 
   if (badge.status !== BadgeStatus.Challenged) {
-    if (!isMobile) return
+    if (!isMobile) return null
     return (
       <Stack gap={3}>
         <Typography variant="dAppTitle2">{t('badge.viewBadge.challengeStatus.notYet')}</Typography>
