@@ -1,6 +1,5 @@
-import { generateCreatorRegisterUrl } from "@/src/utils/navigation/generateUrl";
 import { useSearchParams } from 'next/navigation'
-import { useRouter } from "next/router";
+import { useRouter } from 'next/router'
 import React from 'react'
 
 import { Box, Stack, Tooltip, Typography } from '@mui/material'
@@ -18,8 +17,8 @@ import UserStatistics from '@/src/pagePartials/profile/statistics/user/UserStati
 import InfoPreview from '@/src/pagePartials/profile/userInfo/InfoPreview'
 import { InfoPreviewSkeleton } from '@/src/pagePartials/profile/userInfo/InfoPreview.skeleton'
 import ProfileContextProvider from '@/src/providers/ProfileProvider'
-import { useSectionReferences } from '@/src/providers/referencesProvider'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+import { generateCreatorRegisterUrl } from '@/src/utils/navigation/generateUrl'
 
 export enum ProfileFilter {
   BADGES_I_AM_REVIEWING = 'badgesIAmReviewing',
