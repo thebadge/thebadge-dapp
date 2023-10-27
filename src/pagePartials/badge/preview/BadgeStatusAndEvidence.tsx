@@ -8,11 +8,9 @@ import SwipeableViews from 'react-swipeable-views'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import useBadgeIdParam from '@/src/hooks/nextjs/useBadgeIdParam'
-import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
 import { useSizeSM } from '@/src/hooks/useSize'
 import ChallengeStatus from '@/src/pagePartials/badge/preview/addons/ChallengeStatus'
 import EvidencesList from '@/src/pagePartials/badge/preview/addons/EvidencesList'
-import { BadgeStatus } from '@/types/generated/subgraph'
 
 const StyledTab = styled(Tab)(({ theme }) => ({
   color: theme.palette.text.primary,
@@ -30,13 +28,6 @@ export default function BadgeStatusAndEvidence() {
   const badgeId = useBadgeIdParam()
   if (!badgeId) {
     throw `No badgeId provided us URL query param`
-  }
-
-  const badgeById = useBadgeById(badgeId)
-  const badge = badgeById.data
-
-  if (!badge) {
-    throw 'There was not possible to get the needed data. Try again in some minutes.'
   }
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -70,23 +61,20 @@ export default function BadgeStatusAndEvidence() {
                 <EvidencesList badgeId={badgeId} />
               </SafeSuspense>
             </TabPanel>
-            {badge.status === BadgeStatus.Challenged && (
-              <TabPanel index={1} value={selectedTab}>
-                <SafeSuspense>
-                  <ChallengeStatus />
-                </SafeSuspense>
-              </TabPanel>
-            )}
+
+            <TabPanel index={1} value={selectedTab}>
+              <SafeSuspense>
+                <ChallengeStatus />
+              </SafeSuspense>
+            </TabPanel>
           </SwipeableViews>
         </>
       )}
       {!isMobile && (
         <>
-          {badge.status === BadgeStatus.Challenged && (
-            <SafeSuspense>
-              <ChallengeStatus />
-            </SafeSuspense>
-          )}
+          <SafeSuspense>
+            <ChallengeStatus />
+          </SafeSuspense>
           <Divider color={colors.white} />
           <SafeSuspense>
             <EvidencesList badgeId={badgeId} />
