@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router'
 import React, { RefObject } from 'react'
 
 import { Box, Button, Tooltip, styled } from '@mui/material'
@@ -7,6 +8,7 @@ import { useTranslation } from 'next-export-i18n'
 import { useCurrentUser } from '@/src/hooks/subgraph/useCurrentUser'
 import { useSectionReferences } from '@/src/providers/referencesProvider'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+import { generateCreatorRegisterUrl } from '@/src/utils/navigation/generateUrl'
 
 const StyledButton = styled(Button)<{ border?: string }>(({ border }) => ({
   color: 'white',
@@ -24,8 +26,8 @@ export default function ActionButtons() {
   const { t } = useTranslation()
   const { data: user } = useCurrentUser()
   const { isWalletConnected } = useWeb3Connection()
-
-  const { becomeACreatorSection, scrollTo } = useSectionReferences()
+  const router = useRouter()
+  const { scrollTo } = useSectionReferences()
 
   const menuButton = (
     title: string,
@@ -78,7 +80,7 @@ export default function ActionButtons() {
             <>
               {t('header.tooltips.becomeACreator.prefixText')}
               <Box
-                onClick={() => scrollTo('/', becomeACreatorSection)}
+                onClick={() => router.push(generateCreatorRegisterUrl())}
                 style={{ cursor: 'pointer', textDecoration: 'underline' }}
               >
                 {t('header.tooltips.becomeACreator.link')}
