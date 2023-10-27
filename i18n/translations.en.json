@@ -532,7 +532,7 @@
       "hours": "hours left",
       "minutes": "minutes left",
       "seconds": "seconds left",
-      "time": "time left",
+      "noTime": "Ready!",
       "toExpire": "to expire"
     }
   },

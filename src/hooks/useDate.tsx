@@ -3,7 +3,7 @@ import { useCallback } from 'react'
 import { useTranslation } from 'next-export-i18n'
 
 export interface TimeLeft {
-  quantity: number
+  quantity?: number
   unitText: string
 }
 
@@ -53,8 +53,7 @@ export const useDate = () => {
         }
       } else {
         return {
-          quantity: 0,
-          unitText: t('date.timeLeft.time'),
+          unitText: t('date.timeLeft.noTime'),
         }
       }
     },
