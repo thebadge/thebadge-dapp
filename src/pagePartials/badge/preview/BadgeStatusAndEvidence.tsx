@@ -82,9 +82,11 @@ export default function BadgeStatusAndEvidence() {
       )}
       {!isMobile && (
         <>
-          <SafeSuspense>
-            <ChallengeStatus />
-          </SafeSuspense>
+          {badge.status === BadgeStatus.Challenged && (
+            <SafeSuspense>
+              <ChallengeStatus />
+            </SafeSuspense>
+          )}
           <Divider color={colors.white} />
           <SafeSuspense>
             <EvidencesList badgeId={badgeId} />
@@ -106,7 +108,7 @@ function TabPanel(props: TabPanelProps) {
 
   return (
     <div hidden={value !== index} id={`tabpanel-${index}`} role="tabpanel" {...other}>
-      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+      {value === index && <Box sx={{ p: 1 }}>{children}</Box>}
     </div>
   )
 }

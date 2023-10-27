@@ -58,7 +58,7 @@ export const Footer: React.FC = () => {
           <Divider color={mode === 'dark' ? 'white' : 'black'} sx={{ borderWidth: '1px' }} />
           <Box sx={!isMobile ? { display: 'flex', flex: 1, justifyContent: 'space-between' } : {}}>
             <ColumnsContainer>
-              <Stack flex="1 0 110px" gap={1.5}>
+              <Stack gap={1.5}>
                 <Typography color={colors.white} fontWeight="800" variant="h6">
                   {t('footer.about.title')}
                 </Typography>
@@ -90,7 +90,7 @@ export const Footer: React.FC = () => {
                   {t('footer.about.items.2.title')}
                 </Typography>
               </Stack>
-              <Stack flex="1 0 110px" gap={1.5}>
+              <Stack gap={1.5}>
                 <Typography color={colors.white} fontWeight="800" variant="h6">
                   {t('footer.help.title')}
                 </Typography>
@@ -113,7 +113,7 @@ export const Footer: React.FC = () => {
                   {t('footer.help.items.1.title')}
                 </Typography>
               </Stack>
-              <Stack flex="1 0 110px" gap={1.5}>
+              <Stack gap={1.5}>
                 <Typography color={colors.white} fontWeight="800" variant="h6">
                   {t('footer.legal.title')}
                 </Typography>

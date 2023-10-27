@@ -23,7 +23,7 @@ export default function BadgeTitle() {
   const badgeModelMetadata = badgeModel?.badgeModelMetadata
 
   return (
-    <Stack gap={3}>
+    <Stack gap={isMobile ? 1 : 3}>
       <Typography
         sx={{
           color: colors.green,

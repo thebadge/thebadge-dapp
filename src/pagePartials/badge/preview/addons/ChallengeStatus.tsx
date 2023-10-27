@@ -42,14 +42,16 @@ export default function ChallengeStatus() {
     <Stack gap={3}>
       {!isMobile && <Divider color={colors.white} />}
       <Box display="flex" justifyContent="space-between">
-        <Typography color={'#FF4949'} variant="dAppTitle1">
-          {t('badge.viewBadge.challengeStatus.title')}
-        </Typography>
+        {!isMobile && (
+          <Typography color={'#FF4949'} variant="dAppTitle1">
+            {t('badge.viewBadge.challengeStatus.title')}
+          </Typography>
+        )}
         <Button
           color="error"
           onClick={() => addMoreEvidence(badgeId)}
           size="medium"
-          sx={{ fontSize: '11px !important', borderRadius: 2 }}
+          sx={{ fontSize: '11px !important', borderRadius: 2, py: 1 }}
           variant="outlined"
         >
           {t('badge.viewBadge.challengeStatus.addEvidence')}

@@ -59,7 +59,7 @@ export default function BadgeOwnedPreview() {
       {/* Badge Metadata */}
       <Stack flex={2} gap={3}>
         {!isMobile && <BadgeTitle />}
-        <Divider color={colors.white} />
+        {!isMobile && <Divider color={colors.white} />}
 
         <Stack flex={1} gap={4} minHeight="50%">
           {/* Issued By and Share */}
