@@ -47,6 +47,22 @@ const NavigationRoom = styled(Box)(({ theme }) => ({
   top: theme.spacing(0),
 }))
 
+const HeaderContainer = styled(Container)(({ theme }) => ({
+  padding: '0 !important',
+  [theme.breakpoints.between('sm', 1400)]: {
+    maxWidth: 'none',
+  },
+}))
+
+const ContentContainer = styled(Container)(({ theme }) => ({
+  [theme.breakpoints.between('sm', 1300)]: {
+    paddingLeft: theme.spacing(14),
+  },
+  [theme.breakpoints.between(1300, 1400)]: {
+    paddingLeft: theme.spacing(10),
+  },
+}))
+
 export default function DefaultLayout({ children }: DefaultLayoutProps) {
   const theme = useTheme()
   const isMobile = useSizeSM()
@@ -63,9 +79,9 @@ export default function DefaultLayout({ children }: DefaultLayoutProps) {
               zIndex: 999,
             }}
           >
-            <Container sx={{ flex: 1 }}>
+            <HeaderContainer sx={{ flex: 1 }}>
               <Header />
-            </Container>
+            </HeaderContainer>
           </Headroom>
           <BackgroundGradient
             gradient={theme.palette?.backgroundGradient[mode as keyof PaletteColorOptions]}
@@ -77,7 +93,7 @@ export default function DefaultLayout({ children }: DefaultLayoutProps) {
                 <MainMenu />
               </NavigationRoom>
             )}
-            <Container
+            <ContentContainer
               maxWidth={'lg'}
               sx={{
                 display: 'flex',
@@ -86,7 +102,7 @@ export default function DefaultLayout({ children }: DefaultLayoutProps) {
               }}
             >
               {children}
-            </Container>
+            </ContentContainer>
           </StyledBody>
         </Content>
       </CurateContextProvider>

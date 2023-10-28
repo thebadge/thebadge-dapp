@@ -11,7 +11,7 @@ import TBSwiper from '@/src/components/helpers/TBSwiper'
 import { fillListWithPlaceholders } from '@/src/components/utils/emptyBadges'
 import { nowInSeconds, nowPlusOneMonthInSeconds } from '@/src/constants/helpers'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
-import { TimeLeft, useDate } from '@/src/hooks/useDate'
+import { TimeLeft, useDateHelpers } from '@/src/hooks/useDateHelpers'
 import { useSizeLG, useSizeMD } from '@/src/hooks/useSize'
 import BadgeModelPreview from '@/src/pagePartials/badge/BadgeModelPreview'
 import { useProfileProvider } from '@/src/providers/ProfileProvider'
@@ -27,7 +27,7 @@ export default function NearToExpireList() {
   const gql = useSubgraph()
   const md = useSizeMD()
   const lg = useSizeLG()
-  const { getTimeLeftToExpire, timestampToDate } = useDate()
+  const { getTimeLeftToExpire, timestampToDate } = useDateHelpers()
   const { address: ownerAddress } = useWeb3Connection()
   const { refreshWatcher } = useProfileProvider()
 

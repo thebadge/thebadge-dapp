@@ -94,7 +94,9 @@ export default function TBSwiper({
       >
         {items.map((item, index) => (
           <SwiperSlide key={'swiper-slide-' + swiperId + '-' + index}>
-            <Box sx={{ scale: itemsScale || '1' }}>{item}</Box>
+            <Box sx={{ scale: itemsScale || '1', display: 'flex', justifyContent: 'center' }}>
+              {item}
+            </Box>
           </SwiperSlide>
         ))}
       </Swiper>

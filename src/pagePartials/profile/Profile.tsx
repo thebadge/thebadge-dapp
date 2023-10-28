@@ -1,4 +1,5 @@
 import { useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/router'
 import React from 'react'
 
 import { Box, Stack, Tooltip, Typography } from '@mui/material'
@@ -16,8 +17,8 @@ import UserStatistics from '@/src/pagePartials/profile/statistics/user/UserStati
 import InfoPreview from '@/src/pagePartials/profile/userInfo/InfoPreview'
 import { InfoPreviewSkeleton } from '@/src/pagePartials/profile/userInfo/InfoPreview.skeleton'
 import ProfileContextProvider from '@/src/providers/ProfileProvider'
-import { useSectionReferences } from '@/src/providers/referencesProvider'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+import { generateCreatorRegisterUrl, generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 
 export enum ProfileFilter {
   BADGES_I_AM_REVIEWING = 'badgesIAmReviewing',
@@ -32,7 +33,7 @@ const Profile = () => {
 
   const { address: connectedWalletAddress } = useWeb3Connection()
   const { data: user } = useCurrentUser()
-  const { becomeACreatorSection, scrollTo } = useSectionReferences()
+  const router = useRouter()
 
   const mainProfileTab = (
     <Typography
@@ -79,11 +80,13 @@ const Profile = () => {
             width="100%"
           >
             {/* my badges */}
-            <LinkWithTranslation pathname={`/profile`}>{mainProfileTab}</LinkWithTranslation>
+            <LinkWithTranslation pathname={generateProfileUrl()}>
+              {mainProfileTab}
+            </LinkWithTranslation>
 
             {/* curated badges */}
             <LinkWithTranslation
-              pathname={`/profile`}
+              pathname={generateProfileUrl()}
               queryParams={{ filter: ProfileFilter.BADGES_I_AM_REVIEWING }}
             >
               {curatedBadgesTab}
@@ -97,7 +100,7 @@ const Profile = () => {
                   <>
                     {t('header.tooltips.becomeACreator.prefixText')}
                     <Box
-                      onClick={() => scrollTo('/', becomeACreatorSection)}
+                      onClick={() => router.push(generateCreatorRegisterUrl())}
                       style={{ cursor: 'pointer', textDecoration: 'underline' }}
                     >
                       {t('header.tooltips.becomeACreator.link')}
@@ -109,7 +112,7 @@ const Profile = () => {
               </Tooltip>
             ) : (
               <LinkWithTranslation
-                pathname={`/profile`}
+                pathname={generateProfileUrl()}
                 queryParams={{ filter: user?.isCreator ? ProfileFilter.CREATED_BADGES : '' }}
               >
                 {createdBadgesTab}

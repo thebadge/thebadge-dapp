@@ -9,6 +9,7 @@ import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import useBadgeByDisputeId from '@/src/hooks/subgraph/useBadgeByDisputeId'
 import CurationCriteriaLink from '@/src/pagePartials/badge/curate/CurationCriteriaLink'
 import BadgeEvidenceDisplay from '@/src/pagePartials/badge/curate/viewEvidence/BadgeEvidenceDisplay'
+import { generateBadgePreviewUrl } from '@/src/utils/navigation/generateUrl'
 
 const Container = styled(Stack)(({ theme }) => ({
   gap: theme.spacing(2),
@@ -29,7 +30,7 @@ export default function CourtEvidenceDataView({
 
   function handleViewBadgeClick() {
     const linkToSubmissionView =
-      router.basePath + `/badge/preview/${graphQueryResult.data?.badge?.id}`
+      router.basePath + generateBadgePreviewUrl(graphQueryResult.data?.badge?.id || '')
     window.open(`${linkToSubmissionView}`, '_blank')
   }
 

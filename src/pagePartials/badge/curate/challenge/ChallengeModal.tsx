@@ -11,8 +11,8 @@ import { useChallengeCost } from '@/src/hooks/kleros/useChallengeCost'
 import { useRemovalCost } from '@/src/hooks/kleros/useRemovalCost'
 import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
 import { useBadgeKlerosMetadata } from '@/src/hooks/subgraph/useBadgeKlerosMetadata'
+import useBadgeHelpers, { ReviewBadge } from '@/src/hooks/theBadge/useBadgeHelpers'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
-import { TimeLeft, useDate } from '@/src/hooks/useDate'
 import useTransaction from '@/src/hooks/useTransaction'
 import CurationCriteriaLink from '@/src/pagePartials/badge/curate/CurationCriteriaLink'
 import ChallengeCost from '@/src/pagePartials/badge/curate/challenge/ChallengeCost'
@@ -51,7 +51,7 @@ function ChallengeModalContent({ badgeId, onClose }: { badgeId: string; onClose:
   const badgeKlerosMetadata = useBadgeKlerosMetadata(badgeId)
   const challengeCost = useChallengeCost(badgeId)
   const removalCost = useRemovalCost(badgeId)
-  const { getTimeLeftToExpire, timestampToDate } = useDate()
+  const { getBadgeReviewStatus } = useBadgeHelpers()
 
   const badge = badgeById.data
   if (!badge) {
@@ -82,13 +82,12 @@ function ChallengeModalContent({ badgeId, onClose }: { badgeId: string; onClose:
       if (!badgeKlerosMetadata || !badgeKlerosMetadata.data) {
         throw 'There was an error fetching the badge metadata or the badge is not a klerosBadge, try again in some minutes.'
       }
-      const dueDate: Date = timestampToDate(badgeKlerosMetadata.data.reviewDueDate)
-      const timeLeft: TimeLeft = getTimeLeftToExpire(dueDate)
+      const { reviewTimeFinished } = getBadgeReviewStatus(badge as ReviewBadge)
       switch (badge.status) {
         case BadgeStatus.Requested:
           // If the badge finished its reviewPeriod but it was not claimed they are in an intermediate status: "Claimable", therefore neither challenge or removeItem is possible
           // This logic should never be executed, the frontend should filter badges in this intermediate state, but I throw an exception here just in case.
-          if (timeLeft.quantity === 0) {
+          if (reviewTimeFinished) {
             throw new Error(
               'The badge was not claimed, challenge an unclaimed badge is not possible.',
             )

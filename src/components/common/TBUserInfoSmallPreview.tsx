@@ -9,6 +9,7 @@ import { useTranslation } from 'next-export-i18n'
 
 import TBUserAvatar from '@/src/components/common/TBUserAvatar'
 import { Address } from '@/src/components/helpers/Address'
+import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 import { truncateStringInTheMiddle } from '@/src/utils/strings'
 import { CreatorMetadata } from '@/types/badges/Creator'
 
@@ -49,7 +50,7 @@ export default function TBUserInfoSmallPreview({
   const router = useRouter()
 
   function handleClick() {
-    window.open(`${router.basePath}/profile/${userAddress}`, '_ blank')
+    window.open(router.basePath + generateProfileUrl({ address: userAddress }), '_ blank')
   }
 
   return (
