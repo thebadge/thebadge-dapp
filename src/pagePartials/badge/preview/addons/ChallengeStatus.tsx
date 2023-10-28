@@ -8,10 +8,12 @@ import { Address } from '@/src/components/helpers/Address'
 import ExternalLink from '@/src/components/helpers/ExternalLink'
 import { KLEROS_COURT_URL } from '@/src/constants/common'
 import useBadgeIdParam from '@/src/hooks/nextjs/useBadgeIdParam'
+import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
 import { useBadgeKlerosMetadata } from '@/src/hooks/subgraph/useBadgeKlerosMetadata'
-import EvidencesList from '@/src/pagePartials/badge/preview/addons/EvidencesList'
+import { useSizeSM } from '@/src/hooks/useSize'
 import { useCurateProvider } from '@/src/providers/curateProvider'
 import { KlerosBadgeRequest, KlerosRequestType } from '@/types/generated/subgraph'
+import { BadgeStatus } from '@/types/generated/subgraph'
 
 const DisplayWrapper = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -22,13 +24,19 @@ const DisplayWrapper = styled(Box)(({ theme }) => ({
 
 export default function ChallengeStatus() {
   const { t } = useTranslation()
-  const { addMoreEvidence } = useCurateProvider()
+  const { addMoreEvidence, challenge } = useCurateProvider()
+
+  const isMobile = useSizeSM()
 
   const badgeId = useBadgeIdParam()
   if (!badgeId) {
     throw `No badgeId provided us URL query param`
   }
-
+  const badgeById = useBadgeById(badgeId)
+  const badge = badgeById.data
+  if (!badge) {
+    throw 'There was not possible to get the needed data. Try again in some minutes.'
+  }
   const badgeKlerosMetadata = useBadgeKlerosMetadata(badgeId)
 
   const activeRequest = badgeKlerosMetadata.data?.requests[
@@ -36,18 +44,38 @@ export default function ChallengeStatus() {
   ] as KlerosBadgeRequest
   const isRegistration = activeRequest.type === KlerosRequestType.Registration
 
+  if (badge.status !== BadgeStatus.Challenged) {
+    if (!isMobile) return null
+    return (
+      <Stack gap={3}>
+        <Typography variant="dAppTitle2">{t('badge.viewBadge.challengeStatus.notYet')}</Typography>
+
+        <Button
+          color="error"
+          onClick={() => challenge(badgeId)}
+          size="medium"
+          sx={{ fontSize: '11px !important', borderRadius: 2, py: 1 }}
+          variant="contained"
+        >
+          {t('badge.viewBadge.challengeStatus.challenge')}
+        </Button>
+      </Stack>
+    )
+  }
   return (
-    <Stack gap={3} mt={5}>
-      <Divider color={colors.white} />
+    <Stack gap={3}>
+      {!isMobile && <Divider color={colors.white} />}
       <Box display="flex" justifyContent="space-between">
-        <Typography color={'#FF4949'} variant="dAppTitle1">
-          {t('badge.viewBadge.challengeStatus.title')}
-        </Typography>
+        {!isMobile && (
+          <Typography color={'#FF4949'} variant="dAppTitle1">
+            {t('badge.viewBadge.challengeStatus.title')}
+          </Typography>
+        )}
         <Button
           color="error"
           onClick={() => addMoreEvidence(badgeId)}
           size="medium"
-          sx={{ fontSize: '11px !important', borderRadius: 2 }}
+          sx={{ fontSize: '11px !important', borderRadius: 2, py: 1 }}
           variant="outlined"
         >
           {t('badge.viewBadge.challengeStatus.addEvidence')}
@@ -90,8 +118,6 @@ export default function ChallengeStatus() {
           </DisplayWrapper>
         </Stack>
       </Box>
-      <Divider color={colors.white} />
-      <EvidencesList badgeId={badgeId} />
     </Stack>
   )
 }

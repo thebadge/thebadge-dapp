@@ -1,4 +1,5 @@
 import { useRouter } from 'next/navigation'
+import * as React from 'react'
 
 import { Box, Stack } from '@mui/material'
 import { ButtonV2, colors } from '@thebadge/ui-library'
@@ -12,7 +13,8 @@ import { useContractInstance } from '@/src/hooks/useContractInstance'
 import useTransaction from '@/src/hooks/useTransaction'
 import BadgeOwnedPreview from '@/src/pagePartials/badge/preview/BadgeOwnedPreview'
 import BadgeOwnerPreview from '@/src/pagePartials/badge/preview/BadgeOwnerPreview'
-import ChallengeStatus from '@/src/pagePartials/badge/preview/ChallengeStatus'
+import BadgeStatusAndEvidence from '@/src/pagePartials/badge/preview/BadgeStatusAndEvidence'
+import ChallengedStatusLogo from '@/src/pagePartials/badge/preview/addons/ChallengedStatusLogo'
 import { useCurateProvider } from '@/src/providers/curateProvider'
 import { useColorMode } from '@/src/providers/themeProvider'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
@@ -30,6 +32,7 @@ const ViewBadge: NextPageWithLayout = () => {
   const router = useRouter()
   const { mode } = useColorMode()
   const theBadge = useContractInstance(TheBadge__factory, 'TheBadge')
+  const isMobile = useSizeSM()
 
   const badgeId = useBadgeIdParam()
   if (!badgeId) {
@@ -59,16 +62,18 @@ const ViewBadge: NextPageWithLayout = () => {
   return (
     <Box sx={{ position: 'relative' }}>
       <Stack maxWidth={900} mx={'auto'}>
+        {badge?.status === BadgeStatus.Challenged && <ChallengedStatusLogo />}
         <BadgeOwnedPreview />
         <Box display="flex" gap={8}>
-          <Box
-            alignItems="center"
-            display="flex"
-            flex="1"
-            justifyContent="space-between"
-            maxWidth={300}
-          >
-            {/* Show mint button if this is not the own badge */}
+          {!isMobile && (
+            <Box
+              alignItems="center"
+              display="flex"
+              flex="1"
+              justifyContent="space-between"
+              maxWidth={300}
+            >
+              {/* Show mint button if this is not the own badge */}
             {address !== ownerAddress ? (
               <ButtonV2
                 backgroundColor={colors.transparent}
@@ -92,7 +97,7 @@ const ViewBadge: NextPageWithLayout = () => {
               </ButtonV2>
             ) : null}
 
-            {/* Show curate button if this is not the own badge and its not already challenged */}
+              {/* Show curate button if this is not the own badge and its not already challenged */}
             {address !== ownerAddress && badgeStatus !== BadgeStatus.Challenged ? (
               <ButtonV2
                 backgroundColor={colors.greenLogo}
@@ -141,16 +146,15 @@ const ViewBadge: NextPageWithLayout = () => {
                 {t('badge.claimButton')}
               </ButtonV2>
             ) : null}
-          </Box>
+            </Box>
+          )}
           <SafeSuspense>
             <BadgeOwnerPreview ownerAddress={ownerAddress} />
           </SafeSuspense>
         </Box>
-        {badge.status === BadgeStatus.Challenged && (
-          <SafeSuspense>
-            <ChallengeStatus />
-          </SafeSuspense>
-        )}
+        <SafeSuspense>
+          <BadgeStatusAndEvidence />
+        </SafeSuspense>
       </Stack>
     </Box>
   )

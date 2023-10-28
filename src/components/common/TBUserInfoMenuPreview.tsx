@@ -22,6 +22,9 @@ const Wrapper = styled(Box)(({ theme }) => ({
   filter: 'drop-shadow(0px 0px 8px rgba(255, 255, 255, 0.3))',
   borderRadius: theme.spacing(1, 1, 0, 0),
   padding: theme.spacing(0.1, 2, 0.1, 2),
+  [theme.breakpoints.down('sm')]: {
+    borderRadius: theme.spacing(1),
+  },
 }))
 
 type OwnerDisplayProps = MenuProps & { width?: number }

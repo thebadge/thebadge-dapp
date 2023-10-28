@@ -1,7 +1,12 @@
 import * as React from 'react'
 
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
-import { TextField as MUITextField, Tooltip, styled } from '@mui/material'
+import {
+  TextField as MUITextField,
+  TextFieldProps as MUITextFieldProps,
+  Tooltip,
+  styled,
+} from '@mui/material'
 import { FieldError } from 'react-hook-form'
 
 export enum TextFieldStatus {
@@ -13,15 +18,21 @@ const StyledTextField = styled(MUITextField)(({ theme }) => ({
   margin: theme.spacing(0),
 }))
 
-type TextFieldProps = {
+type TextFieldProps = Omit<MUITextFieldProps, 'error' | 'onChange'> & {
   error?: FieldError
-  label?: string
   onChange: (event: any) => void
   placeholder?: string
   value: string | undefined
 }
 
-export function TextField({ error, label, onChange, placeholder, value }: TextFieldProps) {
+export function TextField({
+  error,
+  label,
+  onChange,
+  placeholder,
+  value,
+  ...props
+}: TextFieldProps) {
   return (
     <StyledTextField
       InputProps={{
@@ -33,12 +44,13 @@ export function TextField({ error, label, onChange, placeholder, value }: TextFi
       }}
       color="secondary"
       error={!!error}
+      fullWidth
       helperText={error?.message || ' '}
       label={label}
       onChange={onChange}
-      sx={{ textTransform: 'capitalize', width: '100%' }}
       value={value ? value : ''}
       variant={'standard'}
+      {...props}
     />
   )
 }

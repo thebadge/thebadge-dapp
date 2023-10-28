@@ -407,7 +407,9 @@
         "user": "User:",
         "amount": "Amount",
         "userAddress": "User address:",
-        "file": "File:"
+        "file": "File:",
+        "notYet": "Do you think think this badge is not correct? So, start a challenge process",
+        "challenge": "Challenge"
       },
       "evidence": {
         "lastActivity": "Last Activity",

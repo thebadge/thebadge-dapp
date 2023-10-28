@@ -31,6 +31,15 @@ const SocialContainer = styled(Box)(({ theme }) => ({
   columnGap: theme.spacing(2),
 }))
 
+const ColumnsContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  gap: theme.spacing(8),
+  [theme.breakpoints.down('sm')]: {
+    gap: theme.spacing(1),
+    justifyContent: 'space-between',
+  },
+}))
+
 export const Footer: React.FC = () => {
   const isMobile = useSizeSM()
 
@@ -43,12 +52,12 @@ export const Footer: React.FC = () => {
   const iconColor = 'white'
 
   return (
-    <Box id="footer" sx={{ background: 'black', mt: 8 }}>
+    <Box id="footer" sx={{ background: 'black', mt: 20 }}>
       <Container>
         <Stack sx={{ justifyContent: 'center', gap: 5, mb: 5 }}>
           <Divider color={mode === 'dark' ? 'white' : 'black'} sx={{ borderWidth: '1px' }} />
-          <Box sx={{ display: 'flex', flex: 1, justifyContent: 'space-between' }}>
-            <Box sx={{ display: 'flex', gap: 8 }}>
+          <Box sx={!isMobile ? { display: 'flex', flex: 1, justifyContent: 'space-between' } : {}}>
+            <ColumnsContainer>
               <Stack gap={1.5}>
                 <Typography color={colors.white} fontWeight="800" variant="h6">
                   {t('footer.about.title')}
@@ -118,7 +127,7 @@ export const Footer: React.FC = () => {
                   {t('footer.legal.items.0.title')}
                 </Typography>
               </Stack>
-            </Box>
+            </ColumnsContainer>
             {!isMobile && <LogoWithText color={iconColor} size={120} />}
           </Box>
           <Box
