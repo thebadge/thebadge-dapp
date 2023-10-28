@@ -1,15 +1,20 @@
 import { useRouter } from 'next/navigation'
+import * as React from 'react'
 
-import { Box, Stack, Tooltip } from '@mui/material'
+import { Box, Stack } from '@mui/material'
 import { ButtonV2, colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 
 import SafeSuspense, { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import useBadgeIdParam from '@/src/hooks/nextjs/useBadgeIdParam'
 import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
+import useBadgeClaim from '@/src/hooks/theBadge/useBadgeClaim'
+import useBadgeHelpers, { ReviewBadge } from '@/src/hooks/theBadge/useBadgeHelpers'
+import { useSizeSM } from '@/src/hooks/useSize'
 import BadgeOwnedPreview from '@/src/pagePartials/badge/preview/BadgeOwnedPreview'
 import BadgeOwnerPreview from '@/src/pagePartials/badge/preview/BadgeOwnerPreview'
-import ChallengeStatus from '@/src/pagePartials/badge/preview/ChallengeStatus'
+import BadgeStatusAndEvidence from '@/src/pagePartials/badge/preview/BadgeStatusAndEvidence'
+import ChallengedStatusLogo from '@/src/pagePartials/badge/preview/addons/ChallengedStatusLogo'
 import { useCurateProvider } from '@/src/providers/curateProvider'
 import { useColorMode } from '@/src/providers/themeProvider'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
@@ -21,8 +26,11 @@ const ViewBadge: NextPageWithLayout = () => {
   const { t } = useTranslation()
   const { address } = useWeb3Connection()
   const { curate } = useCurateProvider()
+  const { getBadgeReviewStatus } = useBadgeHelpers()
   const router = useRouter()
   const { mode } = useColorMode()
+  const handleClaimBadge = useBadgeClaim()
+  const isMobile = useSizeSM()
 
   const badgeId = useBadgeIdParam()
   if (!badgeId) {
@@ -38,23 +46,35 @@ const ViewBadge: NextPageWithLayout = () => {
   const badgeModelId = badge.badgeModel.id
   const ownerAddress = badge.account.id
 
+  const { reviewTimeFinished: badgeReviewTimeFinished, status: badgeStatus } = getBadgeReviewStatus(
+    badge as ReviewBadge,
+  )
+
+  // Show mint button if this is not the own badge
+  const showMintButton = address !== ownerAddress
+
+  // Show curate button if this is not the own badge and its not already challenged */
+  const showCurateButton = address !== ownerAddress && badgeStatus !== BadgeStatus.Challenged
+
+  // Show claim button if it is an own badge, it has status requested and the review time finished
+  const showClaimButton =
+    address === ownerAddress && badgeStatus === BadgeStatus.Requested && badgeReviewTimeFinished
+
   return (
     <Box sx={{ position: 'relative' }}>
       <Stack maxWidth={900} mx={'auto'}>
+        {badge?.status === BadgeStatus.Challenged && <ChallengedStatusLogo />}
         <BadgeOwnedPreview />
         <Box display="flex" gap={8}>
-          <Box
-            alignItems="center"
-            display="flex"
-            flex="1"
-            justifyContent="space-between"
-            maxWidth={300}
-          >
-            <Tooltip
-              arrow
-              title={address === ownerAddress ? t('badge.mintButtonDisabledTooltip') : ''}
+          {!isMobile && (
+            <Box
+              alignItems="center"
+              display="flex"
+              flex="1"
+              justifyContent="space-between"
+              maxWidth={300}
             >
-              <div>
+              {showMintButton && (
                 <ButtonV2
                   backgroundColor={colors.transparent}
                   disabled={address === ownerAddress}
@@ -75,13 +95,9 @@ const ViewBadge: NextPageWithLayout = () => {
                 >
                   {t('badge.mintButton')}
                 </ButtonV2>
-              </div>
-            </Tooltip>
-            <Tooltip
-              arrow
-              title={address === ownerAddress ? t('badge.curateButtonDisabledTooltip') : ''}
-            >
-              <div>
+              )}
+
+              {showCurateButton && (
                 <ButtonV2
                   backgroundColor={colors.greenLogo}
                   disabled={address === ownerAddress}
@@ -101,18 +117,40 @@ const ViewBadge: NextPageWithLayout = () => {
                 >
                   {t('badge.curateButton')}
                 </ButtonV2>
-              </div>
-            </Tooltip>
-          </Box>
+              )}
+
+              {showClaimButton && (
+                <ButtonV2
+                  backgroundColor={colors.blue}
+                  disabled={!badgeReviewTimeFinished}
+                  fontColor={colors.white}
+                  onClick={() => handleClaimBadge(badge.id)}
+                  sx={{
+                    width: '100%',
+                    height: 'fit-content !important',
+                    marginTop: '1rem',
+                    padding: '0.5rem 1rem !important',
+                    borderRadius: '10px',
+                    fontSize: '15px !important',
+                    lineHeight: '15px',
+                    fontWeight: 700,
+                    boxShadow: 'none',
+                    textTransform: 'uppercase',
+                  }}
+                  variant="contained"
+                >
+                  {t('badge.claimButton')}
+                </ButtonV2>
+              )}
+            </Box>
+          )}
           <SafeSuspense>
             <BadgeOwnerPreview ownerAddress={ownerAddress} />
           </SafeSuspense>
         </Box>
-        {badge.status === BadgeStatus.Challenged && (
-          <SafeSuspense>
-            <ChallengeStatus />
-          </SafeSuspense>
-        )}
+        <SafeSuspense>
+          <BadgeStatusAndEvidence />
+        </SafeSuspense>
       </Stack>
     </Box>
   )

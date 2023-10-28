@@ -36,3 +36,15 @@ export function generateCreatorRegisterUrl() {
 export function generateBaseUrl() {
   return '/'
 }
+
+export function generateEvidenceUrl() {
+  return '/evidence'
+}
+
+export function generateLegalTermsUrl() {
+  return '/legal/terms'
+}
+
+export function generateLegalPrivacyPolicyUrl() {
+  return '/legal/privacy-policy'
+}

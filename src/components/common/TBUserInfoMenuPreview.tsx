@@ -11,6 +11,7 @@ import { useTranslation } from 'next-export-i18n'
 
 import TBUserAvatar from '@/src/components/common/TBUserAvatar'
 import { Address } from '@/src/components/helpers/Address'
+import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 import { truncateStringInTheMiddle } from '@/src/utils/strings'
 import { CreatorMetadata } from '@/types/badges/Creator'
 
@@ -22,6 +23,9 @@ const Wrapper = styled(Box)(({ theme }) => ({
   filter: 'drop-shadow(0px 0px 8px rgba(255, 255, 255, 0.3))',
   borderRadius: theme.spacing(1, 1, 0, 0),
   padding: theme.spacing(0.1, 2, 0.1, 2),
+  [theme.breakpoints.down('sm')]: {
+    borderRadius: theme.spacing(1),
+  },
 }))
 
 type OwnerDisplayProps = MenuProps & { width?: number }
@@ -64,7 +68,7 @@ export default function TBUserInfoExpandablePreview({
   }
 
   function handleViewProfileClick() {
-    window.open(`${router.basePath}/profile/${userAddress}`, '_ blank')
+    window.open(router.basePath + generateProfileUrl({ address: userAddress }), '_ blank')
   }
 
   return (

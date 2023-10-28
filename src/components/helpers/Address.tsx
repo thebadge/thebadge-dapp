@@ -8,6 +8,7 @@ import { Copy } from '@/src/components/assets/Copy'
 import { Link } from '@/src/components/assets/Link'
 import { ToastComponent } from '@/src/components/toast/ToastComponent'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 import { truncateStringInTheMiddle } from '@/src/utils/strings'
 
 const Wrapper = styled('span')`
@@ -85,7 +86,7 @@ export const Address: React.FC<Props> = ({
   }
 
   function getProfileUrl() {
-    return `${router.basePath}/profile/${address}`
+    return router.basePath + generateProfileUrl({ address })
   }
 
   return (

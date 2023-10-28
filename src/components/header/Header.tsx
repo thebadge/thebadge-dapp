@@ -23,10 +23,12 @@ const HeaderContainer = styled(Box)(({ theme }) => ({
   paddingBottom: theme.spacing(2),
   paddingLeft: 'calc(5% - 32px)',
   paddingRight: 'calc(5% - 32px)',
-  [theme.breakpoints.down('sm')]: {
-    flex: 1,
-  },
   transition: 'padding-top 0.5s cubic-bezier(0.83, 0, 0.17, 1)',
+  [theme.breakpoints.down('md')]: {
+    flex: 1,
+    paddingLeft: '24px !important',
+    paddingRight: '24px !important',
+  },
 }))
 
 const Header = () => {

@@ -31,7 +31,11 @@
       "step1": "Also known as \"Blockchain certifications as a service\". These are badges generated and\n        backed by a public or private entity. Entities that are willing to generate these badges\n have to be registered on the platform before they can start emitting them.",
       "learnMore": "Learn more",
       "button": "BECOME A THIRD PARTY",
-      "buttonTooltip": "Join to our discord, to be up to date with third party release."
+      "tooltip": {
+        "prefixText": "Join our ",
+        "link": "discord",
+        "suffixText": " to be up to date with the third-party release."
+      }
     },
     "faqs": {
       "title": "FAQs",
@@ -417,7 +421,9 @@
         "user": "User:",
         "amount": "Amount",
         "userAddress": "User address:",
-        "file": "File:"
+        "file": "File:",
+        "notYet": "Do you think think this badge is not correct? So, start a challenge process",
+        "challenge": "Challenge"
       },
       "evidence": {
         "lastActivity": "Last Activity",
@@ -538,7 +544,7 @@
       "hours": "hours left",
       "minutes": "minutes left",
       "seconds": "seconds left",
-      "time": "time left",
+      "noTime": "Ready!",
       "toExpire": "to expire"
     }
   },

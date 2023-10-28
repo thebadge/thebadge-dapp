@@ -27,6 +27,7 @@ import { APP_URL } from '@/src/constants/common'
 import { useUserById } from '@/src/hooks/subgraph/useUserById'
 import useIsUserVerified from '@/src/hooks/theBadge/useIsUserVerified'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
+import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 import { truncateStringInTheMiddle } from '@/src/utils/strings'
 import { CreatorMetadata } from '@/types/badges/Creator'
 
@@ -156,7 +157,9 @@ export default function BadgeRequesterPreview({
             <ButtonV2
               backgroundColor={colors.transparent}
               fontColor={colors.purple}
-              onClick={() => window.open(`${APP_URL}/profile/${ownerAddress}`, '_ blank')}
+              onClick={() =>
+                window.open(APP_URL + generateProfileUrl({ address: ownerAddress }), '_ blank')
+              }
               sx={{
                 borderRadius: 2,
                 mt: 2,

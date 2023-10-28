@@ -1,8 +1,10 @@
+import React from 'react'
+
 import { Box, Tooltip, Typography } from '@mui/material'
 import { ButtonV2, colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 
-import { DOCS_URL } from '@/src/constants/common'
+import { DISCORD_URL, DOCS_URL } from '@/src/constants/common'
 import { useSectionReferences } from '@/src/providers/referencesProvider'
 
 export default function ThirdParty() {
@@ -45,7 +47,18 @@ export default function ThirdParty() {
         {t('home.thirdParty.learnMore')}
       </Typography>
 
-      <Tooltip arrow title={t('home.thirdParty.buttonTooltip')}>
+      <Tooltip
+        arrow
+        title={
+          <span>
+            {t('home.thirdParty.tooltip.prefixText')}
+            <a href={DISCORD_URL} style={{ cursor: 'pointer', textDecoration: 'underline' }}>
+              {t('home.thirdParty.tooltip.link')}
+            </a>
+            {t('home.thirdParty.tooltip.suffixText')}
+          </span>
+        }
+      >
         <Box>
           <ButtonV2
             backgroundColor={'#22dbbd'}

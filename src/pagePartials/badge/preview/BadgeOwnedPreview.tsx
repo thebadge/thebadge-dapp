@@ -1,23 +1,36 @@
-import Image from 'next/image'
-
 import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined'
-import { Box, Divider, IconButton, Stack, Typography } from '@mui/material'
+import { Box, Divider, IconButton, Stack, Typography, styled } from '@mui/material'
 import { colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 
-import challengedLogo from '@/src/components/assets/challenged.webp'
 import LinkWithTranslation from '@/src/components/helpers/LinkWithTranslation'
 import { notify } from '@/src/components/toast/Toast'
 import useBadgeIdParam from '@/src/hooks/nextjs/useBadgeIdParam'
 import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
+import { useSizeSM } from '@/src/hooks/useSize'
 import BadgeModelPreview from '@/src/pagePartials/badge/BadgeModelPreview'
-import { BadgeStatus } from '@/types/generated/subgraph'
+import BadgeTitle from '@/src/pagePartials/badge/preview/addons/BadgeTitle'
 import { ToastStates } from '@/types/toast'
+
+const Wrapper = styled(Stack)(({ theme }) => ({
+  gap: theme.spacing(4),
+  margin: theme.spacing(4, 0),
+
+  [theme.breakpoints.up('sm')]: {
+    width: '100%',
+    padding: theme.spacing(0.5, 0, 1.5, 0),
+    flex: 1,
+    gap: theme.spacing(8),
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+  },
+}))
 
 export default function BadgeOwnedPreview() {
   const { t } = useTranslation()
 
   const badgeId = useBadgeIdParam()
+  const isMobile = useSizeSM()
 
   if (!badgeId) {
     throw `No badgeId provided us URL query param`
@@ -35,39 +48,36 @@ export default function BadgeOwnedPreview() {
   }
 
   return (
-    <>
-      {badge?.status === BadgeStatus.Challenged && (
-        <Box sx={{ position: 'absolute', right: 0, top: -10, width: '150px', cursor: 'pointer' }}>
-          <Image alt="Challenged badge" src={challengedLogo} />
-        </Box>
-      )}
-      <Box display="flex" flex={1} gap={8} justifyContent="space-between" my={4}>
-        <Box display="flex" flex={1}>
-          <BadgeModelPreview effects metadata={badgeModel?.uri} />
-        </Box>
-        <Stack flex={2} gap={2} justifyContent="space-between">
-          <Stack gap={3}>
-            <Typography
-              sx={{
-                color: colors.green,
-                textShadow: '0px 0px 7px rgba(51, 255, 204, 0.6)',
-              }}
-              variant="dAppTitle3"
-            >
-              {badgeModelMetadata?.name}
-            </Typography>
-            <Typography sx={{ color: colors.green, fontWeight: 'bold' }} variant="caption">
-              {t('badge.viewBadge.id', { id: badgeId })}
-            </Typography>
-          </Stack>
-          <Divider color={colors.white} />
-          <Stack gap={4} minHeight="50%">
+    <Wrapper>
+      {isMobile && <BadgeTitle />}
+
+      {/* Badge Image */}
+      <Stack alignItems="center">
+        <BadgeModelPreview effects metadata={badgeModel?.uri} />
+      </Stack>
+
+      {/* Badge Metadata */}
+      <Stack flex={2} gap={3}>
+        {!isMobile && <BadgeTitle />}
+        {!isMobile && <Divider color={colors.white} />}
+
+        <Stack flex={1} gap={4} minHeight="50%">
+          {/* Issued By and Share */}
+          <Box alignItems="center" display="flex" justifyContent="space-between">
             <Typography variant="body2">
               {t('badge.viewBadge.issueBy', { issuer: 'TheBadge' })}
             </Typography>
-            <Typography variant="dAppBody1">{badgeModelMetadata?.description}</Typography>
-          </Stack>
-          <Divider color={colors.white} />
+            <IconButton aria-label="Share badge preview" component="label" onClick={handleShare}>
+              <ShareOutlinedIcon />
+            </IconButton>
+          </Box>
+
+          <Typography variant="dAppBody1">{badgeModelMetadata?.description}</Typography>
+        </Stack>
+        <Divider color={colors.white} />
+
+        {/* Number of claims and see all */}
+        <Box alignItems="center" display="flex" justifyContent="space-between">
           <Typography
             sx={{
               color: colors.green,
@@ -76,19 +86,15 @@ export default function BadgeOwnedPreview() {
           >
             {t('badge.viewBadge.claims', { amount: badgeModel?.badgesMintedAmount })}
           </Typography>
-          <Box alignItems="center" display="flex" justifyContent="space-between">
-            <Typography variant="body4">
-              {t('badge.viewBadge.checkHowElse')}
-              <LinkWithTranslation pathname="/badge/explorer">
-                {t('badge.viewBadge.seeAll').toUpperCase()}
-              </LinkWithTranslation>
-            </Typography>
-            <IconButton aria-label="Share badge preview" component="label" onClick={handleShare}>
-              <ShareOutlinedIcon />
-            </IconButton>
-          </Box>
-        </Stack>
-      </Box>
-    </>
+
+          <Typography variant="body4">
+            {t('badge.viewBadge.checkHowElse')}
+            <LinkWithTranslation pathname="/badge/explorer">
+              {t('badge.viewBadge.seeAll').toUpperCase()}
+            </LinkWithTranslation>
+          </Typography>
+        </Box>
+      </Stack>
+    </Wrapper>
   )
 }

@@ -7,8 +7,7 @@ import { colors, gradients } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 
 import { BadgeAnimatedLogo } from '@/src/components/assets/animated/BadgeAnimatedLogo'
-import { useSectionReferences } from '@/src/providers/referencesProvider'
-import { generateBaseUrl } from '@/src/utils/navigation/generateUrl'
+import { generateBaseUrl, generateCreatorRegisterUrl } from '@/src/utils/navigation/generateUrl'
 
 const ModalBody = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -34,7 +33,6 @@ const ModalBody = styled(Box)(({ theme }) => ({
 export default function NotACreatorError() {
   const { t } = useTranslation()
   const router = useRouter()
-  const { becomeACreatorSection, scrollTo } = useSectionReferences()
 
   return (
     <ModalBody>
@@ -57,7 +55,7 @@ export default function NotACreatorError() {
           {t('errors.notACreatorSubtitle')}
           <Box
             component="span"
-            onClick={() => scrollTo('/', becomeACreatorSection)}
+            onClick={() => router.push(generateCreatorRegisterUrl())}
             style={{ cursor: 'pointer', textDecoration: 'underline' }}
           >
             {t('header.tooltips.becomeACreator.link')}

@@ -11,6 +11,7 @@ import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { MintThirdPartySchemaType } from '@/src/pagePartials/badge/mint/schema/MintThirdPartySchema'
+import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 import { Creator } from '@/types/badges/Creator'
 
 export default function HowItWorksThirdParty() {
@@ -36,7 +37,9 @@ export default function HowItWorksThirdParty() {
           index={1}
           text={t(`badge.model.mint.helpSteps.${0}`, {
             badgeCreatorName: badgeCreatorMetadata.data?.content?.name,
-            badgeCreatorProfileLink: '/profile/' + badgeModelData.data?.badgeModel?.creator.id,
+            badgeCreatorProfileLink: generateProfileUrl({
+              address: badgeModelData.data?.badgeModel?.creator.id,
+            }),
           })}
         />
         <HowItWorksStep

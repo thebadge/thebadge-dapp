@@ -22,6 +22,7 @@ import {
 import { useSizeSM } from '@/src/hooks/useSize'
 import { useCookiesWarningContext } from '@/src/providers/cookiesWarningProvider'
 import { useColorMode } from '@/src/providers/themeProvider'
+import { generateLegalPrivacyPolicyUrl } from '@/src/utils/navigation/generateUrl'
 
 const SocialContainer = styled(Box)(({ theme }) => ({
   color: 'white',
@@ -29,6 +30,15 @@ const SocialContainer = styled(Box)(({ theme }) => ({
   alignItems: 'center',
   justifyContent: 'center',
   columnGap: theme.spacing(2),
+}))
+
+const ColumnsContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  gap: theme.spacing(8),
+  [theme.breakpoints.down('sm')]: {
+    gap: theme.spacing(1),
+    justifyContent: 'space-between',
+  },
 }))
 
 export const Footer: React.FC = () => {
@@ -47,8 +57,8 @@ export const Footer: React.FC = () => {
       <Container>
         <Stack sx={{ justifyContent: 'center', gap: 5, mb: 5 }}>
           <Divider color={mode === 'dark' ? 'white' : 'black'} sx={{ borderWidth: '1px' }} />
-          <Box sx={{ display: 'flex', flex: 1, justifyContent: 'space-between' }}>
-            <Box sx={{ display: 'flex', gap: 8 }}>
+          <Box sx={!isMobile ? { display: 'flex', flex: 1, justifyContent: 'space-between' } : {}}>
+            <ColumnsContainer>
               <Stack gap={1.5}>
                 <Typography color={colors.white} fontWeight="800" variant="h6">
                   {t('footer.about.title')}
@@ -111,14 +121,14 @@ export const Footer: React.FC = () => {
                 <Typography
                   color={colors.white + ' !important'}
                   component={'a'}
-                  href={'/legal/privacy-policy'}
+                  href={generateLegalPrivacyPolicyUrl()}
                   sx={{ fontSize: '1rem !important' }}
                 >
                   {/* Privacy Police */}
                   {t('footer.legal.items.0.title')}
                 </Typography>
               </Stack>
-            </Box>
+            </ColumnsContainer>
             {!isMobile && <LogoWithText color={iconColor} size={120} />}
           </Box>
           <Box
