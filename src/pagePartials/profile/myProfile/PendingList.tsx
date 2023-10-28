@@ -10,29 +10,26 @@ import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import TBSwiper from '@/src/components/helpers/TBSwiper'
 import { fillListWithPlaceholders } from '@/src/components/utils/emptyBadges'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
+import useBadgeClaim from '@/src/hooks/theBadge/useBadgeClaim'
 import useBadgeHelpers, { ReviewBadge } from '@/src/hooks/theBadge/useBadgeHelpers'
-import { useContractInstance } from '@/src/hooks/useContractInstance'
 import { useSizeLG } from '@/src/hooks/useSize'
-import useTransaction from '@/src/hooks/useTransaction'
 import BadgeModelPreview from '@/src/pagePartials/badge/BadgeModelPreview'
 import { useProfileProvider } from '@/src/providers/ProfileProvider'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { generateBadgePreviewUrl } from '@/src/utils/navigation/generateUrl'
-import { TheBadge__factory } from '@/types/generated/typechain'
 
 export default function PendingList() {
   const { t } = useTranslation()
-  const { sendTx } = useTransaction()
   const router = useRouter()
   const gql = useSubgraph()
+  const { refreshWatcher } = useProfileProvider()
   const { getBadgeReviewStatus } = useBadgeHelpers()
   const { address: ownerAddress } = useWeb3Connection()
-  const { refreshWatcher } = useProfileProvider()
+  const handleClaimBadge = useBadgeClaim()
 
   const { mutate, ...badgesInReview } = gql.useUserBadgesInReview({
     ownerAddress: ownerAddress || '',
   })
-  const theBadge = useContractInstance(TheBadge__factory, 'TheBadge')
 
   useEffect(() => {
     mutate()
@@ -43,13 +40,6 @@ export default function PendingList() {
       const { reviewProgressPercentage, reviewTimeFinished, reviewTimeLeft } = getBadgeReviewStatus(
         badge as ReviewBadge,
       )
-
-      async function handleClaimBadge(badgeId: string) {
-        const transaction = await sendTx(() => theBadge.claim(badgeId, '0x'))
-        if (transaction) {
-          await transaction.wait()
-        }
-      }
 
       return (
         <Box key={badge.id} sx={{ height: '100%', display: 'flex' }}>
@@ -108,7 +98,7 @@ export default function PendingList() {
       </div>,
       2,
     )
-  }, [badgesInReview.data?.user?.badges, getBadgeReviewStatus, t, sendTx, theBadge, router])
+  }, [badgesInReview.data?.user?.badges, getBadgeReviewStatus, t, router, handleClaimBadge])
 
   return (
     <TBSwiper
