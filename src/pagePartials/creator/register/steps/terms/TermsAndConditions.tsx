@@ -7,6 +7,10 @@ import { Controller, useFormContext } from 'react-hook-form'
 import { CreatorRegisterSchemaType } from '../../schema/CreatorRegisterSchema'
 import { TextFieldStatus } from '@/src/components/form/formFields/TextField'
 import { FormField } from '@/src/components/form/helpers/FormField'
+import {
+  generateLegalPrivacyPolicyUrl,
+  generateLegalTermsUrl,
+} from '@/src/utils/navigation/generateUrl'
 
 export default function TermsAndConditions() {
   const { t } = useTranslation()
@@ -43,11 +47,11 @@ export default function TermsAndConditions() {
           variant="body4"
         >
           {t('creator.register.form.termsConditions.youAgree')}
-          <a href="/legal/terms" target="_blank">
+          <a href={generateLegalTermsUrl()} target="_blank">
             {t('creator.register.form.termsConditions.termsOfUse')}
           </a>
           {t('creator.register.form.termsConditions.and')}
-          <a href="/legal/privacy-policy" target="_blank">
+          <a href={generateLegalPrivacyPolicyUrl()} target="_blank">
             {t('creator.register.form.termsConditions.privacy')}
           </a>
           .

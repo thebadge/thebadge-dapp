@@ -22,6 +22,7 @@ import {
 import { useSizeSM } from '@/src/hooks/useSize'
 import { useCookiesWarningContext } from '@/src/providers/cookiesWarningProvider'
 import { useColorMode } from '@/src/providers/themeProvider'
+import { generateLegalPrivacyPolicyUrl } from '@/src/utils/navigation/generateUrl'
 
 const SocialContainer = styled(Box)(({ theme }) => ({
   color: 'white',
@@ -120,7 +121,7 @@ export const Footer: React.FC = () => {
                 <Typography
                   color={colors.white + ' !important'}
                   component={'a'}
-                  href={'/legal/privacy-policy'}
+                  href={generateLegalPrivacyPolicyUrl()}
                   sx={{ fontSize: '1rem !important' }}
                 >
                   {/* Privacy Police */}

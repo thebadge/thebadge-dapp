@@ -9,6 +9,10 @@ import { FieldError } from 'react-hook-form'
 import MarkdownTypography from '@/src/components/common/MarkdownTypography'
 import { TextFieldStatus } from '@/src/components/form/formFields/TextField'
 import { FormField } from '@/src/components/form/helpers/FormField'
+import {
+  generateLegalPrivacyPolicyUrl,
+  generateLegalTermsUrl,
+} from '@/src/utils/navigation/generateUrl'
 
 type AgreementFieldProps = {
   error?: FieldError
@@ -73,11 +77,11 @@ export function AgreementField({
         variant="body4"
       >
         By continuing, you agree to our{' '}
-        <a href="/legal/terms" target="_blank">
+        <a href={generateLegalTermsUrl()} target="_blank">
           terms of use
         </a>{' '}
         and{' '}
-        <a href="/legal/privacy-policy" target="_blank">
+        <a href={generateLegalPrivacyPolicyUrl()} target="_blank">
           privacy policy
         </a>
         .

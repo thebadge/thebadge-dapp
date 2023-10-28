@@ -11,6 +11,7 @@ import { useRegistrationBadgeModelKlerosMetadata } from '@/src/hooks/subgraph/us
 import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { MintBadgeSchemaType } from '@/src/pagePartials/badge/mint/schema/MintBadgeSchema'
 import { secondsToDays, secondsToMinutes } from '@/src/utils/dateUtils'
+import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 import { isTestnet } from '@/src/utils/network'
 import { Creator } from '@/types/badges/Creator'
 
@@ -44,7 +45,9 @@ export default function HowItWorks() {
         <AgreementField
           agreementText={t('badge.model.mint.helpSteps', {
             badgeCreatorName: badgeCreatorMetadata.data?.content?.name,
-            badgeCreatorProfileLink: '/profile/' + badgeModelData.data?.badgeModel?.creator.id,
+            badgeCreatorProfileLink: generateProfileUrl({
+              address: badgeModelData.data?.badgeModel?.creator.id,
+            }),
             curationDocsUrl: DOCS_URL + '/thebadge-documentation/protocol-mechanics/challenge',
             curationCriteriaUrl: badgeCriteria,
             challengePeriodDuration,

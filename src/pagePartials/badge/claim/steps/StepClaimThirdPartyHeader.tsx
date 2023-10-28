@@ -6,6 +6,7 @@ import { useTranslation } from 'next-export-i18n'
 
 import ModalSubtitle from '@/src/components/modal/ModalSubtitle'
 import { APP_URL } from '@/src/constants/common'
+import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 type StepClaimThirdPartyHeaderProps = {
   creatorName: string
   creatorAddress: string
@@ -27,7 +28,7 @@ export const StepClaimThirdPartyHeader = ({
         showHint={false}
         subTitle={t('badge.model.claim.thirdParty.header.subTitle', {
           creatorName,
-          creatorProfileUrl: `${APP_URL}/profile/${creatorAddress}`,
+          creatorProfileUrl: APP_URL + generateProfileUrl({ address: creatorAddress }),
         })}
       />
     </Stack>

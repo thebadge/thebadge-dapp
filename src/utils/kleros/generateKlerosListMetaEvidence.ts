@@ -1,4 +1,5 @@
 import { DYNAMIC_SCRIPT_IPFS_HASH } from '@/src/constants/common'
+import { generateEvidenceUrl } from '@/src/utils/navigation/generateUrl'
 import { MetadataColumn } from '@/types/kleros/types'
 import { BackendFileResponse, BackendFileUpload } from '@/types/utils'
 
@@ -63,7 +64,7 @@ export function generateKlerosListMetaEvidence(
     question: `Does the ${badgeName} comply with the required criteria?`,
     fileURI: criteriaFile,
     fileTypeExtension: 'pdf',
-    evidenceDisplayInterfaceURI: `${window.location.origin}/evidence`,
+    evidenceDisplayInterfaceURI: window.location.origin + generateEvidenceUrl(),
     dynamicScriptURI: `ipfs/${DYNAMIC_SCRIPT_IPFS_HASH}`,
     dynamicScriptRequiredParams: ['disputeID', 'arbitrableChainID', 'arbitrableContractAddress'],
     metadata: {
@@ -94,7 +95,7 @@ export function generateKlerosListMetaEvidence(
     question: `Does the ${badgeName} comply with the required criteria?`,
     fileURI: criteriaFile,
     fileTypeExtension: 'pdf',
-    evidenceDisplayInterfaceURI: `${window.location.origin}/evidence`,
+    evidenceDisplayInterfaceURI: window.location.origin + generateEvidenceUrl(),
     dynamicScriptURI: `ipfs/${DYNAMIC_SCRIPT_IPFS_HASH}`,
     dynamicScriptRequiredParams: ['disputeID', 'arbitrableChainID', 'arbitrableContractAddress'],
     metadata: {

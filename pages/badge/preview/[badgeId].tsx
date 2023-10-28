@@ -8,7 +8,7 @@ import { useTranslation } from 'next-export-i18n'
 import SafeSuspense, { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import useBadgeIdParam from '@/src/hooks/nextjs/useBadgeIdParam'
 import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
-import useBadge, { ReviewBadge } from '@/src/hooks/theBadge/useBadge'
+import useBadgeHelpers, { ReviewBadge } from '@/src/hooks/theBadge/useBadgeHelpers'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
 import useTransaction from '@/src/hooks/useTransaction'
 import BadgeOwnedPreview from '@/src/pagePartials/badge/preview/BadgeOwnedPreview'
@@ -28,7 +28,7 @@ const ViewBadge: NextPageWithLayout = () => {
   const { address } = useWeb3Connection()
   const { sendTx } = useTransaction()
   const { curate } = useCurateProvider()
-  const { getBadgeReviewStatus } = useBadge()
+  const { getBadgeReviewStatus } = useBadgeHelpers()
   const router = useRouter()
   const { mode } = useColorMode()
   const theBadge = useContractInstance(TheBadge__factory, 'TheBadge')
