@@ -46,7 +46,7 @@ const ThemeContextProvider: React.FC<PropsWithChildren> = ({ children }) => {
     const variants = getTypographyVariants(theme)
     const createdTheme = responsiveFontSizes(createTheme(theme), {
       disableAlign: true,
-      factor: 1.4,
+      factor: 1.7,
       variants,
     })
 

@@ -25,6 +25,12 @@ const CriteriaLink = styled(Link)(() => ({
   '&:hover': {
     color: colors.green,
   },
+  '&:visited': {
+    color: colors.green,
+  },
+  '&:active': {
+    color: colors.green,
+  },
 }))
 
 export default function HowItWorks() {
@@ -54,7 +60,7 @@ export default function HowItWorks() {
       <Stack gap={6}>
         <Box display="flex" gap={1}>
           <WarningAmberOutlinedIcon color="green" />
-          <CriteriaLink href={badgeCriteria} underline="hover">
+          <CriteriaLink href={badgeCriteria} target="_blank" underline="hover">
             Please, view badge application requirements PDF here
           </CriteriaLink>
         </Box>
