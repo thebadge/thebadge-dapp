@@ -69,6 +69,11 @@ export default function CreateWithSteps({
   async function onStepNavigation(stepNumber: number) {
     // Safeguard to prevent navigation on Transaction
     if (txState !== TransactionStates.none) return
+    // Allow go back
+    if (currentStep > stepNumber) {
+      setCurrentStep(stepNumber)
+      return
+    }
     const isValid = await isValidStep()
     // Only allows one step further or to a completed steps
     if (isValid && (stepNumber <= currentStep + 1 || completed[stepNumber])) {

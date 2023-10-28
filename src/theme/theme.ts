@@ -62,7 +62,7 @@ export function overrideFontFamily(theme: ThemeOptions, fontFamily: string): Typ
   return overrideTypography
 }
 
-export function configureThemeComponentes(theme: Theme) {
+export function configureThemeComponents(theme: Theme) {
   const lightMode = theme.palette.mode === 'light'
 
   return {
