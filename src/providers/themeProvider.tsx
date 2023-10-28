@@ -8,7 +8,7 @@ import {
   responsiveFontSizes,
 } from '@mui/material'
 
-import { configureThemeComponentes, getTheme, getTypographyVariants } from '@/src/theme/theme'
+import { configureThemeComponents, getTheme, getTypographyVariants } from '@/src/theme/theme'
 import { ThemeType } from '@/src/theme/types'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -50,7 +50,7 @@ const ThemeContextProvider: React.FC<PropsWithChildren> = ({ children }) => {
       variants,
     })
 
-    return configureThemeComponentes(createdTheme)
+    return configureThemeComponents(createdTheme)
   }, [mode])
 
   return (

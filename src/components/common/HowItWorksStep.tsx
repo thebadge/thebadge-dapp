@@ -8,7 +8,15 @@ export default function HowItWorksStep({ index, text }: { index: string | number
   return (
     <Box display="flex" gap={1}>
       <Typography variant="titleLarge">{index}.</Typography>
-      <MarkdownTypography variant="bodySmall">{text}</MarkdownTypography>
+      <MarkdownTypography
+        sx={{
+          alignItems: 'center',
+          display: 'flex',
+        }}
+        variant="bodySmall"
+      >
+        {text}
+      </MarkdownTypography>
     </Box>
   )
 }
