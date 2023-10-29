@@ -1,36 +1,42 @@
 import { BadgeModelControllerType } from '@/types/badges/BadgeModel'
 
-export function generateMintUrl(controllerType: string, badgeModelId: string) {
-  return `/badge/mint/${controllerType || BadgeModelControllerType.Community}/${badgeModelId}`
+export function generateMintUrl(
+  controllerType: string,
+  badgeModelId: string = BadgeModelControllerType.Community,
+) {
+  return `/badgeModel/${controllerType}/${badgeModelId}/mint`
 }
 
-export function generateModelExplorerUrl(badgeModelId: string) {
-  return `/badge/model/${badgeModelId}/explorer`
+export function generateModelExplorerUrl(
+  badgeModelId: string,
+  controllerType: string = BadgeModelControllerType.Community,
+) {
+  return `/badgeModel/${controllerType}/${badgeModelId}/explorer`
 }
 
 export function generateBadgeModelCreate() {
-  return `/badge/model/create`
+  return `/badgeModel/create`
 }
 
 export function generateBadgeExplorer() {
-  return `/badge/explorer`
+  return `/badgeModel/explorer`
 }
 
 export function generateBadgeCurate() {
-  return `/badge/curate`
+  return `/curate`
 }
 
 export function generateBadgePreviewUrl(badgeId: string) {
-  return `/badge/preview/${badgeId}`
+  return `/badge/${badgeId}`
 }
 
 export function generateProfileUrl(args?: { address?: string; filter?: string }) {
   const { address, filter } = args || {}
-  return `/profile${address ? '/' + address : ''}${filter ? '?filter=' + filter : ''}`
+  return `/user/profile${address ? '/' + address : ''}${filter ? '?filter=' + filter : ''}`
 }
 
 export function generateCreatorRegisterUrl() {
-  return '/creator/register'
+  return '/user/register'
 }
 
 export function generateBaseUrl() {
