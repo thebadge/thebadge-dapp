@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Box, Typography, alpha, styled } from '@mui/material'
 import { colors } from '@thebadge/ui-library'
-import { useTranslation } from 'next-export-i18n'
+import useTranslation from 'next-translate/useTranslation'
 
 const Container = styled(Box)(({ theme }) => ({
   display: 'flex',

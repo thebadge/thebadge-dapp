@@ -1,7 +1,7 @@
 import { ReactNode } from 'react'
 
 import { Box, Typography } from '@mui/material'
-import { useTranslation } from 'next-export-i18n'
+import useTranslation from 'next-translate/useTranslation'
 
 import { Choose } from './svg/choose'
 import { Complete } from './svg/complete'

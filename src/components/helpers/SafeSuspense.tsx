@@ -1,3 +1,4 @@
+'use client'
 import React, { FC, PropsWithChildren, Suspense } from 'react'
 
 import { Box } from '@mui/material'
@@ -19,7 +20,7 @@ const DefaultFallback: React.FC<SpinnerProps> = ({ color }: SpinnerProps) => {
   return <Loading color={color} />
 }
 
-const DefaultPageFallback: React.FC<SpinnerProps> = ({ color }: SpinnerProps) => {
+export const DefaultPageFallback: React.FC<SpinnerProps> = ({ color }: SpinnerProps) => {
   return (
     <Box display="flex" height="50vh">
       <Loading color={color} />

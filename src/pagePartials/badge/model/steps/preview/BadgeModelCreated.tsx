@@ -1,9 +1,9 @@
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import React, { useEffect } from 'react'
 
 import { Box, Divider, Stack, Typography, alpha, styled } from '@mui/material'
 import { BadgePreview, colors } from '@thebadge/ui-library'
-import { useTranslation } from 'next-export-i18n'
+import useTranslation from 'next-translate/useTranslation'
 import { useFormContext } from 'react-hook-form'
 
 import { CreateModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateModelSchema'

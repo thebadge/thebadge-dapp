@@ -1,8 +1,9 @@
+'use client'
 import React, { useState } from 'react'
 
 import { Box, Stack, Typography, styled } from '@mui/material'
 import { colors, gradients } from '@thebadge/ui-library'
-import { useTranslation } from 'next-export-i18n'
+import useTranslation from 'next-translate/useTranslation'
 import { Toast, toast } from 'react-hot-toast'
 
 import { Copy } from '@/src/components/assets/Copy'

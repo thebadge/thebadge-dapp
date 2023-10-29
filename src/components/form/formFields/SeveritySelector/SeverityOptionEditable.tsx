@@ -6,7 +6,7 @@ import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded'
 import { Box, Divider, IconButton, InputAdornment } from '@mui/material'
 import { BigNumberInput } from 'big-number-input'
 import { formatUnits } from 'ethers/lib/utils'
-import { useTranslation } from 'next-export-i18n'
+import useTranslation from 'next-translate/useTranslation'
 import { z } from 'zod'
 
 import { CustomOptionPaper, Title, Value, ValueContainer, VerySmallTextField } from './styled'

@@ -1,6 +1,8 @@
 import withBundleAnalyzer from '@next/bundle-analyzer';
 import mdx from '@next/mdx'
 import remarkGfm from 'remark-gfm'
+import nextTranslate from 'next-translate-plugin'
+
 /**
  * Don't be scared of the generics here.
  * All they do is to give us autocompletion when using this.
@@ -23,7 +25,7 @@ const withMDX = mdx({
   },
 })
 
-export default withMDX(withBundleAnalyzerWrapper(
+export default withMDX(nextTranslate(withBundleAnalyzerWrapper(
   defineNextConfig({
     reactStrictMode: false,
     swcMinify: false,
@@ -46,7 +48,14 @@ export default withMDX(withBundleAnalyzerWrapper(
         "assets.coingecko.com"
       ]
     },
-    webpack: (config) => {
+    webpack: (config, {isServer}) => {
+      if (isServer) {
+        config.resolve.alias.lokijs = false;
+        config.resolve.alias.encoding = false;
+        config.resolve.alias["pino-pretty"] = false;
+        config.resolve.alias["@web3-onboard/react"] = false;
+        config.resolve.alias['@thebadge/ui-library'] = false;
+      }
       // load worker files as a urls by using Asset Modules
       // https://webpack.js.org/guides/asset-modules/
       config.module.rules.unshift({
@@ -59,4 +68,4 @@ export default withMDX(withBundleAnalyzerWrapper(
       return config;
     }
   }),
-));
+)));

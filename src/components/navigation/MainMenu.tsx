@@ -1,4 +1,4 @@
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
@@ -182,7 +182,6 @@ const SubMenuItem = styled(Button)(({ theme }) => ({
 }))
 
 export default function MainMenu({ ...restProps }) {
-  // const t = useTranslations('mainMenu')
   const router = useRouter()
   const { scrollTo } = useSectionReferences()
   const [selectedElement, setSelectedElement] = useState(-1)

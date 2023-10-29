@@ -5,7 +5,7 @@ import { Box, Stack, Typography } from '@mui/material'
 import { BadgePreview } from '@thebadge/ui-library'
 import { BigNumber } from 'ethers'
 import { formatUnits } from 'ethers/lib/utils'
-import { useTranslation } from 'next-export-i18n'
+import useTranslation from 'next-translate/useTranslation'
 import { useFormContext } from 'react-hook-form'
 
 import MintCost from './MintCost'

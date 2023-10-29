@@ -4,7 +4,7 @@ import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import RestoreOutlinedIcon from '@mui/icons-material/RestoreOutlined'
 import { Box, Tooltip, Typography, alpha, styled } from '@mui/material'
 import { colors } from '@thebadge/ui-library'
-import { useTranslation } from 'next-export-i18n'
+import useTranslation from 'next-translate/useTranslation'
 
 import { timeLeftTo, timeLeftToShort } from '@/src/utils/dateUtils'
 

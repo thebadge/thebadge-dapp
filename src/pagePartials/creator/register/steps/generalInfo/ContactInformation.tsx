@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { Box, Stack, Typography } from '@mui/material'
-import { useTranslation } from 'next-export-i18n'
+import useTranslation from 'next-translate/useTranslation'
 import { Controller, useFormContext } from 'react-hook-form'
 
 import { CONTACT_METHODS, CreatorRegisterSchemaType } from '../../schema/CreatorRegisterSchema'

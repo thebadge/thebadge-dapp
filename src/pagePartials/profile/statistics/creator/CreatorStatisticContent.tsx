@@ -13,7 +13,7 @@ import { Box, Stack, Table, TableBody, Typography } from '@mui/material'
 import { colors } from '@thebadge/ui-library'
 import { BigNumber } from 'ethers'
 import { formatUnits } from 'ethers/lib/utils'
-import { useTranslation } from 'next-export-i18n'
+import useTranslation from 'next-translate/useTranslation'
 
 import { StatisticSquare, StatisticsContainer } from '../addons/styled'
 import { getNetworkConfig } from '@/src/config/web3'

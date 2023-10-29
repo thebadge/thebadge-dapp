@@ -1,3 +1,4 @@
+'use client'
 import { FC, PropsWithChildren, createContext, useContext } from 'react'
 
 import useSWR from 'swr'

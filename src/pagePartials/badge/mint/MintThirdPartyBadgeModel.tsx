@@ -1,4 +1,4 @@
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import * as React from 'react'
 import { useEffect } from 'react'
 

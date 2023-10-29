@@ -6,7 +6,7 @@ import SummarizeOutlinedIcon from '@mui/icons-material/SummarizeOutlined'
 import { Box, Stack, Tooltip, Typography } from '@mui/material'
 import { colors } from '@thebadge/ui-library'
 import { formatUnits } from 'ethers/lib/utils'
-import { useTranslation } from 'next-export-i18n'
+import useTranslation from 'next-translate/useTranslation'
 import { z } from 'zod'
 
 import SeverityOptionEditable from '@/src/components/form/formFields/SeveritySelector/SeverityOptionEditable'

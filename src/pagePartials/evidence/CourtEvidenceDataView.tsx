@@ -1,9 +1,9 @@
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import React from 'react'
 
 import { Button, Skeleton, Stack, Typography, styled } from '@mui/material'
 import { colors } from '@thebadge/ui-library'
-import { useTranslation } from 'next-export-i18n'
+import useTranslation from 'next-translate/useTranslation'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import useBadgeByDisputeId from '@/src/hooks/subgraph/useBadgeByDisputeId'

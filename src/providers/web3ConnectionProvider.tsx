@@ -1,3 +1,4 @@
+'use client'
 import {
   Dispatch,
   ReactNode,
@@ -21,7 +22,7 @@ import walletConnectModule from '@web3-onboard/walletconnect'
 import web3authModule from '@web3-onboard/web3auth'
 import { UserInfo } from '@web3auth/base'
 import { Web3Auth } from '@web3auth/modal'
-import { useTranslation } from 'next-export-i18n'
+import useTranslation from 'next-translate/useTranslation'
 import nullthrows from 'nullthrows'
 
 import translate from '@/i18n'
@@ -223,7 +224,7 @@ export default function Web3ConnectionProvider({ children }: Props) {
     )
     if (buttonsElements) {
       // Iterate over each button
-      for (let i = 0; i < buttonsElements.children.length; i++) {
+      for (let i = 0; i < buttonsElements.children?.length; i++) {
         const buttonWithName = buttonsElements.children[i].querySelector(
           'div > button > div > div.name',
         )
@@ -233,9 +234,10 @@ export default function Web3ConnectionProvider({ children }: Props) {
         }
       }
     }
-  }, [t])
+  }, [])
 
   useEffect(() => {
+    console.log('connectingWallet, renameWeb3Auth')
     if (connectingWallet && window) {
       setTimeout(() => {
         renameWeb3Auth()
@@ -244,6 +246,7 @@ export default function Web3ConnectionProvider({ children }: Props) {
   }, [connectingWallet, renameWeb3Auth])
 
   useEffect(() => {
+    console.log('wallet?.chains, isWalletNetworkSupported')
     if (isWalletNetworkSupported && wallet?.chains) {
       const connectedChainId = wallet?.chains
         ? hexToNumber(wallet?.chains[0].id)
@@ -255,7 +258,7 @@ export default function Web3ConnectionProvider({ children }: Props) {
 
   // Save connected wallets to localstorage
   useEffect(() => {
-    if (!connectedWallets.length) return
+    if (!connectedWallets?.length) return
 
     const connectedWalletsLabelArray = connectedWallets.map(({ label }) => label)
     setLocalStorageKey(STORAGE_CONNECTED_WALLET, connectedWalletsLabelArray)
@@ -316,7 +319,7 @@ export default function Web3ConnectionProvider({ children }: Props) {
   // Auto connect wallet if localStorage has values
   useEffect(() => {
     const previouslyConnectedWallets = recoverLocalStorageKey(STORAGE_CONNECTED_WALLET, [])
-    if (previouslyConnectedWallets?.length && !connectedWallets.length) {
+    if (previouslyConnectedWallets?.length && !connectedWallets?.length) {
       const setWalletFromLocalStorage = async () =>
         await connect({
           autoSelect: { label: previouslyConnectedWallets[0], disableModals: true },
@@ -324,12 +327,12 @@ export default function Web3ConnectionProvider({ children }: Props) {
 
       setWalletFromLocalStorage()
     }
-  }, [connect, chains, connectedWallets.length])
+  }, [connect, chains, connectedWallets?.length])
 
   const getExplorerUrl = useMemo(() => {
     const url = chainsConfig[appChainId]?.blockExplorerUrls[0]
     return (hash: string) => {
-      const type = hash.length > 42 ? 'tx' : 'address'
+      const type = hash?.length > 42 ? 'tx' : 'address'
       return `${url}${type}/${hash}`
     }
   }, [appChainId])
@@ -381,7 +384,7 @@ export function useWeb3Connection() {
   if (context === undefined) {
     throw new Error('useWeb3Connection must be used within a Web3ConnectionProvider')
   }
-  return context
+  return useContext(Web3ContextConnection)
 }
 
 export function useWeb3ConnectedApp() {

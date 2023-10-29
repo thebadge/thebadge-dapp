@@ -5,7 +5,7 @@ import { ChipPropsColorOverrides } from '@mui/material/Chip/Chip'
 import { OverridableStringUnion } from '@mui/types'
 import { colors } from '@thebadge/ui-library'
 import dayjs from 'dayjs'
-import { useTranslation } from 'next-export-i18n'
+import useTranslation from 'next-translate/useTranslation'
 import Sticky from 'react-sticky-el'
 
 import LastUpdated from '@/src/components/common/LastUpdated'

@@ -1,17 +1,27 @@
+'use client'
 import Link from 'next/link'
 
 import { styled } from '@mui/material'
-import { LogoTheBadgeWithText } from '@thebadge/ui-library'
+import { LogoTheBadgeWithText, colors } from '@thebadge/ui-library'
 
 import { Logo as BaseLogoSVG } from '@/src/components/assets/Logo'
 
-const HomeLink = styled('a')`
-  transition: opacity 0.05s linear;
+const HomeLink = styled(Link)(() => ({
+  transition: 'opacity 0.05s linear',
 
-  &:active {
-    opacity: 0.7;
-  }
-`
+  color: colors.green,
+  fontWeight: 700,
+  '&:hover': {
+    color: colors.green,
+  },
+  '&:visited': {
+    color: colors.green,
+  },
+  '&:active': {
+    opacity: 0.7,
+    color: colors.green,
+  },
+}))
 
 const LogoSVG = styled(BaseLogoSVG)`
   cursor: pointer;
@@ -24,17 +34,13 @@ const LogoSVGWithText = styled(LogoTheBadgeWithText)`
 `
 
 export const Logo = ({ size }: { size?: number }) => (
-  <Link href="/" legacyBehavior passHref>
-    <HomeLink>
-      <LogoSVG size={size || 100} />
-    </HomeLink>
-  </Link>
+  <HomeLink href="/">
+    <LogoSVG size={size || 100} />
+  </HomeLink>
 )
 
 export const LogoWithText = ({ color, size }: { size?: number; color?: string }) => (
-  <Link href="/" legacyBehavior passHref>
-    <HomeLink>
-      <LogoSVGWithText fill={color} size={size || 100} />
-    </HomeLink>
-  </Link>
+  <HomeLink href="/">
+    <LogoSVGWithText fill={color} size={size || 100} />
+  </HomeLink>
 )

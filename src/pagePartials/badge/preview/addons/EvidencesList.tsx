@@ -3,7 +3,7 @@ import * as React from 'react'
 
 import { Timeline } from '@mui/lab'
 import { Stack, Typography, styled } from '@mui/material'
-import { useTranslation } from 'next-export-i18n'
+import useTranslation from 'next-translate/useTranslation'
 
 import { useBadgeKlerosMetadata } from '@/src/hooks/subgraph/useBadgeKlerosMetadata'
 import { useSizeSM } from '@/src/hooks/useSize'

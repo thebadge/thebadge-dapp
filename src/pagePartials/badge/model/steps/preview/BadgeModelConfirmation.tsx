@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Box, Typography, alpha, styled } from '@mui/material'
 import { BadgePreview } from '@thebadge/ui-library'
-import { useTranslation } from 'next-export-i18n'
+import useTranslation from 'next-translate/useTranslation'
 import { useFormContext } from 'react-hook-form'
 
 import { CreateModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateModelSchema'

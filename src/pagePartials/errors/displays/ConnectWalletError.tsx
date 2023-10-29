@@ -1,11 +1,11 @@
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import React from 'react'
 
 import CloseIcon from '@mui/icons-material/Close'
 import ReportProblemOutlinedIcon from '@mui/icons-material/ReportProblemOutlined'
 import { Box, IconButton, Stack, Typography, styled } from '@mui/material'
 import { colors, gradients } from '@thebadge/ui-library'
-import { useTranslation } from 'next-export-i18n'
+import useTranslation from 'next-translate/useTranslation'
 
 import { WalletAnimated } from '@/src/components/assets/animated/WalletAnimated'
 import ConnectWalletButton from '@/src/components/header/ConnectWalletButton'

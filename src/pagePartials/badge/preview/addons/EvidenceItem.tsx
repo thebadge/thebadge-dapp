@@ -5,7 +5,7 @@ import FilePresentOutlinedIcon from '@mui/icons-material/FilePresentOutlined'
 import { TimelineContent, TimelineDot, TimelineItem, TimelineSeparator } from '@mui/lab'
 import { Box, Divider, IconButton, Stack, Typography } from '@mui/material'
 import { colors } from '@thebadge/ui-library'
-import { useTranslation } from 'next-export-i18n'
+import useTranslation from 'next-translate/useTranslation'
 
 import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { formatTimestamp } from '@/src/utils/dateUtils'

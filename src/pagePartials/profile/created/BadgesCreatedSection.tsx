@@ -1,11 +1,11 @@
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 
 import { AddressZero } from '@ethersproject/constants'
 import { Box, Stack, Typography, styled } from '@mui/material'
 import { ButtonV2, colors } from '@thebadge/ui-library'
 import { formatUnits } from 'ethers/lib/utils'
-import { useTranslation } from 'next-export-i18n'
+import useTranslation from 'next-translate/useTranslation'
 
 import { NoResultsAnimated } from '@/src/components/assets/animated/NoResults'
 import { MiniBadgePreviewContainer } from '@/src/components/common/MiniBadgePreviewContainer'

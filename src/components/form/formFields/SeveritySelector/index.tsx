@@ -14,7 +14,7 @@ import {
 } from '@mui/material'
 import { gradients } from '@thebadge/ui-library'
 import { useDescription, useTsController } from '@ts-react/form'
-import { useTranslation } from 'next-export-i18n'
+import useTranslation from 'next-translate/useTranslation'
 import { FieldError } from 'react-hook-form'
 import { z } from 'zod'
 

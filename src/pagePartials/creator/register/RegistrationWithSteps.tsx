@@ -3,7 +3,7 @@ import React from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button, Container, Divider, Stack, styled } from '@mui/material'
 import { colors } from '@thebadge/ui-library'
-import { useTranslation } from 'next-export-i18n'
+import useTranslation from 'next-translate/useTranslation'
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form'
 import { z } from 'zod'
 

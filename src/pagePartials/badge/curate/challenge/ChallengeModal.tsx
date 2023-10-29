@@ -2,7 +2,7 @@ import React from 'react'
 
 import FindInPageOutlinedIcon from '@mui/icons-material/FindInPageOutlined'
 import { Box, Skeleton, Stack, Typography } from '@mui/material'
-import { useTranslation } from 'next-export-i18n'
+import useTranslation from 'next-translate/useTranslation'
 import { z } from 'zod'
 
 import TBModal from '@/src/components/common/TBModal'

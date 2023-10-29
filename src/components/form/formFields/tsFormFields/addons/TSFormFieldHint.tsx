@@ -1,7 +1,7 @@
 import * as React from 'react'
 
 import { Stack, Tooltip, Typography, styled } from '@mui/material'
-import { useTranslation } from 'next-export-i18n'
+import useTranslation from 'next-translate/useTranslation'
 
 const HintContainer = styled(Stack)(({ theme }) => ({
   display: 'flex',

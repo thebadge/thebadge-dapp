@@ -13,7 +13,7 @@ import {
   styled,
 } from '@mui/material'
 import dayjs from 'dayjs'
-import { useTranslation } from 'next-export-i18n'
+import useTranslation from 'next-translate/useTranslation'
 import { FieldError } from 'react-hook-form'
 import { z } from 'zod'
 

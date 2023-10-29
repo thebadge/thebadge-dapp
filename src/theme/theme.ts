@@ -3,7 +3,7 @@ import { TypographyOptions } from '@mui/material/styles/createTypography'
 import { colors, darkTheme, lightTheme } from '@thebadge/ui-library'
 import { Mulish } from 'next/font/google'
 
-const mulishFont = Mulish({
+export const mulishFont = Mulish({
   weight: ['300', '400', '500', '600', '700', '800', '900'],
   subsets: ['latin'],
   display: 'swap', // 👈 The documentation seems to be wrong. 'swap' is not the default value, so we need to specify it

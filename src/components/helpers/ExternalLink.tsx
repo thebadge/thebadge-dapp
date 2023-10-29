@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 import { styled } from '@mui/material'
-import { useTranslation } from 'next-export-i18n'
+import useTranslation from 'next-translate/useTranslation'
 import { Toast, toast } from 'react-hot-toast'
 
 import { Copy } from '@/src/components/assets/Copy'

@@ -1,3 +1,4 @@
+'use client'
 import React, { useCallback, useContext } from 'react'
 
 import useActionObserver, { ActionObserver } from '@/src/hooks/useActionObserver'

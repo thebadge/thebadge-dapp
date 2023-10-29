@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 import { Box, Collapse, FormHelperText, Typography } from '@mui/material'
 import { Editor } from '@thebadge/ui-library'
-import { useTranslation } from 'next-export-i18n'
+import useTranslation from 'next-translate/useTranslation'
 import { DeltaStatic, Sources } from 'quill'
 import { Controller, useFormContext } from 'react-hook-form'
 import { UnprivilegedEditor } from 'react-quill'

@@ -3,7 +3,7 @@ import * as React from 'react'
 
 import { Box, Divider } from '@mui/material'
 import { formatUnits } from 'ethers/lib/utils'
-import { useTranslation } from 'next-export-i18n'
+import useTranslation from 'next-translate/useTranslation'
 import { z } from 'zod'
 
 import { CustomOptionPaper, Title, Value, ValueContainer } from './styled'

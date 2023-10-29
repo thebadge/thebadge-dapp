@@ -7,7 +7,7 @@ import TrendingUpOutlinedIcon from '@mui/icons-material/TrendingUpOutlined'
 import { Box, IconButton, Typography } from '@mui/material'
 import { colors } from '@thebadge/ui-library'
 import dayjs from 'dayjs'
-import { useTranslation } from 'next-export-i18n'
+import useTranslation from 'next-translate/useTranslation'
 
 import LastUpdated from '@/src/components/common/LastUpdated'
 import { useProfileProvider } from '@/src/providers/ProfileProvider'

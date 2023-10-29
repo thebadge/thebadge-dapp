@@ -2,7 +2,7 @@ import * as React from 'react'
 
 import { Box, Stack } from '@mui/material'
 import { formatUnits } from 'ethers/lib/utils'
-import { useTranslation } from 'next-export-i18n'
+import useTranslation from 'next-translate/useTranslation'
 import { useFormContext } from 'react-hook-form'
 
 import { APP_URL } from '@/src/constants/common'

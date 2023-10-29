@@ -7,7 +7,7 @@ import EmojiEventsOutlinedIcon from '@mui/icons-material/EmojiEventsOutlined'
 import MilitaryTechOutlinedIcon from '@mui/icons-material/MilitaryTechOutlined'
 import StarBorderPurple500RoundedIcon from '@mui/icons-material/StarBorderPurple500Rounded'
 import { Box, Stack, Table, TableBody, Typography, useTheme } from '@mui/material'
-import { useTranslation } from 'next-export-i18n'
+import useTranslation from 'next-translate/useTranslation'
 
 import { StatisticSquare, StatisticsContainer } from '../addons/styled'
 import { StatisticVisibility } from '@/src/hooks/nextjs/useStatisticsVisibility'

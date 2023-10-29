@@ -1,8 +1,9 @@
+'use client'
 import { useEffect } from 'react'
 
 import { Box, styled } from '@mui/material'
 import { useAccountCenter } from '@web3-onboard/react'
-import { useTranslation } from 'next-export-i18n'
+import useTranslation from 'next-translate/useTranslation'
 
 import { LogoWithText } from '@/src/components/common/Logo'
 import ActionButtons from '@/src/components/header/ActionButtons'
@@ -35,7 +36,7 @@ const Header = () => {
   const isMobile = useSizeSM()
   const updateAccountCenter = useAccountCenter()
   const { connectWallet, isWalletConnected } = useWeb3Connection()
-  const { t } = useTranslation()
+  const { t } = useTranslation('translations')
 
   useEffect(() => {
     updateAccountCenter({ enabled: isMobile })

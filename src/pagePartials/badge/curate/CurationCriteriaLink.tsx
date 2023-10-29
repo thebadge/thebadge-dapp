@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { Typography } from '@mui/material'
-import { useTranslation } from 'next-export-i18n'
+import useTranslation from 'next-translate/useTranslation'
 
 import {
   useRegistrationBadgeModelKlerosMetadata,

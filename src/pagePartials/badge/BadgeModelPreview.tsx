@@ -1,3 +1,5 @@
+'use client'
+
 import * as React from 'react'
 
 import { Box } from '@mui/material'
@@ -29,7 +31,7 @@ function BadgeModelPreview({ clickable, effects, metadata, size = 'medium' }: Pr
 
   return (
     <SafeSuspense>
-      <Box sx={{ cursor: clickable ? 'pointer' : 'inherit' }}>
+      <Box sx={{ cursor: clickable ? 'pointer' : 'inherit', boxSizing: 'border-box' }}>
         <BadgePreview
           animationEffects={effects ? ['wobble', 'grow', 'glare'] : []}
           animationOnHover

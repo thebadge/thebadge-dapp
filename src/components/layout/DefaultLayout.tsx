@@ -1,3 +1,4 @@
+'use client'
 import { Box, Container, styled, useTheme } from '@mui/material'
 import { PaletteColorOptions } from '@mui/material/styles/createPalette'
 import { BackgroundGradient } from '@thebadge/ui-library'
@@ -37,7 +38,7 @@ const StyledBody = styled(Box)(() => ({
 }))
 
 type DefaultLayoutProps = {
-  children: React.ReactElement
+  children: React.ReactElement | React.ReactNode
 }
 
 const NavigationRoom = styled(Box)(({ theme }) => ({

@@ -9,11 +9,11 @@ export function generateModelExplorerUrl(badgeModelId: string) {
 }
 
 export function generateBadgeModelCreate() {
-  return `/badge/model/create`
+  return `/badgeModel/create`
 }
 
 export function generateBadgeExplorer() {
-  return `/badge/explorer`
+  return `/badgeModel/explorer`
 }
 
 export function generateBadgeCurate() {

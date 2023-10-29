@@ -1,4 +1,5 @@
-import { useRouter } from 'next/router'
+'use client'
+import { useRouter } from 'next/navigation'
 import React, { RefObject, useContext, useRef } from 'react'
 
 type SectionReferencesContextType = {

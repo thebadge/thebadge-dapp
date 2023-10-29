@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 
-import { useTranslation } from 'next-export-i18n'
+import useTranslation from 'next-translate/useTranslation'
 
 export interface TimeLeft {
   quantity?: number

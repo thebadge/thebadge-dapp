@@ -1,7 +1,7 @@
 import PushPinIcon from '@mui/icons-material/PushPin'
 import PushPinOutlinedIcon from '@mui/icons-material/PushPinOutlined'
 import { Checkbox, Menu, MenuItem, MenuList, Typography } from '@mui/material'
-import { useTranslation } from 'next-export-i18n'
+import useTranslation from 'next-translate/useTranslation'
 
 import { StatisticVisibility } from '@/src/hooks/nextjs/useStatisticsVisibility'
 export const StatisticVisibilityToggle = ({

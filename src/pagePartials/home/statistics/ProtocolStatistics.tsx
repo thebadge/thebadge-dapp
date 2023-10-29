@@ -1,5 +1,6 @@
+'use client'
 import { Box, Typography, styled } from '@mui/material'
-import { useTranslation } from 'next-export-i18n'
+import useTranslation from 'next-translate/useTranslation'
 
 import { useProtocolStatistic } from '@/src/hooks/subgraph/useProtocolStatistic'
 import StatisticDisplay from '@/src/pagePartials/home/statistics/StatisticDisplay'

@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 
 import { Avatar, Badge, Box, Theme, Tooltip } from '@mui/material'
 import { SxProps } from '@mui/system'
-import { useTranslation } from 'next-export-i18n'
+import useTranslation from 'next-translate/useTranslation'
 import Blockies from 'react-18-blockies'
 
 import VerifiedCreator from '@/src/components/icons/VerifiedCreator'

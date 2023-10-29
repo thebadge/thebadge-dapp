@@ -1,15 +1,17 @@
-import { useRouter } from 'next/router'
+'use client'
+import { useRouter } from 'next/navigation'
 import React, { RefObject } from 'react'
 
 import { Box, Button, Tooltip, styled } from '@mui/material'
 import { colors } from '@thebadge/ui-library'
-import { useTranslation } from 'next-export-i18n'
+import useTranslation from 'next-translate/useTranslation'
 
 import { useCurrentUser } from '@/src/hooks/subgraph/useCurrentUser'
 import { useSectionReferences } from '@/src/providers/referencesProvider'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import {
   generateBadgeCurate,
+  generateBadgeExplorer,
   generateBadgeModelCreate,
   generateCreatorRegisterUrl,
 } from '@/src/utils/navigation/generateUrl'
@@ -27,7 +29,7 @@ const StyledButton = styled(Button)<{ border?: string }>(({ border }) => ({
 }))
 
 export default function ActionButtons() {
-  const { t } = useTranslation()
+  const { t } = useTranslation('translations')
   const { data: user } = useCurrentUser()
   const { isWalletConnected } = useWeb3Connection()
   const router = useRouter()
@@ -52,7 +54,12 @@ export default function ActionButtons() {
       </StyledButton>
     )
   }
-  const exploreButton = menuButton(t('header.buttons.mint'), colors.blue, false, '/badge/explorer')
+  const exploreButton = menuButton(
+    t('header.buttons.mint'),
+    colors.blue,
+    false,
+    generateBadgeExplorer(),
+  )
   const curateButton = menuButton(
     t('header.buttons.curate'),
     colors.greenLogo,

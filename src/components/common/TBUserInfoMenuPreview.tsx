@@ -1,4 +1,4 @@
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import React, { useRef, useState } from 'react'
 
 import AddRoundedIcon from '@mui/icons-material/AddRounded'
@@ -7,7 +7,7 @@ import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded'
 import TwitterIcon from '@mui/icons-material/Twitter'
 import { Box, IconButton, Menu, MenuProps, Stack, Typography, alpha, styled } from '@mui/material'
 import { ButtonV2, IconDiscord, colors } from '@thebadge/ui-library'
-import { useTranslation } from 'next-export-i18n'
+import useTranslation from 'next-translate/useTranslation'
 
 import TBUserAvatar from '@/src/components/common/TBUserAvatar'
 import { Address } from '@/src/components/helpers/Address'

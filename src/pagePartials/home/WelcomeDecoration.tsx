@@ -1,6 +1,8 @@
+'use client'
+
 import { Stack, Typography, styled } from '@mui/material'
 import { BoxBorderGradient, colors, gradients } from '@thebadge/ui-library'
-import { useTranslation } from 'next-export-i18n'
+import useTranslation from 'next-translate/useTranslation'
 
 import { ProcessIllustration } from '@/src/components/assets/ProcessIllustration'
 import { DOCS_URL } from '@/src/constants/common'

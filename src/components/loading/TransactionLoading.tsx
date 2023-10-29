@@ -2,7 +2,7 @@ import React, { DOMAttributes, HTMLAttributes } from 'react'
 
 import { Box, Typography, styled } from '@mui/material'
 import { ButtonV2, colors } from '@thebadge/ui-library'
-import { useTranslation } from 'next-export-i18n'
+import useTranslation from 'next-translate/useTranslation'
 
 import { LoadingArrow } from '@/src/components/loading/animated/LoadingArrow'
 import { LoadingCheck } from '@/src/components/loading/animated/LoadingCheck'

@@ -1,4 +1,4 @@
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 
 /**
  * Helper hook to get the claimUUID from the url params, as we are not using the app directory yet, we encapsulate this on a
