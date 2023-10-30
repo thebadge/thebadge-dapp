@@ -10,6 +10,7 @@ import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
 import { useSizeSM } from '@/src/hooks/useSize'
 import BadgeModelPreview from '@/src/pagePartials/badge/BadgeModelPreview'
 import BadgeTitle from '@/src/pagePartials/badge/preview/addons/BadgeTitle'
+import { generateBadgeExplorer } from '@/src/utils/navigation/generateUrl'
 import { ToastStates } from '@/types/toast'
 
 const Wrapper = styled(Stack)(({ theme }) => ({
@@ -89,7 +90,7 @@ export default function BadgeOwnedPreview() {
 
           <Typography variant="body4">
             {t('badge.viewBadge.checkHowElse')}
-            <LinkWithTranslation pathname="/badge/explorer">
+            <LinkWithTranslation pathname={generateBadgeExplorer()}>
               {t('badge.viewBadge.seeAll').toUpperCase()}
             </LinkWithTranslation>
           </Typography>
