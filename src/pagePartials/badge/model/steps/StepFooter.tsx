@@ -4,8 +4,10 @@ import { OverridableStringUnion } from '@mui/types'
 import { useTranslation } from 'next-export-i18n'
 import { useFormContext } from 'react-hook-form'
 
-import { CREATE_MODEL_STEPS_AMOUNT, saveFormValues } from '../utils'
+import { getCreateModelStepsAmount, saveFormValues } from '../utils'
+import useControllerTypeParam from '@/src/hooks/nextjs/useControllerTypeParam'
 import { PreventActionWithoutConnection } from '@/src/pagePartials/errors/preventActionWithoutConnection'
+import { BadgeModelControllerType } from '@/types/badges/BadgeModel'
 
 export const StepButton = styled(Button)(({ theme }) => ({
   borderRadius: theme.spacing(1.25),
@@ -33,7 +35,9 @@ export default function StepFooter({
 
   const canGoBack = currentStep !== 0
   const backButtonDisabled = currentStep === 0
-  const isLastStep = currentStep === CREATE_MODEL_STEPS_AMOUNT - 1
+  const controllerType = useControllerTypeParam()
+  const isLastStep =
+    currentStep === getCreateModelStepsAmount(controllerType as BadgeModelControllerType) - 1
 
   function onBack() {
     saveFormValues(getValues())

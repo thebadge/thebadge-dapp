@@ -1,4 +1,5 @@
 import { APP_URL, MODEL_CREATION_CACHE_EXPIRATION_MS } from '@/src/constants/common'
+import { BadgeModelControllerType } from '@/types/badges/BadgeModel'
 
 const STEP_0 = ['howItWorks']
 const STEP_1 = [
@@ -12,9 +13,23 @@ const STEP_1 = [
 const STEP_2 = ['criteriaFileUri', 'criteria', 'rigorousness', 'mintFee', 'validFor']
 const STEP_3 = ['badgeMetadataColumns']
 export const FIELDS_TO_VALIDATE_ON_STEP = [STEP_0, STEP_1, STEP_2, STEP_3]
-export const CREATE_MODEL_STEPS_AMOUNT = 5
 
 export const FORM_STORE_KEY = 'badge-model-creation'
+
+export function getCreateModelStepsAmount(controllerType: BadgeModelControllerType): number {
+  switch (controllerType.toLowerCase()) {
+    case BadgeModelControllerType.Community.toLowerCase(): {
+      return 5
+    }
+    case BadgeModelControllerType.ThirdParty.toLowerCase(): {
+      return 3
+    }
+    default: {
+      return 5
+    }
+  }
+}
+
 /**
  * Retrieve stored values, in case that the user refresh the page or something
  * happens
