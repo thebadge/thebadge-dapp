@@ -341,7 +341,8 @@
           "challengePeriodDuration": "Challenge period duration",
           "rigorousness": "Rigorousness",
           "validFor": "Expiration time",
-          "mintFee": "Mint fee"
+          "mintFee": "Mint fee",
+          "administrators": "The addresses of the administrators"
         },
         "evidence": {
         },

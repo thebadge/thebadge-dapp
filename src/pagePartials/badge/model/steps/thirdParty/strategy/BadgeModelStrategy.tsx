@@ -49,7 +49,7 @@ export default function BadgeModelStrategy() {
             render={({ field: { onChange, value }, fieldState: { error } }) => (
               <TextField
                 error={error}
-                label={t('badge.model.claim.thirdParty.body.addressPlaceholder')}
+                label={t('badge.model.create.strategy.administrators')}
                 onChange={onChange}
                 value={value}
               />
