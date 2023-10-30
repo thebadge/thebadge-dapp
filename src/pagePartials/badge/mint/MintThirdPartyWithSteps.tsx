@@ -30,7 +30,8 @@ type MintStepsProps = {
 
 const STEP_0 = ['terms']
 // Use undefined to trigger a full schema validation, that makes the .superRefine logic to be executed
-const STEP_1 = undefined
+//const STEP_1 = undefined TODO disabled as seems not working fine
+const STEP_1: string[] = ['email', 'address', 'preferMintMethod']
 const STEP_2 = ['previewImage']
 
 const FIELDS_TO_VALIDATE_ON_STEP = [STEP_0, STEP_1, STEP_2]
@@ -63,6 +64,7 @@ export default function MintThirdPartyWithSteps({
   }, [triggerValidation, watchedPreferMintMethod])
 
   async function isValidStep() {
+    console.log('FIELDS_TO_VALIDATE_ON_STEP', FIELDS_TO_VALIDATE_ON_STEP, currentStep)
     return await triggerValidation(FIELDS_TO_VALIDATE_ON_STEP[currentStep])
   }
 
@@ -74,6 +76,7 @@ export default function MintThirdPartyWithSteps({
   // Navigation helpers to go to the next step
   async function onNextCallback() {
     const isValid = await isValidStep()
+    console.log('is valid', isValid)
     if (isValid) {
       setCompleted((prev) => ({ ...prev, [currentStep]: true }))
       setCurrentStep((prev) => (prev === 4 ? 4 : prev + 1))
