@@ -16,7 +16,7 @@ import {
 /**
  * Auxiliary schema to support the PDF upload or the PDF creation on the same form
  */
-const BadgeModelCriteriaSchema = z
+const CommunityBadgeModelCriteriaSchema = z
   .object({
     criteriaFileUri: FileSchema,
     criteriaDeltaText: DeltaPDFSchema,
@@ -37,7 +37,7 @@ const BadgeModelCriteriaSchema = z
     }
   })
 
-export const CreateModelSchema = z.object({
+export const CreateCommunityModelSchema = z.object({
   howItWorks: AgreementSchema,
   // ------ UI BASICS FIELD ------
   name: z.string().max(28),
@@ -47,7 +47,7 @@ export const CreateModelSchema = z.object({
   backgroundImage: z.string(),
   template: z.string(),
   // ------ STRATEGY FIELD ------
-  criteria: BadgeModelCriteriaSchema,
+  criteria: CommunityBadgeModelCriteriaSchema,
   challengePeriodDuration: ChallengePeriodTypeSchema,
   rigorousness: SeverityTypeSchema,
   mintFee: TokenInputSchema,
@@ -56,5 +56,5 @@ export const CreateModelSchema = z.object({
   badgeMetadataColumns: KlerosDynamicFields,
 })
 
-export type BadgeModelCriteriaType = z.infer<typeof BadgeModelCriteriaSchema>
-export type CreateModelSchemaType = z.infer<typeof CreateModelSchema>
+export type BadgeModelCommunityCriteriaType = z.infer<typeof CommunityBadgeModelCriteriaSchema>
+export type CreateCommunityModelSchemaType = z.infer<typeof CreateCommunityModelSchema>

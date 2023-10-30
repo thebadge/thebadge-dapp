@@ -12,9 +12,9 @@ import { TransactionLoading } from '@/src/components/loading/TransactionLoading'
 import { TransactionStates } from '@/src/hooks/useTransaction'
 import { useTriggerRHF } from '@/src/hooks/useTriggerRHF'
 import {
-  CreateModelSchema,
-  CreateModelSchemaType,
-} from '@/src/pagePartials/badge/model/schema/CreateModelSchema'
+  CreateCommunityModelSchema,
+  CreateCommunityModelSchemaType,
+} from '@/src/pagePartials/badge/model/schema/CreateCommunityModelSchema'
 import StepFooter from '@/src/pagePartials/badge/model/steps/StepFooter'
 import BadgeModelEvidenceFormCreation from '@/src/pagePartials/badge/model/steps/evidence/BadgeModelEvidenceFormCreation'
 import BadgeModelConfirmation from '@/src/pagePartials/badge/model/steps/preview/BadgeModelConfirmation'
@@ -24,7 +24,7 @@ import HowItWorks from '@/src/pagePartials/badge/model/steps/terms/HowItWorks'
 import BadgeModelUIBasics from '@/src/pagePartials/badge/model/steps/uiBasics/BadgeModelUIBasics'
 
 type CreateModelStepsProps = {
-  onSubmit: SubmitHandler<CreateModelSchemaType>
+  onSubmit: SubmitHandler<CreateCommunityModelSchemaType>
   txState: TransactionStates
   resetTxState: VoidFunction
 }
@@ -39,8 +39,8 @@ export default function CreateWithSteps({
   // Naive completed step implementation
   const [completed, setCompleted] = useState<Record<string, boolean>>({})
 
-  const methods = useForm<z.infer<typeof CreateModelSchema>>({
-    resolver: zodResolver(CreateModelSchema),
+  const methods = useForm<z.infer<typeof CreateCommunityModelSchema>>({
+    resolver: zodResolver(CreateCommunityModelSchema),
     defaultValues: defaultValues(),
     reValidateMode: 'onChange',
     mode: 'onChange',

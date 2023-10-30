@@ -8,13 +8,13 @@ import { Controller, useFormContext } from 'react-hook-form'
 import { UnprivilegedEditor } from 'react-quill'
 import { TransitionGroup } from 'react-transition-group'
 
-import { CreateModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateModelSchema'
+import { CreateCommunityModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateCommunityModelSchema'
 import PDFRequirementInput from '@/src/pagePartials/badge/model/steps/strategy/PDFRequirementInput'
 import { getCriteriaTemplate } from '@/src/pagePartials/badge/model/utils'
 
 export default function RequirementInput() {
   const { t } = useTranslation()
-  const { control } = useFormContext<CreateModelSchemaType>()
+  const { control } = useFormContext<CreateCommunityModelSchemaType>()
 
   const [enableTextEditor, setEnableTextEditor] = useState(true) // default is true
 
