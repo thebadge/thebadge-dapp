@@ -64,7 +64,6 @@ export default function MintThirdPartyWithSteps({
   }, [triggerValidation, watchedPreferMintMethod])
 
   async function isValidStep() {
-    console.log('FIELDS_TO_VALIDATE_ON_STEP', FIELDS_TO_VALIDATE_ON_STEP, currentStep)
     return await triggerValidation(FIELDS_TO_VALIDATE_ON_STEP[currentStep])
   }
 
@@ -76,7 +75,6 @@ export default function MintThirdPartyWithSteps({
   // Navigation helpers to go to the next step
   async function onNextCallback() {
     const isValid = await isValidStep()
-    console.log('is valid', isValid)
     if (isValid) {
       setCompleted((prev) => ({ ...prev, [currentStep]: true }))
       setCurrentStep((prev) => (prev === 4 ? 4 : prev + 1))
