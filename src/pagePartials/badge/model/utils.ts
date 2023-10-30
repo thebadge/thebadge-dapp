@@ -1,8 +1,8 @@
 import { APP_URL, MODEL_CREATION_CACHE_EXPIRATION_MS } from '@/src/constants/common'
 import { BadgeModelControllerType } from '@/types/badges/BadgeModel'
 
-const STEP_0 = ['howItWorks']
-const STEP_1 = [
+const STEP_0_COMMUNITY = ['howItWorks']
+const STEP_1_COMMUNITY = [
   'name',
   'description',
   'badgeModelLogoUri',
@@ -10,9 +10,39 @@ const STEP_1 = [
   'backgroundImage',
   'template',
 ]
-const STEP_2 = ['criteriaFileUri', 'criteria', 'rigorousness', 'mintFee', 'validFor']
-const STEP_3 = ['badgeMetadataColumns']
-export const FIELDS_TO_VALIDATE_ON_STEP = [STEP_0, STEP_1, STEP_2, STEP_3]
+const STEP_2_COMMUNITY = ['criteriaFileUri', 'criteria', 'rigorousness', 'mintFee', 'validFor']
+const STEP_3_COMMUNITY = ['badgeMetadataColumns']
+
+const STEP_0_TP = [
+  'name',
+  'description',
+  'badgeModelLogoUri',
+  'textContrast',
+  'backgroundImage',
+  'template',
+]
+const STEP_1_TP = ['mintFee', 'validFor', 'administrators']
+
+export function getFieldsToValidateOnStep(controllerType: BadgeModelControllerType): string[][] {
+  const communityValidationSteps = [
+    STEP_0_COMMUNITY,
+    STEP_1_COMMUNITY,
+    STEP_2_COMMUNITY,
+    STEP_3_COMMUNITY,
+  ]
+  const thirdPartyValidationSteps = [STEP_0_TP, STEP_1_TP]
+  switch (controllerType.toLowerCase()) {
+    case BadgeModelControllerType.Community.toLowerCase(): {
+      return communityValidationSteps
+    }
+    case BadgeModelControllerType.ThirdParty.toLowerCase(): {
+      return thirdPartyValidationSteps
+    }
+    default: {
+      return communityValidationSteps
+    }
+  }
+}
 
 export const FORM_STORE_KEY = 'badge-model-creation'
 

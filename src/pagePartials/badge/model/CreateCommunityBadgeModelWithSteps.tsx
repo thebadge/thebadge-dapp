@@ -6,7 +6,7 @@ import { FormProvider, SubmitHandler, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import StepHeaderCommunity from './steps/community/StepHeaderCommunity'
-import { FIELDS_TO_VALIDATE_ON_STEP, defaultValues } from './utils'
+import { defaultValues, getFieldsToValidateOnStep } from './utils'
 import StepPrompt from '@/src/components/form/formWithSteps/StepPrompt'
 import { TransactionLoading } from '@/src/components/loading/TransactionLoading'
 import { TransactionStates } from '@/src/hooks/useTransaction'
@@ -22,6 +22,7 @@ import BadgeModelConfirmation from '@/src/pagePartials/badge/model/steps/preview
 import BadgeModelCreated from '@/src/pagePartials/badge/model/steps/preview/BadgeModelCreated'
 import HowItWorks from '@/src/pagePartials/badge/model/steps/terms/HowItWorks'
 import BadgeModelUIBasics from '@/src/pagePartials/badge/model/steps/uiBasics/BadgeModelUIBasics'
+import { BadgeModelControllerType } from '@/types/badges/BadgeModel'
 
 type CreateModelStepsProps = {
   onSubmit: SubmitHandler<CreateCommunityModelSchemaType>
@@ -48,7 +49,8 @@ export default function CreateCommunityBadgeModelWithSteps({
 
   const triggerValidation = useTriggerRHF(methods)
   async function isValidStep() {
-    return await triggerValidation(FIELDS_TO_VALIDATE_ON_STEP[currentStep])
+    const steps = getFieldsToValidateOnStep(BadgeModelControllerType.Community)
+    return await triggerValidation(steps[currentStep])
   }
 
   // Navigation helpers to go back on the steps

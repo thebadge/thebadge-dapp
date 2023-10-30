@@ -209,3 +209,12 @@ export const KlerosDynamicFields = createUniqueFieldSchema(
     .max(20, `Can't add more than twenty (20)`),
   'KlerosDynamicFields',
 )
+
+export const ThirdPartyAdministratorsFields = createUniqueFieldSchema(
+  z
+    .array(AddressSchema, {
+      required_error: 'Must provide at least one administrator.',
+    })
+    .max(10, `Can't add more than ten (10)`),
+  'ThirdPartyAdministratorsFields',
+)

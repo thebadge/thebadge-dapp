@@ -176,18 +176,8 @@ export async function encodeKlerosBadgeModelControllerData(
   )
 }
 
-export async function encodeThirdPartyBadgeModelControllerData(
-  creatorAddress: string,
-  administrators: string[],
-) {
-  return defaultAbiCoder.encode(
-    [
-      `tuple(
-          address[],
-        )`,
-    ],
-    [[administrators]],
-  )
+export async function encodeThirdPartyBadgeModelControllerData(administrators: string[]) {
+  return defaultAbiCoder.encode(['tuple(address[])'], [[administrators]])
 }
 
 export const encodeIpfsEvidence = (ipfsEvidenceHash: string): string => {
