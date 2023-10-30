@@ -72,6 +72,7 @@ const MintThirdPartyBadgeModel: NextPageWithLayout = () => {
           badgeModelId,
           { imageBase64File: previewImage },
         )
+        const encodedBadgeMetadata = encodeIpfsBadgeMetadata(badgeMetadataIPFSHash)
 
         // If social login relay tx
         if (isSocialWallet && destination && userSocialInfo && appPubKey) {
@@ -84,7 +85,7 @@ const MintThirdPartyBadgeModel: NextPageWithLayout = () => {
           preferMintMethod === 'email' ? ZERO_ADDRESS : destination,
           badgeMetadataIPFSHash,
           // TODO Check if this makes sense or not
-          encodeIpfsBadgeMetadata(badgeMetadataIPFSHash),
+          encodedBadgeMetadata,
           {
             value: mintValue,
           },

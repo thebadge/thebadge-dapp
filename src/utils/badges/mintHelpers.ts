@@ -24,7 +24,13 @@ export async function createAndUploadThirdPartyBadgeMetadata(
       description: badgeModelMetadata?.description || '',
       // TODO: This will point to the model not to the badge because is still not being created, we need to check if this url makes sense or not
       external_link: APP_URL + generateBadgePreviewUrl(badgeModelId),
-      attributes: [],
+      attributes: [
+        {
+          trait_type: 'CreationDate',
+          value: Date.now(),
+          display_type: 'date',
+        },
+      ],
       image: { mimeType: 'image/png', base64File: additionalArgs.imageBase64File },
     },
     filePaths: ['image'],
