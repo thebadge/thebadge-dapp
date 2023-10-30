@@ -98,7 +98,7 @@ export const DescriptionTextSchema = createUniqueFieldSchema(
 // TODO Move to env variables
 const ONE_MB = 1000000
 const MAX_FILE_SIZE = ONE_MB * 5
-const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
+const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/svg+xml']
 
 export const ImageSchema = createUniqueFieldSchema(
   z
