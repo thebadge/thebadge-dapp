@@ -34,10 +34,10 @@ const MintBadgeModel: NextPageWithLayout = () => {
   }, [router, state])
 
   switch (controllerType.toLowerCase()) {
-    case BadgeModelControllerType.Community: {
+    case BadgeModelControllerType.Community.toLowerCase(): {
       return <MintKlerosBadgeModel />
     }
-    case BadgeModelControllerType.ThirdParty: {
+    case BadgeModelControllerType.ThirdParty.toLowerCase(): {
       return <MintThirdPartyBadgeModel />
     }
     default: {
