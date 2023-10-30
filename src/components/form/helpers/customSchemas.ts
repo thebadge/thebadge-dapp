@@ -215,6 +215,7 @@ export const ThirdPartyAdministratorsFields = createUniqueFieldSchema(
     .array(AddressSchema, {
       required_error: 'Must provide at least one administrator.',
     })
+    .min(1, 'Must provide at least one administrator.')
     .max(10, `Can't add more than ten (10)`),
   'ThirdPartyAdministratorsFields',
 )

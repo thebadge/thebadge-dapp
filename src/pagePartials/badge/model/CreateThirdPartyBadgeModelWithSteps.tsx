@@ -5,31 +5,30 @@ import { Container, Stack } from '@mui/material'
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-import StepHeaderCommunity from './steps/community/StepHeaderCommunity'
-import { FIELDS_TO_VALIDATE_ON_STEP, defaultValues } from './utils'
+import { defaultValues, getFieldsToValidateOnStep } from './utils'
 import StepPrompt from '@/src/components/form/formWithSteps/StepPrompt'
 import { TransactionLoading } from '@/src/components/loading/TransactionLoading'
 import { TransactionStates } from '@/src/hooks/useTransaction'
 import { useTriggerRHF } from '@/src/hooks/useTriggerRHF'
 import {
-  CreateCommunityModelSchema,
-  CreateCommunityModelSchemaType,
-} from '@/src/pagePartials/badge/model/schema/CreateCommunityModelSchema'
+  CreateThirdPartyModelSchema,
+  CreateThirdPartyModelSchemaType,
+} from '@/src/pagePartials/badge/model/schema/CreateThirdPartyModelSchema'
 import StepFooter from '@/src/pagePartials/badge/model/steps/StepFooter'
-import BadgeModelEvidenceFormCreation from '@/src/pagePartials/badge/model/steps/evidence/BadgeModelEvidenceFormCreation'
 import BadgeModelConfirmation from '@/src/pagePartials/badge/model/steps/preview/BadgeModelConfirmation'
 import BadgeModelCreated from '@/src/pagePartials/badge/model/steps/preview/BadgeModelCreated'
-import BadgeModelStrategy from '@/src/pagePartials/badge/model/steps/community/strategy/BadgeModelStrategy'
-import HowItWorks from '@/src/pagePartials/badge/model/steps/terms/HowItWorks'
+import StepHeaderThirdParty from '@/src/pagePartials/badge/model/steps/thirdParty/StepHeaderThirdParty'
+import BadgeModelStrategy from '@/src/pagePartials/badge/model/steps/thirdParty/strategy/BadgeModelStrategy'
 import BadgeModelUIBasics from '@/src/pagePartials/badge/model/steps/uiBasics/BadgeModelUIBasics'
+import { BadgeModelControllerType } from '@/types/badges/BadgeModel'
 
 type CreateModelStepsProps = {
-  onSubmit: SubmitHandler<CreateCommunityModelSchemaType>
+  onSubmit: SubmitHandler<CreateThirdPartyModelSchemaType>
   txState: TransactionStates
   resetTxState: VoidFunction
 }
 
-export default function CreateWithSteps({
+export default function CreateThirdPartyBadgeModelWithSteps({
   onSubmit,
   resetTxState,
   txState = TransactionStates.none,
@@ -39,8 +38,8 @@ export default function CreateWithSteps({
   // Naive completed step implementation
   const [completed, setCompleted] = useState<Record<string, boolean>>({})
 
-  const methods = useForm<z.infer<typeof CreateCommunityModelSchema>>({
-    resolver: zodResolver(CreateCommunityModelSchema),
+  const methods = useForm<z.infer<typeof CreateThirdPartyModelSchema>>({
+    resolver: zodResolver(CreateThirdPartyModelSchema),
     defaultValues: defaultValues(),
     reValidateMode: 'onChange',
     mode: 'onChange',
@@ -48,7 +47,8 @@ export default function CreateWithSteps({
 
   const triggerValidation = useTriggerRHF(methods)
   async function isValidStep() {
-    return await triggerValidation(FIELDS_TO_VALIDATE_ON_STEP[currentStep])
+    const steps = getFieldsToValidateOnStep(BadgeModelControllerType.ThirdParty)
+    return await triggerValidation(steps[currentStep])
   }
 
   // Navigation helpers to go back on the steps
@@ -61,7 +61,7 @@ export default function CreateWithSteps({
     const isValid = await isValidStep()
     if (isValid) {
       setCompleted((prev) => ({ ...prev, [currentStep]: true }))
-      setCurrentStep((prev) => (prev === 4 ? 4 : prev + 1))
+      setCurrentStep((prev) => (prev === 2 ? 2 : prev + 1))
     }
   }
 
@@ -75,6 +75,7 @@ export default function CreateWithSteps({
       return
     }
     const isValid = await isValidStep()
+
     // Only allows one step further or to a completed steps
     if (isValid && (stepNumber <= currentStep + 1 || completed[stepNumber])) {
       setCompleted((prev) => ({ ...prev, [currentStep]: true }))
@@ -85,7 +86,7 @@ export default function CreateWithSteps({
   return (
     <FormProvider {...methods}>
       <StepPrompt hasUnsavedChanges={methods.formState.isDirty} />
-      <StepHeaderCommunity
+      <StepHeaderThirdParty
         completedSteps={completed}
         currentStep={currentStep}
         onStepNavigation={onStepNavigation}
@@ -98,11 +99,9 @@ export default function CreateWithSteps({
         {txState === TransactionStates.none && (
           <form onSubmit={methods.handleSubmit(onSubmit)}>
             <Stack gap={3}>
-              {currentStep === 0 && <HowItWorks />}
-              {currentStep === 1 && <BadgeModelUIBasics />}
-              {currentStep === 2 && <BadgeModelStrategy />}
-              {currentStep === 3 && <BadgeModelEvidenceFormCreation />}
-              {currentStep === 4 && <BadgeModelConfirmation />}
+              {currentStep === 0 && <BadgeModelUIBasics />}
+              {currentStep === 1 && <BadgeModelStrategy />}
+              {currentStep === 2 && <BadgeModelConfirmation />}
 
               <StepFooter
                 color="purple"

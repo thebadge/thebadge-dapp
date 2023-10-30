@@ -21,7 +21,7 @@ const STEP_0_TP = [
   'backgroundImage',
   'template',
 ]
-const STEP_1_TP = ['mintFee', 'validFor', 'administrators']
+const STEP_1_TP = ['mintFee', 'validFor'] // TODO ADD administrators when the UI is ready
 
 export function getFieldsToValidateOnStep(controllerType: BadgeModelControllerType): string[][] {
   const communityValidationSteps = [
