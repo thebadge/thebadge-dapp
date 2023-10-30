@@ -16,7 +16,7 @@ const steps = [
   'Badge model preview',
 ]
 
-export default function StepHeader({
+export default function StepHeaderCommunity({
   completedSteps,
   currentStep,
   onStepNavigation,

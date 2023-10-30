@@ -9,7 +9,7 @@ import { UnprivilegedEditor } from 'react-quill'
 import { TransitionGroup } from 'react-transition-group'
 
 import { CreateCommunityModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateCommunityModelSchema'
-import PDFRequirementInput from '@/src/pagePartials/badge/model/steps/strategy/PDFRequirementInput'
+import PDFRequirementInput from '@/src/pagePartials/badge/model/steps/community/strategy/PDFRequirementInput'
 import { getCriteriaTemplate } from '@/src/pagePartials/badge/model/utils'
 
 export default function RequirementInput() {

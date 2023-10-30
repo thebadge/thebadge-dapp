@@ -16,10 +16,10 @@ import {
   CreateCommunityModelSchemaType,
 } from '@/src/pagePartials/badge/model/schema/CreateCommunityModelSchema'
 import StepFooter from '@/src/pagePartials/badge/model/steps/StepFooter'
+import BadgeModelStrategy from '@/src/pagePartials/badge/model/steps/community/strategy/BadgeModelStrategy'
 import BadgeModelEvidenceFormCreation from '@/src/pagePartials/badge/model/steps/evidence/BadgeModelEvidenceFormCreation'
 import BadgeModelConfirmation from '@/src/pagePartials/badge/model/steps/preview/BadgeModelConfirmation'
 import BadgeModelCreated from '@/src/pagePartials/badge/model/steps/preview/BadgeModelCreated'
-import BadgeModelStrategy from '@/src/pagePartials/badge/model/steps/community/strategy/BadgeModelStrategy'
 import HowItWorks from '@/src/pagePartials/badge/model/steps/terms/HowItWorks'
 import BadgeModelUIBasics from '@/src/pagePartials/badge/model/steps/uiBasics/BadgeModelUIBasics'
 
@@ -29,7 +29,7 @@ type CreateModelStepsProps = {
   resetTxState: VoidFunction
 }
 
-export default function CreateWithSteps({
+export default function CreateCommunityBadgeModelWithSteps({
   onSubmit,
   resetTxState,
   txState = TransactionStates.none,

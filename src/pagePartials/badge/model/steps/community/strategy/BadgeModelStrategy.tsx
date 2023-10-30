@@ -10,9 +10,9 @@ import { TokenInput } from '@/src/components/form/formFields/TokenInput'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { getNetworkConfig } from '@/src/config/web3'
 import { CreateCommunityModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateCommunityModelSchema'
-import RequirementInput from '@/src/pagePartials/badge/model/steps/strategy/RequirementInput'
+import RequirementInput from '@/src/pagePartials/badge/model/steps/community/strategy/RequirementInput'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
-import { SeveritySelector } from 'src/components/form/formFields/SeveritySelector'
+import { SeveritySelector } from '@/src/components/form/formFields/SeveritySelector'
 
 export default function BadgeModelStrategy() {
   const { t } = useTranslation()
