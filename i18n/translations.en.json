@@ -242,7 +242,9 @@
     "outOfServiceSubtitle": "Please, head over to our Discord channel for more information.",
     "outOfServiceErrorCode": "Error code: `{{errorCode}}`",
     "fileType": "The selected file's type is not allowed",
-    "fileMaxSize": "The selected file's size exceeds maxFileSize"
+    "fileMaxSize": "The selected file's size exceeds maxFileSize",
+    "noTheBadgeModelCreator": "Oops, something went wrong!",
+    "noTheBadgeModelCreatorSubtitle": "Seems like you dont have access to this badge model. Please get in touch with the creator."
   },
   "creator": {
     "register": {
