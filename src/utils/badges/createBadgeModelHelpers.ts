@@ -188,10 +188,6 @@ export const encodeIpfsBadgeMetadata = (badgeMetadataIpsHash: string): string =>
   return defaultAbiCoder.encode([`tuple(string)`], [[badgeMetadataIpsHash]])
 }
 
-export const encodeClaimThirdPartyBadgeMetadata = (claimAddress: string): string => {
-  return defaultAbiCoder.encode([`tuple(address)`], [[claimAddress]])
-}
-
 async function transformDeltaToPDF(pdfValues: z.infer<typeof DeltaPDFSchema>) {
   if (!pdfValues) return ''
   // Use NextJs dynamic import to reduce the bundle size

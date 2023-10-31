@@ -1,7 +1,6 @@
 import axios from 'axios'
 
 import { ZERO_ADDRESS } from '@/src/constants/bigNumber'
-import { encodeClaimThirdPartyBadgeMetadata } from '@/src/utils/badges/createBadgeModelHelpers'
 import { EmailClaimTx, RelayedTx, RelayedTxResult } from '@/types/relayedTx'
 import { BackendResponse } from '@/types/utils'
 
@@ -44,10 +43,9 @@ export const sendClaimRequest = async (
   claimUUID: string,
   claimAddress: string,
 ): Promise<RelayedTxResult> => {
-  const encodedClaimAddress = encodeClaimThirdPartyBadgeMetadata(claimAddress)
   const res = await axios.post<BackendResponse<{ txHash: string }>>(
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/thirdPartyController/claim`,
-    { claimUUID, claimAddress: encodedClaimAddress },
+    { claimUUID, claimAddress },
   )
   if (res.data && res.data.result) {
     return {
