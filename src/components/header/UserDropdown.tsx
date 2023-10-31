@@ -1,12 +1,16 @@
 import { useRouter } from 'next/router'
 import React, { RefObject, useRef, useState } from 'react'
 
+import { ExpandLess, ExpandMore } from '@mui/icons-material'
 import {
   Avatar,
   Badge,
+  Collapse,
   Divider,
   IconButton,
   ListItemIcon,
+  ListItemText,
+  ListSubheader,
   Menu,
   MenuItem,
   Tooltip,
@@ -15,10 +19,10 @@ import {
 import Blockies from 'react-18-blockies'
 
 import { Logout } from '@/src/components/assets/Logout'
-import { SwitchNetwork } from '@/src/components/assets/SwitchNetwork'
 import ActionButtons from '@/src/components/header/ActionButtons'
-import { ModalSwitchNetwork } from '@/src/components/helpers/ModalSwitchNetwork'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
+import { SwitchNetworkOptions } from '@/src/components/helpers/SwitchNetworkOptions'
+import { getNetworkConfig } from '@/src/config/web3'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { generateBaseUrl, generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 import { truncateStringInTheMiddle } from '@/src/utils/strings'
@@ -54,16 +58,23 @@ const StyledBadge = styled(Badge)<{ state?: 'ok' | 'error' }>(({ state, theme })
 
 export const UserDropdown: React.FC = () => {
   const router = useRouter()
-  const { address, disconnectWallet, isWalletNetworkSupported } = useWeb3Connection()
+  const { address, appChainId, disconnectWallet, isWalletNetworkSupported } = useWeb3Connection()
+  const networkConfig = getNetworkConfig(appChainId)
+
   const [open, setOpen] = useState(false)
   const [showNetworkModal, setShowNetworkModal] = useState(false)
-  const anchorElRef: RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null)
+  const anchorMenuElRef: RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null)
 
   const handleClick = () => {
     setOpen(true)
   }
   const handleClose = () => {
     setOpen(false)
+    setShowNetworkModal(false)
+  }
+
+  const toggleNetworkChange = () => {
+    setShowNetworkModal((prevState) => !prevState)
   }
 
   const logout = async () => {
@@ -80,7 +91,7 @@ export const UserDropdown: React.FC = () => {
   return (
     <>
       <ActionButtons />
-      <Tooltip arrow ref={anchorElRef} title="Account settings">
+      <Tooltip arrow ref={anchorMenuElRef} title="Account settings">
         <IconButton
           aria-controls={open ? 'account-menu' : undefined}
           aria-expanded={open ? 'true' : undefined}
@@ -100,10 +111,9 @@ export const UserDropdown: React.FC = () => {
         </IconButton>
       </Tooltip>
       <Menu
-        anchorEl={anchorElRef.current}
+        anchorEl={anchorMenuElRef.current}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
         id="account-menu"
-        onClick={handleClose}
         onClose={handleClose}
         open={open}
         slotProps={{
@@ -135,20 +145,30 @@ export const UserDropdown: React.FC = () => {
           },
         }}
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+        variant="menu"
       >
-        <MenuItem>
+        <ListSubheader sx={{ lineHeight: '20px', pb: '6px' }}>{networkConfig.name}</ListSubheader>
+        <ListSubheader sx={{ lineHeight: '20px' }}>
           Connected {address ? <>{truncateStringInTheMiddle(address, 8, 4)}</> : 'Error'}
-        </MenuItem>
+        </ListSubheader>
+        <Divider sx={{ my: 1 }} />
         <MenuItem onClick={() => router.push(generateProfileUrl())}>
-          <Avatar>{blockiesIcon} </Avatar> Profile
+          <Avatar>{blockiesIcon}</Avatar> Profile
         </MenuItem>
         <Divider />
-        <MenuItem onClick={() => setShowNetworkModal(true)}>
-          <ListItemIcon>
-            <SwitchNetwork />
+        {/* Switch network */}
+        <MenuItem onClick={toggleNetworkChange} sx={{ pl: 1 }}>
+          <ListItemIcon sx={{ mr: 1 }}>
+            {showNetworkModal ? <ExpandLess /> : <ExpandMore />}
           </ListItemIcon>
-          Switch network
+          <ListItemText primary="Switch network" />
         </MenuItem>
+        {/* Network options */}
+        <Collapse in={showNetworkModal} timeout="auto" unmountOnExit>
+          <SwitchNetworkOptions />
+          <Divider />
+        </Collapse>
+
         <MenuItem onClick={logout}>
           <ListItemIcon>
             <Logout />
@@ -156,9 +176,6 @@ export const UserDropdown: React.FC = () => {
           Logout
         </MenuItem>
       </Menu>
-      {showNetworkModal && (
-        <ModalSwitchNetwork onClose={() => setShowNetworkModal(false)} open={showNetworkModal} />
-      )}
     </>
   )
 }

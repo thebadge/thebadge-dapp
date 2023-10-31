@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 import { styled } from '@mui/material'
 
-import { ModalSwitchNetwork } from '@/src/components/helpers/ModalSwitchNetwork'
+import { SwitchNetworkOptions } from '@/src/components/helpers/SwitchNetworkOptions'
 import { useSizeMD } from '@/src/hooks/useSize'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 
@@ -55,7 +55,7 @@ export const WrongNetwork: React.FC = ({ ...restProps }) => {
         {!isMobileOrTablet ? <span> to use the app!</span> : null}
       </TextWrapper>
       {showNetworkModal && (
-        <ModalSwitchNetwork onClose={() => setShowNetworkModal(false)} open={showNetworkModal} />
+        <SwitchNetworkOptions onClose={() => setShowNetworkModal(false)} open={showNetworkModal} />
       )}
     </Wrapper>
   ) : null
