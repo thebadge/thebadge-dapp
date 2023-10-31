@@ -6,7 +6,6 @@ export type ReviewBadge = {
   badgeKlerosMetaData: {
     reviewDueDate: number
   }
-  badgeThirdPartyMetadata: {}
   badgeModel: {
     badgeModelKleros: {
       challengePeriodDuration: number
