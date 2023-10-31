@@ -153,7 +153,8 @@ export const UserDropdown: React.FC = () => {
         </ListSubheader>
         <Divider sx={{ my: 1 }} />
         <MenuItem onClick={() => router.push(generateProfileUrl())}>
-          <Avatar>{blockiesIcon}</Avatar> Profile
+          <Avatar>{blockiesIcon}</Avatar>
+          <ListItemText primary="Profile" />
         </MenuItem>
         <Divider />
         {/* Switch network */}
@@ -173,7 +174,7 @@ export const UserDropdown: React.FC = () => {
           <ListItemIcon>
             <Logout />
           </ListItemIcon>
-          Logout
+          <ListItemText primary="Logout" />
         </MenuItem>
       </Menu>
     </>
