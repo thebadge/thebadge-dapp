@@ -8,10 +8,10 @@ import SwipeableViews from 'react-swipeable-views'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import useBadgeIdParam from '@/src/hooks/nextjs/useBadgeIdParam'
+import useIsThirdPartyBadge from '@/src/hooks/subgraph/useIsThirdPartyBadge'
 import { useSizeSM } from '@/src/hooks/useSize'
 import ChallengeStatus from '@/src/pagePartials/badge/preview/addons/ChallengeStatus'
 import EvidencesList from '@/src/pagePartials/badge/preview/addons/EvidencesList'
-import useIsThirdPartyBadge from '@/src/hooks/subgraph/useIsThirdPartyBadge'
 
 const StyledTab = styled(Tab)(({ theme }) => ({
   color: theme.palette.text.primary,
