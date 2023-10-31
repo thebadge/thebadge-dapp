@@ -76,7 +76,7 @@ export default class MyDocument extends Document {
 
   title = 'The Badge dApp - Decentralized certifications tokenized as NFTs'
   description =
-    'The Badge is a decentralized certification platform powered by Ethereum. It provides users with the opportunity to tokenize any piece of information from the real world in the form of badges. These badges are verified and validated by the thirdParty, which decides what should be accepted and what should not be.'
+    'The Badge is a decentralized certification platform powered by Ethereum. It provides users with the opportunity to tokenize any piece of information from the real world in the form of badges. These badges are verified and validated by the community, which decides what should be accepted and what should not be.'
   twitterHandle = '@thebadgexyz'
 
   render = () => {
