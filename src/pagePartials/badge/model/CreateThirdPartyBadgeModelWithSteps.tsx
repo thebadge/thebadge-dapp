@@ -97,7 +97,7 @@ export default function CreateThirdPartyBadgeModelWithSteps({
         )}
         {txState === TransactionStates.success && <BadgeModelCreated />}
         {txState === TransactionStates.none && (
-          <form onSubmit={methods.handleSubmit(onSubmit)}>
+          <form onSubmit={methods.handleSubmit(onSubmit, (e) => console.log(e))}>
             <Stack gap={3}>
               {currentStep === 0 && <BadgeModelUIBasics />}
               {currentStep === 1 && <BadgeModelStrategy />}

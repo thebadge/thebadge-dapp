@@ -31,7 +31,6 @@ type MintStepsProps = {
 const STEP_0 = ['terms']
 // Use undefined to trigger a full schema validation, that makes the .superRefine logic to be executed
 const STEP_1 = ['destination', 'preferMintMethod'] //TODO disabled as seems not working fine
-//const STEP_1: string[] = ['email', 'address', 'preferMintMethod']
 const STEP_2 = ['previewImage']
 
 const FIELDS_TO_VALIDATE_ON_STEP = [STEP_0, STEP_1, STEP_2]

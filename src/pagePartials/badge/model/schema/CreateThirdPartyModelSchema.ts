@@ -2,7 +2,6 @@ import { z } from 'zod'
 
 import {
   AddressSchema,
-  AgreementSchema,
   ExpirationTypeSchema,
   ImageSchema,
   LongTextSchema,
@@ -10,7 +9,6 @@ import {
 } from '@/src/components/form/helpers/customSchemas'
 
 export const CreateThirdPartyModelSchema = z.object({
-  howItWorks: AgreementSchema,
   // ------ UI BASICS FIELD ------
   name: z.string().max(28),
   description: LongTextSchema,
