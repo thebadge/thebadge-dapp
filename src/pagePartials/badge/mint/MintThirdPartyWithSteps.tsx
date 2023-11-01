@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Container, Stack } from '@mui/material'
@@ -30,8 +30,8 @@ type MintStepsProps = {
 
 const STEP_0 = ['terms']
 // Use undefined to trigger a full schema validation, that makes the .superRefine logic to be executed
-//const STEP_1 = undefined TODO disabled as seems not working fine
-const STEP_1: string[] = ['email', 'address', 'preferMintMethod']
+const STEP_1 = ['destination', 'preferMintMethod'] //TODO disabled as seems not working fine
+//const STEP_1: string[] = ['email', 'address', 'preferMintMethod']
 const STEP_2 = ['previewImage']
 
 const FIELDS_TO_VALIDATE_ON_STEP = [STEP_0, STEP_1, STEP_2]
@@ -41,7 +41,6 @@ export default function MintThirdPartyWithSteps({
   resetTxState,
   txState = TransactionStates.none,
 }: MintStepsProps) {
-  const badgePreviewRef = useRef<HTMLDivElement>()
   const [currentStep, setCurrentStep] = useState(0)
   const modelId = useModelIdParam()
 
@@ -111,7 +110,7 @@ export default function MintThirdPartyWithSteps({
             <Stack gap={3}>
               {currentStep === 0 && <HowItWorksThirdParty />}
               {currentStep === 1 && <FormThirdParty />}
-              {currentStep === 2 && <SubmitPreviewThirdParty badgePreviewRef={badgePreviewRef} />}
+              {currentStep === 2 && <SubmitPreviewThirdParty />}
 
               <StepFooter
                 color="blue"
