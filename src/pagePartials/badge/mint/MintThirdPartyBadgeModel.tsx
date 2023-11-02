@@ -84,7 +84,6 @@ const MintThirdPartyBadgeModel: NextPageWithLayout = () => {
           badgeModelId,
           preferMintMethod === 'email' ? ZERO_ADDRESS : destination,
           badgeMetadataIPFSHash,
-          // TODO Check if this makes sense or not
           encodedBadgeMetadata,
           {
             value: mintValue,
