@@ -103,6 +103,7 @@
         "name": "Name",
         "description": "Description",
         "mintCost": "Mint cost:",
+        "depositCost": "Deposit cost:",
         "totalMinted": "Total minted amount:",
         "mint": "Mint",
         "showOthers": "See minted badges"

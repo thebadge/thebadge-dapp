@@ -20,11 +20,14 @@ export default function InViewPort({
   fallback = <Loading color={color} />,
 }: PropsWithChildren<Props & SpinnerProps>) {
   const elemRef = useRef<HTMLDivElement>(null)
-  const { inViewport } = useInViewport(elemRef)
+  const { enterCount, inViewport } = useInViewport(elemRef)
 
+  // If it has been rendered, the query was made, so we can safely render it
+  // since the network call was already made
+  const shouldDisplay = enterCount > 0 || inViewport
   return (
     <Stack minHeight={minHeight} minWidth={minWidth} position="relative" ref={elemRef}>
-      {inViewport ? children : fallback}
+      {shouldDisplay ? children : fallback}
     </Stack>
   )
 }
