@@ -5,7 +5,7 @@ import { BadgePreview } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 import { useFormContext } from 'react-hook-form'
 
-import { CreateModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateModelSchema'
+import { CreateCommunityModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateCommunityModelSchema'
 import {
   BADGE_MODEL_BACKGROUNDS,
   BADGE_MODEL_TEXT_CONTRAST,
@@ -22,7 +22,7 @@ const BoxShadow = styled(Box)(({ theme }) => ({
 
 export default function BadgeModelConfirmation() {
   const { t } = useTranslation()
-  const { watch } = useFormContext<CreateModelSchemaType>()
+  const { watch } = useFormContext<CreateCommunityModelSchemaType>()
 
   const watchedName = watch('name')
   const watchedDescription = watch('description')

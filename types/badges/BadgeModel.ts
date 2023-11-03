@@ -1,10 +1,10 @@
 export enum BadgeModelControllerType {
   // TODO replace kleros with community
   Community = 'kleros',
-  ThirdParty = 'thirdparty',
+  ThirdParty = 'thirdParty',
 }
 
 export enum BadgeModelControllerName {
   Kleros = 'kleros',
-  ThirdParty = 'thirdparty',
+  ThirdParty = 'thirdParty',
 }

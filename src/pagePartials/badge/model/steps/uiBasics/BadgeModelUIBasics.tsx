@@ -10,7 +10,7 @@ import { DropdownSelect } from '@/src/components/form/formFields/DropdownSelect'
 import { ImageInput } from '@/src/components/form/formFields/ImageInput'
 import { TextArea } from '@/src/components/form/formFields/TextArea'
 import { TextField } from '@/src/components/form/formFields/TextField'
-import { CreateModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateModelSchema'
+import { CreateCommunityModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateCommunityModelSchema'
 
 const BoxShadow = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -41,7 +41,7 @@ export const BADGE_MODEL_BACKGROUNDS: { [key: string]: string } = {
 
 export default function BadgeModelUIBasics() {
   const { t } = useTranslation()
-  const { control, watch } = useFormContext<CreateModelSchemaType>()
+  const { control, watch } = useFormContext<CreateCommunityModelSchemaType>()
 
   const watchedName = watch('name')
   const watchedDescription = watch('description')

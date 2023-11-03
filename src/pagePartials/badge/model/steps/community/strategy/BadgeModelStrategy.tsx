@@ -6,17 +6,17 @@ import { Controller, useFormContext } from 'react-hook-form'
 
 import { ExpirationField } from '@/src/components/form/formFields/ExpirationField'
 import { PeriodSelector } from '@/src/components/form/formFields/PeriodSelector'
+import { SeveritySelector } from '@/src/components/form/formFields/SeveritySelector'
 import { TokenInput } from '@/src/components/form/formFields/TokenInput'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { getNetworkConfig } from '@/src/config/web3'
-import { CreateModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateModelSchema'
-import RequirementInput from '@/src/pagePartials/badge/model/steps/strategy/RequirementInput'
+import { CreateCommunityModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateCommunityModelSchema'
+import RequirementInput from '@/src/pagePartials/badge/model/steps/community/strategy/RequirementInput'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
-import { SeveritySelector } from 'src/components/form/formFields/SeveritySelector'
 
 export default function BadgeModelStrategy() {
   const { t } = useTranslation()
-  const { control } = useFormContext<CreateModelSchemaType>()
+  const { control } = useFormContext<CreateCommunityModelSchemaType>()
   const { appChainId } = useWeb3Connection()
   const networkConfig = getNetworkConfig(appChainId)
 

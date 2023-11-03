@@ -4,23 +4,17 @@ import { useEffect } from 'react'
 
 import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import useControllerTypeParam from '@/src/hooks/nextjs/useControllerTypeParam'
-import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import useTransaction, { TransactionStates } from '@/src/hooks/useTransaction'
-import MintKlerosBadgeModel from '@/src/pagePartials/badge/mint/MintCommunityBadgeModel'
-import MintThirdPartyBadgeModel from '@/src/pagePartials/badge/mint/MintThirdPartyBadgeModel'
+import CreateCommunityBadgeModel from '@/src/pagePartials/badge/model/CreateCommunityBadgeModel'
+import CreateThirdPartyBadgeModel from '@/src/pagePartials/badge/model/CreateThirdPartyBadgeModel'
 import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 import { BadgeModelControllerType } from '@/types/badges/BadgeModel'
 import { NextPageWithLayout } from '@/types/next'
 
-const MintBadgeModel: NextPageWithLayout = () => {
+const CreateBadgeModel: NextPageWithLayout = () => {
   const { state } = useTransaction()
   const router = useRouter()
-  const badgeModelId = useModelIdParam()
   const controllerType = useControllerTypeParam()
-
-  if (!badgeModelId) {
-    throw `No modelId provided as URL query param`
-  }
 
   if (!controllerType) {
     throw `No controllerType provided as URL query param`
@@ -35,10 +29,10 @@ const MintBadgeModel: NextPageWithLayout = () => {
 
   switch (controllerType.toLowerCase()) {
     case BadgeModelControllerType.Community.toLowerCase(): {
-      return <MintKlerosBadgeModel />
+      return <CreateCommunityBadgeModel />
     }
     case BadgeModelControllerType.ThirdParty.toLowerCase(): {
-      return <MintThirdPartyBadgeModel />
+      return <CreateThirdPartyBadgeModel />
     }
     default: {
       throw `Route does not exists`
@@ -46,4 +40,4 @@ const MintBadgeModel: NextPageWithLayout = () => {
   }
 }
 
-export default withPageGenericSuspense(MintBadgeModel)
+export default withPageGenericSuspense(CreateBadgeModel)

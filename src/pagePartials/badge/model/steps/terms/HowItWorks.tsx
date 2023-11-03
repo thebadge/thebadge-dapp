@@ -7,11 +7,11 @@ import { Controller, useFormContext } from 'react-hook-form'
 import HowItWorksStep from '@/src/components/common/HowItWorksStep'
 import { AgreementCheckbox } from '@/src/components/form/formFields/AgreementCheckbox'
 import { DISCORD_URL, DOCS_URL, DOCUMENTATION_URL } from '@/src/constants/common'
-import { CreateModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateModelSchema'
+import { CreateCommunityModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateCommunityModelSchema'
 
 export default function HowItWorks() {
   const { t } = useTranslation()
-  const { control } = useFormContext<CreateModelSchemaType>() // retrieve all hook methods
+  const { control } = useFormContext<CreateCommunityModelSchemaType>() // retrieve all hook methods
 
   return (
     <Stack gap={8} mt={4}>
