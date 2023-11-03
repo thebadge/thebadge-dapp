@@ -8,6 +8,7 @@ import SwipeableViews from 'react-swipeable-views'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import useBadgeIdParam from '@/src/hooks/nextjs/useBadgeIdParam'
+import useIsThirdPartyBadge from '@/src/hooks/subgraph/useIsThirdPartyBadge'
 import { useSizeSM } from '@/src/hooks/useSize'
 import ChallengeStatus from '@/src/pagePartials/badge/preview/addons/ChallengeStatus'
 import EvidencesList from '@/src/pagePartials/badge/preview/addons/EvidencesList'
@@ -29,6 +30,7 @@ export default function BadgeStatusAndEvidence() {
   if (!badgeId) {
     throw `No badgeId provided us URL query param`
   }
+  const isThirdParty = useIsThirdPartyBadge(badgeId)
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setSelectedTab(newValue)
@@ -62,15 +64,17 @@ export default function BadgeStatusAndEvidence() {
               </SafeSuspense>
             </TabPanel>
 
-            <TabPanel index={1} value={selectedTab}>
-              <SafeSuspense>
-                <ChallengeStatus />
-              </SafeSuspense>
-            </TabPanel>
+            {!isThirdParty && (
+              <TabPanel index={1} value={selectedTab}>
+                <SafeSuspense>
+                  <ChallengeStatus />
+                </SafeSuspense>
+              </TabPanel>
+            )}
           </SwipeableViews>
         </>
       )}
-      {!isMobile && (
+      {!isMobile && !isThirdParty && (
         <>
           <SafeSuspense>
             <ChallengeStatus />

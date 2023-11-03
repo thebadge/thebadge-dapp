@@ -2,17 +2,13 @@ import * as React from 'react'
 
 import { Box, Stack, Typography, styled } from '@mui/material'
 import { colors } from '@thebadge/ui-library'
+import { formatUnits } from 'ethers/lib/utils'
 import { useTranslation } from 'next-export-i18n'
 
 import { getNetworkConfig } from '@/src/config/web3'
 import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
+import useMintValue from '@/src/hooks/theBadge/useMintValue'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
-
-type Props = {
-  costs: {
-    totalMintCost: string
-  }
-}
 
 const CostContainer = styled(Stack)(({ theme }) => ({
   flex: 1,
@@ -28,7 +24,7 @@ const ValueContainer = styled(Box)(({ theme }) => ({
   marginBottom: theme.spacing(1),
 }))
 
-export default function MintCostThirdParty({ costs }: Props) {
+export default function MintCostThirdParty() {
   const { t } = useTranslation()
   const { appChainId } = useWeb3Connection()
   const networkConfig = getNetworkConfig(appChainId)
@@ -37,6 +33,14 @@ export default function MintCostThirdParty({ costs }: Props) {
   if (!modelId) {
     throw `No modelId provided as URL query param`
   }
+
+  // Get kleros deposit value for the badge model
+  const { data: mintValue } = useMintValue(modelId)
+  if (!mintValue) {
+    throw `There was not possible to get the value to mint a badge for the badge model: ${modelId}`
+  }
+
+  const totalMintCost = formatUnits(mintValue, 18)
 
   return (
     <Stack
@@ -58,7 +62,7 @@ export default function MintCostThirdParty({ costs }: Props) {
             sx={{ display: 'flex', fontWeight: 'bold' }}
             variant="body2"
           >
-            {costs.totalMintCost} {networkConfig.token}
+            {totalMintCost} {networkConfig.token}
           </Typography>
         </ValueContainer>
       </CostContainer>

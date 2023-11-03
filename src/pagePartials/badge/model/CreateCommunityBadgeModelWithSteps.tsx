@@ -1,68 +1,56 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Container, Stack } from '@mui/material'
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-import StepFooter from './steps/StepFooter'
-import { defaultValues } from './utils'
+import StepHeaderCommunity from './steps/community/StepHeaderCommunity'
+import { defaultValues, getFieldsToValidateOnStep } from './utils'
 import StepPrompt from '@/src/components/form/formWithSteps/StepPrompt'
 import { TransactionLoading } from '@/src/components/loading/TransactionLoading'
-import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import { TransactionStates } from '@/src/hooks/useTransaction'
 import { useTriggerRHF } from '@/src/hooks/useTriggerRHF'
 import {
-  MintThirdPartySchema,
-  MintThirdPartySchemaType,
-} from '@/src/pagePartials/badge/mint/schema/MintThirdPartySchema'
-import StepHeaderThirdParty from '@/src/pagePartials/badge/mint/steps/StepHeaderThirdParty'
-import FormThirdParty from '@/src/pagePartials/badge/mint/steps/dynamicForm/FormThirdParty'
-import MintSucceed from '@/src/pagePartials/badge/mint/steps/preview/MintSucceed'
-import SubmitPreviewThirdParty from '@/src/pagePartials/badge/mint/steps/preview/SubmitPreviewThirdParty'
-import HowItWorksThirdParty from '@/src/pagePartials/badge/mint/steps/terms/HowItWorksThirdParty'
+  CreateCommunityModelSchema,
+  CreateCommunityModelSchemaType,
+} from '@/src/pagePartials/badge/model/schema/CreateCommunityModelSchema'
+import StepFooter from '@/src/pagePartials/badge/model/steps/StepFooter'
+import BadgeModelStrategy from '@/src/pagePartials/badge/model/steps/community/strategy/BadgeModelStrategy'
+import BadgeModelEvidenceFormCreation from '@/src/pagePartials/badge/model/steps/evidence/BadgeModelEvidenceFormCreation'
+import BadgeModelConfirmation from '@/src/pagePartials/badge/model/steps/preview/BadgeModelConfirmation'
+import BadgeModelCreated from '@/src/pagePartials/badge/model/steps/preview/BadgeModelCreated'
+import HowItWorks from '@/src/pagePartials/badge/model/steps/terms/HowItWorks'
+import BadgeModelUIBasics from '@/src/pagePartials/badge/model/steps/uiBasics/BadgeModelUIBasics'
+import { BadgeModelControllerType } from '@/types/badges/BadgeModel'
 
-type MintStepsProps = {
-  onSubmit: SubmitHandler<MintThirdPartySchemaType>
+type CreateModelStepsProps = {
+  onSubmit: SubmitHandler<CreateCommunityModelSchemaType>
   txState: TransactionStates
   resetTxState: VoidFunction
 }
 
-const STEP_0 = ['terms']
-// Use undefined to trigger a full schema validation, that makes the .superRefine logic to be executed
-const STEP_1 = ['destination', 'preferMintMethod'] //TODO disabled as seems not working fine
-const STEP_2 = ['previewImage']
-
-const FIELDS_TO_VALIDATE_ON_STEP = [STEP_0, STEP_1, STEP_2]
-
-export default function MintThirdPartyWithSteps({
+export default function CreateCommunityBadgeModelWithSteps({
   onSubmit,
   resetTxState,
   txState = TransactionStates.none,
-}: MintStepsProps) {
+}: CreateModelStepsProps) {
   const [currentStep, setCurrentStep] = useState(0)
-  const modelId = useModelIdParam()
 
   // Naive completed step implementation
   const [completed, setCompleted] = useState<Record<string, boolean>>({})
 
-  const methods = useForm<z.infer<typeof MintThirdPartySchema>>({
-    resolver: zodResolver(MintThirdPartySchema),
-    defaultValues: defaultValues(modelId),
+  const methods = useForm<z.infer<typeof CreateCommunityModelSchema>>({
+    resolver: zodResolver(CreateCommunityModelSchema),
+    defaultValues: defaultValues(),
     reValidateMode: 'onChange',
     mode: 'onChange',
   })
 
   const triggerValidation = useTriggerRHF(methods)
-  const watchedPreferMintMethod = methods.watch('preferMintMethod')
-
-  useEffect(() => {
-    // Each time that the preferMintMethod changes, we wan to trigger the validation
-    triggerValidation(STEP_1)
-  }, [triggerValidation, watchedPreferMintMethod])
-
   async function isValidStep() {
-    return await triggerValidation(FIELDS_TO_VALIDATE_ON_STEP[currentStep])
+    const steps = getFieldsToValidateOnStep(BadgeModelControllerType.Community)
+    return await triggerValidation(steps[currentStep])
   }
 
   // Navigation helpers to go back on the steps
@@ -83,6 +71,11 @@ export default function MintThirdPartyWithSteps({
   async function onStepNavigation(stepNumber: number) {
     // Safeguard to prevent navigation on Transaction
     if (txState !== TransactionStates.none) return
+    // Allow go back
+    if (currentStep > stepNumber) {
+      setCurrentStep(stepNumber)
+      return
+    }
     const isValid = await isValidStep()
     // Only allows one step further or to a completed steps
     if (isValid && (stepNumber <= currentStep + 1 || completed[stepNumber])) {
@@ -94,7 +87,7 @@ export default function MintThirdPartyWithSteps({
   return (
     <FormProvider {...methods}>
       <StepPrompt hasUnsavedChanges={methods.formState.isDirty} />
-      <StepHeaderThirdParty
+      <StepHeaderCommunity
         completedSteps={completed}
         currentStep={currentStep}
         onStepNavigation={onStepNavigation}
@@ -103,16 +96,18 @@ export default function MintThirdPartyWithSteps({
         {txState !== TransactionStates.none && txState !== TransactionStates.success && (
           <TransactionLoading resetTxState={resetTxState} state={txState} />
         )}
-        {txState === TransactionStates.success && <MintSucceed />}
+        {txState === TransactionStates.success && <BadgeModelCreated />}
         {txState === TransactionStates.none && (
           <form onSubmit={methods.handleSubmit(onSubmit)}>
             <Stack gap={3}>
-              {currentStep === 0 && <HowItWorksThirdParty />}
-              {currentStep === 1 && <FormThirdParty />}
-              {currentStep === 2 && <SubmitPreviewThirdParty />}
+              {currentStep === 0 && <HowItWorks />}
+              {currentStep === 1 && <BadgeModelUIBasics />}
+              {currentStep === 2 && <BadgeModelStrategy />}
+              {currentStep === 3 && <BadgeModelEvidenceFormCreation />}
+              {currentStep === 4 && <BadgeModelConfirmation />}
 
               <StepFooter
-                color="blue"
+                color="purple"
                 currentStep={currentStep}
                 onBackCallback={onBackCallback}
                 onNextCallback={onNextCallback}

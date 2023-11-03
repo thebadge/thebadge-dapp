@@ -8,15 +8,9 @@ import StepHeaderStepper from '@/src/components/form/formWithSteps/StepHeaderSte
 import StepHeaderSubtitle from '@/src/components/form/formWithSteps/StepHeaderSubtitle'
 import { DOCS_URL } from '@/src/constants/common'
 
-const steps = [
-  'Help',
-  'Badge model basics',
-  'Badge model strategy',
-  'Evidence form',
-  'Badge model preview',
-]
+const steps = ['Badge model basics', 'Badge model details', 'Badge model preview']
 
-export default function StepHeader({
+export default function StepHeaderThirdParty({
   completedSteps,
   currentStep,
   onStepNavigation,

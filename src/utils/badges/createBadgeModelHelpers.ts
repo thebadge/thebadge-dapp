@@ -5,7 +5,7 @@ import { z } from 'zod'
 
 import { DeltaPDFSchema } from '@/src/components/form/helpers/customSchemas'
 import { APP_URL } from '@/src/constants/common'
-import { BadgeModelCriteriaType } from '@/src/pagePartials/badge/model/schema/CreateModelSchema'
+import { BadgeModelCommunityCriteriaType } from '@/src/pagePartials/badge/model/schema/CreateCommunityModelSchema'
 import { convertHashToValidIPFSKlerosHash } from '@/src/utils/fileUtils'
 import ipfsUpload from '@/src/utils/ipfsUpload'
 import {
@@ -63,7 +63,7 @@ export async function createAndUploadClearingAndRegistrationFilesForKleros(
   badgeModelName: string,
   badgeModelDescription: string,
   badgeModelLogoUri: BackendFileUpload,
-  badgeModelCriteria: BadgeModelCriteriaType,
+  badgeModelCriteria: BadgeModelCommunityCriteriaType,
   badgeModelKlerosColumns: MetadataColumn[],
 ) {
   let badgeModelCriteriaFile: BackendFileUpload = {
@@ -174,6 +174,10 @@ export async function encodeKlerosBadgeModelControllerData(
       ],
     ],
   )
+}
+
+export async function encodeThirdPartyBadgeModelControllerData(administrators: string[]) {
+  return defaultAbiCoder.encode(['tuple(address[])'], [[administrators]])
 }
 
 export const encodeIpfsEvidence = (ipfsEvidenceHash: string): string => {

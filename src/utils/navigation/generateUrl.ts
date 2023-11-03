@@ -14,8 +14,10 @@ export function generateModelExplorerUrl(
   return `/badgeModel/${controllerType}/${badgeModelId}/explorer`
 }
 
-export function generateBadgeModelCreate() {
-  return `/badgeModel/create`
+export function generateBadgeModelCreate(
+  controllerType: string = BadgeModelControllerType.Community,
+) {
+  return `/badgeModel/create/${controllerType}`
 }
 
 export function generateBadgeExplorer() {

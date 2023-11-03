@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import * as React from 'react'
 
 import { Box, Stack, Typography } from '@mui/material'
@@ -15,16 +15,15 @@ type BadgePreviewGeneratorProps = {
   modelId: string
   setValue: UseFormSetValue<any>
   badgeUrl?: string
-  badgePreviewRef: React.MutableRefObject<HTMLDivElement | undefined>
 }
 
 export const BadgePreviewGenerator = ({
-  badgePreviewRef,
   badgeUrl,
   modelId,
   setValue,
   title,
 }: BadgePreviewGeneratorProps) => {
+  const badgePreviewRef = useRef<HTMLDivElement>()
   const badgeModelData = useBadgeModel(modelId)
   const badgeModelMetadata = badgeModelData.data?.badgeModelMetadata
   const badgeLogoImage = badgeModelData.data?.badgeModelMetadata?.image

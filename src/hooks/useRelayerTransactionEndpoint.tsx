@@ -56,15 +56,11 @@ export default function useRelayerTransactionEndpoint() {
       try {
         notifyWaitingForSignature()
         setTransactionState(TransactionStates.waitingSignature)
-        console.log('requesting method')
         const { errorMessage, txHash, valid } = await requestedMethod()
-        console.log('result', txHash, 'valid', valid, 'error', errorMessage)
         if (!valid || !txHash) {
           throw new Error(errorMessage)
         }
-        console.log('atuei')
         await waitForAsyncTxExecution(txHash)
-        console.log('dutie')
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (e: any) {
         const error = new TransactionError(

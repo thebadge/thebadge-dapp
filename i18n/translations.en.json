@@ -243,7 +243,9 @@
     "outOfServiceSubtitle": "Please, head over to our Discord channel for more information.",
     "outOfServiceErrorCode": "Error code: `{{errorCode}}`",
     "fileType": "The selected file's type is not allowed",
-    "fileMaxSize": "The selected file's size exceeds maxFileSize"
+    "fileMaxSize": "The selected file's size exceeds maxFileSize",
+    "noTheBadgeModelCreator": "Oops, something went wrong!",
+    "noTheBadgeModelCreatorSubtitle": "Seems like you dont have access to this badge model. Please get in touch with the creator."
   },
   "creator": {
     "register": {
@@ -342,10 +344,10 @@
           "challengePeriodDuration": "Challenge period duration",
           "rigorousness": "Rigorousness",
           "validFor": "Expiration time",
-          "mintFee": "Mint fee"
+          "mintFee": "Mint fee",
+          "administrators": "The addresses of the administrators"
         },
-        "evidence": {
-        },
+        "evidence": {},
         "confirmation": {
           "youAgree": "By continuing, you agree to our ",
           "termsOfUse": "terms of use",
@@ -399,6 +401,24 @@
         "back": "Back",
         "next": "Next",
         "submit": "Submit"
+      },
+      "claim": {
+        "thirdParty": {
+          "header": {
+            "title": "Claim your badge",
+            "subTitle": "You have received a badge from [{{creatorName}}]({{creatorProfileUrl}}). Please complete the following form to receive it.",
+            "titleSuccess": "Your badge has been successfully claimed!"
+          },
+          "body": {
+            "title": "Please fill up with your Ethereum Address",
+            "addressPlaceholder": "address"
+          },
+          "preview": {
+            "title": "This is how your new Badge is going to look like:",
+            "goToProfile": "Check your new badge",
+            "submit": "Submit"
+          }
+        }
       }
     },
     "viewBadge": {
