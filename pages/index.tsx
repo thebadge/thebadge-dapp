@@ -1,4 +1,4 @@
-import { Box, useTheme } from '@mui/material'
+import { Box, Stack, styled, useTheme } from '@mui/material'
 import { SectionLayout, colors, gradients } from '@thebadge/ui-library'
 
 import BadgeCreator from '@/src/pagePartials/home/BadgeCreator'
@@ -11,6 +11,14 @@ import ProtocolStatistics from '@/src/pagePartials/home/statistics/ProtocolStati
 import { useSectionReferences } from '@/src/providers/referencesProvider'
 import { useColorMode } from '@/src/providers/themeProvider'
 import { NextPageWithLayout } from '@/types/next'
+
+const SectionContainer = styled(Stack)(({ theme }) => ({
+  flexDirection: 'row',
+  gap: theme.spacing(5),
+  [theme.breakpoints.down(1000)]: {
+    flexDirection: 'column',
+  },
+}))
 
 const Home: NextPageWithLayout = () => {
   const { homeSection } = useSectionReferences()
@@ -54,13 +62,7 @@ const Home: NextPageWithLayout = () => {
         }}
       />
 
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          columnGap: '40px',
-        }}
-      >
+      <SectionContainer>
         <SectionLayout
           backgroundColor={colors.transparent}
           borderColor={colors.pink}
@@ -76,7 +78,7 @@ const Home: NextPageWithLayout = () => {
             boxShadow: '0px 0px 6px rgba(0, 0, 0, 0.3)',
           }}
         />
-      </Box>
+      </SectionContainer>
 
       <ProtocolStatistics />
 

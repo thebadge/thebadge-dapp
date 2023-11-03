@@ -3,7 +3,7 @@ import React from 'react'
 import { colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 
-import TBUserInfoExpandablePreview from '@/src/components/common/TBUserInfoMenuPreview'
+import TBUserInfoExpandablePreview from '@/src/components/common/TBUserInfoExpandablePreview'
 import { useUserById } from '@/src/hooks/subgraph/useUserById'
 import useIsUserVerified from '@/src/hooks/theBadge/useIsUserVerified'
 import useS3Metadata from '@/src/hooks/useS3Metadata'

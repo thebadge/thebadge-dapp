@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
+import React, { RefObject, useRef, useState } from 'react'
 
-import { styled } from '@mui/material'
+import { Divider, Menu, styled } from '@mui/material'
 
-import { ModalSwitchNetwork } from '@/src/components/helpers/ModalSwitchNetwork'
+import { SwitchNetworkOptions } from '@/src/components/helpers/SwitchNetworkOptions'
 import { useSizeMD } from '@/src/hooks/useSize'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 
@@ -46,17 +46,24 @@ export const WrongNetwork: React.FC = ({ ...restProps }) => {
   const { isWalletConnected, isWalletNetworkSupported } = useWeb3Connection()
   const [showNetworkModal, setShowNetworkModal] = useState(false)
   const isMobileOrTablet = useSizeMD()
+  const anchorMenuElRef: RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null)
 
   return isWalletConnected && !isWalletNetworkSupported ? (
     <Wrapper {...restProps}>
       <ErrorSVG />
-      <TextWrapper>
+      <TextWrapper ref={anchorMenuElRef}>
         <Underline onClick={() => setShowNetworkModal(true)}>Switch to a valid network</Underline>
         {!isMobileOrTablet ? <span> to use the app!</span> : null}
       </TextWrapper>
-      {showNetworkModal && (
-        <ModalSwitchNetwork onClose={() => setShowNetworkModal(false)} open={showNetworkModal} />
-      )}
+      <Menu
+        anchorEl={anchorMenuElRef.current}
+        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+        onClose={() => setShowNetworkModal(false)}
+        open={showNetworkModal}
+      >
+        <SwitchNetworkOptions />
+        <Divider />
+      </Menu>
     </Wrapper>
   ) : null
 }
