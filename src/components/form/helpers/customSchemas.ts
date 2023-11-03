@@ -35,15 +35,6 @@ export const AgreementSchema = z
   .refine((value) => value, {
     message: 'You need to agree to be able to continue.',
   })
-export const AgreementSchemaBranded = createUniqueFieldSchema(AgreementSchema, 'AgreementSchema')
-
-export const RadioButtonSchema = createUniqueFieldSchema(
-  z.boolean({
-    required_error: 'Is required',
-    invalid_type_error: 'Must be a boolean',
-  }),
-  'RadioButtonSchema',
-)
 
 export const AddressSchema = createUniqueFieldSchema(
   z.string({ required_error: 'Is required' }).refine(isAddress, {
@@ -210,12 +201,9 @@ export const KlerosDynamicFields = createUniqueFieldSchema(
   'KlerosDynamicFields',
 )
 
-export const ThirdPartyAdministratorsFields = createUniqueFieldSchema(
-  z
-    .array(AddressSchema, {
-      required_error: 'Must provide at least one administrator.',
-    })
-    .min(1, 'Must provide at least one administrator.')
-    .max(10, `Can't add more than ten (10)`),
-  'ThirdPartyAdministratorsFields',
-)
+export const ThirdPartyAdministratorsFields = z
+  .array(AddressSchema, {
+    required_error: 'Must provide at least one administrator.',
+  })
+  .min(1, 'Must provide at least one administrator.')
+  .max(10, `Can't add more than ten (10)`)

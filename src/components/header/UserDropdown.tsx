@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router'
 import React, { RefObject, useRef, useState } from 'react'
 
+import { AddressZero } from '@ethersproject/constants'
 import { ExpandLess, ExpandMore } from '@mui/icons-material'
 import {
   Avatar,
@@ -20,12 +21,12 @@ import Blockies from 'react-18-blockies'
 
 import { Logout } from '@/src/components/assets/Logout'
 import ActionButtons from '@/src/components/header/ActionButtons'
+import { Address } from '@/src/components/helpers/Address'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { SwitchNetworkOptions } from '@/src/components/helpers/SwitchNetworkOptions'
 import { getNetworkConfig } from '@/src/config/web3'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { generateBaseUrl, generateProfileUrl } from '@/src/utils/navigation/generateUrl'
-import { truncateStringInTheMiddle } from '@/src/utils/strings'
 
 const StyledBadge = styled(Badge)<{ state?: 'ok' | 'error' }>(({ state, theme }) => ({
   '& .MuiBadge-badge': {
@@ -75,6 +76,12 @@ export const UserDropdown: React.FC = () => {
 
   const toggleNetworkChange = () => {
     setShowNetworkModal((prevState) => !prevState)
+  }
+
+  const handleProfileNavigation = () => {
+    setOpen(false)
+
+    router.push(generateProfileUrl())
   }
 
   const logout = async () => {
@@ -149,10 +156,10 @@ export const UserDropdown: React.FC = () => {
       >
         <ListSubheader sx={{ lineHeight: '20px', pb: '6px' }}>{networkConfig.name}</ListSubheader>
         <ListSubheader sx={{ lineHeight: '20px' }}>
-          Connected {address ? <>{truncateStringInTheMiddle(address, 8, 4)}</> : 'Error'}
+          Connected <Address address={address || AddressZero} showExternalLink={false} />
         </ListSubheader>
         <Divider sx={{ my: 1 }} />
-        <MenuItem onClick={() => router.push(generateProfileUrl())}>
+        <MenuItem onClick={handleProfileNavigation}>
           <Avatar>{blockiesIcon}</Avatar>
           <ListItemText primary="Profile" />
         </MenuItem>
