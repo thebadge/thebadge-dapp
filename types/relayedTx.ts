@@ -1,9 +1,8 @@
 import { UserInfo } from '@web3auth/base'
 
-import { ChainsValues } from '@/types/chains'
-
 export enum SupportedRelayMethods {
   MINT = 'mint',
+  MINT_ALEO = 'mintAleo',
   IS_ASSET_ACTIVE = 'isAssetActive',
 }
 
@@ -24,6 +23,8 @@ export interface RelayedTx {
     userSocialInfo: Partial<UserInfo>
     address: string
   }
+
+  isSocialLogin: boolean
 }
 
 export interface EmailClaimTx {

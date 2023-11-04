@@ -111,7 +111,8 @@ export default function useTransaction() {
       try {
         notifyWaitingForSignature()
         setTransactionState(TransactionStates.waitingSignature)
-        const { appPubKey, chainId, data, from, method, signature, userAccount } = populatedTx
+        const { appPubKey, chainId, data, from, isSocialLogin, method, signature, userAccount } =
+          populatedTx
         const { error, message, result } = await sendTxToRelayer({
           data,
           from,
@@ -120,9 +121,15 @@ export default function useTransaction() {
           signature,
           userAccount,
           appPubKey,
+          isSocialLogin,
         })
         if (error || !result) {
           throw new Error(message)
+        }
+        if (result.txHash == '0xFakeAleo') {
+          notifyTxMined(result.txHash, true)
+          setTransactionState(TransactionStates.success)
+          return
         }
         if (result.txHash) {
           await waitForAsyncTxExecution(result.txHash)
@@ -139,7 +146,13 @@ export default function useTransaction() {
         notifyRejectSignature(error.code === 4001 ? 'User denied signature' : error.message)
       }
     },
-    [isAppConnected, notifyWaitingForSignature, waitForAsyncTxExecution, notifyRejectSignature],
+    [
+      isAppConnected,
+      notifyWaitingForSignature,
+      waitForAsyncTxExecution,
+      notifyRejectSignature,
+      notifyTxMined,
+    ],
   )
 
   return { state, sendTx, sendRelayTx, resetTxState }

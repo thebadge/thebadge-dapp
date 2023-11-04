@@ -18,22 +18,30 @@ type ZKModalProps = {
   open: boolean
   onClose: () => void
   badgeId: string
+  badgeModelId: string
 }
 
 const ZKAleoSchema = z.object({
   address: z.string(),
 })
 
-export default function ZKModal({ badgeId, onClose, open }: ZKModalProps) {
+export default function ZKModal({ badgeId, badgeModelId, onClose, open }: ZKModalProps) {
   return (
     <TBModal closeButtonAriaLabel="Close curate modal" onClose={onClose} open={open}>
-      {open && <ZKModalContent badgeId={badgeId} onClose={onClose} />}
+      {open && <ZKModalContent badgeId={badgeId} badgeModelId={badgeModelId} onClose={onClose} />}
     </TBModal>
   )
 }
 
-function ZKModalContent({ badgeId, onClose }: { badgeId: string; onClose: () => void }) {
-  const { address, appChainId, userSocialInfo, wallet, web3Provider } = useWeb3Connection()
+function ZKModalContent({
+  badgeModelId,
+  onClose,
+}: {
+  badgeId: string
+  badgeModelId: string
+  onClose: () => void
+}) {
+  const { address, appChainId, wallet, web3Provider } = useWeb3Connection()
   const { sendRelayTx } = useTransaction()
 
   const [submitting, setSubmitting] = useState(false)
@@ -54,7 +62,7 @@ function ZKModalContent({ badgeId, onClose }: { badgeId: string; onClose: () => 
           // Create message to sign
           const messageToSign = JSON.stringify({
             aleoAddress: data.address,
-            badgeId,
+            badgeModelId,
           })
           console.log('signMessage')
           const signature = await web3Provider?.getSigner().signMessage(messageToSign)
@@ -69,13 +77,16 @@ function ZKModalContent({ badgeId, onClose }: { badgeId: string; onClose: () => 
             data: messageToSign,
             from: address,
             chainId: appChainId.toString(),
-            method: SupportedRelayMethods.MINT,
+            method: SupportedRelayMethods.MINT_ALEO,
             signature,
             userAccount: {
               address,
               // Forced for now
-              userSocialInfo: userSocialInfo as unknown as OpenloginUserInfo,
+              userSocialInfo: {
+                email: 'dummy@noreply.com',
+              },
             },
+            isSocialLogin: false,
             appPubKey: 'publicKey',
           })
 
