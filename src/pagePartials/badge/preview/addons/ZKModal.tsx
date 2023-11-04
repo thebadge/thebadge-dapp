@@ -4,7 +4,6 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { LoadingButton } from '@mui/lab'
 import { Box, Stack, Typography } from '@mui/material'
 import { colors } from '@thebadge/ui-library'
-import { OpenloginUserInfo } from '@toruslabs/openlogin/src/interfaces'
 import { Controller, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
