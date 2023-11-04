@@ -38,14 +38,13 @@ export default function ZKModal({ badgeId, badgeModelId, onClose, open }: ZKModa
           onFinish={setTxHash}
         />
       )}
-      {open && txHash && <ZModalSucceed />}
+      {open && txHash && <ZModalSucceed txHash={txHash} />}
     </TBModal>
   )
 }
 
 function ZKModalContent({
   badgeModelId,
-  onClose,
   onFinish,
 }: {
   badgeId: string
@@ -102,13 +101,12 @@ function ZKModalContent({
             appPubKey: 'publicKey',
           })
 
-          onFinish(aleoTxHash)
+          onFinish(aleoTxHash || '')
 
           return
         }
         if (transaction) {
           await transaction()
-          onClose()
         }
       }
     } catch (e) {
@@ -172,7 +170,7 @@ function ZKModalContent({
   )
 }
 
-function ZModalSucceed({ txHash }) {
+function ZModalSucceed({ txHash }: { txHash: string }) {
   function aleoExplorerUrl(txHash: string) {
     return `https://explorer.aleo.org/transaction/${txHash}?tab=overview`
   }
