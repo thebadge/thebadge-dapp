@@ -196,12 +196,14 @@ const ViewBadge: NextPageWithLayout = () => {
           <BadgeStatusAndEvidence />
         </SafeSuspense>
       </Stack>
-      <ZKModal
-        badgeId={badgeId}
-        badgeModelId={badgeModelId}
-        onClose={handleCloseZK}
-        open={openZKModal}
-      />
+      {openZKModal && (
+        <ZKModal
+          badgeId={badgeId}
+          badgeModelId={badgeModelId}
+          onClose={handleCloseZK}
+          open={openZKModal}
+        />
+      )}
     </Box>
   )
 }

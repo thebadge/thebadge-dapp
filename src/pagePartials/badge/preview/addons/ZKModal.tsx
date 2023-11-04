@@ -2,11 +2,12 @@ import React, { useState } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { LoadingButton } from '@mui/lab'
-import { Box, Stack, Typography } from '@mui/material'
+import { Box, Link, Stack, Typography } from '@mui/material'
 import { colors } from '@thebadge/ui-library'
 import { Controller, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
+import { BadgeAnimatedLogo } from '@/src/components/assets/animated/BadgeAnimatedLogo'
 import TBModal from '@/src/components/common/TBModal'
 import { TextField } from '@/src/components/form/formFields/TextField'
 import useTransaction from '@/src/hooks/useTransaction'
@@ -25,9 +26,19 @@ const ZKAleoSchema = z.object({
 })
 
 export default function ZKModal({ badgeId, badgeModelId, onClose, open }: ZKModalProps) {
+  const [txHash, setTxHash] = useState('')
+
   return (
     <TBModal closeButtonAriaLabel="Close curate modal" onClose={onClose} open={open}>
-      {open && <ZKModalContent badgeId={badgeId} badgeModelId={badgeModelId} onClose={onClose} />}
+      {open && !txHash && (
+        <ZKModalContent
+          badgeId={badgeId}
+          badgeModelId={badgeModelId}
+          onClose={onClose}
+          onFinish={setTxHash}
+        />
+      )}
+      {open && txHash && <ZModalSucceed />}
     </TBModal>
   )
 }
@@ -35,10 +46,12 @@ export default function ZKModal({ badgeId, badgeModelId, onClose, open }: ZKModa
 function ZKModalContent({
   badgeModelId,
   onClose,
+  onFinish,
 }: {
   badgeId: string
   badgeModelId: string
   onClose: () => void
+  onFinish: (txHash: string) => void
 }) {
   const { address, appChainId, wallet, web3Provider } = useWeb3Connection()
   const { sendRelayTx } = useTransaction()
@@ -72,7 +85,7 @@ function ZKModalContent({
 
           console.log('sendRelayTx')
           // Send to backend
-          await sendRelayTx({
+          const aleoTxHash = await sendRelayTx({
             data: messageToSign,
             from: address,
             chainId: appChainId.toString(),
@@ -88,6 +101,8 @@ function ZKModalContent({
             isSocialLogin: false,
             appPubKey: 'publicKey',
           })
+
+          onFinish(aleoTxHash)
 
           return
         }
@@ -127,7 +142,7 @@ function ZKModalContent({
           ZK Badge on ALEO
         </Typography>
 
-        <Typography color={colors.white} variant="titleSmall">
+        <Typography color={colors.white} textAlign="center" variant="titleSmall">
           This badge will be a copy of their original Ethereum Badge based on Aleo ZK technology.
         </Typography>
       </Stack>
@@ -152,6 +167,54 @@ function ZKModalContent({
             Submit request
           </LoadingButton>
         </Box>
+      </Stack>
+    </Stack>
+  )
+}
+
+function ZModalSucceed({ txHash }) {
+  function aleoExplorerUrl(txHash: string) {
+    return `https://explorer.aleo.org/transaction/${txHash}?tab=overview`
+  }
+
+  return (
+    <Stack
+      sx={{
+        alignItems: 'center',
+        width: '100%',
+        gap: 6,
+      }}
+    >
+      <Stack gap={4}>
+        <Stack alignContent="center" gap={2}>
+          <Typography
+            color={colors.green}
+            id="modal-modal-title"
+            textAlign="center"
+            variant="headlineLarge"
+          >
+            ZK Badge on ALEO
+          </Typography>
+
+          <Typography color={colors.white} textAlign="center" variant="titleSmall">
+            Your ZK Badge is ready on Aleo. Check the following link to Aleo explorer to see the
+            transaction details
+          </Typography>
+
+          <Box m="auto">
+            <BadgeAnimatedLogo />
+          </Box>
+        </Stack>
+
+        <Link
+          color="primary"
+          href={aleoExplorerUrl(txHash)}
+          sx={{ cursor: 'pointer', width: 'fit-content', margin: 'auto' }}
+          target="_blank"
+          underline="hover"
+        >
+          Go to Aleo Explorer
+        </Link>
       </Stack>
     </Stack>
   )

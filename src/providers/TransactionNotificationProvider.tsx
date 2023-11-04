@@ -23,7 +23,7 @@ type TransactionStorageItem = {
 }
 
 type TransactionContextValue = {
-  notifyTxMined: (txHash: string, isSuccess?: boolean) => void
+  notifyTxMined: (txHash: string, isSuccess?: boolean, externalChain?: 'Aleo' | undefined) => void
   notifyWaitingForSignature: () => void
   notifyWaitingForTxMined: (txHash: string) => void
   notifyRejectSignature: (msg: string) => void
@@ -82,11 +82,14 @@ const TransactionNotificationProvider: React.FC<PropsWithChildren> = ({ children
   }
 
   const notifyTxMined = useCallback(
-    (txHash: string, isSuccess?: boolean) => {
+    (txHash: string, isSuccess?: boolean, externalChain?: 'Aleo' | undefined) => {
+      function aleoExplorerUrl(txHash: string) {
+        return `https://explorer.aleo.org/transaction/${txHash}?tab=overview`
+      }
       if (isSuccess) {
         notify({
           type: ToastStates.success,
-          explorerUrl: getExplorerUrl(txHash),
+          explorerUrl: externalChain === 'Aleo' ? aleoExplorerUrl(txHash) : getExplorerUrl(txHash),
           id: txHash,
         })
 
@@ -94,7 +97,7 @@ const TransactionNotificationProvider: React.FC<PropsWithChildren> = ({ children
       } else {
         notify({
           type: ToastStates.failed,
-          explorerUrl: getExplorerUrl(txHash),
+          explorerUrl: externalChain === 'Aleo' ? aleoExplorerUrl(txHash) : getExplorerUrl(txHash),
           id: txHash,
         })
 

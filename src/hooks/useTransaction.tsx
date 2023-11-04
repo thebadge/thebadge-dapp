@@ -6,7 +6,7 @@ import { useTransactionNotification } from '@/src/providers/TransactionNotificat
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { TransactionError } from '@/src/utils/TransactionError'
 import { sendTxToRelayer } from '@/src/utils/relayTx'
-import { RelayedTx } from '@/types/relayedTx'
+import { RelayedTx, SupportedRelayMethods } from '@/types/relayedTx'
 
 export enum TransactionStates {
   none = 'NONE',
@@ -126,13 +126,14 @@ export default function useTransaction() {
         if (error || !result) {
           throw new Error(message)
         }
-        if (result.txHash == '0xFakeAleo') {
-          notifyTxMined(result.txHash, true)
+        if (method === SupportedRelayMethods.MINT_ALEO && result.txHash) {
+          notifyTxMined(result.txHash, true, 'Aleo')
           setTransactionState(TransactionStates.success)
-          return
+          return result.txHash
         }
         if (result.txHash) {
           await waitForAsyncTxExecution(result.txHash)
+          return result.txHash
         }
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (e: any) {
