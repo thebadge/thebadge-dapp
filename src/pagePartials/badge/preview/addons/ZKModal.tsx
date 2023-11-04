@@ -34,7 +34,7 @@ export default function ZKModal({ badgeId, onClose, open }: ZKModalProps) {
 
 function ZKModalContent({ badgeId, onClose }: { badgeId: string; onClose: () => void }) {
   const { address, appChainId, userSocialInfo, wallet, web3Provider } = useWeb3Connection()
-  const { sendRelayTx, sendTx } = useTransaction()
+  const { sendRelayTx } = useTransaction()
 
   const [submitting, setSubmitting] = useState(false)
   const { control, handleSubmit } = useForm<z.infer<typeof ZKAleoSchema>>({
