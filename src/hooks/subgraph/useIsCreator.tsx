@@ -12,5 +12,8 @@ export default function useIsCreator(address?: string): SWRResponse<boolean> {
       const userById = await gql.userById({ id: address || connectedAddress || '' })
       return !!userById.user?.isCreator
     },
+    {
+      revalidateOnFocus: true,
+    },
   )
 }
