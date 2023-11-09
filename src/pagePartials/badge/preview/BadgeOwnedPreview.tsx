@@ -59,7 +59,11 @@ export default function BadgeOwnedPreview() {
   const badgeModelMetadata = badgeModel?.badgeModelMetadata
   const resCreatorMetadata = useS3Metadata<{ content: CreatorMetadata }>(badgeModel?.uri || '')
   const creatorMetadata = resCreatorMetadata.data?.content
-  const issuer = isThirdParty && creatorMetadata ? creatorMetadata.name : 'TheBadge'
+  let issuer = 'TheBadge'
+  if (isThirdParty && creatorMetadata && creatorMetadata.name) {
+    issuer = creatorMetadata.name
+  }
+  console.log('asd', issuer)
 
   function handleShare() {
     navigator.clipboard.writeText(window.location.href)
@@ -76,8 +80,6 @@ export default function BadgeOwnedPreview() {
           tokenId: badgeId,
         },
       } as unknown as any)
-
-      console.log('was added', wasAdded)
 
       if (wasAdded) {
         notify({ message: `Badge #${badgeId} added to metamask!`, type: ToastStates.success })
@@ -127,7 +129,7 @@ export default function BadgeOwnedPreview() {
                   {issuer}
                 </LinkWithTranslation>
               ) : (
-                { issuer }
+                issuer
               )}
             </Typography>
             <Box alignItems="center" display="flex" justifyContent="flex-end">
