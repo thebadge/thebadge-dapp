@@ -48,7 +48,7 @@ export const useEnsReverseLookup = function (address: string): EnsLookupResult {
     }
 
     ensReverseLookup(address)
-  }, [address])
+  }, [address, readOnlyAppProvider])
 
   return ensNameOrAddress
 }
