@@ -1,6 +1,6 @@
 import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined'
 import { Box, Divider, IconButton, Stack, Typography, styled } from '@mui/material'
-import { colors } from '@thebadge/ui-library'
+import { IconGithub, colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 
 import LinkWithTranslation from '@/src/components/helpers/LinkWithTranslation'
@@ -9,16 +9,19 @@ import { APP_URL } from '@/src/constants/common'
 import useBadgeIdParam from '@/src/hooks/nextjs/useBadgeIdParam'
 import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
 import useIsThirdPartyBadge from '@/src/hooks/subgraph/useIsThirdPartyBadge'
+import { useContractInstance } from '@/src/hooks/useContractInstance'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { useSizeSM } from '@/src/hooks/useSize'
 import BadgeModelPreview from '@/src/pagePartials/badge/BadgeModelPreview'
 import BadgeTitle from '@/src/pagePartials/badge/preview/addons/BadgeTitle'
+import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import {
   generateBadgeExplorer,
   generateBadgePreviewUrl,
   generateProfileUrl,
 } from '@/src/utils/navigation/generateUrl'
 import { CreatorMetadata } from '@/types/badges/Creator'
+import { TheBadge__factory } from '@/types/generated/typechain'
 import { ToastStates } from '@/types/toast'
 
 const Wrapper = styled(Stack)(({ theme }) => ({
@@ -45,8 +48,10 @@ export default function BadgeOwnedPreview() {
     throw `No badgeId provided us URL query param`
   }
 
+  const { web3Provider } = useWeb3Connection()
   const badgeById = useBadgeById(badgeId)
   const isThirdParty = useIsThirdPartyBadge(badgeId)
+  const theBadge = useContractInstance(TheBadge__factory, 'TheBadge')
 
   const badge = badgeById.data
   const badgeModel = badge?.badgeModel
@@ -59,6 +64,36 @@ export default function BadgeOwnedPreview() {
   function handleShare() {
     navigator.clipboard.writeText(window.location.href)
     notify({ message: 'URL Copied to clipboard', type: ToastStates.info })
+  }
+
+  async function handleImport() {
+    try {
+      // 'wasAdded' is a boolean. Like any RPC method, an error can be thrown.
+      const wasAdded = await web3Provider?.send('wallet_watchAsset', {
+        type: 'ERC1155',
+        options: {
+          address: theBadge.address,
+          tokenId: badgeId,
+        },
+      } as unknown as any)
+
+      console.log('was added', wasAdded)
+
+      if (wasAdded) {
+        notify({ message: `Badge #${badgeId} added to metamask!`, type: ToastStates.success })
+      } else {
+        notify({
+          message: `Badge ID #${badgeId} could not be added to metamask!`,
+          type: ToastStates.info,
+        })
+      }
+    } catch (error) {
+      console.error(error)
+      notify({
+        message: `There was an error adding the badge #${badgeId} to metamask!`,
+        type: ToastStates.infoFailed,
+      })
+    }
   }
 
   return (
@@ -95,9 +130,18 @@ export default function BadgeOwnedPreview() {
                 { issuer }
               )}
             </Typography>
-            <IconButton aria-label="Share badge preview" component="label" onClick={handleShare}>
-              <ShareOutlinedIcon />
-            </IconButton>
+            <Box alignItems="center" display="flex" justifyContent="flex-end">
+              <IconButton aria-label="Share badge preview" component="label" onClick={handleShare}>
+                <ShareOutlinedIcon />
+              </IconButton>
+              <IconButton
+                aria-label="Import badge to metamask"
+                component="label"
+                onClick={handleImport}
+              >
+                <IconGithub color={colors.white} />
+              </IconButton>
+            </Box>
           </Box>
 
           <Typography variant="dAppBody1">{badgeModelMetadata?.description}</Typography>
