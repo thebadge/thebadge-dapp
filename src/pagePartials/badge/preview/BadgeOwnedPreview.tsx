@@ -8,7 +8,7 @@ import { notify } from '@/src/components/toast/Toast'
 import { APP_URL } from '@/src/constants/common'
 import useBadgeIdParam from '@/src/hooks/nextjs/useBadgeIdParam'
 import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
-import useIsThirdPartyBadge from '@/src/hooks/subgraph/useIsThirdPartyBadge'
+import { useUserById } from '@/src/hooks/subgraph/useUserById'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { useSizeSM } from '@/src/hooks/useSize'
@@ -50,17 +50,19 @@ export default function BadgeOwnedPreview() {
 
   const { web3Provider } = useWeb3Connection()
   const badgeById = useBadgeById(badgeId)
-  const isThirdParty = useIsThirdPartyBadge(badgeId)
   const theBadge = useContractInstance(TheBadge__factory, 'TheBadge')
 
   const badge = badgeById.data
   const badgeModel = badge?.badgeModel
-  const creatorAddress = isThirdParty ? badgeModel?.creator.id : null
+  const creatorAddress = badgeModel?.creator.id || ''
+  const creatorResponse = useUserById(creatorAddress)
+  const creator = creatorResponse.data
+  const resCreatorMetadata = useS3Metadata<{ content: CreatorMetadata }>(creator?.metadataUri || '')
   const badgeModelMetadata = badgeModel?.badgeModelMetadata
-  const resCreatorMetadata = useS3Metadata<{ content: CreatorMetadata }>(badgeModel?.uri || '')
+
   const creatorMetadata = resCreatorMetadata.data?.content
   let issuer = 'TheBadge'
-  if (isThirdParty && creatorMetadata && creatorMetadata.name) {
+  if (creatorMetadata && creatorMetadata.name) {
     issuer = creatorMetadata.name
   }
 
