@@ -7,6 +7,7 @@ import { Toast, toast } from 'react-hot-toast'
 import { Copy } from '@/src/components/assets/Copy'
 import { Link } from '@/src/components/assets/Link'
 import { ToastComponent } from '@/src/components/toast/ToastComponent'
+import { useEnsReverseLookup } from '@/src/hooks/useEnsLookup'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 import { truncateStringInTheMiddle } from '@/src/utils/strings'
@@ -73,6 +74,7 @@ export const Address: React.FC<Props> = ({
   const router = useRouter()
   const { getExplorerUrl } = useWeb3Connection()
   const [toastId, setToastId] = useState('')
+  const { ensNameOrAddress, isEnsName } = useEnsReverseLookup(address)
 
   const copyAddress = (address: string) => {
     navigator.clipboard.writeText(address)
@@ -96,7 +98,11 @@ export const Address: React.FC<Props> = ({
   return (
     <Wrapper {...restProps}>
       <ExternalLink href={isUserAddress ? getProfileUrl() : getExplorerUrl(address)}>
-        {truncate ? truncateStringInTheMiddle(address, 8, 6) : address}
+        {isEnsName
+          ? ensNameOrAddress
+          : truncate
+          ? truncateStringInTheMiddle(address, 8, 6)
+          : address}
       </ExternalLink>
       {showCopyButton && (
         <CopyButton onClick={() => copyAddress(address)}>
