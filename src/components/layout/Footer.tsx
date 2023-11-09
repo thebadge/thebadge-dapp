@@ -50,8 +50,6 @@ export const Footer: React.FC = () => {
 
   const year = new Date().getFullYear()
 
-  const iconColor = 'white'
-
   return (
     <Box id="footer" sx={{ background: 'black', mt: 20 }}>
       <Container>
@@ -129,7 +127,7 @@ export const Footer: React.FC = () => {
                 </Typography>
               </Stack>
             </ColumnsContainer>
-            {!isMobile && <LogoWithText color={iconColor} size={120} />}
+            {!isMobile && <LogoWithText color={colors.white} size={120} />}
           </Box>
           <Box
             display={'flex'}
@@ -138,11 +136,11 @@ export const Footer: React.FC = () => {
             justifyContent={'space-between'}
           >
             <SocialContainer>
-              <IconTwitter color={iconColor} link={TWITTER_URL} />
-              <IconGithub color={iconColor} link={GITHUB_URL} />
-              <IconMedium color={iconColor} link={MEDIUM_URL} />
-              <IconEmail color={iconColor} link={EMAIL_URL} />
-              <IconDiscord color={iconColor} link={DISCORD_URL} />
+              <IconTwitter color={colors.white} link={TWITTER_URL} />
+              <IconGithub color={colors.white} link={GITHUB_URL} />
+              <IconMedium color={colors.white} link={MEDIUM_URL} />
+              <IconEmail color={colors.white} link={EMAIL_URL} />
+              <IconDiscord color={colors.white} link={DISCORD_URL} />
             </SocialContainer>
             <Typography color={colors.white} component={'div'} textAlign="center">
               {t('footer.copyright', { year })}
