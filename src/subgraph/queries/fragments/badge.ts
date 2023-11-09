@@ -6,6 +6,8 @@ gql`
     status
     uri
     validUntil
+    createdTxHash
+    claimedTxHash
     account {
       id
     }
