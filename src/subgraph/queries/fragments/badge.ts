@@ -20,6 +20,9 @@ gql`
         tcrList
         challengePeriodDuration
       }
+      creator {
+        id
+      }
     }
     badgeKlerosMetaData {
       reviewDueDate

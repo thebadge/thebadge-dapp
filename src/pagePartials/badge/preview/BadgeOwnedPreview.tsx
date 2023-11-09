@@ -5,12 +5,20 @@ import { useTranslation } from 'next-export-i18n'
 
 import LinkWithTranslation from '@/src/components/helpers/LinkWithTranslation'
 import { notify } from '@/src/components/toast/Toast'
+import { APP_URL } from '@/src/constants/common'
 import useBadgeIdParam from '@/src/hooks/nextjs/useBadgeIdParam'
 import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
+import useIsThirdPartyBadge from '@/src/hooks/subgraph/useIsThirdPartyBadge'
+import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { useSizeSM } from '@/src/hooks/useSize'
 import BadgeModelPreview from '@/src/pagePartials/badge/BadgeModelPreview'
 import BadgeTitle from '@/src/pagePartials/badge/preview/addons/BadgeTitle'
-import { generateBadgeExplorer } from '@/src/utils/navigation/generateUrl'
+import {
+  generateBadgeExplorer,
+  generateBadgePreviewUrl,
+  generateProfileUrl,
+} from '@/src/utils/navigation/generateUrl'
+import { CreatorMetadata } from '@/types/badges/Creator'
 import { ToastStates } from '@/types/toast'
 
 const Wrapper = styled(Stack)(({ theme }) => ({
@@ -38,10 +46,15 @@ export default function BadgeOwnedPreview() {
   }
 
   const badgeById = useBadgeById(badgeId)
+  const isThirdParty = useIsThirdPartyBadge(badgeId)
 
   const badge = badgeById.data
   const badgeModel = badge?.badgeModel
+  const creatorAddress = isThirdParty ? badgeModel?.creator.id : null
   const badgeModelMetadata = badgeModel?.badgeModelMetadata
+  const resCreatorMetadata = useS3Metadata<{ content: CreatorMetadata }>(badgeModel?.uri || '')
+  const creatorMetadata = resCreatorMetadata.data?.content
+  const issuer = isThirdParty && creatorMetadata ? creatorMetadata.name : 'TheBadge'
 
   function handleShare() {
     navigator.clipboard.writeText(window.location.href)
@@ -54,7 +67,11 @@ export default function BadgeOwnedPreview() {
 
       {/* Badge Image */}
       <Stack alignItems="center">
-        <BadgeModelPreview effects metadata={badgeModel?.uri} />
+        <BadgeModelPreview
+          badgeUrl={APP_URL + generateBadgePreviewUrl(badgeId)}
+          effects
+          metadata={badgeModel?.uri}
+        />
       </Stack>
 
       {/* Badge Metadata */}
@@ -66,7 +83,17 @@ export default function BadgeOwnedPreview() {
           {/* Issued By and Share */}
           <Box alignItems="center" display="flex" justifyContent="space-between">
             <Typography variant="body2">
-              {t('badge.viewBadge.issueBy', { issuer: 'TheBadge' })}
+              {t('badge.viewBadge.issueBy')}
+              {creatorAddress ? (
+                <LinkWithTranslation
+                  pathname={generateProfileUrl({ address: creatorAddress })}
+                  queryParams={{ target: '_blank' }}
+                >
+                  {issuer}
+                </LinkWithTranslation>
+              ) : (
+                { issuer }
+              )}
             </Typography>
             <IconButton aria-label="Share badge preview" component="label" onClick={handleShare}>
               <ShareOutlinedIcon />
