@@ -427,6 +427,7 @@
       "claims": " {{amount}} # badges claimed",
       "checkHowElse": "Check who else claimed it. ",
       "seeAll": "See All",
+      "importBadge": "Import your badge into metamask",
       "challengeStatus": {
         "title": "Challenge Status",
         "challenged": "CHALLENGED",

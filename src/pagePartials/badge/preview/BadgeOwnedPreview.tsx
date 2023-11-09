@@ -1,5 +1,7 @@
+import * as React from 'react'
+
 import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined'
-import { Box, Divider, IconButton, Stack, Typography, styled } from '@mui/material'
+import { Box, Divider, IconButton, Stack, Tooltip, Typography, styled } from '@mui/material'
 import { IconGithub, colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 
@@ -137,13 +139,15 @@ export default function BadgeOwnedPreview() {
               <IconButton aria-label="Share badge preview" component="label" onClick={handleShare}>
                 <ShareOutlinedIcon />
               </IconButton>
-              <IconButton
-                aria-label="Import badge to metamask"
-                component="label"
-                onClick={handleImport}
-              >
-                <IconGithub color={colors.white} />
-              </IconButton>
+              <Tooltip arrow title={t('badge.viewBadge.importBadge')}>
+                <IconButton
+                  aria-label={t('badge.viewBadge.importBadge')}
+                  component="label"
+                  onClick={handleImport}
+                >
+                  <IconGithub color={colors.white} />
+                </IconButton>
+              </Tooltip>
             </Box>
           </Box>
 
