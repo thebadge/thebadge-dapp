@@ -17,7 +17,7 @@ type Props = {
   clickable?: boolean
 }
 
-function BadgeModelPreview({ clickable, effects, metadata, badgeUrl, size = 'medium' }: Props) {
+function BadgeModelPreview({ badgeUrl, clickable, effects, metadata, size = 'medium' }: Props) {
   const res = useS3Metadata<{ content: BadgeModelMetadata<BackendFileResponse> }>(metadata || '')
   const badgeMetadata = res.data?.content
   const backgroundType = badgeMetadata?.attributes?.find(
