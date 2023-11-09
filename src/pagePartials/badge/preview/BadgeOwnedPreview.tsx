@@ -63,7 +63,6 @@ export default function BadgeOwnedPreview() {
   if (isThirdParty && creatorMetadata && creatorMetadata.name) {
     issuer = creatorMetadata.name
   }
-  console.log('asd', issuer)
 
   function handleShare() {
     navigator.clipboard.writeText(window.location.href)

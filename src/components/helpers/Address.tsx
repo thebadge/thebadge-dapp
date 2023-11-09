@@ -95,14 +95,12 @@ export const Address: React.FC<Props> = ({
     return router.basePath + generateProfileUrl({ address })
   }
 
+  const displayAddress = truncate ? truncateStringInTheMiddle(address, 8, 6) : address
+  const userIdentifier = isEnsName ? ensNameOrAddress : displayAddress
   return (
     <Wrapper {...restProps}>
       <ExternalLink href={isUserAddress ? getProfileUrl() : getExplorerUrl(address)}>
-        {isEnsName
-          ? ensNameOrAddress
-          : truncate
-          ? truncateStringInTheMiddle(address, 8, 6)
-          : address}
+        {userIdentifier}
       </ExternalLink>
       {showCopyButton && (
         <CopyButton onClick={() => copyAddress(address)}>
