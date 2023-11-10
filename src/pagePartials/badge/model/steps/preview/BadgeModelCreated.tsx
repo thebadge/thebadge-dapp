@@ -13,7 +13,7 @@ import {
   BADGE_MODEL_TEXT_CONTRAST,
 } from '@/src/pagePartials/badge/model/steps/uiBasics/BadgeModelUIBasics'
 import { cleanCreateModelFormValues } from '@/src/pagePartials/badge/model/utils'
-import { ProfileFilter } from '@/src/pagePartials/profile/Profile'
+import { ProfileFilter } from '@/src/pagePartials/profile/NormalProfile'
 import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 
 const BoxShadow = styled(Box)(({ theme }) => ({

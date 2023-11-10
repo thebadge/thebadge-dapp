@@ -14,10 +14,7 @@ import BadgesIAmReviewingSection from '@/src/pagePartials/profile/reviewing/Badg
 import CreatorStatistics from '@/src/pagePartials/profile/statistics/creator/CreatorStatistics'
 import CuratorStatistics from '@/src/pagePartials/profile/statistics/curator/CuratorStatistics'
 import UserStatistics from '@/src/pagePartials/profile/statistics/user/UserStatistics'
-import InfoPreview from '@/src/pagePartials/profile/userInfo/InfoPreview'
-import { InfoPreviewSkeleton } from '@/src/pagePartials/profile/userInfo/InfoPreview.skeleton'
 import ProfileContextProvider from '@/src/providers/ProfileProvider'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { generateCreatorRegisterUrl, generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 
 export enum ProfileFilter {
@@ -25,13 +22,12 @@ export enum ProfileFilter {
   CREATED_BADGES = 'createdBadges',
 }
 
-const Profile = () => {
+const NormalProfile = () => {
   const { t } = useTranslation()
 
   const params = useSearchParams()
   const selectedFilter = params.get('filter')
 
-  const { address: connectedWalletAddress } = useWeb3Connection()
   const { data: user } = useCurrentUser()
   const router = useRouter()
 
@@ -40,7 +36,7 @@ const Profile = () => {
       color={!selectedFilter ? 'text.primary' : 'text.disabled'}
       textTransform="uppercase"
     >
-      {t('profile.tab1')}
+      {t('profile.normalProfile.tab1')}
     </Typography>
   )
 
@@ -51,7 +47,7 @@ const Profile = () => {
       }
       textTransform="uppercase"
     >
-      {t('profile.tab2')}
+      {t('profile.normalProfile.tab2')}
     </Typography>
   )
 
@@ -60,17 +56,13 @@ const Profile = () => {
       color={selectedFilter === ProfileFilter.CREATED_BADGES ? 'text.primary' : 'text.disabled'}
       textTransform="uppercase"
     >
-      {t('profile.tab3')}
+      {t('profile.normalProfile.tab3')}
     </Typography>
   )
 
   return (
     <ProfileContextProvider>
       <SafeSuspense>
-        <SafeSuspense fallback={<InfoPreviewSkeleton />}>
-          <InfoPreview address={connectedWalletAddress || ''} />
-        </SafeSuspense>
-
         <Stack sx={{ mb: 6, gap: 4, alignItems: 'center' }}>
           <Box
             display="flex"
@@ -135,4 +127,4 @@ const Profile = () => {
   )
 }
 
-export default Profile
+export default NormalProfile
