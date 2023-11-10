@@ -18,6 +18,7 @@ type ToastTypes = {
   [ToastStates.failed]: ({ explorerUrl, message, t }: ToastComponentProps) => JSX.Element
   [ToastStates.success]: ({ explorerUrl, message, t }: ToastComponentProps) => JSX.Element
   [ToastStates.info]: ({ explorerUrl, message, t }: ToastComponentProps) => JSX.Element
+  [ToastStates.infoFailed]: ({ explorerUrl, message, t }: ToastComponentProps) => JSX.Element
 }
 
 const ToastTypes: ToastTypes = {
@@ -51,6 +52,14 @@ const ToastTypes: ToastTypes = {
   [ToastStates.info]: ({ message, t, title }: ToastComponentProps) => (
     <ToastComponent
       icon={<SuccessIcon />}
+      message={message ? message : undefined}
+      t={t}
+      title={title}
+    />
+  ),
+  [ToastStates.infoFailed]: ({ message, t, title }: ToastComponentProps) => (
+    <ToastComponent
+      icon={<FailedIcon />}
       message={message ? message : undefined}
       t={t}
       title={title}

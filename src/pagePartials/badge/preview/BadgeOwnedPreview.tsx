@@ -1,16 +1,28 @@
+import * as React from 'react'
+
 import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined'
-import { Box, Divider, IconButton, Stack, Typography, styled } from '@mui/material'
-import { colors } from '@thebadge/ui-library'
+import { Box, Divider, IconButton, Stack, Tooltip, Typography, styled } from '@mui/material'
+import { IconGithub, colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 
 import LinkWithTranslation from '@/src/components/helpers/LinkWithTranslation'
 import { notify } from '@/src/components/toast/Toast'
+import { APP_URL } from '@/src/constants/common'
 import useBadgeIdParam from '@/src/hooks/nextjs/useBadgeIdParam'
 import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
+import { useUserById } from '@/src/hooks/subgraph/useUserById'
+import useTBContract from '@/src/hooks/theBadge/useTBContract'
+import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { useSizeSM } from '@/src/hooks/useSize'
 import BadgeModelPreview from '@/src/pagePartials/badge/BadgeModelPreview'
 import BadgeTitle from '@/src/pagePartials/badge/preview/addons/BadgeTitle'
-import { generateBadgeExplorer } from '@/src/utils/navigation/generateUrl'
+import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+import {
+  generateBadgeExplorer,
+  generateBadgePreviewUrl,
+  generateProfileUrl,
+} from '@/src/utils/navigation/generateUrl'
+import { CreatorMetadata } from '@/types/badges/Creator'
 import { ToastStates } from '@/types/toast'
 
 const Wrapper = styled(Stack)(({ theme }) => ({
@@ -37,15 +49,55 @@ export default function BadgeOwnedPreview() {
     throw `No badgeId provided us URL query param`
   }
 
+  const { web3Provider } = useWeb3Connection()
   const badgeById = useBadgeById(badgeId)
+  const theBadge = useTBContract()
 
   const badge = badgeById.data
   const badgeModel = badge?.badgeModel
+  const creatorAddress = badgeModel?.creator.id || ''
+  const creatorResponse = useUserById(creatorAddress)
+  const creator = creatorResponse.data
+  const resCreatorMetadata = useS3Metadata<{ content: CreatorMetadata }>(creator?.metadataUri || '')
   const badgeModelMetadata = badgeModel?.badgeModelMetadata
+
+  const creatorMetadata = resCreatorMetadata.data?.content
+  let issuer = 'TheBadge'
+  if (creatorMetadata && creatorMetadata.name) {
+    issuer = creatorMetadata.name
+  }
 
   function handleShare() {
     navigator.clipboard.writeText(window.location.href)
     notify({ message: 'URL Copied to clipboard', type: ToastStates.info })
+  }
+
+  async function handleImport() {
+    try {
+      // 'wasAdded' is a boolean. Like any RPC method, an error can be thrown.
+      const wasAdded = await web3Provider?.send('wallet_watchAsset', {
+        type: 'ERC1155',
+        options: {
+          address: theBadge.address,
+          tokenId: badgeId,
+        },
+      } as unknown as any)
+
+      if (wasAdded) {
+        notify({ message: `Badge #${badgeId} added to metamask!`, type: ToastStates.success })
+      } else {
+        notify({
+          message: `Badge ID #${badgeId} could not be added to metamask!`,
+          type: ToastStates.info,
+        })
+      }
+    } catch (error) {
+      console.error(error)
+      notify({
+        message: `There was an error adding the badge #${badgeId} to metamask!`,
+        type: ToastStates.infoFailed,
+      })
+    }
   }
 
   return (
@@ -54,7 +106,11 @@ export default function BadgeOwnedPreview() {
 
       {/* Badge Image */}
       <Stack alignItems="center">
-        <BadgeModelPreview effects metadata={badgeModel?.uri} />
+        <BadgeModelPreview
+          badgeUrl={APP_URL + generateBadgePreviewUrl(badgeId)}
+          effects
+          metadata={badgeModel?.uri}
+        />
       </Stack>
 
       {/* Badge Metadata */}
@@ -66,11 +122,32 @@ export default function BadgeOwnedPreview() {
           {/* Issued By and Share */}
           <Box alignItems="center" display="flex" justifyContent="space-between">
             <Typography variant="body2">
-              {t('badge.viewBadge.issueBy', { issuer: 'TheBadge' })}
+              {t('badge.viewBadge.issueBy')}
+              {creatorAddress ? (
+                <LinkWithTranslation
+                  pathname={generateProfileUrl({ address: creatorAddress })}
+                  queryParams={{ target: '_blank' }}
+                >
+                  {issuer}
+                </LinkWithTranslation>
+              ) : (
+                issuer
+              )}
             </Typography>
-            <IconButton aria-label="Share badge preview" component="label" onClick={handleShare}>
-              <ShareOutlinedIcon />
-            </IconButton>
+            <Box alignItems="center" display="flex" justifyContent="flex-end">
+              <IconButton aria-label="Share badge preview" component="label" onClick={handleShare}>
+                <ShareOutlinedIcon />
+              </IconButton>
+              <Tooltip arrow title={t('badge.viewBadge.importBadge')}>
+                <IconButton
+                  aria-label={t('badge.viewBadge.importBadge')}
+                  component="label"
+                  onClick={handleImport}
+                >
+                  <IconGithub color={colors.white} />
+                </IconButton>
+              </Tooltip>
+            </Box>
           </Box>
 
           <Typography variant="dAppBody1">{badgeModelMetadata?.description}</Typography>

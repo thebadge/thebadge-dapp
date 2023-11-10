@@ -8,7 +8,7 @@ import { ZERO_ADDRESS } from '@/src/constants/bigNumber'
 import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
 import useMintValue from '@/src/hooks/theBadge/useMintValue'
-import { useContractInstance } from '@/src/hooks/useContractInstance'
+import useTBContract from '@/src/hooks/theBadge/useTBContract'
 import useTransaction, { TransactionStates } from '@/src/hooks/useTransaction'
 import MintThirdPartyWithSteps from '@/src/pagePartials/badge/mint/MintThirdPartyWithSteps'
 import { MintThirdPartySchemaType } from '@/src/pagePartials/badge/mint/schema/MintThirdPartySchema'
@@ -19,13 +19,12 @@ import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 import { sendEmailClaim } from '@/src/utils/relayTx'
 import { BadgeModelMetadata } from '@/types/badges/BadgeMetadata'
-import { TheBadge__factory } from '@/types/generated/typechain'
 import { NextPageWithLayout } from '@/types/next'
 import { ToastStates } from '@/types/toast'
 
 const MintThirdPartyBadgeModel: NextPageWithLayout = () => {
   const { appChainId, appPubKey, isSocialWallet, userSocialInfo } = useWeb3Connection()
-  const theBadge = useContractInstance(TheBadge__factory, 'TheBadge')
+  const theBadge = useTBContract()
   const { resetTxState, sendTx, state } = useTransaction()
   const router = useRouter()
   const badgeModelId = useModelIdParam()

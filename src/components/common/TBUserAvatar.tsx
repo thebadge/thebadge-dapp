@@ -6,6 +6,7 @@ import { useTranslation } from 'next-export-i18n'
 import Blockies from 'react-18-blockies'
 
 import VerifiedCreator from '@/src/components/icons/VerifiedCreator'
+import { useEnsReverseLookup } from '@/src/hooks/useEnsLookup'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 
 /**
@@ -37,6 +38,10 @@ export default function TBUserAvatar({
     return address || connectedAddress || 'default'
   }, [address, connectedAddress])
 
+  const { avatar } = useEnsReverseLookup(seed)
+
+  const avatarImgSrc = avatar ?? src
+
   return (
     <Badge
       badgeContent={
@@ -49,7 +54,7 @@ export default function TBUserAvatar({
       invisible={!isVerified}
       overlap="circular"
     >
-      <Avatar src={src} sx={{ width: size, height: size, ...sx }}>
+      <Avatar src={avatarImgSrc} sx={{ width: size, height: size, ...sx }}>
         <Blockies className="blockies-avatar" scale={size / 10} seed={seed} size={size / 10} />
       </Avatar>
     </Badge>

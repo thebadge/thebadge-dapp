@@ -6,6 +6,8 @@ gql`
     status
     uri
     validUntil
+    createdTxHash
+    claimedTxHash
     account {
       id
     }
@@ -19,6 +21,9 @@ gql`
       badgeModelKleros {
         tcrList
         challengePeriodDuration
+      }
+      creator {
+        id
       }
     }
     badgeKlerosMetaData {

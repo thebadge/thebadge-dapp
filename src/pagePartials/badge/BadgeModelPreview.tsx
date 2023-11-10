@@ -11,12 +11,13 @@ import { BackendFileResponse } from '@/types/utils'
 
 type Props = {
   metadata?: string
+  badgeUrl?: string
   effects?: boolean
   size?: BadgePreviewProps['size']
   clickable?: boolean
 }
 
-function BadgeModelPreview({ clickable, effects, metadata, size = 'medium' }: Props) {
+function BadgeModelPreview({ badgeUrl, clickable, effects, metadata, size = 'medium' }: Props) {
   const res = useS3Metadata<{ content: BadgeModelMetadata<BackendFileResponse> }>(metadata || '')
   const badgeMetadata = res.data?.content
   const backgroundType = badgeMetadata?.attributes?.find(
@@ -34,7 +35,7 @@ function BadgeModelPreview({ clickable, effects, metadata, size = 'medium' }: Pr
           animationEffects={effects ? ['wobble', 'grow', 'glare'] : []}
           animationOnHover
           badgeBackgroundUrl={getBackgroundBadgeUrl(backgroundType?.value)}
-          badgeUrl="https://www.thebadge.xyz"
+          badgeUrl={badgeUrl ? badgeUrl : 'https://www.thebadge.xyz'}
           category={badgeMetadata?.name}
           description={badgeMetadata?.description}
           imageUrl={badgeMetadata?.image.s3Url}

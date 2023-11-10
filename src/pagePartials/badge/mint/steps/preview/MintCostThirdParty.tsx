@@ -42,6 +42,10 @@ export default function MintCostThirdParty() {
 
   const totalMintCost = formatUnits(mintValue, 18)
 
+  if (mintValue.isZero()) {
+    return null
+  }
+
   return (
     <Stack
       sx={{

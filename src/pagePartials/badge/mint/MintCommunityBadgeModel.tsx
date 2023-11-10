@@ -7,7 +7,7 @@ import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
 import { useRegistrationBadgeModelKlerosMetadata } from '@/src/hooks/subgraph/useBadgeModelKlerosMetadata'
 import useMintValue from '@/src/hooks/theBadge/useMintValue'
-import { useContractInstance } from '@/src/hooks/useContractInstance'
+import useTBContract from '@/src/hooks/theBadge/useTBContract'
 import useTransaction, { TransactionStates } from '@/src/hooks/useTransaction'
 import MintCommunityWithSteps from '@/src/pagePartials/badge/mint/MintCommunityWithSteps'
 import { MintBadgeSchemaType } from '@/src/pagePartials/badge/mint/schema/MintBadgeSchema'
@@ -18,7 +18,6 @@ import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { encodeIpfsEvidence } from '@/src/utils/badges/createBadgeModelHelpers'
 import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 import { BadgeModelMetadata } from '@/types/badges/BadgeMetadata'
-import { TheBadge__factory } from '@/types/generated/typechain'
 import { MetadataColumn } from '@/types/kleros/types'
 import { NextPageWithLayout } from '@/types/next'
 import { SupportedRelayMethods } from '@/types/relayedTx'
@@ -26,7 +25,7 @@ import { SupportedRelayMethods } from '@/types/relayedTx'
 const MintCommunityBadgeModel: NextPageWithLayout = () => {
   const { address, appChainId, appPubKey, isSocialWallet, userSocialInfo, web3Provider } =
     useWeb3Connection()
-  const theBadge = useContractInstance(TheBadge__factory, 'TheBadge')
+  const theBadge = useTBContract()
   const { resetTxState, sendRelayTx, sendTx, state } = useTransaction()
   const router = useRouter()
   const badgeModelId = useModelIdParam()
