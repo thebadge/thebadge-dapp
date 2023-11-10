@@ -103,7 +103,7 @@ export default function BadgesYouOwnList({ address }: Props) {
         items
       ) : (
         <Stack>
-          <NoResultsAnimated errorText={t('profile.badgesYouOwn.noResults')} />
+          <NoResultsAnimated errorText={t('profile.normalProfile.badgesYouOwn.noResults')} />
           {isLoggedInUser && (
             <ButtonV2
               backgroundColor={colors.transparent}

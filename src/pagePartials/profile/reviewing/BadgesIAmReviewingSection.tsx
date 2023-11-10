@@ -102,7 +102,7 @@ export default function BadgesIAmReviewingSection() {
       <SafeSuspense>
         <Box display="flex" justifyContent="space-between">
           <Typography color={colors.purple} mb={4} variant="dAppHeadline2">
-            {t('profile.badgesIAmReviewing.previewTitle')}
+            {t('profile.normalProfile.badgesIAmReviewing.previewTitle')}
           </Typography>
           <Box>
             <IconButton onClick={selectPrevious}>
@@ -129,7 +129,7 @@ export default function BadgesIAmReviewingSection() {
         preview={renderSelectedBadgePreview()}
         search={search}
         showTextSearch={false}
-        title={t('profile.badgesIAmReviewing.title')}
+        title={t('profile.normalProfile.badgesIAmReviewing.title')}
         titleColor={colors.purple}
       >
         {badgesIamReviewing.length > 0 ? (
@@ -156,14 +156,16 @@ export default function BadgesIAmReviewingSection() {
           })
         ) : (
           <Stack>
-            <NoResultsAnimated errorText={t('profile.badgesIAmReviewing.noResults')} />
+            <NoResultsAnimated
+              errorText={t('profile.normalProfile.badgesIAmReviewing.noResults')}
+            />
             <ButtonV2
               backgroundColor={colors.transparent}
               fontColor={colors.green}
               onClick={() => router.push(generateBadgeCurate())}
               sx={{ m: 'auto' }}
             >
-              <Typography>{t('profile.badgesIAmReviewing.curate')}</Typography>
+              <Typography>{t('profile.normalProfile.badgesIAmReviewing.curate')}</Typography>
             </ButtonV2>
           </Stack>
         )}

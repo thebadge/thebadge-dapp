@@ -180,7 +180,9 @@
       "verified": "Verified user"
     },
     "thirdPartyProfile": {
-      "title": "Management"
+      "title": "Management",
+      "tab1": "Manage account",
+      "tab2": "Manage badges"
     },
     "statistics": {
       "title": "Statistics",

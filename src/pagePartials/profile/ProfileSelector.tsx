@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
-import { useRouter } from 'next/router'
 import React from 'react'
 
 import { Box, Stack, Typography } from '@mui/material'
@@ -24,15 +23,17 @@ const ProfileSelector = () => {
   const { t } = useTranslation()
 
   const params = useSearchParams()
-  const router = useRouter()
-  const selectedFilter = params.get('filter')
   const selectedProfile = params.get('profileType')
 
   const { address: connectedWalletAddress } = useWeb3Connection()
 
   const mainProfileTab = (
     <Typography
-      color={!selectedFilter ? 'text.primary' : 'text.disabled'}
+      color={
+        !selectedProfile || selectedProfile === ProfileType.NORMAL_PROFILE
+          ? 'text.primary'
+          : 'text.disabled'
+      }
       textTransform="uppercase"
     >
       {t('profile.normalProfile.title')}
@@ -41,7 +42,7 @@ const ProfileSelector = () => {
 
   const thirdPartyProfileTab = (
     <Typography
-      color={!selectedFilter ? 'text.primary' : 'text.disabled'}
+      color={selectedProfile === ProfileType.THIRD_PARTY_PROFILE ? 'text.primary' : 'text.disabled'}
       textTransform="uppercase"
     >
       {t('profile.thirdPartyProfile.title')}

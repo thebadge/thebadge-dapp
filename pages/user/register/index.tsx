@@ -10,7 +10,7 @@ import useTransaction, { TransactionStates } from '@/src/hooks/useTransaction'
 import RegistrationWithSteps from '@/src/pagePartials/creator/register/RegistrationWithSteps'
 import { CreatorRegisterSchemaType } from '@/src/pagePartials/creator/register/schema/CreatorRegisterSchema'
 import { PreventActionIfRegisterPaused } from '@/src/pagePartials/errors/preventActionIfPaused'
-import { ProfileFilter } from '@/src/pagePartials/profile/NormalProfile'
+import { NormalProfileFilter } from '@/src/pagePartials/profile/NormalProfile'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 import { TheBadgeUsers__factory } from '@/types/generated/typechain'
@@ -26,7 +26,7 @@ const Register: NextPageWithLayout = () => {
   useEffect(() => {
     // Redirect to the creator profile section
     if (state === TransactionStates.success) {
-      router.push(generateProfileUrl({ filter: ProfileFilter.CREATED_BADGES }))
+      router.push(generateProfileUrl({ filter: NormalProfileFilter.CREATED_BADGES }))
     }
   }, [router, state])
 
@@ -35,7 +35,7 @@ const Register: NextPageWithLayout = () => {
   })
 
   if (userProfile.data?.user?.isCreator) {
-    router.push(generateProfileUrl({ filter: ProfileFilter.CREATED_BADGES }))
+    router.push(generateProfileUrl({ filter: NormalProfileFilter.CREATED_BADGES }))
   }
 
   async function onSubmit(data: CreatorRegisterSchemaType) {

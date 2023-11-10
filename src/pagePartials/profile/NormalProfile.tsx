@@ -17,7 +17,7 @@ import UserStatistics from '@/src/pagePartials/profile/statistics/user/UserStati
 import ProfileContextProvider from '@/src/providers/ProfileProvider'
 import { generateCreatorRegisterUrl, generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 
-export enum ProfileFilter {
+export enum NormalProfileFilter {
   BADGES_I_AM_REVIEWING = 'badgesIAmReviewing',
   CREATED_BADGES = 'createdBadges',
 }
@@ -43,7 +43,9 @@ const NormalProfile = () => {
   const curatedBadgesTab = (
     <Typography
       color={
-        selectedFilter === ProfileFilter.BADGES_I_AM_REVIEWING ? 'text.primary' : 'text.disabled'
+        selectedFilter === NormalProfileFilter.BADGES_I_AM_REVIEWING
+          ? 'text.primary'
+          : 'text.disabled'
       }
       textTransform="uppercase"
     >
@@ -53,7 +55,9 @@ const NormalProfile = () => {
 
   const createdBadgesTab = (
     <Typography
-      color={selectedFilter === ProfileFilter.CREATED_BADGES ? 'text.primary' : 'text.disabled'}
+      color={
+        selectedFilter === NormalProfileFilter.CREATED_BADGES ? 'text.primary' : 'text.disabled'
+      }
       textTransform="uppercase"
     >
       {t('profile.normalProfile.tab3')}
@@ -79,7 +83,7 @@ const NormalProfile = () => {
             {/* curated badges */}
             <LinkWithTranslation
               pathname={generateProfileUrl()}
-              queryParams={{ filter: ProfileFilter.BADGES_I_AM_REVIEWING }}
+              queryParams={{ filter: NormalProfileFilter.BADGES_I_AM_REVIEWING }}
             >
               {curatedBadgesTab}
             </LinkWithTranslation>
@@ -105,7 +109,7 @@ const NormalProfile = () => {
             ) : (
               <LinkWithTranslation
                 pathname={generateProfileUrl()}
-                queryParams={{ filter: user?.isCreator ? ProfileFilter.CREATED_BADGES : '' }}
+                queryParams={{ filter: user?.isCreator ? NormalProfileFilter.CREATED_BADGES : '' }}
               >
                 {createdBadgesTab}
               </LinkWithTranslation>
@@ -114,14 +118,16 @@ const NormalProfile = () => {
         </Stack>
 
         {/* Statistics */}
-        {selectedFilter === ProfileFilter.CREATED_BADGES && <CreatorStatistics />}
-        {selectedFilter === ProfileFilter.BADGES_I_AM_REVIEWING && <CuratorStatistics />}
+        {selectedFilter === NormalProfileFilter.CREATED_BADGES && <CreatorStatistics />}
+        {selectedFilter === NormalProfileFilter.BADGES_I_AM_REVIEWING && <CuratorStatistics />}
         {!selectedFilter && <UserStatistics />}
 
         {/* Profile Content */}
         {!selectedFilter && <MyProfileSection />}
-        {selectedFilter === ProfileFilter.BADGES_I_AM_REVIEWING && <BadgesIAmReviewingSection />}
-        {selectedFilter === ProfileFilter.CREATED_BADGES && <BadgesCreatedSection />}
+        {selectedFilter === NormalProfileFilter.BADGES_I_AM_REVIEWING && (
+          <BadgesIAmReviewingSection />
+        )}
+        {selectedFilter === NormalProfileFilter.CREATED_BADGES && <BadgesCreatedSection />}
       </SafeSuspense>
     </ProfileContextProvider>
   )
