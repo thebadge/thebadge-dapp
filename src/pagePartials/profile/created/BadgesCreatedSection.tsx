@@ -15,6 +15,7 @@ import MiniBadgeModelPreview from '@/src/pagePartials/badge/MiniBadgeModelPrevie
 import { RequiredCreatorAccess } from '@/src/pagePartials/errors/requiresCreatorAccess'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { generateBadgeModelCreate } from '@/src/utils/navigation/generateUrl'
+import { BadgeModel } from '@/types/generated/subgraph'
 
 const StyledBadgeContainer = styled(MiniBadgePreviewContainer)(({ theme }) => {
   return {
@@ -39,7 +40,7 @@ export default function BadgesCreatedSection() {
   const { t } = useTranslation()
   const router = useRouter()
   const { address } = useWeb3Connection()
-  const [items, setItems] = useState<React.ReactNode[]>([])
+  const [badgeModels, setBadgeModels] = useState<BadgeModel[]>([])
   const [loading, setLoading] = useState<boolean>(false)
   const gql = useSubgraph()
 
@@ -54,61 +55,62 @@ export default function BadgesCreatedSection() {
     setLoading(true)
     // TODO filter badges with: selectedFilters, selectedCategory, textSearch
     const userCreatedBadges = await gql.userCreatedBadges({ ownerAddress: address ?? AddressZero })
-    const badgeModels = userCreatedBadges?.user?.createdBadgeModels || []
+    const badgeModels = (userCreatedBadges?.user?.createdBadgeModels as BadgeModel[]) || []
 
-    const badgesLayouts = badgeModels.map((badgeModel) => {
-      return (
-        <StyledBadgeContainer highlightColor={colors.pink} key={badgeModel.id}>
-          <MiniBadgeModelPreview
-            disableAnimations
-            highlightColor={colors.pink}
-            metadata={badgeModel?.uri}
-          />
-          <Box id="badge-info">
-            <Typography variant="body4">
-              {t('profile.badgesCreated.explorerBadgeCost')}{' '}
-              {formatUnits(badgeModel.creatorFee, 18)}
-            </Typography>
-            <Typography variant="body4">
-              {t('profile.badgesCreated.explorerBadgeMinted')} {badgeModel.badgesMintedAmount}
-            </Typography>
-          </Box>
-        </StyledBadgeContainer>
-      )
-    })
+    setBadgeModels(badgeModels)
+    setLoading(false)
+  }
 
-    setTimeout(() => {
-      setItems(badgesLayouts)
-      setLoading(false)
-    }, 2000)
+  function renderCreatedBadgeItem(badgeModel: BadgeModel) {
+    return (
+      <StyledBadgeContainer highlightColor={colors.pink} key={badgeModel.id}>
+        <MiniBadgeModelPreview
+          disableAnimations
+          highlightColor={colors.pink}
+          metadata={badgeModel?.uri}
+        />
+        <Box id="badge-info">
+          <Typography variant="body4">
+            {t('profile.badgesCreated.explorerBadgeCost')} {formatUnits(badgeModel.creatorFee, 18)}
+          </Typography>
+          <Typography variant="body4">
+            {t('profile.badgesCreated.explorerBadgeMinted')} {badgeModel.badgesMintedAmount}
+          </Typography>
+        </Box>
+      </StyledBadgeContainer>
+    )
+  }
+
+  function generateListItems() {
+    if (badgeModels.length > 0) {
+      return badgeModels.map((badgeModel) => renderCreatedBadgeItem(badgeModel))
+    }
+    return [
+      <Stack key="no-results">
+        <NoResultsAnimated errorText={t('profile.badgesCreated.badgesCreatedNoResults')} />
+        <ButtonV2
+          backgroundColor={colors.transparent}
+          fontColor={colors.pink}
+          onClick={() => router.push(generateBadgeModelCreate())}
+          sx={{ m: 'auto' }}
+        >
+          <Typography>{t('profile.badgesCreated.create')}</Typography>
+        </ButtonV2>
+      </Stack>,
+    ]
   }
 
   return (
     <RequiredCreatorAccess>
       <FilteredList
+        items={generateListItems()}
         loading={loading}
         loadingColor={'primary'}
         search={search}
         showTextSearch={false}
         title={t('profile.badgesCreated.title')}
         titleColor={colors.pink}
-      >
-        {items.length > 0 ? (
-          items
-        ) : (
-          <Stack>
-            <NoResultsAnimated errorText={t('profile.badgesCreated.badgesCreatedNoResults')} />
-            <ButtonV2
-              backgroundColor={colors.transparent}
-              fontColor={colors.pink}
-              onClick={() => router.push(generateBadgeModelCreate())}
-              sx={{ m: 'auto' }}
-            >
-              <Typography>{t('profile.badgesCreated.create')}</Typography>
-            </ButtonV2>
-          </Stack>
-        )}
-      </FilteredList>
+      />
     </RequiredCreatorAccess>
   )
 }

@@ -1,21 +1,21 @@
 import React, { PropsWithChildren, ReactNode, useCallback, useEffect, useState } from 'react'
 
-import { Box, Chip, Divider, Stack, Typography, styled } from '@mui/material'
+import { Box, Chip, Divider, Typography, styled } from '@mui/material'
 import { ChipPropsColorOverrides } from '@mui/material/Chip/Chip'
 import { OverridableStringUnion } from '@mui/types'
 import { colors } from '@thebadge/ui-library'
 import dayjs from 'dayjs'
 import { useTranslation } from 'next-export-i18n'
-import Sticky from 'react-sticky-el'
 
 import LastUpdated from '@/src/components/common/LastUpdated'
-import SafeSuspense from '@/src/components/helpers/SafeSuspense'
-import { Loading } from '@/src/components/loading/Loading'
+import FilteredListDesktopView from '@/src/components/helpers/FilteredList/DesktopView'
+import FilteredListMobileView from '@/src/components/helpers/FilteredList/MobileView'
 import { SpinnerColors } from '@/src/components/loading/Spinner'
 import TBSearchField from '@/src/components/select/SearchField'
 import TBadgeSelect from '@/src/components/select/Select'
 import useSelectedFilters from '@/src/hooks/nextjs/useSelectedFilters'
 import useChainId from '@/src/hooks/theBadge/useChainId'
+import { useSizeSM } from '@/src/hooks/useSize'
 import { useColorMode } from '@/src/providers/themeProvider'
 
 export type ListFilter<K = unknown> = {
@@ -48,13 +48,8 @@ type FilteredListProps = PropsWithChildren & {
   preview?: ReactNode | undefined
   searchInputLabel?: string
   showTextSearch?: boolean
+  items: React.ReactNode[]
 }
-
-const ItemsGridBox = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  flexWrap: 'wrap',
-  gap: theme.spacing(3),
-}))
 
 const FilteredListHeaderBox = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -72,6 +67,7 @@ export default function FilteredList({
   ...props
 }: FilteredListProps) {
   const { t } = useTranslation()
+  const isMobile = useSizeSM()
 
   const { mode } = useColorMode()
   const chainId = useChainId()
@@ -145,45 +141,47 @@ export default function FilteredList({
           {props.title}
         </Typography>
 
-        <Box alignItems={'center'} display={'flex'} flexWrap={'wrap'} gap={1}>
-          {/* filters */}
-          {filters.map((filter, index) => {
-            return (
-              <Chip
-                color={filter.color}
-                disabled={props.disableEdit && !isFilterSelected(filter)}
-                key={'filter-' + index}
-                label={filter.title}
-                onClick={() => handleSelectFilter(filter)}
-                onDelete={
-                  filter.fixed || !isFilterSelected(filter)
-                    ? undefined
-                    : () => handleRemoveFilter(filter)
-                }
-                variant={isFilterSelected(filter) ? 'filled' : 'outlined'}
+        {!isMobile && (
+          <Box alignItems={'center'} display={'flex'} flexWrap={'wrap'} gap={1}>
+            {/* filters */}
+            {filters.map((filter, index) => {
+              return (
+                <Chip
+                  color={filter.color}
+                  disabled={props.disableEdit && !isFilterSelected(filter)}
+                  key={'filter-' + index}
+                  label={filter.title}
+                  onClick={() => handleSelectFilter(filter)}
+                  onDelete={
+                    filter.fixed || !isFilterSelected(filter)
+                      ? undefined
+                      : () => handleRemoveFilter(filter)
+                  }
+                  variant={isFilterSelected(filter) ? 'filled' : 'outlined'}
+                />
+              )
+            })}
+
+            {/* categories */}
+            {props.categories ? (
+              <TBadgeSelect
+                items={props.categories}
+                label={t('filteredList.category')}
+                onChange={(e) => handleSelectCategory(e.target.value)}
+                selectedItem={selectedCategory}
               />
-            )
-          })}
+            ) : null}
 
-          {/* categories */}
-          {props.categories ? (
-            <TBadgeSelect
-              items={props.categories}
-              label={t('filteredList.category')}
-              onChange={(e) => handleSelectCategory(e.target.value)}
-              selectedItem={selectedCategory}
-            />
-          ) : null}
-
-          {/* text search */}
-          {showTextSearch && (
-            <TBSearchField
-              disabled={!!props.disableEdit}
-              label={props.searchInputLabel || t('filteredList.textSearch')}
-              onSearch={(searchValue) => onStringSearch(searchValue)}
-            />
-          )}
-        </Box>
+            {/* text search */}
+            {showTextSearch && (
+              <TBSearchField
+                disabled={!!props.disableEdit}
+                label={props.searchInputLabel || t('filteredList.textSearch')}
+                onSearch={(searchValue) => onStringSearch(searchValue)}
+              />
+            )}
+          </Box>
+        )}
       </FilteredListHeaderBox>
       <Divider color={mode === 'dark' ? 'white' : 'black'} sx={{ borderWidth: '1px' }} />
 
@@ -193,22 +191,23 @@ export default function FilteredList({
         onClick={refresh}
       />
 
-      <Box display="flex" id="preview" mt={4}>
-        <Box flex="3">
-          {props.loading ? (
-            <Loading color={props.loadingColor} />
-          ) : (
-            <ItemsGridBox sx={{ justifyContent: props.preview ? 'left' : 'center' }}>
-              <SafeSuspense>{props.children}</SafeSuspense>
-            </ItemsGridBox>
-          )}
-        </Box>
-        {props.preview && (
-          <Stack flex="2" overflow="hidden">
-            <Sticky boundaryElement="#preview">{props.preview}</Sticky>
-          </Stack>
-        )}
-      </Box>
+      {isMobile && (
+        <FilteredListMobileView
+          items={props.items}
+          loading={props.loading}
+          loadingColor={props.loadingColor}
+          preview={props.preview}
+        />
+      )}
+      {!isMobile && (
+        <FilteredListDesktopView
+          loading={props.loading}
+          loadingColor={props.loadingColor}
+          preview={props.preview}
+        >
+          {props.items}
+        </FilteredListDesktopView>
+      )}
     </Box>
   )
 }
