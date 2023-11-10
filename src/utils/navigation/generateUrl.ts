@@ -1,3 +1,4 @@
+import { ProfileType } from '@/src/pagePartials/profile/ProfileSelector'
 import { BadgeModelControllerType } from '@/types/badges/BadgeModel'
 
 export function generateMintUrl(
@@ -32,9 +33,33 @@ export function generateBadgePreviewUrl(badgeId: string) {
   return `/badge/${badgeId}`
 }
 
-export function generateProfileUrl(args?: { address?: string; filter?: string }) {
-  const { address, filter } = args || {}
-  return `/user/profile${address ? '/' + address : ''}${filter ? '?filter=' + filter : ''}`
+export function generateProfileUrl(args?: {
+  address?: string
+  filter?: string
+  profileType?: ProfileType
+}) {
+  const { address, filter, profileType } = args || {}
+  let url = `/user/profile`
+
+  const queryParameters = []
+
+  if (address) {
+    url += `/${address}`
+  }
+
+  if (filter) {
+    queryParameters.push(`filter=${encodeURIComponent(filter)}`)
+  }
+
+  if (profileType) {
+    queryParameters.push(`profileType=${encodeURIComponent(profileType)}`)
+  }
+
+  if (queryParameters.length > 0) {
+    url += `?${queryParameters.join('&')}`
+  }
+
+  return url
 }
 
 export function generateCreatorRegisterUrl() {

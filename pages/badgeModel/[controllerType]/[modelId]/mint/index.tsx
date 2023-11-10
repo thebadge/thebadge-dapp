@@ -8,6 +8,7 @@ import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import useTransaction, { TransactionStates } from '@/src/hooks/useTransaction'
 import MintKlerosBadgeModel from '@/src/pagePartials/badge/mint/MintCommunityBadgeModel'
 import MintThirdPartyBadgeModel from '@/src/pagePartials/badge/mint/MintThirdPartyBadgeModel'
+import { ProfileType } from '@/src/pagePartials/profile/ProfileSelector'
 import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 import { BadgeModelControllerType } from '@/types/badges/BadgeModel'
 import { NextPageWithLayout } from '@/types/next'
@@ -29,7 +30,7 @@ const MintBadgeModel: NextPageWithLayout = () => {
   useEffect(() => {
     // Redirect to the profile
     if (state === TransactionStates.success) {
-      router.push(generateProfileUrl())
+      router.push(generateProfileUrl({ profileType: ProfileType.NORMAL_PROFILE }))
     }
   }, [router, state])
 

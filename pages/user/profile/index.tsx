@@ -1,7 +1,7 @@
 import { Stack, Typography } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
 
-import Profile from '@/src/pagePartials/profile/Profile'
+import ProfileSelector from '@/src/pagePartials/profile/ProfileSelector'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { NextPageWithLayout } from '@/types/next'
 
@@ -20,7 +20,7 @@ const ProfilePage: NextPageWithLayout = () => {
       </>
     )
   }
-  return <Profile />
+  return <ProfileSelector />
 }
 
 export default ProfilePage
