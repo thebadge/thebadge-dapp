@@ -12,7 +12,7 @@ import { useRemovalCost } from '@/src/hooks/kleros/useRemovalCost'
 import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
 import { useBadgeKlerosMetadata } from '@/src/hooks/subgraph/useBadgeKlerosMetadata'
 import useBadgeHelpers, { ReviewBadge } from '@/src/hooks/theBadge/useBadgeHelpers'
-import { useContractInstance } from '@/src/hooks/useContractInstance'
+import useTBContract from '@/src/hooks/theBadge/useTBContract'
 import useTransaction from '@/src/hooks/useTransaction'
 import CurationCriteriaLink from '@/src/pagePartials/badge/curate/CurationCriteriaLink'
 import ChallengeCost from '@/src/pagePartials/badge/curate/challenge/ChallengeCost'
@@ -26,7 +26,6 @@ import {
 } from '@/src/utils/badges/challengeBadgesHelpers'
 import { encodeIpfsEvidence } from '@/src/utils/badges/createBadgeModelHelpers'
 import { BadgeStatus } from '@/types/generated/subgraph'
-import { TheBadge__factory } from '@/types/generated/typechain'
 
 type ChallengeModalProps = {
   open: boolean
@@ -59,7 +58,7 @@ function ChallengeModalContent({ badgeId, onClose }: { badgeId: string; onClose:
   }
 
   const badgeModelId = badge.badgeModel.id
-  const theBadge = useContractInstance(TheBadge__factory, 'TheBadge')
+  const theBadge = useTBContract()
 
   async function onSubmit(data: z.infer<typeof EvidenceSchema>) {
     if (!badge || !badge.status) {

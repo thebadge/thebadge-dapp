@@ -11,7 +11,7 @@ import { APP_URL } from '@/src/constants/common'
 import useBadgeIdParam from '@/src/hooks/nextjs/useBadgeIdParam'
 import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
 import { useUserById } from '@/src/hooks/subgraph/useUserById'
-import { useContractInstance } from '@/src/hooks/useContractInstance'
+import useTBContract from '@/src/hooks/theBadge/useTBContract'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { useSizeSM } from '@/src/hooks/useSize'
 import BadgeModelPreview from '@/src/pagePartials/badge/BadgeModelPreview'
@@ -23,7 +23,6 @@ import {
   generateProfileUrl,
 } from '@/src/utils/navigation/generateUrl'
 import { CreatorMetadata } from '@/types/badges/Creator'
-import { TheBadge__factory } from '@/types/generated/typechain'
 import { ToastStates } from '@/types/toast'
 
 const Wrapper = styled(Stack)(({ theme }) => ({
@@ -52,7 +51,7 @@ export default function BadgeOwnedPreview() {
 
   const { web3Provider } = useWeb3Connection()
   const badgeById = useBadgeById(badgeId)
-  const theBadge = useContractInstance(TheBadge__factory, 'TheBadge')
+  const theBadge = useTBContract()
 
   const badge = badgeById.data
   const badgeModel = badge?.badgeModel

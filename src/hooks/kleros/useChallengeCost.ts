@@ -1,14 +1,13 @@
 import useSWR from 'swr'
 
-import { useContractInstance } from '@/src/hooks/useContractInstance'
-import { TheBadge__factory } from '@/types/generated/typechain'
+import useTBContract from '@/src/hooks/theBadge/useTBContract'
 
 /**
  * This hook calculates the cost of creating a challenge request
  * @param badgeId
  */
 export function useChallengeCost(badgeId: string) {
-  const theBadge = useContractInstance(TheBadge__factory, 'TheBadge')
+  const theBadge = useTBContract()
 
   return useSWR(
     [`challengeDeposit:${badgeId}`, badgeId],

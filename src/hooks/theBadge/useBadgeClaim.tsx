@@ -1,13 +1,12 @@
 import { useCallback } from 'react'
 
-import { useContractInstance } from '@/src/hooks/useContractInstance'
+import useTBContract from '@/src/hooks/theBadge/useTBContract'
 import useTransaction from '@/src/hooks/useTransaction'
-import { TheBadge__factory } from '@/types/generated/typechain'
 
 type ClaimFunction = (badgeId: string) => Promise<void>
 
 export default function useBadgeClaim(): ClaimFunction {
-  const theBadge = useContractInstance(TheBadge__factory, 'TheBadge')
+  const theBadge = useTBContract()
   const { sendTx } = useTransaction()
 
   return useCallback(
