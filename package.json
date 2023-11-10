@@ -37,7 +37,7 @@
     "@web3-onboard/walletconnect": "^2.2.2",
     "@web3-onboard/web3auth": "^2.2.3",
     "@web3auth/modal": "^6.1.1",
-    "axios": "^1.2.3",
+    "axios": "^1.6.0",
     "big-number-input": "^1.0.3",
     "dayjs": "^1.11.7",
     "dom-to-image": "^2.6.0",
