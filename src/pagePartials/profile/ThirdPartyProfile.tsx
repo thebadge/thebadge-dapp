@@ -8,7 +8,6 @@ import { useTranslation } from 'next-export-i18n'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { ProfileType } from '@/src/pagePartials/profile/ProfileSelector'
 import MyProfileSection from '@/src/pagePartials/profile/myProfile/MyProfileSection'
-import BadgesIAmReviewingSection from '@/src/pagePartials/profile/reviewing/BadgesIAmReviewingSection'
 import ProfileContextProvider from '@/src/providers/ProfileProvider'
 import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 
@@ -78,8 +77,8 @@ const ThirdPartyProfile = () => {
         </Stack>
         {/* Profile Content */}
         {!selectedFilter && <MyProfileSection />}
-        {selectedFilter === ThirdPartyProfileFilter.MANAGE_ACCOUNT && <MyProfileSection />}
-        {selectedFilter === ThirdPartyProfileFilter.MANAGE_BADGES && <BadgesIAmReviewingSection />}
+        {selectedFilter === ThirdPartyProfileFilter.MANAGE_ACCOUNT && <div>MANAGE ACCOUNT WIP</div>}
+        {selectedFilter === ThirdPartyProfileFilter.MANAGE_BADGES && <div>MANAGE BADGES WIP</div>}
       </SafeSuspense>
     </ProfileContextProvider>
   )
