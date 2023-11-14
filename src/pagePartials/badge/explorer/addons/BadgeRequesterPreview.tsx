@@ -12,8 +12,7 @@ import { CreatorMetadata } from '@/types/badges/Creator'
 export default function BadgeRequesterPreview({
   ownerAddress,
 }: {
-  // TODO Validate
-  ownerAddress: `0x${string}` | string
+  ownerAddress: `0x${string}`
   color?: string
 }) {
   const { t } = useTranslation()

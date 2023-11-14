@@ -220,10 +220,22 @@ export function useWeb3Connection(): Web3Context {
   const [web3Auth] = useState<Web3Auth | null>(web3AuthInstance)
   const [isSocialWallet, setIsSocialWallet] = useState<boolean>(false)
 
+  /*useEffect(() => {*/
+  /*  const initSocialWallet = async () => {*/
+  /*    if (!web3Auth) {*/
+  /*      const web3AuthInstance = await initWeb3Auth()*/
+  /*      if (web3AuthInstance) setWeb3Auth(web3AuthInstance)*/
+  /*    }*/
+  /*  }*/
+  /*  initSocialWallet()*/
+  /*}, [web3Auth])*/
+
   useEffect(() => {
     const checkIfItsSocialWallet = async () => {
-      const authUser = await web3Auth?.authenticateUser()
-      if (authUser) setIsSocialWallet(true)
+      if (web3Auth?.connected) {
+        const authUser = await web3Auth?.authenticateUser()
+        if (authUser) setIsSocialWallet(true)
+      }
     }
     checkIfItsSocialWallet()
   }, [web3Auth])

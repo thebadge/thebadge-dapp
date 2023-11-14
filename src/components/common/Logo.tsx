@@ -34,7 +34,7 @@ export const Logo = ({ size }: { size?: number }) => (
 export const LogoWithText = ({ color, size }: { size?: number; color?: string }) => (
   <Link href="/" legacyBehavior passHref>
     <HomeLink>
-      <LogoSVGWithText fill={color} size={size || 100} />
+      <LogoSVGWithText fill={color} size={size || 130} />
     </HomeLink>
   </Link>
 )
