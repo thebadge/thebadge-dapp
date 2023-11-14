@@ -45,7 +45,6 @@ const ThirdPartyProfile = () => {
     </Typography>
   )
 
-  console.log('selected', selectedFilter)
   return (
     <ProfileContextProvider>
       <SafeSuspense>
