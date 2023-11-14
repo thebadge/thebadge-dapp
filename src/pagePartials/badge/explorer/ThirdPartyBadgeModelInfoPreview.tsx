@@ -1,23 +1,24 @@
 import { useRouter } from 'next/navigation'
 import React from 'react'
 
-import { Box, Divider, Skeleton, Stack, Typography } from '@mui/material'
+import { Box, Divider, Stack, Typography } from '@mui/material'
 import { ButtonV2, colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
-import { useSizeSM } from '@/src/hooks/useSize'
-import BadgeMintCost from '@/src/pagePartials/badge/explorer/addons/BadgeMintCost'
 import CreatorInfoSmallPreview from '@/src/pagePartials/badge/explorer/addons/CreatorInfoSmallPreview'
 import { generateMintUrl, generateModelExplorerUrl } from '@/src/utils/navigation/generateUrl'
 import { BadgeModelMetadata } from '@/types/badges/BadgeMetadata'
 import { BadgeModel } from '@/types/generated/subgraph'
 
-export default function BadgeModelInfoPreview({ badgeModel }: { badgeModel: BadgeModel }) {
+export default function ThirdPartyBadgeModelInfoPreview({
+  badgeModel,
+}: {
+  badgeModel: BadgeModel
+}) {
   const { t } = useTranslation()
   const router = useRouter()
-  const isMobile = useSizeSM()
 
   const resBadgeModelMetadata = useS3Metadata<{ content: BadgeModelMetadata }>(badgeModel.uri || '')
   const badgeMetadata = resBadgeModelMetadata.data?.content
@@ -35,12 +36,6 @@ export default function BadgeModelInfoPreview({ badgeModel }: { badgeModel: Badg
 
       {/* Mint info */}
       <Stack gap={1}>
-        <SafeSuspense fallback={<Skeleton variant="text" width={100} />}>
-          <BadgeMintCost modelId={badgeModel.id} />
-        </SafeSuspense>
-
-        {isMobile && <Divider color={colors.white} sx={{ my: 2 }} />}
-
         <Typography fontWeight="bold" variant="titleMedium">
           {t('explorer.preview.badge.totalMinted')}
           <Typography component="span" sx={{ ml: 1 }} variant="dAppTitle2">
@@ -55,15 +50,18 @@ export default function BadgeModelInfoPreview({ badgeModel }: { badgeModel: Badg
           onClick={() =>
             router.push(generateModelExplorerUrl(badgeModel.id, badgeModel.controllerType))
           }
+          sx={{
+            textTransform: 'uppercase',
+          }}
           variant="outlined"
         >
-          {t('explorer.preview.badge.showOthers')}
+          {t('explorer.preview.badge.thirdParty.showOthers')}
         </ButtonV2>
 
         <ButtonV2
           backgroundColor={colors.blue}
           onClick={() => router.push(generateMintUrl(badgeModel.controllerType, badgeModel.id))}
-          sx={{ ml: 'auto' }}
+          sx={{ ml: 'auto', textTransform: 'uppercase' }}
           variant="contained"
         >
           {t('explorer.preview.badge.mint')}

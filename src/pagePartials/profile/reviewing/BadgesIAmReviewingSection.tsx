@@ -102,7 +102,7 @@ export default function BadgesIAmReviewingSection() {
         color={colors.purple}
         onSelectNext={selectNext}
         onSelectPrevious={selectPrevious}
-        title={t('profile.badgesIAmReviewing.previewTitle')}
+        title={t('profile.user.badgesIAmReviewing.previewTitle')}
       >
         <BadgeReviewingInfoPreview badge={badgesIamReviewing[selectedBadge]} />
       </SelectedItemPreviewWrapper>
@@ -137,14 +137,14 @@ export default function BadgesIAmReviewingSection() {
     }
     return [
       <Stack key="no-results">
-        <NoResultsAnimated errorText={t('profile.badgesIAmReviewing.noResults')} />
+        <NoResultsAnimated errorText={t('profile.user.badgesIAmReviewing.noResults')} />
         <ButtonV2
           backgroundColor={colors.transparent}
           fontColor={colors.green}
           onClick={() => router.push(generateBadgeCurate())}
           sx={{ m: 'auto' }}
         >
-          <Typography>{t('profile.badgesIAmReviewing.curate')}</Typography>
+          <Typography>{t('profile.user.badgesIAmReviewing.curate')}</Typography>
         </ButtonV2>
       </Stack>,
     ]
@@ -163,7 +163,7 @@ export default function BadgesIAmReviewingSection() {
         preview={renderSelectedBadgePreview()}
         search={search}
         showTextSearch={false}
-        title={t('profile.badgesIAmReviewing.title')}
+        title={t('profile.user.badgesIAmReviewing.title')}
         titleColor={colors.purple}
       />
     </>

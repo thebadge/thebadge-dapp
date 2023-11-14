@@ -19,6 +19,7 @@ const ItemsGridBox = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexWrap: 'wrap',
   gap: theme.spacing(3),
+  margin: 'auto',
 }))
 
 export default function FilteredListDesktopView(props: {

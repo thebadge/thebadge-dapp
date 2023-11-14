@@ -13,7 +13,7 @@ import {
   BADGE_MODEL_TEXT_CONTRAST,
 } from '@/src/pagePartials/badge/model/steps/uiBasics/BadgeModelUIBasics'
 import { cleanCreateModelFormValues } from '@/src/pagePartials/badge/model/utils'
-import { ProfileFilter } from '@/src/pagePartials/profile/Profile'
+import { NormalProfileFilter } from '@/src/pagePartials/profile/UserProfile'
 import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 
 const BoxShadow = styled(Box)(({ theme }) => ({
@@ -61,7 +61,9 @@ export default function BadgeModelCreated() {
       </Stack>
       <StepButton
         color={'primary'}
-        onClick={() => router.push(generateProfileUrl({ filter: ProfileFilter.CREATED_BADGES }))}
+        onClick={() =>
+          router.push(generateProfileUrl({ filter: NormalProfileFilter.CREATED_BADGES }))
+        }
         sx={{ m: 'auto' }}
         variant="contained"
       >

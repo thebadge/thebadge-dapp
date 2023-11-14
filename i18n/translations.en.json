@@ -98,7 +98,7 @@
     "noBadgesFound": "There are no badges that match these filters...",
     "button": "MINT",
     "preview": {
-      "title": "Badge information",
+      "title": "Model information",
       "badge": {
         "name": "Name",
         "description": "Description",
@@ -106,7 +106,10 @@
         "depositCost": "Deposit cost:",
         "totalMinted": "Total minted amount:",
         "mint": "Mint",
-        "showOthers": "See minted badges"
+        "showOthers": "See minted badges",
+        "thirdParty": {
+          "showOthers": "See minted"
+        }
       },
       "creator": {
         "createdBy": "Created By"
@@ -127,6 +130,9 @@
       "viewEvidence": "View raw evidence (.json)",
       "evidences": "Evidence",
       "listingCriteria": "Curation Criteria"
+    },
+    "thirdParty": {
+      "title": "Third party badges explorer"
     }
   },
   "curateExplorer": {
@@ -157,25 +163,37 @@
       "explorerBadgeMinted": "Minted: ",
       "create": "Create a Badge Model"
     },
-    "badgesToCurate": "Browse other badges to curate",
-    "createdBadges": "Earn by creating new badges",
-    "tab1": "My badges",
-    "tab2": "Curated badges",
-    "tab3": "Created badges",
-    "badgesIAmReviewing": {
-      "title": "Badges I am reviewing",
-      "seeDispute": "See dispute",
-      "seeDisputeTooltip": "When you raise a challenge, a kleros dispute is created to resolve it and you can see how it's going on the Kleros Court",
-      "previewTitle": "Challenged Badge",
-      "noResults": "There are no badges you are already reviewing...",
-      "addEvidence": "Add more evidence",
-      "viewAll": "View details",
-      "lastActivity": "Last Activity",
-      "submissionChallenge": "You have challenged the submission of this badge",
-      "removalChallenge": "You have requested the removal of this badge",
-      "curate": "Curate a badge"
+    "user": {
+      "title": "My Profile",
+      "badgesToCurate": "Browse other badges to curate",
+      "createdBadges": "Earn by creating new badges",
+      "tab1": "My badges",
+      "tab2": "Curated badges",
+      "tab3": "Created badges",
+      "badgesIAmReviewing": {
+        "title": "Badges I am reviewing",
+        "seeDispute": "See dispute",
+        "seeDisputeTooltip": "When you raise a challenge, a kleros dispute is created to resolve it and you can see how it's going on the Kleros Court",
+        "previewTitle": "Challenged Badge",
+        "noResults": "There are no badges you are already reviewing...",
+        "addEvidence": "Add more evidence",
+        "viewAll": "View details",
+        "lastActivity": "Last Activity",
+        "submissionChallenge": "You have challenged the submission of this badge",
+        "removalChallenge": "You have requested the removal of this badge",
+        "curate": "Curate a badge"
+      },
+      "verified": "Verified user"
     },
-    "verified": "Verified user",
+    "thirdParty": {
+      "title": "Management",
+      "subtitle": "{{thirdPartyName}} Models Management",
+      "tab1": "Manage account",
+      "tab2": "Manage badges",
+      "manageBadges": {
+        "title": "Manage third party badges"
+      }
+    },
     "statistics": {
       "title": "Statistics",
       "lastUpdated": "Updated:",
@@ -284,6 +302,9 @@
     "curateButton": "Curate",
     "curateButtonDisabledTooltip": "You cannot curate your own badge.",
     "claimButton": "Claim",
+    "claimed": "Claimed",
+    "unclaimed": "Unclaimed",
+    "thirdPartyBadgeUnclaimedText": "The badge has not been claimed, an email has been sent to the user.",
     "claimButtonDisabledTooltip": "You cannot claim this badge yet.",
     "renewButton": "Renew",
     "model": {
