@@ -55,6 +55,7 @@ const { chains, publicClient } = configureChains(defaultChains, [
 ])
 
 let web3AuthInstance: Web3Auth | null = null
+
 // 2.1. Add Social Login with web3Auth
 // Set up your Web3Auth instance with all the features you want
 async function initWeb3Auth() {
