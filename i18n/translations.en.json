@@ -157,25 +157,33 @@
       "explorerBadgeMinted": "Minted: ",
       "create": "Create a Badge Model"
     },
-    "badgesToCurate": "Browse other badges to curate",
-    "createdBadges": "Earn by creating new badges",
-    "tab1": "My badges",
-    "tab2": "Curated badges",
-    "tab3": "Created badges",
-    "badgesIAmReviewing": {
-      "title": "Badges I am reviewing",
-      "seeDispute": "See dispute",
-      "seeDisputeTooltip": "When you raise a challenge, a kleros dispute is created to resolve it and you can see how it's going on the Kleros Court",
-      "previewTitle": "Challenged Badge",
-      "noResults": "There are no badges you are already reviewing...",
-      "addEvidence": "Add more evidence",
-      "viewAll": "View details",
-      "lastActivity": "Last Activity",
-      "submissionChallenge": "You have challenged the submission of this badge",
-      "removalChallenge": "You have requested the removal of this badge",
-      "curate": "Curate a badge"
+    "user": {
+      "title": "My Profile",
+      "badgesToCurate": "Browse other badges to curate",
+      "createdBadges": "Earn by creating new badges",
+      "tab1": "My badges",
+      "tab2": "Curated badges",
+      "tab3": "Created badges",
+      "badgesIAmReviewing": {
+        "title": "Badges I am reviewing",
+        "seeDispute": "See dispute",
+        "seeDisputeTooltip": "When you raise a challenge, a kleros dispute is created to resolve it and you can see how it's going on the Kleros Court",
+        "previewTitle": "Challenged Badge",
+        "noResults": "There are no badges you are already reviewing...",
+        "addEvidence": "Add more evidence",
+        "viewAll": "View details",
+        "lastActivity": "Last Activity",
+        "submissionChallenge": "You have challenged the submission of this badge",
+        "removalChallenge": "You have requested the removal of this badge",
+        "curate": "Curate a badge"
+      },
+      "verified": "Verified user"
     },
-    "verified": "Verified user",
+    "thirdPartyProfile": {
+      "title": "Management",
+      "tab1": "Manage account",
+      "tab2": "Manage badges"
+    },
     "statistics": {
       "title": "Statistics",
       "lastUpdated": "Updated:",

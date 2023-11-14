@@ -123,7 +123,7 @@ const ExploreBadgeModels: NextPageWithLayout = () => {
         loadingColor={'blue'}
         preview={renderSelectedBadgePreview()}
         search={search}
-        title={t('explorer.title')}
+        title={t('profile.user.badgesIAmReviewing.title')}
       />
     </>
   )

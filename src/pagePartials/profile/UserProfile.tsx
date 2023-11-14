@@ -14,24 +14,20 @@ import BadgesIAmReviewingSection from '@/src/pagePartials/profile/reviewing/Badg
 import CreatorStatistics from '@/src/pagePartials/profile/statistics/creator/CreatorStatistics'
 import CuratorStatistics from '@/src/pagePartials/profile/statistics/curator/CuratorStatistics'
 import UserStatistics from '@/src/pagePartials/profile/statistics/user/UserStatistics'
-import InfoPreview from '@/src/pagePartials/profile/userInfo/InfoPreview'
-import { InfoPreviewSkeleton } from '@/src/pagePartials/profile/userInfo/InfoPreview.skeleton'
 import ProfileContextProvider from '@/src/providers/ProfileProvider'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { generateCreatorRegisterUrl, generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 
-export enum ProfileFilter {
+export enum NormalProfileFilter {
   BADGES_I_AM_REVIEWING = 'badgesIAmReviewing',
   CREATED_BADGES = 'createdBadges',
 }
 
-const Profile = () => {
+const UserProfile = () => {
   const { t } = useTranslation()
 
   const params = useSearchParams()
   const selectedFilter = params.get('filter')
 
-  const { address: connectedWalletAddress } = useWeb3Connection()
   const { data: user } = useCurrentUser()
   const router = useRouter()
 
@@ -40,37 +36,37 @@ const Profile = () => {
       color={!selectedFilter ? 'text.primary' : 'text.disabled'}
       textTransform="uppercase"
     >
-      {t('profile.tab1')}
+      {t('profile.user.tab1')}
     </Typography>
   )
 
   const curatedBadgesTab = (
     <Typography
       color={
-        selectedFilter === ProfileFilter.BADGES_I_AM_REVIEWING ? 'text.primary' : 'text.disabled'
+        selectedFilter === NormalProfileFilter.BADGES_I_AM_REVIEWING
+          ? 'text.primary'
+          : 'text.disabled'
       }
       textTransform="uppercase"
     >
-      {t('profile.tab2')}
+      {t('profile.user.tab2')}
     </Typography>
   )
 
   const createdBadgesTab = (
     <Typography
-      color={selectedFilter === ProfileFilter.CREATED_BADGES ? 'text.primary' : 'text.disabled'}
+      color={
+        selectedFilter === NormalProfileFilter.CREATED_BADGES ? 'text.primary' : 'text.disabled'
+      }
       textTransform="uppercase"
     >
-      {t('profile.tab3')}
+      {t('profile.user.tab3')}
     </Typography>
   )
 
   return (
     <ProfileContextProvider>
       <SafeSuspense>
-        <SafeSuspense fallback={<InfoPreviewSkeleton />}>
-          <InfoPreview address={connectedWalletAddress || ''} />
-        </SafeSuspense>
-
         <Stack sx={{ mb: 6, gap: 4, alignItems: 'center' }}>
           <Box
             display="flex"
@@ -87,7 +83,7 @@ const Profile = () => {
             {/* curated badges */}
             <LinkWithTranslation
               pathname={generateProfileUrl()}
-              queryParams={{ filter: ProfileFilter.BADGES_I_AM_REVIEWING }}
+              queryParams={{ filter: NormalProfileFilter.BADGES_I_AM_REVIEWING }}
             >
               {curatedBadgesTab}
             </LinkWithTranslation>
@@ -113,7 +109,7 @@ const Profile = () => {
             ) : (
               <LinkWithTranslation
                 pathname={generateProfileUrl()}
-                queryParams={{ filter: user?.isCreator ? ProfileFilter.CREATED_BADGES : '' }}
+                queryParams={{ filter: user?.isCreator ? NormalProfileFilter.CREATED_BADGES : '' }}
               >
                 {createdBadgesTab}
               </LinkWithTranslation>
@@ -122,17 +118,19 @@ const Profile = () => {
         </Stack>
 
         {/* Statistics */}
-        {selectedFilter === ProfileFilter.CREATED_BADGES && <CreatorStatistics />}
-        {selectedFilter === ProfileFilter.BADGES_I_AM_REVIEWING && <CuratorStatistics />}
+        {selectedFilter === NormalProfileFilter.CREATED_BADGES && <CreatorStatistics />}
+        {selectedFilter === NormalProfileFilter.BADGES_I_AM_REVIEWING && <CuratorStatistics />}
         {!selectedFilter && <UserStatistics />}
 
         {/* Profile Content */}
         {!selectedFilter && <MyProfileSection />}
-        {selectedFilter === ProfileFilter.BADGES_I_AM_REVIEWING && <BadgesIAmReviewingSection />}
-        {selectedFilter === ProfileFilter.CREATED_BADGES && <BadgesCreatedSection />}
+        {selectedFilter === NormalProfileFilter.BADGES_I_AM_REVIEWING && (
+          <BadgesIAmReviewingSection />
+        )}
+        {selectedFilter === NormalProfileFilter.CREATED_BADGES && <BadgesCreatedSection />}
       </SafeSuspense>
     </ProfileContextProvider>
   )
 }
 
-export default Profile
+export default UserProfile

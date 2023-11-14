@@ -40,8 +40,8 @@ export default function BadgeReviewingInfoPreview({ badge }: { badge: Badge }) {
 
       <Alert severity="info">
         {isRegistration
-          ? t('profile.badgesIAmReviewing.submissionChallenge')
-          : t('profile.badgesIAmReviewing.removalChallenge')}
+          ? t('profile.user.badgesIAmReviewing.submissionChallenge')
+          : t('profile.user.badgesIAmReviewing.removalChallenge')}
       </Alert>
 
       <Box alignContent="center" display="flex" flex={1} justifyContent="space-between">
@@ -73,7 +73,7 @@ export default function BadgeReviewingInfoPreview({ badge }: { badge: Badge }) {
           fontColor={colors.white}
           onClick={() => router.push(generateBadgePreviewUrl(badge.id))}
         >
-          {t('profile.badgesIAmReviewing.viewAll')}
+          {t('profile.user.badgesIAmReviewing.viewAll')}
         </ButtonV2>
         <ButtonV2
           backgroundColor={colors.transparent}
@@ -81,7 +81,7 @@ export default function BadgeReviewingInfoPreview({ badge }: { badge: Badge }) {
           onClick={() => addMoreEvidence(badge?.id)}
           variant="outlined"
         >
-          {t('profile.badgesIAmReviewing.addEvidence')}
+          {t('profile.user.badgesIAmReviewing.addEvidence')}
         </ButtonV2>
       </Box>
 

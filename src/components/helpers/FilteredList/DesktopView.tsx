@@ -28,7 +28,7 @@ export default function FilteredListDesktopView(props: {
   children: React.ReactNode
 }) {
   return (
-    <Box display="flex" id="preview" mt={4}>
+    <Box alignItems={'center'} display="flex" flexDirection={'column'} id="preview" mt={4}>
       <ContentBox>
         {props.loading ? (
           <Loading color={props.loadingColor} />
