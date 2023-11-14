@@ -7,7 +7,7 @@ import Blockies from 'react-18-blockies'
 
 import VerifiedCreator from '@/src/components/icons/VerifiedCreator'
 import { useEnsReverseLookup } from '@/src/hooks/useEnsLookup'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
 /**
  * Avatar implementation that fallbacks on Blocajes generated with the address, if the given src is not valid

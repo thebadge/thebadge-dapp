@@ -24,7 +24,7 @@ const LogoSVGWithText = styled(LogoTheBadgeWithText)`
 `
 
 export const Logo = ({ size }: { size?: number }) => (
-  <Link href="/" legacyBehavior passHref>
+  <Link href="/" legacyBehavior passHref prefetch={false}>
     <HomeLink>
       <LogoSVG size={size || 100} />
     </HomeLink>
@@ -32,7 +32,7 @@ export const Logo = ({ size }: { size?: number }) => (
 )
 
 export const LogoWithText = ({ color, size }: { size?: number; color?: string }) => (
-  <Link href="/" legacyBehavior passHref>
+  <Link href="/" legacyBehavior passHref prefetch={false}>
     <HomeLink>
       <LogoSVGWithText fill={color} size={size || 130} />
     </HomeLink>

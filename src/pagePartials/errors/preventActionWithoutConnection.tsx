@@ -8,7 +8,7 @@ import { DisableOverlay, DisableWrapper } from '@/src/components/helpers/Disable
 import useIsCreator from '@/src/hooks/subgraph/useIsCreator'
 import ConnectWalletActionError from '@/src/pagePartials/errors/displays/ConnectWalletActionError'
 import { RequiredCreatorAccess } from '@/src/pagePartials/errors/requiresCreatorAccess'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
 const Wrapper = styled('div')`
   display: flex;

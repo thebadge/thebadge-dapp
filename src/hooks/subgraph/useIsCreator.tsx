@@ -1,7 +1,7 @@
 import useSWR, { SWRResponse } from 'swr'
 
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
 export default function useIsCreator(address?: string): SWRResponse<boolean> {
   const gql = useSubgraph()

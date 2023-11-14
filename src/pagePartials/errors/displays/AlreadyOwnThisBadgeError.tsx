@@ -10,7 +10,7 @@ import { useTranslation } from 'next-export-i18n'
 import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import { useBadgeOwnershipData } from '@/src/hooks/subgraph/useIsBadgeOwner'
 import { useColorMode } from '@/src/providers/themeProvider'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import { generateBadgePreviewUrl } from '@/src/utils/navigation/generateUrl'
 
 const ModalBody = styled(Box)(({ theme }) => ({

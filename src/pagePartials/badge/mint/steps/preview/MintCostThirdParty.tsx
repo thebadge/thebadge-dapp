@@ -8,7 +8,7 @@ import { useTranslation } from 'next-export-i18n'
 import { getNetworkConfig } from '@/src/config/web3'
 import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import useMintValue from '@/src/hooks/theBadge/useMintValue'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
 const CostContainer = styled(Stack)(({ theme }) => ({
   flex: 1,

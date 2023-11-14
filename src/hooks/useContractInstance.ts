@@ -1,6 +1,6 @@
 import { ContractsKeys, contracts } from '@/src/contracts/contracts'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import { useEthersSigner } from '@/src/hooks/etherjs/useEthersSigner'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import * as typechainImports from '@/types/generated/typechain'
 import { ObjectValues } from '@/types/utils'
 

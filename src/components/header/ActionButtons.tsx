@@ -7,7 +7,7 @@ import { useTranslation } from 'next-export-i18n'
 
 import { useCurrentUser } from '@/src/hooks/subgraph/useCurrentUser'
 import { useSectionReferences } from '@/src/providers/referencesProvider'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import {
   generateBadgeCurate,
   generateBadgeExplorer,

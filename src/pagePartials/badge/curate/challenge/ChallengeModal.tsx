@@ -19,7 +19,7 @@ import ChallengeCost from '@/src/pagePartials/badge/curate/challenge/ChallengeCo
 import EvidenceForm, {
   EvidenceSchema,
 } from '@/src/pagePartials/badge/curate/evidenceForm/EvidenceForm'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import {
   removeChallengedBadgeId,
   saveChallengedBadgeId,

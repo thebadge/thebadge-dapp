@@ -11,7 +11,7 @@ import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import { MintBadgeSchemaType } from '@/src/pagePartials/badge/mint/schema/MintBadgeSchema'
 import MintCostThirdParty from '@/src/pagePartials/badge/mint/steps/preview/MintCostThirdParty'
 import { BadgePreviewGenerator } from '@/src/pagePartials/badge/preview/BadgePreviewGenerator'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
 export default function SubmitPreviewThirdParty() {
   const { t } = useTranslation()

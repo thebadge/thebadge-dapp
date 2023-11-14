@@ -3,7 +3,7 @@ import React, { RefObject, useRef } from 'react'
 import { styled } from '@mui/material'
 
 import { useSizeMD } from '@/src/hooks/useSize'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
 const ErrorSVG: React.FC = () => (
   <svg height="15" viewBox="0 0 15 15" width="15" xmlns="http://www.w3.org/2000/svg">

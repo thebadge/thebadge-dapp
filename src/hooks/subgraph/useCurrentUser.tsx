@@ -2,7 +2,7 @@ import useSWR from 'swr'
 
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import useChainId from '@/src/hooks/theBadge/useChainId'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import { User } from '@/types/generated/subgraph'
 
 export const useCurrentUser = () => {
