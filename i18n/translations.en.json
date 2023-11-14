@@ -106,7 +106,10 @@
         "depositCost": "Deposit cost:",
         "totalMinted": "Total minted amount:",
         "mint": "Mint",
-        "showOthers": "See minted badges"
+        "showOthers": "See minted badges",
+        "thirdParty": {
+          "showOthers": "See minted"
+        }
       },
       "creator": {
         "createdBy": "Created By"
