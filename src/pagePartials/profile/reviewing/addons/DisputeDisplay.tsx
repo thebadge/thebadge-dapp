@@ -33,12 +33,12 @@ export default function DisputeDisplay({ disputeId }: { disputeId?: string }) {
       <StyledTypography variant="body4">
         <ExternalLink
           href={`${KLEROS_COURT_URL}/cases/${disputeId}`}
-          label={t('profile.normalProfile.badgesIAmReviewing.seeDispute')}
+          label={t('profile.user.badgesIAmReviewing.seeDispute')}
           showCopyButton={false}
           showExternalLink={false}
         />
       </StyledTypography>
-      <Tooltip arrow title={t('profile.normalProfile.badgesIAmReviewing.seeDisputeTooltip')}>
+      <Tooltip arrow title={t('profile.user.badgesIAmReviewing.seeDisputeTooltip')}>
         <InfoOutlinedIcon color="white" sx={{ ml: 1, width: '20px', height: '20px' }} />
       </Tooltip>
     </Container>

@@ -1,8 +1,6 @@
 import React, { RefObject, createRef, useState } from 'react'
 
-import ArrowBackIosOutlinedIcon from '@mui/icons-material/ArrowBackIosOutlined'
-import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined'
-import { Box, IconButton, Stack, Typography, styled } from '@mui/material'
+import { Box, Stack, styled } from '@mui/material'
 import { colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 
@@ -12,6 +10,7 @@ import {
   MiniBadgePreviewLoading,
 } from '@/src/components/common/MiniBadgePreviewContainer'
 import FilteredList, { ListFilter } from '@/src/components/helpers/FilteredList'
+import SelectedItemPreviewWrapper from '@/src/components/helpers/FilteredList/SelectedItemPreviewWrapper'
 import InViewPort from '@/src/components/helpers/InViewPort'
 import SafeSuspense, { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import { ADDRESS_PREFIX, nowInSeconds } from '@/src/constants/helpers'
@@ -91,77 +90,73 @@ const CurateBadges: NextPageWithLayout = () => {
   function renderSelectedBadgePreview() {
     if (!badges[selectedBadgeIndex]) return null
     return (
-      <>
-        <Box display="flex" justifyContent="space-between">
-          <Typography color={colors.green} mb={4} variant="dAppHeadline2">
-            {t('explorer.curate.title')}
-          </Typography>
-          <Box>
-            <IconButton onClick={selectPrevious}>
-              <ArrowBackIosOutlinedIcon color="green" />
-            </IconButton>
-            <IconButton onClick={selectNext}>
-              <ArrowForwardIosOutlinedIcon color="green" />
-            </IconButton>
-          </Box>
-        </Box>
-        <SafeSuspense>
-          <BadgeEvidenceInfoPreview badge={badges[selectedBadgeIndex]} />
-        </SafeSuspense>
-      </>
+      <SelectedItemPreviewWrapper
+        color={colors.green}
+        onSelectNext={selectNext}
+        onSelectPrevious={selectPrevious}
+        title={t('explorer.curate.title')}
+      >
+        <BadgeEvidenceInfoPreview badge={badges[selectedBadgeIndex]} />
+      </SelectedItemPreviewWrapper>
     )
+  }
+
+  function renderBadgeToCurateItem(badge: Badge, index: number) {
+    const isSelected = badge.id === badges[selectedBadgeIndex]?.id
+    const showTimeLeft = badge.status !== BadgeStatus.Approved
+
+    return (
+      <InViewPort key={badge.id} minHeight={300} minWidth={180}>
+        <SafeSuspense fallback={<MiniBadgePreviewLoading />}>
+          <MiniBadgePreviewContainer
+            highlightColor={getHighlightColorByStatus(badge.status)}
+            ref={badgesElementRefs[index]}
+            selected={isSelected}
+          >
+            {showTimeLeft && (
+              <TimeLeftContainer>
+                <TimeLeftDisplay
+                  reviewDueDate={badge?.badgeKlerosMetaData?.reviewDueDate}
+                  smallView
+                />
+              </TimeLeftContainer>
+            )}
+            <MiniBadgeModelPreview
+              buttonTitle={t('curateExplorer.button')}
+              disableAnimations
+              highlightColor={getHighlightColorByStatus(badge.status)}
+              metadata={badge.badgeModel.uri}
+              onClick={() => setSelectedBadgeIndex(index)}
+            />
+          </MiniBadgePreviewContainer>
+        </SafeSuspense>
+      </InViewPort>
+    )
+  }
+
+  function generateListItems() {
+    if (badges.length > 0) {
+      return badges.map((badge, i) => renderBadgeToCurateItem(badge, i))
+    }
+    return [
+      <Stack key="no-results">
+        <NoResultsAnimated errorText={t('curateExplorer.noBadgesFound')} />
+      </Stack>,
+    ]
   }
 
   return (
     <>
       <FilteredList
         filters={filters}
+        items={generateListItems()}
         loading={loading}
         loadingColor={'green'}
         preview={renderSelectedBadgePreview()}
         search={search}
         searchInputLabel={t('curateExplorer.searchLabel')}
         title={t('curateExplorer.title')}
-      >
-        {badges.length > 0 ? (
-          badges.map((badge, i) => {
-            const isSelected = badge.id === badges[selectedBadgeIndex]?.id
-            const showTimeLeft = badge.status !== BadgeStatus.Approved
-
-            return (
-              <InViewPort key={badge.id} minHeight={300} minWidth={180}>
-                <SafeSuspense fallback={<MiniBadgePreviewLoading />}>
-                  <MiniBadgePreviewContainer
-                    highlightColor={getHighlightColorByStatus(badge.status)}
-                    ref={badgesElementRefs[i]}
-                    selected={isSelected}
-                  >
-                    {showTimeLeft && (
-                      <TimeLeftContainer>
-                        <TimeLeftDisplay
-                          reviewDueDate={badge?.badgeKlerosMetaData?.reviewDueDate}
-                          smallView
-                        />
-                      </TimeLeftContainer>
-                    )}
-                    <MiniBadgeModelPreview
-                      buttonTitle={t('curateExplorer.button')}
-                      disableAnimations
-                      highlightColor={getHighlightColorByStatus(badge.status)}
-                      metadata={badge.badgeModel.uri}
-                      onClick={() => setSelectedBadgeIndex(i)}
-                    />
-                  </MiniBadgePreviewContainer>
-                </SafeSuspense>
-              </InViewPort>
-            )
-          })
-        ) : (
-          <Stack>
-            <NoResultsAnimated errorText={t('curateExplorer.noBadgesFound')} />
-          </Stack>
-        )}
-      </FilteredList>
+      />
     </>
   )
 }

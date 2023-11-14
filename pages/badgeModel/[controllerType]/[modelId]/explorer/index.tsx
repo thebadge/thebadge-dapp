@@ -1,8 +1,6 @@
 import React, { RefObject, createRef, useState } from 'react'
 
-import ArrowBackIosOutlinedIcon from '@mui/icons-material/ArrowBackIosOutlined'
-import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined'
-import { Box, IconButton, Stack, Typography } from '@mui/material'
+import { Stack } from '@mui/material'
 import { colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 
@@ -12,11 +10,13 @@ import {
   BadgePreviewLoading,
 } from '@/src/components/common/BadgePreviewContainer'
 import FilteredList, { ListFilter } from '@/src/components/helpers/FilteredList'
+import SelectedItemPreviewWrapper from '@/src/components/helpers/FilteredList/SelectedItemPreviewWrapper'
 import InViewPort from '@/src/components/helpers/InViewPort'
 import SafeSuspense, { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import useListItemNavigation from '@/src/hooks/useListItemNavigation'
+import { useSizeSM } from '@/src/hooks/useSize'
 import BadgeModelPreview from '@/src/pagePartials/badge/BadgeModelPreview'
 import BadgeEvidenceInfoPreview from '@/src/pagePartials/badge/explorer/BadgeEvidenceInfoPreview'
 import { Badge } from '@/types/generated/subgraph'
@@ -26,6 +26,7 @@ const ExploreBadgeModels: NextPageWithLayout = () => {
   const { t } = useTranslation()
   const gql = useSubgraph()
   const badgeModelId = useModelIdParam()
+  const isMobile = useSizeSM()
 
   const [badges, setBadge] = useState<Badge[]>([])
   const [loading, setLoading] = useState<boolean>(false)
@@ -65,60 +66,65 @@ const ExploreBadgeModels: NextPageWithLayout = () => {
   function renderSelectedBadgePreview() {
     if (!badges[selectedBadge]) return null
     return (
-      <>
-        <Box display="flex" justifyContent="space-between">
-          <Typography color={colors.blue} mb={4} variant="dAppHeadline2">
-            {t('explorer.curate.title')}
-          </Typography>
-          <Box>
-            <IconButton onClick={selectPrevious}>
-              <ArrowBackIosOutlinedIcon color="blue" />
-            </IconButton>
-            <IconButton onClick={selectNext}>
-              <ArrowForwardIosOutlinedIcon color="blue" />
-            </IconButton>
-          </Box>
-        </Box>
-        <SafeSuspense>
-          <BadgeEvidenceInfoPreview badge={badges[selectedBadge]} />
-        </SafeSuspense>
-      </>
+      <SelectedItemPreviewWrapper
+        color={colors.blue}
+        onSelectNext={selectNext}
+        onSelectPrevious={selectPrevious}
+        title={t('explorer.curate.title')}
+      >
+        <BadgeEvidenceInfoPreview badge={badges[selectedBadge]} />
+      </SelectedItemPreviewWrapper>
     )
+  }
+
+  function renderBadgeItem(badge: Badge, index: number) {
+    const isSelected = badge.id === badges[selectedBadge]?.id
+    return (
+      <InViewPort
+        key={badge.id}
+        minHeight={300}
+        minWidth={180}
+        onViewPortEnter={() => {
+          if (isMobile) {
+            setSelectedBadgeModel(index)
+          }
+        }}
+      >
+        <SafeSuspense fallback={<BadgePreviewLoading />}>
+          <BadgePreviewContainer
+            highlightColor={colors.blue}
+            onClick={() => setSelectedBadgeModel(index)}
+            ref={badgeModelsElementRefs[index]}
+            selected={isSelected}
+          >
+            <BadgeModelPreview metadata={badge.badgeModel.uri} size="small" />
+          </BadgePreviewContainer>
+        </SafeSuspense>
+      </InViewPort>
+    )
+  }
+
+  function generateListItems() {
+    if (badges.length > 0) {
+      return badges.map((badge, i) => renderBadgeItem(badge, i))
+    }
+    return [
+      <Stack key="no-results">
+        <NoResultsAnimated errorText={t('explorer.noBadgesFound')} />
+      </Stack>,
+    ]
   }
 
   return (
     <>
       <FilteredList
+        items={generateListItems()}
         loading={loading}
         loadingColor={'blue'}
         preview={renderSelectedBadgePreview()}
         search={search}
-        title={t('explorer.title')}
-      >
-        {badges.length > 0 ? (
-          badges.map((badge, i) => {
-            const isSelected = badge.id === badges[selectedBadge]?.id
-            return (
-              <InViewPort key={badge.id} minHeight={300} minWidth={180}>
-                <SafeSuspense fallback={<BadgePreviewLoading />}>
-                  <BadgePreviewContainer
-                    highlightColor={colors.blue}
-                    onClick={() => setSelectedBadgeModel(i)}
-                    ref={badgeModelsElementRefs[i]}
-                    selected={isSelected}
-                  >
-                    <BadgeModelPreview metadata={badge.badgeModel.uri} size="small" />
-                  </BadgePreviewContainer>
-                </SafeSuspense>
-              </InViewPort>
-            )
-          })
-        ) : (
-          <Stack>
-            <NoResultsAnimated errorText={t('explorer.noBadgesFound')} />
-          </Stack>
-        )}
-      </FilteredList>
+        title={t('profile.user.badgesIAmReviewing.title')}
+      />
     </>
   )
 }

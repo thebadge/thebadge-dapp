@@ -7,6 +7,7 @@ import { useTranslation } from 'next-export-i18n'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
+import { useSizeSM } from '@/src/hooks/useSize'
 import BadgeMintCost from '@/src/pagePartials/badge/explorer/addons/BadgeMintCost'
 import CreatorInfoSmallPreview from '@/src/pagePartials/badge/explorer/addons/CreatorInfoSmallPreview'
 import { generateMintUrl, generateModelExplorerUrl } from '@/src/utils/navigation/generateUrl'
@@ -16,6 +17,7 @@ import { BadgeModel } from '@/types/generated/subgraph'
 export default function BadgeModelInfoPreview({ badgeModel }: { badgeModel: BadgeModel }) {
   const { t } = useTranslation()
   const router = useRouter()
+  const isMobile = useSizeSM()
 
   const resBadgeModelMetadata = useS3Metadata<{ content: BadgeModelMetadata }>(badgeModel.uri || '')
   const badgeMetadata = resBadgeModelMetadata.data?.content
@@ -36,6 +38,8 @@ export default function BadgeModelInfoPreview({ badgeModel }: { badgeModel: Badg
         <SafeSuspense fallback={<Skeleton variant="text" width={100} />}>
           <BadgeMintCost modelId={badgeModel.id} />
         </SafeSuspense>
+
+        {isMobile && <Divider color={colors.white} sx={{ my: 2 }} />}
 
         <Typography fontWeight="bold" variant="titleMedium">
           {t('explorer.preview.badge.totalMinted')}

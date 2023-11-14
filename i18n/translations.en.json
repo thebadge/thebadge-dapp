@@ -157,7 +157,7 @@
       "explorerBadgeMinted": "Minted: ",
       "create": "Create a Badge Model"
     },
-    "normalProfile": {
+    "user": {
       "title": "My Profile",
       "badgesToCurate": "Browse other badges to curate",
       "createdBadges": "Earn by creating new badges",
