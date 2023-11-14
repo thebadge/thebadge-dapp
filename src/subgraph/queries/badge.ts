@@ -93,7 +93,6 @@ export const BADGE_BY_TYPE = gql`
   query badgeByModelId($id: String!) {
     badges(where: { badgeModel: $id }) {
       ...BadgeWithJustIds
-      controllerType
     }
   }
 `
