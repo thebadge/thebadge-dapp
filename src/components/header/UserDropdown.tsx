@@ -2,11 +2,10 @@ import { useRouter } from 'next/router'
 import React, { RefObject, useRef, useState } from 'react'
 
 import { AddressZero } from '@ethersproject/constants'
-import { ExpandLess, ExpandMore } from '@mui/icons-material'
+import RadarIcon from '@mui/icons-material/Radar'
 import {
   Avatar,
   Badge,
-  Collapse,
   Divider,
   IconButton,
   ListItemIcon,
@@ -17,14 +16,15 @@ import {
   Tooltip,
   styled,
 } from '@mui/material'
+import { useWeb3Modal } from '@web3modal/wagmi/react'
 import Blockies from 'react-18-blockies'
 
 import { Logout } from '@/src/components/assets/Logout'
 import ActionButtons from '@/src/components/header/ActionButtons'
 import { Address } from '@/src/components/helpers/Address'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
-import { SwitchNetworkOptions } from '@/src/components/helpers/SwitchNetworkOptions'
 import { getNetworkConfig } from '@/src/config/web3'
+import { PreventActionIfOutOfService } from '@/src/pagePartials/errors/preventActionIfOutOfService'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { generateBaseUrl, generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 
@@ -61,9 +61,9 @@ export const UserDropdown: React.FC = () => {
   const router = useRouter()
   const { address, appChainId, disconnectWallet, isWalletNetworkSupported } = useWeb3Connection()
   const networkConfig = getNetworkConfig(appChainId)
+  const { open: openWeb3Modal } = useWeb3Modal()
 
   const [open, setOpen] = useState(false)
-  const [showNetworkModal, setShowNetworkModal] = useState(false)
   const anchorMenuElRef: RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null)
 
   const handleClick = () => {
@@ -71,11 +71,10 @@ export const UserDropdown: React.FC = () => {
   }
   const handleClose = () => {
     setOpen(false)
-    setShowNetworkModal(false)
   }
 
   const toggleNetworkChange = () => {
-    setShowNetworkModal((prevState) => !prevState)
+    openWeb3Modal({ view: 'Networks' })
   }
 
   const handleProfileNavigation = () => {
@@ -97,7 +96,9 @@ export const UserDropdown: React.FC = () => {
 
   return (
     <>
-      <ActionButtons />
+      <PreventActionIfOutOfService>
+        <ActionButtons />
+      </PreventActionIfOutOfService>
       <Tooltip arrow ref={anchorMenuElRef} title="Account settings">
         <IconButton
           aria-controls={open ? 'account-menu' : undefined}
@@ -164,18 +165,14 @@ export const UserDropdown: React.FC = () => {
           <ListItemText primary="Profile" />
         </MenuItem>
         <Divider />
+
         {/* Switch network */}
         <MenuItem onClick={toggleNetworkChange} sx={{ pl: 1 }}>
           <ListItemIcon sx={{ mr: 1 }}>
-            {showNetworkModal ? <ExpandLess /> : <ExpandMore />}
+            <RadarIcon />
           </ListItemIcon>
           <ListItemText primary="Switch network" />
         </MenuItem>
-        {/* Network options */}
-        <Collapse in={showNetworkModal} timeout="auto" unmountOnExit>
-          <SwitchNetworkOptions />
-          <Divider />
-        </Collapse>
 
         <MenuItem onClick={logout}>
           <ListItemIcon>

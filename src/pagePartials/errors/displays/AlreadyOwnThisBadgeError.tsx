@@ -42,7 +42,7 @@ export default function AlreadyOwnThisBadgeError({ onClose }: { onClose: VoidFun
   const { address } = useWeb3Connection()
   const badgeModelId = useModelIdParam()
 
-  const ownedBadges = useBadgeOwnershipData(badgeModelId, address as string)
+  const ownedBadges = useBadgeOwnershipData(badgeModelId, address)
 
   if (!ownedBadges || !ownedBadges.length) {
     // This case it would never happen, but it's the safest way to proceed

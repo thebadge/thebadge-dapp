@@ -9,7 +9,10 @@ import useChainId from '@/src/hooks/theBadge/useChainId'
  * @param badgeModelId
  * @param ownerAddress
  */
-export default function useIsBadgeOwner(badgeModelId: string, ownerAddress: string | null) {
+export default function useIsBadgeOwner(
+  badgeModelId: string,
+  ownerAddress: `0x${string}` | undefined,
+) {
   const userWithOwnerBadges = useBadgesOwnedByModelId(badgeModelId, ownerAddress)
   if (!ownerAddress) return false
   return !!userWithOwnerBadges.data?.user?.badges?.length
@@ -20,7 +23,10 @@ export default function useIsBadgeOwner(badgeModelId: string, ownerAddress: stri
  * @param badgeModelId
  * @param ownerAddress
  */
-export function useBadgeOwnershipData(badgeModelId: string, ownerAddress: string) {
+export function useBadgeOwnershipData(
+  badgeModelId: string,
+  ownerAddress: `0x${string}` | undefined,
+) {
   const userWithOwnerBadges = useBadgesOwnedByModelId(badgeModelId, ownerAddress)
   return userWithOwnerBadges.data?.user?.badges
 }
@@ -30,7 +36,7 @@ export function useBadgeOwnershipData(badgeModelId: string, ownerAddress: string
  * @param badgeModelId
  * @param ownerAddress
  */
-function useBadgesOwnedByModelId(badgeModelId: string, ownerAddress: string | null) {
+function useBadgesOwnedByModelId(badgeModelId: string, ownerAddress: `0x${string}` | undefined) {
   const gql = useSubgraph()
   const chainId = useChainId()
 

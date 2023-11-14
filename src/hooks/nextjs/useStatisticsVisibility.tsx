@@ -68,7 +68,7 @@ export default function useStatisticVisibility(
 
 function getStoredStatisticVisibility(
   category: string,
-  address: string | null,
+  address: string | undefined,
 ): StatisticVisibility | null {
   if (!address) return null
   const stored = sessionStorage.getItem(`${category}-statisticVisibility-${address}`)

@@ -26,7 +26,7 @@ export default function TBUserAvatar({
   sx,
 }: {
   src?: string
-  address?: string
+  address?: `0x${string}`
   size?: number
   isVerified?: boolean
   sx?: SxProps<Theme>
@@ -38,7 +38,7 @@ export default function TBUserAvatar({
     return address || connectedAddress || 'default'
   }, [address, connectedAddress])
 
-  const { avatar } = useEnsReverseLookup(seed)
+  const { avatar } = useEnsReverseLookup(address || connectedAddress)
 
   const avatarImgSrc = avatar ?? src
 

@@ -48,7 +48,7 @@ function CurateModalContent({ badgeId, onClose }: { badgeId: string; onClose: ()
   }
 
   const badgeModelId = badge.badgeModel.id
-  const ownerAddress = badge.account.id
+  const ownerAddress = badge.account.id as `0x${string}`
 
   const badgeKlerosMetadata = useEvidenceBadgeKlerosMetadata(badgeId)
 

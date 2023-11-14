@@ -52,7 +52,7 @@ export default function BadgeEvidenceInfoPreview({ badge }: { badge: Badge }) {
       </Box>
 
       {/* Badge Receiver Address */}
-      <BadgeRequesterPreview ownerAddress={badge.account.id} />
+      <BadgeRequesterPreview ownerAddress={badge.account.id as `0x${string}`} />
 
       {/* Badge Evidence */}
       <Stack gap={2}>

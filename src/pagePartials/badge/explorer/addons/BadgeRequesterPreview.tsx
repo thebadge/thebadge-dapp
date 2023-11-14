@@ -12,7 +12,7 @@ import { CreatorMetadata } from '@/types/badges/Creator'
 export default function BadgeRequesterPreview({
   ownerAddress,
 }: {
-  ownerAddress: string
+  ownerAddress: `0x${string}`
   color?: string
 }) {
   const { t } = useTranslation()
@@ -32,7 +32,7 @@ export default function BadgeRequesterPreview({
       isVerified={isVerified.data}
       label={t('explorer.curate.requester')}
       metadata={ownerMetadata}
-      userAddress={ownerAddress}
+      userAddress={ownerAddress as `0x${string}`}
     />
   )
 }

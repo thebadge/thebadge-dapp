@@ -56,7 +56,7 @@ const CopyButton = styled('button')`
 `
 
 interface Props {
-  address: string
+  address: `0x${string}`
   showExternalLink?: boolean
   isUserAddress?: boolean
   showCopyButton?: boolean

@@ -32,7 +32,7 @@ export default function InfoPreview({ address }: Props) {
         style={{ padding: 10 }}
       >
         <InfoPreviewContainer>
-          <InfoPreviewEdit address={address} />
+          <InfoPreviewEdit address={address as `0x${string}`} />
         </InfoPreviewContainer>
       </AnimateHeight>
     </Stack>

@@ -37,7 +37,7 @@ const TextFieldContainer = styled(Box)(({ theme }) => ({
 }))
 
 type Props = {
-  address: string
+  address: `0x${string}`
 }
 
 export default function InfoPreviewEdit({ address }: Props) {
