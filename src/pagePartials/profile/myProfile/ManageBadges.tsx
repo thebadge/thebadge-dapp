@@ -14,11 +14,14 @@ import SelectedItemPreviewWrapper from '@/src/components/helpers/FilteredList/Se
 import InViewPort from '@/src/components/helpers/InViewPort'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
+import { useUserById } from '@/src/hooks/subgraph/useUserById'
 import useListItemNavigation from '@/src/hooks/useListItemNavigation'
+import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { useSizeSM } from '@/src/hooks/useSize'
 import MiniBadgeModelPreview from '@/src/pagePartials/badge/MiniBadgeModelPreview'
 import ThirdPartyBadgeModelInfoPreview from '@/src/pagePartials/badge/explorer/ThirdPartyBadgeModelInfoPreview'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+import { CreatorMetadata } from '@/types/badges/Creator'
 import { BadgeModel } from '@/types/generated/subgraph'
 
 export default function ManageBadges() {
@@ -30,6 +33,9 @@ export default function ManageBadges() {
   const [badgeModels, setBadgeModels] = useState<BadgeModel[]>([])
   const [loading, setLoading] = useState<boolean>(false)
   const [selectedBadgeModelIndex, setSelectedBadgeModelIndex] = useState<number>(0)
+  const { data } = useUserById(address || '')
+  const resCreatorMetadata = useS3Metadata<{ content: CreatorMetadata }>(data?.metadataUri || '')
+  const creatorMetadata = resCreatorMetadata.data?.content
 
   const badgeModelsElementRefs: RefObject<HTMLLIElement>[] = badgeModels.map(() =>
     createRef<HTMLLIElement>(),
@@ -66,8 +72,7 @@ export default function ManageBadges() {
 
   function renderSelectedBadgePreview() {
     if (!badgeModels[selectedBadgeModelIndex]) return null
-    // TODO CHECK
-    const selectedBadge = badgeModels[selectedBadgeModelIndex]
+    const selectedBadgeModel = badgeModels[selectedBadgeModelIndex]
     return (
       <SelectedItemPreviewWrapper
         color={colors.purple}
@@ -75,7 +80,7 @@ export default function ManageBadges() {
         onSelectPrevious={selectPrevious}
         title={t('explorer.preview.title')}
       >
-        <ThirdPartyBadgeModelInfoPreview badgeModel={selectedBadge} />
+        <ThirdPartyBadgeModelInfoPreview badgeModel={selectedBadgeModel} />
       </SelectedItemPreviewWrapper>
     )
   }
@@ -132,7 +137,7 @@ export default function ManageBadges() {
         preview={renderSelectedBadgePreview()}
         search={search}
         showTextSearch={false}
-        title={t('profile.thirdParty.subtitle')}
+        title={t('profile.thirdParty.subtitle', { thirdPartyName: creatorMetadata?.name })}
         titleColor={colors.blue}
       ></FilteredList>
     </>

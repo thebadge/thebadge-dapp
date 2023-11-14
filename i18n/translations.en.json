@@ -98,7 +98,7 @@
     "noBadgesFound": "There are no badges that match these filters...",
     "button": "MINT",
     "preview": {
-      "title": "Badge information",
+      "title": "Model information",
       "badge": {
         "name": "Name",
         "description": "Description",
@@ -187,7 +187,7 @@
     },
     "thirdParty": {
       "title": "Management",
-      "subtitle": "Badge Models Management",
+      "subtitle": "{{thirdPartyName}} Models Management",
       "tab1": "Manage account",
       "tab2": "Manage badges",
       "manageBadges": {
