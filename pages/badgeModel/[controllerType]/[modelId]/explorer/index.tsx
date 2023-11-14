@@ -19,6 +19,8 @@ import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import useListItemNavigation from '@/src/hooks/useListItemNavigation'
 import BadgeModelPreview from '@/src/pagePartials/badge/BadgeModelPreview'
 import BadgeEvidenceInfoPreview from '@/src/pagePartials/badge/explorer/BadgeEvidenceInfoPreview'
+import ThirdPartyBadgeEvidenceInfoPreview from '@/src/pagePartials/badge/explorer/ThirdPartyBadgeEvidenceInfoPreview'
+import { BadgeModelControllerType } from '@/types/badges/BadgeModel'
 import { Badge } from '@/types/generated/subgraph'
 import { NextPageWithLayout } from '@/types/next'
 
@@ -29,15 +31,15 @@ const ExploreBadgeModels: NextPageWithLayout = () => {
 
   const [badges, setBadge] = useState<Badge[]>([])
   const [loading, setLoading] = useState<boolean>(false)
-  const [selectedBadge, setSelectedBadgeModel] = useState<number>(0)
+  const [selectedBadgeModelIndex, setSelectedBadgeModelIndex] = useState<number>(0)
 
   const badgeModelsElementRefs: RefObject<HTMLLIElement>[] = badges.map(() =>
     createRef<HTMLLIElement>(),
   )
   const { selectNext, selectPrevious } = useListItemNavigation(
-    setSelectedBadgeModel,
+    setSelectedBadgeModelIndex,
     badgeModelsElementRefs,
-    selectedBadge,
+    selectedBadgeModelIndex,
     badges.length,
   )
 
@@ -58,12 +60,15 @@ const ExploreBadgeModels: NextPageWithLayout = () => {
     setTimeout(() => {
       setLoading(false)
       setBadge(badges)
-      setSelectedBadgeModel(0)
+      setSelectedBadgeModelIndex(0)
     }, 2000)
   }
 
   function renderSelectedBadgePreview() {
-    if (!badges[selectedBadge]) return null
+    const selectedBadge = badges[selectedBadgeModelIndex]
+    if (!selectedBadge) return null
+
+    const badgeModelControllerType = selectedBadge.badgeModel.controllerType
     return (
       <>
         <Box display="flex" justifyContent="space-between">
@@ -80,7 +85,11 @@ const ExploreBadgeModels: NextPageWithLayout = () => {
           </Box>
         </Box>
         <SafeSuspense>
-          <BadgeEvidenceInfoPreview badge={badges[selectedBadge]} />
+          {badgeModelControllerType == BadgeModelControllerType.Community ? (
+            <BadgeEvidenceInfoPreview badge={selectedBadge} />
+          ) : (
+            <ThirdPartyBadgeEvidenceInfoPreview badge={selectedBadge} />
+          )}
         </SafeSuspense>
       </>
     )
@@ -97,13 +106,13 @@ const ExploreBadgeModels: NextPageWithLayout = () => {
       >
         {badges.length > 0 ? (
           badges.map((badge, i) => {
-            const isSelected = badge.id === badges[selectedBadge]?.id
+            const isSelected = badge.id === badges[selectedBadgeModelIndex]?.id
             return (
               <InViewPort key={badge.id} minHeight={300} minWidth={180}>
                 <SafeSuspense fallback={<BadgePreviewLoading />}>
                   <BadgePreviewContainer
                     highlightColor={colors.blue}
-                    onClick={() => setSelectedBadgeModel(i)}
+                    onClick={() => setSelectedBadgeModelIndex(i)}
                     ref={badgeModelsElementRefs[i]}
                     selected={isSelected}
                   >

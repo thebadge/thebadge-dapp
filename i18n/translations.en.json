@@ -298,6 +298,9 @@
     "curateButton": "Curate",
     "curateButtonDisabledTooltip": "You cannot curate your own badge.",
     "claimButton": "Claim",
+    "claimed": "Claimed",
+    "unclaimed": "Unclaimed",
+    "thirdPartyBadgeUnclaimedText": "The badge has not been claimed, an email has been sent to the user.",
     "claimButtonDisabledTooltip": "You cannot claim this badge yet.",
     "renewButton": "Renew",
     "model": {
@@ -465,7 +468,9 @@
         "lastActivity": "Last Activity",
         "evidenceActivity": "Evidence Activity",
         "submission": "Submission Evidence",
-        "submittedBy": "Submitted {{at}} by {{submitter}}"
+        "submittedBy": "Submitted {{at}} by {{submitter}}",
+        "thirdParty": {
+        }
       },
       "owner": {
         "address": "OWNER ADDRESS:",
