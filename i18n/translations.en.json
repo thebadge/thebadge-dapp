@@ -130,6 +130,9 @@
       "viewEvidence": "View raw evidence (.json)",
       "evidences": "Evidence",
       "listingCriteria": "Curation Criteria"
+    },
+    "thirdParty": {
+      "title": "Third party badges explorer"
     }
   },
   "curateExplorer": {

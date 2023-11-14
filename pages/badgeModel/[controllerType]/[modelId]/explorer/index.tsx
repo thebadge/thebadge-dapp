@@ -15,6 +15,7 @@ import FilteredList, { ListFilter } from '@/src/components/helpers/FilteredList'
 import InViewPort from '@/src/components/helpers/InViewPort'
 import SafeSuspense, { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
+import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import useListItemNavigation from '@/src/hooks/useListItemNavigation'
 import BadgeModelPreview from '@/src/pagePartials/badge/BadgeModelPreview'
@@ -28,6 +29,7 @@ const ExploreBadgeModels: NextPageWithLayout = () => {
   const { t } = useTranslation()
   const gql = useSubgraph()
   const badgeModelId = useModelIdParam()
+  const badgeModel = useBadgeModel(badgeModelId)
 
   const [badges, setBadge] = useState<Badge[]>([])
   const [loading, setLoading] = useState<boolean>(false)
@@ -64,11 +66,14 @@ const ExploreBadgeModels: NextPageWithLayout = () => {
     }, 2000)
   }
 
+  if (!badgeModel.data) {
+    return null
+  }
+
   function renderSelectedBadgePreview() {
     const selectedBadge = badges[selectedBadgeModelIndex]
     if (!selectedBadge) return null
 
-    const badgeModelControllerType = selectedBadge.badgeModel.controllerType
     return (
       <>
         <Box display="flex" justifyContent="space-between">
@@ -85,7 +90,7 @@ const ExploreBadgeModels: NextPageWithLayout = () => {
           </Box>
         </Box>
         <SafeSuspense>
-          {badgeModelControllerType == BadgeModelControllerType.Community ? (
+          {badgeModel.data?.badgeModel.controllerType == BadgeModelControllerType.Community ? (
             <BadgeEvidenceInfoPreview badge={selectedBadge} />
           ) : (
             <ThirdPartyBadgeEvidenceInfoPreview badge={selectedBadge} />
@@ -102,7 +107,11 @@ const ExploreBadgeModels: NextPageWithLayout = () => {
         loadingColor={'blue'}
         preview={renderSelectedBadgePreview()}
         search={search}
-        title={t('explorer.title')}
+        title={
+          badgeModel.data.badgeModel.controllerType == BadgeModelControllerType.Community
+            ? t('explorer.curate.title')
+            : t('explorer.thirdParty.title')
+        }
       >
         {badges.length > 0 ? (
           badges.map((badge, i) => {
