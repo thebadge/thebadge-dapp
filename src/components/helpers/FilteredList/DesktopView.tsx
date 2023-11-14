@@ -19,6 +19,7 @@ const ItemsGridBox = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexWrap: 'wrap',
   gap: theme.spacing(3),
+  margin: 'auto',
 }))
 
 export default function FilteredListDesktopView(props: {
@@ -28,7 +29,7 @@ export default function FilteredListDesktopView(props: {
   children: React.ReactNode
 }) {
   return (
-    <Box alignItems={'center'} display="flex" flexDirection={'column'} id="preview" mt={4}>
+    <Box display="flex" id="preview" mt={4}>
       <ContentBox>
         {props.loading ? (
           <Loading color={props.loadingColor} />

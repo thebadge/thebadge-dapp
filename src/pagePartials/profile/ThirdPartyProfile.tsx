@@ -7,7 +7,7 @@ import { useTranslation } from 'next-export-i18n'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { ProfileType } from '@/src/pagePartials/profile/ProfileSelector'
-import MyProfileSection from '@/src/pagePartials/profile/myProfile/MyProfileSection'
+import ManageBadges from '@/src/pagePartials/profile/myProfile/ManageBadges'
 import ProfileContextProvider from '@/src/providers/ProfileProvider'
 import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 
@@ -21,6 +21,19 @@ const ThirdPartyProfile = () => {
   const params = useSearchParams()
   const selectedFilter = params.get('filter')
 
+  const manageBadgesTab = (
+    <Typography
+      color={
+        !selectedFilter || selectedFilter === ThirdPartyProfileFilter.MANAGE_BADGES
+          ? 'text.primary'
+          : 'text.disabled'
+      }
+      textTransform="uppercase"
+    >
+      {t('profile.thirdParty.tab2')}
+    </Typography>
+  )
+
   const manageAccountTab = (
     <Typography
       color={
@@ -28,18 +41,7 @@ const ThirdPartyProfile = () => {
       }
       textTransform="uppercase"
     >
-      {t('profile.thirdPartyProfile.tab1')}
-    </Typography>
-  )
-
-  const manageBadgesTab = (
-    <Typography
-      color={
-        selectedFilter === ThirdPartyProfileFilter.MANAGE_BADGES ? 'text.primary' : 'text.disabled'
-      }
-      textTransform="uppercase"
-    >
-      {t('profile.thirdPartyProfile.tab2')}
+      {t('profile.thirdParty.tab1')}
     </Typography>
   )
 
@@ -54,16 +56,6 @@ const ThirdPartyProfile = () => {
             justifyContent="space-evenly"
             width="100%"
           >
-            {/* manage account */}
-            <Link
-              href={generateProfileUrl({
-                profileType: ProfileType.THIRD_PARTY_PROFILE,
-                filter: ThirdPartyProfileFilter.MANAGE_ACCOUNT,
-              })}
-            >
-              {manageAccountTab}
-            </Link>
-
             {/* manage badges */}
             <Link
               href={generateProfileUrl({
@@ -73,12 +65,23 @@ const ThirdPartyProfile = () => {
             >
               {manageBadgesTab}
             </Link>
+
+            {/* manage account */}
+            <div
+              aria-disabled={true}
+              // href={generateProfileUrl({
+              //   profileType: ProfileType.THIRD_PARTY_PROFILE,
+              //   filter: ThirdPartyProfileFilter.MANAGE_ACCOUNT,
+              // })}
+            >
+              {manageAccountTab}
+            </div>
           </Box>
         </Stack>
         {/* Profile Content */}
-        {!selectedFilter && <MyProfileSection />}
+        {!selectedFilter && <ManageBadges />}
+        {selectedFilter === ThirdPartyProfileFilter.MANAGE_BADGES && <ManageBadges />}
         {selectedFilter === ThirdPartyProfileFilter.MANAGE_ACCOUNT && <div>MANAGE ACCOUNT WIP</div>}
-        {selectedFilter === ThirdPartyProfileFilter.MANAGE_BADGES && <div>MANAGE BADGES WIP</div>}
       </SafeSuspense>
     </ProfileContextProvider>
   )

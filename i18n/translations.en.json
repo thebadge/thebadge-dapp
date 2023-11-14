@@ -98,7 +98,7 @@
     "noBadgesFound": "There are no badges that match these filters...",
     "button": "MINT",
     "preview": {
-      "title": "Badge information",
+      "title": "Model information",
       "badge": {
         "name": "Name",
         "description": "Description",
@@ -106,7 +106,10 @@
         "depositCost": "Deposit cost:",
         "totalMinted": "Total minted amount:",
         "mint": "Mint",
-        "showOthers": "See minted badges"
+        "showOthers": "See minted badges",
+        "thirdParty": {
+          "showOthers": "See minted"
+        }
       },
       "creator": {
         "createdBy": "Created By"
@@ -127,6 +130,9 @@
       "viewEvidence": "View raw evidence (.json)",
       "evidences": "Evidence",
       "listingCriteria": "Curation Criteria"
+    },
+    "thirdParty": {
+      "title": "Third party badges explorer"
     }
   },
   "curateExplorer": {
@@ -179,10 +185,14 @@
       },
       "verified": "Verified user"
     },
-    "thirdPartyProfile": {
+    "thirdParty": {
       "title": "Management",
+      "subtitle": "{{thirdPartyName}} Models Management",
       "tab1": "Manage account",
-      "tab2": "Manage badges"
+      "tab2": "Manage badges",
+      "manageBadges": {
+        "title": "Manage third party badges"
+      }
     },
     "statistics": {
       "title": "Statistics",
@@ -292,6 +302,9 @@
     "curateButton": "Curate",
     "curateButtonDisabledTooltip": "You cannot curate your own badge.",
     "claimButton": "Claim",
+    "claimed": "Claimed",
+    "unclaimed": "Unclaimed",
+    "thirdPartyBadgeUnclaimedText": "The badge has not been claimed, an email has been sent to the user.",
     "claimButtonDisabledTooltip": "You cannot claim this badge yet.",
     "renewButton": "Renew",
     "model": {
