@@ -22,6 +22,9 @@ export const MiniBadgePreviewContainer = styled(Box, {
         transition: 'all 1s cubic-bezier(0.65, 0, 0.35, 1)',
       }
     : {}),
+  [theme.breakpoints.down('sm')]: {
+    scale: '1.3',
+  },
 }))
 
 export const MiniBadgePreviewLoading = () => (

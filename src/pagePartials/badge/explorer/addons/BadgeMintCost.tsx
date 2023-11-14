@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Box, Typography } from '@mui/material'
+import { Stack, Typography, styled } from '@mui/material'
 import { BigNumber } from 'ethers'
 import { formatUnits } from 'ethers/lib/utils'
 import { useTranslation } from 'next-export-i18n'
@@ -9,6 +9,16 @@ import { getNetworkConfig } from '@/src/config/web3'
 import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
 import useMintValue from '@/src/hooks/theBadge/useMintValue'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+
+const StackContainer = styled(Stack)(({ theme }) => ({
+  display: 'flex',
+  justifyContent: 'space-between',
+  flexDirection: 'column',
+  gap: theme.spacing(2),
+  [theme.breakpoints.up(940)]: {
+    flexDirection: 'row',
+  },
+}))
 
 // TODO Improve design when we have it on figma
 export default function BadgeMintCost({ modelId }: { modelId: string }) {
@@ -28,7 +38,7 @@ export default function BadgeMintCost({ modelId }: { modelId: string }) {
   const depositValue = mintValue.sub(creatorFee)
 
   return (
-    <Box display="flex" justifyContent="space-between">
+    <StackContainer>
       <Typography variant="labelLarge">
         {t('explorer.preview.badge.depositCost')}
         <Typography component="span" sx={{ ml: 1 }} variant="labelLarge">
@@ -41,6 +51,6 @@ export default function BadgeMintCost({ modelId }: { modelId: string }) {
           {formatUnits(creatorFee, 18)} {networkConfig.token}
         </Typography>
       </Typography>
-    </Box>
+    </StackContainer>
   )
 }

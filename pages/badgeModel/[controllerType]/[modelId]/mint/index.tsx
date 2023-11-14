@@ -30,7 +30,7 @@ const MintBadgeModel: NextPageWithLayout = () => {
   useEffect(() => {
     // Redirect to the profile
     if (state === TransactionStates.success) {
-      router.push(generateProfileUrl({ profileType: ProfileType.NORMAL_PROFILE }))
+      router.push(generateProfileUrl({ profileType: ProfileType.USER_PROFILE }))
     }
   }, [router, state])
 

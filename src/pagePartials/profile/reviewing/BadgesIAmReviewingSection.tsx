@@ -1,9 +1,7 @@
 import { useRouter } from 'next/navigation'
 import React, { RefObject, createRef, useState } from 'react'
 
-import ArrowBackIosOutlinedIcon from '@mui/icons-material/ArrowBackIosOutlined'
-import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined'
-import { Box, IconButton, Stack, Typography } from '@mui/material'
+import { Stack, Typography } from '@mui/material'
 import { ButtonV2, colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 
@@ -13,6 +11,7 @@ import {
   MiniBadgePreviewLoading,
 } from '@/src/components/common/MiniBadgePreviewContainer'
 import FilteredList, { ListFilter } from '@/src/components/helpers/FilteredList'
+import SelectedItemPreviewWrapper from '@/src/components/helpers/FilteredList/SelectedItemPreviewWrapper'
 import InViewPort from '@/src/components/helpers/InViewPort'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
@@ -99,23 +98,56 @@ export default function BadgesIAmReviewingSection() {
   function renderSelectedBadgePreview() {
     if (!badgesIamReviewing[selectedBadge]) return null
     return (
-      <SafeSuspense>
-        <Box display="flex" justifyContent="space-between">
-          <Typography color={colors.purple} mb={4} variant="dAppHeadline2">
-            {t('profile.normal.badgesIAmReviewing.previewTitle')}
-          </Typography>
-          <Box>
-            <IconButton onClick={selectPrevious}>
-              <ArrowBackIosOutlinedIcon color="purple" />
-            </IconButton>
-            <IconButton onClick={selectNext}>
-              <ArrowForwardIosOutlinedIcon color="purple" />
-            </IconButton>
-          </Box>
-        </Box>
+      <SelectedItemPreviewWrapper
+        color={colors.purple}
+        onSelectNext={selectNext}
+        onSelectPrevious={selectPrevious}
+        title={t('profile.user.badgesIAmReviewing.previewTitle')}
+      >
         <BadgeReviewingInfoPreview badge={badgesIamReviewing[selectedBadge]} />
-      </SafeSuspense>
+      </SelectedItemPreviewWrapper>
     )
+  }
+
+  function renderBadgeCuratedItem(badge: Badge, index: number) {
+    const isSelected = badge.id === badgesIamReviewing[selectedBadge]?.id
+    return (
+      <InViewPort key={badge.id} minHeight={300} minWidth={180}>
+        <SafeSuspense fallback={<MiniBadgePreviewLoading />}>
+          <MiniBadgePreviewContainer
+            highlightColor={colors.purple}
+            onClick={() => setSelectedBadge(index)}
+            ref={badgesElementRefs[index]}
+            selected={isSelected}
+          >
+            <MiniBadgeModelPreview
+              disableAnimations
+              highlightColor={colors.purple}
+              metadata={badge.badgeModel?.uri}
+            />
+          </MiniBadgePreviewContainer>
+        </SafeSuspense>
+      </InViewPort>
+    )
+  }
+
+  function generateListItems() {
+    if (badgesIamReviewing.length > 0) {
+      return badgesIamReviewing.map((badge, i) => renderBadgeCuratedItem(badge, i))
+    }
+    return [
+      <Stack key="no-results">
+        <NoResultsAnimated errorText={t('profile.user.badgesIAmReviewing.noResults')} />
+        <ButtonV2
+          backgroundColor={colors.transparent}
+          fontColor={colors.green}
+          onClick={() => router.push(generateBadgeCurate())}
+          sx={{ m: 'auto' }}
+        >
+          <Typography>{t('profile.user.badgesIAmReviewing.curate')}</Typography>
+        </ButtonV2>
+      </Stack>,
+    ]
   }
 
   if (!address) return null
@@ -125,50 +157,15 @@ export default function BadgesIAmReviewingSection() {
       <FilteredList
         disableEdit
         filters={filters}
+        items={generateListItems()}
         loading={loading}
-        loadingColor={'green'}
+        loadingColor="green"
         preview={renderSelectedBadgePreview()}
         search={search}
         showTextSearch={false}
-        title={t('profile.normal.badgesIAmReviewing.title')}
+        title={t('profile.user.badgesIAmReviewing.title')}
         titleColor={colors.purple}
-      >
-        {badgesIamReviewing.length > 0 ? (
-          badgesIamReviewing.map((badge, i) => {
-            const isSelected = badge.id === badgesIamReviewing[selectedBadge]?.id
-            return (
-              <InViewPort key={badge.id} minHeight={300} minWidth={180}>
-                <SafeSuspense fallback={<MiniBadgePreviewLoading />}>
-                  <MiniBadgePreviewContainer
-                    highlightColor={colors.purple}
-                    onClick={() => setSelectedBadge(i)}
-                    ref={badgesElementRefs[i]}
-                    selected={isSelected}
-                  >
-                    <MiniBadgeModelPreview
-                      disableAnimations
-                      highlightColor={colors.purple}
-                      metadata={badge.badgeModel?.uri}
-                    />
-                  </MiniBadgePreviewContainer>
-                </SafeSuspense>
-              </InViewPort>
-            )
-          })
-        ) : (
-          <Stack>
-            <NoResultsAnimated errorText={t('profile.normal.badgesIAmReviewing.noResults')} />
-            <ButtonV2
-              backgroundColor={colors.transparent}
-              fontColor={colors.green}
-              onClick={() => router.push(generateBadgeCurate())}
-              sx={{ m: 'auto' }}
-            >
-              <Typography>{t('profile.normal.badgesIAmReviewing.curate')}</Typography>
-            </ButtonV2>
-          </Stack>
-        )}
-      </FilteredList>
+      />
     </>
   )
 }

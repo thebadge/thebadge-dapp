@@ -7,8 +7,8 @@ import { useTranslation } from 'next-export-i18n'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import useIsThirdPartyUser from '@/src/hooks/theBadge/useIsThirdPartyUser'
-import NormalProfile from '@/src/pagePartials/profile/NormalProfile'
 import ThirdPartyProfile from '@/src/pagePartials/profile/ThirdPartyProfile'
+import UserProfile from '@/src/pagePartials/profile/UserProfile'
 import InfoPreview from '@/src/pagePartials/profile/userInfo/InfoPreview'
 import { InfoPreviewSkeleton } from '@/src/pagePartials/profile/userInfo/InfoPreview.skeleton'
 import ProfileContextProvider from '@/src/providers/ProfileProvider'
@@ -16,7 +16,7 @@ import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 
 export enum ProfileType {
-  NORMAL_PROFILE = 'normalProfile',
+  USER_PROFILE = 'userProfile',
   THIRD_PARTY_PROFILE = 'thirdPartyProfile',
 }
 
@@ -32,13 +32,13 @@ const ProfileSelector = () => {
   const mainProfileTab = (
     <Typography
       color={
-        !selectedProfile || selectedProfile === ProfileType.NORMAL_PROFILE
+        !selectedProfile || selectedProfile === ProfileType.USER_PROFILE
           ? 'text.primary'
           : 'text.disabled'
       }
       textTransform="uppercase"
     >
-      {t('profile.normal.title')}
+      {t('profile.user.title')}
     </Typography>
   )
 
@@ -65,7 +65,7 @@ const ProfileSelector = () => {
             >
               <Link
                 href={generateProfileUrl({
-                  profileType: ProfileType.NORMAL_PROFILE,
+                  profileType: ProfileType.USER_PROFILE,
                   address: connectedWalletAddress ? connectedWalletAddress : '',
                 })}
               >
@@ -85,8 +85,8 @@ const ProfileSelector = () => {
             <InfoPreview address={connectedWalletAddress || ''} />
           </SafeSuspense>
           {/* Profile Content */}
-          {!selectedProfile && <NormalProfile />}
-          {selectedProfile === ProfileType.NORMAL_PROFILE && <NormalProfile />}
+          {!selectedProfile && <UserProfile />}
+          {selectedProfile === ProfileType.USER_PROFILE && <UserProfile />}
           {selectedProfile === ProfileType.THIRD_PARTY_PROFILE && <ThirdPartyProfile />}
         </SafeSuspense>
       </ProfileContextProvider>
@@ -101,7 +101,7 @@ const ProfileSelector = () => {
             <InfoPreview address={connectedWalletAddress || ''} />
           </SafeSuspense>
           {/* Profile Content */}
-          <NormalProfile />
+          <UserProfile />
         </SafeSuspense>
       </ProfileContextProvider>
     )

@@ -27,6 +27,9 @@ const CostContainer = styled(Stack)(({ theme }) => ({
   gap: theme.spacing(1),
   borderBottom: '1px solid white',
   margin: 'auto',
+  [theme.breakpoints.down('sm')]: {
+    width: '100%',
+  },
 }))
 
 const ValueContainer = styled(Box)(({ theme }) => ({
@@ -115,7 +118,7 @@ export default function MintCost({ costs }: Props) {
 
       <Divider />
 
-      <CostContainer width="50%">
+      <CostContainer>
         <Typography color={colors.green} variant="dAppTitle2">
           {t('badge.model.mint.totalCost')}
         </Typography>

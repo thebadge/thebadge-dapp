@@ -22,7 +22,7 @@ export enum NormalProfileFilter {
   CREATED_BADGES = 'createdBadges',
 }
 
-const NormalProfile = () => {
+const UserProfile = () => {
   const { t } = useTranslation()
 
   const params = useSearchParams()
@@ -36,7 +36,7 @@ const NormalProfile = () => {
       color={!selectedFilter ? 'text.primary' : 'text.disabled'}
       textTransform="uppercase"
     >
-      {t('profile.normal.tab1')}
+      {t('profile.user.tab1')}
     </Typography>
   )
 
@@ -49,7 +49,7 @@ const NormalProfile = () => {
       }
       textTransform="uppercase"
     >
-      {t('profile.normal.tab2')}
+      {t('profile.user.tab2')}
     </Typography>
   )
 
@@ -60,7 +60,7 @@ const NormalProfile = () => {
       }
       textTransform="uppercase"
     >
-      {t('profile.normal.tab3')}
+      {t('profile.user.tab3')}
     </Typography>
   )
 
@@ -133,4 +133,4 @@ const NormalProfile = () => {
   )
 }
 
-export default NormalProfile
+export default UserProfile

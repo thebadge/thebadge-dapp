@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useRef } from 'react'
+import React, { PropsWithChildren, useEffect, useRef } from 'react'
 
 import { Stack } from '@mui/material'
 import { useInViewport } from 'react-in-viewport'
@@ -11,16 +11,25 @@ type Props = {
   fallback?: JSX.Element
   minHeight?: number
   minWidth?: number
+  onViewPortEnter?: VoidFunction
 }
 export default function InViewPort({
   children,
   color,
   minHeight,
   minWidth,
+  onViewPortEnter,
   fallback = <Loading color={color} />,
 }: PropsWithChildren<Props & SpinnerProps>) {
   const elemRef = useRef<HTMLDivElement>(null)
   const { enterCount, inViewport } = useInViewport(elemRef)
+
+  useEffect(() => {
+    if (enterCount > 0 && onViewPortEnter) {
+      // Trigger any functionality needed when the element go to the viewPort
+      onViewPortEnter()
+    }
+  }, [enterCount, onViewPortEnter])
 
   // If it has been rendered, the query was made, so we can safely render it
   // since the network call was already made
