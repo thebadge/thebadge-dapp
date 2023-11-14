@@ -36,7 +36,7 @@ const NormalProfile = () => {
       color={!selectedFilter ? 'text.primary' : 'text.disabled'}
       textTransform="uppercase"
     >
-      {t('profile.normalProfile.tab1')}
+      {t('profile.normal.tab1')}
     </Typography>
   )
 
@@ -49,7 +49,7 @@ const NormalProfile = () => {
       }
       textTransform="uppercase"
     >
-      {t('profile.normalProfile.tab2')}
+      {t('profile.normal.tab2')}
     </Typography>
   )
 
@@ -60,7 +60,7 @@ const NormalProfile = () => {
       }
       textTransform="uppercase"
     >
-      {t('profile.normalProfile.tab3')}
+      {t('profile.normal.tab3')}
     </Typography>
   )
 

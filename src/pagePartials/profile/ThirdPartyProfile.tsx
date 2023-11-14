@@ -30,7 +30,7 @@ const ThirdPartyProfile = () => {
       }
       textTransform="uppercase"
     >
-      {t('profile.thirdPartyProfile.tab2')}
+      {t('profile.thirdParty.tab2')}
     </Typography>
   )
 
@@ -41,7 +41,7 @@ const ThirdPartyProfile = () => {
       }
       textTransform="uppercase"
     >
-      {t('profile.thirdPartyProfile.tab1')}
+      {t('profile.thirdParty.tab1')}
     </Typography>
   )
 

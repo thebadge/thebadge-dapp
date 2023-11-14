@@ -157,7 +157,7 @@
       "explorerBadgeMinted": "Minted: ",
       "create": "Create a Badge Model"
     },
-    "normalProfile": {
+    "normal": {
       "title": "My Profile",
       "badgesToCurate": "Browse other badges to curate",
       "createdBadges": "Earn by creating new badges",
@@ -179,10 +179,13 @@
       },
       "verified": "Verified user"
     },
-    "thirdPartyProfile": {
+    "thirdParty": {
       "title": "Management",
       "tab1": "Manage account",
-      "tab2": "Manage badges"
+      "tab2": "Manage badges",
+      "manageBadges": {
+        "title": "Manage third party badges"
+      }
     },
     "statistics": {
       "title": "Statistics",

@@ -38,7 +38,7 @@ const ProfileSelector = () => {
       }
       textTransform="uppercase"
     >
-      {t('profile.normalProfile.title')}
+      {t('profile.normal.title')}
     </Typography>
   )
 
@@ -47,7 +47,7 @@ const ProfileSelector = () => {
       color={selectedProfile === ProfileType.THIRD_PARTY_PROFILE ? 'text.primary' : 'text.disabled'}
       textTransform="uppercase"
     >
-      {t('profile.thirdPartyProfile.title')}
+      {t('profile.thirdParty.title')}
     </Typography>
   )
 
