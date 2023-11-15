@@ -449,6 +449,7 @@
       "checkHowElse": "Check who else claimed it. ",
       "seeAll": "See All",
       "importBadge": "Import your badge into metamask",
+      "importLinkedin": "Import your badge into your Linkedin",
       "challengeStatus": {
         "title": "Challenge Status",
         "challenged": "CHALLENGED",

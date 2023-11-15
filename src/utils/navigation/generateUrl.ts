@@ -1,3 +1,4 @@
+import { APP_URL } from '@/src/constants/common'
 import { ProfileType } from '@/src/pagePartials/profile/ProfileSelector'
 import { BadgeModelControllerType } from '@/types/badges/BadgeModel'
 
@@ -80,4 +81,42 @@ export function generateLegalTermsUrl() {
 
 export function generateLegalPrivacyPolicyUrl() {
   return '/legal/privacy-policy'
+}
+
+function removeUndefinedValues(obj: Record<string, unknown>): Record<string, unknown> {
+  const result: Record<string, unknown> = {}
+
+  for (const key in obj) {
+    if (obj[key] !== undefined) {
+      result[key] = obj[key]
+    }
+  }
+
+  return result
+}
+
+export function generateLinkedinUrl(certData: {
+  name: string
+  organizationName?: string
+  organizationId?: string
+  issueYear: string
+  issueMonth: string
+  expirationYear?: string
+  expirationMonth?: string
+  certUrl: string
+  certId: string
+}) {
+  const certDataCleaned: Record<string, unknown> = removeUndefinedValues(certData)
+  if (!certDataCleaned.organizationId && !certDataCleaned.organizationName) {
+    throw new Error('OrganizationId or organizationName should be defined!')
+  }
+  // TODO GET FROM ENV
+  const baseUrl = 'https://www.linkedin.com/profile/add'
+
+  const queryParams = new URLSearchParams({
+    startTask: 'CERTIFICATION_NAME',
+    ...certDataCleaned,
+  })
+
+  return `${baseUrl}?${queryParams.toString()}`
 }

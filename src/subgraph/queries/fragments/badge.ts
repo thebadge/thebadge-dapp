@@ -8,6 +8,7 @@ gql`
     validUntil
     createdTxHash
     claimedTxHash
+    createdAt
     account {
       id
     }

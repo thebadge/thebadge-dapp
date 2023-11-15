@@ -49,6 +49,7 @@ export function secondsToDays(periodDuration: number) {
 export function secondsToMinutes(periodDuration: number) {
   return periodDuration ? periodDuration / 60 : 0
 }
+
 /**
  * By default expect Unix Timestamp (seconds)
  * @param timestamp
@@ -111,4 +112,40 @@ export const isBeforeToday = (timestamp?: string | number) => {
   }
   // Check if now is after the give timestamp
   return dayjs().isAfter(dayjs.unix(Number(timestamp)))
+}
+
+export const getExpirationYearAndMonth = (
+  validUntil: number,
+): {
+  expirationYear?: number
+  expirationMonth?: number
+} => {
+  if (validUntil == 0) {
+    return {
+      expirationYear: undefined,
+      expirationMonth: undefined,
+    }
+  }
+  // * 1000 is used to convert the Ethereum timestamp (in seconds) to JavaScript's expected milliseconds.
+  // TODO MOVE LOGIC TO SUBGRAPH
+  const date = new Date(validUntil * 1000)
+  return {
+    expirationYear: date.getFullYear(),
+    expirationMonth: date.getMonth() + 1,
+  }
+}
+
+export const getIssueYearAndMonth = (
+  issuedAt: number,
+): {
+  issueYear: number
+  issueMonth: number
+} => {
+  // * 1000 is used to convert the Ethereum timestamp (in seconds) to JavaScript's expected milliseconds.
+  // TODO MOVE LOGIC TO SUBGRAPH
+  const date = new Date(issuedAt * 1000)
+  return {
+    issueYear: date.getFullYear(),
+    issueMonth: date.getMonth() + 1,
+  }
 }
