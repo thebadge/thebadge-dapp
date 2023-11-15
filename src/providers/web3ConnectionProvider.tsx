@@ -28,7 +28,6 @@ import {
   WEB3_MODAL_PROJECT_ID,
   appName,
 } from '@/src/constants/common'
-import isDev from '@/src/utils/isDev'
 import { isTestnet } from '@/src/utils/network'
 import { ChainsValues } from '@/types/chains'
 
@@ -159,7 +158,7 @@ function setupWeb3Modal() {
     chains,
     featuredWalletIds,
     termsConditionsUrl,
-    defaultChain: isDev ? sepolia : gnosis,
+    defaultChain: isTestnet ? sepolia : gnosis,
   })
 }
 
@@ -262,14 +261,14 @@ export function useWeb3Connection(): Web3Context {
 
   const isWalletNetworkSupported = useMemo(() => {
     // Gnosis Chain is not supported on dev mode
-    if (isDev && `${appChainId}` === '100') return false
+    if (isTestnet && `${appChainId}` === '100') return false
     return chains.some(({ id }) => {
       return `${id}` === `${appChainId}`
     })
   }, [appChainId])
 
   const consoleAppConfig = useCallback<VoidFunction>(() => {
-    if (!isDev) return
+    if (!isTestnet) return
     console.log('[TB - Web3 Configs]', {
       address,
       isWalletConnected,

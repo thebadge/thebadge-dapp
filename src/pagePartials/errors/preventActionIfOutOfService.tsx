@@ -30,8 +30,6 @@ const CheckStatus: React.FC<Props> = ({
 }) => {
   const { data, error, isLoading } = useSubGraphStatus()
 
-  console.log('CheckStatus', { data })
-
   if (isLoading) return null
   if (!data || data?.hasIndexingErrors || error) {
     return fallback
