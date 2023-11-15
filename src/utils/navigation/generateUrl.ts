@@ -1,4 +1,3 @@
-import { APP_URL } from '@/src/constants/common'
 import { ProfileType } from '@/src/pagePartials/profile/ProfileSelector'
 import { BadgeModelControllerType } from '@/types/badges/BadgeModel'
 
