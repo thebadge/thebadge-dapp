@@ -47,7 +47,7 @@ const metadata = {
 }
 
 // 2. Chains supported
-const defaultChains = [mainnet, sepolia, goerli, gnosis]
+const defaultChains = [sepolia, goerli, gnosis, mainnet]
 
 const { chains, publicClient } = configureChains(defaultChains, [
   walletConnectProvider({ projectId }),
@@ -220,16 +220,6 @@ export function useWeb3Connection(): Web3Context {
   const [web3Auth] = useState<Web3Auth | null>(web3AuthInstance)
   const [isSocialWallet, setIsSocialWallet] = useState<boolean>(false)
 
-  /*useEffect(() => {*/
-  /*  const initSocialWallet = async () => {*/
-  /*    if (!web3Auth) {*/
-  /*      const web3AuthInstance = await initWeb3Auth()*/
-  /*      if (web3AuthInstance) setWeb3Auth(web3AuthInstance)*/
-  /*    }*/
-  /*  }*/
-  /*  initSocialWallet()*/
-  /*}, [web3Auth])*/
-
   useEffect(() => {
     const checkIfItsSocialWallet = async () => {
       if (web3Auth?.connected) {
@@ -255,7 +245,7 @@ export function useWeb3Connection(): Web3Context {
   }, [isSocialWallet, web3Auth])
 
   // No sense logic to cast the type
-  const appChainId = (selectedNetworkId || 5) as ChainsValues
+  const appChainId = (selectedNetworkId || 11155111) as ChainsValues
   const isAppConnected = Boolean(isWalletConnected && appChainId)
 
   const getExplorerUrl = useMemo(() => {
