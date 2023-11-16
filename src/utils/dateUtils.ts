@@ -142,10 +142,10 @@ export const getIssueYearAndMonth = (
   issueMonth: number
 } => {
   // * 1000 is used to convert the Ethereum timestamp (in seconds) to JavaScript's expected milliseconds.
-  // TODO MOVE LOGIC TO SUBGRAPH
-  const date = new Date(issuedAt * 1000)
+  // TODO MOVE CONVERT UNITS LOGIC TO SUBGRAPH
+  const parsedDate = dayjs(issuedAt * 1000)
   return {
-    issueYear: date.getFullYear(),
-    issueMonth: date.getMonth() + 1,
+    issueYear: parsedDate.year(),
+    issueMonth: parsedDate.month() + 1,
   }
 }

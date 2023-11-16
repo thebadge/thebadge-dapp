@@ -12,6 +12,8 @@ export const DISCORD_URL = process.env.NEXT_PUBLIC_DISCORD_URL || 'https://disco
 export const MEDIUM_URL = process.env.NEXT_PUBLIC_MEDIUM_URL || 'https://medium.com/@TheBadge'
 export const GITHUB_URL = process.env.NEXT_PUBLIC_GITHUB_URL || 'https://github.com/thebadge'
 export const EMAIL_URL = process.env.NEXT_PUBLIC_EMAIL_URL || 'mailto:hello@thebadge.xyz'
+export const LINKEDIN_URL = 'https://www.linkedin.com'
+export const THE_BADGE_LINKEDIN_ID = process.env.NEXT_PUBLIC_THE_BADGE_LINKEDIN_ID || '86794678'
 export const DOCS_URL = process.env.NEXT_PUBLIC_DOCS_URL || 'https://docs.thebadge.xyz'
 export const DOCUMENTATION_URL = DOCS_URL + '/thebadge-documentation'
 

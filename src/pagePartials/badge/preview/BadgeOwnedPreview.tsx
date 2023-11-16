@@ -17,7 +17,7 @@ import { useTranslation } from 'next-export-i18n'
 
 import LinkWithTranslation from '@/src/components/helpers/LinkWithTranslation'
 import { notify } from '@/src/components/toast/Toast'
-import { APP_URL } from '@/src/constants/common'
+import { APP_URL, THE_BADGE_LINKEDIN_ID } from '@/src/constants/common'
 import useBadgeIdParam from '@/src/hooks/nextjs/useBadgeIdParam'
 import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
 import { useUserById } from '@/src/hooks/subgraph/useUserById'
@@ -125,12 +125,11 @@ export default function BadgeOwnedPreview() {
 
       const linkedinUrl = generateLinkedinUrl({
         name: badge?.badgeMetadata.name,
-        // TODO fix TB hardcoded
         organizationName:
           badgeModel?.controllerType === BadgeModelControllerType.Community ? undefined : issuer,
         organizationId:
           badgeModel?.controllerType === BadgeModelControllerType.Community
-            ? '86794678'
+            ? THE_BADGE_LINKEDIN_ID
             : undefined,
         issueYear: String(issueYear),
         issueMonth: String(issueMonth),
@@ -144,6 +143,7 @@ export default function BadgeOwnedPreview() {
     } catch (error) {
       console.error(error)
       notify({
+        // @ts-ignore
         message: `There was an error adding the badge #${badgeId} to linkedin!...${error.message}`,
         type: ToastStates.infoFailed,
       })
