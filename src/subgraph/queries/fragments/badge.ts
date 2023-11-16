@@ -38,6 +38,7 @@ gql`
     id
     status
     uri
+    createdTxHash
     account {
       id
     }
@@ -67,6 +68,7 @@ gql`
     id
     status
     uri
+    createdTxHash
     account {
       id
     }

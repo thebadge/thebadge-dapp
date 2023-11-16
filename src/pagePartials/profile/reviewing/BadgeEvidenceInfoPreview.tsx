@@ -45,7 +45,7 @@ export default function BadgeReviewingInfoPreview({ badge }: { badge: Badge }) {
       </Alert>
 
       <Box alignContent="center" display="flex" flex={1} justifyContent="space-between">
-        <BadgeIdDisplay id={badge?.id} />
+        <BadgeIdDisplay id={badge?.id} mintTxHash={badge.createdTxHash} />
         {activeRequest.disputeID ? (
           <DisputeDisplay disputeId={activeRequest.disputeID} />
         ) : (
