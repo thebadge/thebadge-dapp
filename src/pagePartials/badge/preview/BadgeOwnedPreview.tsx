@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import * as React from 'react'
 
 import { LinkedIn } from '@mui/icons-material'
@@ -15,7 +16,6 @@ import {
 import { IconMetamask, colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 
-import LinkWithTranslation from '@/src/components/helpers/LinkWithTranslation'
 import { notify } from '@/src/components/toast/Toast'
 import { APP_URL, THE_BADGE_LINKEDIN_ID } from '@/src/constants/common'
 import useBadgeIdParam from '@/src/hooks/nextjs/useBadgeIdParam'
@@ -143,8 +143,7 @@ export default function BadgeOwnedPreview() {
     } catch (error) {
       console.error(error)
       notify({
-        // @ts-ignore
-        message: `There was an error adding the badge #${badgeId} to linkedin!...${error.message}`,
+        message: `There was an error adding the badge #${badgeId} to linkedin!...`,
         type: ToastStates.infoFailed,
       })
     }
@@ -174,12 +173,9 @@ export default function BadgeOwnedPreview() {
             <Typography variant="body2">
               {t('badge.viewBadge.issueBy')}
               {creatorAddress ? (
-                <LinkWithTranslation
-                  pathname={generateProfileUrl({ address: creatorAddress })}
-                  queryParams={{ target: '_blank' }}
-                >
-                  {issuer}
-                </LinkWithTranslation>
+                <Link href={generateProfileUrl({ address: creatorAddress })} target={'_blank'}>
+                  <span style={{ textDecoration: 'underline' }}>{issuer}</span>
+                </Link>
               ) : (
                 issuer
               )}
@@ -232,9 +228,11 @@ export default function BadgeOwnedPreview() {
 
           <Typography variant="body4">
             {t('badge.viewBadge.checkHowElse')}
-            <LinkWithTranslation pathname={generateBadgeExplorer()}>
-              {t('badge.viewBadge.seeAll').toUpperCase()}
-            </LinkWithTranslation>
+            <Link href={generateBadgeExplorer()}>
+              <span style={{ textDecoration: 'underline', textTransform: 'uppercase' }}>
+                {t('badge.viewBadge.seeAll')}
+              </span>
+            </Link>
           </Typography>
         </Box>
       </Stack>
