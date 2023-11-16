@@ -1,6 +1,8 @@
+import Link from 'next/link'
 import React, { useState } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { LinkedIn } from '@mui/icons-material'
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined'
 import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined'
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined'
@@ -116,6 +118,18 @@ export default function InfoPreviewEdit({ address }: Props) {
     }
   }
 
+  function shortenLinkedinString(inputString: string, maxLength: number): string {
+    if (!inputString || inputString.length <= maxLength) {
+      return inputString
+    } else {
+      const prefixToRemove = 'https://www.linkedin.com/'
+      const replacedUrl = inputString
+        .replace(new RegExp('^' + prefixToRemove), '')
+        .slice(0, maxLength)
+      return replacedUrl.slice(0, maxLength)
+    }
+  }
+
   return (
     <>
       {readView && (
@@ -184,9 +198,16 @@ export default function InfoPreviewEdit({ address }: Props) {
                       disabled={readView}
                       error={error}
                       onChange={onChange}
+                      placeholder={'Email'}
                       variant="dAppTitle2"
                     >
-                      {value}
+                      {value ? (
+                        <Link href={`mailto:${value}`} target={'_blank'}>
+                          {value}
+                        </Link>
+                      ) : (
+                        value
+                      )}
                     </TBEditableTypography>
                   )}
                 />
@@ -203,9 +224,16 @@ export default function InfoPreviewEdit({ address }: Props) {
                       disabled={readView}
                       error={error}
                       onChange={onChange}
+                      placeholder={'Twitter'}
                       variant="dAppTitle2"
                     >
-                      {value}
+                      {value ? (
+                        <Link href={value} target={'_blank'}>
+                          {value}
+                        </Link>
+                      ) : (
+                        value
+                      )}
                     </TBEditableTypography>
                   )}
                 />
@@ -222,9 +250,42 @@ export default function InfoPreviewEdit({ address }: Props) {
                       disabled={readView}
                       error={error}
                       onChange={onChange}
+                      placeholder={'Discord'}
                       variant="dAppTitle2"
                     >
-                      {value}
+                      {value ? (
+                        <Link href={value} target={'_blank'}>
+                          {value}
+                        </Link>
+                      ) : (
+                        value
+                      )}
+                    </TBEditableTypography>
+                  )}
+                />
+              </TextFieldContainer>
+            )}
+            {(creatorMetadata?.linkedin || !readView) && (
+              <TextFieldContainer>
+                <LinkedIn sx={{ mr: 1 }} />
+                <Controller
+                  control={control}
+                  name={'linkedin'}
+                  render={({ field: { onChange, value }, fieldState: { error } }) => (
+                    <TBEditableTypography
+                      disabled={readView}
+                      error={error}
+                      onChange={onChange}
+                      placeholder={'Company Url'}
+                      variant="dAppTitle2"
+                    >
+                      {value ? (
+                        <Link href={value} target={'_blank'}>
+                          {shortenLinkedinString(value || '', 20)}
+                        </Link>
+                      ) : (
+                        value
+                      )}
                     </TBEditableTypography>
                   )}
                 />
