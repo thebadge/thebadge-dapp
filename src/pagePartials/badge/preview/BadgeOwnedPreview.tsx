@@ -1,13 +1,23 @@
+import Link from 'next/link'
 import * as React from 'react'
 
+import { LinkedIn } from '@mui/icons-material'
 import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined'
-import { Box, Divider, IconButton, Stack, Tooltip, Typography, styled } from '@mui/material'
+import {
+  Box,
+  Divider,
+  IconButton,
+  Stack,
+  Tooltip,
+  Typography,
+  styled,
+  useTheme,
+} from '@mui/material'
 import { IconMetamask, colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 
-import LinkWithTranslation from '@/src/components/helpers/LinkWithTranslation'
 import { notify } from '@/src/components/toast/Toast'
-import { APP_URL } from '@/src/constants/common'
+import { APP_URL, THE_BADGE_LINKEDIN_ID } from '@/src/constants/common'
 import useBadgeIdParam from '@/src/hooks/nextjs/useBadgeIdParam'
 import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
 import { useUserById } from '@/src/hooks/subgraph/useUserById'
@@ -17,11 +27,14 @@ import { useSizeSM } from '@/src/hooks/useSize'
 import BadgeModelPreview from '@/src/pagePartials/badge/BadgeModelPreview'
 import BadgeTitle from '@/src/pagePartials/badge/preview/addons/BadgeTitle'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+import { getExpirationYearAndMonth, getIssueYearAndMonth } from '@/src/utils/dateUtils'
 import {
   generateBadgeExplorer,
   generateBadgePreviewUrl,
+  generateLinkedinUrl,
   generateProfileUrl,
 } from '@/src/utils/navigation/generateUrl'
+import { BadgeModelControllerType } from '@/types/badges/BadgeModel'
 import { CreatorMetadata } from '@/types/badges/Creator'
 import { ToastStates } from '@/types/toast'
 
@@ -41,6 +54,7 @@ const Wrapper = styled(Stack)(({ theme }) => ({
 
 export default function BadgeOwnedPreview() {
   const { t } = useTranslation()
+  const theme = useTheme()
 
   const badgeId = useBadgeIdParam()
   const isMobile = useSizeSM()
@@ -100,6 +114,41 @@ export default function BadgeOwnedPreview() {
     }
   }
 
+  async function handleImportLinkedin() {
+    try {
+      if (!badge || !badge.badgeMetadata) {
+        throw new Error('The badge has no name!')
+      }
+      const { expirationMonth, expirationYear } = getExpirationYearAndMonth(badge.validUntil)
+      // TODO replace createdAt with claimedAt in case of third party
+      const { issueMonth, issueYear } = getIssueYearAndMonth(badge.createdAt)
+
+      const linkedinUrl = generateLinkedinUrl({
+        name: badge?.badgeMetadata.name,
+        organizationName:
+          badgeModel?.controllerType === BadgeModelControllerType.Community ? undefined : issuer,
+        organizationId:
+          badgeModel?.controllerType === BadgeModelControllerType.Community
+            ? THE_BADGE_LINKEDIN_ID
+            : undefined,
+        issueYear: String(issueYear),
+        issueMonth: String(issueMonth),
+        expirationYear: String(expirationYear),
+        expirationMonth: String(expirationMonth),
+        certUrl: APP_URL + generateBadgePreviewUrl(badgeId),
+        certId: badgeId,
+      })
+
+      window.open(linkedinUrl)
+    } catch (error) {
+      console.error(error)
+      notify({
+        message: `There was an error adding the badge #${badgeId} to linkedin!...`,
+        type: ToastStates.infoFailed,
+      })
+    }
+  }
+
   return (
     <Wrapper>
       {isMobile && <BadgeTitle />}
@@ -124,12 +173,9 @@ export default function BadgeOwnedPreview() {
             <Typography variant="body2">
               {t('badge.viewBadge.issueBy')}
               {creatorAddress ? (
-                <LinkWithTranslation
-                  pathname={generateProfileUrl({ address: creatorAddress })}
-                  queryParams={{ target: '_blank' }}
-                >
-                  {issuer}
-                </LinkWithTranslation>
+                <Link href={generateProfileUrl({ address: creatorAddress })} target={'_blank'}>
+                  <span style={{ textDecoration: 'underline' }}>{issuer}</span>
+                </Link>
               ) : (
                 issuer
               )}
@@ -145,6 +191,21 @@ export default function BadgeOwnedPreview() {
                   onClick={handleImport}
                 >
                   <IconMetamask color={colors.white} />
+                </IconButton>
+              </Tooltip>
+              <Tooltip arrow title={t('badge.viewBadge.importLinkedin')}>
+                <IconButton
+                  aria-label={t('badge.viewBadge.importLinkedin')}
+                  component="label"
+                  onClick={handleImportLinkedin}
+                >
+                  <LinkedIn
+                    sx={{
+                      width: theme.customSizes.icon,
+                      height: theme.customSizes.icon,
+                      fill: colors.white,
+                    }}
+                  />
                 </IconButton>
               </Tooltip>
             </Box>
@@ -167,9 +228,11 @@ export default function BadgeOwnedPreview() {
 
           <Typography variant="body4">
             {t('badge.viewBadge.checkHowElse')}
-            <LinkWithTranslation pathname={generateBadgeExplorer()}>
-              {t('badge.viewBadge.seeAll').toUpperCase()}
-            </LinkWithTranslation>
+            <Link href={generateBadgeExplorer()}>
+              <span style={{ textDecoration: 'underline', textTransform: 'uppercase' }}>
+                {t('badge.viewBadge.seeAll')}
+              </span>
+            </Link>
           </Typography>
         </Box>
       </Stack>
