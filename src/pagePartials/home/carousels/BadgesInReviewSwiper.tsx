@@ -19,7 +19,7 @@ const now = nowInSeconds()
 export default function BadgesInReviewSwiper() {
   const router = useRouter()
   const gql = useSubgraph()
-  const { address } = useWeb3Connection()
+  const { address, appChainId } = useWeb3Connection()
   const md = useSizeMD()
   const lg = useSizeLG()
 
@@ -30,7 +30,15 @@ export default function BadgesInReviewSwiper() {
       return (
         <Box
           key={badgeInReview.id}
-          onClick={() => router.push(generateBadgePreviewUrl(badgeInReview.id))}
+          onClick={() =>
+            router.push(
+              generateBadgePreviewUrl(
+                badgeInReview.id,
+                badgeInReview.badgeModel.contractAddress,
+                appChainId,
+              ),
+            )
+          }
           sx={{ height: '100%', display: 'flex' }}
         >
           <InViewPort minHeight={300}>
@@ -47,7 +55,7 @@ export default function BadgesInReviewSwiper() {
     })
     // If there is no badges to show, we list 5 placeholders
     return fillListWithPlaceholders(badges, <EmptyBadgePreview size="small" />, 4)
-  }, [badgesUserCanReview.data?.badges, router])
+  }, [badgesUserCanReview.data?.badges, router, appChainId])
 
   const amountItems = () => {
     if (md) {
