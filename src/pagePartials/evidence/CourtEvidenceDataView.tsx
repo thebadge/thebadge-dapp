@@ -10,6 +10,7 @@ import useBadgeByDisputeId from '@/src/hooks/subgraph/useBadgeByDisputeId'
 import CurationCriteriaLink from '@/src/pagePartials/badge/curate/CurationCriteriaLink'
 import BadgeEvidenceDisplay from '@/src/pagePartials/badge/curate/viewEvidence/BadgeEvidenceDisplay'
 import { generateBadgePreviewUrl } from '@/src/utils/navigation/generateUrl'
+import { ChainsValues } from '@/types/chains'
 
 const Container = styled(Stack)(({ theme }) => ({
   gap: theme.spacing(2),
@@ -20,17 +21,28 @@ export default function CourtEvidenceDataView({
   arbitrableChainID,
   disputeID,
 }: {
-  arbitrableChainID: number | undefined
-  disputeID: string | undefined
+  arbitrableChainID?: ChainsValues
+  disputeID?: string
 }) {
   const { t } = useTranslation()
 
   const router = useRouter()
   const graphQueryResult = useBadgeByDisputeId(arbitrableChainID, disputeID)
 
+  if (!graphQueryResult.data || !graphQueryResult.data.badge || !graphQueryResult.data.badgeModel) {
+    return null
+  }
+
+  const badge = graphQueryResult.data.badge
+  const badgeModel = graphQueryResult.data.badgeModel
+
   function handleViewBadgeClick() {
+    if (!arbitrableChainID) {
+      return null
+    }
     const linkToSubmissionView =
-      router.basePath + generateBadgePreviewUrl(graphQueryResult.data?.badge?.id || '')
+      router.basePath +
+      generateBadgePreviewUrl(badge?.id, badgeModel.contractAddress, arbitrableChainID)
     window.open(`${linkToSubmissionView}`, '_blank')
   }
 
