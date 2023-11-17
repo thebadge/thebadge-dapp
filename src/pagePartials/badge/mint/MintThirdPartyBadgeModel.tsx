@@ -71,7 +71,7 @@ const MintThirdPartyBadgeModel: NextPageWithLayout = () => {
         const estimatedBadgeId = await theBadgeStore.getCurrentBadgeIdCounter()
         const badgeMetadataIPFSHash = await createAndUploadThirdPartyBadgeMetadata({
           estimatedBadgeId: estimatedBadgeId.toString(),
-          badgeModelContractAddress: badgeModel.data?.badgeModel.contractAddress,
+          theBadgeContractAddress: theBadge.address,
           appChainId,
           badgeModelMetadata: badgeModel.data?.badgeModelMetadata as BadgeModelMetadata,
           additionalArgs: { imageBase64File: previewImage },
