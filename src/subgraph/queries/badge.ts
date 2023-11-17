@@ -122,6 +122,7 @@ export const BADGE_BY_DISPUTE_ID = gql`
           badgeModel {
             id
             uri
+            contractAddress
             badgeModelKleros {
               removalUri
               registrationUri

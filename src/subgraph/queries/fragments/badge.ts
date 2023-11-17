@@ -19,6 +19,7 @@ gql`
       creatorFee
       validFor
       badgesMintedAmount
+      contractAddress
       badgeModelKleros {
         tcrList
         challengePeriodDuration
@@ -47,6 +48,7 @@ gql`
       uri
       controllerType
       validFor
+      contractAddress
       badgeModelKleros {
         tcrList
         challengePeriodDuration
@@ -75,6 +77,7 @@ gql`
     badgeModel {
       id
       uri
+      contractAddress
       badgeModelKleros {
         tcrList
         registrationUri
@@ -93,6 +96,7 @@ gql`
     status
     badgeModel {
       id
+      contractAddress
     }
     badgeKlerosMetaData {
       reviewDueDate
