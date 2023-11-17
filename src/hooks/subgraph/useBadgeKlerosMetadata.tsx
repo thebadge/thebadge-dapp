@@ -5,29 +5,31 @@ import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import { getFromIPFS } from '@/src/hooks/subgraph/utils'
 import useChainId from '@/src/hooks/theBadge/useChainId'
+import { SubgraphName } from '@/src/subgraph/subgraph'
 import { BadgeEvidenceMetadata } from '@/types/badges/BadgeMetadata'
 import { KlerosBadgeRequest, KlerosRequestType } from '@/types/generated/subgraph'
 
 /**
  * The BadgeKlerosMetadata provides additional information about a Badge within the Kleros system.
  * @param badgeId
+ * @param targetContract
  * @param options
  * @return SWRResponse<BadgeKlerosMetaData>
  */
-export function useBadgeKlerosMetadata(badgeId: string, options?: BadgeModelHooksOptions) {
+export function useBadgeKlerosMetadata(
+  badgeId: string,
+  targetContract?: string,
+  options?: BadgeModelHooksOptions,
+) {
   // It's going to do the fetch if it has ID and skip option on false
   const fetchIt = !options?.skip && badgeId.length
-  const gql = useSubgraph()
-  const chainId = useChainId()
+  const gql = useSubgraph(SubgraphName.TheBadge, targetContract)
 
-  return useSWR(
-    fetchIt ? [`BadgeKlerosMetadata:${badgeId}`, badgeId, chainId] : null,
-    async ([, _id]) => {
-      const badgeKleros = await gql.badgeKlerosMetadataById({ id: _id })
+  return useSWR(fetchIt ? [`BadgeKlerosMetadata:${badgeId}`, badgeId] : null, async ([, _id]) => {
+    const badgeKleros = await gql.badgeKlerosMetadataById({ id: _id })
 
-      return badgeKleros.badgeKlerosMetaData
-    },
-  )
+    return badgeKleros.badgeKlerosMetaData
+  })
 }
 
 /**
@@ -39,12 +41,12 @@ export function useBadgeKlerosMetadata(badgeId: string, options?: BadgeModelHook
 export function useEvidenceBadgeKlerosMetadata(badgeId: string, options?: BadgeModelHooksOptions) {
   const chainId = useChainId()
   const badge = useBadgeById(badgeId)
-  const badgeKlerosMetadata = useBadgeKlerosMetadata(badgeId, options)
+  const badgeKlerosMetadata = useBadgeKlerosMetadata(badgeId, badge.data?.contractAddress, options)
   // It's going to do the fetch if it has ID and skip option on false
   const fetchIt = !options?.skip && badgeId.length
   return useSWR(
     fetchIt ? [`EvidenceBadgeKlerosMetadata:${badgeId}`, badgeId, badge.data?.id, chainId] : null,
-    async ([,]) => {
+    async () => {
       if (!badgeKlerosMetadata.data?.requests) {
         throw 'There was not possible to get the needed metadata. Try again in some minutes.'
       }
