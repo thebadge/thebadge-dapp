@@ -9,6 +9,7 @@ import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
 import useMintValue from '@/src/hooks/theBadge/useMintValue'
 import useTBContract from '@/src/hooks/theBadge/useTBContract'
+import useTBStore from '@/src/hooks/theBadge/useTBStore'
 import useTransaction, { TransactionStates } from '@/src/hooks/useTransaction'
 import MintThirdPartyWithSteps from '@/src/pagePartials/badge/mint/MintThirdPartyWithSteps'
 import { MintThirdPartySchemaType } from '@/src/pagePartials/badge/mint/schema/MintThirdPartySchema'
@@ -25,6 +26,7 @@ import { ToastStates } from '@/types/toast'
 const MintThirdPartyBadgeModel: NextPageWithLayout = () => {
   const { appChainId, appPubKey, isSocialWallet, userSocialInfo } = useWeb3Connection()
   const theBadge = useTBContract()
+  const theBadgeStore = useTBStore()
   const { resetTxState, sendTx, state } = useTransaction()
   const router = useRouter()
   const badgeModelId = useModelIdParam()
@@ -66,11 +68,14 @@ const MintThirdPartyBadgeModel: NextPageWithLayout = () => {
           '@/src/utils/badges/createBadgeModelHelpers'
         )
 
-        const badgeMetadataIPFSHash = await createAndUploadThirdPartyBadgeMetadata(
-          badgeModel.data?.badgeModelMetadata as BadgeModelMetadata,
-          badgeModelId,
-          { imageBase64File: previewImage },
-        )
+        const estimatedBadgeId = await theBadgeStore.getCurrentBadgeIdCounter()
+        const badgeMetadataIPFSHash = await createAndUploadThirdPartyBadgeMetadata({
+          estimatedBadgeId: estimatedBadgeId.toString(),
+          badgeModelContractAddress: badgeModel.data?.badgeModel.contractAddress,
+          appChainId,
+          badgeModelMetadata: badgeModel.data?.badgeModelMetadata as BadgeModelMetadata,
+          additionalArgs: { imageBase64File: previewImage },
+        })
         const encodedBadgeMetadata = encodeIpfsBadgeMetadata(badgeMetadataIPFSHash)
 
         // If social login relay tx
