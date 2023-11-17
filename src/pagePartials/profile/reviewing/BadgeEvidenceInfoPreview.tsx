@@ -74,9 +74,7 @@ export default function BadgeReviewingInfoPreview({ badge }: { badge: Badge }) {
           backgroundColor={colors.transparent}
           fontColor={colors.white}
           onClick={() =>
-            router.push(
-              generateBadgePreviewUrl(badge.id, badge.badgeModel.contractAddress, appChainId),
-            )
+            router.push(generateBadgePreviewUrl(badge.id, badge.contractAddress, appChainId))
           }
         >
           {t('profile.user.badgesIAmReviewing.viewAll')}

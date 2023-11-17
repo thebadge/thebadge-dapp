@@ -7,7 +7,6 @@ import { useTranslation } from 'next-export-i18n'
 import { Address } from '@/src/components/helpers/Address'
 import ExternalLink from '@/src/components/helpers/ExternalLink'
 import { KLEROS_COURT_URL } from '@/src/constants/common'
-import useBadgeIdParam from '@/src/hooks/nextjs/useBadgeIdParam'
 import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
 import { useBadgeKlerosMetadata } from '@/src/hooks/subgraph/useBadgeKlerosMetadata'
 import { useSizeSM } from '@/src/hooks/useSize'
@@ -22,22 +21,25 @@ const DisplayWrapper = styled(Box)(({ theme }) => ({
   rowGap: theme.spacing(1),
 }))
 
-export default function ChallengeStatus() {
+export default function ChallengeStatus({
+  badgeId,
+  contract,
+}: {
+  badgeId: string
+  contract?: string
+}) {
   const { t } = useTranslation()
   const { addMoreEvidence, challenge } = useCurateProvider()
 
   const isMobile = useSizeSM()
 
-  const { badgeId } = useBadgeIdParam()
-  if (!badgeId) {
-    throw `No badgeId provided us URL query param`
-  }
-  const badgeById = useBadgeById(badgeId)
+  const badgeById = useBadgeById(badgeId, contract)
   const badge = badgeById.data
+
   if (!badge) {
     throw 'There was not possible to get the needed data. Try again in some minutes.'
   }
-  const badgeKlerosMetadata = useBadgeKlerosMetadata(badgeId)
+  const badgeKlerosMetadata = useBadgeKlerosMetadata(badgeId, contract)
 
   const activeRequest = badgeKlerosMetadata.data?.requests[
     badgeKlerosMetadata.data?.requests.length - 1

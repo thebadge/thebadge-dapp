@@ -49,11 +49,7 @@ export default function PendingList() {
                 <Box
                   onClick={() =>
                     router.push(
-                      generateBadgePreviewUrl(
-                        badge.id,
-                        badge.badgeModel.contractAddress,
-                        appChainId,
-                      ),
+                      generateBadgePreviewUrl(badge.id, badge.contractAddress, appChainId),
                     )
                   }
                   sx={{ cursor: 'pointer' }}

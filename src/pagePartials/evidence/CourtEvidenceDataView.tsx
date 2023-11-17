@@ -34,15 +34,13 @@ export default function CourtEvidenceDataView({
   }
 
   const badge = graphQueryResult.data.badge
-  const badgeModel = graphQueryResult.data.badgeModel
 
   function handleViewBadgeClick() {
     if (!arbitrableChainID) {
       return null
     }
     const linkToSubmissionView =
-      router.basePath +
-      generateBadgePreviewUrl(badge?.id, badgeModel.contractAddress, arbitrableChainID)
+      router.basePath + generateBadgePreviewUrl(badge?.id, badge.contractAddress, arbitrableChainID)
     window.open(`${linkToSubmissionView}`, '_blank')
   }
 

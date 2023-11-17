@@ -18,15 +18,17 @@ const StyledTimeline = styled(Timeline)(({ theme }) => ({
 
 export default function EvidencesList({
   badgeId,
+  contract,
   showLastActivity = false,
 }: {
   badgeId: string
+  contract?: string
   showLastActivity?: boolean
 }) {
   const { t } = useTranslation()
   const isMobile = useSizeSM()
 
-  const badgeKlerosMetadata = useBadgeKlerosMetadata(badgeId)
+  const badgeKlerosMetadata = useBadgeKlerosMetadata(badgeId, contract)
 
   const activeRequest = badgeKlerosMetadata.data?.requests[
     badgeKlerosMetadata.data?.requests.length - 1

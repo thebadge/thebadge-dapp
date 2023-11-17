@@ -32,11 +32,7 @@ export default function BadgesInReviewSwiper() {
           key={badgeInReview.id}
           onClick={() =>
             router.push(
-              generateBadgePreviewUrl(
-                badgeInReview.id,
-                badgeInReview.badgeModel.contractAddress,
-                appChainId,
-              ),
+              generateBadgePreviewUrl(badgeInReview.id, badgeInReview.contractAddress, appChainId),
             )
           }
           sx={{ height: '100%', display: 'flex' }}
