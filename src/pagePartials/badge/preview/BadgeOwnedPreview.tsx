@@ -63,7 +63,7 @@ export default function BadgeOwnedPreview() {
     throw `No badgeId provided us URL query param`
   }
 
-  const { web3Provider } = useWeb3Connection()
+  const { appChainId, web3Provider } = useWeb3Connection()
   const badgeById = useBadgeById(badgeId)
   const theBadge = useTBContract()
 
@@ -73,8 +73,12 @@ export default function BadgeOwnedPreview() {
   const creatorResponse = useUserById(creatorAddress)
   const creator = creatorResponse.data
   const resCreatorMetadata = useS3Metadata<{ content: CreatorMetadata }>(creator?.metadataUri || '')
-  const badgeModelMetadata = badgeModel?.badgeModelMetadata
 
+  if (!badge || !badgeModel) {
+    return null
+  }
+
+  const badgeModelMetadata = badgeModel?.badgeModelMetadata
   const creatorMetadata = resCreatorMetadata.data?.content
   let issuer = 'TheBadge'
   if (creatorMetadata && creatorMetadata.name) {
@@ -116,8 +120,8 @@ export default function BadgeOwnedPreview() {
 
   async function handleImportLinkedin() {
     try {
-      if (!badge || !badge.badgeMetadata) {
-        throw new Error('The badge has no name!')
+      if (!badge || !badge.badgeMetadata || !badgeModel) {
+        throw new Error('The badge does not exists or there is an issue with the badgeModel!')
       }
       const { expirationMonth, expirationYear } = getExpirationYearAndMonth(badge.validUntil)
       // TODO replace createdAt with claimedAt in case of third party
@@ -135,7 +139,8 @@ export default function BadgeOwnedPreview() {
         issueMonth: String(issueMonth),
         expirationYear: String(expirationYear),
         expirationMonth: String(expirationMonth),
-        certUrl: APP_URL + generateBadgePreviewUrl(badgeId),
+        certUrl:
+          APP_URL + generateBadgePreviewUrl(badge.id, badgeModel.contractAddress, appChainId),
         certId: badgeId,
       })
 
@@ -156,7 +161,9 @@ export default function BadgeOwnedPreview() {
       {/* Badge Image */}
       <Stack alignItems="center">
         <BadgeModelPreview
-          badgeUrl={APP_URL + generateBadgePreviewUrl(badgeId)}
+          badgeUrl={
+            APP_URL + generateBadgePreviewUrl(badge.id, badgeModel.contractAddress, appChainId)
+          }
           effects
           metadata={badgeModel?.uri}
         />
