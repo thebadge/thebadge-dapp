@@ -151,8 +151,6 @@ export default function BadgeOwnedPreview() {
     }
   }
 
-  console.log('Creator metadat', creatorMetadata)
-  console.log('issuer', issuer)
   return (
     <Wrapper>
       {isMobile && <BadgeTitle />}
