@@ -23,7 +23,7 @@ export function walletClientToSigner(walletClient: WalletClient) {
  * that a new wallet is connected
  * @param chainId
  */
-function useWalletClientHandcraft({
+export function useWalletClientHandcraft({
   address,
   chainId,
 }: {
@@ -57,6 +57,7 @@ function useWalletClientHandcraft({
 export function useEthersSigner({ chainId }: { chainId?: number } = {}) {
   const { address } = useWeb3Connection()
   const { data: walletClient } = useWalletClientHandcraft({ chainId, address })
+
   return React.useMemo(
     () => (walletClient ? walletClientToSigner(walletClient) : undefined),
     [walletClient],

@@ -179,9 +179,11 @@ function useCustomWagniConfig() {
 export default function Web3Modal({ children }: Props) {
   const newConfig = useCustomWagniConfig()
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  return <WagmiConfig config={newConfig.data}>{children}</WagmiConfig>
+  return (
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    <WagmiConfig config={newConfig.data}>{children}</WagmiConfig>
+  )
 }
 
 // 5. Create our own wrapper Web3ContextConnection to be backwards compatible with the code
