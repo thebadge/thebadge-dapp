@@ -46,7 +46,7 @@ const Header = () => {
       </Box>
       <Box display="flex">
         <WrongNetwork />
-        {isWalletConnected && !isMobile && <UserDropdown />}
+        {isWalletConnected && <UserDropdown />}
         {!isWalletConnected && (
           <Box display="flex" gap={2}>
             {!isMobile && (

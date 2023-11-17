@@ -24,6 +24,7 @@ import ActionButtons from '@/src/components/header/ActionButtons'
 import { Address } from '@/src/components/helpers/Address'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { getNetworkConfig } from '@/src/config/web3'
+import { useSizeSM } from '@/src/hooks/useSize'
 import { PreventActionIfOutOfService } from '@/src/pagePartials/errors/preventActionIfOutOfService'
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import { generateBaseUrl, generateProfileUrl } from '@/src/utils/navigation/generateUrl'
@@ -62,6 +63,7 @@ export const UserDropdown: React.FC = () => {
   const { address, appChainId, disconnectWallet, isWalletNetworkSupported } = useWeb3Connection()
   const networkConfig = getNetworkConfig(appChainId)
   const { open: openWeb3Modal } = useWeb3Modal()
+  const isMobile = useSizeSM()
 
   const [open, setOpen] = useState(false)
   const anchorMenuElRef: RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null)
@@ -96,9 +98,11 @@ export const UserDropdown: React.FC = () => {
 
   return (
     <>
-      <PreventActionIfOutOfService>
-        <ActionButtons />
-      </PreventActionIfOutOfService>
+      {!isMobile && (
+        <PreventActionIfOutOfService>
+          <ActionButtons />
+        </PreventActionIfOutOfService>
+      )}
       <Tooltip arrow ref={anchorMenuElRef} title="Account settings">
         <IconButton
           aria-controls={open ? 'account-menu' : undefined}
