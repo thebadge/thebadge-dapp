@@ -9,6 +9,7 @@ gql`
     createdTxHash
     claimedTxHash
     createdAt
+    contractAddress
     account {
       id
     }
@@ -40,6 +41,7 @@ gql`
     status
     uri
     createdTxHash
+    contractAddress
     account {
       id
     }
@@ -71,6 +73,7 @@ gql`
     status
     uri
     createdTxHash
+    contractAddress
     account {
       id
     }
@@ -94,6 +97,7 @@ gql`
     id
     uri
     status
+    contractAddress
     badgeModel {
       id
       contractAddress

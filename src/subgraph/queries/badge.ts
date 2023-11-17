@@ -104,6 +104,7 @@ export const BADGE_BY_USER_BY_MODEL_ID = gql`
         id
         status
         createdAt
+        contractAddress
       }
     }
   }
@@ -119,6 +120,7 @@ export const BADGE_BY_DISPUTE_ID = gql`
           validUntil
           createdTxHash
           createdAt
+          contractAddress
           badgeModel {
             id
             uri
