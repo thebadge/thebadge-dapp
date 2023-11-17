@@ -171,7 +171,7 @@ type Props = {
  * the wallets ready to go
  */
 function useCustomWagniConfig() {
-  return useSWR(`createWagniConfig`, async ([,]) => {
+  return useSWR(`createWagniConfig`, async () => {
     return await createWagniConfig()
   })
 }
@@ -208,7 +208,15 @@ export type Web3Context = {
 }
 
 export function useWeb3Connection(): Web3Context {
-  const { address, isConnected: isWalletConnected, isConnecting: connectingWallet } = useAccount()
+  const {
+    address: checkSummedAddress,
+    isConnected: isWalletConnected,
+    isConnecting: connectingWallet,
+  } = useAccount()
+  // @TODO (agustin) check if there is a better way to do this
+  const address = checkSummedAddress
+    ? (checkSummedAddress.toLowerCase() as '0x${String}')
+    : undefined
   const { disconnect: disconnectWallet } = useDisconnect()
   const { open: connectWallet } = useWeb3Modal()
   const { selectedNetworkId } = useWeb3ModalState()
