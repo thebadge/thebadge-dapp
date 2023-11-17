@@ -56,7 +56,7 @@ export default function BadgeOwnedPreview() {
   const { t } = useTranslation()
   const theme = useTheme()
 
-  const badgeId = useBadgeIdParam()
+  const { badgeId, contract } = useBadgeIdParam()
   const isMobile = useSizeSM()
 
   if (!badgeId) {
@@ -64,7 +64,7 @@ export default function BadgeOwnedPreview() {
   }
 
   const { appChainId, web3Provider } = useWeb3Connection()
-  const badgeById = useBadgeById(badgeId)
+  const badgeById = useBadgeById(badgeId, contract)
   const theBadge = useTBContract()
 
   const badge = badgeById.data

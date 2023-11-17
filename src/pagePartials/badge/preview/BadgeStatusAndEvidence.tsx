@@ -26,7 +26,7 @@ export default function BadgeStatusAndEvidence() {
 
   const [selectedTab, setSelectedTab] = useState(0)
 
-  const badgeId = useBadgeIdParam()
+  const { badgeId } = useBadgeIdParam()
   if (!badgeId) {
     throw `No badgeId provided us URL query param`
   }

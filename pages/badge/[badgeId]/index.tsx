@@ -32,12 +32,12 @@ const ViewBadge: NextPageWithLayout = () => {
   const handleClaimBadge = useBadgeClaim()
   const isMobile = useSizeSM()
 
-  const badgeId = useBadgeIdParam()
+  const { badgeId, contract } = useBadgeIdParam()
   if (!badgeId) {
     throw `No badgeId provided us URL query param`
   }
 
-  const badgeById = useBadgeById(badgeId)
+  const badgeById = useBadgeById(badgeId, contract)
   const badge = badgeById.data
 
   if (!badge) {

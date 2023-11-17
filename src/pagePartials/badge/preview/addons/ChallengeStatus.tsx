@@ -28,7 +28,7 @@ export default function ChallengeStatus() {
 
   const isMobile = useSizeSM()
 
-  const badgeId = useBadgeIdParam()
+  const { badgeId } = useBadgeIdParam()
   if (!badgeId) {
     throw `No badgeId provided us URL query param`
   }
