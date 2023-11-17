@@ -24,7 +24,7 @@ export default function PendingList() {
   const gql = useSubgraph()
   const { refreshWatcher } = useProfileProvider()
   const { getBadgeReviewStatus } = useBadgeHelpers()
-  const { address: ownerAddress } = useWeb3Connection()
+  const { address: ownerAddress, appChainId } = useWeb3Connection()
   const handleClaimBadge = useBadgeClaim()
 
   const { mutate, ...badgesInReview } = gql.useUserBadgesInReview({
@@ -47,7 +47,15 @@ export default function PendingList() {
             <SafeSuspense color={'green'}>
               <Box sx={{ width: 'fit-content' }}>
                 <Box
-                  onClick={() => router.push(generateBadgePreviewUrl(badge.id))}
+                  onClick={() =>
+                    router.push(
+                      generateBadgePreviewUrl(
+                        badge.id,
+                        badge.badgeModel.contractAddress,
+                        appChainId,
+                      ),
+                    )
+                  }
                   sx={{ cursor: 'pointer' }}
                 >
                   <PendingBadgeOverlay
@@ -98,7 +106,14 @@ export default function PendingList() {
       </div>,
       2,
     )
-  }, [badgesInReview.data?.user?.badges, getBadgeReviewStatus, t, router, handleClaimBadge])
+  }, [
+    badgesInReview.data?.user?.badges,
+    getBadgeReviewStatus,
+    t,
+    router,
+    handleClaimBadge,
+    appChainId,
+  ])
 
   return (
     <TBSwiper
