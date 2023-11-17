@@ -14,7 +14,7 @@ import { BackendFileUpload } from '@/types/utils'
 
 type ThirdPartyEvidence = {
   estimatedBadgeId: string
-  badgeModelContractAddress: string
+  theBadgeContractAddress: string
   appChainId: ChainsValues
   badgeModelMetadata: BadgeModelMetadata
   additionalArgs: {
@@ -25,16 +25,16 @@ type ThirdPartyEvidence = {
 export async function createAndUploadThirdPartyBadgeMetadata({
   additionalArgs,
   appChainId,
-  badgeModelContractAddress,
   badgeModelMetadata,
   estimatedBadgeId,
+  theBadgeContractAddress,
 }: ThirdPartyEvidence) {
   const badgeMetadataIPFSUploaded = await ipfsUpload<BadgeMetadata<BackendFileUpload>>({
     attributes: {
       name: badgeModelMetadata?.name || '',
       description: badgeModelMetadata?.description || '',
       external_link:
-        APP_URL + generateBadgePreviewUrl(estimatedBadgeId, badgeModelContractAddress, appChainId),
+        APP_URL + generateBadgePreviewUrl(estimatedBadgeId, theBadgeContractAddress, appChainId),
       attributes: [
         {
           trait_type: 'CreationDate',

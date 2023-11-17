@@ -35,10 +35,10 @@ export function generateBadgeCurate() {
 
 export function generateBadgePreviewUrl(
   badgeId: string,
-  badgeModelContractAddress: string,
+  theBadgeContractAddress: string,
   connectedChainId: ChainsValues,
 ) {
-  return `/badge/${badgeId}?contract=${connectedChainId}:${badgeModelContractAddress}`
+  return `/badge/${badgeId}?contract=${connectedChainId}:${theBadgeContractAddress}`
 }
 
 export function generateProfileUrl(args?: {
