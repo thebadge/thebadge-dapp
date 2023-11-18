@@ -1,10 +1,10 @@
+import Link from 'next/link'
 import React from 'react'
 
 import { Stack, Typography } from '@mui/material'
 import { colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 
-import LinkWithTranslation from '@/src/components/helpers/LinkWithTranslation'
 import useBadgeIdParam from '@/src/hooks/nextjs/useBadgeIdParam'
 import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
 import { useSizeSM } from '@/src/hooks/useSize'
@@ -44,10 +44,11 @@ export default function BadgeTitle() {
         textAlign={isMobile ? 'center' : 'left'}
         variant="caption"
       >
+        {t('badge.viewBadge.id')}
         {badge?.claimedTxHash && (
-          <LinkWithTranslation pathname={getExplorerUrl(badge?.claimedTxHash)} target={'_blank'}>
-            {t('badge.viewBadge.id', { id: badgeId })}
-          </LinkWithTranslation>
+          <Link href={getExplorerUrl(badge?.claimedTxHash)} target={'_blank'}>
+            <strong style={{ textDecoration: 'underline' }}>#{badgeId}</strong>
+          </Link>
         )}
       </Typography>
     </Stack>

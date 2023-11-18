@@ -1,3 +1,6 @@
+import _ from 'lodash'
+
+import { LINKEDIN_URL } from '@/src/constants/common'
 import { ProfileType } from '@/src/pagePartials/profile/ProfileSelector'
 import { BadgeModelControllerType } from '@/types/badges/BadgeModel'
 
@@ -80,4 +83,34 @@ export function generateLegalTermsUrl() {
 
 export function generateLegalPrivacyPolicyUrl() {
   return '/legal/privacy-policy'
+}
+
+export function generateLinkedinUrl(certData: {
+  name: string
+  organizationName?: string
+  organizationId?: string
+  issueYear: string
+  issueMonth: string
+  expirationYear?: string
+  expirationMonth?: string
+  certUrl: string
+  certId: string
+}) {
+  const certDataCleaned = _.pickBy(certData, _.negate(_.isUndefined))
+  if (!certDataCleaned.organizationId && !certDataCleaned.organizationName) {
+    throw new Error('OrganizationId or organizationName should be defined!')
+  }
+
+  const queryParams = new URLSearchParams({
+    startTask: 'CERTIFICATION_NAME',
+    ...certDataCleaned,
+  })
+
+  return `${LINKEDIN_URL}/profile/add?${queryParams.toString()}`
+}
+
+export function generateLinkedinOrganization(linkedinUrl: string): string {
+  const regex = /\/(\d+)\/?$/
+  const match = linkedinUrl.match(regex)
+  return match ? match[1] : linkedinUrl
 }

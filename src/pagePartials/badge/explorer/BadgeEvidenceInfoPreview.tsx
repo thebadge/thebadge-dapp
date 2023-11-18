@@ -45,7 +45,7 @@ export default function BadgeEvidenceInfoPreview({ badge }: { badge: Badge }) {
   return (
     <Stack gap={4} p={1}>
       <Box alignContent="center" display="flex" flex={1} justifyContent="space-between">
-        <BadgeIdDisplay id={badge?.id} />
+        <BadgeIdDisplay id={badge?.id} mintTxHash={badge.createdTxHash} />
         {showTimeLeft && (
           <TimeLeftDisplay reviewDueDate={badge?.badgeKlerosMetaData?.reviewDueDate} />
         )}
@@ -64,7 +64,6 @@ export default function BadgeEvidenceInfoPreview({ badge }: { badge: Badge }) {
         </Box>
 
         {/* Evidence Items */}
-
         {badgeEvidence?.columns.map((column) => {
           return (
             <Stack key={column.label + column.description}>

@@ -59,6 +59,7 @@ export const EditProfileSchema = z.object({
   website: z.string().optional(),
   twitter: TwitterSchema.optional(),
   discord: z.string().optional(),
+  linkedin: z.string().optional(),
 
   preferContactMethod: z.enum(CONTACT_METHODS),
 })
