@@ -21,7 +21,7 @@ export default function ImagePlaceholder({
       <TSFormFieldHint description={description} label={label} />
       <TSFormField>
         <Disable disabled sx={{ width: '100%' }}>
-          <ImageInput disabled label={label} onChange={emptyOnChange} value={undefined} />
+          <ImageInput label={label} onChange={emptyOnChange} value={undefined} />
         </Disable>
       </TSFormField>
     </TSFormFieldWrapper>

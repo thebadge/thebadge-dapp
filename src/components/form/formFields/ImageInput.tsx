@@ -72,16 +72,9 @@ type ImageInputProps = {
   onChange: (image: ImageType | null) => void
   placeholder?: string
   value: ImageType | undefined
-  disabled?: boolean
 }
-export function ImageInput({
-  disabled,
-  error,
-  label,
-  onChange,
-  placeholder,
-  value,
-}: ImageInputProps) {
+
+export function ImageInput({ error, label, onChange, placeholder, value }: ImageInputProps) {
   const [images, setImages] = useState<ImageListType>(value ? [value] : [])
   const maxNumber = 1
 
@@ -98,7 +91,6 @@ export function ImageInput({
   return (
     <Wrapper error={!!error}>
       <FormField
-        disabled={disabled}
         formControl={
           <Container maxWidth="md" sx={{ display: 'flex', mt: 2, width: '100%' }}>
             <ImageUploading

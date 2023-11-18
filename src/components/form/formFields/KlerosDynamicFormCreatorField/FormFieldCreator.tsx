@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Box, Button, Stack, styled } from '@mui/material'
+import { Box, Button, Stack, Typography, styled } from '@mui/material'
 import { useTsController } from '@ts-react/form'
 import update from 'immutability-helper'
 import { useTranslation } from 'next-export-i18n'
@@ -153,6 +153,8 @@ export function KlerosDynamicFieldsCreator({ error, ...props }: Props) {
       </Stack>
       {error && <FormStatus status={TextFieldStatus.error}>{error.message}</FormStatus>}
       <Box mt={2}>
+        <Typography variant="labelMedium">Check how your form would look like</Typography>
+
         <Box sx={{ overflowY: 'auto' }}>
           <DndProvider backend={HTML5Backend}>
             {props?.value?.map((field, index) => renderFieldItem(field, index))}

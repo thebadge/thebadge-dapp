@@ -24,9 +24,13 @@ export function CheckBox({ disabled, error, label, onChange, placeholder, value 
   return (
     <FormField
       alignItems="center"
-      disabled={disabled}
       formControl={
-        <MUICheckbox checked={!!value} onChange={handleChange} sx={{ width: 'fit-content' }} />
+        <MUICheckbox
+          checked={!!value}
+          disabled={disabled}
+          onChange={handleChange}
+          sx={{ width: 'fit-content' }}
+        />
       }
       label={
         <Typography color="text.disabled">
