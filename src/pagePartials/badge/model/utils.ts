@@ -10,8 +10,8 @@ const STEP_1_COMMUNITY = [
   'backgroundImage',
   'template',
 ]
-const STEP_2_COMMUNITY = ['criteriaFileUri', 'criteria', 'rigorousness', 'mintFee', 'validFor']
-const STEP_3_COMMUNITY = ['badgeMetadataColumns']
+const STEP_2_COMMUNITY = ['rigorousness', 'mintFee', 'validFor']
+const STEP_3_COMMUNITY = ['criteriaFileUri', 'criteria', 'badgeMetadataColumns']
 
 const STEP_0_TP = [
   'name',

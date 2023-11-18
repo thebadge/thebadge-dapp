@@ -45,6 +45,7 @@ type FileInputProps = {
   placeholder?: string
   value: ImageType | undefined
   downloadableTemplate?: React.ReactNode
+  disabled?: boolean
 }
 
 /**
@@ -53,6 +54,7 @@ type FileInputProps = {
  * @constructor
  */
 export function FileInput({
+  disabled,
   downloadableTemplate,
   error,
   label,
@@ -102,7 +104,12 @@ export function FileInput({
                       {...dragProps}
                     >
                       <Typography color="text.disabled">Upload file</Typography>
-                      <IconButton aria-label="upload file" color="secondary" component="label">
+                      <IconButton
+                        aria-label="upload file"
+                        color="secondary"
+                        component="label"
+                        disabled={disabled}
+                      >
                         <FileUploadOutlinedIcon color="white" />
                       </IconButton>
                     </FileDrop>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Container, Stack } from '@mui/material'
+import { Container } from '@mui/material'
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -15,6 +15,7 @@ import {
   CreateThirdPartyModelSchemaType,
 } from '@/src/pagePartials/badge/model/schema/CreateThirdPartyModelSchema'
 import StepFooter from '@/src/pagePartials/badge/model/steps/StepFooter'
+import StepInnerContainer from '@/src/pagePartials/badge/model/steps/StepInnerContainer'
 import BadgeModelConfirmation from '@/src/pagePartials/badge/model/steps/preview/BadgeModelConfirmation'
 import BadgeModelCreated from '@/src/pagePartials/badge/model/steps/preview/BadgeModelCreated'
 import StepHeaderThirdParty from '@/src/pagePartials/badge/model/steps/thirdParty/StepHeaderThirdParty'
@@ -98,7 +99,7 @@ export default function CreateThirdPartyBadgeModelWithSteps({
         {txState === TransactionStates.success && <BadgeModelCreated />}
         {txState === TransactionStates.none && (
           <form onSubmit={methods.handleSubmit(onSubmit, (e) => console.log(e))}>
-            <Stack gap={3}>
+            <StepInnerContainer gap={3}>
               {currentStep === 0 && <BadgeModelUIBasics />}
               {currentStep === 1 && <BadgeModelStrategy />}
               {currentStep === 2 && <BadgeModelConfirmation />}
@@ -109,7 +110,7 @@ export default function CreateThirdPartyBadgeModelWithSteps({
                 onBackCallback={onBackCallback}
                 onNextCallback={onNextCallback}
               />
-            </Stack>
+            </StepInnerContainer>
           </form>
         )}
       </Container>

@@ -35,7 +35,10 @@ const Wrapper = styled(Box)(({ theme }) => ({
   flexDirection: 'column',
   position: 'relative',
   rowGap: theme.spacing(1),
-  gridColumn: 'span 1 / span 2',
+  width: '60%',
+  [theme.breakpoints.down('sm')]: {
+    width: '100%',
+  },
 }))
 
 const CustomSlider = styled(Slider)({

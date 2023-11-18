@@ -1,6 +1,7 @@
 import React from 'react'
 
-import { Box, Stack, alpha, styled } from '@mui/material'
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
+import { Box, Stack, Tooltip, Typography, alpha, styled } from '@mui/material'
 import { BadgePreview } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 import { Controller, useFormContext } from 'react-hook-form'
@@ -19,10 +20,8 @@ const BoxShadow = styled(Box)(({ theme }) => ({
 }))
 
 export const BADGE_MODEL_TEXT_CONTRAST: { [key: string]: string } = {
-  Black: 'light',
-  White: 'dark',
-  'White with shadow': 'dark-withTextBackground',
-  'Black with shadow': 'light-withTextBackground',
+  White: 'dark-withTextBackground',
+  Black: 'light-withTextBackground',
 }
 
 export const BADGE_MODEL_BACKGROUNDS: { [key: string]: string } = {
@@ -43,61 +42,84 @@ export default function BadgeModelUIBasics() {
   const { t } = useTranslation()
   const { control, watch } = useFormContext<CreateCommunityModelSchemaType>()
 
-  const watchedName = watch('name')
-  const watchedDescription = watch('description')
+  const watchedName = watch('name') || 'Security Certificate'
+  const watchedDescription =
+    watch('description') ||
+    'This badges certifies that the address that has it complies with the regulations about...'
   const watchedLogoUri = watch('badgeModelLogoUri')
   const watchedTextContrast = watch('textContrast')
   const watchedBackground = watch('backgroundImage')
 
   return (
     <>
-      <Box display="flex" flexDirection="row" gap={5} justifyContent="space-between">
-        <Stack flex="1" gap={2}>
-          <Controller
-            control={control}
-            name={'name'}
-            render={({ field: { onChange, value }, fieldState: { error } }) => (
-              <TextField
-                error={error}
-                label={t('badge.model.create.uiBasics.name')}
-                onChange={onChange}
-                value={value}
-              />
-            )}
-          />
-          <Controller
-            control={control}
-            name={'description'}
-            render={({ field: { onChange, value }, fieldState: { error } }) => (
-              <TextArea
-                error={error}
-                label={t('badge.model.create.uiBasics.description')}
-                onChange={onChange}
-                value={value}
-              />
-            )}
-          />
-          <Controller
-            control={control}
-            name={'badgeModelLogoUri'}
-            render={({ field: { onChange, value }, fieldState: { error } }) => (
-              <ImageInput
-                error={error}
-                label={t('badge.model.create.uiBasics.logo')}
-                onChange={(value: ImageType | null) => {
-                  if (value) {
-                    // We change the structure a little bit to have it ready to push to the backend
-                    onChange({
-                      mimeType: value.file?.type,
-                      base64File: value.base64File,
-                    })
-                  } else onChange(null)
-                }}
-                value={value}
-              />
-            )}
-          />
+      <Box display="flex" flexDirection="row" gap={10} justifyContent="space-between">
+        <Stack flex="1" gap={4}>
+          <Stack>
+            <Typography variant="bodySmall">Choose a name for your badge model</Typography>
+            <Controller
+              control={control}
+              name={'name'}
+              render={({ field: { onChange, value }, fieldState: { error } }) => (
+                <TextField
+                  error={error}
+                  ghostLabel={t('badge.model.create.uiBasics.name')}
+                  onChange={onChange}
+                  value={value}
+                />
+              )}
+            />
+          </Stack>
+
+          <Stack>
+            <Typography variant="bodySmall">Briefly describe what your badge certifies</Typography>
+            <Controller
+              control={control}
+              name={'description'}
+              render={({ field: { onChange, value }, fieldState: { error } }) => (
+                <TextArea
+                  error={error}
+                  onChange={onChange}
+                  placeholder={t('badge.model.create.uiBasics.description')}
+                  value={value}
+                />
+              )}
+            />
+          </Stack>
+
+          <Stack sx={{ position: 'relative' }}>
+            <Typography variant="bodySmall">
+              Choose an image or logo that will make your model unique
+            </Typography>
+            <Controller
+              control={control}
+              name={'badgeModelLogoUri'}
+              render={({ field: { onChange, value }, fieldState: { error } }) => (
+                <ImageInput
+                  error={error}
+                  onChange={(value: ImageType | null) => {
+                    if (value) {
+                      // We change the structure a little bit to have it ready to push to the backend
+                      onChange({
+                        mimeType: value.file?.type,
+                        base64File: value.base64File,
+                      })
+                    } else onChange(null)
+                  }}
+                  value={value}
+                />
+              )}
+            />
+            <Tooltip
+              arrow
+              title={
+                'For your badge to look great, it is ideal that the image has 1:1 proportions.'
+              }
+            >
+              <InfoOutlinedIcon sx={{ ml: 1, position: 'absolute', bottom: 8, right: 4 }} />
+            </Tooltip>
+          </Stack>
         </Stack>
+
         <Stack flex="1">
           <BoxShadow>
             <BadgePreview
@@ -114,7 +136,7 @@ export default function BadgeModelUIBasics() {
           </BoxShadow>
         </Stack>
       </Box>
-      <Box display="flex" flexDirection="row" gap={5} justifyContent="space-between" mt={4}>
+      <Box display="flex" flexDirection="row" gap={10} justifyContent="space-between" mt={4}>
         <Stack flex="1" gap={2}>
           <Controller
             control={control}

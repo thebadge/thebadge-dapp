@@ -21,11 +21,15 @@ type TextAreaProps = Omit<MUITextFieldProps, 'error' | 'onChange'> & {
   label?: string
   onChange: (event: any) => void
   placeholder?: string
+  // Temporal solution to show the real TextField placeholder as a level,
+  // it's made on this way to prevent a huge rework around other usages
+  ghostLabel?: string
   rows?: number
   value: string | undefined
 }
 export function TextArea({
   error,
+  ghostLabel,
   label,
   onChange,
   placeholder,

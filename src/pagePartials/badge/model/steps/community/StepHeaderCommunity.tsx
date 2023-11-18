@@ -8,13 +8,7 @@ import StepHeaderStepper from '@/src/components/form/formWithSteps/StepHeaderSte
 import StepHeaderSubtitle from '@/src/components/form/formWithSteps/StepHeaderSubtitle'
 import { DOCS_URL } from '@/src/constants/common'
 
-const steps = [
-  'Help',
-  'Badge model basics',
-  'Badge model strategy',
-  'Evidence form',
-  'Badge model preview',
-]
+const steps = ['Help', 'Model basics', 'Details', 'Evidence', 'Preview']
 
 export default function StepHeaderCommunity({
   completedSteps,
@@ -47,6 +41,7 @@ export default function StepHeaderCommunity({
           createBadgeTypeDocs: DOCS_URL + '/thebadge-documentation/protocol-mechanics/how-it-works',
         })}
         showHint={currentStep !== 5}
+        stepNumber={currentStep + 1}
         subTitle={t(`badge.model.create.steps.${currentStep}.subTitle`, {
           docsUrl: DOCS_URL + '/thebadge-documentation/protocol-mechanics/how-it-works',
           criteriaDocsUrl: DOCS_URL + '/thebadge-documentation/protocol-mechanics/how-it-works',
