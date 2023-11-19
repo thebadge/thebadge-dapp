@@ -11,7 +11,10 @@ import { z } from 'zod'
 
 import SeverityOptionEditable from '@/src/components/form/formFields/SeveritySelector/SeverityOptionEditable'
 import SeverityOptionItem from '@/src/components/form/formFields/SeveritySelector/SeverityOptionItem'
-import { DisplayLabel } from '@/src/components/form/formFields/SeveritySelector/styled'
+import {
+  ColorfulDivider,
+  DisplayLabel,
+} from '@/src/components/form/formFields/SeveritySelector/styled'
 import { SeverityTypeSchema } from '@/src/components/form/helpers/customSchemas'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { ZERO_BN } from '@/src/constants/bigNumber'
@@ -59,7 +62,8 @@ export default function SeveritySelectorAdvanceView({
   )
 
   return (
-    <Stack gap={1}>
+    <Stack gap={2}>
+      <ColorfulDivider />
       <Box display="flex" justifyContent="space-between">
         {/* 1 juror with normal reward on challenges */}
         <SafeSuspense>

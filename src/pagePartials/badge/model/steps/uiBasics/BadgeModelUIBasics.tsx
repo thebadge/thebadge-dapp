@@ -19,6 +19,17 @@ const BoxShadow = styled(Box)(({ theme }) => ({
   filter: `drop-shadow(0px 0px 15px ${alpha(theme.palette.text.primary, 0.3)})`,
 }))
 
+const SectionContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'row',
+  gap: theme.spacing(10),
+  justifyContent: 'space-between',
+  [theme.breakpoints.down('sm')]: {
+    flexDirection: 'column',
+    gap: theme.spacing(4),
+  },
+}))
+
 export const BADGE_MODEL_TEXT_CONTRAST: { [key: string]: string } = {
   White: 'dark-withTextBackground',
   Black: 'light-withTextBackground',
@@ -52,7 +63,7 @@ export default function BadgeModelUIBasics() {
 
   return (
     <>
-      <Box display="flex" flexDirection="row" gap={10} justifyContent="space-between">
+      <SectionContainer>
         <Stack flex="1" gap={4}>
           <Stack>
             <Typography variant="bodySmall">Choose a name for your badge model</Typography>
@@ -135,7 +146,7 @@ export default function BadgeModelUIBasics() {
             />
           </BoxShadow>
         </Stack>
-      </Box>
+      </SectionContainer>
       <Box display="flex" flexDirection="row" gap={10} justifyContent="space-between" mt={4}>
         <Stack flex="1" gap={2}>
           <Controller

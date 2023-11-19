@@ -597,6 +597,7 @@
   },
   "severity": {
     "advance": "Advance",
+    "onlyOnDesktop": " (Only available on desktop)",
     "amountOfJurors": "Amount \n of Jurors",
     "challengeBounty": " Challenge \n Bounty",
     "baseDeposit": "Base \n deposit",

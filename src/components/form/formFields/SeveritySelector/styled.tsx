@@ -1,4 +1,5 @@
 import { Box, TextField, Typography, alpha, styled } from '@mui/material'
+import { gradients } from '@thebadge/ui-library'
 
 export const CustomOptionPaper = styled(Box, {
   shouldForwardProp: (propName) => propName !== 'color' && propName !== 'selected',
@@ -6,6 +7,7 @@ export const CustomOptionPaper = styled(Box, {
   color: string
   selected: boolean
 }>(({ color, selected, theme }) => ({
+  position: 'relative',
   margin: theme.spacing(1),
   width: 165,
   height: 180,
@@ -43,7 +45,7 @@ export const VerySmallTextField = styled(TextField, {
   width: '95%',
   marginLeft: 'auto',
   '& :before': {
-    borderBottom: 'none !important',
+    borderBottomColor: `${fontColor} !important`,
   },
   '& .MuiInputBase-root': {
     fontSize: '12px !important',
@@ -82,4 +84,10 @@ export const DisplayLabel = styled(Typography)(({ theme }) => ({
   minWidth: '25%',
   gap: theme.spacing(1),
   fontSize: '14px !important',
+}))
+
+export const ColorfulDivider = styled(Box)(() => ({
+  height: '1px',
+  width: '100%',
+  background: gradients.gradientHeader,
 }))

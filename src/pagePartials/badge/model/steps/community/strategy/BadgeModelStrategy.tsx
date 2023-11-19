@@ -23,6 +23,13 @@ const SliderContainer = styled(Box)(({ theme }) => ({
   },
 }))
 
+const Label = styled(Typography)(({ theme }) => ({
+  maxWidth: '175px',
+  [theme.breakpoints.down('sm')]: {
+    maxWidth: 'none',
+  },
+}))
+
 export default function BadgeModelStrategy() {
   const { t } = useTranslation()
   const { control } = useFormContext<CreateCommunityModelSchemaType>()
@@ -32,9 +39,7 @@ export default function BadgeModelStrategy() {
   return (
     <Stack gap={8}>
       <SliderContainer>
-        <Typography maxWidth="175px" variant="bodySmall">
-          Select the duration period for your badge model challenge
-        </Typography>
+        <Label variant="bodySmall">Select the duration period for your badge model challenge</Label>
         <Controller
           control={control}
           name={'challengePeriodDuration'}
@@ -49,22 +54,17 @@ export default function BadgeModelStrategy() {
           )}
         />
       </SliderContainer>
-      <SliderContainer>
-        <Typography maxWidth="175px" variant="bodySmall">
-          Select the rigorousness of your badge model challenge
-        </Typography>
-        <Controller
-          control={control}
-          name={'rigorousness'}
-          render={({ field: { onChange, value }, fieldState: { error } }) => {
-            return (
-              <SafeSuspense>
-                <SeveritySelector error={error} onChange={onChange} value={value} />
-              </SafeSuspense>
-            )
-          }}
-        />
-      </SliderContainer>
+      <Controller
+        control={control}
+        name={'rigorousness'}
+        render={({ field: { onChange, value }, fieldState: { error } }) => {
+          return (
+            <SafeSuspense>
+              <SeveritySelector error={error} onChange={onChange} value={value} />
+            </SafeSuspense>
+          )
+        }}
+      />
 
       <Box
         display="flex"
