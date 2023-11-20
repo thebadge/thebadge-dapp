@@ -1,9 +1,9 @@
 {
   "5": {
-    "theBadge": "https://api.studio.thegraph.com/query/30300/tb-test-goerli/version/latest"
+    "theBadge": "https://api.studio.thegraph.com/query/51391/thebadge-goerli-dev/version/latest"
   },
   "11155111": {
-    "theBadge": "https://api.studio.thegraph.com/query/30300/tb-test/version/latest"
+    "theBadge": "https://api.studio.thegraph.com/query/51391/thebadge-sepolia-dev/version/latest"
   },
   "100": {
     "theBadge": ""
