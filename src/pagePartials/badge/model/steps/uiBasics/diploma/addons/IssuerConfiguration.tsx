@@ -34,23 +34,6 @@ export default function IssuerConfiguration() {
       {customIssuerEnabled && (
         <SectionContainer>
           <Stack flex="1" gap={2}>
-            <Typography variant="bodySmall">Issued by label</Typography>
-
-            <Controller
-              control={control}
-              name={'issuedByLabel'}
-              render={({ field: { onChange, value }, fieldState: { error } }) => (
-                <TextField
-                  error={error}
-                  ghostLabel={'Issued By'}
-                  onChange={onChange}
-                  value={value}
-                />
-              )}
-            />
-          </Stack>
-
-          <Stack flex="1" gap={2}>
             <Typography variant="bodySmall">Issuer Avatar</Typography>
             <Controller
               control={control}

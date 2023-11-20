@@ -58,7 +58,7 @@ export default function DiplomaConfiguration() {
       </SectionContainer>
       <Divider />
 
-      <Stack flex="1">
+      <Stack flex="1" mb={2}>
         <BadgeModelCreationPreview />
       </Stack>
 

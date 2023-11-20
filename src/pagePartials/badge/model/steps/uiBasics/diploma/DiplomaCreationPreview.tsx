@@ -40,7 +40,7 @@ export default function DiplomaCreationPreview() {
 
   const footerEnabled = watch('footerEnabled')
   const footerText =
-    watch('footerText') || 'account.eth hast confirmed the identity {{studentName}}'
+    watch('footerText') || `${creatorMetadata?.name} hast confirmed the identity {{studentName}}`
 
   const signatureEnabled = watch('signatureEnabled')
 
