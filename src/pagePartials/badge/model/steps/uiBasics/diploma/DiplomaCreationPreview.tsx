@@ -4,6 +4,7 @@ import { Box, alpha, styled } from '@mui/material'
 import { DiplomaPreview } from '@thebadge/ui-library'
 import { useFormContext } from 'react-hook-form'
 
+import { APP_URL } from '@/src/constants/common'
 import { useUserById } from '@/src/hooks/subgraph/useUserById'
 import useIsUserVerified from '@/src/hooks/theBadge/useIsUserVerified'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
@@ -29,7 +30,6 @@ export default function DiplomaCreationPreview() {
   const { data } = useUserById(address)
   const resCreatorMetadata = useS3Metadata<{ content: CreatorMetadata }>(data?.metadataUri || '')
   const creatorMetadata = resCreatorMetadata.data?.content
-  console.log(creatorMetadata)
   const isVerified = useIsUserVerified(address, 'kleros')
 
   // Diploma Badge Configs
@@ -62,6 +62,7 @@ export default function DiplomaCreationPreview() {
       <DiplomaPreview
         animationEffects={['wobble', 'grow', 'glare']}
         animationOnHover
+        badgeUrl={APP_URL}
         courseName={courseName}
         date={achievementDate}
         description={achievementDescription}
