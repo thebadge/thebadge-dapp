@@ -17,7 +17,7 @@ import SignatureConfiguration from '@/src/pagePartials/badge/model/steps/uiBasic
 export default function DiplomaConfiguration() {
   const { t } = useTranslation()
 
-  const { control, watch } = useFormContext<CreateCommunityModelSchemaType>()
+  const { control } = useFormContext<CreateCommunityModelSchemaType>()
 
   return (
     <>
