@@ -31,6 +31,7 @@ import { getExpirationYearAndMonth, getIssueYearAndMonth } from '@/src/utils/dat
 import {
   generateBadgeExplorer,
   generateBadgePreviewUrl,
+  generateLinkedinOrganization,
   generateLinkedinUrl,
   generateProfileUrl,
 } from '@/src/utils/navigation/generateUrl'
@@ -127,6 +128,7 @@ export default function BadgeOwnedPreview() {
       // TODO replace createdAt with claimedAt in case of third party
       const { issueMonth, issueYear } = getIssueYearAndMonth(badge.createdAt)
 
+      const thirdPartyOrganizationId = generateLinkedinOrganization(creatorMetadata?.linkedin || '')
       const linkedinUrl = generateLinkedinUrl({
         name: badge?.badgeMetadata.name,
         organizationName:
@@ -134,7 +136,7 @@ export default function BadgeOwnedPreview() {
         organizationId:
           badgeModel?.controllerType === BadgeModelControllerType.Community
             ? THE_BADGE_LINKEDIN_ID
-            : undefined,
+            : thirdPartyOrganizationId,
         issueYear: String(issueYear),
         issueMonth: String(issueMonth),
         expirationYear: String(expirationYear),

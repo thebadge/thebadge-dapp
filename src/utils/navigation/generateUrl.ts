@@ -113,3 +113,9 @@ export function generateLinkedinUrl(certData: {
 
   return `${LINKEDIN_URL}/profile/add?${queryParams.toString()}`
 }
+
+export function generateLinkedinOrganization(linkedinUrl: string): string {
+  const regex = /\/(\d+)\/?$/
+  const match = linkedinUrl.match(regex)
+  return match ? match[1] : linkedinUrl
+}
