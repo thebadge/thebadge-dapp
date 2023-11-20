@@ -46,6 +46,7 @@ type FileInputProps = {
   value: ImageType | undefined
   downloadableTemplate?: React.ReactNode
   disabled?: boolean
+  acceptType?: string[]
 }
 
 /**
@@ -54,6 +55,7 @@ type FileInputProps = {
  * @constructor
  */
 export function FileInput({
+  acceptType,
   disabled,
   downloadableTemplate,
   error,
@@ -87,7 +89,7 @@ export function FileInput({
             {/* Custom element where we can define a template example for the expected file */}
             {downloadableTemplate ? downloadableTemplate : null}
             <ImageUploading
-              acceptType={['pdf']}
+              acceptType={acceptType ? acceptType : ['pdf']}
               allowNonImageType={true}
               dataURLKey="base64File"
               maxNumber={maxNumber}

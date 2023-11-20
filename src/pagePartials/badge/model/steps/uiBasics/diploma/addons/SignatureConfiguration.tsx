@@ -76,6 +76,7 @@ export default function SignatureConfiguration() {
                 name={'signatureImage'}
                 render={({ field: { onChange, value }, fieldState: { error } }) => (
                   <FileInput
+                    acceptType={[]}
                     error={error}
                     onChange={(value: ImageType | null) => {
                       if (value) {
