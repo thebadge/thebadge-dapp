@@ -1,34 +1,14 @@
 import React from 'react'
 
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
-import { Box, Stack, Tooltip, Typography, alpha, styled } from '@mui/material'
-import { BadgePreview } from '@thebadge/ui-library'
-import { useTranslation } from 'next-export-i18n'
+import { Divider, Stack, Typography } from '@mui/material'
 import { Controller, useFormContext } from 'react-hook-form'
-import { ImageType } from 'react-images-uploading'
 
 import { DropdownSelect } from '@/src/components/form/formFields/DropdownSelect'
-import { ImageInput } from '@/src/components/form/formFields/ImageInput'
-import { TextArea } from '@/src/components/form/formFields/TextArea'
-import { TextField } from '@/src/components/form/formFields/TextField'
+import useControllerTypeParam from '@/src/hooks/nextjs/useControllerTypeParam'
 import { CreateCommunityModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateCommunityModelSchema'
-
-const BoxShadow = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  justifyContent: 'center',
-  filter: `drop-shadow(0px 0px 15px ${alpha(theme.palette.text.primary, 0.3)})`,
-}))
-
-const SectionContainer = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'row',
-  gap: theme.spacing(10),
-  justifyContent: 'space-between',
-  [theme.breakpoints.down('sm')]: {
-    flexDirection: 'column',
-    gap: theme.spacing(4),
-  },
-}))
+import BadgeConfiguration from '@/src/pagePartials/badge/model/steps/uiBasics/badge/BadgeConfiguration'
+import DiplomaConfiguration from '@/src/pagePartials/badge/model/steps/uiBasics/diploma/DiplomaConfiguration'
+import { BadgeModelControllerType, BadgeModelTemplate } from '@/types/badges/BadgeModel'
 
 export const BADGE_MODEL_TEXT_CONTRAST: { [key: string]: string } = {
   White: 'dark-withTextBackground',
@@ -50,149 +30,40 @@ export const BADGE_MODEL_BACKGROUNDS: { [key: string]: string } = {
 }
 
 export default function BadgeModelUIBasics() {
-  const { t } = useTranslation()
-  const { control, watch } = useFormContext<CreateCommunityModelSchemaType>()
+  const controllerType = useControllerTypeParam()
+  const isThirdParty = controllerType === BadgeModelControllerType.ThirdParty
 
-  const watchedName = watch('name') || 'Security Certificate'
-  const watchedDescription =
-    watch('description') ||
-    'This badges certifies that the address that has it complies with the regulations about...'
-  const watchedLogoUri = watch('badgeModelLogoUri')
-  const watchedTextContrast = watch('textContrast')
-  const watchedBackground = watch('backgroundImage')
+  const { control, watch } = useFormContext<CreateCommunityModelSchemaType>()
+  const watchedTemplate = watch('template')
 
   return (
     <>
-      <SectionContainer>
-        <Stack flex="1" gap={4}>
-          <Stack>
-            <Typography variant="bodySmall">Choose a name for your badge model</Typography>
-            <Controller
-              control={control}
-              name={'name'}
-              render={({ field: { onChange, value }, fieldState: { error } }) => (
-                <TextField
-                  error={error}
-                  ghostLabel={t('badge.model.create.uiBasics.name')}
-                  onChange={onChange}
-                  value={value}
-                />
-              )}
-            />
-          </Stack>
+      {isThirdParty && (
+        <Stack flex="1" gap={1} mb={4}>
+          <Typography variant="bodySmall">Choose what type of badge you want:</Typography>
 
-          <Stack>
-            <Typography variant="bodySmall">Briefly describe what your badge certifies</Typography>
-            <Controller
-              control={control}
-              name={'description'}
-              render={({ field: { onChange, value }, fieldState: { error } }) => (
-                <TextArea
-                  error={error}
-                  onChange={onChange}
-                  placeholder={t('badge.model.create.uiBasics.description')}
-                  value={value}
-                />
-              )}
-            />
-          </Stack>
-
-          <Stack sx={{ position: 'relative' }}>
-            <Typography variant="bodySmall">
-              Choose an image or logo that will make your model unique
-            </Typography>
-            <Controller
-              control={control}
-              name={'badgeModelLogoUri'}
-              render={({ field: { onChange, value }, fieldState: { error } }) => (
-                <ImageInput
-                  error={error}
-                  onChange={(value: ImageType | null) => {
-                    if (value) {
-                      // We change the structure a little bit to have it ready to push to the backend
-                      onChange({
-                        mimeType: value.file?.type,
-                        base64File: value.base64File,
-                      })
-                    } else onChange(null)
-                  }}
-                  value={value}
-                />
-              )}
-            />
-            <Tooltip
-              arrow
-              title={
-                'For your badge to look great, it is ideal that the image has 1:1 proportions.'
-              }
-            >
-              <InfoOutlinedIcon sx={{ ml: 1, position: 'absolute', bottom: 8, right: 4 }} />
-            </Tooltip>
-          </Stack>
-        </Stack>
-
-        <Stack flex="1">
-          <BoxShadow>
-            <BadgePreview
-              animationEffects={['wobble', 'grow', 'glare']}
-              animationOnHover
-              badgeBackgroundUrl={BADGE_MODEL_BACKGROUNDS[watchedBackground]}
-              badgeUrl="https://www.thebadge.xyz"
-              description={watchedDescription}
-              imageUrl={watchedLogoUri?.base64File}
-              size="medium"
-              textContrast={BADGE_MODEL_TEXT_CONTRAST[watchedTextContrast]}
-              title={watchedName}
-            />
-          </BoxShadow>
-        </Stack>
-      </SectionContainer>
-      <Box display="flex" flexDirection="row" gap={10} justifyContent="space-between" mt={4}>
-        <Stack flex="1" gap={2}>
-          <Controller
-            control={control}
-            name={'textContrast'}
-            render={({ field: { onChange, value }, fieldState: { error } }) => (
-              <DropdownSelect
-                error={error}
-                label={t('badge.model.create.uiBasics.textContrast')}
-                onChange={onChange}
-                options={Object.keys(BADGE_MODEL_TEXT_CONTRAST)}
-                value={value || 'Black'}
-              />
-            )}
-          />
-          <Controller
-            control={control}
-            name={'backgroundImage'}
-            render={({ field: { onChange, value }, fieldState: { error } }) => (
-              <DropdownSelect
-                error={error}
-                label={t('badge.model.create.uiBasics.backgroundImage')}
-                onChange={onChange}
-                options={Object.keys(BADGE_MODEL_BACKGROUNDS)}
-                value={value || 'Two'}
-              />
-            )}
-          />
-        </Stack>
-        <Stack flex="1" gap={2}>
           <Controller
             control={control}
             name={'template'}
             render={({ field: { onChange, value }, fieldState: { error } }) => (
               <DropdownSelect
-                disabled
+                disabled={!isThirdParty}
                 error={error}
-                label={t('badge.model.create.uiBasics.template')}
                 onChange={onChange}
-                options={['Classic', 'Business', 'Product', 'Academic', 'Fashion']}
-                value={value || 'Classic'}
+                options={[BadgeModelTemplate.Classic, BadgeModelTemplate.Diploma]}
+                value={value || BadgeModelTemplate.Classic}
               />
             )}
           />
+
+          <Divider />
         </Stack>
-      </Box>
+      )}
+
+      {watchedTemplate === BadgeModelTemplate.Classic && <BadgeConfiguration />}
+      {watchedTemplate === BadgeModelTemplate.Diploma && <DiplomaConfiguration />}
+
+      <Divider />
     </>
   )
 }

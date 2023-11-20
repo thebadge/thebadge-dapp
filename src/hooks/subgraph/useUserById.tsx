@@ -4,7 +4,7 @@ import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import useChainId from '@/src/hooks/theBadge/useChainId'
 import { User } from '@/types/generated/subgraph'
 
-export const useUserById = (address: string) => {
+export const useUserById = (address: `0x${string}`) => {
   const gql = useSubgraph()
   const chainId = useChainId()
   return useSWR(address ? [`user:${address}`, address, chainId] : null, async () => {
