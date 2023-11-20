@@ -81,9 +81,8 @@ export const Title = styled(Typography)(() => ({
 export const DisplayLabel = styled(Typography)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'row',
-  minWidth: '25%',
   gap: theme.spacing(1),
-  fontSize: '14px !important',
+  fontSize: '12px !important',
 }))
 
 export const ColorfulDivider = styled(Box)(() => ({

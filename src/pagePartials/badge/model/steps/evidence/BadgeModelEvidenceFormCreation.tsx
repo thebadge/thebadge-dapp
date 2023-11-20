@@ -10,7 +10,7 @@ import RequirementInput from '@/src/pagePartials/badge/model/steps/community/str
 export default function BadgeModelEvidenceFormCreation() {
   const { control } = useFormContext<CreateCommunityModelSchemaType>()
   return (
-    <Stack gap={8}>
+    <Stack gap={8} mb={8}>
       <RequirementInput />
 
       <Typography variant="titleMedium">

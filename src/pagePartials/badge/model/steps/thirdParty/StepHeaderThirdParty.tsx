@@ -51,7 +51,7 @@ export default function StepHeaderThirdParty({
           createBadgeTypeDocs: DOCS_URL + '/thebadge-documentation/protocol-mechanics/how-it-works',
         })}
         showHint={currentStep !== 5}
-        stepNumber={currentStep}
+        stepNumber={currentStep + 1}
         subTitle={t(`badge.model.create.steps.${currentStep}.subTitle`, {
           docsUrl: DOCS_URL + '/thebadge-documentation/protocol-mechanics/how-it-works',
           criteriaDocsUrl: DOCS_URL + '/thebadge-documentation/protocol-mechanics/how-it-works',

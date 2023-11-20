@@ -3,7 +3,7 @@ import * as React from 'react'
 
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import SummarizeOutlinedIcon from '@mui/icons-material/SummarizeOutlined'
-import { Box, Stack, Tooltip, Typography } from '@mui/material'
+import { Box, Divider, Stack, Tooltip, Typography } from '@mui/material'
 import { colors } from '@thebadge/ui-library'
 import { formatUnits } from 'ethers/lib/utils'
 import { useTranslation } from 'next-export-i18n'
@@ -112,44 +112,44 @@ export default function SeveritySelectorAdvanceView({
           </Typography>
         </Box>
         <Stack gap={2}>
-          <Box display="flex" gap={3}>
+          <Box display="flex" gap={2} justifyContent="space-between">
             <DisplayLabel>
               <Tooltip arrow title={t('severity.display.numberOfJurorExplanations')}>
-                <InfoOutlinedIcon sx={{ mr: 0.5 }} />
+                <InfoOutlinedIcon sx={{ width: 16, height: 16, mr: 0.25 }} />
               </Tooltip>
               <strong>{t('severity.display.amountOfJurors')}</strong> {value?.amountOfJurors}
             </DisplayLabel>
 
             <DisplayLabel>
               <Tooltip arrow title={t('severity.display.feePerJurorExplanation')}>
-                <InfoOutlinedIcon sx={{ mr: 0.5 }} />
+                <InfoOutlinedIcon sx={{ width: 16, height: 16, mr: 0.25 }} />
               </Tooltip>
               <strong>{t('severity.display.feePerJuror')}</strong> {feeForJurorDisplayValue}
             </DisplayLabel>
 
             <DisplayLabel>
               <Tooltip arrow title={t('severity.display.challengeBountyExplanation')}>
-                <InfoOutlinedIcon sx={{ mr: 0.5 }} />
+                <InfoOutlinedIcon sx={{ width: 16, height: 16, mr: 0.25 }} />
               </Tooltip>
               <strong>{t('severity.display.challengeBounty')}</strong>{' '}
               {formatUnits(value?.challengeBounty)}
             </DisplayLabel>
-          </Box>
-          <Box display="flex" gap={3}>
+
             <DisplayLabel>
               <Tooltip arrow title={t('severity.display.baseDepositExplanation')}>
-                <InfoOutlinedIcon sx={{ mr: 0.5 }} />
+                <InfoOutlinedIcon sx={{ width: 16, height: 16, mr: 0.25 }} />
               </Tooltip>
               <strong>{t('severity.display.baseDeposit')}</strong> {baseDepositDisplayValue}
             </DisplayLabel>
 
             <DisplayLabel>
               <Tooltip arrow title={t('severity.display.courtExplanation')}>
-                <InfoOutlinedIcon sx={{ mr: 0.5 }} />
+                <InfoOutlinedIcon sx={{ width: 16, height: 16, mr: 0.25 }} />
               </Tooltip>
               <strong>{t('severity.display.court')}</strong> General
             </DisplayLabel>
           </Box>
+          <Divider />
         </Stack>
       </Stack>
     </Stack>

@@ -87,7 +87,11 @@ export default function BadgeModelStrategy() {
             )}
           />
         </Stack>
-        <Stack flex="1" gap={4} justifyContent="flex-end">
+        <Stack flex="1" gap={1} justifyContent="flex-end">
+          <Typography variant="bodySmall">
+            How much do you want to charge for each badge?
+          </Typography>
+
           <Controller
             control={control}
             name={'mintFee'}
@@ -96,7 +100,6 @@ export default function BadgeModelStrategy() {
                 decimals={18}
                 error={error}
                 hiddenBalance={true}
-                label={t('badge.model.create.strategy.mintFee')}
                 onChange={onChange}
                 symbol={networkConfig.token}
                 value={value}
