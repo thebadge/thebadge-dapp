@@ -141,7 +141,12 @@ export default function BadgeOwnedPreview() {
         issueMonth: String(issueMonth),
         expirationYear: String(expirationYear),
         expirationMonth: String(expirationMonth),
-        certUrl: APP_URL + generateBadgePreviewUrl(badge.id, badge.contractAddress, appChainId),
+        certUrl:
+          APP_URL +
+          generateBadgePreviewUrl(badge.id, {
+            theBadgeContractAddress: badge.contractAddress,
+            connectedChainId: appChainId,
+          }),
         certId: badgeId,
       })
 
@@ -162,7 +167,13 @@ export default function BadgeOwnedPreview() {
       {/* Badge Image */}
       <Stack alignItems="center">
         <BadgeModelPreview
-          badgeUrl={APP_URL + generateBadgePreviewUrl(badge.id, badge.contractAddress, appChainId)}
+          badgeUrl={
+            APP_URL +
+            generateBadgePreviewUrl(badge.id, {
+              theBadgeContractAddress: badge.contractAddress,
+              connectedChainId: appChainId,
+            })
+          }
           effects
           metadata={badgeModel?.uri}
         />

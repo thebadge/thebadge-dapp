@@ -35,9 +35,12 @@ export function generateBadgeCurate() {
 
 export function generateBadgePreviewUrl(
   badgeId: string,
-  theBadgeContractAddress: string,
-  connectedChainId: ChainsValues,
+  extraParams: {
+    theBadgeContractAddress: string
+    connectedChainId: ChainsValues
+  },
 ) {
+  const { connectedChainId, theBadgeContractAddress } = extraParams
   return `/badge/${badgeId}?contract=${connectedChainId}:${theBadgeContractAddress}`
 }
 

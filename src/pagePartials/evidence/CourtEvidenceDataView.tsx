@@ -40,7 +40,11 @@ export default function CourtEvidenceDataView({
       return null
     }
     const linkToSubmissionView =
-      router.basePath + generateBadgePreviewUrl(badge?.id, badge.contractAddress, arbitrableChainID)
+      router.basePath +
+      generateBadgePreviewUrl(badge.id, {
+        theBadgeContractAddress: badge.contractAddress,
+        connectedChainId: arbitrableChainID,
+      })
     window.open(`${linkToSubmissionView}`, '_blank')
   }
 

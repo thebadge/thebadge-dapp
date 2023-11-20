@@ -53,7 +53,12 @@ export default function BadgesYouOwnList({ address }: Props) {
 
   const onBadgeClick = useCallback(
     (badge: Badge) => () =>
-      router.push(generateBadgePreviewUrl(badge.id, badge.contractAddress, appChainId)),
+      router.push(
+        generateBadgePreviewUrl(badge.id, {
+          theBadgeContractAddress: badge.contractAddress,
+          connectedChainId: appChainId,
+        }),
+      ),
     [router, appChainId],
   )
 

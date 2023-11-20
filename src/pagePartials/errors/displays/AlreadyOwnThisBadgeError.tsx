@@ -81,7 +81,10 @@ export default function AlreadyOwnThisBadgeError({ onClose }: { onClose: VoidFun
           onClick={() => {
             const selectedBadge = ownedBadges[0]
             return router.push(
-              generateBadgePreviewUrl(selectedBadge.id, selectedBadge.contractAddress, appChainId),
+              generateBadgePreviewUrl(selectedBadge.id, {
+                theBadgeContractAddress: selectedBadge.contractAddress,
+                connectedChainId: appChainId,
+              }),
             )
           }}
           sx={{

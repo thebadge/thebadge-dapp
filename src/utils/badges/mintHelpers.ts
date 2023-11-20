@@ -34,7 +34,11 @@ export async function createAndUploadThirdPartyBadgeMetadata({
       name: badgeModelMetadata?.name || '',
       description: badgeModelMetadata?.description || '',
       external_link:
-        APP_URL + generateBadgePreviewUrl(estimatedBadgeId, theBadgeContractAddress, appChainId),
+        APP_URL +
+        generateBadgePreviewUrl(estimatedBadgeId, {
+          theBadgeContractAddress: theBadgeContractAddress,
+          connectedChainId: appChainId,
+        }),
       attributes: [
         {
           trait_type: 'CreationDate',

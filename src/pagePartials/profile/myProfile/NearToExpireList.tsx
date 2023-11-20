@@ -54,7 +54,10 @@ export default function NearToExpireList() {
                 <Box
                   onClick={() =>
                     router.push(
-                      generateBadgePreviewUrl(badge.id, badge.contractAddress, appChainId),
+                      generateBadgePreviewUrl(badge.id, {
+                        theBadgeContractAddress: badge.contractAddress,
+                        connectedChainId: appChainId,
+                      }),
                     )
                   }
                   sx={{ cursor: 'pointer' }}
