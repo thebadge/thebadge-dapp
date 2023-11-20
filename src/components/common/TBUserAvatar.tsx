@@ -7,7 +7,7 @@ import Blockies from 'react-18-blockies'
 
 import VerifiedCreator from '@/src/components/icons/VerifiedCreator'
 import { useEnsReverseLookup } from '@/src/hooks/useEnsLookup'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
 /**
  * Avatar implementation that fallbacks on Blocajes generated with the address, if the given src is not valid
@@ -26,7 +26,7 @@ export default function TBUserAvatar({
   sx,
 }: {
   src?: string
-  address?: string
+  address?: `0x${string}`
   size?: number
   isVerified?: boolean
   sx?: SxProps<Theme>
@@ -38,7 +38,7 @@ export default function TBUserAvatar({
     return address || connectedAddress || 'default'
   }, [address, connectedAddress])
 
-  const { avatar } = useEnsReverseLookup(seed)
+  const { avatar } = useEnsReverseLookup(address || connectedAddress)
 
   const avatarImgSrc = avatar ?? src
 

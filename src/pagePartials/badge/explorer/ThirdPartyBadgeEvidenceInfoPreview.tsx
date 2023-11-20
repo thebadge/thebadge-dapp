@@ -34,7 +34,7 @@ export default function ThirdPartyBadgeEvidenceInfoPreview({ badge }: { badge: B
           {t('badge.thirdPartyBadgeUnclaimedText')}
         </Typography>
       ) : (
-        <BadgeRequesterPreview ownerAddress={badge.account.id} />
+        <BadgeRequesterPreview ownerAddress={badge.account.id as `0x${string}`} />
       )}
     </Stack>
   )

@@ -15,7 +15,7 @@ import useBadgeHelpers, { ReviewBadge } from '@/src/hooks/theBadge/useBadgeHelpe
 import { useSizeLG } from '@/src/hooks/useSize'
 import BadgeModelPreview from '@/src/pagePartials/badge/BadgeModelPreview'
 import { useProfileProvider } from '@/src/providers/ProfileProvider'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import { generateBadgePreviewUrl } from '@/src/utils/navigation/generateUrl'
 
 export default function PendingList() {

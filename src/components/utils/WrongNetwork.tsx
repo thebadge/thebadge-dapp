@@ -1,10 +1,9 @@
-import React, { RefObject, useRef, useState } from 'react'
+import React, { RefObject, useRef } from 'react'
 
-import { Divider, Menu, styled } from '@mui/material'
+import { styled } from '@mui/material'
 
-import { SwitchNetworkOptions } from '@/src/components/helpers/SwitchNetworkOptions'
 import { useSizeMD } from '@/src/hooks/useSize'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
 const ErrorSVG: React.FC = () => (
   <svg height="15" viewBox="0 0 15 15" width="15" xmlns="http://www.w3.org/2000/svg">
@@ -44,7 +43,6 @@ const Underline = styled('button')`
 
 export const WrongNetwork: React.FC = ({ ...restProps }) => {
   const { isWalletConnected, isWalletNetworkSupported } = useWeb3Connection()
-  const [showNetworkModal, setShowNetworkModal] = useState(false)
   const isMobileOrTablet = useSizeMD()
   const anchorMenuElRef: RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null)
 
@@ -52,18 +50,10 @@ export const WrongNetwork: React.FC = ({ ...restProps }) => {
     <Wrapper {...restProps}>
       <ErrorSVG />
       <TextWrapper ref={anchorMenuElRef}>
-        <Underline onClick={() => setShowNetworkModal(true)}>Switch to a valid network</Underline>
+        <Underline>Switch to a valid network</Underline>
         {!isMobileOrTablet ? <span> to use the app!</span> : null}
       </TextWrapper>
-      <Menu
-        anchorEl={anchorMenuElRef.current}
-        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-        onClose={() => setShowNetworkModal(false)}
-        open={showNetworkModal}
-      >
-        <SwitchNetworkOptions />
-        <Divider />
-      </Menu>
+      <w3m-network-button />
     </Wrapper>
   ) : null
 }

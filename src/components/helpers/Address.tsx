@@ -8,7 +8,7 @@ import { Copy } from '@/src/components/assets/Copy'
 import { Link } from '@/src/components/assets/Link'
 import { ToastComponent } from '@/src/components/toast/ToastComponent'
 import { useEnsReverseLookup } from '@/src/hooks/useEnsLookup'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 import { truncateStringInTheMiddle } from '@/src/utils/strings'
 
@@ -56,7 +56,7 @@ const CopyButton = styled('button')`
 `
 
 interface Props {
-  address: string
+  address: `0x${string}`
   showExternalLink?: boolean
   isUserAddress?: boolean
   showCopyButton?: boolean

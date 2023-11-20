@@ -20,7 +20,7 @@ type RequiredConnectionProps = {
   children: ReactElement
   minHeight?: number
   networkToCheck?: ChainsValues
-  ownerAddress: string | null
+  ownerAddress: `0x${string}` | undefined
 }
 
 export const RequiredNotHaveBadge: React.FC<RequiredConnectionProps> = ({

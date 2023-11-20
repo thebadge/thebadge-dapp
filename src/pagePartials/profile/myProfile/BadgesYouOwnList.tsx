@@ -10,7 +10,7 @@ import FilteredList, { ListFilter } from '@/src/components/helpers/FilteredList'
 import InViewPort from '@/src/components/helpers/InViewPort'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import MiniBadgeModelPreview from '@/src/pagePartials/badge/MiniBadgeModelPreview'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import getHighlightColorByStatus from '@/src/utils/badges/getHighlightColorByStatus'
 import { generateBadgeExplorer, generateBadgePreviewUrl } from '@/src/utils/navigation/generateUrl'
 import { Badge, BadgeStatus, Badge_Filter } from '@/types/generated/subgraph'

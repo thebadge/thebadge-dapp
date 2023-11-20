@@ -16,7 +16,7 @@ const Wrapper = styled(Box)(() => ({
 type DisplayAddressProps = {
   label?: string
   placeholder?: string
-  value: string
+  value: `0x${string}`
 }
 
 export function DisplayAddress({ label, placeholder, value }: DisplayAddressProps) {

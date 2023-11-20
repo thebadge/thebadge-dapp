@@ -9,7 +9,7 @@ import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { getNetworkConfig } from '@/src/config/web3'
 import { useChallengeCost } from '@/src/hooks/kleros/useChallengeCost'
 import { useRegistrationBadgeModelKlerosMetadata } from '@/src/hooks/subgraph/useBadgeModelKlerosMetadata'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import { secondsToDays, secondsToMinutes } from '@/src/utils/dateUtils'
 import { isTestnet } from '@/src/utils/network'
 

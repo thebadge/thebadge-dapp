@@ -6,7 +6,7 @@ import { SectionLayout, colors } from '@thebadge/ui-library'
 import BadgesYouOwnList from '@/src/pagePartials/profile/myProfile/BadgesYouOwnList'
 import NearToExpire from '@/src/pagePartials/profile/myProfile/NearToExpire'
 import Pending from '@/src/pagePartials/profile/myProfile/Pending'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
 export default function MyProfileSection() {
   const { address } = useWeb3Connection()

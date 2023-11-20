@@ -634,7 +634,9 @@
   },
   "transactionLoading": {
     "signature": "Waiting signature",
+    "bePatientSignature": "You wallet is processing the request, be patient...",
     "confirmation": "Waiting confirmation",
+    "bePatientConfirmation": "Validating transaction on the blockchain. This may take a moment...",
     "done": "Transaction done",
     "failed": "Transaction failed"
   },

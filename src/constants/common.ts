@@ -24,6 +24,7 @@ export const KLEROS_COURT_URL = process.env.KLEROS_COURT_URL || 'https://court.k
 
 export const IS_DEVELOP = process.env.NEXT_PUBLIC_DEV_MODE || false
 
+export const WEB3_MODAL_PROJECT_ID = process.env.NEXT_PUBLIC_WEB3_MODAL_PROJECT_ID || ''
 export const WEB3_AUTH_CLIENT_ID_TESTNET = process.env.NEXT_PUBLIC_WEB3AUTH_CLIENT_ID_TESTNET || ''
 export const WEB3_AUTH_CLIENT_ID_PRODUCTION =
   process.env.NEXT_PUBLIC_WEB3AUTH_CLIENT_ID_PRODUCTION || ''

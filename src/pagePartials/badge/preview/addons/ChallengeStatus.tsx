@@ -110,13 +110,13 @@ export default function ChallengeStatus({
             <Typography variant="dAppBody4">
               {t('badge.viewBadge.challengeStatus.requester')}
             </Typography>
-            <Address address={activeRequest.requester} />
+            <Address address={activeRequest.requester as `0x${string}`} />
           </DisplayWrapper>
           <DisplayWrapper>
             <Typography variant="dAppBody4">
               {t('badge.viewBadge.challengeStatus.challenger')}
             </Typography>
-            <Address address={activeRequest.challenger} />
+            <Address address={activeRequest.challenger as `0x${string}`} />
           </DisplayWrapper>
         </Stack>
       </Box>
