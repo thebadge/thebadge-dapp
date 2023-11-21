@@ -5,7 +5,6 @@ import { colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 
 import TBUserInfoExpandablePreview from '@/src/components/common/TBUserInfoExpandablePreview'
-import useIsUserVerified from '@/src/hooks/theBadge/useIsUserVerified'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { CreatorMetadata } from '@/types/badges/Creator'
 import { User } from '@/types/generated/subgraph'
@@ -15,7 +14,6 @@ export default function CreatorInfoSmallPreview({ creator }: { creator: User }) 
 
   const resCreatorMetadata = useS3Metadata<{ content: CreatorMetadata }>(creator.metadataUri || '')
   const creatorMetadata = resCreatorMetadata.data?.content
-  const isVerified = useIsUserVerified(creator.id, 'kleros')
 
   /* Creator info */
   return (
@@ -26,7 +24,6 @@ export default function CreatorInfoSmallPreview({ creator }: { creator: User }) 
 
       <TBUserInfoExpandablePreview
         color={colors.purple}
-        isVerified={isVerified.data}
         metadata={creatorMetadata}
         userAddress={creator.id as `0x${string}`}
       />

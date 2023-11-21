@@ -68,7 +68,7 @@ export default function BadgeOwnedPreview() {
 
   const badge = badgeById.data
   const badgeModel = badge?.badgeModel
-  const creatorAddress = badgeModel?.creator.id || ''
+  const creatorAddress = badgeModel?.creator.id as `0x${string}`
   const creatorResponse = useUserById(creatorAddress)
   const creator = creatorResponse.data
   const resCreatorMetadata = useS3Metadata<{ content: CreatorMetadata }>(creator?.metadataUri || '')

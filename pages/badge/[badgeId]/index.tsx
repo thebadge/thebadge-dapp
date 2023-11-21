@@ -44,7 +44,7 @@ const ViewBadge: NextPageWithLayout = () => {
     throw 'There was not possible to get the needed data. Try again in some minutes.'
   }
   const badgeModelId = badge.badgeModel.id
-  const ownerAddress = badge.account.id
+  const ownerAddress = badge.account.id as `0x${string}`
 
   const { reviewTimeFinished: badgeReviewTimeFinished, status: badgeStatus } = getBadgeReviewStatus(
     badge as ReviewBadge,
