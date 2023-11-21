@@ -171,14 +171,20 @@ type Props = {
  * Hook with SWR to Suspense the UI until we have the Wagni and
  * the wallets ready to go
  */
-function useCustomWagniConfig() {
-  return useSWR(`createWagniConfig`, async () => {
+function useCustomWagmiConfig() {
+  return useSWR(`createWagmiConfig`, async () => {
     return await createWagniConfig()
   })
 }
 
+function getValidNetwork(selectedNetworkId: `${string}:${string}` | undefined) {
+  return chains.find(({ id }) => {
+    return id === Number(selectedNetworkId)
+  })?.id
+}
+
 export default function Web3Modal({ children }: Props) {
-  const newConfig = useCustomWagniConfig()
+  const newConfig = useCustomWagmiConfig()
 
   return (
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -225,6 +231,10 @@ export function useWeb3Connection(): Web3Context {
   const { open: connectWallet } = useWeb3Modal()
   const { selectedNetworkId } = useWeb3ModalState()
 
+  const [appChainId, setAppChainId] = useState<ChainsValues>(
+    getValidNetwork(selectedNetworkId) || (Number(APP_DEFAULT_CHAIN_ID) as ChainsValues),
+  )
+
   // Social Login with Web3Auth
   const [web3Auth] = useState<Web3Auth | null>(web3AuthInstance)
   const [isSocialWallet, setIsSocialWallet] = useState<boolean>(false)
@@ -254,12 +264,9 @@ export function useWeb3Connection(): Web3Context {
   }, [isSocialWallet, web3Auth])
 
   // No sense logic to cast the type and ensure that appId is a supported network
-  const appChainId = useMemo(() => {
-    return (
-      chains.find(({ id }) => {
-        return id === Number(selectedNetworkId)
-      })?.id || (Number(APP_DEFAULT_CHAIN_ID) as ChainsValues)
-    )
+  useEffect(() => {
+    const newNetwork = getValidNetwork(selectedNetworkId)
+    if (newNetwork) setAppChainId(newNetwork)
   }, [selectedNetworkId])
 
   const isAppConnected = Boolean(isWalletConnected && appChainId)

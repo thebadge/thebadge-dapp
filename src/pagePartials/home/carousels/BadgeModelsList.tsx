@@ -9,7 +9,7 @@ import InViewPort from '@/src/components/helpers/InViewPort'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import TBSwiper from '@/src/components/helpers/TBSwiper'
 import { fillListWithPlaceholders } from '@/src/components/utils/emptyBadges'
-import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
+import useBadgeModelMaxAmount from '@/src/hooks/subgraph/useBadgeModelMaxAmount'
 import BadgeModelPreview from '@/src/pagePartials/badge/BadgeModelPreview'
 import { generateMintUrl } from '@/src/utils/navigation/generateUrl'
 
@@ -19,29 +19,29 @@ import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 
 export default function BadgeModelsList() {
-  const gql = useSubgraph()
   const router = useRouter()
 
-  const badgeModels = gql
-    .useBadgeModelsMaxAmount({ first: 10 })
-    .data?.badgeModels?.map((badgeModel) => {
-      return (
-        <Box
-          key={badgeModel.id}
-          onClick={() => router.push(generateMintUrl(badgeModel.controllerType, badgeModel.id))}
-          sx={{ height: '100%', display: 'flex' }}
-        >
-          <InViewPort minHeight={300} minWidth={180}>
-            <SafeSuspense>
-              <BadgeModelPreview clickable={true} effects metadata={badgeModel?.uri} size="small" />
-            </SafeSuspense>
-          </InViewPort>
-        </Box>
-      )
-    })
+  const { data: badgeModels } = useBadgeModelMaxAmount(10)
+
+  const badgeModelItems = badgeModels?.map((badgeModel) => {
+    return (
+      <Box
+        key={badgeModel.id}
+        onClick={() => router.push(generateMintUrl(badgeModel.controllerType, badgeModel.id))}
+        sx={{ height: '100%', display: 'flex' }}
+      >
+        <InViewPort minHeight={300} minWidth={180}>
+          <SafeSuspense>
+            <BadgeModelPreview clickable={true} effects metadata={badgeModel?.uri} size="small" />
+          </SafeSuspense>
+        </InViewPort>
+      </Box>
+    )
+  })
+
   // If there is no badges to show, we list 5 placeholders
   const badgeModelsList = fillListWithPlaceholders(
-    badgeModels,
+    badgeModelItems,
     <EmptyBadgePreview size="small" />,
     5,
   )
