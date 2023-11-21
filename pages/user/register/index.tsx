@@ -1,10 +1,8 @@
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 
-import { ethers } from 'ethers'
-
 import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
-import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
+import { useUserById } from '@/src/hooks/subgraph/useUserById'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
 import useTransaction, { TransactionStates } from '@/src/hooks/useTransaction'
 import RegistrationWithSteps from '@/src/pagePartials/creator/register/RegistrationWithSteps'
@@ -21,7 +19,6 @@ const Register: NextPageWithLayout = () => {
   const { address } = useWeb3Connection()
   const { resetTxState, sendTx, state } = useTransaction()
   const theBadgeUsers = useContractInstance(TheBadgeUsers__factory, 'TheBadgeUsers')
-  const gql = useSubgraph()
 
   useEffect(() => {
     // Redirect to the creator profile section
@@ -30,11 +27,9 @@ const Register: NextPageWithLayout = () => {
     }
   }, [router, state])
 
-  const userProfile = gql.useUserById({
-    id: address || ethers.constants.AddressZero,
-  })
+  const { data: userProfile } = useUserById(address)
 
-  if (userProfile.data?.user?.isCreator) {
+  if (userProfile?.isCreator) {
     router.push(generateProfileUrl({ filter: NormalProfileFilter.CREATED_BADGES }))
   }
 
