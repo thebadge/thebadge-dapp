@@ -6,7 +6,7 @@ import { useTransactionNotification } from '@/src/providers/TransactionNotificat
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { TransactionError } from '@/src/utils/TransactionError'
 import { sendTxToRelayer } from '@/src/utils/relayTx'
-import { RelayedTx } from '@/types/relayedTx'
+import { RelayedTx, SupportedRelayMethods } from '@/types/relayedTx'
 
 export enum TransactionStates {
   none = 'NONE',
@@ -111,7 +111,8 @@ export default function useTransaction() {
       try {
         notifyWaitingForSignature()
         setTransactionState(TransactionStates.waitingSignature)
-        const { appPubKey, chainId, data, from, method, signature, userAccount } = populatedTx
+        const { appPubKey, chainId, data, from, isSocialLogin, method, signature, userAccount } =
+          populatedTx
         const { error, message, result } = await sendTxToRelayer({
           data,
           from,
@@ -120,12 +121,19 @@ export default function useTransaction() {
           signature,
           userAccount,
           appPubKey,
+          isSocialLogin,
         })
         if (error || !result) {
           throw new Error(message)
         }
+        if (method === SupportedRelayMethods.MINT_ALEO && result.txHash) {
+          notifyTxMined(result.txHash, true, 'Aleo')
+          setTransactionState(TransactionStates.success)
+          return result.txHash
+        }
         if (result.txHash) {
           await waitForAsyncTxExecution(result.txHash)
+          return result.txHash
         }
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (e: any) {
@@ -139,7 +147,13 @@ export default function useTransaction() {
         notifyRejectSignature(error.code === 4001 ? 'User denied signature' : error.message)
       }
     },
-    [isAppConnected, notifyWaitingForSignature, waitForAsyncTxExecution, notifyRejectSignature],
+    [
+      isAppConnected,
+      notifyWaitingForSignature,
+      waitForAsyncTxExecution,
+      notifyRejectSignature,
+      notifyTxMined,
+    ],
   )
 
   return { state, sendTx, sendRelayTx, resetTxState }

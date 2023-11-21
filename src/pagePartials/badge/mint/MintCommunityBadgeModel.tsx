@@ -105,6 +105,7 @@ const MintCommunityBadgeModel: NextPageWithLayout = () => {
 
           // Send to backend
           await sendRelayTx({
+            isSocialLogin: isSocialWallet,
             data,
             from: address,
             chainId: appChainId.toString(),

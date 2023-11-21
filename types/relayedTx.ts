@@ -2,6 +2,7 @@ import { UserInfo } from '@web3auth/base'
 
 export enum SupportedRelayMethods {
   MINT = 'mint',
+  MINT_ALEO = 'mintAleo',
   IS_ASSET_ACTIVE = 'isAssetActive',
 }
 
@@ -22,6 +23,8 @@ export interface RelayedTx {
     userSocialInfo: Partial<UserInfo>
     address: string
   }
+
+  isSocialLogin: boolean
 }
 
 export interface EmailClaimTx {

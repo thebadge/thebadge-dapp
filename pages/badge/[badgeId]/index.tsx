@@ -1,7 +1,8 @@
 import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 import * as React from 'react'
 
-import { Box, Stack } from '@mui/material'
+import { Box, Link, Stack, alpha } from '@mui/material'
 import { ButtonV2, colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 
@@ -15,6 +16,7 @@ import BadgeOwnedPreview from '@/src/pagePartials/badge/preview/BadgeOwnedPrevie
 import BadgeOwnerPreview from '@/src/pagePartials/badge/preview/BadgeOwnerPreview'
 import BadgeStatusAndEvidence from '@/src/pagePartials/badge/preview/BadgeStatusAndEvidence'
 import ChallengedStatusLogo from '@/src/pagePartials/badge/preview/addons/ChallengedStatusLogo'
+import ZKModal from '@/src/pagePartials/badge/preview/addons/ZKModal'
 import { useCurateProvider } from '@/src/providers/curateProvider'
 import { useColorMode } from '@/src/providers/themeProvider'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
@@ -31,6 +33,8 @@ const ViewBadge: NextPageWithLayout = () => {
   const { mode } = useColorMode()
   const handleClaimBadge = useBadgeClaim()
   const isMobile = useSizeSM()
+
+  const [openZKModal, setOpenZKModal] = useState(false)
 
   const badgeId = useBadgeIdParam()
   if (!badgeId) {
@@ -59,6 +63,11 @@ const ViewBadge: NextPageWithLayout = () => {
   // Show claim button if it is an own badge, it has status requested and the review time finished
   const showClaimButton =
     address === ownerAddress && badgeStatus === BadgeStatus.Requested && badgeReviewTimeFinished
+
+  const showZKButton =
+    address === ownerAddress && badgeReviewTimeFinished && badgeStatus === BadgeStatus.Approved
+
+  const handleCloseZK = () => setOpenZKModal(false)
 
   return (
     <Box sx={{ position: 'relative' }}>
@@ -142,6 +151,41 @@ const ViewBadge: NextPageWithLayout = () => {
                   {t('badge.claimButton')}
                 </ButtonV2>
               )}
+
+              {showZKButton && (
+                <Stack flex={1} gap={1}>
+                  <ButtonV2
+                    backgroundColor="transparent"
+                    color="blue"
+                    disabled={!badgeReviewTimeFinished}
+                    fontColor={colors.white}
+                    onClick={() => setOpenZKModal(true)}
+                    sx={{
+                      width: '100%',
+                      height: 'fit-content !important',
+                      padding: '0.5rem 1rem !important',
+                      borderRadius: '16px',
+                      fontSize: '15px !important',
+                      lineHeight: '15px',
+                      fontWeight: 700,
+                      border: `1px solid ${alpha(colors.blue, 0.8)}`,
+                      boxShadow: `0px 0px 4px ${alpha(colors.blue, 0.9)}`,
+                    }}
+                    variant="outlined"
+                  >
+                    Mint ZK Badge
+                  </ButtonV2>
+                  <Link
+                    color="white"
+                    sx={{ cursor: 'pointer', width: 'fit-content' }}
+                    target="_blank"
+                    underline="hover"
+                    variant="labelSmall"
+                  >
+                    Powered by ALEO
+                  </Link>
+                </Stack>
+              )}
             </Box>
           )}
           <SafeSuspense>
@@ -152,6 +196,14 @@ const ViewBadge: NextPageWithLayout = () => {
           <BadgeStatusAndEvidence />
         </SafeSuspense>
       </Stack>
+      {openZKModal && (
+        <ZKModal
+          badgeId={badgeId}
+          badgeModelId={badgeModelId}
+          onClose={handleCloseZK}
+          open={openZKModal}
+        />
+      )}
     </Box>
   )
 }
