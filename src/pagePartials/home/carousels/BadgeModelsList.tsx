@@ -23,25 +23,23 @@ export default function BadgeModelsList() {
 
   const { data: badgeModels } = useBadgeModelMaxAmount(10)
 
-  const badgeModelItems = badgeModels?.map((badgeModel) => {
-    return (
-      <Box
-        key={badgeModel.id}
-        onClick={() => router.push(generateMintUrl(badgeModel.controllerType, badgeModel.id))}
-        sx={{ height: '100%', display: 'flex' }}
-      >
-        <InViewPort minHeight={300} minWidth={180}>
-          <SafeSuspense>
-            <BadgeModelPreview clickable={true} effects metadata={badgeModel?.uri} size="small" />
-          </SafeSuspense>
-        </InViewPort>
-      </Box>
-    )
-  })
-
   // If there is no badges to show, we list 5 placeholders
   const badgeModelsList = fillListWithPlaceholders(
-    badgeModelItems,
+    badgeModels?.map((badgeModel) => {
+      return (
+        <Box
+          key={badgeModel.id}
+          onClick={() => router.push(generateMintUrl(badgeModel.controllerType, badgeModel.id))}
+          sx={{ height: '100%', display: 'flex' }}
+        >
+          <InViewPort minHeight={300} minWidth={180}>
+            <SafeSuspense>
+              <BadgeModelPreview clickable={true} effects metadata={badgeModel?.uri} size="small" />
+            </SafeSuspense>
+          </InViewPort>
+        </Box>
+      )
+    }),
     <EmptyBadgePreview size="small" />,
     5,
   )
