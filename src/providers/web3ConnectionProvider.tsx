@@ -202,7 +202,7 @@ export type Web3Context = {
 
   // dApp helpers
   appChainId: ChainsValues
-  selectedNetworkId: ChainsValues
+  selectedNetworkId: `${string}:${string}` | undefined
   getExplorerUrl: (hash: string) => string
   readOnlyAppProvider: JsonRpcProvider
 
