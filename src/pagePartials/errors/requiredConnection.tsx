@@ -1,10 +1,9 @@
 import React, { ReactElement, ReactNode } from 'react'
 
-import { Button, styled } from '@mui/material'
+import { styled } from '@mui/material'
 
-import { chainsConfig } from '@/src/config/web3'
 import ConnectWalletError from '@/src/pagePartials/errors/displays/ConnectWalletError'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
 const Wrapper = styled('div')`
   display: flex;
@@ -26,9 +25,8 @@ const RequiredConnection: React.FC<RequiredConnectionProps> = ({
   noCloseButton,
   ...restProps
 }) => {
-  const { address, appChainId, isWalletConnected, pushNetwork, walletChainId } = useWeb3Connection()
+  const { address, isWalletConnected, isWalletNetworkSupported } = useWeb3Connection()
   const isConnected = isWalletConnected && address
-  const isWrongNetwork = isConnected && walletChainId !== appChainId
 
   if (!isConnected) {
     return (
@@ -38,12 +36,10 @@ const RequiredConnection: React.FC<RequiredConnectionProps> = ({
     )
   }
 
-  if (isWrongNetwork) {
+  if (!isWalletNetworkSupported) {
     return (
       <Wrapper style={{ minHeight }} {...restProps}>
-        <Button onClick={() => pushNetwork({ chainId: chainsConfig[appChainId].chainIdHex })}>
-          Switch to {chainsConfig[appChainId].name}
-        </Button>
+        <w3m-network-button />
       </Wrapper>
     )
   }

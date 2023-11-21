@@ -41,7 +41,7 @@ export default function TBUserInfoSmallPreview({
   userAddress,
 }: {
   color: string
-  userAddress: string
+  userAddress: `0x${string}`
   metadata?: CreatorMetadata
   label?: string
   isVerified?: boolean

@@ -27,7 +27,7 @@ export default function BadgeOwnerPreview({ ownerAddress }: { ownerAddress: stri
       isVerified={isVerified.data}
       label={t('badge.viewBadge.owner.address')}
       metadata={ownerMetadata}
-      userAddress={ownerAddress}
+      userAddress={ownerAddress as `0x${string}`}
     />
   )
 }

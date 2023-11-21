@@ -12,7 +12,7 @@ import { nowInSeconds } from '@/src/constants/helpers'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import { useSizeLG, useSizeMD } from '@/src/hooks/useSize'
 import BadgeModelPreview from '@/src/pagePartials/badge/BadgeModelPreview'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import { generateBadgePreviewUrl } from '@/src/utils/navigation/generateUrl'
 
 const now = nowInSeconds()

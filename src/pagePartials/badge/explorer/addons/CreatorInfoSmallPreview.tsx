@@ -28,7 +28,7 @@ export default function CreatorInfoSmallPreview({ creator }: { creator: User }) 
         color={colors.purple}
         isVerified={isVerified.data}
         metadata={creatorMetadata}
-        userAddress={creator.id}
+        userAddress={creator.id as `0x${string}`}
       />
     </Stack>
   )

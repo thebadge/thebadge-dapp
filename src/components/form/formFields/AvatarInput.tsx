@@ -11,7 +11,7 @@ import ImageUploading, { ImageListType, ImageType } from 'react-images-uploading
 import { TextFieldStatus } from '@/src/components/form/formFields/TextField'
 import { FormField } from '@/src/components/form/helpers/FormField'
 import { Label } from '@/src/components/form/helpers/Label'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
 const Wrapper = styled(Box)(({ theme }) => ({
   display: 'flex',

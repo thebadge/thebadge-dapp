@@ -49,7 +49,7 @@ export default function TBUserInfoExpandablePreview({
   userAddress,
 }: {
   color: string
-  userAddress: string
+  userAddress: `0x${string}`
   metadata?: CreatorMetadata
   label?: string
   isVerified?: boolean

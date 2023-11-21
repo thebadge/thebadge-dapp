@@ -13,7 +13,7 @@ import useIsClaimable from '@/src/hooks/subgraph/useIsClaimable'
 import CurationCriteriaLink from '@/src/pagePartials/badge/curate/CurationCriteriaLink'
 import BadgeEvidenceDisplay from '@/src/pagePartials/badge/curate/viewEvidence/BadgeEvidenceDisplay'
 import { useCurateProvider } from '@/src/providers/curateProvider'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import { BadgeStatus } from '@/types/generated/subgraph'
 
 type CurateModalProps = {
@@ -48,7 +48,7 @@ function CurateModalContent({ badgeId, onClose }: { badgeId: string; onClose: ()
   }
 
   const badgeModelId = badge.badgeModel.id
-  const ownerAddress = badge.account.id
+  const ownerAddress = badge.account.id as `0x${string}`
 
   const badgeKlerosMetadata = useEvidenceBadgeKlerosMetadata(badgeId)
 

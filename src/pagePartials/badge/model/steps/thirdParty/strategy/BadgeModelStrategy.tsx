@@ -9,7 +9,7 @@ import { TextField } from '@/src/components/form/formFields/TextField'
 import { TokenInput } from '@/src/components/form/formFields/TokenInput'
 import { getNetworkConfig } from '@/src/config/web3'
 import { CreateThirdPartyModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateThirdPartyModelSchema'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
 export default function BadgeModelStrategy() {
   const { t } = useTranslation()

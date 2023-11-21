@@ -12,7 +12,6 @@ import { SWRConfig } from 'swr'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import Toast from '@/src/components/toast/Toast'
-import { PreventActionIfOutOfService } from '@/src/pagePartials/errors/preventActionIfOutOfService'
 import { Head } from '@/src/pagePartials/index/Head'
 import ThemeProvider from '@/src/providers/themeProvider'
 import { NextPageWithLayout } from '@/types/next'
@@ -33,10 +32,11 @@ const TransactionNotificationProvider = dynamic(
     ssr: false,
   },
 )
-const Web3ConnectionProvider = dynamic(() => import('@/src/providers/web3ConnectionProvider'), {
+
+const DefaultLayout = dynamic(() => import('@/src/components/layout/DefaultLayout'), {
   ssr: false,
 })
-const DefaultLayout = dynamic(() => import('@/src/components/layout/DefaultLayout'), {
+const Web3Modal = dynamic(() => import('@/src/providers/web3ConnectionProvider'), {
   ssr: false,
 })
 
@@ -84,22 +84,20 @@ export default function App({
               revalidateOnFocus: false,
             }}
           >
-            <Web3ConnectionProvider>
-              <ThemeProvider>
-                <SafeSuspense>
+            <ThemeProvider>
+              <SafeSuspense>
+                <Web3Modal>
                   <SectionReferencesProvider>
                     <TransactionNotificationProvider>
                       <CookiesWarningProvider>
-                        <PreventActionIfOutOfService>
-                          <Container>{getLayout(<Component {...pageProps} />)}</Container>
-                        </PreventActionIfOutOfService>
+                        <Container>{getLayout(<Component {...pageProps} />)}</Container>
                       </CookiesWarningProvider>
                     </TransactionNotificationProvider>
                   </SectionReferencesProvider>
-                </SafeSuspense>
-                <Toast />
-              </ThemeProvider>
-            </Web3ConnectionProvider>
+                </Web3Modal>
+              </SafeSuspense>
+              <Toast />
+            </ThemeProvider>
           </SWRConfig>
         </Box>
       </CacheProvider>

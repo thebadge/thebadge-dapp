@@ -21,12 +21,11 @@ import { APP_URL, THE_BADGE_LINKEDIN_ID } from '@/src/constants/common'
 import useBadgeIdParam from '@/src/hooks/nextjs/useBadgeIdParam'
 import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
 import { useUserById } from '@/src/hooks/subgraph/useUserById'
-import useTBContract from '@/src/hooks/theBadge/useTBContract'
+import useAddTokenIntoWallet from '@/src/hooks/theBadge/useAddTokenIntoWallet'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { useSizeSM } from '@/src/hooks/useSize'
 import BadgeModelPreview from '@/src/pagePartials/badge/BadgeModelPreview'
 import BadgeTitle from '@/src/pagePartials/badge/preview/addons/BadgeTitle'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { getExpirationYearAndMonth, getIssueYearAndMonth } from '@/src/utils/dateUtils'
 import {
   generateBadgeExplorer,
@@ -64,9 +63,8 @@ export default function BadgeOwnedPreview() {
     throw `No badgeId provided us URL query param`
   }
 
-  const { web3Provider } = useWeb3Connection()
+  const addTokenIntoWallet = useAddTokenIntoWallet()
   const badgeById = useBadgeById(badgeId)
-  const theBadge = useTBContract()
 
   const badge = badgeById.data
   const badgeModel = badge?.badgeModel
@@ -87,32 +85,8 @@ export default function BadgeOwnedPreview() {
     notify({ message: 'URL Copied to clipboard', type: ToastStates.info })
   }
 
-  async function handleImport() {
-    try {
-      // 'wasAdded' is a boolean. Like any RPC method, an error can be thrown.
-      const wasAdded = await web3Provider?.send('wallet_watchAsset', {
-        type: 'ERC1155',
-        options: {
-          address: theBadge.address,
-          tokenId: badgeId,
-        },
-      } as unknown as any)
-
-      if (wasAdded) {
-        notify({ message: `Badge #${badgeId} added to metamask!`, type: ToastStates.success })
-      } else {
-        notify({
-          message: `Badge ID #${badgeId} could not be added to metamask!`,
-          type: ToastStates.info,
-        })
-      }
-    } catch (error) {
-      console.error(error)
-      notify({
-        message: `There was an error adding the badge #${badgeId} to metamask!`,
-        type: ToastStates.infoFailed,
-      })
-    }
+  function handleImport() {
+    addTokenIntoWallet(badgeId)
   }
 
   async function handleImportLinkedin() {

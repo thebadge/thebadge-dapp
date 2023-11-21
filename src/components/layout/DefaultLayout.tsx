@@ -7,6 +7,7 @@ import Header from '@/src/components/header/Header'
 import { Footer } from '@/src/components/layout/Footer'
 import MainMenu from '@/src/components/navigation/MainMenu'
 import { useSizeSM } from '@/src/hooks/useSize'
+import { PreventPageIfOutOfService } from '@/src/pagePartials/errors/preventActionIfOutOfService'
 import CurateContextProvider from '@/src/providers/curateProvider'
 import { useColorMode } from '@/src/providers/themeProvider'
 
@@ -101,7 +102,7 @@ export default function DefaultLayout({ children }: DefaultLayoutProps) {
                 margin: theme.spacing(6, 'auto', 0),
               }}
             >
-              {children}
+              <PreventPageIfOutOfService>{children}</PreventPageIfOutOfService>
             </ContentContainer>
           </StyledBody>
         </Content>

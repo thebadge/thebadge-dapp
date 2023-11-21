@@ -2,7 +2,7 @@ import { Stack, Typography } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
 
 import ProfileSelector from '@/src/pagePartials/profile/ProfileSelector'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import { NextPageWithLayout } from '@/types/next'
 
 const ProfilePage: NextPageWithLayout = () => {

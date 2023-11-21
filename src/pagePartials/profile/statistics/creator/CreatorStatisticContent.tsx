@@ -23,7 +23,7 @@ import useCreatorStatistics from '@/src/hooks/subgraph/useCreatorStatistics'
 import StatisticRow from '@/src/pagePartials/profile/statistics/addons/StatisticRow'
 import { CreatorStatistic } from '@/src/pagePartials/profile/statistics/creator/CreatorStatistics'
 import { useProfileProvider } from '@/src/providers/ProfileProvider'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
 export default function CreatorStatisticContent({
   statisticVisibility,

@@ -24,7 +24,7 @@ export default function DisplayEvidenceField({
         <DisplayAddress
           label={columnItem.label}
           placeholder={columnItem.description}
-          value={value}
+          value={value as `0x${string}`}
         />
       )
     case KLEROS_LIST_TYPES.TEXT:

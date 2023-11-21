@@ -13,7 +13,7 @@ import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { CreatorMetadata } from '@/types/badges/Creator'
 
 type Props = {
-  address: string
+  address: `0x${string}`
 }
 
 export default function InfoPreviewRead({ address }: Props) {
@@ -34,7 +34,7 @@ export default function InfoPreviewRead({ address }: Props) {
       <Stack flex="5" justifyContent="space-between" overflow="auto">
         <Stack gap={1}>
           <Typography variant="dAppHeadline2">{creatorMetadata?.name}</Typography>
-          <Address address={address || user?.id || ''} truncate={false} />
+          <Address address={address || (user?.id as `0x${string}`) || '0x'} truncate={false} />
         </Stack>
         {hasCustomProfileData && (
           <Box display="flex">

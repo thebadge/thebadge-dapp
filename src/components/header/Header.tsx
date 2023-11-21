@@ -1,7 +1,4 @@
-import { useEffect } from 'react'
-
 import { Box, styled } from '@mui/material'
-import { useAccountCenter } from '@web3-onboard/react'
 import { useTranslation } from 'next-export-i18n'
 
 import { LogoWithText } from '@/src/components/common/Logo'
@@ -10,7 +7,8 @@ import ConnectWalletButton from '@/src/components/header/ConnectWalletButton'
 import { UserDropdown } from '@/src/components/header/UserDropdown'
 import WrongNetwork from '@/src/components/utils/WrongNetwork'
 import { useSizeSM } from '@/src/hooks/useSize'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+import { PreventActionIfOutOfService } from '@/src/pagePartials/errors/preventActionIfOutOfService'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
 const HeaderContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -32,14 +30,9 @@ const HeaderContainer = styled(Box)(({ theme }) => ({
 }))
 
 const Header = () => {
-  const isMobile = useSizeSM()
-  const updateAccountCenter = useAccountCenter()
-  const { connectWallet, isWalletConnected } = useWeb3Connection()
   const { t } = useTranslation()
-
-  useEffect(() => {
-    updateAccountCenter({ enabled: isMobile })
-  }, [isMobile, updateAccountCenter])
+  const { connectWallet, isWalletConnected } = useWeb3Connection()
+  const isMobile = useSizeSM()
 
   return (
     <HeaderContainer id="header-container">
@@ -53,10 +46,14 @@ const Header = () => {
       </Box>
       <Box display="flex">
         <WrongNetwork />
-        {isWalletConnected && !isMobile && <UserDropdown />}
+        {isWalletConnected && <UserDropdown />}
         {!isWalletConnected && (
           <Box display="flex" gap={2}>
-            {!isMobile && <ActionButtons />}
+            {!isMobile && (
+              <PreventActionIfOutOfService>
+                <ActionButtons />
+              </PreventActionIfOutOfService>
+            )}
             <ConnectWalletButton onClick={connectWallet}>
               {t('header.wallet.connect')}
             </ConnectWalletButton>

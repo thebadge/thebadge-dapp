@@ -59,7 +59,7 @@ export default function BadgeRequesterPreview({
   color,
   ownerAddress,
 }: {
-  ownerAddress: string
+  ownerAddress: `0x${string}`
   color?: string
 }) {
   const { t } = useTranslation()

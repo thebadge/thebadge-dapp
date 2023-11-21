@@ -15,7 +15,7 @@ import { MintThirdPartySchemaType } from '@/src/pagePartials/badge/mint/schema/M
 import { cleanMintFormValues } from '@/src/pagePartials/badge/mint/utils'
 import { PreventActionIfNoBadgeModelCreator } from '@/src/pagePartials/errors/preventActionIfNoBadgeModelCreator'
 import { PreventActionIfBadgeModelPaused } from '@/src/pagePartials/errors/preventActionIfPaused'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 import { sendEmailClaim } from '@/src/utils/relayTx'
 import { BadgeModelMetadata } from '@/types/badges/BadgeMetadata'
@@ -23,7 +23,7 @@ import { NextPageWithLayout } from '@/types/next'
 import { ToastStates } from '@/types/toast'
 
 const MintThirdPartyBadgeModel: NextPageWithLayout = () => {
-  const { appChainId, appPubKey, isSocialWallet, userSocialInfo } = useWeb3Connection()
+  const { appChainId, getSocialCompressedPubKey, isSocialWallet, web3Auth } = useWeb3Connection()
   const theBadge = useTBContract()
   const { resetTxState, sendTx, state } = useTransaction()
   const router = useRouter()
@@ -72,6 +72,10 @@ const MintThirdPartyBadgeModel: NextPageWithLayout = () => {
           { imageBase64File: previewImage },
         )
         const encodedBadgeMetadata = encodeIpfsBadgeMetadata(badgeMetadataIPFSHash)
+
+        // Social wallet information
+        const userSocialInfo = await web3Auth?.getUserInfo()
+        const appPubKey = await getSocialCompressedPubKey()
 
         // If social login relay tx
         if (isSocialWallet && destination && userSocialInfo && appPubKey) {

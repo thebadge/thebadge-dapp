@@ -14,7 +14,7 @@ import { ListingCriteriaPreview } from '@/src/pagePartials/badge/explorer/addons
 import TimeLeftDisplay from '@/src/pagePartials/badge/explorer/addons/TimeLeftDisplay'
 import ViewEvidenceButton from '@/src/pagePartials/badge/explorer/addons/ViewEvidenceButton'
 import { useCurateProvider } from '@/src/providers/curateProvider'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import { getEvidenceValue } from '@/src/utils/kleros/getEvidenceValue'
 import { Badge, BadgeStatus } from '@/types/generated/subgraph'
 
@@ -52,7 +52,7 @@ export default function BadgeEvidenceInfoPreview({ badge }: { badge: Badge }) {
       </Box>
 
       {/* Badge Receiver Address */}
-      <BadgeRequesterPreview ownerAddress={badge.account.id} />
+      <BadgeRequesterPreview ownerAddress={badge.account.id as `0x${string}`} />
 
       {/* Badge Evidence */}
       <Stack gap={2}>
