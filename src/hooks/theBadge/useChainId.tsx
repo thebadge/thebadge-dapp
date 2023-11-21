@@ -1,9 +1,7 @@
-import { useWeb3ModalState } from '@web3modal/wagmi/react'
-
-import { ChainsValues } from '@/types/chains'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
 export default function useChainId() {
-  const { selectedNetworkId } = useWeb3ModalState()
+  const { appChainId } = useWeb3Connection()
 
-  return (selectedNetworkId || 11155111) as ChainsValues
+  return appChainId
 }
