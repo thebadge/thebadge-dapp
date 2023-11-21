@@ -17,6 +17,7 @@ import TBEditableTypography from '@/src/components/common/TBEditableTypography'
 import TBUserAvatar from '@/src/components/common/TBUserAvatar'
 import { AvatarInput } from '@/src/components/form/formFields/AvatarInput'
 import { Address } from '@/src/components/helpers/Address'
+import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { useUserById } from '@/src/hooks/subgraph/useUserById'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
@@ -29,7 +30,6 @@ import {
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import { CreatorMetadata } from '@/types/badges/Creator'
 import { TheBadgeUsers__factory } from '@/types/generated/typechain'
-import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 
 const TextFieldContainer = styled(Box)(({ theme }) => ({
   alignItems: 'center',

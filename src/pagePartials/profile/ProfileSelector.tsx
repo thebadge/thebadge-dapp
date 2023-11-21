@@ -27,7 +27,7 @@ const ProfileSelector = () => {
   const selectedProfile = params.get('profileType')
 
   const { address: connectedWalletAddress } = useWeb3Connection()
-  const isThirdPartyUser = useIsThirdPartyUser(connectedWalletAddress || '')
+  const isThirdPartyUser = useIsThirdPartyUser(connectedWalletAddress)
 
   const mainProfileTab = (
     <Typography
