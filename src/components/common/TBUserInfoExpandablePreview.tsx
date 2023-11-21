@@ -5,12 +5,23 @@ import AddRoundedIcon from '@mui/icons-material/AddRounded'
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined'
 import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded'
 import TwitterIcon from '@mui/icons-material/Twitter'
-import { Box, IconButton, Menu, MenuProps, Stack, Typography, alpha, styled } from '@mui/material'
+import {
+  Box,
+  IconButton,
+  Menu,
+  MenuProps,
+  Skeleton,
+  Stack,
+  Typography,
+  alpha,
+  styled,
+} from '@mui/material'
 import { ButtonV2, IconDiscord, colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 
 import TBUserAvatar from '@/src/components/common/TBUserAvatar'
 import { Address } from '@/src/components/helpers/Address'
+import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 import { truncateStringInTheMiddle } from '@/src/utils/strings'
 import { CreatorMetadata } from '@/types/badges/Creator'
@@ -43,7 +54,6 @@ const OwnerDisplay = styled(Menu)<OwnerDisplayProps>(({ theme, width }) => ({
 
 export default function TBUserInfoExpandablePreview({
   color,
-  isVerified,
   label,
   metadata,
   userAddress,
@@ -91,12 +101,13 @@ export default function TBUserInfoExpandablePreview({
         width={wrapperRef.current?.getBoundingClientRect().width}
       >
         <Box display="flex" flex="1" gap={2}>
-          <TBUserAvatar
-            address={userAddress}
-            isVerified={isVerified}
-            src={metadata?.logo?.s3Url}
-            sx={{ border: '1px solid white' }}
-          />
+          <SafeSuspense fallback={<Skeleton variant="circular" width={100} />}>
+            <TBUserAvatar
+              address={userAddress}
+              src={metadata?.logo?.s3Url}
+              sx={{ border: '1px solid white' }}
+            />
+          </SafeSuspense>
           <Stack gap={1}>
             <Typography variant="dAppHeadline2">
               {metadata?.name || truncateStringInTheMiddle(userAddress, 8, 6)}

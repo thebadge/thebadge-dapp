@@ -8,7 +8,7 @@ import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined'
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined'
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined'
 import TwitterIcon from '@mui/icons-material/Twitter'
-import { Box, IconButton, Stack, styled } from '@mui/material'
+import { Box, IconButton, Skeleton, Stack, styled } from '@mui/material'
 import { IconDiscord } from '@thebadge/ui-library'
 import { Controller, useForm } from 'react-hook-form'
 import { ImageType } from 'react-images-uploading'
@@ -17,8 +17,8 @@ import TBEditableTypography from '@/src/components/common/TBEditableTypography'
 import TBUserAvatar from '@/src/components/common/TBUserAvatar'
 import { AvatarInput } from '@/src/components/form/formFields/AvatarInput'
 import { Address } from '@/src/components/helpers/Address'
+import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { useUserById } from '@/src/hooks/subgraph/useUserById'
-import useIsUserVerified from '@/src/hooks/theBadge/useIsUserVerified'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
 import useTransaction from '@/src/hooks/useTransaction'
@@ -53,7 +53,6 @@ export default function InfoPreviewEdit({ address }: Props) {
   const theBadgeUsers = useContractInstance(TheBadgeUsers__factory, 'TheBadgeUsers')
 
   const { data } = useUserById(address)
-  const isVerified = useIsUserVerified(address, 'kleros')
 
   const resCreatorMetadata = useS3Metadata<{ content: CreatorMetadata }>(data?.metadataUri || '')
   const creatorMetadata = resCreatorMetadata.data?.content
@@ -134,11 +133,11 @@ export default function InfoPreviewEdit({ address }: Props) {
     <>
       {readView && (
         <Stack my={0.5}>
-          <TBUserAvatar
-            isVerified={isVerified.data}
-            size={creatorMetadata ? 171 : 90}
-            src={creatorMetadata?.logo?.s3Url}
-          />
+          <SafeSuspense
+            fallback={<Skeleton variant="circular" width={creatorMetadata ? 171 : 90} />}
+          >
+            <TBUserAvatar size={creatorMetadata ? 171 : 90} src={creatorMetadata?.logo?.s3Url} />
+          </SafeSuspense>
         </Stack>
       )}
       {!readView && (
