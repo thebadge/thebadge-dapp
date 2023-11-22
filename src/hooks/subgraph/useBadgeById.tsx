@@ -2,7 +2,7 @@ import useSWR from 'swr'
 
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import { getFromIPFS } from '@/src/hooks/subgraph/utils'
-import useChainId from '@/src/hooks/theBadge/useChainId'
+import { SubgraphName } from '@/src/subgraph/subgraph'
 import { BadgeMetadata, BadgeModelMetadata } from '@/types/badges/BadgeMetadata'
 import { BackendFileResponse } from '@/types/utils'
 
@@ -10,12 +10,12 @@ import { BackendFileResponse } from '@/types/utils'
  * Hooks to wrap the getBadgeById graphql query, to take advantage of the SWR cache
  * and reduce the number of queries and also reduce the repeated code
  * @param badgeId
+ * @param targetContract
  */
-export default function useBadgeById(badgeId: string) {
-  const gql = useSubgraph()
-  const chainId = useChainId()
+export default function useBadgeById(badgeId: string, targetContract?: string) {
+  const gql = useSubgraph(SubgraphName.TheBadge, targetContract)
 
-  return useSWR(badgeId.length ? [`Badge:${badgeId}`, badgeId, chainId] : null, async () => {
+  return useSWR(badgeId.length ? [`Badge:${badgeId}`, badgeId, targetContract] : null, async () => {
     const badgeResponse = await gql.badgeById({ id: badgeId })
 
     const badge = badgeResponse.badge

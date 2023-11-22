@@ -11,9 +11,10 @@ import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { useUserById } from '@/src/hooks/subgraph/useUserById'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { CreatorMetadata } from '@/types/badges/Creator'
+import { WCAddress } from '@/types/utils'
 
 type Props = {
-  address: `0x${string}`
+  address: WCAddress
 }
 
 export default function InfoPreviewRead({ address }: Props) {
@@ -31,7 +32,7 @@ export default function InfoPreviewRead({ address }: Props) {
       <Stack flex="5" justifyContent="space-between" overflow="auto">
         <Stack gap={1}>
           <Typography variant="dAppHeadline2">{creatorMetadata?.name}</Typography>
-          <Address address={address || (user?.id as `0x${string}`) || '0x'} truncate={false} />
+          <Address address={address || (user?.id as WCAddress) || '0x'} truncate={false} />
         </Stack>
         {hasCustomProfileData && (
           <Box display="flex">

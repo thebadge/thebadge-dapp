@@ -4,6 +4,8 @@ import { providers } from 'ethers'
 import useSWR from 'swr'
 import { Connector, type WalletClient, useConnect } from 'wagmi'
 
+import { WCAddress } from '@/types/utils'
+
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
 export function walletClientToSigner(walletClient: WalletClient) {
@@ -28,7 +30,7 @@ export function useWalletClientHandcraft({
   chainId,
 }: {
   chainId?: number
-  address: `0x${string}` | undefined
+  address: WCAddress | undefined
 }) {
   const { connectors } = useConnect()
 

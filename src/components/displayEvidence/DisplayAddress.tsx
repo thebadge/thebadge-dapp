@@ -6,6 +6,7 @@ import { colors } from '@thebadge/ui-library'
 
 import { FormField } from '@/src/components/form/helpers/FormField'
 import { Address } from '@/src/components/helpers/Address'
+import { WCAddress } from '@/types/utils'
 
 const Wrapper = styled(Box)(() => ({
   display: 'flex',
@@ -16,7 +17,7 @@ const Wrapper = styled(Box)(() => ({
 type DisplayAddressProps = {
   label?: string
   placeholder?: string
-  value: `0x${string}`
+  value: WCAddress
 }
 
 export function DisplayAddress({ label, placeholder, value }: DisplayAddressProps) {

@@ -27,9 +27,11 @@ import {
   EditProfileSchema,
   EditProfileSchemaType,
 } from '@/src/pagePartials/creator/register/schema/CreatorRegisterSchema'
-const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import { CreatorMetadata } from '@/types/badges/Creator'
 import { TheBadgeUsers__factory } from '@/types/generated/typechain'
+import { WCAddress } from '@/types/utils'
+
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
 const TextFieldContainer = styled(Box)(({ theme }) => ({
   alignItems: 'center',
@@ -39,7 +41,7 @@ const TextFieldContainer = styled(Box)(({ theme }) => ({
 }))
 
 type Props = {
-  address: `0x${string}`
+  address: WCAddress
 }
 
 export default function InfoPreviewEdit({ address }: Props) {

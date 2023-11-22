@@ -3,6 +3,7 @@ import _ from 'lodash'
 import { LINKEDIN_URL } from '@/src/constants/common'
 import { ProfileType } from '@/src/pagePartials/profile/ProfileSelector'
 import { BadgeModelControllerType } from '@/types/badges/BadgeModel'
+import { ChainsValues } from '@/types/chains'
 
 export function generateMintUrl(
   controllerType: string,
@@ -32,8 +33,15 @@ export function generateBadgeCurate() {
   return `/curate`
 }
 
-export function generateBadgePreviewUrl(badgeId: string) {
-  return `/badge/${badgeId}`
+export function generateBadgePreviewUrl(
+  badgeId: string,
+  extraParams: {
+    theBadgeContractAddress: string
+    connectedChainId: ChainsValues
+  },
+) {
+  const { connectedChainId, theBadgeContractAddress } = extraParams
+  return `/badge/${badgeId}?contract=${connectedChainId}:${theBadgeContractAddress}`
 }
 
 export function generateProfileUrl(args?: {
