@@ -60,14 +60,16 @@ export function DropdownSelect<T>({
       fullWidth
       helperText={error ? error.message : ' '}
       label={
-        <Typography id="select-helper-label">
-          {label}
-          {placeholder && (
-            <Tooltip arrow title={placeholder}>
-              <InfoOutlinedIcon />
-            </Tooltip>
-          )}
-        </Typography>
+        label && (
+          <Typography id="select-helper-label">
+            {label}
+            {placeholder && (
+              <Tooltip arrow title={placeholder}>
+                <InfoOutlinedIcon />
+              </Tooltip>
+            )}
+          </Typography>
+        )
       }
       onChange={handleChange}
       select

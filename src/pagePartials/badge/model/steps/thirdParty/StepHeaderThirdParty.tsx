@@ -7,6 +7,7 @@ import { useTranslation } from 'next-export-i18n'
 import StepHeaderStepper from '@/src/components/form/formWithSteps/StepHeaderStepper'
 import StepHeaderSubtitle from '@/src/components/form/formWithSteps/StepHeaderSubtitle'
 import { DOCS_URL } from '@/src/constants/common'
+import { useSizeSM } from '@/src/hooks/useSize'
 
 const steps = ['Badge model basics', 'Badge model details', 'Badge model preview']
 
@@ -20,9 +21,18 @@ export default function StepHeaderThirdParty({
   completedSteps: Record<string, boolean>
 }) {
   const { t } = useTranslation()
+  const isMobile = useSizeSM()
 
   return (
-    <Stack sx={{ display: 'flex', flexDirection: 'column', mb: 6, gap: 4, alignItems: 'center' }}>
+    <Stack
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        mb: isMobile ? 12 : 6,
+        gap: 4,
+        alignItems: 'center',
+      }}
+    >
       <Typography color={colors.purple} textAlign="center" variant="title2">
         {t('badge.model.create.title')}
       </Typography>
@@ -41,6 +51,7 @@ export default function StepHeaderThirdParty({
           createBadgeTypeDocs: DOCS_URL + '/thebadge-documentation/protocol-mechanics/how-it-works',
         })}
         showHint={currentStep !== 5}
+        stepNumber={currentStep + 1}
         subTitle={t(`badge.model.create.steps.${currentStep}.subTitle`, {
           docsUrl: DOCS_URL + '/thebadge-documentation/protocol-mechanics/how-it-works',
           criteriaDocsUrl: DOCS_URL + '/thebadge-documentation/protocol-mechanics/how-it-works',

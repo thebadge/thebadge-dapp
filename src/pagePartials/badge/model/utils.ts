@@ -1,5 +1,5 @@
 import { APP_URL, MODEL_CREATION_CACHE_EXPIRATION_MS } from '@/src/constants/common'
-import { BadgeModelControllerType } from '@/types/badges/BadgeModel'
+import { BadgeModelControllerType, BadgeModelTemplate } from '@/types/badges/BadgeModel'
 
 const STEP_0_COMMUNITY = ['howItWorks']
 const STEP_1_COMMUNITY = [
@@ -10,8 +10,8 @@ const STEP_1_COMMUNITY = [
   'backgroundImage',
   'template',
 ]
-const STEP_2_COMMUNITY = ['criteriaFileUri', 'criteria', 'rigorousness', 'mintFee', 'validFor']
-const STEP_3_COMMUNITY = ['badgeMetadataColumns']
+const STEP_2_COMMUNITY = ['rigorousness', 'mintFee', 'validFor']
+const STEP_3_COMMUNITY = ['criteriaFileUri', 'criteria', 'badgeMetadataColumns']
 
 const STEP_0_TP = [
   'name',
@@ -21,6 +21,18 @@ const STEP_0_TP = [
   'backgroundImage',
   'template',
 ]
+
+const STEP_0_TP_DIPLOMA = [
+  'name',
+  'description',
+  'footerEnabled',
+  'courseName',
+  'achievementDescription',
+  'achievementDate',
+  'signatureEnabled',
+  'template',
+]
+
 const STEP_1_TP = ['mintFee', 'validFor', 'administrators']
 
 const communityValidationSteps = [
@@ -30,14 +42,26 @@ const communityValidationSteps = [
   STEP_3_COMMUNITY,
 ]
 const thirdPartyValidationSteps = [STEP_0_TP, STEP_1_TP]
+const thirdPartyDiplomaValidationSteps = [STEP_0_TP_DIPLOMA, STEP_1_TP]
 
-export function getFieldsToValidateOnStep(controllerType: BadgeModelControllerType): string[][] {
+export function getFieldsToValidateOnStep(
+  controllerType: BadgeModelControllerType,
+  template?: BadgeModelTemplate,
+): string[][] {
   switch (controllerType.toLowerCase()) {
     case BadgeModelControllerType.Community.toLowerCase(): {
       return communityValidationSteps
     }
     case BadgeModelControllerType.ThirdParty.toLowerCase(): {
-      return thirdPartyValidationSteps
+      switch (template) {
+        case BadgeModelTemplate.Diploma: {
+          return thirdPartyDiplomaValidationSteps
+        }
+        case BadgeModelTemplate.Classic:
+        default: {
+          return thirdPartyValidationSteps
+        }
+      }
     }
     default: {
       return communityValidationSteps

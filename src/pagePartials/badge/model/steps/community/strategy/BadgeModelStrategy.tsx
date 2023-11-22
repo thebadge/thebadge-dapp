@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Box, Divider, Stack } from '@mui/material'
+import { Box, Stack, Typography, styled } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
 import { Controller, useFormContext } from 'react-hook-form'
 
@@ -11,8 +11,24 @@ import { TokenInput } from '@/src/components/form/formFields/TokenInput'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { getNetworkConfig } from '@/src/config/web3'
 import { CreateCommunityModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateCommunityModelSchema'
-import RequirementInput from '@/src/pagePartials/badge/model/steps/community/strategy/RequirementInput'
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
+
+const SliderContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  justifyContent: 'center',
+  gap: theme.spacing(4),
+  flexDirection: 'row',
+  [theme.breakpoints.down('sm')]: {
+    flexDirection: 'column',
+  },
+}))
+
+const Label = styled(Typography)(({ theme }) => ({
+  maxWidth: '175px',
+  [theme.breakpoints.down('sm')]: {
+    maxWidth: 'none',
+  },
+}))
 
 export default function BadgeModelStrategy() {
   const { t } = useTranslation()
@@ -21,40 +37,34 @@ export default function BadgeModelStrategy() {
   const networkConfig = getNetworkConfig(appChainId)
 
   return (
-    <>
-      <Controller
-        control={control}
-        name={'challengePeriodDuration'}
-        render={({ field: { onChange, value }, fieldState: { error } }) => (
-          <PeriodSelector
-            error={error}
-            label={t('badge.model.create.strategy.challengePeriodDuration')}
-            maxValue={90}
-            minValue={2}
-            onChange={onChange}
-            value={value}
-          />
-        )}
-      />
-      <Divider />
+    <Stack gap={8}>
+      <SliderContainer>
+        <Label variant="bodySmall">Select the duration period for your badge model challenge</Label>
+        <Controller
+          control={control}
+          name={'challengePeriodDuration'}
+          render={({ field: { onChange, value }, fieldState: { error } }) => (
+            <PeriodSelector
+              error={error}
+              maxValue={90}
+              minValue={2}
+              onChange={onChange}
+              value={value}
+            />
+          )}
+        />
+      </SliderContainer>
       <Controller
         control={control}
         name={'rigorousness'}
         render={({ field: { onChange, value }, fieldState: { error } }) => {
           return (
             <SafeSuspense>
-              <SeveritySelector
-                error={error}
-                label={t('badge.model.create.strategy.rigorousness')}
-                onChange={onChange}
-                value={value}
-              />
+              <SeveritySelector error={error} onChange={onChange} value={value} />
             </SafeSuspense>
           )
         }}
       />
-
-      <Divider />
 
       <Box
         display="flex"
@@ -77,7 +87,11 @@ export default function BadgeModelStrategy() {
             )}
           />
         </Stack>
-        <Stack flex="1" gap={4} justifyContent="flex-end">
+        <Stack flex="1" gap={1} justifyContent="flex-end">
+          <Typography variant="bodySmall">
+            How much do you want to charge for each badge?
+          </Typography>
+
           <Controller
             control={control}
             name={'mintFee'}
@@ -86,7 +100,6 @@ export default function BadgeModelStrategy() {
                 decimals={18}
                 error={error}
                 hiddenBalance={true}
-                label={t('badge.model.create.strategy.mintFee')}
                 onChange={onChange}
                 symbol={networkConfig.token}
                 value={value}
@@ -95,10 +108,6 @@ export default function BadgeModelStrategy() {
           />
         </Stack>
       </Box>
-
-      <Divider />
-
-      <RequirementInput />
-    </>
+    </Stack>
   )
 }

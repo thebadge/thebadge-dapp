@@ -1,5 +1,4 @@
 import { useRouter } from 'next/navigation'
-import { useMemo } from 'react'
 
 import { Box } from '@mui/material'
 import { EmptyBadgePreview } from '@thebadge/ui-library'
@@ -9,7 +8,7 @@ import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import TBSwiper from '@/src/components/helpers/TBSwiper'
 import { fillListWithPlaceholders } from '@/src/components/utils/emptyBadges'
 import { nowInSeconds } from '@/src/constants/helpers'
-import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
+import useBadgesUserCanReview from '@/src/hooks/subgraph/useBadgesUserCanReview'
 import { useSizeLG, useSizeMD } from '@/src/hooks/useSize'
 import BadgeModelPreview from '@/src/pagePartials/badge/BadgeModelPreview'
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
@@ -18,15 +17,14 @@ import { generateBadgePreviewUrl } from '@/src/utils/navigation/generateUrl'
 const now = nowInSeconds()
 export default function BadgesInReviewSwiper() {
   const router = useRouter()
-  const gql = useSubgraph()
   const { address, appChainId } = useWeb3Connection()
   const md = useSizeMD()
   const lg = useSizeLG()
 
-  const badgesUserCanReview = gql.useBadgesUserCanReview({ userAddress: address || '', date: now })
+  const { data: badgesUserCanReview } = useBadgesUserCanReview({ address, date: now })
 
-  const badgesList = useMemo(() => {
-    const badges = badgesUserCanReview.data?.badges.map((badgeInReview) => {
+  const badgesList = fillListWithPlaceholders(
+    badgesUserCanReview?.map((badgeInReview) => {
       return (
         <Box
           key={badgeInReview.id}
@@ -51,10 +49,10 @@ export default function BadgesInReviewSwiper() {
           </InViewPort>
         </Box>
       )
-    })
-    // If there is no badges to show, we list 5 placeholders
-    return fillListWithPlaceholders(badges, <EmptyBadgePreview size="small" />, 4)
-  }, [badgesUserCanReview.data?.badges, router, appChainId])
+    }),
+    <EmptyBadgePreview size="small" />,
+    4,
+  )
 
   const amountItems = () => {
     if (md) {

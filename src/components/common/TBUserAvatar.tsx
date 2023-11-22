@@ -6,6 +6,7 @@ import { useTranslation } from 'next-export-i18n'
 import Blockies from 'react-18-blockies'
 
 import VerifiedCreator from '@/src/components/icons/VerifiedCreator'
+import useIsUserVerified from '@/src/hooks/theBadge/useIsUserVerified'
 import { useEnsReverseLookup } from '@/src/hooks/useEnsLookup'
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
@@ -20,7 +21,6 @@ const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvid
  */
 export default function TBUserAvatar({
   address,
-  isVerified,
   size = 90,
   src,
   sx,
@@ -28,11 +28,12 @@ export default function TBUserAvatar({
   src?: string
   address?: `0x${string}`
   size?: number
-  isVerified?: boolean
   sx?: SxProps<Theme>
 }) {
   const { t } = useTranslation()
   const { address: connectedAddress } = useWeb3Connection()
+  // TODO Add logic to check verified into another controllers, maybe using pathname where the avatar is rendered
+  const isVerified = useIsUserVerified(address || connectedAddress, 'kleros')
 
   const seed = useMemo(() => {
     return address || connectedAddress || 'default'

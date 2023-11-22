@@ -24,9 +24,6 @@ export default function RequirementInput() {
 
   return (
     <>
-      <Typography color="text.disabled" variant="dAppTitle2">
-        {t('acceptanceCriteria.create')}
-      </Typography>
       <TransitionGroup>
         {!enableTextEditor && (
           <Collapse key={'criteria.criteriaFileUri'}>

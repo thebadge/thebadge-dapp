@@ -40,7 +40,7 @@ const CreateCommunityBadgeModel: NextPageWithLayout = () => {
       const transaction = await sendTx(async () => {
         // Use NextJs dynamic import to reduce the bundle size
         const {
-          createAndUploadBadgeModelMetadata,
+          createAndUploadClassicBadgeModelMetadata,
           createAndUploadClearingAndRegistrationFilesForKleros,
           encodeKlerosBadgeModelControllerData,
         } = await import('@/src/utils/badges/createBadgeModelHelpers')
@@ -56,7 +56,7 @@ const CreateCommunityBadgeModel: NextPageWithLayout = () => {
 
         const [badgeModelMetadataIPFSHash, klerosBadgeModelControllerDataEncoded] =
           await Promise.all([
-            createAndUploadBadgeModelMetadata(
+            createAndUploadClassicBadgeModelMetadata(
               name,
               description,
               badgeModelLogoUri,

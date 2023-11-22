@@ -36,12 +36,19 @@ export default function StepHeaderStepper({
               onClick={() => onStepNavigation(index)}
               sx={{
                 '.MuiStepLabel-iconContainer': {
+                  '& .MuiStepIcon-root': {
+                    color: `#D9D9D9 !important`,
+                  },
                   '.Mui-active, .Mui-completed': {
                     color: `${color || colors.purple} !important`,
+                    '& .MuiStepIcon-text': {
+                      fill: `#D9D9D9 !important`,
+                    },
                   },
                 },
                 '& .MuiStepIcon-text': {
                   fontSize: '1rem',
+                  fill: `${color || colors.purple} !important`,
                 },
               }}
             >

@@ -33,7 +33,7 @@ export default function ManageBadges() {
   const [badgeModels, setBadgeModels] = useState<BadgeModel[]>([])
   const [loading, setLoading] = useState<boolean>(false)
   const [selectedBadgeModelIndex, setSelectedBadgeModelIndex] = useState<number>(0)
-  const { data } = useUserById(address || '')
+  const { data } = useUserById(address)
   const resCreatorMetadata = useS3Metadata<{ content: CreatorMetadata }>(data?.metadataUri || '')
   const creatorMetadata = resCreatorMetadata.data?.content
 
