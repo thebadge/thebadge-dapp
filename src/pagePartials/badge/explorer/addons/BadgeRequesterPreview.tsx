@@ -7,11 +7,12 @@ import TBUserInfoSmallPreview from '@/src/components/common/TBUserInfoSmallPrevi
 import { useUserById } from '@/src/hooks/subgraph/useUserById'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { CreatorMetadata } from '@/types/badges/Creator'
+import { WCAddress } from '@/types/utils'
 
 export default function BadgeRequesterPreview({
   ownerAddress,
 }: {
-  ownerAddress: `0x${string}`
+  ownerAddress: WCAddress
   color?: string
 }) {
   const { t } = useTranslation()
@@ -29,7 +30,7 @@ export default function BadgeRequesterPreview({
       color={colors.purple}
       label={t('explorer.curate.requester')}
       metadata={ownerMetadata}
-      userAddress={ownerAddress as `0x${string}`}
+      userAddress={ownerAddress as WCAddress}
     />
   )
 }

@@ -38,6 +38,7 @@ import {
 import { BadgeModelControllerType } from '@/types/badges/BadgeModel'
 import { CreatorMetadata } from '@/types/badges/Creator'
 import { ToastStates } from '@/types/toast'
+import { WCAddress } from '@/types/utils'
 
 const Wrapper = styled(Stack)(({ theme }) => ({
   gap: theme.spacing(4),
@@ -71,7 +72,7 @@ export default function BadgeOwnedPreview() {
   const badge = badgeById.data
   const badgeModel = badge?.badgeModel
   const creatorAddress = badgeModel?.creator.id || '0x'
-  const creatorResponse = useUserById(creatorAddress as `0x${string}`)
+  const creatorResponse = useUserById(creatorAddress as WCAddress)
   const creator = creatorResponse.data
   const resCreatorMetadata = useS3Metadata<{ content: CreatorMetadata }>(creator?.metadataUri || '')
 

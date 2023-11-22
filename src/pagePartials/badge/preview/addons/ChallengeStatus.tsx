@@ -7,12 +7,14 @@ import { useTranslation } from 'next-export-i18n'
 import { Address } from '@/src/components/helpers/Address'
 import ExternalLink from '@/src/components/helpers/ExternalLink'
 import { KLEROS_COURT_URL } from '@/src/constants/common'
+import useBadgeIdParam from '@/src/hooks/nextjs/useBadgeIdParam'
 import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
 import { useBadgeKlerosMetadata } from '@/src/hooks/subgraph/useBadgeKlerosMetadata'
 import { useSizeSM } from '@/src/hooks/useSize'
 import { useCurateProvider } from '@/src/providers/curateProvider'
 import { KlerosBadgeRequest, KlerosRequestType } from '@/types/generated/subgraph'
 import { BadgeStatus } from '@/types/generated/subgraph'
+import { WCAddress } from '@/types/utils'
 
 const DisplayWrapper = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -21,15 +23,12 @@ const DisplayWrapper = styled(Box)(({ theme }) => ({
   rowGap: theme.spacing(1),
 }))
 
-export default function ChallengeStatus({
-  badgeId,
-  contract,
-}: {
-  badgeId: string
-  contract?: string
-}) {
+export default function ChallengeStatus() {
   const { t } = useTranslation()
   const { addMoreEvidence, challenge } = useCurateProvider()
+
+  // Params from url badge/preview/[badgeId]?contract=xxx:xxx
+  const { badgeId, contract } = useBadgeIdParam()
 
   const isMobile = useSizeSM()
 
@@ -110,13 +109,13 @@ export default function ChallengeStatus({
             <Typography variant="dAppBody4">
               {t('badge.viewBadge.challengeStatus.requester')}
             </Typography>
-            <Address address={activeRequest.requester as `0x${string}`} />
+            <Address address={activeRequest.requester as WCAddress} />
           </DisplayWrapper>
           <DisplayWrapper>
             <Typography variant="dAppBody4">
               {t('badge.viewBadge.challengeStatus.challenger')}
             </Typography>
-            <Address address={activeRequest.challenger as `0x${string}`} />
+            <Address address={activeRequest.challenger as WCAddress} />
           </DisplayWrapper>
         </Stack>
       </Box>

@@ -31,6 +31,7 @@ import {
 } from '@/src/constants/common'
 import { isTestnet } from '@/src/utils/network'
 import { ChainsValues } from '@/types/chains'
+import { WCAddress } from '@/types/utils'
 
 // 1. Get projectId
 const projectId = WEB3_MODAL_PROJECT_ID
@@ -195,7 +196,7 @@ export default function Web3Modal({ children }: Props) {
 
 // 5. Create our own wrapper Web3ContextConnection to be backwards compatible with the code
 export type Web3Context = {
-  address: `0x${string}` | undefined
+  address: WCAddress | undefined
 
   // Wallet connection
   connectingWallet: boolean

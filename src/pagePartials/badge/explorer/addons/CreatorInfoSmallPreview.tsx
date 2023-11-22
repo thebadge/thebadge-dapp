@@ -8,6 +8,7 @@ import TBUserInfoExpandablePreview from '@/src/components/common/TBUserInfoExpan
 import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { CreatorMetadata } from '@/types/badges/Creator'
 import { User } from '@/types/generated/subgraph'
+import { WCAddress } from '@/types/utils'
 
 export default function CreatorInfoSmallPreview({ creator }: { creator: User }) {
   const { t } = useTranslation()
@@ -25,7 +26,7 @@ export default function CreatorInfoSmallPreview({ creator }: { creator: User }) 
       <TBUserInfoExpandablePreview
         color={colors.purple}
         metadata={creatorMetadata}
-        userAddress={creator.id as `0x${string}`}
+        userAddress={creator.id as WCAddress}
       />
     </Stack>
   )

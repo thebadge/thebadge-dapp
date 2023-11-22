@@ -15,7 +15,7 @@ import { BackendFileResponse } from '@/types/utils'
 export default function useBadgeById(badgeId: string, targetContract?: string) {
   const gql = useSubgraph(SubgraphName.TheBadge, targetContract)
 
-  return useSWR(badgeId.length ? [`Badge:${badgeId}`, badgeId] : null, async () => {
+  return useSWR(badgeId.length ? [`Badge:${badgeId}`, badgeId, targetContract] : null, async () => {
     const badgeResponse = await gql.badgeById({ id: badgeId })
 
     const badge = badgeResponse.badge

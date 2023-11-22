@@ -67,7 +67,7 @@ export default function BadgeStatusAndEvidence() {
             {!isThirdParty && (
               <TabPanel index={1} value={selectedTab}>
                 <SafeSuspense>
-                  <ChallengeStatus badgeId={badgeId} contract={contract} />
+                  <ChallengeStatus />
                 </SafeSuspense>
               </TabPanel>
             )}
@@ -77,7 +77,7 @@ export default function BadgeStatusAndEvidence() {
       {!isMobile && !isThirdParty && (
         <>
           <SafeSuspense>
-            <ChallengeStatus badgeId={badgeId} contract={contract} />
+            <ChallengeStatus />
           </SafeSuspense>
           <Divider color={colors.white} />
           <SafeSuspense>
