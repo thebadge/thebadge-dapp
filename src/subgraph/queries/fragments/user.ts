@@ -7,6 +7,7 @@ gql`
       mintedBadgesAmount
     }
     isCreator
+    isRegistered
     metadataUri
   }
 `

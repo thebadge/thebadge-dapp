@@ -3,8 +3,8 @@ import React, { ReactElement } from 'react'
 import { styled } from '@mui/material'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
-import useIsCreator from '@/src/hooks/subgraph/useIsCreator'
-import NotACreatorError from '@/src/pagePartials/errors/displays/NotACreatorError'
+import useIsRegistered from '@/src/hooks/subgraph/useIsRegistered'
+import NotRegisteredError from '@/src/pagePartials/errors/displays/NotRegisteredError'
 import { ChainsValues } from '@/types/chains'
 
 const Wrapper = styled('div')`
@@ -21,19 +21,19 @@ type RequiredConnectionProps = {
   networkToCheck?: ChainsValues
 }
 
-export const RequiredCreatorAccess: React.FC<RequiredConnectionProps> = ({
+export const RegistrationRequired: React.FC<RequiredConnectionProps> = ({
   children,
   minHeight,
   ...restProps
 }) => {
-  const { data: isCreator } = useIsCreator()
+  const { data: isRegistered } = useIsRegistered()
   return (
     <>
-      {isCreator ? (
+      {isRegistered ? (
         <SafeSuspense>{children}</SafeSuspense>
       ) : (
         <Wrapper style={{ minHeight }} {...restProps}>
-          <NotACreatorError />
+          <NotRegisteredError />
         </Wrapper>
       )}
     </>

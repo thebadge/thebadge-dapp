@@ -12,7 +12,7 @@ import { MiniBadgePreviewContainer } from '@/src/components/common/MiniBadgePrev
 import FilteredList, { ListFilter } from '@/src/components/helpers/FilteredList'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import MiniBadgeModelPreview from '@/src/pagePartials/badge/MiniBadgeModelPreview'
-import { RequiredCreatorAccess } from '@/src/pagePartials/errors/requiresCreatorAccess'
+import { RegistrationRequired } from '@/src/pagePartials/errors/requiresCreatorAccess'
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import { generateBadgeModelCreate } from '@/src/utils/navigation/generateUrl'
 import { BadgeModel } from '@/types/generated/subgraph'
@@ -101,7 +101,7 @@ export default function BadgesCreatedSection() {
   }
 
   return (
-    <RequiredCreatorAccess>
+    <RegistrationRequired>
       <FilteredList
         items={generateListItems()}
         loading={loading}
@@ -111,6 +111,6 @@ export default function BadgesCreatedSection() {
         title={t('profile.badgesCreated.title')}
         titleColor={colors.pink}
       />
-    </RequiredCreatorAccess>
+    </RegistrationRequired>
   )
 }

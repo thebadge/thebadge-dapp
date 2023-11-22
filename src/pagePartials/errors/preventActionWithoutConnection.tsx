@@ -5,9 +5,9 @@ import { Theme } from '@mui/material/styles'
 import { SxProps } from '@mui/system'
 
 import { DisableOverlay, DisableWrapper } from '@/src/components/helpers/DisableElements'
-import useIsCreator from '@/src/hooks/subgraph/useIsCreator'
+import useIsRegistered from '@/src/hooks/subgraph/useIsRegistered'
 import ConnectWalletActionError from '@/src/pagePartials/errors/displays/ConnectWalletActionError'
-import { RequiredCreatorAccess } from '@/src/pagePartials/errors/requiresCreatorAccess'
+import { RegistrationRequired } from '@/src/pagePartials/errors/requiresCreatorAccess'
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
 const Wrapper = styled('div')`
@@ -32,7 +32,7 @@ const PreventActionWithoutConnection: React.FC<RequiredConnectionProps> = ({
   ...restProps
 }) => {
   const { address, isWalletConnected, isWalletNetworkSupported } = useWeb3Connection()
-  const { data: isCreator } = useIsCreator()
+  const { data: isRegistered } = useIsRegistered()
   const isConnected = isWalletConnected && address
 
   if (!isConnected) {
@@ -59,14 +59,14 @@ const PreventActionWithoutConnection: React.FC<RequiredConnectionProps> = ({
     )
   }
 
-  if (onlyCreator && !isCreator) {
+  if (onlyCreator && !isRegistered) {
     return (
-      <RequiredCreatorAccess>
+      <RegistrationRequired>
         <DisableWrapper onClick={(e) => e.stopPropagation()} sx={{ mt: 2 }}>
           {children}
           <DisableOverlay />
         </DisableWrapper>
-      </RequiredCreatorAccess>
+      </RegistrationRequired>
     )
   }
 
