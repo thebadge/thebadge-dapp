@@ -1,14 +1,14 @@
 import * as React from 'react'
 
 import TipsAndUpdatesOutlinedIcon from '@mui/icons-material/TipsAndUpdatesOutlined'
-import { Box, styled } from '@mui/material'
+import { Box, Typography, styled } from '@mui/material'
 
 import MarkdownTypography from '@/src/components/common/MarkdownTypography'
 
 const SubtitleContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   flex: '1',
-  gap: theme.spacing(8),
+  gap: theme.spacing(10),
   paddingLeft: '10%',
   paddingRight: '10%',
   [theme.breakpoints.down('sm')]: {
@@ -30,26 +30,54 @@ const HintContainer = styled(Box)(({ theme }) => ({
   margin: 'auto',
 }))
 
-const SubtitleTypography = styled(MarkdownTypography)(({ theme }) => ({
-  width: '65%',
+const SubtitleTypography = styled(MarkdownTypography)(() => ({
+  display: 'flex',
+  alignItems: 'center',
   textAlign: 'justify',
+}))
+
+const InnerContainer = styled(Box)(({ theme }) => ({
+  alignItems: 'center',
+  display: 'flex',
+  width: '60%',
   [theme.breakpoints.down('sm')]: {
     width: '100%',
   },
+  gap: theme.spacing(2),
+}))
+
+const StepNumberTypography = styled(Box)(({ theme }) => ({
+  backgroundColor: theme.palette.primary.main,
+  display: 'flex',
+  flexShrink: '0',
+  alignItems: 'center',
+  justifyContent: 'center',
+  borderRadius: '50%',
+  height: '20px',
+  width: '20px',
 }))
 
 export default function StepHeaderSubtitle({
   hint,
   showHint = true,
+  stepNumber,
   subTitle,
 }: {
   hint: string
   subTitle: string
   showHint?: boolean
+  stepNumber?: number
 }) {
   return (
     <SubtitleContainer>
-      <SubtitleTypography variant="body2">{subTitle}</SubtitleTypography>
+      <InnerContainer>
+        {stepNumber && (
+          <StepNumberTypography>
+            <Typography variant="labelMedium">{stepNumber}</Typography>
+          </StepNumberTypography>
+        )}
+        <SubtitleTypography variant="labelMedium">{subTitle}</SubtitleTypography>
+      </InnerContainer>
 
       {showHint && hint && (
         <HintContainer>

@@ -13,9 +13,10 @@ type CheckBoxProps = {
   onChange: (event: boolean) => void
   placeholder?: string
   value: boolean | undefined
+  disabled?: boolean
 }
 
-export function CheckBox({ error, label, onChange, placeholder, value }: CheckBoxProps) {
+export function CheckBox({ disabled, error, label, onChange, placeholder, value }: CheckBoxProps) {
   function handleChange() {
     onChange(!value)
   }
@@ -24,7 +25,12 @@ export function CheckBox({ error, label, onChange, placeholder, value }: CheckBo
     <FormField
       alignItems="center"
       formControl={
-        <MUICheckbox checked={!!value} onChange={handleChange} sx={{ width: 'fit-content' }} />
+        <MUICheckbox
+          checked={!!value}
+          disabled={disabled}
+          onChange={handleChange}
+          sx={{ width: 'fit-content' }}
+        />
       }
       label={
         <Typography color="text.disabled">

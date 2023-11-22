@@ -1,5 +1,4 @@
 import { useRouter } from 'next/navigation'
-import { useMemo } from 'react'
 
 import { Box } from '@mui/material'
 import { EmptyBadgePreview } from '@thebadge/ui-library'
@@ -24,8 +23,8 @@ export default function BadgesInReviewSwiper() {
 
   const { data: badgesUserCanReview } = useBadgesUserCanReview({ address, date: now })
 
-  const badgesList = useMemo(() => {
-    const badges = badgesUserCanReview?.map((badgeInReview) => {
+  const badgesList = fillListWithPlaceholders(
+    badgesUserCanReview?.map((badgeInReview) => {
       return (
         <Box
           key={badgeInReview.id}
@@ -43,10 +42,10 @@ export default function BadgesInReviewSwiper() {
           </InViewPort>
         </Box>
       )
-    })
-    // If there is no badges to show, we list 5 placeholders
-    return fillListWithPlaceholders(badges, <EmptyBadgePreview size="small" />, 4)
-  }, [badgesUserCanReview, router])
+    }),
+    <EmptyBadgePreview size="small" />,
+    4,
+  )
 
   const amountItems = () => {
     if (md) {

@@ -8,10 +8,14 @@ import { FieldError } from 'react-hook-form'
 import { TextFieldStatus } from '@/src/components/form/formFields/TextField'
 import { FormField } from '@/src/components/form/helpers/FormField'
 
-const Wrapper = styled(Box)(() => ({
+const Wrapper = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   position: 'relative',
+  width: '60%',
+  [theme.breakpoints.down('sm')]: {
+    width: '100%',
+  },
 }))
 
 const CustomSlider = styled(Slider)({

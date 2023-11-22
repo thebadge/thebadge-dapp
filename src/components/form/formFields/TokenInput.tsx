@@ -1,7 +1,7 @@
 import { ChangeEvent, useCallback, useEffect, useMemo } from 'react'
 
 import { BigNumberish } from '@ethersproject/bignumber'
-import { Box, Button, Stack, TextField, styled } from '@mui/material'
+import { Box, Button, InputAdornment, Stack, TextField, styled } from '@mui/material'
 import { BigNumberInput } from 'big-number-input'
 import { BigNumber } from 'ethers/lib/ethers'
 import { formatUnits, parseUnits } from 'ethers/lib/utils'
@@ -98,6 +98,9 @@ export function TokenInput({
         renderInput={(props) => (
           <Stack>
             <TextField
+              InputProps={{
+                endAdornment: symbol && <InputAdornment position="end">{symbol}</InputAdornment>,
+              }}
               color="secondary"
               error={!!error}
               helperText={error?.message}

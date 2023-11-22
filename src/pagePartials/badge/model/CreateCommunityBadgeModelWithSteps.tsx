@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Container, Stack } from '@mui/material'
+import { Container } from '@mui/material'
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -16,6 +16,7 @@ import {
   CreateCommunityModelSchemaType,
 } from '@/src/pagePartials/badge/model/schema/CreateCommunityModelSchema'
 import StepFooter from '@/src/pagePartials/badge/model/steps/StepFooter'
+import StepInnerContainer from '@/src/pagePartials/badge/model/steps/StepInnerContainer'
 import BadgeModelStrategy from '@/src/pagePartials/badge/model/steps/community/strategy/BadgeModelStrategy'
 import BadgeModelEvidenceFormCreation from '@/src/pagePartials/badge/model/steps/evidence/BadgeModelEvidenceFormCreation'
 import BadgeModelConfirmation from '@/src/pagePartials/badge/model/steps/preview/BadgeModelConfirmation'
@@ -99,7 +100,7 @@ export default function CreateCommunityBadgeModelWithSteps({
         {txState === TransactionStates.success && <BadgeModelCreated />}
         {txState === TransactionStates.none && (
           <form onSubmit={methods.handleSubmit(onSubmit)}>
-            <Stack gap={3}>
+            <StepInnerContainer gap={3}>
               {currentStep === 0 && <HowItWorks />}
               {currentStep === 1 && <BadgeModelUIBasics />}
               {currentStep === 2 && <BadgeModelStrategy />}
@@ -112,7 +113,7 @@ export default function CreateCommunityBadgeModelWithSteps({
                 onBackCallback={onBackCallback}
                 onNextCallback={onNextCallback}
               />
-            </Stack>
+            </StepInnerContainer>
           </form>
         )}
       </Container>

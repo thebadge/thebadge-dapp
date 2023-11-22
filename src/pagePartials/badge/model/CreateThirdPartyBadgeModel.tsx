@@ -3,7 +3,6 @@ import { useContractInstance } from '@/src/hooks/useContractInstance'
 import useTransaction from '@/src/hooks/useTransaction'
 import CreateThirdPartyBadgeModelWithSteps from '@/src/pagePartials/badge/model/CreateThirdPartyBadgeModelWithSteps'
 import { CreateThirdPartyModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateThirdPartyModelSchema'
-import { BADGE_MODEL_TEXT_CONTRAST } from '@/src/pagePartials/badge/model/steps/uiBasics/BadgeModelUIBasics'
 import { BadgeModelControllerName } from '@/types/badges/BadgeModel'
 import { TheBadgeModels__factory } from '@/types/generated/typechain'
 import { NextPageWithLayout } from '@/types/next'
@@ -14,9 +13,9 @@ const CreateThirdPartyBadgeModel: NextPageWithLayout = () => {
   const theBadgeModels = useContractInstance(TheBadgeModels__factory, 'TheBadgeModels')
 
   const onSubmit = async (data: CreateThirdPartyModelSchemaType) => {
-    const { administrators, backgroundImage, badgeModelLogoUri, description, name, textContrast } =
-      data
+    const { administrators } = data
 
+    console.log('onSubmit', data)
     try {
       // Start transaction to show the loading state when we create the files
       // and configs
@@ -27,15 +26,13 @@ const CreateThirdPartyBadgeModel: NextPageWithLayout = () => {
 
         const [badgeModelMetadataIPFSHash, thirdPartyBadgeModelControllerDataEncoded] =
           await Promise.all([
-            createAndUploadBadgeModelMetadata(
-              name,
-              description,
-              badgeModelLogoUri,
-              backgroundImage,
-              BADGE_MODEL_TEXT_CONTRAST[textContrast],
-            ),
+            createAndUploadBadgeModelMetadata(data),
             encodeThirdPartyBadgeModelControllerData([administrators]), // TODO replace
           ])
+
+        if (!badgeModelMetadataIPFSHash) {
+          throw `There was an error uploading the data, try again`
+        }
 
         return theBadgeModels.createBadgeModel(
           {

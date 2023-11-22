@@ -19,7 +19,7 @@ export default function BadgeOwnerPreview({
     throw `No ownerAddress provided`
   }
 
-  const owner = useUserById(ownerAddress)
+  const owner = useUserById(ownerAddress as `0x${string}`)
   const resMetadata = useS3Metadata<{ content: CreatorMetadata }>(owner.data?.metadataUri || '')
   const ownerMetadata = resMetadata.data?.content
 
