@@ -29,6 +29,21 @@ export enum BadgeNFTAttributesType {
   TextContrast = 'TextContrast',
 }
 
+export enum DiplomaNFTAttributesType {
+  CourseName = 'CourseName',
+  AchievementDescription = 'AchievementDescription',
+  AchievementDate = 'AchievementDate',
+  SignatureEnabled = 'SignatureEnabled',
+  SignerTitle = 'SignerTitle',
+  SignerSubline = 'SignerSubline',
+  SignatureImage = 'SignatureImage',
+  FooterEnabled = 'FooterEnabled',
+  FooterText = 'FooterText',
+  CustomIssuerEnabled = 'CustomIssuerEnabled',
+  IssuedByLabel = 'IssuedByLabel',
+  IssuerAvatar = 'IssuerAvatar',
+}
+
 export type EvidenceMetadata = {
   title: string
   description: string

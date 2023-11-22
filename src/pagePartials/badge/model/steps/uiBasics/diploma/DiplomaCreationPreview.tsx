@@ -38,16 +38,18 @@ export default function DiplomaCreationPreview() {
     watch('achievementDescription') || 'has successfully completed the course'
   const achievementDate = watch('achievementDate') || 'November 9, 2023'
 
+  // Footer
   const footerEnabled = watch('footerEnabled')
   const footerText =
     watch('footerText') || `${creatorMetadata?.name} hast confirmed the identity {{studentName}}`
 
+  // Signature
   const signatureEnabled = watch('signatureEnabled')
-
   const signatureImageUrl =
+    watch('signatureImage') ||
     'https://images.unsplash.com/photo-1645484686977-dbddd9e1dc0a?q=80&w=3270&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
-  const signerTitle = 'Max Mustermann'
-  const signerSubline = 'CEO of TheGreatestCompany'
+  const signerTitle = watch('signerTitle') || 'Max Mustermann'
+  const signerSubline = watch('signerSubline') || 'CEO of TheGreatestCompany'
 
   const signatureProps = signatureEnabled
     ? {
@@ -56,6 +58,9 @@ export default function DiplomaCreationPreview() {
         signerSubline,
       }
     : {}
+
+  // Issuer
+  const issuerAvatar = watch('issuerAvatar')?.base64File || creatorMetadata?.logo?.s3Url
 
   return (
     <BoxShadow>
@@ -68,7 +73,7 @@ export default function DiplomaCreationPreview() {
         description={achievementDescription}
         footerText={footerEnabled && footerText}
         issuedByLabel={'Issued by'}
-        issuerAvatarUrl={creatorMetadata?.logo?.s3Url}
+        issuerAvatarUrl={issuerAvatar}
         issuerIsVerified={isVerified}
         studentName={'{{studentName}}'}
         {...signatureProps}

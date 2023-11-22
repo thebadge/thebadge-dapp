@@ -2,9 +2,10 @@ import React from 'react'
 
 import { Stack, Typography } from '@mui/material'
 import { Controller, useFormContext } from 'react-hook-form'
+import { ImageType } from 'react-images-uploading'
 
 import { CheckBox } from '@/src/components/form/formFields/CheckBox'
-import { TextField } from '@/src/components/form/formFields/TextField'
+import { FileInput } from '@/src/components/form/formFields/FileInput'
 import { IssuerConfigurationSchemaType } from '@/src/pagePartials/badge/model/schema/CreateThirdPartyModelSchema'
 import SectionContainer from '@/src/pagePartials/badge/model/steps/uiBasics/addons/SectionContainer'
 
@@ -33,15 +34,30 @@ export default function IssuerConfiguration() {
       </SectionContainer>
       {customIssuerEnabled && (
         <SectionContainer>
-          <Stack flex="1" gap={2}>
-            <Typography variant="bodySmall">Issuer Avatar</Typography>
-            <Controller
-              control={control}
-              name={'issuerAvatarUrl'}
-              render={({ field: { onChange, value }, fieldState: { error } }) => (
-                <TextField error={error} onChange={onChange} value={value} />
-              )}
-            />
+          <Stack flex="1" gap={4} justifyContent="center">
+            <Stack>
+              <Typography variant="bodySmall">Issuer Avatar</Typography>
+              <Controller
+                control={control}
+                name={'issuerAvatar'}
+                render={({ field: { onChange, value }, fieldState: { error } }) => (
+                  <FileInput
+                    acceptType={['jpg', 'gif', 'png']}
+                    error={error}
+                    onChange={(value: ImageType | null) => {
+                      if (value) {
+                        // We change the structure a little bit to have it ready to push to the backend
+                        onChange({
+                          mimeType: value.file?.type,
+                          base64File: value.base64File,
+                        })
+                      } else onChange(null)
+                    }}
+                    value={value}
+                  />
+                )}
+              />
+            </Stack>
           </Stack>
         </SectionContainer>
       )}

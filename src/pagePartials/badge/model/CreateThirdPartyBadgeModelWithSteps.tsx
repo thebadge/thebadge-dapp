@@ -46,9 +46,12 @@ export default function CreateThirdPartyBadgeModelWithSteps({
     mode: 'onChange',
   })
 
+  // Watched template to trigger different validations
+  const watchedTemplate = methods.watch('template')
+
   const triggerValidation = useTriggerRHF(methods)
   async function isValidStep() {
-    const steps = getFieldsToValidateOnStep(BadgeModelControllerType.ThirdParty)
+    const steps = getFieldsToValidateOnStep(BadgeModelControllerType.ThirdParty, watchedTemplate)
     return await triggerValidation(steps[currentStep])
   }
 

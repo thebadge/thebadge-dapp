@@ -67,7 +67,6 @@ export function TokenInput({
     [maxValue, value],
   )
 
-  console.log(symbol)
   const setMaxValue = useCallback(() => {
     onChange(parseUnits(maxValueFormatted).toString())
   }, [maxValueFormatted, onChange])
