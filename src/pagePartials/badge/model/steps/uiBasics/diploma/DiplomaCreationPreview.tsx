@@ -9,8 +9,8 @@ import { useUserById } from '@/src/hooks/subgraph/useUserById'
 import useIsUserVerified from '@/src/hooks/theBadge/useIsUserVerified'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { CreateThirdPartyModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateThirdPartyModelSchema'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { CreatorMetadata } from '@/types/badges/Creator'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
 const BoxShadow = styled(Box)(({ theme }) => ({
   display: 'flex',

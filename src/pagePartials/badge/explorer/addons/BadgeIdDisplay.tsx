@@ -5,7 +5,7 @@ import { Box, Typography, alpha, styled } from '@mui/material'
 import { colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
 const Container = styled(Box)(({ theme }) => ({
   display: 'flex',
