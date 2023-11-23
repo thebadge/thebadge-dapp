@@ -28,6 +28,7 @@ const StyledButton = styled(Button)<{ border?: string }>(({ border }) => ({
   lineHeight: '14px',
   fontWeight: 700,
   boxShadow: 'none',
+  minHeight: '42px',
 }))
 
 type ButtonWithMenuProps = {
