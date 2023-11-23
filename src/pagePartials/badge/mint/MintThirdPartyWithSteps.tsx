@@ -17,9 +17,10 @@ import {
   MintThirdPartySchemaType,
 } from '@/src/pagePartials/badge/mint/schema/MintThirdPartySchema'
 import StepHeaderThirdParty from '@/src/pagePartials/badge/mint/steps/StepHeaderThirdParty'
-import FormThirdParty from '@/src/pagePartials/badge/mint/steps/dynamicForm/FormThirdParty'
+import DynamicRequiredData from '@/src/pagePartials/badge/mint/steps/dynamicForm/thirdParty/DynamicRequiredData'
+import FormThirdParty from '@/src/pagePartials/badge/mint/steps/dynamicForm/thirdParty/FormThirdParty'
 import MintSucceed from '@/src/pagePartials/badge/mint/steps/preview/MintSucceed'
-import SubmitPreviewThirdParty from '@/src/pagePartials/badge/mint/steps/preview/SubmitPreviewThirdParty'
+import SubmitPreviewThirdParty from '@/src/pagePartials/badge/mint/steps/preview/thirdParty/SubmitPreviewThirdParty'
 import HowItWorksThirdParty from '@/src/pagePartials/badge/mint/steps/terms/HowItWorksThirdParty'
 
 type MintStepsProps = {
@@ -109,14 +110,23 @@ export default function MintThirdPartyWithSteps({
             <Stack gap={3}>
               {currentStep === 0 && <HowItWorksThirdParty />}
               {currentStep === 1 && <FormThirdParty />}
+              {currentStep === 1 && (
+                <DynamicRequiredData
+                  onBackCallback={onBackCallback}
+                  onNextCallback={onNextCallback}
+                />
+              )}
               {currentStep === 2 && <SubmitPreviewThirdParty />}
 
-              <StepFooter
-                color="blue"
-                currentStep={currentStep}
-                onBackCallback={onBackCallback}
-                onNextCallback={onNextCallback}
-              />
+              {/* We disable the footer on the dynamic form, bc its need to handle his own footer */}
+              {currentStep !== 1 && (
+                <StepFooter
+                  color="blue"
+                  currentStep={currentStep}
+                  onBackCallback={onBackCallback}
+                  onNextCallback={onNextCallback}
+                />
+              )}
             </Stack>
           </form>
         )}

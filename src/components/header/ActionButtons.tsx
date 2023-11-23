@@ -28,7 +28,6 @@ const StyledButton = styled(Button)<{ border?: string }>(({ border }) => ({
   lineHeight: '14px',
   fontWeight: 700,
   boxShadow: 'none',
-  minHeight: '42px',
 }))
 
 type ButtonWithMenuProps = {
@@ -60,7 +59,7 @@ const ButtonWithMenu = ({ color, disabled, menuItems, title }: ButtonWithMenuPro
         aria-haspopup="true"
         border={`2px solid ${color}`}
         disabled={disabled}
-        endIcon={<KeyboardArrowDownIcon />}
+        endIcon={<KeyboardArrowDownIcon sx={{ width: '14px', height: '14px' }} />}
         id="create-menu-button"
         onClick={handleClick}
       >

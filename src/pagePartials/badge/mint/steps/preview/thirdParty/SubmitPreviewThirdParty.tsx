@@ -4,13 +4,12 @@ import { Box, Stack } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
 import { useFormContext } from 'react-hook-form'
 
-import { BadgePreviewLoading } from '@/src/components/common/BadgePreviewContainer'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { APP_URL } from '@/src/constants/common'
 import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import { MintBadgeSchemaType } from '@/src/pagePartials/badge/mint/schema/MintBadgeSchema'
-import MintCostThirdParty from '@/src/pagePartials/badge/mint/steps/preview/MintCostThirdParty'
-import { BadgePreviewGenerator } from '@/src/pagePartials/badge/preview/BadgePreviewGenerator'
+import MintCostThirdParty from '@/src/pagePartials/badge/mint/steps/preview/thirdParty/MintCostThirdParty'
+import { BadgeThirdPartyPreviewGenerator } from '@/src/pagePartials/badge/preview/BadgeThirdPartyPreviewGenerator'
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
 export default function SubmitPreviewThirdParty() {
@@ -22,8 +21,8 @@ export default function SubmitPreviewThirdParty() {
   return (
     <Stack alignItems={'center'} gap={3} margin={1}>
       <Box>
-        <SafeSuspense fallback={<BadgePreviewLoading />}>
-          <BadgePreviewGenerator
+        <SafeSuspense>
+          <BadgeThirdPartyPreviewGenerator
             badgeUrl={`${APP_URL}/${modelId}/${address}`}
             modelId={modelId}
             setValue={setValue}

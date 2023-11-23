@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef } from 'react'
 import * as React from 'react'
 
-import { Box, Stack, Typography } from '@mui/material'
+import { Box } from '@mui/material'
 import { BadgePreview } from '@thebadge/ui-library'
 import { UseFormSetValue } from 'react-hook-form'
 
@@ -11,7 +11,6 @@ import { getBackgroundBadgeUrl } from '@/src/utils/badges/getBackgroundBadgeUrl'
 import { BadgeNFTAttributesType } from '@/types/badges/BadgeMetadata'
 
 type BadgePreviewGeneratorProps = {
-  title: string
   modelId: string
   setValue: UseFormSetValue<any>
   badgeUrl?: string
@@ -21,7 +20,6 @@ export const BadgePreviewGenerator = ({
   badgeUrl,
   modelId,
   setValue,
-  title,
 }: BadgePreviewGeneratorProps) => {
   const badgePreviewRef = useRef<HTMLDivElement>()
   const badgeModelData = useBadgeModel(modelId)
@@ -51,21 +49,18 @@ export const BadgePreviewGenerator = ({
   }, [badgePreviewRef, generatePreviewImage])
 
   return (
-    <Stack alignItems={'center'} gap={3} margin={1}>
-      <Typography>{title}</Typography>
-      <Box ref={badgePreviewRef}>
-        <BadgePreview
-          animationEffects={['wobble', 'grow', 'glare']}
-          animationOnHover
-          badgeBackgroundUrl={getBackgroundBadgeUrl(backgroundType?.value)}
-          badgeUrl={badgeUrl}
-          category={badgeModelMetadata?.name}
-          description={badgeModelMetadata?.description}
-          imageUrl={badgeLogoImage?.s3Url}
-          size="medium"
-          textContrast={textContrast?.value || 'light-withTextBackground'}
-        />
-      </Box>
-    </Stack>
+    <Box ref={badgePreviewRef}>
+      <BadgePreview
+        animationEffects={['wobble', 'grow', 'glare']}
+        animationOnHover
+        badgeBackgroundUrl={getBackgroundBadgeUrl(backgroundType?.value)}
+        badgeUrl={badgeUrl}
+        category={badgeModelMetadata?.name}
+        description={badgeModelMetadata?.description}
+        imageUrl={badgeLogoImage?.s3Url}
+        size="medium"
+        textContrast={textContrast?.value || 'light-withTextBackground'}
+      />
+    </Box>
   )
 }

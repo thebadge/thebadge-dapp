@@ -35,7 +35,7 @@ export enum DiplomaNFTAttributesType {
   CourseName = 'CourseName',
   AchievementDescription = 'AchievementDescription',
   AchievementDate = 'AchievementDate',
-  FooterConfigs = 'FooterText',
+  FooterConfigs = 'FooterConfigs',
   SignerConfigs = 'SignerConfigs',
   IssuerConfigs = 'IssuerConfigs',
 }
@@ -48,4 +48,22 @@ export type EvidenceMetadata = {
   fileTypeExtension?: string
   // File Mimetype
   type?: string
+}
+
+export type DiplomaSignatureConfig<T = IPFSHash | BackendFileResponse | BackendFileUpload> = {
+  signatureEnabled: boolean
+  signatureImage?: T
+  signerTitle?: string
+  signerSubline?: string
+}
+
+export type DiplomaIssuerConfig<T = IPFSHash | BackendFileResponse | BackendFileUpload> = {
+  customIssuerEnabled: boolean
+  issuerAvatar?: T
+  issuedByLabel?: string
+}
+
+export type DiplomaFooterConfig = {
+  footerEnabled: boolean
+  footerText?: string
 }

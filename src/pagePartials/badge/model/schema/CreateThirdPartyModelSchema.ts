@@ -38,7 +38,7 @@ export type FooterConfigurationSchemaType = z.infer<typeof FooterConfigurationSc
 export const IssuerConfigurationSchema = z.object({
   // ------ DIPLOMA BASICS FIELD ------
   customIssuerEnabled: z.boolean().optional(),
-  issuedByLabel: z.string().optional(),
+  issuedByLabel: z.string().default('Issued by'),
   issuerAvatar: AvatarSchema.optional(),
 })
 

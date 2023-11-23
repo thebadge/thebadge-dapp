@@ -18,7 +18,10 @@ import { isTestnet } from '@/src/utils/network'
 import {
   BadgeModelMetadata,
   BadgeNFTAttributesType,
+  DiplomaFooterConfig,
+  DiplomaIssuerConfig,
   DiplomaNFTAttributesType,
+  DiplomaSignatureConfig,
 } from '@/types/badges/BadgeMetadata'
 import { BadgeModelTemplate } from '@/types/badges/BadgeModel'
 import { Kleros__factory } from '@/types/generated/typechain'
@@ -101,7 +104,7 @@ async function createAndUploadDiplomaBadgeModelMetadata(
   const configsToUpload = []
 
   configsToUpload.push(
-    await ipfsUpload({
+    await ipfsUpload<DiplomaSignatureConfig>({
       attributes: {
         signatureEnabled: !!rest.signatureEnabled,
         signatureImage: rest.signatureEnabled ? rest.signatureImage : '',
@@ -113,7 +116,7 @@ async function createAndUploadDiplomaBadgeModelMetadata(
   )
 
   configsToUpload.push(
-    await ipfsUpload({
+    await ipfsUpload<DiplomaIssuerConfig>({
       attributes: {
         customIssuerEnabled: !!rest.customIssuerEnabled,
         // If it's an IPFS Url we are re-using the creator avatar, so we dont need to re-upload the file
@@ -127,7 +130,7 @@ async function createAndUploadDiplomaBadgeModelMetadata(
   )
 
   configsToUpload.push(
-    await ipfsUpload({
+    await ipfsUpload<DiplomaFooterConfig>({
       attributes: {
         footerEnabled: !!rest.footerEnabled,
         footerText: rest.footerEnabled ? rest.footerText : '',

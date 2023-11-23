@@ -14,6 +14,7 @@ export default function FormThirdParty() {
   const { control, watch } = useFormContext<MintThirdPartySchemaType>()
 
   const watchedPreferMintMethod = watch('preferMintMethod')
+
   return (
     <>
       <Stack gap={2}>

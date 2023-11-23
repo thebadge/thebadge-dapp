@@ -1,38 +1,19 @@
 import { useRouter } from 'next/router'
 import React, { useEffect } from 'react'
 
-import { Box, Divider, Stack, Typography, alpha, styled } from '@mui/material'
-import { BadgePreview, colors } from '@thebadge/ui-library'
+import { Divider, Stack, Typography } from '@mui/material'
+import { colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
-import { useFormContext } from 'react-hook-form'
 
-import { CreateCommunityModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateCommunityModelSchema'
 import { StepButton } from '@/src/pagePartials/badge/model/steps/StepFooter'
-import {
-  BADGE_MODEL_BACKGROUNDS,
-  BADGE_MODEL_TEXT_CONTRAST,
-} from '@/src/pagePartials/badge/model/steps/uiBasics/BadgeModelUIBasics'
+import BadgeModelCreationPreview from '@/src/pagePartials/badge/model/steps/uiBasics/BadgeModelCreationPreview'
 import { cleanCreateModelFormValues } from '@/src/pagePartials/badge/model/utils'
 import { NormalProfileFilter } from '@/src/pagePartials/profile/UserProfile'
 import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 
-const BoxShadow = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  justifyContent: 'center',
-  filter: `drop-shadow(0px 0px 15px ${alpha(theme.palette.text.primary, 0.3)})`,
-}))
-
 export default function BadgeModelCreated() {
   const { t } = useTranslation()
   const router = useRouter()
-
-  const { watch } = useFormContext<CreateCommunityModelSchemaType>()
-
-  const watchedName = watch('name')
-  const watchedDescription = watch('description')
-  const watchedLogoUri = watch('badgeModelLogoUri')
-  const watchedTextContrast = watch('textContrast')
-  const watchedBackground = watch('backgroundImage')
 
   useEffect(() => {
     return () => cleanCreateModelFormValues()
@@ -40,19 +21,7 @@ export default function BadgeModelCreated() {
 
   return (
     <Stack alignItems="center" gap={3} justifyContent="center">
-      <BoxShadow>
-        <BadgePreview
-          animationEffects={['wobble', 'grow', 'glare']}
-          animationOnHover
-          badgeBackgroundUrl={BADGE_MODEL_BACKGROUNDS[watchedBackground]}
-          badgeUrl="https://www.thebadge.xyz"
-          description={watchedDescription}
-          imageUrl={watchedLogoUri?.base64File}
-          size="medium"
-          textContrast={BADGE_MODEL_TEXT_CONTRAST[watchedTextContrast]}
-          title={watchedName}
-        />
-      </BoxShadow>
+      <BadgeModelCreationPreview />
       <Stack display="flex" flex="1" gap={1} justifyContent="center" maxWidth={480} mt={2}>
         <Typography fontSize={'14px !important'} textAlign="center" variant="body4">
           {t('badge.model.create.created.footer')}
