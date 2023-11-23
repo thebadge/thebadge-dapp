@@ -57,11 +57,12 @@ export function useWalletClientHandcraft({
 
 /** Hook to convert a viem Wallet Client to an ethers.js Signer. */
 export function useEthersSigner({ chainId }: { chainId?: number } = {}) {
-  const { address } = useWeb3Connection()
+  const { address, readOnlyAppProvider } = useWeb3Connection()
   const { data: walletClient } = useWalletClientHandcraft({ chainId, address })
+  const readonlySigner = readOnlyAppProvider.getSigner()
 
   return React.useMemo(
-    () => (walletClient ? walletClientToSigner(walletClient) : undefined),
-    [walletClient],
+    () => (walletClient ? walletClientToSigner(walletClient) : readonlySigner),
+    [walletClient, readonlySigner],
   )
 }
