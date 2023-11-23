@@ -1,12 +1,18 @@
-export const ENRICH_TEXT_VARIABLES = ['{address}', '{displayName}', '{expirationTime}'] as const
+export const ENRICH_TEXT_VARIABLES = [
+  'address',
+  'displayName',
+  'expirationTime',
+  'studentName',
+] as const
+
+export type EnrichTextVariables = (typeof ENRICH_TEXT_VARIABLES)[number]
 
 export type EnrichTextValues = {
-  [key in (typeof ENRICH_TEXT_VARIABLES)[number]]: string
+  [key in EnrichTextVariables]: string
 }
 
 export default function enrichTextWithValues(badgeDescription: string, values: EnrichTextValues) {
+  const enrichTextKeys = Object.keys(values) as EnrichTextVariables[]
+  enrichTextKeys.forEach((key) => badgeDescription.replace(`{{${key}}`, values[key] || ''))
   return badgeDescription
-    .replace('{address}', values['{address}'] || '')
-    .replace('{displayName}', values['{displayName}'] || '')
-    .replace('{expirationTime}', values['{expirationTime}'] || '')
 }

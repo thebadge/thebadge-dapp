@@ -5,7 +5,7 @@ import CreateThirdPartyBadgeModelWithSteps from '@/src/pagePartials/badge/model/
 import { CreateThirdPartyModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateThirdPartyModelSchema'
 import { BadgeModelControllerName } from '@/types/badges/BadgeModel'
 import { TheBadgeModels__factory } from '@/types/generated/typechain'
-import { KLEROS_LIST_TYPES } from '@/types/kleros/types'
+import { KLEROS_LIST_TYPES, ThirdPartyMetadataColumn } from '@/types/kleros/types'
 import { NextPageWithLayout } from '@/types/next'
 
 const CreateThirdPartyBadgeModel: NextPageWithLayout = () => {
@@ -29,27 +29,26 @@ const CreateThirdPartyBadgeModel: NextPageWithLayout = () => {
         } = await import('@/src/utils/badges/createBadgeModelHelpers')
 
         // Hardcoded Required metadata for the Diploma use case
-        const badgeMetadataColumns = [
+        const badgeMetadataColumns: ThirdPartyMetadataColumn[] = [
           {
-            label: 'studentName',
+            label: 'Student Name',
             description: 'You must add your name and surname, to have your diploma',
             type: KLEROS_LIST_TYPES.TEXT,
+            // Key that is going to be used to search and replace the value on
+            // the diploma, like {{studentName}}
+            replacementKey: 'studentName',
             isIdentifier: false,
           },
         ]
 
-        const requirementsPFSHash = await createAndUploadThirdPartyBadgeModelRequirements(
+        const requirementsIPFSHash = await createAndUploadThirdPartyBadgeModelRequirements(
           badgeMetadataColumns,
         )
-
-        // Should we save this on the Controller o on the Metadata?
-        // Community badges has it on controller
-        console.log('requirementsPFSHash', requirementsPFSHash)
 
         const [badgeModelMetadataIPFSHash, thirdPartyBadgeModelControllerDataEncoded] =
           await Promise.all([
             createAndUploadBadgeModelMetadata(data),
-            encodeThirdPartyBadgeModelControllerData([administrators]), // TODO replace
+            encodeThirdPartyBadgeModelControllerData([administrators], requirementsIPFSHash), // TODO replace
           ])
 
         if (!badgeModelMetadataIPFSHash) {

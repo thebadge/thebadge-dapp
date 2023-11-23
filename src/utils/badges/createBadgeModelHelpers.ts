@@ -22,7 +22,7 @@ import {
 } from '@/types/badges/BadgeMetadata'
 import { BadgeModelTemplate } from '@/types/badges/BadgeModel'
 import { Kleros__factory } from '@/types/generated/typechain'
-import { MetadataColumn } from '@/types/kleros/types'
+import { MetadataColumn, ThirdPartyMetadataColumn } from '@/types/kleros/types'
 import { BackendFileUpload } from '@/types/utils'
 
 export async function createAndUploadBadgeModelMetadata(data: CreateThirdPartyModelSchemaType) {
@@ -182,7 +182,7 @@ async function createAndUploadDiplomaBadgeModelMetadata(
 }
 
 export async function createAndUploadThirdPartyBadgeModelRequirements(
-  badgeModelRequirementColumns: MetadataColumn[],
+  badgeModelRequirementColumns: ThirdPartyMetadataColumn[],
 ) {
   // We upload the required data to mint the TP badge, as we do with the
   // community ones, so then we can create the form on the UI
@@ -324,8 +324,14 @@ export async function encodeKlerosBadgeModelControllerData(
   )
 }
 
-export async function encodeThirdPartyBadgeModelControllerData(administrators: string[]) {
-  return defaultAbiCoder.encode(['tuple(address[])'], [[administrators]])
+export async function encodeThirdPartyBadgeModelControllerData(
+  administrators: string[],
+  requirementsIPFSHash: string,
+) {
+  return defaultAbiCoder.encode(
+    ['tuple(address[], string)'],
+    [[administrators], requirementsIPFSHash],
+  )
 }
 
 export const encodeIpfsEvidence = (ipfsEvidenceHash: string): string => {
