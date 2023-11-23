@@ -17,10 +17,11 @@ import BadgeStatusAndEvidence from '@/src/pagePartials/badge/preview/BadgeStatus
 import ChallengedStatusLogo from '@/src/pagePartials/badge/preview/addons/ChallengedStatusLogo'
 import { useCurateProvider } from '@/src/providers/curateProvider'
 import { useColorMode } from '@/src/providers/themeProvider'
-const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import { generateMintUrl } from '@/src/utils/navigation/generateUrl'
 import { BadgeStatus } from '@/types/generated/subgraph'
 import { NextPageWithLayout } from '@/types/next'
+import { WCAddress } from '@/types/utils'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
 const ViewBadge: NextPageWithLayout = () => {
   const { t } = useTranslation()
@@ -32,19 +33,19 @@ const ViewBadge: NextPageWithLayout = () => {
   const handleClaimBadge = useBadgeClaim()
   const isMobile = useSizeSM()
 
-  const badgeId = useBadgeIdParam()
+  const { badgeId, contract } = useBadgeIdParam()
   if (!badgeId) {
     throw `No badgeId provided us URL query param`
   }
 
-  const badgeById = useBadgeById(badgeId)
+  const badgeById = useBadgeById(badgeId, contract)
   const badge = badgeById.data
 
   if (!badge) {
     throw 'There was not possible to get the needed data. Try again in some minutes.'
   }
   const badgeModelId = badge.badgeModel.id
-  const ownerAddress = badge.account.id as `0x${string}`
+  const ownerAddress = badge.account.id as WCAddress
 
   const { reviewTimeFinished: badgeReviewTimeFinished, status: badgeStatus } = getBadgeReviewStatus(
     badge as ReviewBadge,

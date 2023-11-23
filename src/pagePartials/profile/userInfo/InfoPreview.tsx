@@ -5,6 +5,7 @@ import AnimateHeight, { Height } from 'react-animate-height'
 
 import { InfoPreviewContainer } from '@/src/pagePartials/profile/userInfo/InfoPreviewContainer'
 import InfoPreviewEdit from '@/src/pagePartials/profile/userInfo/InfoPreviewEdit'
+import { WCAddress } from '@/types/utils'
 
 type Props = {
   address: string
@@ -32,7 +33,7 @@ export default function InfoPreview({ address }: Props) {
         style={{ padding: 10 }}
       >
         <InfoPreviewContainer>
-          <InfoPreviewEdit address={address as `0x${string}`} />
+          <InfoPreviewEdit address={address as WCAddress} />
         </InfoPreviewContainer>
       </AnimateHeight>
     </Stack>

@@ -25,6 +25,7 @@ import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 import { truncateStringInTheMiddle } from '@/src/utils/strings'
 import { CreatorMetadata } from '@/types/badges/Creator'
+import { WCAddress } from '@/types/utils'
 
 const Wrapper = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -59,7 +60,7 @@ export default function TBUserInfoExpandablePreview({
   userAddress,
 }: {
   color: string
-  userAddress: `0x${string}`
+  userAddress: WCAddress
   metadata?: CreatorMetadata
   label?: string
   isVerified?: boolean

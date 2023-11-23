@@ -8,22 +8,37 @@ import {
   BadgeMetadata,
   BadgeModelMetadata,
 } from '@/types/badges/BadgeMetadata'
+import { ChainsValues } from '@/types/chains'
 import { MetadataColumn } from '@/types/kleros/types'
 import { BackendFileUpload } from '@/types/utils'
 
-export async function createAndUploadThirdPartyBadgeMetadata(
-  badgeModelMetadata: BadgeModelMetadata,
-  badgeModelId: string,
+type ThirdPartyEvidence = {
+  estimatedBadgeId: string
+  theBadgeContractAddress: string
+  appChainId: ChainsValues
+  badgeModelMetadata: BadgeModelMetadata
   additionalArgs: {
     imageBase64File: string
-  },
-) {
+  }
+}
+
+export async function createAndUploadThirdPartyBadgeMetadata({
+  additionalArgs,
+  appChainId,
+  badgeModelMetadata,
+  estimatedBadgeId,
+  theBadgeContractAddress,
+}: ThirdPartyEvidence) {
   const badgeMetadataIPFSUploaded = await ipfsUpload<BadgeMetadata<BackendFileUpload>>({
     attributes: {
       name: badgeModelMetadata?.name || '',
       description: badgeModelMetadata?.description || '',
-      // TODO: This will point to the model not to the badge because is still not being created, we need to check if this url makes sense or not
-      external_link: APP_URL + generateBadgePreviewUrl(badgeModelId),
+      external_link:
+        APP_URL +
+        generateBadgePreviewUrl(estimatedBadgeId, {
+          theBadgeContractAddress: theBadgeContractAddress,
+          connectedChainId: appChainId,
+        }),
       attributes: [
         {
           trait_type: 'CreationDate',

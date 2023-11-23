@@ -8,6 +8,7 @@ import Blockies from 'react-18-blockies'
 import VerifiedCreator from '@/src/components/icons/VerifiedCreator'
 import useIsUserVerified from '@/src/hooks/theBadge/useIsUserVerified'
 import { useEnsReverseLookup } from '@/src/hooks/useEnsLookup'
+import { WCAddress } from '@/types/utils'
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
 /**
@@ -26,7 +27,7 @@ export default function TBUserAvatar({
   sx,
 }: {
   src?: string
-  address?: `0x${string}`
+  address?: WCAddress
   size?: number
   sx?: SxProps<Theme>
 }) {

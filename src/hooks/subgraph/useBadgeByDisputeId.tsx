@@ -2,6 +2,7 @@ import useSWR from 'swr'
 
 import { SubgraphName, getSubgraphSdkByNetwork } from '@/src/subgraph/subgraph'
 import { ChainsValues } from '@/types/chains'
+import { Badge, BadgeKlerosMetaData, BadgeModel } from '@/types/generated/subgraph'
 
 export default function useBadgeByDisputeId(appChainId?: number, disputeId?: string) {
   const gql = appChainId
@@ -19,16 +20,16 @@ export default function useBadgeByDisputeId(appChainId?: number, disputeId?: str
       if (!klerosBadgeRequest) {
         throw 'Error loading item. Are you in the correct network?'
       }
-      const badge = klerosBadgeRequest.badgeKlerosMetaData?.badge
+      const badge = (klerosBadgeRequest.badgeKlerosMetaData as BadgeKlerosMetaData).badge
       const requester = klerosBadgeRequest.requester
       const challenger = klerosBadgeRequest.challenger
-      const badgeModel = badge?.badgeModel
+      const badgeModel = badge.badgeModel
 
       return {
-        badge,
+        badge: badge as Badge,
         requester,
         challenger,
-        badgeModel,
+        badgeModel: badgeModel as BadgeModel,
       }
     },
   )

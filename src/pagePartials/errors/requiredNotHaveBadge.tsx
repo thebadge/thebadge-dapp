@@ -7,6 +7,7 @@ import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import useIsBadgeOwner from '@/src/hooks/subgraph/useIsBadgeOwner'
 import AlreadyOwnThisBadgeError from '@/src/pagePartials/errors/displays/AlreadyOwnThisBadgeError'
 import { ChainsValues } from '@/types/chains'
+import { WCAddress } from '@/types/utils'
 
 const Wrapper = styled('div')`
   display: flex;
@@ -20,7 +21,7 @@ type RequiredConnectionProps = {
   children: ReactElement
   minHeight?: number
   networkToCheck?: ChainsValues
-  ownerAddress: `0x${string}` | undefined
+  ownerAddress: WCAddress | undefined
 }
 
 export const RequiredNotHaveBadge: React.FC<RequiredConnectionProps> = ({

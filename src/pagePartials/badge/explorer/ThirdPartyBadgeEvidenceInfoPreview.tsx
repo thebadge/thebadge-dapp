@@ -8,6 +8,7 @@ import useIsClaimable from '@/src/hooks/subgraph/useIsClaimable'
 import BadgeIdDisplay from '@/src/pagePartials/badge/explorer/addons/BadgeIdDisplay'
 import BadgeRequesterPreview from '@/src/pagePartials/badge/explorer/addons/BadgeRequesterPreview'
 import { Badge } from '@/types/generated/subgraph'
+import { WCAddress } from '@/types/utils'
 
 export default function ThirdPartyBadgeEvidenceInfoPreview({ badge }: { badge: Badge }) {
   const { t } = useTranslation()
@@ -34,7 +35,7 @@ export default function ThirdPartyBadgeEvidenceInfoPreview({ badge }: { badge: B
           {t('badge.thirdPartyBadgeUnclaimedText')}
         </Typography>
       ) : (
-        <BadgeRequesterPreview ownerAddress={badge.account.id as `0x${string}`} />
+        <BadgeRequesterPreview ownerAddress={badge.account.id as WCAddress} />
       )}
     </Stack>
   )

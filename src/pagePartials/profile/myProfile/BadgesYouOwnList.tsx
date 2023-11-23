@@ -22,7 +22,7 @@ type Props = {
 export default function BadgesYouOwnList({ address }: Props) {
   const { t } = useTranslation()
   const router = useRouter()
-  const { address: connectedWalletAddress } = useWeb3Connection()
+  const { address: connectedWalletAddress, appChainId } = useWeb3Connection()
 
   const isLoggedInUser = connectedWalletAddress === address
 
@@ -52,8 +52,14 @@ export default function BadgesYouOwnList({ address }: Props) {
   ]
 
   const onBadgeClick = useCallback(
-    (badgeId: string) => () => router.push(generateBadgePreviewUrl(badgeId)),
-    [router],
+    (badge: Badge) => () =>
+      router.push(
+        generateBadgePreviewUrl(badge.id, {
+          theBadgeContractAddress: badge.contractAddress,
+          connectedChainId: appChainId,
+        }),
+      ),
+    [router, appChainId],
   )
 
   const search = async (
@@ -81,7 +87,7 @@ export default function BadgesYouOwnList({ address }: Props) {
 
   function generateListItems() {
     if (ownBadges.length > 0) {
-      return ownBadges.map((badge) => renderOwnBadgeItem(badge, onBadgeClick(badge.id)))
+      return ownBadges.map((badge) => renderOwnBadgeItem(badge, onBadgeClick(badge)))
     }
     return [
       <Stack key="no-results">
