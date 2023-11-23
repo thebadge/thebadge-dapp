@@ -16,7 +16,6 @@ const CreateThirdPartyBadgeModel: NextPageWithLayout = () => {
   const onSubmit = async (data: CreateThirdPartyModelSchemaType) => {
     const { administrators } = data
 
-    console.log('onSubmit', data)
     try {
       // Start transaction to show the loading state when we create the files
       // and configs
@@ -48,7 +47,7 @@ const CreateThirdPartyBadgeModel: NextPageWithLayout = () => {
         const [badgeModelMetadataIPFSHash, thirdPartyBadgeModelControllerDataEncoded] =
           await Promise.all([
             createAndUploadBadgeModelMetadata(data),
-            encodeThirdPartyBadgeModelControllerData([administrators], requirementsIPFSHash), // TODO replace
+            encodeThirdPartyBadgeModelControllerData([administrators], requirementsIPFSHash),
           ])
 
         if (!badgeModelMetadataIPFSHash) {

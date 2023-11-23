@@ -330,7 +330,7 @@ export async function encodeThirdPartyBadgeModelControllerData(
 ) {
   return defaultAbiCoder.encode(
     ['tuple(address[], string)'],
-    [[administrators], requirementsIPFSHash],
+    [[administrators, requirementsIPFSHash]],
   )
 }
 
