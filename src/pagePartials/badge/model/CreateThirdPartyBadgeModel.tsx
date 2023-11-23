@@ -5,6 +5,7 @@ import CreateThirdPartyBadgeModelWithSteps from '@/src/pagePartials/badge/model/
 import { CreateThirdPartyModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateThirdPartyModelSchema'
 import { BadgeModelControllerName } from '@/types/badges/BadgeModel'
 import { TheBadgeModels__factory } from '@/types/generated/typechain'
+import { KLEROS_LIST_TYPES } from '@/types/kleros/types'
 import { NextPageWithLayout } from '@/types/next'
 
 const CreateThirdPartyBadgeModel: NextPageWithLayout = () => {
@@ -21,8 +22,29 @@ const CreateThirdPartyBadgeModel: NextPageWithLayout = () => {
       // and configs
       const transaction = await sendTx(async () => {
         // Use NextJs dynamic import to reduce the bundle size
-        const { createAndUploadBadgeModelMetadata, encodeThirdPartyBadgeModelControllerData } =
-          await import('@/src/utils/badges/createBadgeModelHelpers')
+        const {
+          createAndUploadBadgeModelMetadata,
+          createAndUploadThirdPartyBadgeModelRequirements,
+          encodeThirdPartyBadgeModelControllerData,
+        } = await import('@/src/utils/badges/createBadgeModelHelpers')
+
+        // Hardcoded Required metadata for the Diploma use case
+        const badgeMetadataColumns = [
+          {
+            label: 'studentName',
+            description: 'You must add your name and surname, to have your diploma',
+            type: KLEROS_LIST_TYPES.TEXT,
+            isIdentifier: false,
+          },
+        ]
+
+        const requirementsPFSHash = await createAndUploadThirdPartyBadgeModelRequirements(
+          badgeMetadataColumns,
+        )
+
+        // Should we save this on the Controller o on the Metadata?
+        // Community badges has it on controller
+        console.log('requirementsPFSHash', requirementsPFSHash)
 
         const [badgeModelMetadataIPFSHash, thirdPartyBadgeModelControllerDataEncoded] =
           await Promise.all([

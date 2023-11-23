@@ -7,6 +7,7 @@ import { Controller, useFormContext } from 'react-hook-form'
 import SectionContainer from '../addons/SectionContainer'
 import { TextArea } from '@/src/components/form/formFields/TextArea'
 import { TextField } from '@/src/components/form/formFields/TextField'
+import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { CreateCommunityModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateCommunityModelSchema'
 import BadgeModelCreationPreview from '@/src/pagePartials/badge/model/steps/uiBasics/BadgeModelCreationPreview'
 import BodyDataConfiguration from '@/src/pagePartials/badge/model/steps/uiBasics/diploma/addons/BodyDataConfiguration'
@@ -64,11 +65,15 @@ export default function DiplomaConfiguration() {
 
       <BodyDataConfiguration />
 
-      <FooterConfiguration />
+      <SafeSuspense>
+        <FooterConfiguration />
+      </SafeSuspense>
 
       <SignatureConfiguration />
 
-      <IssuerConfiguration />
+      <SafeSuspense>
+        <IssuerConfiguration />
+      </SafeSuspense>
     </>
   )
 }

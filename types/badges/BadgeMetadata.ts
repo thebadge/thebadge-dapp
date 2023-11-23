@@ -27,21 +27,17 @@ export type BadgeMetadata<T = IPFSHash | BackendFileResponse | BackendFileUpload
 export enum BadgeNFTAttributesType {
   Background = 'Background',
   TextContrast = 'TextContrast',
+  Template = 'Template',
 }
 
 export enum DiplomaNFTAttributesType {
+  Template = 'Template',
   CourseName = 'CourseName',
   AchievementDescription = 'AchievementDescription',
   AchievementDate = 'AchievementDate',
-  SignatureEnabled = 'SignatureEnabled',
-  SignerTitle = 'SignerTitle',
-  SignerSubline = 'SignerSubline',
-  SignatureImage = 'SignatureImage',
-  FooterEnabled = 'FooterEnabled',
-  FooterText = 'FooterText',
-  CustomIssuerEnabled = 'CustomIssuerEnabled',
-  IssuedByLabel = 'IssuedByLabel',
-  IssuerAvatar = 'IssuerAvatar',
+  FooterConfigs = 'FooterText',
+  SignerConfigs = 'SignerConfigs',
+  IssuerConfigs = 'IssuerConfigs',
 }
 
 export type EvidenceMetadata = {

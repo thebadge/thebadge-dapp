@@ -5,11 +5,8 @@ import { DiplomaPreview } from '@thebadge/ui-library'
 import { useFormContext } from 'react-hook-form'
 
 import { APP_URL } from '@/src/constants/common'
-import { useUserById } from '@/src/hooks/subgraph/useUserById'
 import useIsUserVerified from '@/src/hooks/theBadge/useIsUserVerified'
-import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { CreateThirdPartyModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateThirdPartyModelSchema'
-import { CreatorMetadata } from '@/types/badges/Creator'
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
 const BoxShadow = styled(Box)(({ theme }) => ({
@@ -27,9 +24,6 @@ export default function DiplomaCreationPreview() {
     throw 'You may need to connect your wallet'
   }
 
-  const { data } = useUserById(address)
-  const resCreatorMetadata = useS3Metadata<{ content: CreatorMetadata }>(data?.metadataUri || '')
-  const creatorMetadata = resCreatorMetadata.data?.content
   const isVerified = useIsUserVerified(address, 'kleros')
 
   // Diploma Badge Configs
@@ -40,8 +34,7 @@ export default function DiplomaCreationPreview() {
 
   // Footer
   const footerEnabled = watch('footerEnabled')
-  const footerText =
-    watch('footerText') || `${creatorMetadata?.name} hast confirmed the identity {{studentName}}`
+  const footerText = watch('footerText')
 
   // Signature
   const signatureEnabled = watch('signatureEnabled')
@@ -51,6 +44,10 @@ export default function DiplomaCreationPreview() {
   const signerTitle = watch('signerTitle') || 'Max Mustermann'
   const signerSubline = watch('signerSubline') || 'CEO of TheGreatestCompany'
 
+  // Issuer
+  const issuedByLabel = watch('issuedByLabel') || 'Issued by'
+  const issuerAvatar = watch('issuerAvatar')?.base64File
+
   const signatureProps = signatureEnabled
     ? {
         signatureImageUrl,
@@ -58,9 +55,6 @@ export default function DiplomaCreationPreview() {
         signerSubline,
       }
     : {}
-
-  // Issuer
-  const issuerAvatar = watch('issuerAvatar')?.base64File || creatorMetadata?.logo?.s3Url
 
   return (
     <BoxShadow>
@@ -72,7 +66,7 @@ export default function DiplomaCreationPreview() {
         date={achievementDate}
         description={achievementDescription}
         footerText={footerEnabled && footerText}
-        issuedByLabel={'Issued by'}
+        issuedByLabel={issuedByLabel}
         issuerAvatarUrl={issuerAvatar}
         issuerIsVerified={isVerified}
         studentName={'{{studentName}}'}

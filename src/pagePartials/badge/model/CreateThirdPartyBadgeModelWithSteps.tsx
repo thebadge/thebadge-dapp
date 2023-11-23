@@ -41,7 +41,7 @@ export default function CreateThirdPartyBadgeModelWithSteps({
 
   const methods = useForm<z.infer<typeof CreateThirdPartyModelSchema>>({
     resolver: zodResolver(CreateThirdPartyModelSchema),
-    defaultValues: defaultValues(),
+    defaultValues: defaultValues(BadgeModelControllerType.ThirdParty),
     reValidateMode: 'onChange',
     mode: 'onChange',
   })

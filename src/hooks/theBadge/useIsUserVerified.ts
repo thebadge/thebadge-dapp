@@ -8,8 +8,8 @@ export default function useIsUserVerified(
   userAddress: `0x${string}` | undefined,
   controller: string,
 ) {
-  const user = useUserById(userAddress)
   const theBadgeUsers = useContractInstance(TheBadgeUsers__factory, 'TheBadgeUsers')
+  const user = useUserById(userAddress)
   return useSWR(
     user.data?.id && userAddress?.length
       ? [`isUserVerified:${userAddress}-${controller}`, userAddress, controller]

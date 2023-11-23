@@ -7,10 +7,11 @@ import useTransaction from '@/src/hooks/useTransaction'
 import CreateCommunityBadgeModelWithSteps from '@/src/pagePartials/badge/model/CreateCommunityBadgeModelWithSteps'
 import { CreateCommunityModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateCommunityModelSchema'
 import { BADGE_MODEL_TEXT_CONTRAST } from '@/src/pagePartials/badge/model/steps/uiBasics/BadgeModelUIBasics'
-const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
-import { BadgeModelControllerName } from '@/types/badges/BadgeModel'
+import { BadgeModelControllerName, BadgeModelTemplate } from '@/types/badges/BadgeModel'
 import { TheBadgeModels__factory } from '@/types/generated/typechain'
 import { NextPageWithLayout } from '@/types/next'
+
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
 const CreateCommunityBadgeModel: NextPageWithLayout = () => {
   const { resetTxState, sendTx, state: transactionState } = useTransaction()
@@ -62,6 +63,7 @@ const CreateCommunityBadgeModel: NextPageWithLayout = () => {
               badgeModelLogoUri,
               backgroundImage,
               BADGE_MODEL_TEXT_CONTRAST[textContrast],
+              BadgeModelTemplate.Classic, // TODO Implement template on Community
             ),
             encodeKlerosBadgeModelControllerData(
               address as string,

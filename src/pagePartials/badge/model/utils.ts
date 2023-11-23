@@ -89,20 +89,37 @@ export function getCreateModelStepsAmount(controllerType: BadgeModelControllerTy
  * Retrieve stored values, in case that the user refresh the page or something
  * happens
  */
-export function defaultValues() {
-  if (checkIfHasOngoingModelCreation()) {
-    const storedValues = JSON.parse(localStorage.getItem(FORM_STORE_KEY) as string)
-    return storedValues.values
-  } else {
-    return {
-      textContrast: 'Black',
-      backgroundImage: 'White Waves',
-      template: 'Classic',
-      challengePeriodDuration: 2,
-      rigorousness: {
-        amountOfJurors: 1,
-        challengeBounty: '0',
-      },
+export function defaultValues(controllerType?: BadgeModelControllerType) {
+  switch (controllerType?.toLowerCase()) {
+    case BadgeModelControllerType.ThirdParty.toLowerCase(): {
+      return {
+        textContrast: 'Black',
+        backgroundImage: 'White Waves',
+        template: 'Classic',
+        challengePeriodDuration: 2,
+        rigorousness: {
+          amountOfJurors: 1,
+          challengeBounty: '0',
+        },
+      }
+    }
+    case BadgeModelControllerType.Community.toLowerCase():
+    default: {
+      if (checkIfHasOngoingModelCreation()) {
+        const storedValues = JSON.parse(localStorage.getItem(FORM_STORE_KEY) as string)
+        return storedValues.values
+      } else {
+        return {
+          textContrast: 'Black',
+          backgroundImage: 'White Waves',
+          template: 'Classic',
+          challengePeriodDuration: 2,
+          rigorousness: {
+            amountOfJurors: 1,
+            challengeBounty: '0',
+          },
+        }
+      }
     }
   }
 }

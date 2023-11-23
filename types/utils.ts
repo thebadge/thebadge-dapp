@@ -89,6 +89,7 @@ export type BackendFileResponse = {
   mimeType: string
   s3Url: string
   extension: string
+  ipfsUrl: string
   ipfs: string
 }
 
