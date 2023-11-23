@@ -84,7 +84,11 @@
     "buttons": {
       "mint": "MINT",
       "curate": "CURATE",
-      "create": "CREATE"
+      "create": "CREATE",
+      "menu": {
+        "community": "Community",
+        "thirdParty": "Third Party"
+      }
     },
     "tooltips": {
       "becomeACreator": {

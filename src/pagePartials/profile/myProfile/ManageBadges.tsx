@@ -1,7 +1,8 @@
+import { useRouter } from 'next/router'
 import React, { RefObject, createRef, useState } from 'react'
 
-import { Stack } from '@mui/material'
-import { colors } from '@thebadge/ui-library'
+import { Stack, Typography } from '@mui/material'
+import { ButtonV2, colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 
 import { NoResultsAnimated } from '@/src/components/assets/animated/NoResults'
@@ -21,6 +22,8 @@ import { useSizeSM } from '@/src/hooks/useSize'
 import MiniBadgeModelPreview from '@/src/pagePartials/badge/MiniBadgeModelPreview'
 import ThirdPartyBadgeModelInfoPreview from '@/src/pagePartials/badge/explorer/ThirdPartyBadgeModelInfoPreview'
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
+import { generateBadgeModelCreate } from '@/src/utils/navigation/generateUrl'
+import { BadgeModelControllerType } from '@/types/badges/BadgeModel'
 import { CreatorMetadata } from '@/types/badges/Creator'
 import { BadgeModel } from '@/types/generated/subgraph'
 
@@ -36,6 +39,7 @@ export default function ManageBadges() {
   const { data } = useUserById(address)
   const resCreatorMetadata = useS3Metadata<{ content: CreatorMetadata }>(data?.metadataUri || '')
   const creatorMetadata = resCreatorMetadata.data?.content
+  const router = useRouter()
 
   const badgeModelsElementRefs: RefObject<HTMLLIElement>[] = badgeModels.map(() =>
     createRef<HTMLLIElement>(),
@@ -124,6 +128,14 @@ export default function ManageBadges() {
     return [
       <Stack key="no-results">
         <NoResultsAnimated errorText={t('explorer.noBadgesFound')} />
+        <ButtonV2
+          backgroundColor={colors.transparent}
+          fontColor={colors.pink}
+          onClick={() => router.push(generateBadgeModelCreate(BadgeModelControllerType.ThirdParty))}
+          sx={{ m: 'auto' }}
+        >
+          <Typography>{t('profile.badgesCreated.create')}</Typography>
+        </ButtonV2>
       </Stack>,
     ]
   }
