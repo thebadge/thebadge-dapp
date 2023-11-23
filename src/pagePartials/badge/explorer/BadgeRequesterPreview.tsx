@@ -27,6 +27,7 @@ import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 import { truncateStringInTheMiddle } from '@/src/utils/strings'
 import { CreatorMetadata } from '@/types/badges/Creator'
+import { WCAddress } from '@/types/utils'
 
 const Wrapper = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -56,7 +57,7 @@ export default function BadgeRequesterPreview({
   color,
   ownerAddress,
 }: {
-  ownerAddress: `0x${string}`
+  ownerAddress: WCAddress
   color?: string
 }) {
   const { t } = useTranslation()

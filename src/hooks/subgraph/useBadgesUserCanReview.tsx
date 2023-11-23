@@ -4,6 +4,7 @@ import { nowInSeconds } from '@/src/constants/helpers'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import useChainId from '@/src/hooks/theBadge/useChainId'
 import { Badge } from '@/types/generated/subgraph'
+import { WCAddress } from '@/types/utils'
 
 const now = nowInSeconds()
 
@@ -11,7 +12,7 @@ export default function useBadgesUserCanReview({
   address,
   date,
 }: {
-  address: `0x${string}` | undefined
+  address: WCAddress | undefined
   date?: number
 }) {
   const gql = useSubgraph()

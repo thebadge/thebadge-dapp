@@ -13,7 +13,7 @@ const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvid
 export default function BadgeTitle() {
   const { t } = useTranslation()
 
-  const badgeId = useBadgeIdParam()
+  const { badgeId } = useBadgeIdParam()
   const isMobile = useSizeSM()
 
   if (!badgeId) {

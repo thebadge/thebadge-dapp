@@ -108,3 +108,8 @@ export type NFTAttribute = {
   value: string | number
   display_type?: undefined | 'date'
 }
+
+/**
+ * Wallet Connect Address Type
+ */
+export type WCAddress = `0x${string}`

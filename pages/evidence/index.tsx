@@ -3,6 +3,7 @@ import React, { ReactElement, useEffect, useState } from 'react'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import CourtEvidenceDataView from '@/src/pagePartials/evidence/CourtEvidenceDataView'
 import { useColorMode } from '@/src/providers/themeProvider'
+import { ChainsValues } from '@/types/chains'
 import { NextPageWithLayout } from '@/types/next'
 
 type InjectedParams = {
@@ -71,7 +72,7 @@ const EvidenceIframe: NextPageWithLayout = () => {
     <>
       <SafeSuspense>
         <CourtEvidenceDataView
-          arbitrableChainID={parameters?.arbitrableChainID}
+          arbitrableChainID={parameters?.arbitrableChainID as ChainsValues}
           disputeID={parameters?.disputeID}
         />
       </SafeSuspense>

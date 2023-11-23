@@ -28,7 +28,7 @@ export default function NearToExpireList() {
   const md = useSizeMD()
   const lg = useSizeLG()
   const { getTimeLeftToExpire, timestampToDate } = useDateHelpers()
-  const { address: ownerAddress } = useWeb3Connection()
+  const { address: ownerAddress, appChainId } = useWeb3Connection()
   const { refreshWatcher } = useProfileProvider()
 
   // TODO now "NEAR TO EXPIRE" is in max 1 month, we will change this to configurable time
@@ -52,7 +52,14 @@ export default function NearToExpireList() {
             <SafeSuspense color={'purple'}>
               <Box sx={{ width: 'fit-content' }}>
                 <Box
-                  onClick={() => router.push(generateBadgePreviewUrl(badge.id))}
+                  onClick={() =>
+                    router.push(
+                      generateBadgePreviewUrl(badge.id, {
+                        theBadgeContractAddress: badge.contractAddress,
+                        connectedChainId: appChainId,
+                      }),
+                    )
+                  }
                   sx={{ cursor: 'pointer' }}
                 >
                   <TimeToExpireBadgeOverlay
@@ -94,7 +101,14 @@ export default function NearToExpireList() {
       </div>,
       3,
     )
-  }, [badgesExpiringSoon.data?.user?.badges, timestampToDate, getTimeLeftToExpire, t, router])
+  }, [
+    badgesExpiringSoon.data?.user?.badges,
+    timestampToDate,
+    getTimeLeftToExpire,
+    t,
+    router,
+    appChainId,
+  ])
 
   const amountItems = () => {
     if (md) {

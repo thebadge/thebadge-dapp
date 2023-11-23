@@ -11,10 +11,19 @@ import {
 
 export const Chains = {
   //mainnet: 1,
+  //polygon: 137,
   goerli: 5,
   sepolia: 11155111,
   gnosis: 100,
 } as const
+
+export const ChainShortName = {
+  mainnet: 'eth',
+  polygon: 'matic',
+  goerli: 'gor',
+  sepolia: 'sep',
+  gnosis: 'gno',
+}
 
 export const providerChains: ProviderChains = {
   [RPCProviders.infura]: {
@@ -51,6 +60,10 @@ export const getProviderUrl = (
     throw new Error(`You must set infura/alchemy token provider in environment variable`)
   }
 
+  // Gnosis has its own rpc provider
+  if (chainId === Chains.gnosis) {
+    return 'https://gnosis.drpc.org'
+  }
   //Manual provider
   if (provider === RPCProviders.infura && RPCProvidersENV[RPCProviders.infura])
     return getInfuraRPCUrl(chainId)
@@ -81,7 +94,7 @@ export const chainsConfig: Record<ChainsValues, ChainConfig> = {
   [Chains.goerli]: {
     id: Chains.goerli,
     name: 'Görli Testnet',
-    shortName: 'Goerli',
+    shortName: ChainShortName.goerli,
     chainId: Chains.goerli,
     chainIdHex: '0x5',
     rpcUrl: getProviderUrl(Chains.goerli),
@@ -91,7 +104,7 @@ export const chainsConfig: Record<ChainsValues, ChainConfig> = {
   [Chains.sepolia]: {
     id: Chains.sepolia,
     name: 'Ethereum Sepolia',
-    shortName: 'sepoliaeth',
+    shortName: ChainShortName.sepolia,
     chainId: Chains.sepolia,
     chainIdHex: '0xaa36a7',
     rpcUrl: getProviderUrl(Chains.sepolia),
@@ -101,7 +114,7 @@ export const chainsConfig: Record<ChainsValues, ChainConfig> = {
   [Chains.gnosis]: {
     id: Chains.gnosis,
     name: 'Gnosis Chain',
-    shortName: 'xDai',
+    shortName: ChainShortName.gnosis,
     chainId: Chains.gnosis,
     chainIdHex: '0x64',
     rpcUrl: getProviderUrl(Chains.gnosis),
@@ -111,12 +124,22 @@ export const chainsConfig: Record<ChainsValues, ChainConfig> = {
   // [Chains.mainnet]: {
   //   id: Chains.mainnet,
   //   name: 'Mainnet',
-  //   shortName: 'Mainnet',
+  //   shortName: ChainShortName.mainnet,
   //   chainId: Chains.mainnet,
   //   chainIdHex: '0x1',
   //   rpcUrl: getProviderUrl(Chains.mainnet),
   //   blockExplorerUrls: ['https://etherscan.io/'],
   //   token: 'ETH',
+  // },
+  // [Chains.mainnet]: {
+  //   id: Chains.polygon,
+  //   name: 'Polygon',
+  //   shortName: ChainShortName.polygon,
+  //   chainId: Chains.polygon,
+  //   chainIdHex: '0x89',
+  //   rpcUrl: getProviderUrl(Chains.polygon),
+  //   blockExplorerUrls: ['https://polygonscan.com/'],
+  //   token: 'MATIC',
   // },
 }
 
