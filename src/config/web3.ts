@@ -60,6 +60,10 @@ export const getProviderUrl = (
     throw new Error(`You must set infura/alchemy token provider in environment variable`)
   }
 
+  // Gnosis has its own rpc provider
+  if (chainId === Chains.gnosis) {
+    return 'https://gnosis.drpc.org'
+  }
   //Manual provider
   if (provider === RPCProviders.infura && RPCProvidersENV[RPCProviders.infura])
     return getInfuraRPCUrl(chainId)
