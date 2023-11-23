@@ -9,6 +9,7 @@ gql`
     creatorFee
     paused
     badgesMintedAmount
+    contractAddress
     creator {
       id
       metadataUri

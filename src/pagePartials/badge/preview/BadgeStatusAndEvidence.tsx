@@ -26,7 +26,7 @@ export default function BadgeStatusAndEvidence() {
 
   const [selectedTab, setSelectedTab] = useState(0)
 
-  const badgeId = useBadgeIdParam()
+  const { badgeId, contract } = useBadgeIdParam()
   if (!badgeId) {
     throw `No badgeId provided us URL query param`
   }
@@ -81,7 +81,7 @@ export default function BadgeStatusAndEvidence() {
           </SafeSuspense>
           <Divider color={colors.white} />
           <SafeSuspense>
-            <EvidencesList badgeId={badgeId} />
+            <EvidencesList badgeId={badgeId} contract={contract} />
           </SafeSuspense>
         </>
       )}

@@ -8,9 +8,10 @@ import { Copy } from '@/src/components/assets/Copy'
 import { Link } from '@/src/components/assets/Link'
 import { ToastComponent } from '@/src/components/toast/ToastComponent'
 import { useEnsReverseLookup } from '@/src/hooks/useEnsLookup'
-const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 import { truncateStringInTheMiddle } from '@/src/utils/strings'
+import { WCAddress } from '@/types/utils'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
 const Wrapper = styled('span')`
   align-items: center;
@@ -56,7 +57,7 @@ const CopyButton = styled('button')`
 `
 
 interface Props {
-  address: `0x${string}`
+  address: WCAddress
   showExternalLink?: boolean
   isUserAddress?: boolean
   showCopyButton?: boolean
