@@ -21,6 +21,8 @@ export const APP_URL = process.env.NEXT_PUBLIC_FRONTEND_URL || 'http://localhost
 export const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5001'
 export const APP_DEFAULT_CHAIN_ID = process.env.NEXT_PUBLIC_DEFAULT_CHAIN_ID || 11155111
 export const KLEROS_COURT_URL = process.env.KLEROS_COURT_URL || 'https://court.kleros.io'
+export const PRIVACY_POLICY_URL = APP_URL + '/legal/privacy-policy'
+export const TERMS_AND_CONDITIONS_URL = APP_URL + '/legal/terms'
 
 export const IS_DEVELOP = process.env.NEXT_PUBLIC_DEV_MODE || false
 
