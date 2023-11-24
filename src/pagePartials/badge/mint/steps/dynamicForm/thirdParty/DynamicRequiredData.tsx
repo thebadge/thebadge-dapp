@@ -7,9 +7,9 @@ import { z } from 'zod'
 
 import { CustomFormFromSchemaWithoutSubmit } from '@/src/components/form/customForms/CustomForm'
 import klerosSchemaFactory from '@/src/components/form/helpers/validators'
-import useS3Metadata from '@/src/hooks/useS3Metadata'
+import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
+import { useBadgeModelThirdPartyMetadata } from '@/src/hooks/subgraph/useBadgeModelThirdPartyMetadata'
 import { MintThirdPartySchemaType } from '@/src/pagePartials/badge/mint/schema/MintThirdPartySchema'
-import { ThirdPartyMetadataColumn } from '@/types/kleros/types'
 
 export default function DynamicRequiredData({
   onBackCallback,
@@ -20,16 +20,16 @@ export default function DynamicRequiredData({
 }) {
   const formButtonRef = useRef<HTMLButtonElement>()
   const { setValue, watch } = useFormContext<MintThirdPartySchemaType>()
+  const modelId = useModelIdParam()
 
-  // TODO Remove hardcoded hash, get it from SG
-  const requiredBadgeDataMetadata = useS3Metadata<{
-    content: { requirementsColumns: ThirdPartyMetadataColumn[] }
-  }>('QmdXRHPWh4atF97AshCAjfwkwhUWEhSXNK34THnJrhk7UR')
+  const requiredBadgeDataMetadata = useBadgeModelThirdPartyMetadata(modelId)
 
-  const hasRequiredData = !!requiredBadgeDataMetadata.data?.content.requirementsColumns
+  const hasRequiredData = !!requiredBadgeDataMetadata.data?.requirementsData?.requirementsColumns
 
   const RequiredDataSchema = z.object(
-    klerosSchemaFactory(requiredBadgeDataMetadata.data?.content.requirementsColumns || []),
+    klerosSchemaFactory(
+      requiredBadgeDataMetadata.data?.requirementsData?.requirementsColumns || [],
+    ),
   )
 
   const handleSubmitNext = (data: z.infer<typeof RequiredDataSchema>) => {
