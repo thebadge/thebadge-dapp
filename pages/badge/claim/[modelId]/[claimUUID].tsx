@@ -7,6 +7,7 @@ import { FormProvider, useForm } from 'react-hook-form'
 
 import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import { TransactionLoading } from '@/src/components/loading/TransactionLoading'
+import useBadgeIDFromULID from '@/src/hooks/nextjs/useBadgeIDFromULID'
 import useClaimUUIDParam from '@/src/hooks/nextjs/useClaimUUIDParam'
 import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
@@ -60,7 +61,8 @@ const ClaimBadge: NextPageWithLayout = () => {
   }
 
   const claimUUID = useClaimUUIDParam()
-  if (!claimUUID) {
+  const badgeId = useBadgeIDFromULID()
+  if (!claimUUID || !badgeId) {
     throw `No claimUUID provided us URL query param`
   }
 
@@ -80,24 +82,31 @@ const ClaimBadge: NextPageWithLayout = () => {
         )}
         {txState === TransactionStates.none && (
           <FormProvider {...methods}>
-            <StepClaimThirdPartyHeader
-              creatorAddress={badgeModelData.data.badgeModel.creator.id}
-              creatorName={badgeCreatorMetadata.data.content.name}
-            />
-            <StepClaimThirdPartyPreview />
-            <Divider />
-            <Container maxWidth="md">
-              <form onSubmit={methods.handleSubmit(onSubmit)} style={{ width: '100%' }}>
-                <Stack mt={4}>
-                  <StepClaimThirdParty />
-                  <Stack gap={4} mt={8}>
-                    <SubmitButton color="blue" sx={{ m: 'auto' }} type="submit" variant="contained">
-                      {t('badge.model.claim.thirdParty.preview.submit')}
-                    </SubmitButton>
+            <Stack gap={4}>
+              <StepClaimThirdPartyHeader
+                creatorAddress={badgeModelData.data.badgeModel.creator.id}
+                creatorName={badgeCreatorMetadata.data.content.name}
+              />
+              <StepClaimThirdPartyPreview />
+              <Divider />
+              <Container maxWidth="md">
+                <form onSubmit={methods.handleSubmit(onSubmit)} style={{ width: '100%' }}>
+                  <Stack mt={4}>
+                    <StepClaimThirdParty />
+                    <Stack gap={4} mt={8}>
+                      <SubmitButton
+                        color="blue"
+                        sx={{ m: 'auto' }}
+                        type="submit"
+                        variant="contained"
+                      >
+                        {t('badge.model.claim.thirdParty.preview.submit')}
+                      </SubmitButton>
+                    </Stack>
                   </Stack>
-                </Stack>
-              </form>
-            </Container>
+                </form>
+              </Container>
+            </Stack>
           </FormProvider>
         )}
         {txState === TransactionStates.success && (

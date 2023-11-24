@@ -98,8 +98,8 @@ const MintThirdPartyBadgeModel: NextPageWithLayout = () => {
         const encodedBadgeRequiredData = encodeIpfsThirdPartyRequiredData(requiredDataIPFSHash)
 
         // Social wallet information
-        const userSocialInfo = await web3Auth?.getUserInfo()
-        const appPubKey = await getSocialCompressedPubKey()
+        const userSocialInfo = isSocialWallet ? await web3Auth?.getUserInfo() : null
+        const appPubKey = isSocialWallet ? await getSocialCompressedPubKey() : null
 
         // If social login relay tx
         if (isSocialWallet && destination && userSocialInfo && appPubKey) {

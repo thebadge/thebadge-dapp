@@ -19,7 +19,6 @@ import {
 import StepHeaderThirdParty from '@/src/pagePartials/badge/mint/steps/StepHeaderThirdParty'
 import DynamicRequiredData from '@/src/pagePartials/badge/mint/steps/dynamicForm/thirdParty/DynamicRequiredData'
 import FormThirdParty from '@/src/pagePartials/badge/mint/steps/dynamicForm/thirdParty/FormThirdParty'
-import MintSucceed from '@/src/pagePartials/badge/mint/steps/preview/MintSucceed'
 import SubmitPreviewThirdParty from '@/src/pagePartials/badge/mint/steps/preview/thirdParty/SubmitPreviewThirdParty'
 import HowItWorksThirdParty from '@/src/pagePartials/badge/mint/steps/terms/HowItWorksThirdParty'
 
@@ -104,7 +103,7 @@ export default function MintThirdPartyWithSteps({
         {txState !== TransactionStates.none && txState !== TransactionStates.success && (
           <TransactionLoading resetTxState={resetTxState} state={txState} />
         )}
-        {txState === TransactionStates.success && <MintSucceed />}
+        {txState === TransactionStates.success && <SubmitPreviewThirdParty />}
         {txState === TransactionStates.none && (
           <form onSubmit={methods.handleSubmit(onSubmit)}>
             <Stack gap={3}>

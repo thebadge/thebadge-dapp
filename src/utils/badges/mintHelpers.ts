@@ -119,7 +119,7 @@ export async function createAndUploadThirdPartyRequiredData(
     filePaths: filePaths,
   })
 
-  return convertHashToValidIPFSKlerosHash(evidenceIPFSUploaded.result?.ipfsHash)
+  return evidenceIPFSUploaded.result?.ipfsHash || 'no-hash'
 }
 
 /**
@@ -154,6 +154,25 @@ export function createThirdPartyValuesObject(
   // If we change this "shape" key values, we need to update the klerosSchemaFactory on src/components/form/helpers/validators.ts
   columns.forEach((column, i) => {
     values[`${column.replacementKey}`] = data[`${i}`]
+  })
+  return values
+}
+
+/**
+ * Method that takes the stored values and make it usable by the components
+ * @param data
+ * @param columns
+ */
+export function reCreateThirdPartyValuesObject(
+  data: Record<string, unknown>,
+  columns?: ThirdPartyMetadataColumn[],
+): Record<string, unknown> {
+  const values: Record<string, unknown> = {}
+  if (!columns) return values
+  // If we change this "shape" key values, we need to update the klerosSchemaFactory on src/components/form/helpers/validators.ts
+  columns.forEach((column) => {
+    // Right now the keys are the same, it will keep this function to be able to change it later if we need
+    values[`${column.replacementKey}`] = data[`${column.replacementKey}`]
   })
   return values
 }

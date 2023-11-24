@@ -89,6 +89,14 @@ export const BADGE_KLEROS_METADATA_BY_ID = gql`
   }
 `
 
+export const BADGE_THIRD_PARTY_METADATA_BY_ID = gql`
+  query badgeThirdPartyMetadataById($id: ID!) {
+    badgeThirdPartyMetaData(id: $id) {
+      ...BadgeThirdPartyMetadata
+    }
+  }
+`
+
 export const BADGE_BY_TYPE = gql`
   query badgeByModelId($id: String!) {
     badges(where: { badgeModel: $id }) {

@@ -38,3 +38,30 @@ export function useBadgeModelThirdPartyMetadata(
     },
   )
 }
+
+export function useBadgeThirdPartyRequiredData(badgeId: string, options?: BadgeModelHooksOptions) {
+  // It's going to do the fetch if it has ID and skip option on false
+  const fetchIt = !options?.skip && badgeId.length
+  const gql = useSubgraph()
+  const chainId = useChainId()
+  console.log({ badgeId, fetchIt })
+
+  return useSWR(
+    fetchIt ? [`BadgeModelThirdPartyMetaData:${badgeId}`, badgeId, chainId] : null,
+    async ([, _id]) => {
+      const graphResult = await gql.badgeThirdPartyMetadataById({ id: _id })
+      const data = graphResult.badgeThirdPartyMetaData
+      console.log({ data, graphResult })
+      const requiredBadgeDataValues = await getFromIPFS<{
+        columns: ThirdPartyMetadataColumn[]
+        values: Record<string, any>
+      }>(data?.badgeDataUri)
+
+      return {
+        ...data,
+        requirementsDataValues: requiredBadgeDataValues?.data.result?.content.values,
+        requirementsDataColumns: requiredBadgeDataValues?.data.result?.content.columns,
+      }
+    },
+  )
+}
