@@ -9,7 +9,7 @@ import {
   BadgeModelMetadata,
 } from '@/types/badges/BadgeMetadata'
 import { ChainsValues } from '@/types/chains'
-import { MetadataColumn } from '@/types/kleros/types'
+import { MetadataColumn, ThirdPartyMetadataColumn } from '@/types/kleros/types'
 import { BackendFileUpload } from '@/types/utils'
 
 type ThirdPartyEvidence = {
@@ -75,6 +75,13 @@ export async function createAndUploadBadgeMetadata(
   return `ipfs://${badgeMetadataIPFSUploaded.result?.ipfsHash}`
 }
 
+/**
+ * Store the evidence provided by the user, with the array of "columns" to be
+ * able to replicate the form if its needed, and also to have the tack of
+ * values <-> required evidence
+ * @param columns
+ * @param values
+ */
 export async function createAndUploadBadgeEvidence(
   columns: MetadataColumn[],
   values: Record<string, any>,
@@ -92,6 +99,34 @@ export async function createAndUploadBadgeEvidence(
   return convertHashToValidIPFSKlerosHash(evidenceIPFSUploaded.result?.ipfsHash)
 }
 
+/**
+ * Store the required data and the values that the creator has complete at mint time.
+ * This values are used later on to render the TP Badge
+ * @param columns
+ * @param values
+ */
+export async function createAndUploadThirdPartyRequiredData(
+  columns: ThirdPartyMetadataColumn[],
+  values: Record<string, any>,
+) {
+  const filePaths = getFilePathsFromValues(values)
+  const evidenceIPFSUploaded = await ipfsUpload<BadgeEvidenceMetadata>({
+    attributes: {
+      columns,
+      values,
+      submittedAt: Date.now(),
+    },
+    filePaths: filePaths,
+  })
+
+  return convertHashToValidIPFSKlerosHash(evidenceIPFSUploaded.result?.ipfsHash)
+}
+
+/**
+ * Method that take the form field evidence, and convert it to the needed format to store it
+ * @param data
+ * @param klerosBadgeMetadata
+ */
 export function createKlerosValuesObject(
   data: Record<string, unknown>,
   klerosBadgeMetadata?: KlerosListStructure | null,
@@ -101,6 +136,24 @@ export function createKlerosValuesObject(
   // If we change this "shape" key values, we need to update the klerosSchemaFactory on src/components/form/helpers/validators.ts
   klerosBadgeMetadata.metadata.columns.forEach((column, i) => {
     values[`${column.label}`] = data[`${i}`]
+  })
+  return values
+}
+
+/**
+ * Method that take the form field requiredData, and convert it to the needed format to store it
+ * @param data
+ * @param columns
+ */
+export function createThirdPartyValuesObject(
+  data: Record<string, unknown>,
+  columns?: ThirdPartyMetadataColumn[],
+): Record<string, unknown> {
+  const values: Record<string, unknown> = {}
+  if (!columns) return values
+  // If we change this "shape" key values, we need to update the klerosSchemaFactory on src/components/form/helpers/validators.ts
+  columns.forEach((column, i) => {
+    values[`${column.replacementKey}`] = data[`${i}`]
   })
   return values
 }

@@ -2860,10 +2860,10 @@
     quilljs-parser "^1.0.14"
     ts-node-dev "^2.0.0"
 
-"@thebadge/ui-library@^1.9.5":
-  version "1.9.5"
-  resolved "https://registry.yarnpkg.com/@thebadge/ui-library/-/ui-library-1.9.5.tgz#cb744dd8117a7e0a7114a0bbce5c9437dae7dfda"
-  integrity sha512-Cm/eQPmgCPQs9S8WGTvhKayHRaLcmDwI5znk03cTveRHPghl1/TV87+GhZkPDwccUwcvTRqNCdveaObkqSCHdg==
+"@thebadge/ui-library@^1.9.8":
+  version "1.9.8"
+  resolved "https://registry.yarnpkg.com/@thebadge/ui-library/-/ui-library-1.9.8.tgz#ad6622f7140a565dc8d7a90426fa51d77893858b"
+  integrity sha512-NWOrgQ9DHSe2A4RY8y8F/Yjxyc6JhMcKntpexXzPOZRmoFmTHlUZTpOysiG6JsA/JeF85Q7C4jruSRpA4smDbQ==
   dependencies:
     "@emotion/react" "^11.10.5"
     "@emotion/server" "^11.10.0"
@@ -8910,6 +8910,11 @@ mkdirp@^1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-1.0.4.tgz#3eb5ed62622756d79a5f0e2a221dfebad75c2f7e"
   integrity sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==
+
+modern-screenshot@^4.4.34:
+  version "4.4.34"
+  resolved "https://registry.yarnpkg.com/modern-screenshot/-/modern-screenshot-4.4.34.tgz#8403806b3e0d64433e8e495c97f08b50029d94e5"
+  integrity sha512-w4cA+1UrXMTXk/XZS7avf2XR6CoSnjJO1SbWUulIOFXmrNmVUc6BZA+KODchIB8YmIPUn7m2lhsy/Lm7UScPow==
 
 motion@10.16.2:
   version "10.16.2"

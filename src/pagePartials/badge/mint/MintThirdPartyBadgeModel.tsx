@@ -7,6 +7,7 @@ import { notify } from '@/src/components/toast/Toast'
 import { ZERO_ADDRESS } from '@/src/constants/bigNumber'
 import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
+import { useBadgeModelThirdPartyMetadata } from '@/src/hooks/subgraph/useBadgeModelThirdPartyMetadata'
 import useMintValue from '@/src/hooks/theBadge/useMintValue'
 import useTBContract from '@/src/hooks/theBadge/useTBContract'
 import useTBStore from '@/src/hooks/theBadge/useTBStore'
@@ -16,6 +17,10 @@ import { MintThirdPartySchemaType } from '@/src/pagePartials/badge/mint/schema/M
 import { cleanMintFormValues } from '@/src/pagePartials/badge/mint/utils'
 import { PreventActionIfNoBadgeModelCreator } from '@/src/pagePartials/errors/preventActionIfNoBadgeModelCreator'
 import { PreventActionIfBadgeModelPaused } from '@/src/pagePartials/errors/preventActionIfPaused'
+import {
+  createAndUploadThirdPartyRequiredData,
+  createThirdPartyValuesObject,
+} from '@/src/utils/badges/mintHelpers'
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 import { sendEmailClaim } from '@/src/utils/relayTx'
@@ -43,6 +48,7 @@ const MintThirdPartyBadgeModel: NextPageWithLayout = () => {
   }, [router, state])
 
   const badgeModel = useBadgeModel(badgeModelId)
+  const requiredBadgeDataMetadata = useBadgeModelThirdPartyMetadata(badgeModelId)
 
   if (badgeModel.error || !badgeModel.data) {
     throw `There was an error trying to fetch the metadata for the badge model`
@@ -54,7 +60,7 @@ const MintThirdPartyBadgeModel: NextPageWithLayout = () => {
   }
 
   async function onSubmit(data: MintThirdPartySchemaType) {
-    const { destination, preferMintMethod, previewImage } = data
+    const { destination, preferMintMethod, previewImage, requiredData } = data
 
     try {
       // Start transaction to show the loading state when we create the files
@@ -64,19 +70,32 @@ const MintThirdPartyBadgeModel: NextPageWithLayout = () => {
         const { createAndUploadThirdPartyBadgeMetadata } = await import(
           '@/src/utils/badges/mintHelpers'
         )
-        const { encodeIpfsBadgeMetadata } = await import(
+        const { encodeIpfsThirdPartyRequiredData } = await import(
           '@/src/utils/badges/createBadgeModelHelpers'
         )
 
+        const requiredDataValues = createThirdPartyValuesObject(
+          requiredData || {},
+          requiredBadgeDataMetadata.data?.requirementsData?.requirementsColumns,
+        )
+
         const estimatedBadgeId = await theBadgeStore.getCurrentBadgeIdCounter()
-        const badgeMetadataIPFSHash = await createAndUploadThirdPartyBadgeMetadata({
-          estimatedBadgeId: estimatedBadgeId.toString(),
-          theBadgeContractAddress: theBadge.address,
-          appChainId,
-          badgeModelMetadata: badgeModel.data?.badgeModelMetadata as BadgeModelMetadata,
-          additionalArgs: { imageBase64File: previewImage },
-        })
-        const encodedBadgeMetadata = encodeIpfsBadgeMetadata(badgeMetadataIPFSHash)
+
+        const [requiredDataIPFSHash, badgeMetadataIPFSHash] = await Promise.all([
+          createAndUploadThirdPartyRequiredData(
+            requiredBadgeDataMetadata.data?.requirementsData?.requirementsColumns || [],
+            requiredDataValues,
+          ),
+          createAndUploadThirdPartyBadgeMetadata({
+            estimatedBadgeId: estimatedBadgeId.toString(),
+            theBadgeContractAddress: theBadge.address,
+            appChainId,
+            badgeModelMetadata: badgeModel.data?.badgeModelMetadata as BadgeModelMetadata,
+            additionalArgs: { imageBase64File: previewImage },
+          }),
+        ])
+
+        const encodedBadgeRequiredData = encodeIpfsThirdPartyRequiredData(requiredDataIPFSHash)
 
         // Social wallet information
         const userSocialInfo = await web3Auth?.getUserInfo()
@@ -92,7 +111,7 @@ const MintThirdPartyBadgeModel: NextPageWithLayout = () => {
           badgeModelId,
           preferMintMethod === 'email' ? ZERO_ADDRESS : destination,
           badgeMetadataIPFSHash,
-          encodedBadgeMetadata,
+          encodedBadgeRequiredData,
           {
             value: mintValue,
           },

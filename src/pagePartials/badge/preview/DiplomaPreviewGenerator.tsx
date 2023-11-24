@@ -28,8 +28,6 @@ export default function DiplomaPreviewGenerator({ additionalData, modelId, setVa
   const badgeModelData = useBadgeModel(modelId)
   const badgeModelMetadata = badgeModelData.data?.badgeModelMetadata
 
-  console.log(additionalData)
-
   const courseName = badgeModelMetadata?.attributes?.find(
     (at) => at.trait_type === DiplomaNFTAttributesType.CourseName,
   )
@@ -90,21 +88,29 @@ export default function DiplomaPreviewGenerator({ additionalData, modelId, setVa
   const footerText = footerConfigsMetadata.data?.content.footerText
 
   return (
-    <Box ref={diplomaPreviewRef}>
-      <DiplomaPreview
-        animationEffects={['wobble', 'grow', 'glare']}
-        animationOnHover
-        badgeUrl={APP_URL}
-        courseName={courseName?.value}
-        date={achievementDate?.value}
-        description={achievementDescription?.value}
-        footerText={footerEnabled ? footerText : ''}
-        issuedByLabel={issuerLabel || 'Issued by'}
-        issuerAvatarUrl={issuerAvatarUrl}
-        issuerIsVerified={''}
-        studentName={additionalData ? additionalData['Student Name'] : '{{studentName}}'}
-        {...signatureProps}
-      />
-    </Box>
+    <>
+      <Box ref={diplomaPreviewRef}>
+        <DiplomaPreview
+          animationEffects={['wobble', 'grow', 'glare']}
+          animationOnHover
+          backgroundUrl={
+            'https://images.unsplash.com/photo-1651527567593-32c04202ed85?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+          }
+          badgeUrl={APP_URL}
+          courseName={courseName?.value}
+          date={achievementDate?.value}
+          decorationBackgroundUrl={
+            'https://images.unsplash.com/photo-1638272181967-7d3772a91265?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+          }
+          description={achievementDescription?.value}
+          footerText={footerEnabled ? footerText : ''}
+          issuedByLabel={issuerLabel || 'Issued by'}
+          issuerAvatarUrl={issuerAvatarUrl}
+          issuerIsVerified={''}
+          studentName={additionalData ? additionalData['studentName'] : '{{studentName}}'}
+          {...signatureProps}
+        />
+      </Box>
+    </>
   )
 }

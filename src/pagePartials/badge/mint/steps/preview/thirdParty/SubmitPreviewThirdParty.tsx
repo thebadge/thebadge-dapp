@@ -11,7 +11,7 @@ import { useBadgeModelThirdPartyMetadata } from '@/src/hooks/subgraph/useBadgeMo
 import { MintThirdPartySchemaType } from '@/src/pagePartials/badge/mint/schema/MintThirdPartySchema'
 import MintCostThirdParty from '@/src/pagePartials/badge/mint/steps/preview/thirdParty/MintCostThirdParty'
 import { BadgeThirdPartyPreviewGenerator } from '@/src/pagePartials/badge/preview/BadgeThirdPartyPreviewGenerator'
-import { createKlerosValuesObject } from '@/src/utils/badges/mintHelpers'
+import { createThirdPartyValuesObject } from '@/src/utils/badges/mintHelpers'
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
 export default function SubmitPreviewThirdParty() {
@@ -23,15 +23,10 @@ export default function SubmitPreviewThirdParty() {
 
   const watchedRequiredData = watch('requiredData') || {}
 
-  const values = createKlerosValuesObject(watchedRequiredData, {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    metadata: {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      columns: requiredBadgeDataMetadata.data?.requirementsData?.requirementsColumns,
-    },
-  })
+  const values = createThirdPartyValuesObject(
+    watchedRequiredData,
+    requiredBadgeDataMetadata.data?.requirementsData?.requirementsColumns,
+  )
 
   return (
     <Stack alignItems={'center'} gap={3} margin={1}>

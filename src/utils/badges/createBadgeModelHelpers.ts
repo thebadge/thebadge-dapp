@@ -341,8 +341,8 @@ export const encodeIpfsEvidence = (ipfsEvidenceHash: string): string => {
   return defaultAbiCoder.encode([`tuple(string)`], [[ipfsEvidenceHash]])
 }
 
-export const encodeIpfsBadgeMetadata = (badgeMetadataIpsHash: string): string => {
-  return defaultAbiCoder.encode([`tuple(string)`], [[badgeMetadataIpsHash]])
+export const encodeIpfsThirdPartyRequiredData = (badgeRequiredDataIpsHash: string): string => {
+  return defaultAbiCoder.encode([`tuple(string)`], [[badgeRequiredDataIpsHash]])
 }
 
 async function transformDeltaToPDF(pdfValues: z.infer<typeof DeltaPDFSchema>) {
