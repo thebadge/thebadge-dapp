@@ -27,3 +27,10 @@ gql`
     challengePeriodDuration
   }
 `
+
+gql`
+  fragment BadgeModelThirdPartyMetaData on BadgeModelThirdPartyMetaData {
+    id
+    requirementsIPFSHash
+  }
+`
