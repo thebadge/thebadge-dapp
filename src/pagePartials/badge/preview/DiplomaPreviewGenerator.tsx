@@ -20,11 +20,15 @@ type Props = {
   modelId: string
   setValue: UseFormSetValue<any>
   badgeUrl?: string
+  additionalData?: Record<string, any>
 }
-export default function DiplomaPreviewGenerator({ modelId, setValue }: Props) {
+
+export default function DiplomaPreviewGenerator({ additionalData, modelId, setValue }: Props) {
   const diplomaPreviewRef = useRef<HTMLDivElement>()
   const badgeModelData = useBadgeModel(modelId)
   const badgeModelMetadata = badgeModelData.data?.badgeModelMetadata
+
+  console.log(additionalData)
 
   const courseName = badgeModelMetadata?.attributes?.find(
     (at) => at.trait_type === DiplomaNFTAttributesType.CourseName,
@@ -98,7 +102,7 @@ export default function DiplomaPreviewGenerator({ modelId, setValue }: Props) {
         issuedByLabel={issuerLabel || 'Issued by'}
         issuerAvatarUrl={issuerAvatarUrl}
         issuerIsVerified={''}
-        studentName={'{{studentName}}'}
+        studentName={additionalData ? additionalData['Student Name'] : '{{studentName}}'}
         {...signatureProps}
       />
     </Box>

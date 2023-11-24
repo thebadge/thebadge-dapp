@@ -28,13 +28,12 @@ export function useBadgeModelThirdPartyMetadata(
       const data = badgeModelKleros.badgeModelThirdPartyMetaData
 
       const requiredBadgeDataMetadata = await getFromIPFS<{
-        content: { requirementsColumns: ThirdPartyMetadataColumn[] }
+        requirementsColumns: ThirdPartyMetadataColumn[]
       }>(data?.requirementsIPFSHash)
 
-      console.log(requiredBadgeDataMetadata?.data.result)
       return {
         ...data,
-        requirementsData: requiredBadgeDataMetadata?.data.result?.content.content,
+        requirementsData: requiredBadgeDataMetadata?.data.result?.content,
       }
     },
   )

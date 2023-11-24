@@ -16,9 +16,16 @@ type Props = {
   modelId: string
   setValue: UseFormSetValue<any>
   badgeUrl?: string
+  additionalData?: Record<string, any>
 }
 
-export const BadgeThirdPartyPreviewGenerator = ({ badgeUrl, modelId, setValue, title }: Props) => {
+export const BadgeThirdPartyPreviewGenerator = ({
+  additionalData,
+  badgeUrl,
+  modelId,
+  setValue,
+  title,
+}: Props) => {
   const badgeModelData = useBadgeModel(modelId)
   const badgeModelMetadata = badgeModelData.data?.badgeModelMetadata
 
@@ -41,7 +48,12 @@ export const BadgeThirdPartyPreviewGenerator = ({ badgeUrl, modelId, setValue, t
             />
           }
         >
-          <DiplomaPreviewGenerator badgeUrl={badgeUrl} modelId={modelId} setValue={setValue} />
+          <DiplomaPreviewGenerator
+            additionalData={additionalData}
+            badgeUrl={badgeUrl}
+            modelId={modelId}
+            setValue={setValue}
+          />
         </SafeSuspense>
       </Stack>
     )
@@ -51,7 +63,12 @@ export const BadgeThirdPartyPreviewGenerator = ({ badgeUrl, modelId, setValue, t
     <Stack alignItems={'center'} gap={3} margin={1}>
       <Typography>{title}</Typography>
       <SafeSuspense fallback={<BadgePreviewLoading />}>
-        <BadgePreviewGenerator badgeUrl={badgeUrl} modelId={modelId} setValue={setValue} />
+        <BadgePreviewGenerator
+          additionalData={additionalData}
+          badgeUrl={badgeUrl}
+          modelId={modelId}
+          setValue={setValue}
+        />
       </SafeSuspense>
     </Stack>
   )

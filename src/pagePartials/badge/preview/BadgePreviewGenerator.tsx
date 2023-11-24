@@ -14,6 +14,7 @@ type BadgePreviewGeneratorProps = {
   modelId: string
   setValue: UseFormSetValue<any>
   badgeUrl?: string
+  additionalData?: Record<string, any>
 }
 
 export const BadgePreviewGenerator = ({

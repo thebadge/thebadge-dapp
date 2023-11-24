@@ -7,22 +7,40 @@ import { useFormContext } from 'react-hook-form'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { APP_URL } from '@/src/constants/common'
 import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
-import { MintBadgeSchemaType } from '@/src/pagePartials/badge/mint/schema/MintBadgeSchema'
+import { useBadgeModelThirdPartyMetadata } from '@/src/hooks/subgraph/useBadgeModelThirdPartyMetadata'
+import { MintThirdPartySchemaType } from '@/src/pagePartials/badge/mint/schema/MintThirdPartySchema'
 import MintCostThirdParty from '@/src/pagePartials/badge/mint/steps/preview/thirdParty/MintCostThirdParty'
 import { BadgeThirdPartyPreviewGenerator } from '@/src/pagePartials/badge/preview/BadgeThirdPartyPreviewGenerator'
+import { createKlerosValuesObject } from '@/src/utils/badges/mintHelpers'
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
 export default function SubmitPreviewThirdParty() {
   const { t } = useTranslation()
   const { address } = useWeb3Connection()
-  const { setValue } = useFormContext<MintBadgeSchemaType>() // retrieve all hook methods
+  const { setValue, watch } = useFormContext<MintThirdPartySchemaType>() // retrieve all hook methods
   const modelId = useModelIdParam()
+  const requiredBadgeDataMetadata = useBadgeModelThirdPartyMetadata(modelId)
+
+  const watchedRequiredData = watch('requiredData') || {}
+
+  const values = createKlerosValuesObject(watchedRequiredData, {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    metadata: {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      columns: requiredBadgeDataMetadata.data?.requirementsData?.requirementsColumns,
+    },
+  })
 
   return (
     <Stack alignItems={'center'} gap={3} margin={1}>
       <Box>
         <SafeSuspense>
           <BadgeThirdPartyPreviewGenerator
+            additionalData={{
+              ...values,
+            }}
             badgeUrl={`${APP_URL}/${modelId}/${address}`}
             modelId={modelId}
             setValue={setValue}
