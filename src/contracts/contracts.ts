@@ -32,7 +32,7 @@ export const contracts = {
     address: {
       [Chains.goerli]: '0x49F7e71dbad648faB6A273F15e363161744a1191',
       [Chains.sepolia]: '0x8de751B764334240E54B4177300Fa8De4301deBC',
-      [Chains.gnosis]: '',
+      [Chains.gnosis]: '0xaDe4Dcc3613dc0b77593adb3D694F2F6f71E4125',
     },
     abi: TheBadgeStore.abi,
   },

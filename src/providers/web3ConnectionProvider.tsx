@@ -24,6 +24,7 @@ import { Chains, chainsConfig, getNetworkConfig } from '@/src/config/web3'
 import {
   APP_DEFAULT_CHAIN_ID,
   APP_URL,
+  TERMS_AND_CONDITIONS_URL,
   WEB3_AUTH_CLIENT_ID_PRODUCTION,
   WEB3_AUTH_CLIENT_ID_TESTNET,
   WEB3_MODAL_PROJECT_ID,
@@ -148,8 +149,6 @@ const featuredWalletIds = [
   '1ae92b26df02f0abca6304df07debccd18262fdf5fe82daa81593582dac9a369',
 ]
 
-const termsConditionsUrl = APP_URL + '/legal/privacy-policy'
-
 // 5. Create Web3Modal (Wallet Connect Modal)
 function setupWeb3Modal() {
   createWeb3Modal({
@@ -157,7 +156,7 @@ function setupWeb3Modal() {
     projectId,
     chains,
     featuredWalletIds,
-    termsConditionsUrl,
+    termsConditionsUrl: TERMS_AND_CONDITIONS_URL,
     defaultChain: isTestnet ? sepolia : gnosis,
   })
 }
