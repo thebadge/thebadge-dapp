@@ -33,3 +33,7 @@ export function convertHashToValidIPFSKlerosHash(hash?: string) {
   // Expected hash as example: ipfs://ipfs/QmSaqcFHpTBP4Ks1DoLuE4yjDSWcr4xBxsnRvW3k8EFc6F
   return `ipfs/${hash}`
 }
+
+export function isIPFSUrl(value?: string) {
+  return value && value?.startsWith('ipfs://')
+}

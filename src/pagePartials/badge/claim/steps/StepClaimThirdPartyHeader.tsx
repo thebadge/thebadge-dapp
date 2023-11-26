@@ -19,7 +19,7 @@ export const StepClaimThirdPartyHeader = ({
   const { t } = useTranslation()
 
   return (
-    <Stack sx={{ display: 'flex', flexDirection: 'column', mb: 6, gap: 4, alignItems: 'center' }}>
+    <Stack sx={{ display: 'flex', flexDirection: 'column', gap: 4, alignItems: 'center' }}>
       <Typography color={colors.blue} textAlign="center" variant="title2">
         {t('badge.model.claim.thirdParty.header.title')}
       </Typography>

@@ -8,7 +8,7 @@ import { APP_URL } from '@/src/constants/common'
 import { BadgeModelCommunityCriteriaType } from '@/src/pagePartials/badge/model/schema/CreateCommunityModelSchema'
 import { CreateThirdPartyModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateThirdPartyModelSchema'
 import { BADGE_MODEL_TEXT_CONTRAST } from '@/src/pagePartials/badge/model/steps/uiBasics/BadgeModelUIBasics'
-import { convertHashToValidIPFSKlerosHash } from '@/src/utils/fileUtils'
+import { convertHashToValidIPFSKlerosHash, isIPFSUrl } from '@/src/utils/fileUtils'
 import ipfsUpload from '@/src/utils/ipfsUpload'
 import {
   KlerosListStructure,
@@ -18,11 +18,14 @@ import { isTestnet } from '@/src/utils/network'
 import {
   BadgeModelMetadata,
   BadgeNFTAttributesType,
+  DiplomaFooterConfig,
+  DiplomaIssuerConfig,
   DiplomaNFTAttributesType,
+  DiplomaSignatureConfig,
 } from '@/types/badges/BadgeMetadata'
 import { BadgeModelTemplate } from '@/types/badges/BadgeModel'
 import { Kleros__factory } from '@/types/generated/typechain'
-import { MetadataColumn } from '@/types/kleros/types'
+import { MetadataColumn, ThirdPartyMetadataColumn } from '@/types/kleros/types'
 import { BackendFileUpload } from '@/types/utils'
 
 export async function createAndUploadBadgeModelMetadata(data: CreateThirdPartyModelSchemaType) {
@@ -32,7 +35,7 @@ export async function createAndUploadBadgeModelMetadata(data: CreateThirdPartyMo
     return createAndUploadDiplomaBadgeModelMetadata(name, description, rest)
   }
   if (template === BadgeModelTemplate.Classic) {
-    const { backgroundImage, badgeModelLogoUri, description, name, textContrast } = data
+    const { backgroundImage, badgeModelLogoUri, description, name, template, textContrast } = data
     // This is a safe validation, the form already validates that the data is here
     if (!backgroundImage || !textContrast) {
       throw `Missing data backgroundImage || textContrast`
@@ -43,6 +46,7 @@ export async function createAndUploadBadgeModelMetadata(data: CreateThirdPartyMo
       badgeModelLogoUri,
       backgroundImage,
       BADGE_MODEL_TEXT_CONTRAST[textContrast],
+      template,
     )
   }
 }
@@ -53,6 +57,7 @@ export async function createAndUploadClassicBadgeModelMetadata(
   badgeModelLogoUri: BackendFileUpload,
   backgroundType: string,
   textContrast: string,
+  template: BadgeModelTemplate,
 ) {
   const badgeModelMetadataIPFSUploaded = await ipfsUpload<BadgeModelMetadata<BackendFileUpload>>({
     attributes: {
@@ -69,6 +74,10 @@ export async function createAndUploadClassicBadgeModelMetadata(
           trait_type: BadgeNFTAttributesType.TextContrast,
           value: textContrast,
         },
+        {
+          trait_type: BadgeNFTAttributesType.Template,
+          value: template,
+        },
       ],
     },
     filePaths: ['image'],
@@ -84,17 +93,61 @@ async function createAndUploadDiplomaBadgeModelMetadata(
     achievementDate,
     achievementDescription,
     courseName,
+    template,
     ...rest
   }: Partial<CreateThirdPartyModelSchemaType>,
 ) {
+  if (!courseName || !achievementDescription || !achievementDate || !template) {
+    // This is a safe validation, the form already validates that the data is here
+    throw `Missing data courseName || achievementDescription || achievementDate`
+  }
+  const configsToUpload = []
+
+  configsToUpload.push(
+    await ipfsUpload<DiplomaSignatureConfig>({
+      attributes: {
+        signatureEnabled: !!rest.signatureEnabled,
+        signatureImage: rest.signatureEnabled ? rest.signatureImage : '',
+        signerTitle: rest.signatureEnabled ? rest.signerTitle : '',
+        signerSubline: rest.signatureEnabled ? rest.signerSubline : '',
+      },
+      filePaths: rest.signatureEnabled ? ['signatureImage'] : [],
+    }),
+  )
+
+  configsToUpload.push(
+    await ipfsUpload<DiplomaIssuerConfig>({
+      attributes: {
+        customIssuerEnabled: !!rest.customIssuerEnabled,
+        // If it's an IPFS Url we are re-using the creator avatar, so we dont need to re-upload the file
+        issuerAvatar: isIPFSUrl(rest.issuerAvatar?.ipfsUrl)
+          ? rest.issuerAvatar?.ipfsUrl
+          : rest.issuerAvatar,
+        issuedByLabel: rest.issuedByLabel,
+        issuerTitle: rest.issuerTitle,
+        issuerDescription: rest.issuerDescription,
+      },
+      filePaths: isIPFSUrl(rest.issuerAvatar?.ipfsUrl) ? [] : ['issuerAvatar'],
+    }),
+  )
+
+  configsToUpload.push(
+    await ipfsUpload<DiplomaFooterConfig>({
+      attributes: {
+        footerEnabled: !!rest.footerEnabled,
+        footerText: rest.footerEnabled ? rest.footerText : '',
+      },
+      filePaths: [],
+    }),
+  )
+
+  const [signatureConfig, issuerConfig, footerConfig] = await Promise.all(configsToUpload)
+
   const badgeModelMetadataIPFSUploaded = await ipfsUpload<BadgeModelMetadata<BackendFileUpload>>({
     attributes: {
       name: badgeModelName,
       description: badgeModelDescription,
-      image: {
-        base64File: '',
-        mimeType: 'png',
-      },
+      image: rest.issuerAvatar,
       external_link: `${APP_URL}/explore`,
       attributes: [
         {
@@ -110,32 +163,20 @@ async function createAndUploadDiplomaBadgeModelMetadata(
           value: achievementDate,
         },
         {
-          trait_type: DiplomaNFTAttributesType.SignatureEnabled,
-          value: rest.signatureEnabled,
+          trait_type: DiplomaNFTAttributesType.Template,
+          value: template,
         },
         {
-          trait_type: DiplomaNFTAttributesType.SignerTitle,
-          value: rest.signerTitle,
+          trait_type: DiplomaNFTAttributesType.SignerConfigs,
+          value: signatureConfig.result?.ipfsHash || '', // IPFS Hash to config file
         },
         {
-          trait_type: DiplomaNFTAttributesType.SignerSubline,
-          value: rest.signerSubline,
+          trait_type: DiplomaNFTAttributesType.FooterConfigs,
+          value: footerConfig.result?.ipfsHash || '', // IPFS Hash to config file
         },
         {
-          trait_type: DiplomaNFTAttributesType.SignatureImage,
-          value: rest.signatureImage, // TODO Upload as separate file
-        },
-        {
-          trait_type: DiplomaNFTAttributesType.FooterText,
-          value: rest.footerEnabled ? rest.footerText : '',
-        },
-        {
-          trait_type: DiplomaNFTAttributesType.IssuedByLabel,
-          value: rest.issuedByLabel,
-        },
-        {
-          trait_type: DiplomaNFTAttributesType.IssuerAvatar,
-          value: rest.issuerAvatar, // TODO Upload as separate file
+          trait_type: DiplomaNFTAttributesType.IssuerConfigs,
+          value: issuerConfig.result?.ipfsHash || '', // IPFS Hash to config file
         },
       ],
     },
@@ -143,6 +184,21 @@ async function createAndUploadDiplomaBadgeModelMetadata(
   })
 
   return `ipfs://${badgeModelMetadataIPFSUploaded.result?.ipfsHash}`
+}
+
+export async function createAndUploadThirdPartyBadgeModelRequirements(
+  badgeModelRequirementColumns: ThirdPartyMetadataColumn[],
+) {
+  // We upload the required data to mint the TP badge, as we do with the
+  // community ones, so then we can create the form on the UI
+  const registrationIPFSUploaded = await ipfsUpload({
+    attributes: {
+      requirementsColumns: badgeModelRequirementColumns,
+    },
+    filePaths: [],
+  })
+
+  return `ipfs://${registrationIPFSUploaded.result?.ipfsHash}`
 }
 
 /**
@@ -273,16 +329,22 @@ export async function encodeKlerosBadgeModelControllerData(
   )
 }
 
-export async function encodeThirdPartyBadgeModelControllerData(administrators: string[]) {
-  return defaultAbiCoder.encode(['tuple(address[])'], [[administrators]])
+export async function encodeThirdPartyBadgeModelControllerData(
+  administrators: string[],
+  requirementsIPFSHash: string,
+) {
+  return defaultAbiCoder.encode(
+    ['tuple(address[], string)'],
+    [[administrators, requirementsIPFSHash]],
+  )
 }
 
 export const encodeIpfsEvidence = (ipfsEvidenceHash: string): string => {
   return defaultAbiCoder.encode([`tuple(string)`], [[ipfsEvidenceHash]])
 }
 
-export const encodeIpfsBadgeMetadata = (badgeMetadataIpsHash: string): string => {
-  return defaultAbiCoder.encode([`tuple(string)`], [[badgeMetadataIpsHash]])
+export const encodeIpfsThirdPartyRequiredData = (badgeRequiredDataIpsHash: string): string => {
+  return defaultAbiCoder.encode([`tuple(string)`], [[badgeRequiredDataIpsHash]])
 }
 
 async function transformDeltaToPDF(pdfValues: z.infer<typeof DeltaPDFSchema>) {

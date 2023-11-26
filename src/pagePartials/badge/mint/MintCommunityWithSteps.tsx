@@ -17,7 +17,7 @@ import {
   MintBadgeSchema,
   MintBadgeSchemaType,
 } from '@/src/pagePartials/badge/mint/schema/MintBadgeSchema'
-import DynamicForm from '@/src/pagePartials/badge/mint/steps/dynamicForm/DynamicEvidenceForm'
+import DynamicForm from '@/src/pagePartials/badge/mint/steps/dynamicForm/community/DynamicEvidenceForm'
 import MintSucceed from '@/src/pagePartials/badge/mint/steps/preview/MintSucceed'
 import SubmitPreview from '@/src/pagePartials/badge/mint/steps/preview/SubmitPreview'
 import HowItWorks from '@/src/pagePartials/badge/mint/steps/terms/HowItWorks'

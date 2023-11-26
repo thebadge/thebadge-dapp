@@ -8911,6 +8911,11 @@ mkdirp@^1.0.4:
   resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-1.0.4.tgz#3eb5ed62622756d79a5f0e2a221dfebad75c2f7e"
   integrity sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==
 
+modern-screenshot@^4.4.34:
+  version "4.4.34"
+  resolved "https://registry.yarnpkg.com/modern-screenshot/-/modern-screenshot-4.4.34.tgz#8403806b3e0d64433e8e495c97f08b50029d94e5"
+  integrity sha512-w4cA+1UrXMTXk/XZS7avf2XR6CoSnjJO1SbWUulIOFXmrNmVUc6BZA+KODchIB8YmIPUn7m2lhsy/Lm7UScPow==
+
 motion@10.16.2:
   version "10.16.2"
   resolved "https://registry.yarnpkg.com/motion/-/motion-10.16.2.tgz#7dc173c6ad62210a7e9916caeeaf22c51e598d21"

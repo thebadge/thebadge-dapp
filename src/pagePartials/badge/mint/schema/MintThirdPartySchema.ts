@@ -17,6 +17,8 @@ export const MintThirdPartySchema = z
     destination: z.string(),
     // Badge Image on base64, generated from the badgePreview
     previewImage: z.string(),
+    // Required data to complete some information on the image
+    requiredData: z.record(z.string(), z.any()).optional(),
   })
   .superRefine(({ destination, preferMintMethod }, ctx) => {
     // Here we add the extra check to assert the field type when

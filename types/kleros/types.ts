@@ -1,3 +1,5 @@
+import { EnrichTextVariables } from '@/src/utils/enrichTextWithValues'
+
 export const KLEROS_LIST_TYPES_KEYS = [
   'address',
   'rich address',
@@ -31,4 +33,8 @@ export type MetadataColumn = {
   description: string
   type: KLEROS_LIST_TYPES
   isIdentifier: boolean
+}
+
+export type ThirdPartyMetadataColumn = MetadataColumn & {
+  replacementKey?: EnrichTextVariables
 }

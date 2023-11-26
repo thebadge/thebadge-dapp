@@ -3,6 +3,7 @@ import { RefinementCtx } from 'zod/lib/types'
 
 import {
   AddressSchema,
+  AvatarSchema,
   ExpirationTypeSchema,
   ImageSchema,
   LongTextSchema,
@@ -13,7 +14,7 @@ import { BadgeModelTemplate } from '@/types/badges/BadgeModel'
 export const BodyDataConfigurationSchema = z.object({
   // ------ DIPLOMA BASICS FIELD ------
   courseName: z.string(),
-  achievementDescription: z.string().optional(),
+  achievementDescription: z.string().default('has successfully completed the course'),
   achievementDate: z.string(),
 })
 export type BodyDataConfigurationSchemaType = z.infer<typeof BodyDataConfigurationSchema>
@@ -37,8 +38,10 @@ export type FooterConfigurationSchemaType = z.infer<typeof FooterConfigurationSc
 export const IssuerConfigurationSchema = z.object({
   // ------ DIPLOMA BASICS FIELD ------
   customIssuerEnabled: z.boolean().optional(),
-  issuedByLabel: z.string().optional(),
-  issuerAvatar: ImageSchema.optional(),
+  issuedByLabel: z.string().default('Issued by'),
+  issuerAvatar: AvatarSchema.optional(),
+  issuerTitle: z.string().max(25).optional(),
+  issuerDescription: z.string().max(100).optional(),
 })
 
 export type IssuerConfigurationSchemaType = z.infer<typeof IssuerConfigurationSchema>
