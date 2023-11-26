@@ -1,7 +1,7 @@
 import { BaseContract } from '@ethersproject/contracts'
 import useSWR, { SWRConfiguration } from 'swr'
 
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import getCacheKey from '@/src/utils/cacheKey'
 import { MySWRResponse, TupleParametersType, TupleReturnType, Writeable } from '@/types/utils'
 

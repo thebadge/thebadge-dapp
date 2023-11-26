@@ -12,15 +12,21 @@ export const DISCORD_URL = process.env.NEXT_PUBLIC_DISCORD_URL || 'https://disco
 export const MEDIUM_URL = process.env.NEXT_PUBLIC_MEDIUM_URL || 'https://medium.com/@TheBadge'
 export const GITHUB_URL = process.env.NEXT_PUBLIC_GITHUB_URL || 'https://github.com/thebadge'
 export const EMAIL_URL = process.env.NEXT_PUBLIC_EMAIL_URL || 'mailto:hello@thebadge.xyz'
+export const LINKEDIN_URL = 'https://www.linkedin.com'
+export const THE_BADGE_LINKEDIN_ID = process.env.NEXT_PUBLIC_THE_BADGE_LINKEDIN_ID || '86794678'
 export const DOCS_URL = process.env.NEXT_PUBLIC_DOCS_URL || 'https://docs.thebadge.xyz'
+export const DOCUMENTATION_URL = DOCS_URL + '/thebadge-documentation'
 
 export const APP_URL = process.env.NEXT_PUBLIC_FRONTEND_URL || 'http://localhost:3000'
 export const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5001'
-
+export const APP_DEFAULT_CHAIN_ID = process.env.NEXT_PUBLIC_DEFAULT_CHAIN_ID || 11155111
 export const KLEROS_COURT_URL = process.env.KLEROS_COURT_URL || 'https://court.kleros.io'
+export const PRIVACY_POLICY_URL = APP_URL + '/legal/privacy-policy'
+export const TERMS_AND_CONDITIONS_URL = APP_URL + '/legal/terms'
 
 export const IS_DEVELOP = process.env.NEXT_PUBLIC_DEV_MODE || false
 
+export const WEB3_MODAL_PROJECT_ID = process.env.NEXT_PUBLIC_WEB3_MODAL_PROJECT_ID || ''
 export const WEB3_AUTH_CLIENT_ID_TESTNET = process.env.NEXT_PUBLIC_WEB3AUTH_CLIENT_ID_TESTNET || ''
 export const WEB3_AUTH_CLIENT_ID_PRODUCTION =
   process.env.NEXT_PUBLIC_WEB3AUTH_CLIENT_ID_PRODUCTION || ''
@@ -40,7 +46,7 @@ export const DEFAULT_COURT_ID = process.env.NEXT_PUBLIC_KLEROS_DEFAULT_COURT || 
 // Kleros Court Case display config
 export const DYNAMIC_SCRIPT_IPFS_HASH =
   process.env.NEXT_PUBLIC_DYNAMIC_SCRIPT_IPFS_HASH ||
-  'QmRHjhpTvYQ3uLRWxEMh4zen7kmwZGPz7vLkYxLpssf1Jz'
+  'QmZ8gHDHenMHZ6WWCHTF3tn2NEhiP15Q5JK7kSCq1SM8x6'
 
 // Kleros Court evidence display config
 export const EVIDENCE_DISPLAY_INTERFACE_IPFS_HASH =

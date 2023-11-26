@@ -19,12 +19,10 @@ export default function TimeAgo({ timestamp }: { timestamp?: number }) {
     const tick = (): 0 | NodeJS.Timeout => {
       const now = timeNow.valueOf()
       if (!timestamp) {
-        console.warn('TimeAgo - None timestamp provided')
         return 0
       }
       const then = dayjs.unix(timestamp).valueOf()
       if (!then) {
-        console.warn('TimeAgo - Invalid timestamp provided')
         return 0
       }
       const seconds = Math.round(Math.abs(now - then) / 1000)

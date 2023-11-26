@@ -13,12 +13,12 @@ import { StatisticVisibilityToggle } from '@/src/pagePartials/profile/statistics
 import CuratorStatisticContent from '@/src/pagePartials/profile/statistics/curator/CuratorStatisticContent'
 
 export enum CuratorStatistic {
-  amountMade = 'Challenges made',
-  amountWon = 'Challenges won ',
-  amountLost = 'Challenges lost ',
-  percentageWon = '% of challenges won',
-  averageFee = 'AVG of fees earned by challenges made',
-  ranking = 'Position in curators ranking',
+  amountMade = 'challengesMadeAmount',
+  amountWon = 'challengesMadeWonAmount',
+  amountLost = 'challengesMadeLostAmount',
+  percentageWon = 'percentageWonPercentage',
+  averageFee = 'averageFeeGain',
+  ranking = 'curatorsRanking',
 }
 
 export const CuratorStatisticDefaultVisibility = {

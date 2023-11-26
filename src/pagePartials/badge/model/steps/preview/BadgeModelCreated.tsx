@@ -6,14 +6,15 @@ import { BadgePreview, colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 import { useFormContext } from 'react-hook-form'
 
-import { CreateModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateModelSchema'
+import { CreateCommunityModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateCommunityModelSchema'
 import { StepButton } from '@/src/pagePartials/badge/model/steps/StepFooter'
 import {
   BADGE_MODEL_BACKGROUNDS,
   BADGE_MODEL_TEXT_CONTRAST,
 } from '@/src/pagePartials/badge/model/steps/uiBasics/BadgeModelUIBasics'
 import { cleanCreateModelFormValues } from '@/src/pagePartials/badge/model/utils'
-import { ProfileFilter } from '@/src/pagePartials/profile/Profile'
+import { NormalProfileFilter } from '@/src/pagePartials/profile/UserProfile'
+import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 
 const BoxShadow = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -25,7 +26,7 @@ export default function BadgeModelCreated() {
   const { t } = useTranslation()
   const router = useRouter()
 
-  const { watch } = useFormContext<CreateModelSchemaType>()
+  const { watch } = useFormContext<CreateCommunityModelSchemaType>()
 
   const watchedName = watch('name')
   const watchedDescription = watch('description')
@@ -60,7 +61,9 @@ export default function BadgeModelCreated() {
       </Stack>
       <StepButton
         color={'primary'}
-        onClick={() => router.push(`/profile?filter=${ProfileFilter.CREATED_BADGES}`)}
+        onClick={() =>
+          router.push(generateProfileUrl({ filter: NormalProfileFilter.CREATED_BADGES }))
+        }
         sx={{ m: 'auto' }}
         variant="contained"
       >

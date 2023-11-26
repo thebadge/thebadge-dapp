@@ -6,9 +6,13 @@ import useChainId from '@/src/hooks/theBadge/useChainId'
 export const useProtocolStatistic = () => {
   const gql = useSubgraph()
   const chainId = useChainId()
-  return useSWR([`protocolStatistic:`, chainId], async () => {
-    const protocolStatisticsData = await gql.protocolStatistics()
+  return useSWR(
+    [`protocolStatistic:`, chainId],
+    async () => {
+      const protocolStatisticsData = await gql.protocolStatistics()
 
-    return protocolStatisticsData.protocolStatistics[0]
-  })
+      return protocolStatisticsData.protocolStatistics[0]
+    },
+    { revalidateOnMount: true },
+  )
 }

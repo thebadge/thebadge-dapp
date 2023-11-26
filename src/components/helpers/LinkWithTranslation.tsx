@@ -18,9 +18,11 @@ export default function LinkWithTranslation({
   children,
   pathname,
   queryParams,
+  target,
 }: {
   children: React.ReactNode
   pathname: string
+  target?: string
   queryParams?: { [key: string]: string }
 }) {
   const [query] = useLanguageQuery()
@@ -28,7 +30,7 @@ export default function LinkWithTranslation({
   const lang = query && query.lang ? query.lang : undefined
 
   return (
-    <StyledLink href={{ pathname: pathname, query: { lang, ...queryParams } }}>
+    <StyledLink href={{ pathname: pathname, query: { lang, ...queryParams } }} target={target}>
       {children}
     </StyledLink>
   )

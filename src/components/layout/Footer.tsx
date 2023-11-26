@@ -22,6 +22,7 @@ import {
 import { useSizeSM } from '@/src/hooks/useSize'
 import { useCookiesWarningContext } from '@/src/providers/cookiesWarningProvider'
 import { useColorMode } from '@/src/providers/themeProvider'
+import { generateLegalPrivacyPolicyUrl } from '@/src/utils/navigation/generateUrl'
 
 const SocialContainer = styled(Box)(({ theme }) => ({
   color: 'white',
@@ -29,6 +30,15 @@ const SocialContainer = styled(Box)(({ theme }) => ({
   alignItems: 'center',
   justifyContent: 'center',
   columnGap: theme.spacing(2),
+}))
+
+const ColumnsContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  gap: theme.spacing(8),
+  [theme.breakpoints.down('sm')]: {
+    gap: theme.spacing(1),
+    justifyContent: 'space-between',
+  },
 }))
 
 export const Footer: React.FC = () => {
@@ -40,15 +50,13 @@ export const Footer: React.FC = () => {
 
   const year = new Date().getFullYear()
 
-  const iconColor = 'white'
-
   return (
-    <Box id="footer" sx={{ background: 'black', mt: 8 }}>
+    <Box id="footer" sx={{ background: 'black', mt: 20 }}>
       <Container>
         <Stack sx={{ justifyContent: 'center', gap: 5, mb: 5 }}>
           <Divider color={mode === 'dark' ? 'white' : 'black'} sx={{ borderWidth: '1px' }} />
-          <Box sx={{ display: 'flex', flex: 1, justifyContent: 'space-between' }}>
-            <Box sx={{ display: 'flex', gap: 8 }}>
+          <Box sx={!isMobile ? { display: 'flex', flex: 1, justifyContent: 'space-between' } : {}}>
+            <ColumnsContainer>
               <Stack gap={1.5}>
                 <Typography color={colors.white} fontWeight="800" variant="h6">
                   {t('footer.about.title')}
@@ -111,15 +119,15 @@ export const Footer: React.FC = () => {
                 <Typography
                   color={colors.white + ' !important'}
                   component={'a'}
-                  href={'/legal/privacy-policy'}
+                  href={generateLegalPrivacyPolicyUrl()}
                   sx={{ fontSize: '1rem !important' }}
                 >
                   {/* Privacy Police */}
                   {t('footer.legal.items.0.title')}
                 </Typography>
               </Stack>
-            </Box>
-            {!isMobile && <LogoWithText color={iconColor} size={120} />}
+            </ColumnsContainer>
+            {!isMobile && <LogoWithText color={colors.white} size={120} />}
           </Box>
           <Box
             display={'flex'}
@@ -128,11 +136,11 @@ export const Footer: React.FC = () => {
             justifyContent={'space-between'}
           >
             <SocialContainer>
-              <IconTwitter color={iconColor} link={TWITTER_URL} />
-              <IconGithub color={iconColor} link={GITHUB_URL} />
-              <IconMedium color={iconColor} link={MEDIUM_URL} />
-              <IconEmail color={iconColor} link={EMAIL_URL} />
-              <IconDiscord color={iconColor} link={DISCORD_URL} />
+              <IconTwitter color={colors.white} link={TWITTER_URL} />
+              <IconGithub color={colors.white} link={GITHUB_URL} />
+              <IconMedium color={colors.white} link={MEDIUM_URL} />
+              <IconEmail color={colors.white} link={EMAIL_URL} />
+              <IconDiscord color={colors.white} link={DISCORD_URL} />
             </SocialContainer>
             <Typography color={colors.white} component={'div'} textAlign="center">
               {t('footer.copyright', { year })}

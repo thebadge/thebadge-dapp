@@ -73,6 +73,7 @@ type ImageInputProps = {
   placeholder?: string
   value: ImageType | undefined
 }
+
 export function ImageInput({ error, label, onChange, placeholder, value }: ImageInputProps) {
   const [images, setImages] = useState<ImageListType>(value ? [value] : [])
   const maxNumber = 1

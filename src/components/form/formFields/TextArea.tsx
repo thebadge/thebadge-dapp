@@ -1,6 +1,10 @@
 import * as React from 'react'
 
-import { TextField as MUITextField, styled } from '@mui/material'
+import {
+  TextField as MUITextField,
+  TextFieldProps as MUITextFieldProps,
+  styled,
+} from '@mui/material'
 import { FieldError } from 'react-hook-form'
 
 export enum TextFieldStatus {
@@ -12,7 +16,7 @@ const StyledTextField = styled(MUITextField)(({ theme }) => ({
   margin: theme.spacing(0),
 }))
 
-type TextAreaProps = {
+type TextAreaProps = Omit<MUITextFieldProps, 'error' | 'onChange'> & {
   error?: FieldError
   label?: string
   onChange: (event: any) => void
@@ -20,7 +24,15 @@ type TextAreaProps = {
   rows?: number
   value: string | undefined
 }
-export function TextArea({ error, label, onChange, placeholder, rows = 3, value }: TextAreaProps) {
+export function TextArea({
+  error,
+  label,
+  onChange,
+  placeholder,
+  rows = 3,
+  value,
+  ...props
+}: TextAreaProps) {
   return (
     <StyledTextField
       color="secondary"
@@ -31,9 +43,10 @@ export function TextArea({ error, label, onChange, placeholder, rows = 3, value 
       onChange={onChange}
       placeholder={placeholder}
       rows={rows}
-      sx={{ textTransform: 'capitalize', flex: 1 }}
+      sx={{ flex: 1 }}
       value={value ? value : ''}
       variant={'standard'}
+      {...props}
     />
   )
 }

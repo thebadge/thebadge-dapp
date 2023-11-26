@@ -6,6 +6,10 @@ gql`
     status
     uri
     validUntil
+    createdTxHash
+    claimedTxHash
+    createdAt
+    contractAddress
     account {
       id
     }
@@ -16,9 +20,13 @@ gql`
       creatorFee
       validFor
       badgesMintedAmount
+      contractAddress
       badgeModelKleros {
         tcrList
         challengePeriodDuration
+      }
+      creator {
+        id
       }
     }
     badgeKlerosMetaData {
@@ -32,6 +40,8 @@ gql`
     id
     status
     uri
+    createdTxHash
+    contractAddress
     account {
       id
     }
@@ -40,6 +50,7 @@ gql`
       uri
       controllerType
       validFor
+      contractAddress
       badgeModelKleros {
         tcrList
         challengePeriodDuration
@@ -61,12 +72,15 @@ gql`
     id
     status
     uri
+    createdTxHash
+    contractAddress
     account {
       id
     }
     badgeModel {
       id
       uri
+      contractAddress
       badgeModelKleros {
         tcrList
         registrationUri
@@ -83,8 +97,10 @@ gql`
     id
     uri
     status
+    contractAddress
     badgeModel {
       id
+      contractAddress
     }
     badgeKlerosMetaData {
       reviewDueDate

@@ -1,7 +1,12 @@
 import * as React from 'react'
 
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
-import { Box, TextField as MUITextField, Tooltip, styled } from '@mui/material'
+import {
+  TextField as MUITextField,
+  TextFieldProps as MUITextFieldProps,
+  Tooltip,
+  styled,
+} from '@mui/material'
 import { FieldError } from 'react-hook-form'
 
 export enum TextFieldStatus {
@@ -9,26 +14,29 @@ export enum TextFieldStatus {
   success = 'success',
 }
 
-const Wrapper = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  position: 'relative',
-  rowGap: theme.spacing(1),
-}))
-
 const StyledTextField = styled(MUITextField)(({ theme }) => ({
   margin: theme.spacing(0),
 }))
 
-type TextFieldProps = {
+type TextFieldProps = Omit<MUITextFieldProps, 'error' | 'onChange'> & {
   error?: FieldError
-  label?: string
   onChange: (event: any) => void
   placeholder?: string
+  // Temporal solution to show the real TextField placeholder as a level,
+  // it's made on this way to prevent a huge rework around other usages
+  ghostLabel?: string
   value: string | undefined
 }
 
-export function TextField({ error, label, onChange, placeholder, value }: TextFieldProps) {
+export function TextField({
+  error,
+  ghostLabel,
+  label,
+  onChange,
+  placeholder,
+  value,
+  ...props
+}: TextFieldProps) {
   return (
     <StyledTextField
       InputProps={{
@@ -40,12 +48,14 @@ export function TextField({ error, label, onChange, placeholder, value }: TextFi
       }}
       color="secondary"
       error={!!error}
+      fullWidth
       helperText={error?.message || ' '}
       label={label}
       onChange={onChange}
-      sx={{ textTransform: 'capitalize', width: '100%' }}
+      placeholder={ghostLabel}
       value={value ? value : ''}
       variant={'standard'}
+      {...props}
     />
   )
 }

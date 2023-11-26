@@ -11,22 +11,21 @@ import { useChallengeCost } from '@/src/hooks/kleros/useChallengeCost'
 import { useRemovalCost } from '@/src/hooks/kleros/useRemovalCost'
 import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
 import { useBadgeKlerosMetadata } from '@/src/hooks/subgraph/useBadgeKlerosMetadata'
-import { useContractInstance } from '@/src/hooks/useContractInstance'
-import { TimeLeft, useDate } from '@/src/hooks/useDate'
+import useBadgeHelpers, { ReviewBadge } from '@/src/hooks/theBadge/useBadgeHelpers'
+import useTBContract from '@/src/hooks/theBadge/useTBContract'
 import useTransaction from '@/src/hooks/useTransaction'
 import CurationCriteriaLink from '@/src/pagePartials/badge/curate/CurationCriteriaLink'
 import ChallengeCost from '@/src/pagePartials/badge/curate/challenge/ChallengeCost'
 import EvidenceForm, {
   EvidenceSchema,
 } from '@/src/pagePartials/badge/curate/evidenceForm/EvidenceForm'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import {
   removeChallengedBadgeId,
   saveChallengedBadgeId,
 } from '@/src/utils/badges/challengeBadgesHelpers'
 import { encodeIpfsEvidence } from '@/src/utils/badges/createBadgeModelHelpers'
 import { BadgeStatus } from '@/types/generated/subgraph'
-import { TheBadge__factory } from '@/types/generated/typechain'
 
 type ChallengeModalProps = {
   open: boolean
@@ -51,7 +50,7 @@ function ChallengeModalContent({ badgeId, onClose }: { badgeId: string; onClose:
   const badgeKlerosMetadata = useBadgeKlerosMetadata(badgeId)
   const challengeCost = useChallengeCost(badgeId)
   const removalCost = useRemovalCost(badgeId)
-  const { getTimeLeftToExpire, timestampToDate } = useDate()
+  const { getBadgeReviewStatus } = useBadgeHelpers()
 
   const badge = badgeById.data
   if (!badge) {
@@ -59,7 +58,7 @@ function ChallengeModalContent({ badgeId, onClose }: { badgeId: string; onClose:
   }
 
   const badgeModelId = badge.badgeModel.id
-  const theBadge = useContractInstance(TheBadge__factory, 'TheBadge')
+  const theBadge = useTBContract()
 
   async function onSubmit(data: z.infer<typeof EvidenceSchema>) {
     if (!badge || !badge.status) {
@@ -82,13 +81,12 @@ function ChallengeModalContent({ badgeId, onClose }: { badgeId: string; onClose:
       if (!badgeKlerosMetadata || !badgeKlerosMetadata.data) {
         throw 'There was an error fetching the badge metadata or the badge is not a klerosBadge, try again in some minutes.'
       }
-      const dueDate: Date = timestampToDate(badgeKlerosMetadata.data.reviewDueDate)
-      const timeLeft: TimeLeft = getTimeLeftToExpire(dueDate)
+      const { reviewTimeFinished } = getBadgeReviewStatus(badge as ReviewBadge)
       switch (badge.status) {
         case BadgeStatus.Requested:
           // If the badge finished its reviewPeriod but it was not claimed they are in an intermediate status: "Claimable", therefore neither challenge or removeItem is possible
           // This logic should never be executed, the frontend should filter badges in this intermediate state, but I throw an exception here just in case.
-          if (timeLeft.quantity === 0) {
+          if (reviewTimeFinished) {
             throw new Error(
               'The badge was not claimed, challenge an unclaimed badge is not possible.',
             )
@@ -130,7 +128,7 @@ function ChallengeModalContent({ badgeId, onClose }: { badgeId: string; onClose:
           ? t('badge.challenge.modal.remove')
           : t('badge.challenge.modal.challenge')}
       </Typography>
-      <SafeSuspense fallback={<Skeleton sx={{ margin: 'auto' }} variant={'text'} width={500} />}>
+      <SafeSuspense fallback={<Skeleton sx={{ margin: 'auto' }} variant={'text'} width="75%" />}>
         <CurationCriteriaLink
           badgeModelId={badgeModelId}
           isRemoval={badge.status === BadgeStatus.Approved}

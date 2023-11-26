@@ -8,9 +8,11 @@ import { ButtonV2, colors, gradients } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 
 import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
+import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
 import { useBadgeOwnershipData } from '@/src/hooks/subgraph/useIsBadgeOwner'
 import { useColorMode } from '@/src/providers/themeProvider'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
+import { generateBadgePreviewUrl } from '@/src/utils/navigation/generateUrl'
 
 const ModalBody = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -38,13 +40,19 @@ export default function AlreadyOwnThisBadgeError({ onClose }: { onClose: VoidFun
   const { t } = useTranslation()
   const { mode } = useColorMode()
   const router = useRouter()
-  const { address } = useWeb3Connection()
+  const { address, appChainId } = useWeb3Connection()
   const badgeModelId = useModelIdParam()
 
-  const ownedBadges = useBadgeOwnershipData(badgeModelId, address as string)
+  const ownedBadges = useBadgeOwnershipData(badgeModelId, address)
+  const badgeModelQuery = useBadgeModel(badgeModelId)
+  const badgeModel = badgeModelQuery?.data?.badgeModel
 
   if (!ownedBadges || !ownedBadges.length) {
     // This case it would never happen, but it's the safest way to proceed
+    onClose()
+    return null
+  }
+  if (!badgeModel) {
     onClose()
     return null
   }
@@ -71,7 +79,15 @@ export default function AlreadyOwnThisBadgeError({ onClose }: { onClose: VoidFun
         <ButtonV2
           backgroundColor={colors.transparent}
           fontColor={mode === 'light' ? colors.blackText : colors.white}
-          onClick={() => router.push(`/badge/preview/${ownedBadges[0].id}`)}
+          onClick={() => {
+            const selectedBadge = ownedBadges[0]
+            return router.push(
+              generateBadgePreviewUrl(selectedBadge.id, {
+                theBadgeContractAddress: selectedBadge.contractAddress,
+                connectedChainId: appChainId,
+              }),
+            )
+          }}
           sx={{
             borderRadius: '10px',
             fontSize: '14px !important',

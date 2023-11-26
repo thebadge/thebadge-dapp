@@ -8,6 +8,7 @@ import { DisplayLink } from '@/src/components/displayEvidence/DisplayLink'
 import { DisplayLongText } from '@/src/components/displayEvidence/DisplayLongText'
 import { DisplayText } from '@/src/components/displayEvidence/DisplayText'
 import { KLEROS_LIST_TYPES, MetadataColumn } from '@/types/kleros/types'
+import { WCAddress } from '@/types/utils'
 
 export default function DisplayEvidenceField({
   columnItem,
@@ -24,7 +25,7 @@ export default function DisplayEvidenceField({
         <DisplayAddress
           label={columnItem.label}
           placeholder={columnItem.description}
-          value={value}
+          value={value as WCAddress}
         />
       )
     case KLEROS_LIST_TYPES.TEXT:

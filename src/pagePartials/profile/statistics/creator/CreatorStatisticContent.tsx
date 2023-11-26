@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import * as React from 'react'
 
 import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange'
@@ -21,7 +22,8 @@ import { StatisticVisibility } from '@/src/hooks/nextjs/useStatisticsVisibility'
 import useCreatorStatistics from '@/src/hooks/subgraph/useCreatorStatistics'
 import StatisticRow from '@/src/pagePartials/profile/statistics/addons/StatisticRow'
 import { CreatorStatistic } from '@/src/pagePartials/profile/statistics/creator/CreatorStatistics'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+import { useProfileProvider } from '@/src/providers/ProfileProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
 export default function CreatorStatisticContent({
   statisticVisibility,
@@ -31,10 +33,14 @@ export default function CreatorStatisticContent({
   const { t } = useTranslation()
   const { appChainId } = useWeb3Connection()
   const networkConfig = getNetworkConfig(appChainId)
+  const { refreshWatcher } = useProfileProvider()
 
-  const statistics = useCreatorStatistics()
+  const { data, mutate } = useCreatorStatistics()
+  const creatorStatistic = data?.creatorStatistic
 
-  const creatorStatistic = statistics.data?.creatorStatistic
+  useEffect(() => {
+    mutate()
+  }, [mutate, refreshWatcher])
 
   return (
     <StatisticsContainer>
@@ -43,7 +49,7 @@ export default function CreatorStatisticContent({
           <StatisticRow
             color={colors.purple}
             icon={<MilitaryTechOutlinedIcon sx={{ color: colors.purple }} />}
-            label={t('profile.statistics.creator.amountModelCreated')}
+            label={t('profile.statistics.creator.amountModelsCreated')}
             value={`${creatorStatistic?.createdBadgeModelsAmount || 0}`}
           />
           <StatisticRow
@@ -79,12 +85,14 @@ export default function CreatorStatisticContent({
               <Typography sx={{ fontSize: '48px !important', fontWeight: 900 }}>
                 {formatUnits(
                   BigNumber.from(creatorStatistic?.totalFeesEarned || ZERO_BN).div(
-                    creatorStatistic?.createdBadgeModelsMintedAmount || 1,
+                    creatorStatistic?.createdBadgeModelsMintedAmount > 0
+                      ? creatorStatistic?.createdBadgeModelsMintedAmount
+                      : 1,
                   ),
                 )}
               </Typography>
               <Typography sx={{ textAlign: 'center', color: 'text.primary' }}>
-                Fees collected <br /> per badge
+                {t('profile.statistics.creator.earnedPerModel')}
               </Typography>
             </StatisticSquare>
           </Stack>
@@ -97,10 +105,10 @@ export default function CreatorStatisticContent({
                 sx={{ color: colors.purple, position: 'absolute', top: 8, left: 8 }}
               />
               <Typography sx={{ fontSize: '48px !important', fontWeight: 900 }}>
-                {creatorStatistic?.createdBadgeModelsAmount}
+                {creatorStatistic?.createdBadgeModelsAmount || 0}
               </Typography>
-              <Typography sx={{ textAlign: 'center', color: colors.purple }}>
-                {t('profile.statistics.creator.amountModelCreated')}
+              <Typography sx={{ textAlign: 'center', color: 'text.primary' }}>
+                {t('profile.statistics.creator.amountModelsCreated')}
               </Typography>
             </StatisticSquare>
           </Stack>
@@ -115,7 +123,7 @@ export default function CreatorStatisticContent({
               <Typography sx={{ fontSize: '48px !important', fontWeight: 900 }}>
                 {creatorStatistic?.mostPopularCreatedBadge}
               </Typography>
-              <Typography sx={{ textAlign: 'center', color: colors.purple }}>
+              <Typography sx={{ textAlign: 'center', color: 'text.primary' }}>
                 {t('profile.statistics.creator.amountOfMinters')}
               </Typography>
             </StatisticSquare>
@@ -128,7 +136,7 @@ export default function CreatorStatisticContent({
               <Typography sx={{ fontSize: '48px !important', fontWeight: 900 }}>
                 {creatorStatistic?.createdBadgeModelsMintedAmount}
               </Typography>
-              <Typography sx={{ textAlign: 'center', color: colors.purple }}>
+              <Typography sx={{ textAlign: 'center', color: 'text.primary' }}>
                 {t('profile.statistics.creator.totalMinted')}
               </Typography>
             </StatisticSquare>
@@ -144,7 +152,7 @@ export default function CreatorStatisticContent({
               <Typography sx={{ fontSize: '48px !important', fontWeight: 900 }}>
                 {creatorStatistic?.mostPopularCreatedBadge}
               </Typography>
-              <Typography sx={{ textAlign: 'center', color: colors.purple }}>
+              <Typography sx={{ textAlign: 'center', color: 'text.primary' }}>
                 {t('profile.statistics.creator.mostMinted')}
               </Typography>
             </StatisticSquare>
@@ -155,7 +163,7 @@ export default function CreatorStatisticContent({
           <Stack flex="1" minWidth="160px">
             <StatisticSquare color={colors.purple}>
               <MilitaryTechOutlinedIcon sx={{ color: colors.purple, fontSize: '4rem' }} />
-              <Typography sx={{ textAlign: 'center', color: colors.purple }}>
+              <Typography sx={{ textAlign: 'center', color: 'text.primary' }}>
                 {t('profile.statistics.creator.ranking', { position: 7 })}
               </Typography>
             </StatisticSquare>

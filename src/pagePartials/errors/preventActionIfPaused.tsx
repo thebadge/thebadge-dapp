@@ -5,7 +5,7 @@ import { styled } from '@mui/material'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
-import ActionIsPaused from '@/src/pagePartials/errors/displays/AcctionIsPaused'
+import ActionIsPaused from '@/src/pagePartials/errors/displays/ActionIsPaused'
 
 const Wrapper = styled('div')`
   display: flex;
@@ -20,11 +20,11 @@ type Props = {
   minHeight?: number
 }
 
-export const PreventActionIfBadgeTypePaused: React.FC<Props> = ({ children, minHeight }) => {
+export const PreventActionIfBadgeModelPaused: React.FC<Props> = ({ children, minHeight }) => {
   const badgeModelId = useModelIdParam()
-  const badgeModel = useBadgeModel(badgeModelId)
+  const { data } = useBadgeModel(badgeModelId)
 
-  if (badgeModel.data?.badgeModel.paused) {
+  if (data?.badgeModel.paused) {
     return (
       <Wrapper style={{ minHeight }}>
         <ActionIsPaused />
@@ -36,7 +36,6 @@ export const PreventActionIfBadgeTypePaused: React.FC<Props> = ({ children, minH
 }
 
 export const PreventActionIfRegisterPaused: React.FC<Props> = ({ children, minHeight }) => {
-  // TODO, Need to check with Nico where is this flag, maybe is coming with the next SC update
   const isRegisterPaused = false
   if (isRegisterPaused) {
     return (

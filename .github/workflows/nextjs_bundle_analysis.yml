@@ -23,7 +23,7 @@ jobs:
       - name: Set up node
         uses: actions/setup-node@v1
         with:
-          node-version: '16.x'
+          node-version: '18.16.1'
 
       - name: Install dependencies
         uses: bahmutov/npm-install@v1
@@ -45,6 +45,7 @@ jobs:
         run: yarn build
         env:
           IS_GH_ACTION: true
+          NEXT_PUBLIC_WEB3_MODAL_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_WEB3_MODAL_PROJECT_ID }}
 
       # Here's the first place where next-bundle-analysis' own script is used
       # This step pulls the raw bundle stats for the current bundle

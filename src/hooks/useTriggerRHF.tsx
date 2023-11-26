@@ -13,7 +13,7 @@ export function useTriggerRHF<
   TContext = any,
 >(methods: UseFormReturn<TFieldValues, TContext>) {
   return useCallback(
-    async (stepName: string | string[]) => {
+    async (stepName: string | string[] | undefined) => {
       return methods.trigger(stepName as Path<TFieldValues> | Path<TFieldValues>[])
     },
     [methods],

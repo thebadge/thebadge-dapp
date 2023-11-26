@@ -1,31 +1,40 @@
 import Kleros from './abis/Kleros.json'
 import TheBadge from './abis/TheBadge.json'
+import TheBadgeStore from './abis/TheBadgeStore.json'
 import { Chains } from '@/src/config/web3'
 
 export const contracts = {
   TheBadge: {
     address: {
-      [Chains.goerli]: '0x86F127fef233C799f2aA130cCc919045f954957d',
-      [Chains.sepolia]: '0x83701fe7a462bD714A9006a9FF604367C24613E3',
+      [Chains.goerli]: '0x344DEeF65b47454E2CdCe24FFCFa12f32180253B',
+      [Chains.sepolia]: '0x8D6E4aa214e3eD2E895E0B6938eED63dda4c8C73',
       [Chains.gnosis]: 'null',
     },
     abi: TheBadge.abi,
   },
   TheBadgeUsers: {
     address: {
-      [Chains.goerli]: '0x196EF38Eca64a6FEa6E6Fc8AdF85Ac1BE44f4804',
-      [Chains.sepolia]: '0x5E7c648EE852241f145e1d480932C091979883D1',
+      [Chains.goerli]: '0x90d790998f8E19A10AAb8c504c7408c1E61F040a',
+      [Chains.sepolia]: '0xa86D1858D751A2f71231456fC136c4837aD76009',
       [Chains.gnosis]: 'null',
     },
     abi: TheBadge.abi,
   },
   TheBadgeModels: {
     address: {
-      [Chains.goerli]: '0x20933724e3C2F177d8Cfe4b1CEEF829A17aD883B',
-      [Chains.sepolia]: '0x5df8183d0B77Bea3B72391eB0c4c873d2fdDC6f2',
+      [Chains.goerli]: '0x156dA5dCA074AC3eFafa779bF24ECd0e02Fa8f18',
+      [Chains.sepolia]: '0xced067Ee9Fa889156697Ea2B8fA79ced10119a3A',
       [Chains.gnosis]: 'null',
     },
     abi: TheBadge.abi,
+  },
+  TheBadgeStore: {
+    address: {
+      [Chains.goerli]: '0x49F7e71dbad648faB6A273F15e363161744a1191',
+      [Chains.sepolia]: '0x8de751B764334240E54B4177300Fa8De4301deBC',
+      [Chains.gnosis]: '',
+    },
+    abi: TheBadgeStore.abi,
   },
   Kleros: {
     address: {

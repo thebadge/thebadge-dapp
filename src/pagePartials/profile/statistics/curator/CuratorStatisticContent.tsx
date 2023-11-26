@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import * as React from 'react'
 
 import BalanceOutlinedIcon from '@mui/icons-material/BalanceOutlined'
@@ -18,7 +19,8 @@ import { StatisticVisibility } from '@/src/hooks/nextjs/useStatisticsVisibility'
 import useCuratorStatistics from '@/src/hooks/subgraph/useCuratorStatistics'
 import StatisticRow from '@/src/pagePartials/profile/statistics/addons/StatisticRow'
 import { CuratorStatistic } from '@/src/pagePartials/profile/statistics/curator/CuratorStatistics'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+import { useProfileProvider } from '@/src/providers/ProfileProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import { percentage } from '@/src/utils/numbers'
 
 export default function CuratorStatisticContent({
@@ -29,10 +31,15 @@ export default function CuratorStatisticContent({
   const { t } = useTranslation()
   const { appChainId } = useWeb3Connection()
   const networkConfig = getNetworkConfig(appChainId)
+  const { refreshWatcher } = useProfileProvider()
 
-  const statistics = useCuratorStatistics()
+  const { data, mutate } = useCuratorStatistics()
 
-  const curatorStatistic = statistics.data?.curatorStatistic
+  const curatorStatistic = data?.curatorStatistic
+
+  useEffect(() => {
+    mutate()
+  }, [mutate, refreshWatcher])
 
   return (
     <StatisticsContainer>

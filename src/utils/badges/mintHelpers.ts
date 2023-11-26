@@ -2,13 +2,57 @@ import { APP_URL } from '@/src/constants/common'
 import { convertHashToValidIPFSKlerosHash } from '@/src/utils/fileUtils'
 import ipfsUpload from '@/src/utils/ipfsUpload'
 import { KlerosListStructure } from '@/src/utils/kleros/generateKlerosListMetaEvidence'
+import { generateBadgePreviewUrl, generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 import {
   BadgeEvidenceMetadata,
   BadgeMetadata,
   BadgeModelMetadata,
 } from '@/types/badges/BadgeMetadata'
+import { ChainsValues } from '@/types/chains'
 import { MetadataColumn } from '@/types/kleros/types'
 import { BackendFileUpload } from '@/types/utils'
+
+type ThirdPartyEvidence = {
+  estimatedBadgeId: string
+  theBadgeContractAddress: string
+  appChainId: ChainsValues
+  badgeModelMetadata: BadgeModelMetadata
+  additionalArgs: {
+    imageBase64File: string
+  }
+}
+
+export async function createAndUploadThirdPartyBadgeMetadata({
+  additionalArgs,
+  appChainId,
+  badgeModelMetadata,
+  estimatedBadgeId,
+  theBadgeContractAddress,
+}: ThirdPartyEvidence) {
+  const badgeMetadataIPFSUploaded = await ipfsUpload<BadgeMetadata<BackendFileUpload>>({
+    attributes: {
+      name: badgeModelMetadata?.name || '',
+      description: badgeModelMetadata?.description || '',
+      external_link:
+        APP_URL +
+        generateBadgePreviewUrl(estimatedBadgeId, {
+          theBadgeContractAddress: theBadgeContractAddress,
+          connectedChainId: appChainId,
+        }),
+      attributes: [
+        {
+          trait_type: 'CreationDate',
+          value: Date.now(),
+          display_type: 'date',
+        },
+      ],
+      image: { mimeType: 'image/png', base64File: additionalArgs.imageBase64File },
+    },
+    filePaths: ['image'],
+  })
+
+  return `ipfs://${badgeMetadataIPFSUploaded.result?.ipfsHash}`
+}
 
 export async function createAndUploadBadgeMetadata(
   badgeModelMetadata: BadgeModelMetadata,
@@ -21,7 +65,7 @@ export async function createAndUploadBadgeMetadata(
     attributes: {
       name: badgeModelMetadata?.name || '',
       description: badgeModelMetadata?.description || '',
-      external_link: `${APP_URL}/profile/${minterAddress}`,
+      external_link: APP_URL + generateProfileUrl({ address: minterAddress }),
       attributes: [],
       image: { mimeType: 'image/png', base64File: additionalArgs.imageBase64File },
     },

@@ -15,7 +15,7 @@ export const NavLink: React.FC<PropsWithChildren<Props>> = ({
   const router = useRouter()
 
   return (
-    <Link href={href} legacyBehavior passHref>
+    <Link href={href} legacyBehavior passHref prefetch={false}>
       <a className={`${className} ${router.pathname === href && 'active'}`} {...restProps}>
         {children}
       </a>

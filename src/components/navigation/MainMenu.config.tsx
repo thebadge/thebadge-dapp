@@ -7,8 +7,13 @@ import { Profile as ProfileIcon } from '@/src/components/assets/Profile'
 import { MenuItem } from '@/src/components/navigation/MainMenu.types'
 import { DOCS_URL } from '@/src/constants/common'
 import { useColorMode } from '@/src/providers/themeProvider'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import { ThemeType } from '@/src/theme/types'
+import {
+  generateBadgeExplorer,
+  generateBaseUrl,
+  generateProfileUrl,
+} from '@/src/utils/navigation/generateUrl'
 
 export const useMainMenuItems = () => {
   const { address } = useWeb3Connection()
@@ -20,19 +25,19 @@ export const useMainMenuItems = () => {
       type: 'color',
       icon: <HomeIcon />,
       title: 'Home',
-      href: '/',
+      href: generateBaseUrl(),
     },
     {
       type: 'color',
       icon: <ExploreIcon />,
       title: 'Explore',
-      href: '/badge/explorer',
+      href: generateBadgeExplorer(),
     },
     {
       type: 'color',
       icon: <ProfileIcon />,
       title: 'Profile',
-      href: '/profile',
+      href: generateProfileUrl(),
       validation: !!address,
     },
   ]

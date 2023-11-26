@@ -1,11 +1,13 @@
 import { JsonRpcProvider } from '@ethersproject/providers'
-import { BigNumberish, constants } from 'ethers'
+import { BigNumberish } from 'ethers'
 import { defaultAbiCoder } from 'ethers/lib/utils'
 import { z } from 'zod'
 
 import { DeltaPDFSchema } from '@/src/components/form/helpers/customSchemas'
 import { APP_URL } from '@/src/constants/common'
-import { BadgeModelCriteriaType } from '@/src/pagePartials/badge/model/schema/CreateModelSchema'
+import { BadgeModelCommunityCriteriaType } from '@/src/pagePartials/badge/model/schema/CreateCommunityModelSchema'
+import { CreateThirdPartyModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateThirdPartyModelSchema'
+import { BADGE_MODEL_TEXT_CONTRAST } from '@/src/pagePartials/badge/model/steps/uiBasics/BadgeModelUIBasics'
 import { convertHashToValidIPFSKlerosHash } from '@/src/utils/fileUtils'
 import ipfsUpload from '@/src/utils/ipfsUpload'
 import {
@@ -13,12 +15,39 @@ import {
   generateKlerosListMetaEvidence,
 } from '@/src/utils/kleros/generateKlerosListMetaEvidence'
 import { isTestnet } from '@/src/utils/network'
-import { BadgeModelMetadata, BadgeNFTAttributesType } from '@/types/badges/BadgeMetadata'
+import {
+  BadgeModelMetadata,
+  BadgeNFTAttributesType,
+  DiplomaNFTAttributesType,
+} from '@/types/badges/BadgeMetadata'
+import { BadgeModelTemplate } from '@/types/badges/BadgeModel'
 import { Kleros__factory } from '@/types/generated/typechain'
 import { MetadataColumn } from '@/types/kleros/types'
 import { BackendFileUpload } from '@/types/utils'
 
-export async function createAndUploadBadgeModelMetadata(
+export async function createAndUploadBadgeModelMetadata(data: CreateThirdPartyModelSchemaType) {
+  const { template } = data
+  if (template === BadgeModelTemplate.Diploma) {
+    const { description, name, ...rest } = data
+    return createAndUploadDiplomaBadgeModelMetadata(name, description, rest)
+  }
+  if (template === BadgeModelTemplate.Classic) {
+    const { backgroundImage, badgeModelLogoUri, description, name, textContrast } = data
+    // This is a safe validation, the form already validates that the data is here
+    if (!backgroundImage || !textContrast) {
+      throw `Missing data backgroundImage || textContrast`
+    }
+    return createAndUploadClassicBadgeModelMetadata(
+      name,
+      description,
+      badgeModelLogoUri,
+      backgroundImage,
+      BADGE_MODEL_TEXT_CONTRAST[textContrast],
+    )
+  }
+}
+
+export async function createAndUploadClassicBadgeModelMetadata(
   badgeModelName: string,
   badgeModelDescription: string,
   badgeModelLogoUri: BackendFileUpload,
@@ -48,6 +77,74 @@ export async function createAndUploadBadgeModelMetadata(
   return `ipfs://${badgeModelMetadataIPFSUploaded.result?.ipfsHash}`
 }
 
+async function createAndUploadDiplomaBadgeModelMetadata(
+  badgeModelName: string,
+  badgeModelDescription: string,
+  {
+    achievementDate,
+    achievementDescription,
+    courseName,
+    ...rest
+  }: Partial<CreateThirdPartyModelSchemaType>,
+) {
+  const badgeModelMetadataIPFSUploaded = await ipfsUpload<BadgeModelMetadata<BackendFileUpload>>({
+    attributes: {
+      name: badgeModelName,
+      description: badgeModelDescription,
+      image: {
+        base64File: '',
+        mimeType: 'png',
+      },
+      external_link: `${APP_URL}/explore`,
+      attributes: [
+        {
+          trait_type: DiplomaNFTAttributesType.CourseName,
+          value: courseName,
+        },
+        {
+          trait_type: DiplomaNFTAttributesType.AchievementDescription,
+          value: achievementDescription,
+        },
+        {
+          trait_type: DiplomaNFTAttributesType.AchievementDate,
+          value: achievementDate,
+        },
+        {
+          trait_type: DiplomaNFTAttributesType.SignatureEnabled,
+          value: rest.signatureEnabled,
+        },
+        {
+          trait_type: DiplomaNFTAttributesType.SignerTitle,
+          value: rest.signerTitle,
+        },
+        {
+          trait_type: DiplomaNFTAttributesType.SignerSubline,
+          value: rest.signerSubline,
+        },
+        {
+          trait_type: DiplomaNFTAttributesType.SignatureImage,
+          value: rest.signatureImage, // TODO Upload as separate file
+        },
+        {
+          trait_type: DiplomaNFTAttributesType.FooterText,
+          value: rest.footerEnabled ? rest.footerText : '',
+        },
+        {
+          trait_type: DiplomaNFTAttributesType.IssuedByLabel,
+          value: rest.issuedByLabel,
+        },
+        {
+          trait_type: DiplomaNFTAttributesType.IssuerAvatar,
+          value: rest.issuerAvatar, // TODO Upload as separate file
+        },
+      ],
+    },
+    filePaths: ['image'],
+  })
+
+  return `ipfs://${badgeModelMetadataIPFSUploaded.result?.ipfsHash}`
+}
+
 /**
  * Clearing files contain information about the removal of items from a TCR list.
  * Registration files, on the other hand, contain information about the
@@ -63,7 +160,7 @@ export async function createAndUploadClearingAndRegistrationFilesForKleros(
   badgeModelName: string,
   badgeModelDescription: string,
   badgeModelLogoUri: BackendFileUpload,
-  badgeModelCriteria: BadgeModelCriteriaType,
+  badgeModelCriteria: BadgeModelCommunityCriteriaType,
   badgeModelKlerosColumns: MetadataColumn[],
 ) {
   let badgeModelCriteriaFile: BackendFileUpload = {
@@ -143,10 +240,9 @@ export async function encodeKlerosBadgeModelControllerData(
   // Received challengePeriodDuration is considered in Dev = minutes and in Prod = Days
   const challengeDurationInSeconds = challengePeriodDuration * (isTestnet ? 1 / 60 : 24) * 60 * 60
 
-  const klerosBadgeModelControllerDataEncoded = defaultAbiCoder.encode(
+  return defaultAbiCoder.encode(
     [
       `tuple(
-          address,
           address,
           uint256,
           uint256,
@@ -160,7 +256,6 @@ export async function encodeKlerosBadgeModelControllerData(
     [
       [
         creatorAddress, // governor
-        constants.AddressZero, // admin
         courtId,
         numberOfJurors,
         registrationIPFSHash,
@@ -176,12 +271,18 @@ export async function encodeKlerosBadgeModelControllerData(
       ],
     ],
   )
+}
 
-  return klerosBadgeModelControllerDataEncoded
+export async function encodeThirdPartyBadgeModelControllerData(administrators: string[]) {
+  return defaultAbiCoder.encode(['tuple(address[])'], [[administrators]])
 }
 
 export const encodeIpfsEvidence = (ipfsEvidenceHash: string): string => {
   return defaultAbiCoder.encode([`tuple(string)`], [[ipfsEvidenceHash]])
+}
+
+export const encodeIpfsBadgeMetadata = (badgeMetadataIpsHash: string): string => {
+  return defaultAbiCoder.encode([`tuple(string)`], [[badgeMetadataIpsHash]])
 }
 
 async function transformDeltaToPDF(pdfValues: z.infer<typeof DeltaPDFSchema>) {

@@ -9,6 +9,7 @@ export const FormButton = styled(Button)(({ theme }) => ({
   borderRadius: theme.spacing(1.25),
   fontSize: '14px !important',
   minHeight: '30px',
+  padding: theme.spacing(1, 4),
 }))
 
 function MyCustomFormComponent({

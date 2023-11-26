@@ -35,15 +35,6 @@ export const AgreementSchema = z
   .refine((value) => value, {
     message: 'You need to agree to be able to continue.',
   })
-export const AgreementSchemaBranded = createUniqueFieldSchema(AgreementSchema, 'AgreementSchema')
-
-export const RadioButtonSchema = createUniqueFieldSchema(
-  z.boolean({
-    required_error: 'Is required',
-    invalid_type_error: 'Must be a boolean',
-  }),
-  'RadioButtonSchema',
-)
 
 export const AddressSchema = createUniqueFieldSchema(
   z.string({ required_error: 'Is required' }).refine(isAddress, {
@@ -62,12 +53,9 @@ export const TwitterSchema = createUniqueFieldSchema(
   'TwitterSchema',
 )
 
-export const EmailSchema = createUniqueFieldSchema(
-  z.string({ required_error: 'Is required' }).refine(isEmail, {
-    message: 'Must be a valid email addresses.',
-  }),
-  'EmailSchema',
-)
+export const EmailSchema = z.string({ required_error: 'Is required' }).refine(isEmail, {
+  message: 'Must be a valid email addresses.',
+})
 
 export const TokenInputSchema = z.string({ required_error: 'Is required' })
 
@@ -101,7 +89,7 @@ export const DescriptionTextSchema = createUniqueFieldSchema(
 // TODO Move to env variables
 const ONE_MB = 1000000
 const MAX_FILE_SIZE = ONE_MB * 5
-const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
+const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/svg+xml']
 
 export const ImageSchema = createUniqueFieldSchema(
   z
@@ -212,3 +200,10 @@ export const KlerosDynamicFields = createUniqueFieldSchema(
     .max(20, `Can't add more than twenty (20)`),
   'KlerosDynamicFields',
 )
+
+export const ThirdPartyAdministratorsFields = z
+  .array(AddressSchema, {
+    required_error: 'Must provide at least one administrator.',
+  })
+  .min(1, 'Must provide at least one administrator.')
+  .max(10, `Can't add more than ten (10)`)

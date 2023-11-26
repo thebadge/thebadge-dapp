@@ -49,17 +49,18 @@ export function secondsToDays(periodDuration: number) {
 export function secondsToMinutes(periodDuration: number) {
   return periodDuration ? periodDuration / 60 : 0
 }
+
 /**
  * By default expect Unix Timestamp (seconds)
  * @param timestamp
  */
 export const timeAgoFrom = (timestamp?: string | number) => {
-  if (!timestamp) {
-    return ''
+  if (!timestamp || !Number(timestamp)) {
+    return '-'
   }
   const format = dayjs.unix(Number(timestamp)).fromNow(true)
   if (format !== null) return format
-  return ''
+  return '-'
 }
 
 /**
@@ -67,12 +68,12 @@ export const timeAgoFrom = (timestamp?: string | number) => {
  * @param timestamp
  */
 export const timeLeftTo = (timestamp?: string | number) => {
-  if (!timestamp) {
-    return ''
+  if (!timestamp || !Number(timestamp)) {
+    return '-'
   }
   const format = dayjs().to(dayjs.unix(Number(timestamp)), true)
   if (format !== null) return format
-  return ''
+  return '-'
 }
 
 /**
@@ -80,34 +81,71 @@ export const timeLeftTo = (timestamp?: string | number) => {
  * @param timestamp
  */
 export const timeLeftToShort = (timestamp?: string | number) => {
-  if (!timestamp) {
-    return ''
+  if (!timestamp || !Number(timestamp)) {
+    return '-'
   }
   const format = dayjs().to(dayjs.unix(Number(timestamp)), true)
   if (format !== null) return format
-  return ''
+  return '-'
 }
 
 /**
- * By default expect Unix Timestamp (seconds)
+ * By default, expect Unix Timestamp (seconds)
  * @param timestamp
+ * @param dateFormat 'MMM DD, YYYY [at] hh:mm A'
  */
 export const formatTimestamp = (
   timestamp?: string | number,
   dateFormat = 'MMM DD, YYYY [at] hh:mm A',
 ) => {
-  if (!timestamp) {
-    return ''
+  if (!timestamp || !Number(timestamp)) {
+    return '-'
   }
   const format = dayjs.unix(Number(timestamp)).format(dateFormat)
   if (format !== null) return format
-  return ''
+  return '-'
 }
 
 export const isBeforeToday = (timestamp?: string | number) => {
-  if (!timestamp) {
+  if (!timestamp || !Number(timestamp)) {
     return false
   }
   // Check if now is after the give timestamp
   return dayjs().isAfter(dayjs.unix(Number(timestamp)))
+}
+
+export const getExpirationYearAndMonth = (
+  validUntil: number,
+): {
+  expirationYear?: number
+  expirationMonth?: number
+} => {
+  if (validUntil == 0) {
+    return {
+      expirationYear: undefined,
+      expirationMonth: undefined,
+    }
+  }
+  // * 1000 is used to convert the Ethereum timestamp (in seconds) to JavaScript's expected milliseconds.
+  // TODO MOVE LOGIC TO SUBGRAPH
+  const date = new Date(validUntil * 1000)
+  return {
+    expirationYear: date.getFullYear(),
+    expirationMonth: date.getMonth() + 1,
+  }
+}
+
+export const getIssueYearAndMonth = (
+  issuedAt: number,
+): {
+  issueYear: number
+  issueMonth: number
+} => {
+  // * 1000 is used to convert the Ethereum timestamp (in seconds) to JavaScript's expected milliseconds.
+  // TODO MOVE CONVERT UNITS LOGIC TO SUBGRAPH
+  const parsedDate = dayjs(issuedAt * 1000)
+  return {
+    issueYear: parsedDate.year(),
+    issueMonth: parsedDate.month() + 1,
+  }
 }

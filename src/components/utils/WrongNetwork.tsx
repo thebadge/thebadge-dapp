@@ -1,10 +1,9 @@
-import React, { useState } from 'react'
+import React, { RefObject, useRef } from 'react'
 
 import { styled } from '@mui/material'
 
-import { ModalSwitchNetwork } from '@/src/components/helpers/ModalSwitchNetwork'
 import { useSizeMD } from '@/src/hooks/useSize'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
 const ErrorSVG: React.FC = () => (
   <svg height="15" viewBox="0 0 15 15" width="15" xmlns="http://www.w3.org/2000/svg">
@@ -44,19 +43,17 @@ const Underline = styled('button')`
 
 export const WrongNetwork: React.FC = ({ ...restProps }) => {
   const { isWalletConnected, isWalletNetworkSupported } = useWeb3Connection()
-  const [showNetworkModal, setShowNetworkModal] = useState(false)
   const isMobileOrTablet = useSizeMD()
+  const anchorMenuElRef: RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null)
 
   return isWalletConnected && !isWalletNetworkSupported ? (
     <Wrapper {...restProps}>
       <ErrorSVG />
-      <TextWrapper>
-        <Underline onClick={() => setShowNetworkModal(true)}>Switch to a valid network</Underline>
+      <TextWrapper ref={anchorMenuElRef}>
+        <Underline>Switch to a valid network</Underline>
         {!isMobileOrTablet ? <span> to use the app!</span> : null}
       </TextWrapper>
-      {showNetworkModal && (
-        <ModalSwitchNetwork onClose={() => setShowNetworkModal(false)} open={showNetworkModal} />
-      )}
+      <w3m-network-button />
     </Wrapper>
   ) : null
 }

@@ -1,4 +1,3 @@
-import { useRouter } from 'next/router'
 import React, { useRef, useState } from 'react'
 
 import AddRoundedIcon from '@mui/icons-material/AddRounded'
@@ -6,30 +5,29 @@ import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined'
 import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded'
 import TwitterIcon from '@mui/icons-material/Twitter'
 import {
-  Avatar,
-  Badge,
   Box,
   IconButton,
   Menu,
   MenuProps,
+  Skeleton,
   Stack,
-  Tooltip,
   Typography,
   alpha,
   styled,
 } from '@mui/material'
 import { ButtonV2, IconDiscord, colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
-import Blockies from 'react-18-blockies'
 
+import TBUserAvatar from '@/src/components/common/TBUserAvatar'
 import { Address } from '@/src/components/helpers/Address'
-import VerifiedCreator from '@/src/components/icons/VerifiedCreator'
+import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { APP_URL } from '@/src/constants/common'
 import { useUserById } from '@/src/hooks/subgraph/useUserById'
-import useIsUserVerified from '@/src/hooks/theBadge/useIsUserVerified'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
+import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 import { truncateStringInTheMiddle } from '@/src/utils/strings'
 import { CreatorMetadata } from '@/types/badges/Creator'
+import { WCAddress } from '@/types/utils'
 
 const Wrapper = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -59,10 +57,9 @@ export default function BadgeRequesterPreview({
   color,
   ownerAddress,
 }: {
-  ownerAddress: string
+  ownerAddress: WCAddress
   color?: string
 }) {
-  const router = useRouter()
   const { t } = useTranslation()
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLDivElement>(null)
@@ -82,7 +79,6 @@ export default function BadgeRequesterPreview({
   const owner = useUserById(ownerAddress)
   const resMetadata = useS3Metadata<{ content: CreatorMetadata }>(owner.data?.metadataUri || '')
   const ownerMetadata = resMetadata.data?.content
-  const isVerified = useIsUserVerified(ownerAddress, 'kleros')
 
   return (
     <>
@@ -104,33 +100,14 @@ export default function BadgeRequesterPreview({
         width={wrapperRef.current?.getBoundingClientRect().width}
       >
         <Box display="flex" flex="1" gap={2}>
-          <Badge
-            badgeContent={
-              <Tooltip title={t('badge.viewBadge.owner.verified')}>
-                <Box>
-                  <VerifiedCreator sx={{ width: '26px', height: '26px' }} />
-                </Box>
-              </Tooltip>
-            }
-            invisible={!isVerified.data}
-            overlap="circular"
-          >
-            {ownerMetadata?.logo ? (
-              <Avatar
-                src={ownerMetadata?.logo?.s3Url}
-                sx={{ width: 90, height: 90, border: '1px solid white' }}
-              />
-            ) : (
-              <Avatar sx={{ width: 90, height: 90, border: '1px solid white' }}>
-                <Blockies
-                  className="blockies-avatar"
-                  scale={10}
-                  seed={ownerAddress || 'default'}
-                  size={10}
-                />
-              </Avatar>
-            )}
-          </Badge>
+          <SafeSuspense fallback={<Skeleton variant="circular" width={100} />}>
+            <TBUserAvatar
+              address={ownerAddress}
+              src={ownerMetadata?.logo?.s3Url}
+              sx={{ border: '1px solid white' }}
+            />
+          </SafeSuspense>
+
           <Stack gap={1}>
             <Typography variant="dAppHeadline2">
               {ownerMetadata?.name || truncateStringInTheMiddle(ownerAddress, 8, 6)}
@@ -158,7 +135,9 @@ export default function BadgeRequesterPreview({
             <ButtonV2
               backgroundColor={colors.transparent}
               fontColor={colors.purple}
-              onClick={() => window.open(`${APP_URL}/profile/${ownerAddress}`, '_ blank')}
+              onClick={() =>
+                window.open(APP_URL + generateProfileUrl({ address: ownerAddress }), '_ blank')
+              }
               sx={{
                 borderRadius: 2,
                 mt: 2,

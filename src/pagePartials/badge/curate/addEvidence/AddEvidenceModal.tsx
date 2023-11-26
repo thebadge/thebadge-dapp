@@ -9,7 +9,7 @@ import TBModal from '@/src/components/common/TBModal'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
 import { useBadgeKlerosMetadata } from '@/src/hooks/subgraph/useBadgeKlerosMetadata'
-import { useContractInstance } from '@/src/hooks/useContractInstance'
+import useTBContract from '@/src/hooks/theBadge/useTBContract'
 import useTransaction from '@/src/hooks/useTransaction'
 import CurationCriteriaLink from '@/src/pagePartials/badge/curate/CurationCriteriaLink'
 import EvidenceForm, {
@@ -17,7 +17,6 @@ import EvidenceForm, {
 } from '@/src/pagePartials/badge/curate/evidenceForm/EvidenceForm'
 import { encodeIpfsEvidence } from '@/src/utils/badges/createBadgeModelHelpers'
 import { BadgeStatus } from '@/types/generated/subgraph'
-import { TheBadge__factory } from '@/types/generated/typechain'
 
 type AddEvidenceModalProps = {
   open: boolean
@@ -45,7 +44,7 @@ function AddEvidenceModalContent({ badgeId, onClose }: { badgeId: string; onClos
   }
 
   const badgeModelId = badge.badgeModel.id
-  const theBadge = useContractInstance(TheBadge__factory, 'TheBadge')
+  const theBadge = useTBContract()
 
   async function onSubmit(data: z.infer<typeof EvidenceSchema>) {
     if (!badge || !badge.status) {

@@ -4,4 +4,5 @@ export enum ToastStates {
   waiting = 'WAITING',
 
   info = 'INFO',
+  infoFailed = 'INFO_FAILED',
 }

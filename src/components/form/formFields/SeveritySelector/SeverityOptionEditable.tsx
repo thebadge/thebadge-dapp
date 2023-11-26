@@ -2,6 +2,7 @@ import { ChangeEvent, MouseEvent, useCallback, useState } from 'react'
 import * as React from 'react'
 
 import AddRoundedIcon from '@mui/icons-material/AddRounded'
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded'
 import { Box, Divider, IconButton, InputAdornment } from '@mui/material'
 import { BigNumberInput } from 'big-number-input'
@@ -89,6 +90,13 @@ export default function SeverityOptionEditable({
       onClick={selected ? undefined : onSelectHandler}
       selected={selected}
     >
+      {selected && (
+        <CheckCircleIcon
+          color="green"
+          sx={{ position: 'absolute', right: 0, top: 0, transform: 'translate(50%, -50%)' }}
+        />
+      )}
+
       <Box display="flex">
         <Box alignItems="center" flex="1">
           <Title>{t('severity.amountOfJurors')}</Title>

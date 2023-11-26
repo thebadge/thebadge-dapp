@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Box, Button, Stack, Typography, styled } from '@mui/material'
 import { useTsController } from '@ts-react/form'
 import update from 'immutability-helper'
+import { useTranslation } from 'next-export-i18n'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { Controller, FieldError, useForm } from 'react-hook-form'
@@ -11,9 +12,9 @@ import { z } from 'zod'
 
 import { DropdownSelect } from '@/src/components/form/formFields/DropdownSelect'
 import FormFieldItem from '@/src/components/form/formFields/KlerosDynamicFormCreatorField/FormFieldItem'
+import EmptyListMessage from '@/src/components/form/formFields/KlerosDynamicFormCreatorField/addons/EmptyListMessage'
 import { TextArea } from '@/src/components/form/formFields/TextArea'
-import { TextField, TextFieldStatus } from '@/src/components/form/formFields/TextField'
-import { FormStatus } from '@/src/components/form/helpers/FormStatus'
+import { TextField } from '@/src/components/form/formFields/TextField'
 import {
   KlerosDynamicFields,
   KlerosFormFieldSchema,
@@ -38,6 +39,10 @@ type Props = {
 }
 
 export function KlerosDynamicFieldsCreator({ error, ...props }: Props) {
+  const { t } = useTranslation()
+
+  const isEmpty = !props?.value || props?.value?.length === 0
+  console.log(props.value)
   // Need to type the useForm call accordingly
   const form = useForm<z.infer<typeof KlerosFormFieldSchema>>({
     resolver: zodResolver(KlerosFormFieldSchema),
@@ -102,57 +107,66 @@ export function KlerosDynamicFieldsCreator({ error, ...props }: Props) {
     <Wrapper>
       <Stack gap={1}>
         <Box display="flex" flex="1" gap={3}>
-          <Controller
-            control={control}
-            name={'label'}
-            render={({ field: { onChange, value }, fieldState: { error } }) => (
-              <TextField error={error} label={'Field name'} onChange={onChange} value={value} />
-            )}
-          />
-          <Controller
-            control={control}
-            name={'type'}
-            render={({ field: { onChange, value }, fieldState: { error } }) => (
-              <DropdownSelect<typeof value>
-                error={error}
-                label={'Field Type'}
-                onChange={onChange}
-                options={['Select a type', ...KLEROS_LIST_TYPES_KEYS]}
-                value={value || ' '}
-              />
-            )}
-          />
+          <Stack flex="1">
+            <Typography variant="labelMedium">{t('badge.model.create.formField.name')}</Typography>
+            <Controller
+              control={control}
+              name={'label'}
+              render={({ field: { onChange, value }, fieldState: { error } }) => (
+                <TextField
+                  error={error}
+                  ghostLabel="How do you want to name this field?"
+                  onChange={onChange}
+                  value={value}
+                />
+              )}
+            />
+          </Stack>
+          <Stack flex="1">
+            <Typography variant="labelMedium">{t('badge.model.create.formField.type')}</Typography>
+            <Controller
+              control={control}
+              name={'type'}
+              render={({ field: { onChange, value }, fieldState: { error } }) => (
+                <DropdownSelect<typeof value>
+                  error={error}
+                  onChange={onChange}
+                  options={[
+                    t('badge.model.create.formField.selectType'),
+                    ...KLEROS_LIST_TYPES_KEYS,
+                  ]}
+                  value={value || ' '}
+                />
+              )}
+            />
+          </Stack>
         </Box>
         <Controller
           control={control}
           name={'description'}
-          render={({ field: { name, onChange, value }, fieldState: { error } }) => (
-            <TextArea error={error} label={name} onChange={onChange} value={value} />
+          render={({ field: { onChange, value }, fieldState: { error } }) => (
+            <TextArea
+              error={error}
+              label={t('badge.model.create.formField.description')}
+              onChange={onChange}
+              placeholder="In a nutshell, describe the requested evidence's key features"
+              value={value}
+            />
           )}
         />
         <Button
           onClick={handleSubmit(submitHandler, (e) => console.log(e))}
-          sx={{ borderRadius: 3, ml: 'auto', fontSize: '12px !important' }}
+          sx={{ borderRadius: 3, ml: 'auto', fontSize: '12px !important', minHeight: '30px' }}
           variant="contained"
         >
-          + Add Field
+          {t('badge.model.create.formField.addField')}
         </Button>
       </Stack>
-      {error && <FormStatus status={TextFieldStatus.error}>{error.message}</FormStatus>}
+      {isEmpty && <EmptyListMessage error={!!error} />}
+
       <Box mt={2}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-evenly', mb: 4, ml: 5, mr: 5 }}>
-          <Typography sx={{ flex: 2 }} variant="subtitle1">
-            Name
-          </Typography>
+        <Typography variant="titleMedium">Check how your form would look like</Typography>
 
-          <Typography sx={{ flex: 3 }} variant="subtitle1">
-            Description
-          </Typography>
-
-          <Typography sx={{ flex: 1 }} variant="subtitle1">
-            Type
-          </Typography>
-        </Box>
         <Box sx={{ overflowY: 'auto' }}>
           <DndProvider backend={HTML5Backend}>
             {props?.value?.map((field, index) => renderFieldItem(field, index))}
