@@ -1,7 +1,10 @@
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 
+import { useSignMessage } from 'wagmi'
+
 import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
+import { PRIVACY_POLICY_URL, TERMS_AND_CONDITIONS_URL } from '@/src/constants/common'
 import { useUserById } from '@/src/hooks/subgraph/useUserById'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
 import useTransaction, { TransactionStates } from '@/src/hooks/useTransaction'
@@ -19,6 +22,7 @@ const Register: NextPageWithLayout = () => {
   const { address } = useWeb3Connection()
   const { resetTxState, sendTx, state } = useTransaction()
   const theBadgeUsers = useContractInstance(TheBadgeUsers__factory, 'TheBadgeUsers')
+  const { signMessageAsync } = useSignMessage()
 
   useEffect(() => {
     // Redirect to the creator profile section
@@ -39,6 +43,15 @@ const Register: NextPageWithLayout = () => {
     }
 
     try {
+      // Message asking the user to accept the terms and privacy policy
+      const message = `By signing this message, you confirm your acceptance of our [Terms and Conditions](${TERMS_AND_CONDITIONS_URL}) and [Privacy Policy](${PRIVACY_POLICY_URL}).`
+
+      const signature = await signMessageAsync({ message })
+      if (!signature) {
+        throw new Error('User rejected the signing of the message.')
+      }
+      // TODO store the signature on the relayer
+      localStorage.setItem('terms-and-conditions-accepted', JSON.stringify({ signature }))
       const transaction = await sendTx(async () => {
         // Use NextJs dynamic import to reduce the bundle size
         const { createAndUploadCreatorMetadata } = await import(
