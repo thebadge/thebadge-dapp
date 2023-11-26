@@ -140,7 +140,7 @@ export default function ActionButtons() {
   const createButton = menuButton({
     title: t('header.buttons.create'),
     color: colors.pink,
-    disabled: isWalletConnected && !user?.isCreator,
+    disabled: isWalletConnected && !user?.isRegistered,
     path: generateBadgeModelCreate(),
     menuItems: isThirdPartyUser
       ? [

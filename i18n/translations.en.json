@@ -256,8 +256,8 @@
   "errors": {
     "connectWallet": "Connect your wallet",
     "connectWalletSubtitle": "Please, to continue it is necessary that you connect your wallet",
-    "notACreator": "You are not a creator yet.",
-    "notACreatorSubtitle": "Please, to continue it is necessary that you have registered as a creator, ",
+    "notRegistered": "You are not a registered yet.",
+    "notRegisteredSubtitle": "Please, to continue it is necessary that you register.",
     "alreadyOwnedBadge": "You already own this badge",
     "pausedAction": "This action has been temporarily paused.",
     "pausedActionSubtitle": "Please, head over to our Discord channel for more information.",
