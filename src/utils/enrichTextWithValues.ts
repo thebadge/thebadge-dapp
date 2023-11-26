@@ -11,8 +11,18 @@ export type EnrichTextValues = {
   [key in EnrichTextVariables]: string
 }
 
-export default function enrichTextWithValues(badgeDescription: string, values: EnrichTextValues) {
+export default function enrichTextWithValues(
+  textToEnrich: string | undefined,
+  values: EnrichTextValues | undefined,
+) {
+  if (!textToEnrich || !values) return ''
   const enrichTextKeys = Object.keys(values) as EnrichTextVariables[]
-  enrichTextKeys.forEach((key) => badgeDescription.replace(`{{${key}}`, values[key] || ''))
-  return badgeDescription
+
+  enrichTextKeys.forEach((key) => {
+    // If the key is on the given values, we replace it, if not we let the text as it was
+    if (values[key]) {
+      textToEnrich = textToEnrich?.replace(`{{${key}}}`, values[key])
+    }
+  })
+  return textToEnrich
 }

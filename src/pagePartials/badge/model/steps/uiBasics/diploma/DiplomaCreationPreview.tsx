@@ -47,6 +47,8 @@ export default function DiplomaCreationPreview() {
   // Issuer
   const issuedByLabel = watch('issuedByLabel') || 'Issued by'
   const issuerAvatar = watch('issuerAvatar')?.base64File
+  const issuerTitle = watch('issuerTitle')
+  const issuerDescription = watch('issuerDescription')
 
   const signatureProps = signatureEnabled
     ? {
@@ -68,8 +70,11 @@ export default function DiplomaCreationPreview() {
         footerText={footerEnabled && footerText}
         issuedByLabel={issuedByLabel}
         issuerAvatarUrl={issuerAvatar}
+        issuerDescription={issuerDescription}
         issuerIsVerified={isVerified}
+        issuerTitle={issuerTitle}
         studentName={'{{studentName}}'}
+        textContrastRight="dark"
         {...signatureProps}
       />
     </BoxShadow>

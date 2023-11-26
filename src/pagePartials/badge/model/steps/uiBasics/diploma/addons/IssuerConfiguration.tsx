@@ -6,6 +6,8 @@ import { ImageType } from 'react-images-uploading'
 
 import { AvatarInput } from '@/src/components/form/formFields/AvatarInput'
 import { CheckBox } from '@/src/components/form/formFields/CheckBox'
+import { TextArea } from '@/src/components/form/formFields/TextArea'
+import { TextField } from '@/src/components/form/formFields/TextField'
 import { useCurrentUser } from '@/src/hooks/subgraph/useCurrentUser'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { IssuerConfigurationSchemaType } from '@/src/pagePartials/badge/model/schema/CreateThirdPartyModelSchema'
@@ -53,6 +55,38 @@ export default function IssuerConfiguration() {
       </SectionContainer>
       {customIssuerEnabled && (
         <SectionContainer>
+          <Stack flex="1" gap={4}>
+            <Stack>
+              <Typography variant="bodySmall">Issuer Title</Typography>
+              <Controller
+                control={control}
+                name={'issuerTitle'}
+                render={({ field: { onChange, value }, fieldState: { error } }) => (
+                  <TextField
+                    error={error}
+                    ghostLabel={'Course instructors'}
+                    onChange={onChange}
+                    value={value}
+                  />
+                )}
+              />
+            </Stack>
+            <Stack>
+              <Typography variant="bodySmall">Issuer Description</Typography>
+              <Controller
+                control={control}
+                name={'issuerDescription'}
+                render={({ field: { onChange, value }, fieldState: { error } }) => (
+                  <TextArea
+                    error={error}
+                    onChange={onChange}
+                    placeholder={'- Max Muster \n- Max Muster \n- Max Muster '}
+                    value={value}
+                  />
+                )}
+              />
+            </Stack>
+          </Stack>
           <Stack flex="1" gap={4} justifyContent="center">
             <Stack>
               <Typography variant="bodySmall">Issuer Avatar</Typography>

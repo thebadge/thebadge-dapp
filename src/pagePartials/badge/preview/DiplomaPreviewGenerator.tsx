@@ -8,6 +8,7 @@ import { APP_URL } from '@/src/constants/common'
 import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { convertPreviewToImage } from '@/src/pagePartials/badge/mint/utils'
+import enrichTextWithValues, { EnrichTextValues } from '@/src/utils/enrichTextWithValues'
 import {
   DiplomaFooterConfig,
   DiplomaIssuerConfig,
@@ -74,6 +75,8 @@ export default function DiplomaPreviewGenerator({ additionalData, modelId, setVa
 
   const issuerAvatarUrl = issuerConfigsMetadata.data?.content.issuerAvatar?.s3Url
   const issuerLabel = issuerConfigsMetadata.data?.content.issuedByLabel
+  const issuerTitle = issuerConfigsMetadata.data?.content.issuerTitle
+  const issuerDescription = issuerConfigsMetadata.data?.content.issuerDescription
 
   const signatureEnabled = signerConfigsMetadata.data?.content.signatureEnabled
   const signatureProps = signatureEnabled
@@ -93,21 +96,24 @@ export default function DiplomaPreviewGenerator({ additionalData, modelId, setVa
         <DiplomaPreview
           animationEffects={['wobble', 'grow', 'glare']}
           animationOnHover
-          backgroundUrl={
-            'https://images.unsplash.com/photo-1651527567593-32c04202ed85?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
-          }
+          backgroundUrl={'https://dev-app.thebadge.xyz/shareable/diploma-background.png'}
           badgeUrl={APP_URL}
           courseName={courseName?.value}
           date={achievementDate?.value}
-          decorationBackgroundUrl={
-            'https://images.unsplash.com/photo-1638272181967-7d3772a91265?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
-          }
+          decorationBackgroundUrl={'https://dev-app.thebadge.xyz/shareable/diploma-decoration.png'}
           description={achievementDescription?.value}
-          footerText={footerEnabled ? footerText : ''}
+          footerText={
+            footerEnabled
+              ? enrichTextWithValues(footerText, additionalData as EnrichTextValues)
+              : ''
+          }
           issuedByLabel={issuerLabel || 'Issued by'}
           issuerAvatarUrl={issuerAvatarUrl}
+          issuerDescription={issuerDescription}
           issuerIsVerified={''}
-          studentName={additionalData ? additionalData['studentName'] : '{{studentName}}'}
+          issuerTitle={issuerTitle}
+          studentName={enrichTextWithValues('{{studentName}}', additionalData as EnrichTextValues)}
+          textContrastRight="dark"
           {...signatureProps}
         />
       </Box>

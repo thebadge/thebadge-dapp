@@ -61,6 +61,8 @@ export type DiplomaIssuerConfig<T = IPFSHash | BackendFileResponse | BackendFile
   customIssuerEnabled: boolean
   issuerAvatar?: T
   issuedByLabel?: string
+  issuerTitle?: string
+  issuerDescription?: string
 }
 
 export type DiplomaFooterConfig = {

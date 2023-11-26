@@ -2860,10 +2860,10 @@
     quilljs-parser "^1.0.14"
     ts-node-dev "^2.0.0"
 
-"@thebadge/ui-library@^1.9.8":
-  version "1.9.8"
-  resolved "https://registry.yarnpkg.com/@thebadge/ui-library/-/ui-library-1.9.8.tgz#ad6622f7140a565dc8d7a90426fa51d77893858b"
-  integrity sha512-NWOrgQ9DHSe2A4RY8y8F/Yjxyc6JhMcKntpexXzPOZRmoFmTHlUZTpOysiG6JsA/JeF85Q7C4jruSRpA4smDbQ==
+"@thebadge/ui-library@^1.9.10":
+  version "1.9.10"
+  resolved "https://registry.yarnpkg.com/@thebadge/ui-library/-/ui-library-1.9.10.tgz#10319c922c4eb07b14aab749a3ac1240ad9cb9eb"
+  integrity sha512-PRtukGXtIM6JAFNv+0hC+4GpFF81TFdZYky79VghsQQWL0PP93K7hWwtk4oM5RteK4o2cZ/qzgaSE2c81DJtdg==
   dependencies:
     "@emotion/react" "^11.10.5"
     "@emotion/server" "^11.10.0"

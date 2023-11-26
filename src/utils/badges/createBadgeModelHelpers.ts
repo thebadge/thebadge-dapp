@@ -124,6 +124,8 @@ async function createAndUploadDiplomaBadgeModelMetadata(
           ? rest.issuerAvatar?.ipfsUrl
           : rest.issuerAvatar,
         issuedByLabel: rest.issuedByLabel,
+        issuerTitle: rest.issuerTitle,
+        issuerDescription: rest.issuerDescription,
       },
       filePaths: isIPFSUrl(rest.issuerAvatar?.ipfsUrl) ? [] : ['issuerAvatar'],
     }),
