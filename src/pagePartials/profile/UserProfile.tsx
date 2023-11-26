@@ -89,7 +89,7 @@ const UserProfile = () => {
             </LinkWithTranslation>
 
             {/* created badges */}
-            {!user?.isRegistered ? (
+            {!user?.isCreator ? (
               <Tooltip
                 arrow
                 title={
@@ -110,7 +110,7 @@ const UserProfile = () => {
               <LinkWithTranslation
                 pathname={generateProfileUrl()}
                 queryParams={{
-                  filter: user?.isRegistered ? NormalProfileFilter.CREATED_BADGES : '',
+                  filter: user?.isCreator ? NormalProfileFilter.CREATED_BADGES : '',
                 }}
               >
                 {createdBadgesTab}
