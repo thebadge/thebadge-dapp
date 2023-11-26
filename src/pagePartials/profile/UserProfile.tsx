@@ -109,7 +109,9 @@ const UserProfile = () => {
             ) : (
               <LinkWithTranslation
                 pathname={generateProfileUrl()}
-                queryParams={{ filter: user?.isCreator ? NormalProfileFilter.CREATED_BADGES : '' }}
+                queryParams={{
+                  filter: user?.isCreator ? NormalProfileFilter.CREATED_BADGES : '',
+                }}
               >
                 {createdBadgesTab}
               </LinkWithTranslation>
