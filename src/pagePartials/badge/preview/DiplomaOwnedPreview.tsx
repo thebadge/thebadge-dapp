@@ -96,7 +96,7 @@ export default function DiplomaOwnedPreview() {
   }
 
   function handleImport() {
-    addTokenIntoWallet(badgeId)
+    addTokenIntoWallet(badgeId, badge.badgeMetadata.image.s3Url)
   }
 
   async function handleImportLinkedin() {
