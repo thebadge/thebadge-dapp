@@ -7,7 +7,7 @@ import { notify } from '@/src/components/toast/Toast'
 import useTBContract from '@/src/hooks/theBadge/useTBContract'
 import { ToastStates } from '@/types/toast'
 
-type AddTokenIntoWalletFn = (badgeId: string, imageUrl?: string) => void
+type AddTokenIntoWalletFn = (badgeId: string, imageUrl?: string) => Promise<void>
 
 export default function useAddTokenIntoWallet() {
   const { open: connectWallet } = useWeb3Modal()
@@ -19,14 +19,8 @@ export default function useAddTokenIntoWallet() {
     async (badgeId: string, imageUrl?: string) => {
       try {
         let wasAdded = false
-        console.log(imageUrl)
         // 'wasAdded' is a boolean. Like any RPC method, an error can be thrown.
         if (walletClient) {
-          console.log({
-            address: theBadge.address,
-            tokenId: badgeId,
-            image: imageUrl,
-          })
           wasAdded = await walletClient.request({
             method: 'wallet_watchAsset',
             params: {
@@ -39,8 +33,8 @@ export default function useAddTokenIntoWallet() {
             } as unknown as any,
           })
         } else {
-          connectWallet()
           console.warn('Need to connect the wallet')
+          connectWallet()
         }
 
         if (wasAdded) {
