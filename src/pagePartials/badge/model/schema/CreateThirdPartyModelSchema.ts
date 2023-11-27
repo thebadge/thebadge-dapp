@@ -41,7 +41,7 @@ export const IssuerConfigurationSchema = z.object({
   issuedByLabel: z.string().default('Issued by'),
   issuerAvatar: AvatarSchema.optional(),
   issuerTitle: z.string().max(25).optional(),
-  issuerDescription: z.string().max(100).optional(),
+  issuerDescription: z.string().max(150).optional(),
 })
 
 export type IssuerConfigurationSchemaType = z.infer<typeof IssuerConfigurationSchema>
@@ -59,7 +59,7 @@ export const CreateThirdPartyModelSchema = z
     mintFee: TokenInputSchema,
     validFor: ExpirationTypeSchema,
     // administrators: ThirdPartyAdministratorsFields, // TODO ENABLE ONCE WE HAVE THE SUPPORT ON THE UI
-    administrators: AddressSchema, // TODO REMOVE ONCE WE HAVE THE SUPPORT ON THE UI
+    administrators: AddressSchema.optional(), // TODO REMOVE ONCE WE HAVE THE SUPPORT ON THE UI
   })
   .merge(BodyDataConfigurationSchema)
   .merge(IssuerConfigurationSchema)
