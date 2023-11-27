@@ -72,7 +72,7 @@ export type CreateThirdPartyModelSchemaType = z.infer<typeof CreateThirdPartyMod
 
 function refineClassic(data: any, ctx: RefinementCtx) {
   // Validate Diploma Template
-  if (data.template !== BadgeModelTemplate.Classic) return
+  if (data.template !== BadgeModelTemplate.Badge) return
   if (!data.badgeModelLogoUri) {
     ctx.addIssue({
       code: z.ZodIssueCode.custom,

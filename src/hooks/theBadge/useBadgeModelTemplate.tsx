@@ -11,7 +11,8 @@ export default function useBadgeModelTemplate(modelId: string): BadgeModelTempla
   )
 
   if (!template) {
-    throw new Error(`No template defined for badgeModelId: ${modelId}`)
+    console.warn(`No template defined for badgeModelId: ${modelId}, returning default one...`)
+    return BadgeModelTemplate.Badge
   }
 
   return template.value as BadgeModelTemplate
