@@ -267,7 +267,9 @@
     "fileType": "The selected file's type is not allowed",
     "fileMaxSize": "The selected file's size exceeds maxFileSize",
     "noTheBadgeModelCreator": "Oops, something went wrong!",
-    "noTheBadgeModelCreatorSubtitle": "Seems like you dont have access to this badge model. Please get in touch with the creator."
+    "noTheBadgeModelCreatorSubtitle": "Seems like you dont have access to this badge model. Please get in touch with the creator.",
+    "claimUUIDInvalid": "Claim link expired!",
+    "claimUUIDInvalidSubtitle": "The link is invalid or the badge has been already claimed"
   },
   "creator": {
     "register": {
