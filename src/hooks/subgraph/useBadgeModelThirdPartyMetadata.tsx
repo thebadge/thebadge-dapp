@@ -44,7 +44,6 @@ export function useBadgeThirdPartyRequiredData(badgeId: string, options?: BadgeM
   const fetchIt = !options?.skip && badgeId.length
   const gql = useSubgraph()
   const chainId = useChainId()
-  console.log({ badgeId, fetchIt })
 
   return useSWR(
     fetchIt ? [`BadgeModelThirdPartyMetaData:${badgeId}`, badgeId, chainId] : null,
