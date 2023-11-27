@@ -1,12 +1,12 @@
 import React from 'react'
 
 import { Stack, Typography } from '@mui/material'
+import { useTranslation } from 'next-export-i18n'
 import { Controller, useFormContext } from 'react-hook-form'
 
 import { TextField } from '@/src/components/form/formFields/TextField'
 import { BodyDataConfigurationSchemaType } from '@/src/pagePartials/badge/model/schema/CreateThirdPartyModelSchema'
 import SectionContainer from '@/src/pagePartials/badge/model/steps/uiBasics/addons/SectionContainer'
-import { useTranslation } from 'next-export-i18n'
 
 export default function BodyDataConfiguration() {
   const { control } = useFormContext<BodyDataConfigurationSchemaType>()
