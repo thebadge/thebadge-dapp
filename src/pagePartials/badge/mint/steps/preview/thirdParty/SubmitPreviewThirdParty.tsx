@@ -8,6 +8,7 @@ import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { APP_URL } from '@/src/constants/common'
 import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import { useBadgeModelThirdPartyMetadata } from '@/src/hooks/subgraph/useBadgeModelThirdPartyMetadata'
+import useBadgeModelTemplate from '@/src/hooks/theBadge/useBadgeModelTemplate'
 import { MintThirdPartySchemaType } from '@/src/pagePartials/badge/mint/schema/MintThirdPartySchema'
 import MintCostThirdParty from '@/src/pagePartials/badge/mint/steps/preview/thirdParty/MintCostThirdParty'
 import { BadgeThirdPartyPreviewGenerator } from '@/src/pagePartials/badge/preview/BadgeThirdPartyPreviewGenerator'
@@ -28,6 +29,8 @@ export default function SubmitPreviewThirdParty() {
     requiredBadgeDataMetadata.data?.requirementsData?.requirementsColumns,
   )
 
+  const template = useBadgeModelTemplate(modelId)
+
   return (
     <Stack alignItems={'center'} gap={3} margin={1}>
       <Box>
@@ -39,7 +42,9 @@ export default function SubmitPreviewThirdParty() {
             badgeUrl={`${APP_URL}/${modelId}/${address}`}
             modelId={modelId}
             setValue={setValue}
-            title={t('badge.model.mint.previewTitle')}
+            title={t('badge.model.mint.previewTitle', {
+              badgeModelTemplate: template,
+            })}
           />
         </SafeSuspense>
       </Box>

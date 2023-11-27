@@ -6,12 +6,11 @@ import { Controller, useFormContext } from 'react-hook-form'
 
 import HowItWorksStep from '@/src/components/common/HowItWorksStep'
 import { AgreementCheckbox } from '@/src/components/form/formFields/AgreementCheckbox'
-import { DOCUMENTATION_URL } from '@/src/constants/common'
 import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
+import useBadgeModelTemplate from '@/src/hooks/theBadge/useBadgeModelTemplate'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { MintThirdPartySchemaType } from '@/src/pagePartials/badge/mint/schema/MintThirdPartySchema'
-import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 import { Creator } from '@/types/badges/Creator'
 
 export default function HowItWorksThirdParty() {
@@ -19,6 +18,7 @@ export default function HowItWorksThirdParty() {
   const { control } = useFormContext<MintThirdPartySchemaType>() // retrieve all hook methods
 
   const modelId = useModelIdParam()
+  const template = useBadgeModelTemplate(modelId)
   const badgeModelData = useBadgeModel(modelId)
 
   const badgeCreatorMetadata = useS3Metadata<{ content: Creator }>(
@@ -29,23 +29,19 @@ export default function HowItWorksThirdParty() {
     throw `There was an error trying to fetch the metadata for the badge model`
   }
 
-  // TODO Define wording for third party
   return (
     <Stack>
       <Stack gap={6}>
         <HowItWorksStep
           index={1}
-          text={t(`badge.model.mint.helpSteps.${0}`, {
-            badgeCreatorName: badgeCreatorMetadata.data?.content?.name,
-            badgeCreatorProfileLink: generateProfileUrl({
-              address: badgeModelData.data?.badgeModel?.creator.id,
-            }),
+          text={t(`badge.model.mint.thirdParty.helpSteps.${0}`, {
+            badgeModelTemplate: template,
           })}
         />
         <HowItWorksStep
           index={2}
-          text={t(`badge.model.mint.helpSteps.${1}`, {
-            curationDocsUrl: DOCUMENTATION_URL + '/protocol-mechanics/challenge',
+          text={t(`badge.model.mint.thirdParty.helpSteps.${1}`, {
+            badgeModelTemplate: template,
           })}
         />
       </Stack>

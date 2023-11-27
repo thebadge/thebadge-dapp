@@ -20,7 +20,6 @@ export function getSubgraphSdkByNetwork(
   const subGraph = IS_DEVELOP
     ? devEndpoints[chainId][subgraphName]
     : endpoints[chainId][subgraphName]
-  console.log('SG', subGraph)
   const networkConfig = getSdkWithHooks(new GraphQLClient(subGraph))
   return nullthrows(networkConfig, `No sdk for chain id: ${chainId}`)
 }
