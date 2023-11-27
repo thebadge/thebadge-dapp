@@ -5,7 +5,11 @@ import { Button, Divider, Stack, Typography, styled } from '@mui/material'
 import { colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 
-import { StepClaimThirdPartyPreview } from '@/src/pagePartials/badge/claim/steps/StepsClaimThirdPartyPreview'
+import useBadgeIDFromULID from '@/src/hooks/nextjs/useBadgeIDFromULID'
+import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
+import { useBadgeThirdPartyRequiredData } from '@/src/hooks/subgraph/useBadgeModelThirdPartyMetadata'
+import { ThirdPartyPreview } from '@/src/pagePartials/badge/preview/ThirdPartyPreview'
+import { reCreateThirdPartyValuesObject } from '@/src/utils/badges/mintHelpers'
 import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 
 type StepsClaimThirdPartySucceedProps = {
@@ -23,6 +27,15 @@ export default function StepsClaimThirdPartySucceed({
 }: StepsClaimThirdPartySucceedProps) {
   const { t } = useTranslation()
   const router = useRouter()
+  const modelId = useModelIdParam()
+  const badgeId = useBadgeIDFromULID()
+
+  const requiredBadgeDataMetadata = useBadgeThirdPartyRequiredData(`${badgeId.data}` || '')
+
+  const values = reCreateThirdPartyValuesObject(
+    requiredBadgeDataMetadata.data?.requirementsDataValues || {},
+    requiredBadgeDataMetadata.data?.requirementsDataColumns,
+  )
 
   const handleSubmit = () => {
     router.push(generateProfileUrl({ address: claimAddress }))
@@ -41,7 +54,7 @@ export default function StepsClaimThirdPartySucceed({
       <Typography color={colors.blue} textAlign="center" variant="title2">
         {t('badge.model.claim.thirdParty.header.titleSuccess')}
       </Typography>
-      <StepClaimThirdPartyPreview />
+      <ThirdPartyPreview additionalData={{ ...values }} modelId={modelId} />
       <Divider />
       <SubmitButton
         color="blue"

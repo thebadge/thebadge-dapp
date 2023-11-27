@@ -9,7 +9,7 @@ import useBadgeIDFromULID from '@/src/hooks/nextjs/useBadgeIDFromULID'
 import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import { useBadgeThirdPartyRequiredData } from '@/src/hooks/subgraph/useBadgeModelThirdPartyMetadata'
 import { ClaimThirdPartyBadgeSchemaType } from '@/src/pagePartials/badge/claim/schema/ClaimThirdPartyBadgeSchema'
-import { BadgeThirdPartyPreviewGenerator } from '@/src/pagePartials/badge/preview/BadgeThirdPartyPreviewGenerator'
+import { BadgeThirdPartyPreviewGenerator } from '@/src/pagePartials/badge/preview/generators/BadgeThirdPartyPreviewGenerator'
 import { reCreateThirdPartyValuesObject } from '@/src/utils/badges/mintHelpers'
 
 export const StepClaimThirdPartyPreview = () => {

@@ -11,7 +11,7 @@ import { useBadgeModelThirdPartyMetadata } from '@/src/hooks/subgraph/useBadgeMo
 import useBadgeModelTemplate from '@/src/hooks/theBadge/useBadgeModelTemplate'
 import { MintThirdPartySchemaType } from '@/src/pagePartials/badge/mint/schema/MintThirdPartySchema'
 import MintCostThirdParty from '@/src/pagePartials/badge/mint/steps/preview/thirdParty/MintCostThirdParty'
-import { BadgeThirdPartyPreviewGenerator } from '@/src/pagePartials/badge/preview/BadgeThirdPartyPreviewGenerator'
+import { BadgeThirdPartyPreviewGenerator } from '@/src/pagePartials/badge/preview/generators/BadgeThirdPartyPreviewGenerator'
 import { createThirdPartyValuesObject } from '@/src/utils/badges/mintHelpers'
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
