@@ -17,7 +17,7 @@ export default function BadgeModelStrategy() {
   const { appChainId } = useWeb3Connection()
   const networkConfig = getNetworkConfig(appChainId)
 
-  // TODO: Add and input for array adding "administrators"
+  // TODO: Add and input for array adding "administrators", make administrators visible again
   return (
     <>
       <Box
@@ -70,7 +70,7 @@ export default function BadgeModelStrategy() {
           </Stack>
         </Box>
 
-        <Stack flex="1" justifyContent="flex-end">
+        <Stack flex="1" justifyContent="flex-end" sx={{ display: 'none' }}>
           <Controller
             control={control}
             name={'administrators'}

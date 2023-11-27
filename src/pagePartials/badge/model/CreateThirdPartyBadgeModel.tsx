@@ -3,6 +3,7 @@ import { useContractInstance } from '@/src/hooks/useContractInstance'
 import useTransaction from '@/src/hooks/useTransaction'
 import CreateThirdPartyBadgeModelWithSteps from '@/src/pagePartials/badge/model/CreateThirdPartyBadgeModelWithSteps'
 import { CreateThirdPartyModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateThirdPartyModelSchema'
+import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { BadgeModelControllerName } from '@/types/badges/BadgeModel'
 import { TheBadgeModels__factory } from '@/types/generated/typechain'
 import { KLEROS_LIST_TYPES, ThirdPartyMetadataColumn } from '@/types/kleros/types'
@@ -12,9 +13,11 @@ const CreateThirdPartyBadgeModel: NextPageWithLayout = () => {
   const { resetTxState, sendTx, state: transactionState } = useTransaction()
 
   const theBadgeModels = useContractInstance(TheBadgeModels__factory, 'TheBadgeModels')
+  const { address } = useWeb3Connection()
 
   const onSubmit = async (data: CreateThirdPartyModelSchemaType) => {
-    const { administrators } = data
+    const administrators = address as string // TODO Replace once is well done
+    //const { administrators } = data
 
     try {
       // Start transaction to show the loading state when we create the files
