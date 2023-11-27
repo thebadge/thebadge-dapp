@@ -3,11 +3,12 @@ import * as React from 'react'
 import { Skeleton, Stack, Typography } from '@mui/material'
 import { UseFormSetValue } from 'react-hook-form'
 
+import { BadgeView } from '../BadgeView'
 import { BadgePreviewLoading } from '@/src/components/common/BadgePreviewContainer'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import useBadgeModelTemplate from '@/src/hooks/theBadge/useBadgeModelTemplate'
-import { BadgePreviewGenerator } from '@/src/pagePartials/badge/preview/BadgePreviewGenerator'
-import DiplomaPreviewGenerator from '@/src/pagePartials/badge/preview/DiplomaPreviewGenerator'
+import DiplomaView from '@/src/pagePartials/badge/preview/DiplomaView'
+import { PreviewGenerator } from '@/src/pagePartials/badge/preview/generators/PreviewGenerator'
 import { BadgeModelTemplate } from '@/types/badges/BadgeModel'
 
 type Props = {
@@ -42,12 +43,9 @@ export const BadgeThirdPartyPreviewGenerator = ({
             />
           }
         >
-          <DiplomaPreviewGenerator
-            additionalData={additionalData}
-            badgeUrl={badgeUrl}
-            modelId={modelId}
-            setValue={setValue}
-          />
+          <PreviewGenerator setValue={setValue}>
+            <DiplomaView additionalData={additionalData} badgeUrl={badgeUrl} modelId={modelId} />
+          </PreviewGenerator>
         </SafeSuspense>
       </Stack>
     )
@@ -57,12 +55,9 @@ export const BadgeThirdPartyPreviewGenerator = ({
     <Stack alignItems={'center'} gap={3} margin={1}>
       <Typography>{title}</Typography>
       <SafeSuspense fallback={<BadgePreviewLoading />}>
-        <BadgePreviewGenerator
-          additionalData={additionalData}
-          badgeUrl={badgeUrl}
-          modelId={modelId}
-          setValue={setValue}
-        />
+        <PreviewGenerator setValue={setValue}>
+          <BadgeView additionalData={additionalData} badgeUrl={badgeUrl} modelId={modelId} />
+        </PreviewGenerator>
       </SafeSuspense>
     </Stack>
   )

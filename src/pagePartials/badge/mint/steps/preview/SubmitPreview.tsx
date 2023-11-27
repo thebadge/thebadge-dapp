@@ -21,7 +21,6 @@ const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvid
 import { getBackgroundBadgeUrl } from '@/src/utils/badges/getBackgroundBadgeUrl'
 import { generateBadgePreviewUrl } from '@/src/utils/navigation/generateUrl'
 import { BadgeNFTAttributesType } from '@/types/badges/BadgeMetadata'
-import { BadgeModel } from '@/types/generated/subgraph'
 
 export default function SubmitPreview({
   badgePreviewRef,
@@ -90,8 +89,7 @@ export default function SubmitPreview({
           badgeUrl={
             APP_URL +
             generateBadgePreviewUrl(estimatedBadgeIdForPreview, {
-              theBadgeContractAddress: (badgeModelData.data as unknown as BadgeModel)
-                .contractAddress,
+              theBadgeContractAddress: badgeModelData.data.badgeModel.contractAddress,
               connectedChainId: appChainId,
             })
           }

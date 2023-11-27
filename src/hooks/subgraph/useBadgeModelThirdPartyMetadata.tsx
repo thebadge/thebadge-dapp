@@ -50,7 +50,7 @@ export function useBadgeThirdPartyRequiredData(badgeId: string, options?: BadgeM
     async ([, _id]) => {
       const graphResult = await gql.badgeThirdPartyMetadataById({ id: _id })
       const data = graphResult.badgeThirdPartyMetaData
-      console.log({ data, graphResult })
+
       const requiredBadgeDataValues = await getFromIPFS<{
         columns: ThirdPartyMetadataColumn[]
         values: Record<string, any>

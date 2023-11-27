@@ -5,8 +5,13 @@ import { Button, Divider, Stack, Typography, styled } from '@mui/material'
 import { colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 
-import { StepClaimThirdPartyPreview } from '@/src/pagePartials/badge/claim/steps/StepsClaimThirdPartyPreview'
-import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
+import { APP_URL } from '@/src/constants/common'
+import useClaimParams from '@/src/hooks/nextjs/useClaimParams'
+import { useBadgeThirdPartyRequiredData } from '@/src/hooks/subgraph/useBadgeModelThirdPartyMetadata'
+import { ThirdPartyPreview } from '@/src/pagePartials/badge/preview/ThirdPartyPreview'
+import { reCreateThirdPartyValuesObject } from '@/src/utils/badges/mintHelpers'
+import { generateBadgePreviewUrl, generateProfileUrl } from '@/src/utils/navigation/generateUrl'
+import { parsePrefixedAddress } from '@/src/utils/prefixedAddress'
 
 type StepsClaimThirdPartySucceedProps = {
   claimAddress: string
@@ -23,6 +28,15 @@ export default function StepsClaimThirdPartySucceed({
 }: StepsClaimThirdPartySucceedProps) {
   const { t } = useTranslation()
   const router = useRouter()
+  const { badgeId, contract, modelId } = useClaimParams()
+  const { address, chainId } = parsePrefixedAddress(contract)
+
+  const requiredBadgeDataMetadata = useBadgeThirdPartyRequiredData(`${badgeId}` || '')
+
+  const values = reCreateThirdPartyValuesObject(
+    requiredBadgeDataMetadata.data?.requirementsDataValues || {},
+    requiredBadgeDataMetadata.data?.requirementsDataColumns,
+  )
 
   const handleSubmit = () => {
     router.push(generateProfileUrl({ address: claimAddress }))
@@ -41,7 +55,17 @@ export default function StepsClaimThirdPartySucceed({
       <Typography color={colors.blue} textAlign="center" variant="title2">
         {t('badge.model.claim.thirdParty.header.titleSuccess')}
       </Typography>
-      <StepClaimThirdPartyPreview />
+      <ThirdPartyPreview
+        additionalData={{ ...values }}
+        badgeUrl={
+          APP_URL +
+          generateBadgePreviewUrl(badgeId, {
+            theBadgeContractAddress: address,
+            connectedChainId: chainId,
+          })
+        }
+        modelId={modelId}
+      />
       <Divider />
       <SubmitButton
         color="blue"

@@ -13,10 +13,9 @@ import useBadgeModelTemplate from '@/src/hooks/theBadge/useBadgeModelTemplate'
 import useEstimateBadgeId from '@/src/hooks/theBadge/useEstimateBadgeId'
 import { MintThirdPartySchemaType } from '@/src/pagePartials/badge/mint/schema/MintThirdPartySchema'
 import MintCostThirdParty from '@/src/pagePartials/badge/mint/steps/preview/thirdParty/MintCostThirdParty'
-import { BadgeThirdPartyPreviewGenerator } from '@/src/pagePartials/badge/preview/BadgeThirdPartyPreviewGenerator'
+import { BadgeThirdPartyPreviewGenerator } from '@/src/pagePartials/badge/preview/generators/BadgeThirdPartyPreviewGenerator'
 import { createThirdPartyValuesObject } from '@/src/utils/badges/mintHelpers'
 import { generateBadgePreviewUrl } from '@/src/utils/navigation/generateUrl'
-import { BadgeModel } from '@/types/generated/subgraph'
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
 export default function SubmitPreviewThirdParty() {
@@ -33,10 +32,9 @@ export default function SubmitPreviewThirdParty() {
     watchedRequiredData,
     requiredBadgeDataMetadata.data?.requirementsData?.requirementsColumns,
   )
-  const badgeModel = useBadgeModel(badgeModelId)
+  const badgeModelData = useBadgeModel(badgeModelId)
   const template = useBadgeModelTemplate(badgeModelId, contract)
-
-  if (badgeModel.error || !badgeModel.data) {
+  if (badgeModelData.error || !badgeModelData.data) {
     throw `There was an error trying to fetch the metadata for the badge model`
   }
 
@@ -53,7 +51,7 @@ export default function SubmitPreviewThirdParty() {
             badgeUrl={
               APP_URL +
               generateBadgePreviewUrl(estimatedBadgeIdForPreview, {
-                theBadgeContractAddress: (badgeModel.data as unknown as BadgeModel).contractAddress,
+                theBadgeContractAddress: badgeModelData.data.badgeModel.contractAddress,
                 connectedChainId: appChainId,
               })
             }
