@@ -8,7 +8,7 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import { TransactionLoading } from '@/src/components/loading/TransactionLoading'
 import useBadgeIDFromULID from '@/src/hooks/nextjs/useBadgeIDFromULID'
-import useClaimUUIDParam from '@/src/hooks/nextjs/useClaimUUIDParam'
+import useClaimParams from '@/src/hooks/nextjs/useClaimParams'
 import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
 import useRelayerTransactionEndpoint from '@/src/hooks/useRelayerTransactionEndpoint'
@@ -60,7 +60,7 @@ const ClaimBadge: NextPageWithLayout = () => {
     return await triggerValidation(['claimAddress'])
   }
 
-  const { claimUUID } = useClaimUUIDParam()
+  const { claimUUID } = useClaimParams()
   const badgeId = useBadgeIDFromULID()
   if (!claimUUID || !badgeId) {
     throw `No claimUUID provided us URL query param`
