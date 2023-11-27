@@ -70,21 +70,23 @@ async function initWeb3Auth() {
     chainConfig: {
       chainNamespace: 'eip155',
       chainId: isTestnet
-        ? chainsConfig[Chains.goerli].chainIdHex
+        ? chainsConfig[Chains.sepolia].chainIdHex
         : chainsConfig[Chains.gnosis].chainIdHex,
       displayName: '1231231 Test',
-      ticker: isTestnet ? chainsConfig[Chains.goerli].token : chainsConfig[Chains.gnosis].token,
-      tickerName: isTestnet ? chainsConfig[Chains.goerli].token : chainsConfig[Chains.gnosis].token,
+      ticker: isTestnet ? chainsConfig[Chains.sepolia].token : chainsConfig[Chains.gnosis].token,
+      tickerName: isTestnet
+        ? chainsConfig[Chains.sepolia].token
+        : chainsConfig[Chains.gnosis].token,
       rpcTarget: isTestnet
-        ? chainsConfig[Chains.goerli].rpcUrl
+        ? chainsConfig[Chains.sepolia].rpcUrl
         : chainsConfig[Chains.gnosis].rpcUrl,
       blockExplorer: isTestnet
-        ? chainsConfig[Chains.goerli].blockExplorerUrls[0]
+        ? chainsConfig[Chains.sepolia].blockExplorerUrls[0]
         : chainsConfig[Chains.gnosis].blockExplorerUrls[0],
     },
     uiConfig: {
       appName,
-      appLogo: 'https://avatars.githubusercontent.com/u/109973181?s=200&v=4',
+      appLogo: 'https://avatars.githubusercontent.com/u/109973181?s=201&v=4',
       modalZIndex: '13002', // Onboard modal is 13001
       defaultLanguage: 'en',
       // todo remove this on development, is an outstanding issue for deployment versions: https://github.com/orgs/Web3Auth/discussions/1143
