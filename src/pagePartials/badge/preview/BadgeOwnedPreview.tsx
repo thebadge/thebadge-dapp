@@ -95,7 +95,7 @@ export default function BadgeOwnedPreview() {
   }
 
   function handleImport() {
-    addTokenIntoWallet(badgeId, badge.badgeMetadata.image.s3Url)
+    addTokenIntoWallet(badgeId, badge?.badgeMetadata?.image.s3Url)
   }
 
   async function handleImportLinkedin() {

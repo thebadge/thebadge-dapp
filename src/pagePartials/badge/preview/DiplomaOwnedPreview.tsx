@@ -66,7 +66,7 @@ export default function DiplomaOwnedPreview() {
     throw `No badgeId provided us URL query param`
   }
 
-  const { appChainId } = useWeb3Connection()
+  const { appChainId, connectWallet, isWalletConnected } = useWeb3Connection()
   const badgeById = useBadgeById(badgeId, contract)
   const addTokenIntoWallet = useAddTokenIntoWallet()
   const isThirdPartyBadge = useIsThirdPartyBadge(badgeId)
@@ -96,7 +96,7 @@ export default function DiplomaOwnedPreview() {
   }
 
   function handleImport() {
-    addTokenIntoWallet(badgeId, badge.badgeMetadata.image.s3Url)
+    addTokenIntoWallet(badgeId, badge?.badgeMetadata?.image.s3Url)
   }
 
   async function handleImportLinkedin() {
