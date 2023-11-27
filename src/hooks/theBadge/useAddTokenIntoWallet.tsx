@@ -53,6 +53,6 @@ export default function useAddTokenIntoWallet() {
         })
       }
     },
-    [theBadge.address, walletClient],
+    [connectWallet, theBadge.address, walletClient],
   )
 }
