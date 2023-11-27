@@ -25,9 +25,9 @@ export default function StepHeader({
   completedSteps: Record<string, boolean>
 }) {
   const { t } = useTranslation()
-  const modelId = useModelIdParam()
-  const badgeModelData = useBadgeModel(modelId)
-  const template = useBadgeModelTemplate(modelId)
+  const { badgeModelId } = useModelIdParam()
+  const badgeModelData = useBadgeModel(badgeModelId)
+  const template = useBadgeModelTemplate(badgeModelId)
 
   const badgeCreatorMetadata = useS3Metadata<{ content: Creator }>(
     badgeModelData.data?.badgeModel?.creator.metadataUri || '',

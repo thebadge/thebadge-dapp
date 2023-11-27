@@ -16,8 +16,8 @@ import {
 export default function FormThirdParty() {
   const { control, watch } = useFormContext<MintThirdPartySchemaType>()
   const { t } = useTranslation()
-  const modelId = useModelIdParam()
-  const template = useBadgeModelTemplate(modelId)
+  const { badgeModelId } = useModelIdParam()
+  const template = useBadgeModelTemplate(badgeModelId)
 
   const watchedPreferMintMethod = watch('preferMintMethod')
 

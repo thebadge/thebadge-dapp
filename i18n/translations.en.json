@@ -326,7 +326,7 @@
         "steps": [
           {
             "subTitle": "You are starting the process of creating a new badge model. Please read the following instructions carefully in order to be able to complete the process correctly.",
-            "hint": "You can click on the links below, and read more about this process on the docs."
+            "hint": "You can read more about this process on the [docs]({{docsUrl}})."
           },
           {
             "subTitle": "Let's start with the look and feel of your badge, so please complete the following form until you are happy with how your badge is going to looks like.",
@@ -351,7 +351,17 @@
           "logo": "The logo for your badge",
           "textContrast": "Text color",
           "backgroundImage": "Background",
-          "template": "Template (Not implemented yet)"
+          "template": "Template (Not implemented yet)",
+          "templateConfig": {
+            "title": "Choose a name for your badge model",
+            "description": "Briefly describe what your badge certifies",
+            "logoDescription": "Choose an image or logo that will make your model unique",
+            "logoTooltip": "For your badge to look great, it is ideal that the image has 1:1 proportions.",
+            "badgeTypeSelectorTitle": "Choose what type of badge you want: ",
+            "additionalConfigsTitle": "Additional configs ",
+            "diplomaName": "Course name",
+            "diplomaDate": "Date"
+          }
         },
         "formField": {
           "name": "Field name",

@@ -20,9 +20,9 @@ export default function DynamicRequiredData({
 }) {
   const formButtonRef = useRef<HTMLButtonElement>()
   const { setValue, watch } = useFormContext<MintThirdPartySchemaType>()
-  const modelId = useModelIdParam()
+  const { badgeModelId } = useModelIdParam()
 
-  const requiredBadgeDataMetadata = useBadgeModelThirdPartyMetadata(modelId)
+  const requiredBadgeDataMetadata = useBadgeModelThirdPartyMetadata(badgeModelId)
 
   const hasRequiredData = !!requiredBadgeDataMetadata.data?.requirementsData?.requirementsColumns
 

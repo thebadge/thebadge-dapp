@@ -24,7 +24,9 @@ export default function BadgeConfiguration() {
       <SectionContainer>
         <Stack flex="1" gap={4}>
           <Stack>
-            <Typography variant="bodySmall">Choose a name for your badge model</Typography>
+            <Typography variant="bodySmall">
+              {t('badge.model.create.uiBasics.templateConfig.title')}
+            </Typography>
             <Controller
               control={control}
               name={'name'}
@@ -40,7 +42,9 @@ export default function BadgeConfiguration() {
           </Stack>
 
           <Stack>
-            <Typography variant="bodySmall">Briefly describe what your badge certifies</Typography>
+            <Typography variant="bodySmall">
+              {t('badge.model.create.uiBasics.templateConfig.description')}
+            </Typography>
             <Controller
               control={control}
               name={'description'}
@@ -57,7 +61,7 @@ export default function BadgeConfiguration() {
 
           <Stack sx={{ position: 'relative' }}>
             <Typography variant="bodySmall">
-              Choose an image or logo that will make your model unique
+              {t('badge.model.create.uiBasics.templateConfig.logoDescription')}
             </Typography>
             <Controller
               control={control}
@@ -78,12 +82,7 @@ export default function BadgeConfiguration() {
                 />
               )}
             />
-            <Tooltip
-              arrow
-              title={
-                'For your badge to look great, it is ideal that the image has 1:1 proportions.'
-              }
-            >
+            <Tooltip arrow title={t('badge.model.create.uiBasics.templateConfig.logoTooltip')}>
               <InfoOutlinedIcon sx={{ ml: 1, position: 'absolute', bottom: 8, right: 4 }} />
             </Tooltip>
           </Stack>

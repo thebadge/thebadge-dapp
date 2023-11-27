@@ -16,7 +16,7 @@ import { NextPageWithLayout } from '@/types/next'
 const MintBadgeModel: NextPageWithLayout = () => {
   const { state } = useTransaction()
   const router = useRouter()
-  const badgeModelId = useModelIdParam()
+  const { badgeModelId } = useModelIdParam()
   const controllerType = useControllerTypeParam()
 
   if (!badgeModelId) {

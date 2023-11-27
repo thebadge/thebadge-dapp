@@ -2,8 +2,11 @@ import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
 import { DiplomaNFTAttributesType } from '@/types/badges/BadgeMetadata'
 import { BadgeModelTemplate } from '@/types/badges/BadgeModel'
 
-export default function useBadgeModelTemplate(modelId: string): BadgeModelTemplate {
-  const badgeModelData = useBadgeModel(modelId)
+export default function useBadgeModelTemplate(
+  modelId: string,
+  targetContract?: string,
+): BadgeModelTemplate {
+  const badgeModelData = useBadgeModel(modelId, targetContract)
   const badgeModelMetadata = badgeModelData.data?.badgeModelMetadata
 
   const template = badgeModelMetadata?.attributes?.find(
