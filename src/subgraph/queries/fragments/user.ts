@@ -16,6 +16,7 @@ gql`
   fragment UserWithBadges on User {
     id
     isCreator
+    isRegistered
     metadataUri
     badges {
       ...UserBadges
