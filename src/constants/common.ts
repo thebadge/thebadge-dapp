@@ -26,8 +26,6 @@ export const TERMS_AND_CONDITIONS_URL = APP_URL + '/legal/terms'
 
 export const IS_DEVELOP = process.env.NEXT_PUBLIC_DEV_MODE || false
 
-console.log('is develop', IS_DEVELOP)
-
 export const WEB3_MODAL_PROJECT_ID = process.env.NEXT_PUBLIC_WEB3_MODAL_PROJECT_ID || ''
 export const WEB3_AUTH_CLIENT_ID_TESTNET = process.env.NEXT_PUBLIC_WEB3AUTH_CLIENT_ID_TESTNET || ''
 export const WEB3_AUTH_CLIENT_ID_PRODUCTION =
