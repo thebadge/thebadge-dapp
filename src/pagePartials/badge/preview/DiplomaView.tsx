@@ -2,7 +2,6 @@ import React from 'react'
 
 import { DiplomaPreview } from '@thebadge/ui-library'
 
-import { APP_URL } from '@/src/constants/common'
 import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
 import enrichTextWithValues, { EnrichTextValues } from '@/src/utils/enrichTextWithValues'
@@ -20,7 +19,7 @@ type Props = {
   additionalData?: Record<string, any>
 }
 
-export default function DiplomaView({ additionalData, modelId }: Props) {
+export default function DiplomaView({ additionalData, badgeUrl, modelId }: Props) {
   const badgeModelData = useBadgeModel(modelId)
   const badgeModelMetadata = badgeModelData.data?.badgeModelMetadata
 
@@ -76,7 +75,7 @@ export default function DiplomaView({ additionalData, modelId }: Props) {
       animationEffects={['wobble', 'grow', 'glare']}
       animationOnHover
       backgroundUrl={'https://dev-app.thebadge.xyz/shareable/diploma-background.png'}
-      badgeUrl={APP_URL}
+      badgeUrl={badgeUrl}
       courseName={courseName?.value}
       date={achievementDate?.value}
       decorationBackgroundUrl={'https://dev-app.thebadge.xyz/shareable/diploma-decoration.png'}

@@ -2,7 +2,7 @@
 const { loadEnvConfig } = require('@next/env')
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-// const devEndpoints = require('./src/subgraph/subgraph-endpoints-dev.json')
+const devEndpoints = require('./src/subgraph/subgraph-endpoints-dev.json')
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const endpoints = require('./src/subgraph/subgraph-endpoints.json')
 
@@ -11,7 +11,7 @@ if (Object.keys(endpoints).length) {
 
   const codeGenOutDir = 'types/generated/subgraph.ts'
 
-  const schemas = Object.values(endpoints).reduce((acc, current) => {
+  const schemas = Object.values(devEndpoints).reduce((acc, current) => {
     return [...acc, ...Object.values(current)].filter((v) => !!v)
   }, [])
 

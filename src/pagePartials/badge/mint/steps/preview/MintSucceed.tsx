@@ -11,7 +11,6 @@ import useEstimateBadgeId from '@/src/hooks/theBadge/useEstimateBadgeId'
 import { getBackgroundBadgeUrl } from '@/src/utils/badges/getBackgroundBadgeUrl'
 import { generateBadgePreviewUrl } from '@/src/utils/navigation/generateUrl'
 import { BadgeNFTAttributesType } from '@/types/badges/BadgeMetadata'
-import { BadgeModel } from '@/types/generated/subgraph'
 
 export default function MintSucceed() {
   const { appChainId } = useWeb3Connection()
@@ -47,7 +46,7 @@ export default function MintSucceed() {
         badgeUrl={
           APP_URL +
           generateBadgePreviewUrl(estimatedBadgeIdForPreview, {
-            theBadgeContractAddress: (badgeModelData.data as unknown as BadgeModel).contractAddress,
+            theBadgeContractAddress: badgeModelData.data.badgeModel.contractAddress,
             connectedChainId: appChainId,
           })
         }
