@@ -33,7 +33,7 @@ const Register: NextPageWithLayout = () => {
 
   const { data: userProfile } = useUserById(address)
 
-  if (userProfile?.isCreator) {
+  if (userProfile?.isRegistered) {
     router.push(generateProfileUrl({ filter: NormalProfileFilter.CREATED_BADGES }))
   }
 
