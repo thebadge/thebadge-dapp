@@ -202,7 +202,7 @@ export default function InfoPreviewEdit({ address }: Props) {
                       placeholder={'Email'}
                       variant="dAppTitle2"
                     >
-                      {value ? (
+                      {value && readView ? (
                         <Link href={`mailto:${value}`} target={'_blank'}>
                           {value}
                         </Link>
@@ -228,7 +228,7 @@ export default function InfoPreviewEdit({ address }: Props) {
                       placeholder={'Twitter'}
                       variant="dAppTitle2"
                     >
-                      {value ? (
+                      {value && readView ? (
                         <Link href={value} target={'_blank'}>
                           {value}
                         </Link>
@@ -254,7 +254,7 @@ export default function InfoPreviewEdit({ address }: Props) {
                       placeholder={'Discord'}
                       variant="dAppTitle2"
                     >
-                      {value ? (
+                      {value && readView ? (
                         <Link href={value} target={'_blank'}>
                           {value}
                         </Link>
@@ -280,7 +280,7 @@ export default function InfoPreviewEdit({ address }: Props) {
                       placeholder={'Company Url'}
                       variant="dAppTitle2"
                     >
-                      {value ? (
+                      {value && readView ? (
                         <Link href={value} target={'_blank'}>
                           {shortenLinkedinString(value || '', 20)}
                         </Link>
