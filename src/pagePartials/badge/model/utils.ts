@@ -57,7 +57,7 @@ export function getFieldsToValidateOnStep(
         case BadgeModelTemplate.Diploma: {
           return thirdPartyDiplomaValidationSteps
         }
-        case BadgeModelTemplate.Classic:
+        case BadgeModelTemplate.Badge:
         default: {
           return thirdPartyValidationSteps
         }
@@ -95,7 +95,7 @@ export function defaultValues(controllerType?: BadgeModelControllerType) {
       return {
         textContrast: 'Black',
         backgroundImage: 'White Waves',
-        template: 'Classic',
+        template: 'Badge',
         challengePeriodDuration: 2,
         rigorousness: {
           amountOfJurors: 1,
@@ -112,7 +112,7 @@ export function defaultValues(controllerType?: BadgeModelControllerType) {
         return {
           textContrast: 'Black',
           backgroundImage: 'White Waves',
-          template: 'Classic',
+          template: 'Badge',
           challengePeriodDuration: 2,
           rigorousness: {
             amountOfJurors: 1,

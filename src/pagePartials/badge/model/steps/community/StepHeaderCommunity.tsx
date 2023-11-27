@@ -48,7 +48,8 @@ export default function StepHeaderCommunity({
       <StepHeaderSubtitle
         hint={t(`badge.model.create.steps.${currentStep}.hint`, {
           docsUrl: DOCS_URL + '/thebadge-documentation/protocol-mechanics/how-it-works',
-          createBadgeTypeDocs: DOCS_URL + '/thebadge-documentation/protocol-mechanics/how-it-works',
+          createBadgeModelDocs:
+            DOCS_URL + '/thebadge-documentation/protocol-mechanics/how-it-works',
         })}
         showHint={currentStep !== 5}
         stepNumber={currentStep + 1}

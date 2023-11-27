@@ -12,6 +12,7 @@ import MintCost from './MintCost'
 import { APP_URL } from '@/src/constants/common'
 import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
+import useBadgeModelTemplate from '@/src/hooks/theBadge/useBadgeModelTemplate'
 import useMintValue from '@/src/hooks/theBadge/useMintValue'
 import { MintBadgeSchemaType } from '@/src/pagePartials/badge/mint/schema/MintBadgeSchema'
 import { convertPreviewToImage } from '@/src/pagePartials/badge/mint/utils'
@@ -30,6 +31,7 @@ export default function SubmitPreview({
 
   const modelId = useModelIdParam()
   const badgeModelData = useBadgeModel(modelId)
+  const template = useBadgeModelTemplate(modelId)
   const badgeModelMetadata = badgeModelData.data?.badgeModelMetadata
 
   const badgeLogoImage = badgeModelData.data?.badgeModelMetadata?.image
@@ -65,7 +67,11 @@ export default function SubmitPreview({
 
   return (
     <Stack alignItems={'center'} gap={3} margin={1}>
-      <Typography>{t('badge.model.mint.previewTitle')}</Typography>
+      <Typography>
+        {t('badge.model.mint.previewTitle', {
+          badgeModelTemplate: template,
+        })}
+      </Typography>
       <Box ref={badgePreviewRef}>
         <BadgePreview
           animationEffects={['wobble', 'grow', 'glare']}

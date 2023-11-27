@@ -50,8 +50,8 @@ export default function BadgeModelUIBasics() {
                 disabled={!isThirdParty}
                 error={error}
                 onChange={onChange}
-                options={[BadgeModelTemplate.Classic, BadgeModelTemplate.Diploma]}
-                value={value || BadgeModelTemplate.Classic}
+                options={[BadgeModelTemplate.Badge, BadgeModelTemplate.Diploma]}
+                value={value || BadgeModelTemplate.Badge}
               />
             )}
           />
@@ -60,7 +60,7 @@ export default function BadgeModelUIBasics() {
         </Stack>
       )}
 
-      {watchedTemplate === BadgeModelTemplate.Classic && <BadgeConfiguration />}
+      {watchedTemplate === BadgeModelTemplate.Badge && <BadgeConfiguration />}
       {watchedTemplate === BadgeModelTemplate.Diploma && <DiplomaConfiguration />}
 
       <Divider />

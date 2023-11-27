@@ -63,7 +63,7 @@ const CreateCommunityBadgeModel: NextPageWithLayout = () => {
               badgeModelLogoUri,
               backgroundImage,
               BADGE_MODEL_TEXT_CONTRAST[textContrast],
-              BadgeModelTemplate.Classic, // TODO Implement template on Community
+              BadgeModelTemplate.Badge, // TODO Implement template on Community
             ),
             encodeKlerosBadgeModelControllerData(
               address as string,

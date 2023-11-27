@@ -34,7 +34,7 @@ export async function createAndUploadBadgeModelMetadata(data: CreateThirdPartyMo
     const { description, name, ...rest } = data
     return createAndUploadDiplomaBadgeModelMetadata(name, description, rest)
   }
-  if (template === BadgeModelTemplate.Classic) {
+  if (template === BadgeModelTemplate.Badge) {
     const { backgroundImage, badgeModelLogoUri, description, name, template, textContrast } = data
     // This is a safe validation, the form already validates that the data is here
     if (!backgroundImage || !textContrast) {
