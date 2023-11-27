@@ -166,7 +166,7 @@ export default function ActionButtons() {
       {exploreButton}
       {curateButton}
 
-      {isWalletConnected && !user?.isCreator ? (
+      {isWalletConnected && !user?.isRegistered ? (
         <Tooltip
           arrow
           title={
