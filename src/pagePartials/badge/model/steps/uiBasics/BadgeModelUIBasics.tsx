@@ -9,6 +9,7 @@ import { CreateCommunityModelSchemaType } from '@/src/pagePartials/badge/model/s
 import BadgeConfiguration from '@/src/pagePartials/badge/model/steps/uiBasics/badge/BadgeConfiguration'
 import DiplomaConfiguration from '@/src/pagePartials/badge/model/steps/uiBasics/diploma/DiplomaConfiguration'
 import { BadgeModelControllerType, BadgeModelTemplate } from '@/types/badges/BadgeModel'
+import { useTranslation } from 'next-export-i18n'
 
 export const BADGE_MODEL_TEXT_CONTRAST: { [key: string]: string } = {
   White: 'dark-withTextBackground',
@@ -35,12 +36,15 @@ export default function BadgeModelUIBasics() {
 
   const { control, watch } = useFormContext<CreateCommunityModelSchemaType>()
   const watchedTemplate = watch('template')
+  const { t } = useTranslation()
 
   return (
     <>
       {isThirdParty && (
         <Stack flex="1" gap={1} mb={4}>
-          <Typography variant="bodySmall">Choose what type of badge you want:</Typography>
+          <Typography variant="bodySmall">
+            {t('badge.model.create.uiBasics.templateConfig.badgeTypeSelectorTitle')}
+          </Typography>
 
           <Controller
             control={control}

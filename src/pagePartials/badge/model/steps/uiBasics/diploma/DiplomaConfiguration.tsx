@@ -25,7 +25,9 @@ export default function DiplomaConfiguration() {
       <SectionContainer>
         <Stack flex="1" gap={4}>
           <Stack>
-            <Typography variant="bodySmall">Choose a name for your badge model</Typography>
+            <Typography variant="bodySmall">
+              {t('badge.model.create.uiBasics.templateConfig.title')}
+            </Typography>
             <Controller
               control={control}
               name={'name'}
@@ -41,7 +43,9 @@ export default function DiplomaConfiguration() {
           </Stack>
 
           <Stack>
-            <Typography variant="bodySmall">Briefly describe what your badge certifies</Typography>
+            <Typography variant="bodySmall">
+              {t('badge.model.create.uiBasics.templateConfig.description')}
+            </Typography>
             <Controller
               control={control}
               name={'description'}

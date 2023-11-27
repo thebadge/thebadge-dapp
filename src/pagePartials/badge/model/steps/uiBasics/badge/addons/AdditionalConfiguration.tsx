@@ -20,7 +20,7 @@ export default function AdditionConfiguration() {
   return (
     <>
       <Typography mt={2} variant="titleMedium">
-        Additional configs
+        {t('badge.model.create.uiBasics.templateConfig.additionalConfigsTitle')}
       </Typography>
       <SectionContainer>
         <Stack flex="1">

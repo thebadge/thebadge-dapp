@@ -7,8 +7,6 @@ import { useTranslation } from 'next-export-i18n'
 import StepHeaderStepper from '@/src/components/form/formWithSteps/StepHeaderStepper'
 import StepHeaderSubtitle from '@/src/components/form/formWithSteps/StepHeaderSubtitle'
 import { DOCS_URL, EMAIL_URL } from '@/src/constants/common'
-import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
-import useBadgeModelTemplate from '@/src/hooks/theBadge/useBadgeModelTemplate'
 import { useSizeSM } from '@/src/hooks/useSize'
 
 const steps = ['Badge model basics', 'Badge model details', 'Badge model preview']
@@ -24,8 +22,6 @@ export default function StepHeaderThirdParty({
 }) {
   const { t } = useTranslation()
   const isMobile = useSizeSM()
-  const modelId = useModelIdParam()
-  const template = useBadgeModelTemplate(modelId)
 
   return (
     <Stack
@@ -50,19 +46,17 @@ export default function StepHeaderThirdParty({
       />
 
       <StepHeaderSubtitle
-        hint={t(`badge.model.create.steps.thirdParty.${currentStep}.hint`, {
-          docsUrl: DOCS_URL + '/thebadge-documentation/protocol-mechanics/how-it-works',
+        hint={t(`badge.model.create.steps.${currentStep}.hint`, {
+          docsUrl: DOCS_URL,
           createBadgeModelDocs:
             DOCS_URL + '/thebadge-documentation/protocol-mechanics/how-it-works',
-          badgeModelTemplate: template,
           supportContact: EMAIL_URL,
         })}
         showHint={currentStep !== 5}
         stepNumber={currentStep + 1}
-        subTitle={t(`badge.model.create.steps.thirdParty.${currentStep}.subTitle`, {
-          docsUrl: DOCS_URL + '/thebadge-documentation/protocol-mechanics/how-it-works',
+        subTitle={t(`badge.model.create.steps.${currentStep}.subTitle`, {
+          docsUrl: DOCS_URL,
           criteriaDocsUrl: DOCS_URL + '/thebadge-documentation/protocol-mechanics/how-it-works',
-          badgeModelTemplate: template,
           supportContact: EMAIL_URL,
         })}
       />
