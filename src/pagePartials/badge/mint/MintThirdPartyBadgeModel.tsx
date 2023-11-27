@@ -34,7 +34,7 @@ const MintThirdPartyBadgeModel: NextPageWithLayout = () => {
   const theBadgeStore = useTBStore()
   const { resetTxState, sendTx, state } = useTransaction()
   const router = useRouter()
-  const badgeModelId = useModelIdParam()
+  const { badgeModelId, contract } = useModelIdParam()
 
   if (!badgeModelId) {
     throw `No modelId provided us URL query param`
@@ -47,7 +47,7 @@ const MintThirdPartyBadgeModel: NextPageWithLayout = () => {
     }
   }, [router, state])
 
-  const badgeModel = useBadgeModel(badgeModelId)
+  const badgeModel = useBadgeModel(badgeModelId, contract)
   const requiredBadgeDataMetadata = useBadgeModelThirdPartyMetadata(badgeModelId)
 
   if (badgeModel.error || !badgeModel.data) {

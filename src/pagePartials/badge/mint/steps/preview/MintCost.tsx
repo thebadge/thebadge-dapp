@@ -43,12 +43,12 @@ export default function MintCost({ costs }: Props) {
   const { t } = useTranslation()
   const { appChainId } = useWeb3Connection()
   const networkConfig = getNetworkConfig(appChainId)
-  const modelId = useModelIdParam()
+  const { badgeModelId } = useModelIdParam()
 
-  if (!modelId) {
+  if (!badgeModelId) {
     throw `No modelId provided as URL query param`
   }
-  const badgeModelKlerosData = useRegistrationBadgeModelKlerosMetadata(modelId)
+  const badgeModelKlerosData = useRegistrationBadgeModelKlerosMetadata(badgeModelId)
 
   if (badgeModelKlerosData.error || !badgeModelKlerosData.data) {
     throw `There was an error trying to fetch the metadata for the badge model`

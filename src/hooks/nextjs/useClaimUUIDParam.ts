@@ -7,5 +7,10 @@ import { useRouter } from 'next/router'
 export default function useClaimUUIDParam() {
   const router = useRouter()
 
-  return router.query.claimUUID as string
+  return {
+    claimUUID: router.query.claimUUID as string,
+    contract: router.query.contract as string,
+    modelId: router.query.modelId as string,
+    badgeId: router.query.badgeId as string,
+  }
 }

@@ -9,7 +9,7 @@ import { BackendResponse } from '@/types/utils'
  * Helper hook to get the badge from the url params
  */
 export default function useBadgeIDFromULID() {
-  const claimUUID = useClaimUUIDParam()
+  const { claimUUID } = useClaimUUIDParam()
 
   return useSWR(claimUUID ? [`badgeId:${claimUUID}`, claimUUID] : null, async ([, _ulid]) => {
     const res = await axios.get<BackendResponse<{ badgeId: string }>>(

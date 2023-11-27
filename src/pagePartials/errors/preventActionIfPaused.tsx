@@ -21,8 +21,8 @@ type Props = {
 }
 
 export const PreventActionIfBadgeModelPaused: React.FC<Props> = ({ children, minHeight }) => {
-  const badgeModelId = useModelIdParam()
-  const { data } = useBadgeModel(badgeModelId)
+  const { badgeModelId, contract } = useModelIdParam()
+  const { data } = useBadgeModel(badgeModelId, contract)
 
   if (data?.badgeModel.paused) {
     return (

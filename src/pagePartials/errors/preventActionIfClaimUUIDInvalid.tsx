@@ -27,7 +27,7 @@ export const PreventActionIfClaimUUIDInvalid: React.FC<Props> = ({
   minHeight,
 }) => {
   const [isClaimUUIDValid, setIsClaimUUIDValid] = useState(false)
-  const claimUUID = useClaimUUIDParam()
+  const { claimUUID } = useClaimUUIDParam()
 
   useEffect(() => {
     const checkInvalidUUID = async () => {
