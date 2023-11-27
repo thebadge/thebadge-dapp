@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { Stack, Typography } from '@mui/material'
+import { useTranslation } from 'next-export-i18n'
 import { Controller, useFormContext } from 'react-hook-form'
 
 import { TextField } from '@/src/components/form/formFields/TextField'
@@ -9,12 +10,15 @@ import SectionContainer from '@/src/pagePartials/badge/model/steps/uiBasics/addo
 
 export default function BodyDataConfiguration() {
   const { control } = useFormContext<BodyDataConfigurationSchemaType>()
+  const { t } = useTranslation()
 
   return (
     <SectionContainer>
       <Stack flex="1" gap={4}>
         <Stack>
-          <Typography variant="bodySmall">Course name</Typography>
+          <Typography variant="bodySmall">
+            {t('badge.model.create.uiBasics.templateConfig.diplomaName')}
+          </Typography>
           <Controller
             control={control}
             name={'courseName'}
@@ -30,7 +34,9 @@ export default function BodyDataConfiguration() {
         </Stack>
 
         <Stack>
-          <Typography variant="bodySmall">Briefly describe what your badge certifies</Typography>
+          <Typography variant="bodySmall">
+            {t('badge.model.create.uiBasics.templateConfig.description')}
+          </Typography>
           <Controller
             control={control}
             name={'achievementDescription'}
@@ -48,7 +54,9 @@ export default function BodyDataConfiguration() {
 
       <Stack flex="1" gap={4}>
         <Stack>
-          <Typography variant="bodySmall">Date</Typography>
+          <Typography variant="bodySmall">
+            {t('badge.model.create.uiBasics.templateConfig.diplomaDate')}
+          </Typography>
           <Controller
             control={control}
             name={'achievementDate'}

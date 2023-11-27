@@ -41,14 +41,14 @@ export default function MintThirdPartyWithSteps({
   txState = TransactionStates.none,
 }: MintStepsProps) {
   const [currentStep, setCurrentStep] = useState(0)
-  const modelId = useModelIdParam()
+  const { badgeModelId } = useModelIdParam()
 
   // Naive completed step implementation
   const [completed, setCompleted] = useState<Record<string, boolean>>({})
 
   const methods = useForm<z.infer<typeof MintThirdPartySchema>>({
     resolver: zodResolver(MintThirdPartySchema),
-    defaultValues: defaultValues(modelId),
+    defaultValues: defaultValues(badgeModelId),
     reValidateMode: 'onChange',
     mode: 'onChange',
   })

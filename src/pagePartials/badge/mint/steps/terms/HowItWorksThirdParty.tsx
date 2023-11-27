@@ -17,9 +17,9 @@ export default function HowItWorksThirdParty() {
   const { t } = useTranslation()
   const { control } = useFormContext<MintThirdPartySchemaType>() // retrieve all hook methods
 
-  const modelId = useModelIdParam()
-  const template = useBadgeModelTemplate(modelId)
-  const badgeModelData = useBadgeModel(modelId)
+  const { badgeModelId, contract } = useModelIdParam()
+  const template = useBadgeModelTemplate(badgeModelId, contract)
+  const badgeModelData = useBadgeModel(badgeModelId, contract)
 
   const badgeCreatorMetadata = useS3Metadata<{ content: Creator }>(
     badgeModelData.data?.badgeModel?.creator.metadataUri || '',

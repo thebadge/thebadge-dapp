@@ -15,7 +15,7 @@ import { reCreateThirdPartyValuesObject } from '@/src/utils/badges/mintHelpers'
 export const StepClaimThirdPartyPreview = () => {
   const { t } = useTranslation()
   const { setValue } = useFormContext<ClaimThirdPartyBadgeSchemaType>()
-  const modelId = useModelIdParam()
+  const { badgeModelId } = useModelIdParam()
   const badgeId = useBadgeIDFromULID()
 
   const requiredBadgeDataMetadata = useBadgeThirdPartyRequiredData(`${badgeId.data}` || '')
@@ -30,7 +30,7 @@ export const StepClaimThirdPartyPreview = () => {
       <SafeSuspense>
         <BadgeThirdPartyPreviewGenerator
           additionalData={{ ...values }}
-          modelId={modelId}
+          modelId={badgeModelId}
           setValue={setValue}
           title={t('badge.model.claim.thirdParty.preview.title')}
         />

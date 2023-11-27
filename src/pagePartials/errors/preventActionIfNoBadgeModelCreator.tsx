@@ -23,8 +23,8 @@ type Props = {
 }
 
 export const PreventActionIfNoBadgeModelCreator: React.FC<Props> = ({ children, minHeight }) => {
-  const badgeModelId = useModelIdParam()
-  const badgeModel = useBadgeModel(badgeModelId)
+  const { badgeModelId, contract } = useModelIdParam()
+  const badgeModel = useBadgeModel(badgeModelId, contract)
   const { address } = useWeb3Connection()
 
   if (

@@ -28,7 +28,7 @@ import { NextPageWithLayout } from '@/types/next'
 const ExploreBadgeModels: NextPageWithLayout = () => {
   const { t } = useTranslation()
   const gql = useSubgraph()
-  const badgeModelId = useModelIdParam()
+  const { badgeModelId } = useModelIdParam()
   const isMobile = useSizeSM()
   const badgeModel = useBadgeModel(badgeModelId)
 

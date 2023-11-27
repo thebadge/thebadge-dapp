@@ -28,16 +28,16 @@ export default function MintCostThirdParty() {
   const { t } = useTranslation()
   const { appChainId } = useWeb3Connection()
   const networkConfig = getNetworkConfig(appChainId)
-  const modelId = useModelIdParam()
+  const { badgeModelId } = useModelIdParam()
 
-  if (!modelId) {
+  if (!badgeModelId) {
     throw `No modelId provided as URL query param`
   }
 
   // Get kleros deposit value for the badge model
-  const { data: mintValue } = useMintValue(modelId)
+  const { data: mintValue } = useMintValue(badgeModelId)
   if (!mintValue) {
-    throw `There was not possible to get the value to mint a badge for the badge model: ${modelId}`
+    throw `There was not possible to get the value to mint a badge for the badge model: ${badgeModelId}`
   }
 
   const totalMintCost = formatUnits(mintValue, 18)
