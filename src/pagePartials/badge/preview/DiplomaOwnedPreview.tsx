@@ -66,7 +66,7 @@ export default function DiplomaOwnedPreview() {
     throw `No badgeId provided us URL query param`
   }
 
-  const { appChainId, connectWallet, isWalletConnected } = useWeb3Connection()
+  const { appChainId } = useWeb3Connection()
   const badgeById = useBadgeById(badgeId, contract)
   const addTokenIntoWallet = useAddTokenIntoWallet()
   const isThirdPartyBadge = useIsThirdPartyBadge(badgeId)
