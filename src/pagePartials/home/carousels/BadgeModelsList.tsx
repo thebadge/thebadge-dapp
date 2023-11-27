@@ -64,9 +64,9 @@ export default function BadgeModelsList() {
       modules={[EffectCoverflow, Pagination]}
       noArrows
       pagination={{ type: 'bullets', clickable: true }}
-      spaceBetween={12}
+      spaceBetween={3}
       style={{
-        padding: '20px 0 56px 43px',
+        padding: '20px 20px 56px 20px',
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         '--swiper-pagination-bullet-inactive-color': '#ffffff',

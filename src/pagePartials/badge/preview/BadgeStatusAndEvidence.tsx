@@ -40,6 +40,10 @@ export default function BadgeStatusAndEvidence() {
     setSelectedTab(index)
   }
 
+  if (isThirdParty) {
+    return null
+  }
+
   return (
     <Stack gap={3} mt={isMobile ? 7 : 5}>
       {isMobile && (
@@ -64,17 +68,15 @@ export default function BadgeStatusAndEvidence() {
               </SafeSuspense>
             </TabPanel>
 
-            {!isThirdParty && (
-              <TabPanel index={1} value={selectedTab}>
-                <SafeSuspense>
-                  <ChallengeStatus />
-                </SafeSuspense>
-              </TabPanel>
-            )}
+            <TabPanel index={1} value={selectedTab}>
+              <SafeSuspense>
+                <ChallengeStatus />
+              </SafeSuspense>
+            </TabPanel>
           </SwipeableViews>
         </>
       )}
-      {!isMobile && !isThirdParty && (
+      {!isMobile && (
         <>
           <SafeSuspense>
             <ChallengeStatus />

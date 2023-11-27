@@ -41,7 +41,7 @@ export const IssuerConfigurationSchema = z.object({
   issuedByLabel: z.string().default('Issued by'),
   issuerAvatar: AvatarSchema.optional(),
   issuerTitle: z.string().max(25).optional(),
-  issuerDescription: z.string().max(150).optional(),
+  issuerDescription: z.string().max(250).optional(),
 })
 
 export type IssuerConfigurationSchemaType = z.infer<typeof IssuerConfigurationSchema>
