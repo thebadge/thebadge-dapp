@@ -12,7 +12,7 @@ import { WCAddress } from '@/types/utils'
 
 export default function ThirdPartyBadgeEvidenceInfoPreview({ badge }: { badge: Badge }) {
   const { t } = useTranslation()
-  const isClaimable = useIsClaimable(badge.id)
+  const { data: isClaimable } = useIsClaimable(badge.id)
 
   return (
     <Stack gap={4} p={1}>
