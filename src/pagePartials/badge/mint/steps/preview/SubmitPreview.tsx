@@ -19,6 +19,7 @@ import { convertPreviewToImage } from '@/src/pagePartials/badge/mint/utils'
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import { getBackgroundBadgeUrl } from '@/src/utils/badges/getBackgroundBadgeUrl'
 import { BadgeNFTAttributesType } from '@/types/badges/BadgeMetadata'
+import { generateModelPreviewUrl } from '@/src/utils/navigation/generateUrl'
 
 export default function SubmitPreview({
   badgePreviewRef,
@@ -29,9 +30,9 @@ export default function SubmitPreview({
   const { address } = useWeb3Connection()
   const { setValue } = useFormContext<MintBadgeSchemaType>() // retrieve all hook methods
 
-  const modelId = useModelIdParam()
-  const badgeModelData = useBadgeModel(modelId)
-  const template = useBadgeModelTemplate(modelId)
+  const { badgeModelId } = useModelIdParam()
+  const badgeModelData = useBadgeModel(badgeModelId)
+  const template = useBadgeModelTemplate(badgeModelId)
   const badgeModelMetadata = badgeModelData.data?.badgeModelMetadata
 
   const badgeLogoImage = badgeModelData.data?.badgeModelMetadata?.image
@@ -45,9 +46,9 @@ export default function SubmitPreview({
   )
 
   // Get kleros deposit value for the badge model
-  const { data: mintValue } = useMintValue(modelId)
+  const { data: mintValue } = useMintValue(badgeModelId)
   if (!mintValue) {
-    throw `There was not possible to get the value to mint a badge for the badge model: ${modelId}`
+    throw `There was not possible to get the value to mint a badge for the badge model: ${badgeModelId}`
   }
   const creatorFee = BigNumber.from(badgeModelData.data?.badgeModel.creatorFee || 0)
 
@@ -77,7 +78,7 @@ export default function SubmitPreview({
           animationEffects={['wobble', 'grow', 'glare']}
           animationOnHover
           badgeBackgroundUrl={getBackgroundBadgeUrl(backgroundType?.value)}
-          badgeUrl={`${APP_URL}/${modelId}/${address}`}
+          badgeUrl={generateModelPreviewUrl(badgeModelId, address as string)}
           category={badgeModelMetadata?.name}
           description={badgeModelMetadata?.description}
           imageUrl={badgeLogoImage?.s3Url}

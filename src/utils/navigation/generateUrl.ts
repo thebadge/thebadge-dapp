@@ -1,6 +1,6 @@
 import _ from 'lodash'
 
-import { LINKEDIN_URL } from '@/src/constants/common'
+import { APP_URL, LINKEDIN_URL } from '@/src/constants/common'
 import { ProfileType } from '@/src/pagePartials/profile/ProfileSelector'
 import { BadgeModelControllerType } from '@/types/badges/BadgeModel'
 import { ChainsValues } from '@/types/chains'
@@ -42,6 +42,11 @@ export function generateBadgePreviewUrl(
 ) {
   const { connectedChainId, theBadgeContractAddress } = extraParams
   return `/badge/${badgeId}?contract=${connectedChainId}:${theBadgeContractAddress}`
+}
+
+// TODO revisit this, does not make much sense
+export function generateModelPreviewUrl(badgeModelId: string, userAddress: string) {
+  return `${APP_URL}/${badgeModelId}/${userAddress}`
 }
 
 export function generateProfileUrl(args?: {
