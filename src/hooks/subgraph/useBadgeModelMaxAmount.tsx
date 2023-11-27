@@ -9,7 +9,7 @@ export default function useBadgeModelMaxAmount(first = 10) {
   const chainId = useChainId()
 
   return useSWR([`BadgeModelsMaxAmount:${first}`, first, chainId], async ([, _first]) => {
-    const response = await gql.badgeModelsMaxAmount({ first: _first })
+    const response = await gql.communityBadgeModelsMaxAmount({ first: _first })
 
     return response.badgeModels as BadgeModel[]
   })
