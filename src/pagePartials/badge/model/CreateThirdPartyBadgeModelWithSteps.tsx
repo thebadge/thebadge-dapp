@@ -2,12 +2,13 @@ import React, { useState } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Container } from '@mui/material'
-import { FormProvider, SubmitHandler, useForm } from 'react-hook-form'
+import { FieldErrors, FormProvider, SubmitHandler, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import { defaultValues, getFieldsToValidateOnStep } from './utils'
 import StepPrompt from '@/src/components/form/formWithSteps/StepPrompt'
 import { TransactionLoading } from '@/src/components/loading/TransactionLoading'
+import { notify } from '@/src/components/toast/Toast'
 import { TransactionStates } from '@/src/hooks/useTransaction'
 import { useTriggerRHF } from '@/src/hooks/useTriggerRHF'
 import {
@@ -21,7 +22,9 @@ import BadgeModelCreated from '@/src/pagePartials/badge/model/steps/preview/Badg
 import StepHeaderThirdParty from '@/src/pagePartials/badge/model/steps/thirdParty/StepHeaderThirdParty'
 import BadgeModelStrategy from '@/src/pagePartials/badge/model/steps/thirdParty/strategy/BadgeModelStrategy'
 import BadgeModelUIBasics from '@/src/pagePartials/badge/model/steps/uiBasics/BadgeModelUIBasics'
+import { isTestnet } from '@/src/utils/network'
 import { BadgeModelControllerType } from '@/types/badges/BadgeModel'
+import { ToastStates } from '@/types/toast'
 
 type CreateModelStepsProps = {
   onSubmit: SubmitHandler<CreateThirdPartyModelSchemaType>
@@ -87,6 +90,14 @@ export default function CreateThirdPartyBadgeModelWithSteps({
     }
   }
 
+  function notifyFormError(e: FieldErrors<CreateThirdPartyModelSchemaType>) {
+    if (isTestnet) console.warn(e)
+    notify({
+      message: 'You may have an error on the form, please take a closer look.',
+      type: ToastStates.infoFailed,
+    })
+  }
+
   return (
     <FormProvider {...methods}>
       <StepPrompt hasUnsavedChanges={methods.formState.isDirty} />
@@ -101,7 +112,7 @@ export default function CreateThirdPartyBadgeModelWithSteps({
         )}
         {txState === TransactionStates.success && <BadgeModelCreated />}
         {txState === TransactionStates.none && (
-          <form onSubmit={methods.handleSubmit(onSubmit, (e) => console.log(e))}>
+          <form onSubmit={methods.handleSubmit(onSubmit, notifyFormError)}>
             <StepInnerContainer gap={3}>
               {currentStep === 0 && <BadgeModelUIBasics />}
               {currentStep === 1 && <BadgeModelStrategy />}

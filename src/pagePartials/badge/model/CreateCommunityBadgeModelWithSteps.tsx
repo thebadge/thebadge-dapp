@@ -2,13 +2,14 @@ import React, { useState } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Container } from '@mui/material'
-import { FormProvider, SubmitHandler, useForm } from 'react-hook-form'
+import { FieldErrors, FormProvider, SubmitHandler, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import StepHeaderCommunity from './steps/community/StepHeaderCommunity'
 import { defaultValues, getFieldsToValidateOnStep } from './utils'
 import StepPrompt from '@/src/components/form/formWithSteps/StepPrompt'
 import { TransactionLoading } from '@/src/components/loading/TransactionLoading'
+import { notify } from '@/src/components/toast/Toast'
 import { TransactionStates } from '@/src/hooks/useTransaction'
 import { useTriggerRHF } from '@/src/hooks/useTriggerRHF'
 import {
@@ -23,7 +24,9 @@ import BadgeModelConfirmation from '@/src/pagePartials/badge/model/steps/preview
 import BadgeModelCreated from '@/src/pagePartials/badge/model/steps/preview/BadgeModelCreated'
 import HowItWorks from '@/src/pagePartials/badge/model/steps/terms/HowItWorks'
 import BadgeModelUIBasics from '@/src/pagePartials/badge/model/steps/uiBasics/BadgeModelUIBasics'
+import { isTestnet } from '@/src/utils/network'
 import { BadgeModelControllerType } from '@/types/badges/BadgeModel'
+import { ToastStates } from '@/types/toast'
 
 type CreateModelStepsProps = {
   onSubmit: SubmitHandler<CreateCommunityModelSchemaType>
@@ -85,6 +88,14 @@ export default function CreateCommunityBadgeModelWithSteps({
     }
   }
 
+  function notifyFormError(e: FieldErrors<CreateCommunityModelSchemaType>) {
+    if (isTestnet) console.warn(e)
+    notify({
+      message: 'You may have an error on the form, please take a closer look.',
+      type: ToastStates.infoFailed,
+    })
+  }
+
   return (
     <FormProvider {...methods}>
       <StepPrompt hasUnsavedChanges={methods.formState.isDirty} />
@@ -99,7 +110,7 @@ export default function CreateCommunityBadgeModelWithSteps({
         )}
         {txState === TransactionStates.success && <BadgeModelCreated />}
         {txState === TransactionStates.none && (
-          <form onSubmit={methods.handleSubmit(onSubmit)}>
+          <form onSubmit={methods.handleSubmit(onSubmit, notifyFormError)}>
             <StepInnerContainer gap={3}>
               {currentStep === 0 && <HowItWorks />}
               {currentStep === 1 && <BadgeModelUIBasics />}
