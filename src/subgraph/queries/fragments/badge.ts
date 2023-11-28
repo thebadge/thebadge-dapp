@@ -22,6 +22,7 @@ gql`
       validFor
       badgesMintedAmount
       contractAddress
+      createdTxHash
       badgeModelKleros {
         tcrList
         challengePeriodDuration
@@ -55,6 +56,7 @@ gql`
       controllerType
       validFor
       contractAddress
+      createdTxHash
       badgeModelKleros {
         tcrList
         challengePeriodDuration
