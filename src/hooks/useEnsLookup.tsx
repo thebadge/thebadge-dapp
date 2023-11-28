@@ -1,5 +1,7 @@
 import { useEnsAvatar, useEnsName } from 'wagmi'
 
+import { Chains } from '@/src/config/web3'
+import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { WCAddress } from '@/types/utils'
 
 type EnsLookupResult = {
@@ -9,12 +11,18 @@ type EnsLookupResult = {
 }
 
 export const useEnsReverseLookup = function (address: WCAddress | undefined): EnsLookupResult {
+  const { appChainId } = useWeb3Connection()
+
+  // Gnosis does not support ens, we fallback to mainnet
+  const ensChainId = appChainId === Chains.gnosis ? 1 : appChainId
   const { data: ensName } = useEnsName({
     address,
+    chainId: ensChainId,
   })
 
   const { data: ensAvatar } = useEnsAvatar({
     name: ensName,
+    chainId: ensChainId,
   })
 
   return { ensNameOrAddress: ensName || address, avatar: ensAvatar || null, isEnsName: !!ensName }
