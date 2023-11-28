@@ -1,10 +1,10 @@
-import { useSizeSM } from "@/src/hooks/useSize";
 import React from 'react'
 
 import { DiplomaPreview } from '@thebadge/ui-library'
 
 import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
+import { useSizeSM } from '@/src/hooks/useSize'
 import enrichTextWithValues, { EnrichTextValues } from '@/src/utils/enrichTextWithValues'
 import {
   DiplomaFooterConfig,
