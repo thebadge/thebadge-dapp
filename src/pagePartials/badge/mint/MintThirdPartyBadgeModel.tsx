@@ -23,7 +23,7 @@ import {
 } from '@/src/utils/badges/mintHelpers'
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
-import { sendEmailClaim } from '@/src/utils/relayTx'
+import { getEncryptedValues, sendEmailClaim } from '@/src/utils/relayTx'
 import { BadgeModelMetadata } from '@/types/badges/BadgeMetadata'
 import { NextPageWithLayout } from '@/types/next'
 import { ToastStates } from '@/types/toast'
@@ -74,8 +74,21 @@ const MintThirdPartyBadgeModel: NextPageWithLayout = () => {
           '@/src/utils/badges/createBadgeModelHelpers'
         )
 
+        let encryptedValues: string | null = null
+
+        if (destination) {
+          const encryptionResult = await getEncryptedValues(appChainId.toString(), {
+            email: destination,
+          })
+          encryptedValues = encryptionResult ? encryptionResult : null
+        }
+
+        const thirdPartyValues = requiredData
+          ? { ...requiredData, encryptedPayload: encryptedValues }
+          : { encryptedPayload: encryptedValues }
+
         const requiredDataValues = createThirdPartyValuesObject(
-          requiredData || {},
+          thirdPartyValues,
           requiredBadgeDataMetadata.data?.requirementsData?.requirementsColumns,
         )
 
@@ -84,7 +97,7 @@ const MintThirdPartyBadgeModel: NextPageWithLayout = () => {
         const [requiredDataIPFSHash, badgeMetadataIPFSHash] = await Promise.all([
           createAndUploadThirdPartyRequiredData(
             requiredBadgeDataMetadata.data?.requirementsData?.requirementsColumns || [],
-            requiredDataValues,
+            { ...requiredDataValues, encryptedPayload: encryptedValues },
           ),
           createAndUploadThirdPartyBadgeMetadata({
             estimatedBadgeId: estimatedBadgeId.toString(),

@@ -7,6 +7,7 @@ import { useTranslation } from 'next-export-i18n'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
+import BadgeIdDisplay from '@/src/pagePartials/badge/explorer/addons/BadgeIdDisplay'
 import CreatorInfoSmallPreview from '@/src/pagePartials/badge/explorer/addons/CreatorInfoSmallPreview'
 import { generateMintUrl, generateModelExplorerUrl } from '@/src/utils/navigation/generateUrl'
 import { BadgeModelMetadata } from '@/types/badges/BadgeMetadata'
@@ -26,6 +27,11 @@ export default function ThirdPartyBadgeModelInfoPreview({
   return (
     <Stack gap={4} mt={4}>
       {/* Badge Model info */}
+      <BadgeIdDisplay
+        id={badgeModel.id}
+        isBadgeModel={true}
+        mintTxHash={badgeModel.createdTxHash}
+      />
       <Stack gap={2}>
         <Typography variant="titleLarge">{badgeMetadata?.name}</Typography>
 

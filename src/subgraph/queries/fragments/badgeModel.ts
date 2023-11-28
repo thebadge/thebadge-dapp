@@ -10,6 +10,7 @@ gql`
     paused
     badgesMintedAmount
     contractAddress
+    createdTxHash
     creator {
       id
       metadataUri
