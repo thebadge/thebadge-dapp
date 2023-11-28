@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 import { ZERO_ADDRESS } from '@/src/constants/bigNumber'
-import { EmailClaimTx, RelayedTx, RelayedTxResult } from '@/types/relayedTx'
+import { EmailClaimTxSigned, RelayedTx, RelayedTxResult } from '@/types/relayedTx'
 import { BackendResponse } from '@/types/utils'
 
 export const sendTxToRelayer = async (
@@ -16,7 +16,7 @@ export const sendTxToRelayer = async (
 
 // TODO This should be removed and this method should be directly inside the relayer, we just need to ask the relayer to relay the  tx
 export const sendEmailClaim = async (
-  param: EmailClaimTx,
+  param: EmailClaimTxSigned,
 ): Promise<BackendResponse<{ txHash: string | null }>> => {
   const res = await axios.post<BackendResponse<{ txHash: string | null }>>(
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/thirdPartyController/sendMintMail`,

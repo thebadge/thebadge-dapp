@@ -2,13 +2,15 @@ import { useRouter } from 'next/router'
 import * as React from 'react'
 import { useEffect } from 'react'
 
+import { ContractTransaction } from '@ethersproject/contracts'
+
 import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
-import { notify } from '@/src/components/toast/Toast'
 import { ZERO_ADDRESS } from '@/src/constants/bigNumber'
 import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
 import { useBadgeModelThirdPartyMetadata } from '@/src/hooks/subgraph/useBadgeModelThirdPartyMetadata'
 import useMintValue from '@/src/hooks/theBadge/useMintValue'
+import useSendClaimEmail from '@/src/hooks/theBadge/useSendClaimEmail'
 import useTBContract from '@/src/hooks/theBadge/useTBContract'
 import useTBStore from '@/src/hooks/theBadge/useTBStore'
 import useTransaction, { TransactionStates } from '@/src/hooks/useTransaction'
@@ -23,10 +25,9 @@ import {
 } from '@/src/utils/badges/mintHelpers'
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
-import { getEncryptedValues, sendEmailClaim } from '@/src/utils/relayTx'
+import { getEncryptedValues } from '@/src/utils/relayTx'
 import { BadgeModelMetadata } from '@/types/badges/BadgeMetadata'
 import { NextPageWithLayout } from '@/types/next'
-import { ToastStates } from '@/types/toast'
 
 const MintThirdPartyBadgeModel: NextPageWithLayout = () => {
   const { appChainId, getSocialCompressedPubKey, isSocialWallet, web3Auth } = useWeb3Connection()
@@ -35,6 +36,7 @@ const MintThirdPartyBadgeModel: NextPageWithLayout = () => {
   const { resetTxState, sendTx, state } = useTransaction()
   const router = useRouter()
   const { badgeModelId, contract } = useModelIdParam()
+  const submitSendClaimEmail = useSendClaimEmail()
 
   if (!badgeModelId) {
     throw `No modelId provided us URL query param`
@@ -65,7 +67,7 @@ const MintThirdPartyBadgeModel: NextPageWithLayout = () => {
     try {
       // Start transaction to show the loading state when we create the files
       // and configs
-      const transaction = await sendTx(async () => {
+      await sendTx(async (): Promise<ContractTransaction> => {
         // Use NextJs dynamic import to reduce the bundle size
         const { createAndUploadThirdPartyBadgeMetadata } = await import(
           '@/src/utils/badges/mintHelpers'
@@ -120,7 +122,7 @@ const MintThirdPartyBadgeModel: NextPageWithLayout = () => {
         }
 
         // If user is not social logged, just send the tx
-        return theBadge.mint(
+        const transactionReceipt = await theBadge.mint(
           badgeModelId,
           preferMintMethod === 'email' ? ZERO_ADDRESS : destination,
           badgeMetadataIPFSHash,
@@ -129,26 +131,18 @@ const MintThirdPartyBadgeModel: NextPageWithLayout = () => {
             value: mintValue,
           },
         )
-      })
-      if (transaction) {
-        const { transactionHash } = await transaction.wait()
-
-        // TODO This should be done async, notifying the relayer before sending the tx, or asking the relayer to send the tx
+        const { transactionHash } = await transactionReceipt.wait()
         if (preferMintMethod === 'email') {
-          await sendEmailClaim({
+          await submitSendClaimEmail({
             networkId: appChainId.toString(),
             mintTxHash: transactionHash,
             badgeModelId: Number(badgeModelId),
             emailClaimer: destination,
           })
-          notify({
-            id: transactionHash,
-            type: ToastStates.info,
-            message: `Email successfully sent to: ${destination}`,
-            position: 'top-right',
-          })
         }
-      }
+        return transactionReceipt
+      })
+
       cleanMintFormValues(badgeModelId)
     } catch (e) {
       console.error(e)
