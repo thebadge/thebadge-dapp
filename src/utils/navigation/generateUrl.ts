@@ -104,7 +104,9 @@ export function generateLinkedinUrl(certData: {
   certUrl: string
   certId: string
 }) {
-  const certDataCleaned = _.pickBy(certData, _.negate(_.isUndefined))
+  let certDataCleaned = _.pickBy(certData, _.negate(_.isUndefined))
+  certDataCleaned = _.pickBy(certDataCleaned, _.negate(_.isEmpty))
+
   if (!certDataCleaned.organizationId && !certDataCleaned.organizationName) {
     throw new Error('OrganizationId or organizationName should be defined!')
   }
