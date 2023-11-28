@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Container, Stack } from '@mui/material'
-import { FormProvider, SubmitHandler, useForm } from 'react-hook-form'
+import { FieldErrors, FormProvider, SubmitHandler, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import StepFooter from './steps/StepFooter'
 import { defaultValues } from './utils'
 import StepPrompt from '@/src/components/form/formWithSteps/StepPrompt'
 import { TransactionLoading } from '@/src/components/loading/TransactionLoading'
+import { notify } from '@/src/components/toast/Toast'
 import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import { TransactionStates } from '@/src/hooks/useTransaction'
 import { useTriggerRHF } from '@/src/hooks/useTriggerRHF'
@@ -21,6 +22,8 @@ import DynamicRequiredData from '@/src/pagePartials/badge/mint/steps/dynamicForm
 import FormThirdParty from '@/src/pagePartials/badge/mint/steps/dynamicForm/thirdParty/FormThirdParty'
 import SubmitPreviewThirdParty from '@/src/pagePartials/badge/mint/steps/preview/thirdParty/SubmitPreviewThirdParty'
 import HowItWorksThirdParty from '@/src/pagePartials/badge/mint/steps/terms/HowItWorksThirdParty'
+import { isTestnet } from '@/src/utils/network'
+import { ToastStates } from '@/types/toast'
 
 type MintStepsProps = {
   onSubmit: SubmitHandler<MintThirdPartySchemaType>
@@ -91,6 +94,14 @@ export default function MintThirdPartyWithSteps({
     }
   }
 
+  function notifyFormError(e: FieldErrors<MintThirdPartySchemaType>) {
+    if (isTestnet) console.warn(e)
+    notify({
+      message: 'You may have an error on the form, please take a closer look.',
+      type: ToastStates.infoFailed,
+    })
+  }
+
   return (
     <FormProvider {...methods}>
       <StepPrompt hasUnsavedChanges={methods.formState.isDirty} />
@@ -105,7 +116,7 @@ export default function MintThirdPartyWithSteps({
         )}
         {txState === TransactionStates.success && <SubmitPreviewThirdParty />}
         {txState === TransactionStates.none && (
-          <form onSubmit={methods.handleSubmit(onSubmit)}>
+          <form onSubmit={methods.handleSubmit(onSubmit, notifyFormError)}>
             <Stack gap={3}>
               {currentStep === 0 && <HowItWorksThirdParty />}
               {currentStep === 1 && <FormThirdParty />}
