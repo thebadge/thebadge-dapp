@@ -138,7 +138,11 @@ export default function InfoPreviewEdit({ address }: Props) {
           <SafeSuspense
             fallback={<Skeleton variant="circular" width={creatorMetadata ? 171 : 90} />}
           >
-            <TBUserAvatar size={creatorMetadata ? 171 : 90} src={creatorMetadata?.logo?.s3Url} />
+            <TBUserAvatar
+              address={address}
+              size={creatorMetadata ? 171 : 90}
+              src={creatorMetadata?.logo?.s3Url}
+            />
           </SafeSuspense>
         </Stack>
       )}

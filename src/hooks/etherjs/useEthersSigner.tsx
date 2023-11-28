@@ -59,10 +59,9 @@ export function useWalletClientHandcraft({
 export function useEthersSigner({ chainId }: { chainId?: number } = {}) {
   const { address, readOnlyAppProvider } = useWeb3Connection()
   const { data: walletClient } = useWalletClientHandcraft({ chainId, address })
-  const readonlySigner = readOnlyAppProvider.getSigner()
 
   return React.useMemo(
-    () => (walletClient ? walletClientToSigner(walletClient) : readonlySigner),
-    [walletClient, readonlySigner],
+    () => (walletClient ? walletClientToSigner(walletClient) : readOnlyAppProvider),
+    [walletClient, readOnlyAppProvider],
   )
 }
