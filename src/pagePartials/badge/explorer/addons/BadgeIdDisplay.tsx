@@ -17,14 +17,22 @@ const Container = styled(Box)(({ theme }) => ({
   padding: theme.spacing(0.5, 1),
 }))
 
-export default function BadgeIdDisplay({ id, mintTxHash }: { id: string; mintTxHash?: string }) {
+export default function BadgeIdDisplay({
+  id,
+  isBadgeModel = true,
+  mintTxHash,
+}: {
+  id: string
+  isBadgeModel?: boolean
+  mintTxHash?: string
+}) {
   const { t } = useTranslation()
   const { getExplorerUrl } = useWeb3Connection()
 
   return (
     <Container>
       <Typography fontSize={14} sx={{ color: colors.green }} variant="body4">
-        {`${t('explorer.curate.badgeId')}`}
+        {isBadgeModel ? `${t('explorer.curate.badgeModelId')}` : `${t('explorer.curate.badgeId')}`}
         {mintTxHash ? (
           <Link href={getExplorerUrl(mintTxHash)} target={'_blank'}>
             <strong style={{ textDecoration: 'underline' }}>#{id}</strong>

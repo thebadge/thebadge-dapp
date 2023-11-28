@@ -127,6 +127,7 @@
       "title": "Badge details",
       "curationList": "Contract Address:",
       "badgeId": "Badge ID: ",
+      "badgeModelId": "Model ID: ",
       "disputeId": "Kleros Dispute ID",
       "timeLeft": "The curation period ends {{time}}",
       "challenge": "Challenge",
