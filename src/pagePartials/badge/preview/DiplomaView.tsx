@@ -1,3 +1,4 @@
+import { useSizeSM } from "@/src/hooks/useSize";
 import React from 'react'
 
 import { DiplomaPreview } from '@thebadge/ui-library'
@@ -20,6 +21,7 @@ type Props = {
 }
 
 export default function DiplomaView({ additionalData, badgeUrl, modelId }: Props) {
+  const isMobile = useSizeSM()
   const badgeModelData = useBadgeModel(modelId)
   const badgeModelMetadata = badgeModelData.data?.badgeModelMetadata
 
@@ -72,7 +74,7 @@ export default function DiplomaView({ additionalData, badgeUrl, modelId }: Props
 
   return (
     <DiplomaPreview
-      animationEffects={['wobble', 'grow', 'glare']}
+      animationEffects={isMobile ? [] : ['wobble', 'grow', 'glare']}
       animationOnHover
       backgroundUrl={'https://dev-app.thebadge.xyz/shareable/diploma-background.png'}
       badgeUrl={badgeUrl}
@@ -89,6 +91,11 @@ export default function DiplomaView({ additionalData, badgeUrl, modelId }: Props
       issuerIsVerified={''}
       issuerTitle={issuerTitle}
       studentName={enrichTextWithValues('{{studentName}}', additionalData as EnrichTextValues)}
+      sx={
+        isMobile
+          ? { scale: '0.5', transform: 'translate(-37.5%)', margin: '10px' }
+          : { margin: '10px' }
+      }
       textContrastRight="dark"
       {...signatureProps}
     />

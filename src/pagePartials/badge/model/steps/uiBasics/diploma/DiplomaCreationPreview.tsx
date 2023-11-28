@@ -6,6 +6,7 @@ import { useFormContext } from 'react-hook-form'
 
 import { APP_URL } from '@/src/constants/common'
 import useIsUserVerified from '@/src/hooks/theBadge/useIsUserVerified'
+import { useSizeSM } from '@/src/hooks/useSize'
 import { CreateThirdPartyModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateThirdPartyModelSchema'
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
@@ -58,10 +59,12 @@ export default function DiplomaCreationPreview() {
       }
     : {}
 
+  const isMobile = useSizeSM()
+
   return (
-    <BoxShadow>
+    <BoxShadow sx={{ display: 'block' }}>
       <DiplomaPreview
-        animationEffects={['wobble', 'grow', 'glare']}
+        animationEffects={isMobile ? [] : ['wobble', 'grow', 'glare']}
         animationOnHover
         badgeUrl={APP_URL}
         courseName={courseName}
@@ -74,6 +77,7 @@ export default function DiplomaCreationPreview() {
         issuerIsVerified={isVerified}
         issuerTitle={issuerTitle}
         studentName={'{{studentName}}'}
+        sx={isMobile ? { scale: '0.5', transform: 'translate(-50%, -50%)' } : {}}
         textContrastRight="dark"
         {...signatureProps}
       />
