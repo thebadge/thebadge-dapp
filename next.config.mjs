@@ -56,6 +56,11 @@ export default withMDX(withBundleAnalyzerWrapper(
           filename: "static/worker/[hash][ext][query]"
         }
       });
+      config.externals.push(
+        "pino-pretty",
+        "lokijs",
+        "encoding"
+      );
       return config;
     }
   }),

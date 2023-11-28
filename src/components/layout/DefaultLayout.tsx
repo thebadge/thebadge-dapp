@@ -7,6 +7,7 @@ import Header from '@/src/components/header/Header'
 import { Footer } from '@/src/components/layout/Footer'
 import MainMenu from '@/src/components/navigation/MainMenu'
 import { useSizeSM } from '@/src/hooks/useSize'
+import { PreventPageIfOutOfService } from '@/src/pagePartials/errors/preventActionIfOutOfService'
 import CurateContextProvider from '@/src/providers/curateProvider'
 import { useColorMode } from '@/src/providers/themeProvider'
 
@@ -47,6 +48,22 @@ const NavigationRoom = styled(Box)(({ theme }) => ({
   top: theme.spacing(0),
 }))
 
+const HeaderContainer = styled(Container)(({ theme }) => ({
+  padding: '0 !important',
+  [theme.breakpoints.between('sm', 1400)]: {
+    maxWidth: 'none',
+  },
+}))
+
+const ContentContainer = styled(Container)(({ theme }) => ({
+  [theme.breakpoints.between('sm', 1300)]: {
+    paddingLeft: theme.spacing(14),
+  },
+  [theme.breakpoints.between(1300, 1400)]: {
+    paddingLeft: theme.spacing(10),
+  },
+}))
+
 export default function DefaultLayout({ children }: DefaultLayoutProps) {
   const theme = useTheme()
   const isMobile = useSizeSM()
@@ -63,9 +80,9 @@ export default function DefaultLayout({ children }: DefaultLayoutProps) {
               zIndex: 999,
             }}
           >
-            <Container sx={{ flex: 1 }}>
+            <HeaderContainer sx={{ flex: 1 }}>
               <Header />
-            </Container>
+            </HeaderContainer>
           </Headroom>
           <BackgroundGradient
             gradient={theme.palette?.backgroundGradient[mode as keyof PaletteColorOptions]}
@@ -77,7 +94,7 @@ export default function DefaultLayout({ children }: DefaultLayoutProps) {
                 <MainMenu />
               </NavigationRoom>
             )}
-            <Container
+            <ContentContainer
               maxWidth={'lg'}
               sx={{
                 display: 'flex',
@@ -85,8 +102,8 @@ export default function DefaultLayout({ children }: DefaultLayoutProps) {
                 margin: theme.spacing(6, 'auto', 0),
               }}
             >
-              {children}
-            </Container>
+              <PreventPageIfOutOfService>{children}</PreventPageIfOutOfService>
+            </ContentContainer>
           </StyledBody>
         </Content>
       </CurateContextProvider>

@@ -7,8 +7,11 @@ import { Toast, toast } from 'react-hot-toast'
 import { Copy } from '@/src/components/assets/Copy'
 import { Link } from '@/src/components/assets/Link'
 import { ToastComponent } from '@/src/components/toast/ToastComponent'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+import { useEnsReverseLookup } from '@/src/hooks/useEnsLookup'
+import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 import { truncateStringInTheMiddle } from '@/src/utils/strings'
+import { WCAddress } from '@/types/utils'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
 const Wrapper = styled('span')`
   align-items: center;
@@ -47,10 +50,14 @@ const CopyButton = styled('button')`
   &:active {
     opacity: 0.7;
   }
+
+  &:hover {
+    opacity: 0.7;
+  }
 `
 
 interface Props {
-  address: string
+  address: WCAddress
   showExternalLink?: boolean
   isUserAddress?: boolean
   showCopyButton?: boolean
@@ -68,6 +75,7 @@ export const Address: React.FC<Props> = ({
   const router = useRouter()
   const { getExplorerUrl } = useWeb3Connection()
   const [toastId, setToastId] = useState('')
+  const { ensNameOrAddress, isEnsName } = useEnsReverseLookup(address)
 
   const copyAddress = (address: string) => {
     navigator.clipboard.writeText(address)
@@ -85,13 +93,15 @@ export const Address: React.FC<Props> = ({
   }
 
   function getProfileUrl() {
-    return `${router.basePath}/profile/${address}`
+    return router.basePath + generateProfileUrl({ address })
   }
 
+  const displayAddress = truncate ? truncateStringInTheMiddle(address, 8, 6) : address
+  const userIdentifier = isEnsName ? ensNameOrAddress : displayAddress
   return (
     <Wrapper {...restProps}>
       <ExternalLink href={isUserAddress ? getProfileUrl() : getExplorerUrl(address)}>
-        {truncate ? truncateStringInTheMiddle(address, 8, 6) : address}
+        {userIdentifier}
       </ExternalLink>
       {showCopyButton && (
         <CopyButton onClick={() => copyAddress(address)}>

@@ -39,6 +39,11 @@ export default function MarkdownTypography({ children, ...rest }: Props) {
               </li>
             )
           },
+          p: ({ ...props }) => (
+            <p {...props} style={{ margin: 0 }}>
+              {props.children}
+            </p>
+          ),
         }}
         remarkPlugins={[remarkGfm]}
       />

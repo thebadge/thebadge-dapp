@@ -2,11 +2,12 @@ import { useCallback, useState } from 'react'
 
 import { ContractTransaction } from '@ethersproject/contracts'
 
+import { useEthersProvider } from '@/src/hooks/etherjs/useEthersProvider'
 import { useTransactionNotification } from '@/src/providers/TransactionNotificationProvider'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { TransactionError } from '@/src/utils/TransactionError'
-import sendTxToRelayer from '@/src/utils/relayTx'
+import { sendTxToRelayer } from '@/src/utils/relayTx'
 import { RelayedTx } from '@/types/relayedTx'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
 export enum TransactionStates {
   none = 'NONE',
@@ -17,7 +18,8 @@ export enum TransactionStates {
 }
 
 export default function useTransaction() {
-  const { isAppConnected, web3Provider } = useWeb3Connection()
+  const { isAppConnected } = useWeb3Connection()
+  const web3Provider = useEthersProvider()
   const [state, setTransactionState] = useState(TransactionStates.none)
   const {
     notifyRejectSignature,

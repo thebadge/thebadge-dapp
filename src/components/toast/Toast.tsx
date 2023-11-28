@@ -1,4 +1,4 @@
-import { Toast, Toaster, toast } from 'react-hot-toast'
+import { Toast, ToastPosition, Toaster, toast } from 'react-hot-toast'
 
 import { Failed as FailedIcon } from '@/src/components/assets/Failed'
 import { Success as SuccessIcon } from '@/src/components/assets/Success'
@@ -18,6 +18,7 @@ type ToastTypes = {
   [ToastStates.failed]: ({ explorerUrl, message, t }: ToastComponentProps) => JSX.Element
   [ToastStates.success]: ({ explorerUrl, message, t }: ToastComponentProps) => JSX.Element
   [ToastStates.info]: ({ explorerUrl, message, t }: ToastComponentProps) => JSX.Element
+  [ToastStates.infoFailed]: ({ explorerUrl, message, t }: ToastComponentProps) => JSX.Element
 }
 
 const ToastTypes: ToastTypes = {
@@ -56,12 +57,21 @@ const ToastTypes: ToastTypes = {
       title={title}
     />
   ),
+  [ToastStates.infoFailed]: ({ message, t, title }: ToastComponentProps) => (
+    <ToastComponent
+      icon={<FailedIcon />}
+      message={message ? message : undefined}
+      t={t}
+      title={title}
+    />
+  ),
 }
 
 const notify = ({
   explorerUrl,
   id,
   message,
+  position = 'bottom-right',
   title,
   type,
 }: {
@@ -70,11 +80,13 @@ const notify = ({
   title?: string
   type: ToastStates
   id?: string | undefined
-}) => toast.custom((t: Toast) => ToastTypes[type]({ t, explorerUrl, message, title }), { id })
+  position?: ToastPosition
+}) =>
+  toast.custom((t: Toast) => ToastTypes[type]({ t, explorerUrl, message, title }), { id, position })
 
-const Toast = () => (
+const Toast = (props: { position?: ToastPosition }) => (
   <Toaster
-    position="bottom-right"
+    position={props.position || 'bottom-right'}
     toastOptions={{
       duration: 10000,
     }}

@@ -1,7 +1,4 @@
-import { useEffect } from 'react'
-
 import { Box, styled } from '@mui/material'
-import { useAccountCenter } from '@web3-onboard/react'
 import { useTranslation } from 'next-export-i18n'
 
 import { LogoWithText } from '@/src/components/common/Logo'
@@ -10,7 +7,8 @@ import ConnectWalletButton from '@/src/components/header/ConnectWalletButton'
 import { UserDropdown } from '@/src/components/header/UserDropdown'
 import WrongNetwork from '@/src/components/utils/WrongNetwork'
 import { useSizeSM } from '@/src/hooks/useSize'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+import { PreventActionIfOutOfService } from '@/src/pagePartials/errors/preventActionIfOutOfService'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
 const HeaderContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -23,21 +21,18 @@ const HeaderContainer = styled(Box)(({ theme }) => ({
   paddingBottom: theme.spacing(2),
   paddingLeft: 'calc(5% - 32px)',
   paddingRight: 'calc(5% - 32px)',
-  [theme.breakpoints.down('sm')]: {
-    flex: 1,
-  },
   transition: 'padding-top 0.5s cubic-bezier(0.83, 0, 0.17, 1)',
+  [theme.breakpoints.down('md')]: {
+    flex: 1,
+    paddingLeft: '24px !important',
+    paddingRight: '24px !important',
+  },
 }))
 
 const Header = () => {
-  const isMobile = useSizeSM()
-  const updateAccountCenter = useAccountCenter()
-  const { connectWallet, isWalletConnected } = useWeb3Connection()
   const { t } = useTranslation()
-
-  useEffect(() => {
-    updateAccountCenter({ enabled: isMobile })
-  }, [isMobile, updateAccountCenter])
+  const { connectWallet, isWalletConnected } = useWeb3Connection()
+  const isMobile = useSizeSM()
 
   return (
     <HeaderContainer id="header-container">
@@ -51,10 +46,14 @@ const Header = () => {
       </Box>
       <Box display="flex">
         <WrongNetwork />
-        {isWalletConnected && !isMobile && <UserDropdown />}
+        {isWalletConnected && <UserDropdown />}
         {!isWalletConnected && (
           <Box display="flex" gap={2}>
-            {!isMobile && <ActionButtons />}
+            {!isMobile && (
+              <PreventActionIfOutOfService>
+                <ActionButtons />
+              </PreventActionIfOutOfService>
+            )}
             <ConnectWalletButton onClick={connectWallet}>
               {t('header.wallet.connect')}
             </ConnectWalletButton>

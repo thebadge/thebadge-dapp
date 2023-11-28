@@ -23,3 +23,31 @@ export interface RelayedTx {
     address: string
   }
 }
+
+export interface EmailClaimTx {
+  networkId: string
+
+  mintTxHash: string
+
+  badgeModelId: number
+
+  emailClaimer?: string
+}
+
+export type EmailClaimTxSigned = EmailClaimTx & {
+  signature: string
+
+  signedMessage: string
+
+  ownerAddress: string
+}
+
+export interface RelayedTxResult {
+  txHash: string | null
+  valid: boolean
+  errorMessage: string
+}
+
+export interface RelayMethod {
+  (): Promise<RelayedTxResult>
+}

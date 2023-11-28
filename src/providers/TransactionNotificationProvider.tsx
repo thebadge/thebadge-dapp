@@ -12,7 +12,7 @@ import toast from 'react-hot-toast'
 
 import { notify } from '@/src/components/toast/Toast'
 import { usePersistedState } from '@/src/hooks/usePersistedState'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import { ChainsValues } from '@/types/chains'
 import { ToastStates } from '@/types/toast'
 

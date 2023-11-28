@@ -2,13 +2,24 @@ import { Box, Stack, Typography, alpha, styled } from '@mui/material'
 
 import StatisticCounterUp from '@/src/pagePartials/home/statistics/StatisticCounterUp'
 
-const StatisticContainer = styled(Stack)<{ transparent?: boolean }>(({ theme, transparent }) => ({
+const StatisticContainer = styled(Stack, { shouldForwardProp: (prop) => prop !== 'transparent' })<{
+  transparent?: boolean
+}>(({ theme, transparent }) => ({
   display: 'flex',
+  flex: '1 0 150px',
   gap: theme.spacing(1),
   padding: theme.spacing(2),
   borderRadius: theme.spacing(2),
   background: transparent ? 'transparent' : alpha('#0D0D0D', 0.7),
   whiteSpace: 'break-spaces',
+  [theme.breakpoints.down('sm')]: {
+    flex: '1',
+    maxWidth: '50%',
+    maxHeight: '125px',
+  },
+  [theme.breakpoints.down(512)]: {
+    maxWidth: '100%',
+  },
 }))
 
 export default function StatisticDoubleDisplay({

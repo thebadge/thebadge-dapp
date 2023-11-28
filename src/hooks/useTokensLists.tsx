@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 
 import { useTokenIcons } from '@/src/providers/tokenIconsProvider'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import { Token } from '@/types/token'
 
 export const useTokensLists = (onChange?: (token: Token | null) => void) => {

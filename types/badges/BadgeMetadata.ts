@@ -27,6 +27,17 @@ export type BadgeMetadata<T = IPFSHash | BackendFileResponse | BackendFileUpload
 export enum BadgeNFTAttributesType {
   Background = 'Background',
   TextContrast = 'TextContrast',
+  Template = 'Template',
+}
+
+export enum DiplomaNFTAttributesType {
+  Template = 'Template',
+  CourseName = 'CourseName',
+  AchievementDescription = 'AchievementDescription',
+  AchievementDate = 'AchievementDate',
+  FooterConfigs = 'FooterConfigs',
+  SignerConfigs = 'SignerConfigs',
+  IssuerConfigs = 'IssuerConfigs',
 }
 
 export type EvidenceMetadata = {
@@ -37,4 +48,24 @@ export type EvidenceMetadata = {
   fileTypeExtension?: string
   // File Mimetype
   type?: string
+}
+
+export type DiplomaSignatureConfig<T = IPFSHash | BackendFileResponse | BackendFileUpload> = {
+  signatureEnabled: boolean
+  signatureImage?: T
+  signerTitle?: string
+  signerSubline?: string
+}
+
+export type DiplomaIssuerConfig<T = IPFSHash | BackendFileResponse | BackendFileUpload> = {
+  customIssuerEnabled: boolean
+  issuerAvatar?: T
+  issuedByLabel?: string
+  issuerTitle?: string
+  issuerDescription?: string
+}
+
+export type DiplomaFooterConfig = {
+  footerEnabled: boolean
+  footerText?: string
 }

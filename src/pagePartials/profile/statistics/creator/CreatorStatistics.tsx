@@ -13,12 +13,13 @@ import { StatisticVisibilityToggle } from '@/src/pagePartials/profile/statistics
 import CreatorStatisticContent from '@/src/pagePartials/profile/statistics/creator/CreatorStatisticContent'
 
 export enum CreatorStatistic {
-  fee = 'Fees collected per badge',
-  amount = 'Badge models created ',
-  minters = 'Users that minted badges',
-  minted = 'Badges minted',
-  mostMinted = 'Most popular badge model',
-  ranking = 'Position in creators ranking',
+  fee = 'totalFeesEarnedPerBadge',
+  amount = 'createdBadgeModelsAmount',
+  minters = 'createdBadgeModelsMintedAmount',
+  allTimeMinter = 'allTimeBadgeMintersAmount',
+  minted = 'amountOfMinters',
+  mostMinted = 'mostPopularCreatedBadge',
+  ranking = 'creatorsRanking',
 }
 
 export const CreatorStatisticDefaultVisibility = {
@@ -35,6 +36,7 @@ export default function CreatorStatistics() {
 
   const [open, setOpen] = useState(true)
   const [anchorEl, setAnchorEl] = useState<Element | null>(null)
+
   const { statisticVisibility, toggleStatisticVisibility } = useStatisticVisibility(
     'creator',
     CreatorStatisticDefaultVisibility,

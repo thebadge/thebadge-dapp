@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
 export type StatisticVisibility = { [key: string]: boolean }
 
@@ -35,7 +35,7 @@ export default function useStatisticVisibility(
       if (stack.includes(columnName)) return
 
       // If we already have 2 select items, we want to deselect one
-      const deselectColumn = stack.length === 2 ? stack.pop() : ''
+      const deselectColumn = stack.length === 2 ? stack.pop() : undefined
 
       setStatisticVisibility((prev) => {
         const newValue = {
@@ -50,7 +50,9 @@ export default function useStatisticVisibility(
         )
         return newValue
       })
-      setStack(() => [columnName, ...stack])
+      setStack((prevState) => {
+        return [columnName, prevState[0]]
+      })
     },
     [address, category, stack],
   )
@@ -66,7 +68,7 @@ export default function useStatisticVisibility(
 
 function getStoredStatisticVisibility(
   category: string,
-  address: string | null,
+  address: string | undefined,
 ): StatisticVisibility | null {
   if (!address) return null
   const stored = sessionStorage.getItem(`${category}-statisticVisibility-${address}`)

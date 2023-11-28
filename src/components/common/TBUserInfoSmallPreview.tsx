@@ -3,14 +3,17 @@ import React from 'react'
 
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined'
 import TwitterIcon from '@mui/icons-material/Twitter'
-import { Box, Paper, Stack, Typography, alpha, styled } from '@mui/material'
+import { Box, Paper, Skeleton, Stack, Typography, alpha, styled } from '@mui/material'
 import { ButtonV2, IconDiscord, colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 
 import TBUserAvatar from '@/src/components/common/TBUserAvatar'
 import { Address } from '@/src/components/helpers/Address'
+import SafeSuspense from '@/src/components/helpers/SafeSuspense'
+import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 import { truncateStringInTheMiddle } from '@/src/utils/strings'
 import { CreatorMetadata } from '@/types/badges/Creator'
+import { WCAddress } from '@/types/utils'
 
 const Wrapper = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -34,13 +37,12 @@ const UserDisplay = styled(Paper)<UserDisplayProps>(({ color, theme }) => ({
 
 export default function TBUserInfoSmallPreview({
   color,
-  isVerified,
   label,
   metadata,
   userAddress,
 }: {
   color: string
-  userAddress: string
+  userAddress: WCAddress
   metadata?: CreatorMetadata
   label?: string
   isVerified?: boolean
@@ -49,7 +51,7 @@ export default function TBUserInfoSmallPreview({
   const router = useRouter()
 
   function handleClick() {
-    window.open(`${router.basePath}/profile/${userAddress}`, '_ blank')
+    window.open(router.basePath + generateProfileUrl({ address: userAddress }), '_ blank')
   }
 
   return (
@@ -67,12 +69,13 @@ export default function TBUserInfoSmallPreview({
 
       <UserDisplay color={color}>
         <Box display="flex" flex="1" gap={2}>
-          <TBUserAvatar
-            address={userAddress}
-            isVerified={isVerified}
-            src={metadata?.logo?.s3Url}
-            sx={{ border: '1px solid white' }}
-          />
+          <SafeSuspense fallback={<Skeleton variant="circular" width={100} />}>
+            <TBUserAvatar
+              address={userAddress}
+              src={metadata?.logo?.s3Url}
+              sx={{ border: '1px solid white' }}
+            />
+          </SafeSuspense>
           <Stack gap={1}>
             <Typography variant="dAppHeadline2">
               {metadata?.name || truncateStringInTheMiddle(userAddress, 8, 6)}

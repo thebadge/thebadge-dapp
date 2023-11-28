@@ -1,28 +1,19 @@
 import React from 'react'
 
-import { Box, Stack, alpha, styled } from '@mui/material'
-import { BadgePreview } from '@thebadge/ui-library'
+import { Divider, Stack, Typography } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
 import { Controller, useFormContext } from 'react-hook-form'
-import { ImageType } from 'react-images-uploading'
 
 import { DropdownSelect } from '@/src/components/form/formFields/DropdownSelect'
-import { ImageInput } from '@/src/components/form/formFields/ImageInput'
-import { TextArea } from '@/src/components/form/formFields/TextArea'
-import { TextField } from '@/src/components/form/formFields/TextField'
-import { CreateModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateModelSchema'
-
-const BoxShadow = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  justifyContent: 'center',
-  filter: `drop-shadow(0px 0px 15px ${alpha(theme.palette.text.primary, 0.3)})`,
-}))
+import useControllerTypeParam from '@/src/hooks/nextjs/useControllerTypeParam'
+import { CreateCommunityModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateCommunityModelSchema'
+import BadgeConfiguration from '@/src/pagePartials/badge/model/steps/uiBasics/badge/BadgeConfiguration'
+import DiplomaConfiguration from '@/src/pagePartials/badge/model/steps/uiBasics/diploma/DiplomaConfiguration'
+import { BadgeModelControllerType, BadgeModelTemplate } from '@/types/badges/BadgeModel'
 
 export const BADGE_MODEL_TEXT_CONTRAST: { [key: string]: string } = {
-  Black: 'light',
-  White: 'dark',
-  'White with shadow': 'dark-withTextBackground',
-  'Black with shadow': 'light-withTextBackground',
+  White: 'dark-withTextBackground',
+  Black: 'light-withTextBackground',
 }
 
 export const BADGE_MODEL_BACKGROUNDS: { [key: string]: string } = {
@@ -40,126 +31,43 @@ export const BADGE_MODEL_BACKGROUNDS: { [key: string]: string } = {
 }
 
 export default function BadgeModelUIBasics() {
-  const { t } = useTranslation()
-  const { control, watch } = useFormContext<CreateModelSchemaType>()
+  const controllerType = useControllerTypeParam()
+  const isThirdParty = controllerType === BadgeModelControllerType.ThirdParty
 
-  const watchedName = watch('name')
-  const watchedDescription = watch('description')
-  const watchedLogoUri = watch('badgeModelLogoUri')
-  const watchedTextContrast = watch('textContrast')
-  const watchedBackground = watch('backgroundImage')
+  const { control, watch } = useFormContext<CreateCommunityModelSchemaType>()
+  const watchedTemplate = watch('template')
+  const { t } = useTranslation()
 
   return (
     <>
-      <Box display="flex" flexDirection="row" gap={5} justifyContent="space-between">
-        <Stack flex="1" gap={2}>
-          <Controller
-            control={control}
-            name={'name'}
-            render={({ field: { onChange, value }, fieldState: { error } }) => (
-              <TextField
-                error={error}
-                label={t('badge.model.create.uiBasics.name')}
-                onChange={onChange}
-                value={value}
-              />
-            )}
-          />
-          <Controller
-            control={control}
-            name={'description'}
-            render={({ field: { onChange, value }, fieldState: { error } }) => (
-              <TextArea
-                error={error}
-                label={t('badge.model.create.uiBasics.description')}
-                onChange={onChange}
-                value={value}
-              />
-            )}
-          />
-          <Controller
-            control={control}
-            name={'badgeModelLogoUri'}
-            render={({ field: { onChange, value }, fieldState: { error } }) => (
-              <ImageInput
-                error={error}
-                label={t('badge.model.create.uiBasics.logo')}
-                onChange={(value: ImageType | null) => {
-                  if (value) {
-                    // We change the structure a little bit to have it ready to push to the backend
-                    onChange({
-                      mimeType: value.file?.type,
-                      base64File: value.base64File,
-                    })
-                  } else onChange(null)
-                }}
-                value={value}
-              />
-            )}
-          />
-        </Stack>
-        <Stack flex="1">
-          <BoxShadow>
-            <BadgePreview
-              animationEffects={['wobble', 'grow', 'glare']}
-              animationOnHover
-              badgeBackgroundUrl={BADGE_MODEL_BACKGROUNDS[watchedBackground]}
-              badgeUrl="https://www.thebadge.xyz"
-              description={watchedDescription}
-              imageUrl={watchedLogoUri?.base64File}
-              size="medium"
-              textContrast={BADGE_MODEL_TEXT_CONTRAST[watchedTextContrast]}
-              title={watchedName}
-            />
-          </BoxShadow>
-        </Stack>
-      </Box>
-      <Box display="flex" flexDirection="row" gap={5} justifyContent="space-between" mt={4}>
-        <Stack flex="1" gap={2}>
-          <Controller
-            control={control}
-            name={'textContrast'}
-            render={({ field: { onChange, value }, fieldState: { error } }) => (
-              <DropdownSelect
-                error={error}
-                label={t('badge.model.create.uiBasics.textContrast')}
-                onChange={onChange}
-                options={Object.keys(BADGE_MODEL_TEXT_CONTRAST)}
-                value={value || 'Black'}
-              />
-            )}
-          />
-          <Controller
-            control={control}
-            name={'backgroundImage'}
-            render={({ field: { onChange, value }, fieldState: { error } }) => (
-              <DropdownSelect
-                error={error}
-                label={t('badge.model.create.uiBasics.backgroundImage')}
-                onChange={onChange}
-                options={Object.keys(BADGE_MODEL_BACKGROUNDS)}
-                value={value || 'Two'}
-              />
-            )}
-          />
-        </Stack>
-        <Stack flex="1" gap={2}>
+      {isThirdParty && (
+        <Stack flex="1" gap={1} mb={4}>
+          <Typography variant="bodySmall">
+            {t('badge.model.create.uiBasics.templateConfig.badgeTypeSelectorTitle')}
+          </Typography>
+
           <Controller
             control={control}
             name={'template'}
             render={({ field: { onChange, value }, fieldState: { error } }) => (
               <DropdownSelect
-                disabled
+                disabled={!isThirdParty}
                 error={error}
-                label={t('badge.model.create.uiBasics.template')}
                 onChange={onChange}
-                options={['Classic', 'Business', 'Product', 'Academic', 'Fashion']}
-                value={value || 'Classic'}
+                options={[BadgeModelTemplate.Badge, BadgeModelTemplate.Diploma]}
+                value={value || BadgeModelTemplate.Badge}
               />
             )}
           />
+
+          <Divider />
         </Stack>
-      </Box>
+      )}
+
+      {watchedTemplate === BadgeModelTemplate.Badge && <BadgeConfiguration />}
+      {watchedTemplate === BadgeModelTemplate.Diploma && <DiplomaConfiguration />}
+
+      <Divider />
     </>
   )
 }

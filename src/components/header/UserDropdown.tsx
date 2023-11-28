@@ -1,26 +1,33 @@
 import { useRouter } from 'next/router'
-import React, { useState } from 'react'
+import React, { RefObject, useRef, useState } from 'react'
 
+import { AddressZero } from '@ethersproject/constants'
+import RadarIcon from '@mui/icons-material/Radar'
 import {
   Avatar,
   Badge,
   Divider,
   IconButton,
   ListItemIcon,
+  ListItemText,
+  ListSubheader,
   Menu,
   MenuItem,
   Tooltip,
   styled,
 } from '@mui/material'
+import { useWeb3Modal } from '@web3modal/wagmi/react'
 import Blockies from 'react-18-blockies'
 
 import { Logout } from '@/src/components/assets/Logout'
-import { SwitchNetwork } from '@/src/components/assets/SwitchNetwork'
 import ActionButtons from '@/src/components/header/ActionButtons'
-import { ModalSwitchNetwork } from '@/src/components/helpers/ModalSwitchNetwork'
+import { Address } from '@/src/components/helpers/Address'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
-import { truncateStringInTheMiddle } from '@/src/utils/strings'
+import { getNetworkConfig } from '@/src/config/web3'
+import { useSizeSM } from '@/src/hooks/useSize'
+import { PreventActionIfOutOfService } from '@/src/pagePartials/errors/preventActionIfOutOfService'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
+import { generateBaseUrl, generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 
 const StyledBadge = styled(Badge)<{ state?: 'ok' | 'error' }>(({ state, theme }) => ({
   '& .MuiBadge-badge': {
@@ -53,21 +60,34 @@ const StyledBadge = styled(Badge)<{ state?: 'ok' | 'error' }>(({ state, theme })
 
 export const UserDropdown: React.FC = () => {
   const router = useRouter()
-  const { address, disconnectWallet, isWalletNetworkSupported } = useWeb3Connection()
+  const { address, appChainId, disconnectWallet, isWalletNetworkSupported } = useWeb3Connection()
+  const networkConfig = getNetworkConfig(appChainId)
+  const { open: openWeb3Modal } = useWeb3Modal()
+  const isMobile = useSizeSM()
 
-  const [showNetworkModal, setShowNetworkModal] = useState(false)
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const open = Boolean(anchorEl)
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget)
+  const [open, setOpen] = useState(false)
+  const anchorMenuElRef: RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null)
+
+  const handleClick = () => {
+    setOpen(true)
   }
   const handleClose = () => {
-    setAnchorEl(null)
+    setOpen(false)
+  }
+
+  const toggleNetworkChange = () => {
+    openWeb3Modal({ view: 'Networks' })
+  }
+
+  const handleProfileNavigation = () => {
+    setOpen(false)
+
+    router.push(generateProfileUrl())
   }
 
   const logout = async () => {
     await disconnectWallet()
-    router.push('/')
+    router.push(generateBaseUrl())
   }
 
   const blockiesIcon = (
@@ -78,8 +98,12 @@ export const UserDropdown: React.FC = () => {
 
   return (
     <>
-      <ActionButtons />
-      <Tooltip arrow title="Account settings">
+      {!isMobile && (
+        <PreventActionIfOutOfService>
+          <ActionButtons />
+        </PreventActionIfOutOfService>
+      )}
+      <Tooltip arrow ref={anchorMenuElRef} title="Account settings">
         <IconButton
           aria-controls={open ? 'account-menu' : undefined}
           aria-expanded={open ? 'true' : undefined}
@@ -99,10 +123,9 @@ export const UserDropdown: React.FC = () => {
         </IconButton>
       </Tooltip>
       <Menu
-        anchorEl={anchorEl}
+        anchorEl={anchorMenuElRef.current}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
         id="account-menu"
-        onClick={handleClose}
         onClose={handleClose}
         open={open}
         slotProps={{
@@ -134,30 +157,34 @@ export const UserDropdown: React.FC = () => {
           },
         }}
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+        variant="menu"
       >
-        <MenuItem>
-          Connected {address ? <>{truncateStringInTheMiddle(address, 8, 4)}</> : 'Error'}
-        </MenuItem>
-        <MenuItem onClick={() => router.push('/profile')}>
-          <Avatar>{blockiesIcon} </Avatar> Profile
+        <ListSubheader sx={{ lineHeight: '20px', pb: '6px' }}>{networkConfig.name}</ListSubheader>
+        <ListSubheader sx={{ lineHeight: '20px' }}>
+          Connected <Address address={address || AddressZero} showExternalLink={false} />
+        </ListSubheader>
+        <Divider sx={{ my: 1 }} />
+        <MenuItem onClick={handleProfileNavigation}>
+          <Avatar>{blockiesIcon}</Avatar>
+          <ListItemText primary="Profile" />
         </MenuItem>
         <Divider />
-        <MenuItem onClick={() => setShowNetworkModal(true)}>
-          <ListItemIcon>
-            <SwitchNetwork />
+
+        {/* Switch network */}
+        <MenuItem onClick={toggleNetworkChange} sx={{ pl: 1 }}>
+          <ListItemIcon sx={{ mr: 1 }}>
+            <RadarIcon />
           </ListItemIcon>
-          Switch network
+          <ListItemText primary="Switch network" />
         </MenuItem>
+
         <MenuItem onClick={logout}>
           <ListItemIcon>
             <Logout />
           </ListItemIcon>
-          Logout
+          <ListItemText primary="Logout" />
         </MenuItem>
       </Menu>
-      {showNetworkModal && (
-        <ModalSwitchNetwork onClose={() => setShowNetworkModal(false)} open={showNetworkModal} />
-      )}
     </>
   )
 }

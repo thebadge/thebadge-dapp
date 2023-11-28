@@ -25,7 +25,9 @@ export function TSFormFieldHint({ description, label }: { label?: string; descri
         <Typography fontWeight="700" variant="subtitle1">
           {label}
         </Typography>
-        <Typography variant="body4">{description}</Typography>
+        <Typography sx={{ wordBreak: 'break-word' }} variant="body4">
+          {description}
+        </Typography>
       </HintContainer>
     </Tooltip>
   )

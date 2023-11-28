@@ -1,5 +1,6 @@
 import { ContractsKeys, contracts } from '@/src/contracts/contracts'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
+import { useEthersSigner } from '@/src/hooks/etherjs/useEthersSigner'
 import * as typechainImports from '@/types/generated/typechain'
 import { ObjectValues } from '@/types/utils'
 
@@ -12,11 +13,11 @@ export const useContractInstance = <F extends AppFactories, RT extends ReturnTyp
   contractKey: ContractsKeys,
   address?: string,
 ) => {
-  const { appChainId, readOnlyAppProvider, web3Provider } = useWeb3Connection()
+  const { appChainId } = useWeb3Connection()
+  const signer = useEthersSigner({ chainId: appChainId })
   const _address = address ? address : contracts[contractKey]['address'][appChainId]
   if (!_address) throw `Address for ${contractKey} and ${appChainId} is null`
-  const signer = web3Provider?.getSigner() || readOnlyAppProvider
-  if (!signer) throw 'There is not signer to execute a tx.'
+  if (!signer) throw 'There is no signer to execute the transaction.'
 
   return contractFactory.connect(_address, signer) as RT
 }

@@ -1,6 +1,7 @@
 import PushPinIcon from '@mui/icons-material/PushPin'
 import PushPinOutlinedIcon from '@mui/icons-material/PushPinOutlined'
 import { Checkbox, Menu, MenuItem, MenuList, Typography } from '@mui/material'
+import { useTranslation } from 'next-export-i18n'
 
 import { StatisticVisibility } from '@/src/hooks/nextjs/useStatisticsVisibility'
 export const StatisticVisibilityToggle = ({
@@ -14,6 +15,8 @@ export const StatisticVisibilityToggle = ({
   visibility: StatisticVisibility
   toggleVisibility: (category: string) => void
 }) => {
+  const { t } = useTranslation()
+
   return (
     <Menu
       anchorEl={anchorEl}
@@ -44,7 +47,7 @@ export const StatisticVisibilityToggle = ({
                 onClick={() => toggleVisibility(columnName)}
               />
               <Typography sx={{ width: '100%' }} variant="body2">
-                {columnName}
+                {t(`profile.statistics.visibility.${columnName}`)}
               </Typography>
             </MenuItem>
           )

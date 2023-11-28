@@ -23,6 +23,7 @@ gql`
     badge {
       id
       validUntil
+      contractAddress
       account {
         id
       }

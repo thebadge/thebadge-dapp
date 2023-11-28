@@ -13,6 +13,7 @@ export const StepButton = styled(Button)(({ theme }) => ({
   borderRadius: theme.spacing(1.25),
   fontSize: '14px !important',
   minHeight: '30px',
+  padding: theme.spacing(1, 4),
 }))
 
 export default function StepFooter({
@@ -30,7 +31,7 @@ export default function StepFooter({
   onBackCallback: VoidFunction
 }) {
   const { t } = useTranslation()
-  const modelId = useModelIdParam()
+  const { badgeModelId } = useModelIdParam()
   const { getValues, watch } = useFormContext<MintBadgeSchemaType>()
 
   const canGoBack = currentStep !== 0
@@ -40,12 +41,12 @@ export default function StepFooter({
   const imageHasBeenGenerated = watch('previewImage')
 
   function onBack() {
-    saveFormValues(getValues(), modelId)
+    saveFormValues(getValues(), badgeModelId)
     if (onBackCallback) onBackCallback()
   }
 
   function onNext() {
-    saveFormValues(getValues(), modelId)
+    saveFormValues(getValues(), badgeModelId)
     if (onNextCallback) onNextCallback()
   }
 

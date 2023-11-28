@@ -2,6 +2,7 @@ import useSWR from 'swr'
 
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import useChainId from '@/src/hooks/theBadge/useChainId'
+import { WCAddress } from '@/types/utils'
 
 /**
  * Hook to determine badge ownership, we utilize the potential Owner Address and the badgeModelId. By querying the SG,
@@ -9,7 +10,7 @@ import useChainId from '@/src/hooks/theBadge/useChainId'
  * @param badgeModelId
  * @param ownerAddress
  */
-export default function useIsBadgeOwner(badgeModelId: string, ownerAddress: string | null) {
+export default function useIsBadgeOwner(badgeModelId: string, ownerAddress: WCAddress | undefined) {
   const userWithOwnerBadges = useBadgesOwnedByModelId(badgeModelId, ownerAddress)
   if (!ownerAddress) return false
   return !!userWithOwnerBadges.data?.user?.badges?.length
@@ -20,7 +21,7 @@ export default function useIsBadgeOwner(badgeModelId: string, ownerAddress: stri
  * @param badgeModelId
  * @param ownerAddress
  */
-export function useBadgeOwnershipData(badgeModelId: string, ownerAddress: string) {
+export function useBadgeOwnershipData(badgeModelId: string, ownerAddress: WCAddress | undefined) {
   const userWithOwnerBadges = useBadgesOwnedByModelId(badgeModelId, ownerAddress)
   return userWithOwnerBadges.data?.user?.badges
 }
@@ -30,7 +31,7 @@ export function useBadgeOwnershipData(badgeModelId: string, ownerAddress: string
  * @param badgeModelId
  * @param ownerAddress
  */
-function useBadgesOwnedByModelId(badgeModelId: string, ownerAddress: string | null) {
+function useBadgesOwnedByModelId(badgeModelId: string, ownerAddress: WCAddress | undefined) {
   const gql = useSubgraph()
   const chainId = useChainId()
 

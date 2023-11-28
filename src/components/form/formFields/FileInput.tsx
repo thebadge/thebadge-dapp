@@ -4,8 +4,10 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf'
+import UploadFileIcon from '@mui/icons-material/UploadFile'
 import { Box, IconButton, Stack, Tooltip, Typography, styled } from '@mui/material'
 import { colors } from '@thebadge/ui-library'
+import { useTranslation } from 'next-export-i18n'
 import { FieldError } from 'react-hook-form'
 import ImageUploading, { ImageListType, ImageType } from 'react-images-uploading'
 
@@ -44,6 +46,8 @@ type FileInputProps = {
   placeholder?: string
   value: ImageType | undefined
   downloadableTemplate?: React.ReactNode
+  disabled?: boolean
+  acceptType?: string[]
 }
 
 /**
@@ -52,6 +56,8 @@ type FileInputProps = {
  * @constructor
  */
 export function FileInput({
+  acceptType,
+  disabled,
   downloadableTemplate,
   error,
   label,
@@ -59,6 +65,7 @@ export function FileInput({
   placeholder,
   value,
 }: FileInputProps) {
+  const { t } = useTranslation()
   const [files, setFiles] = useState<ImageListType>(value ? [value] : [])
   const maxNumber = 1
 
@@ -83,7 +90,7 @@ export function FileInput({
             {/* Custom element where we can define a template example for the expected file */}
             {downloadableTemplate ? downloadableTemplate : null}
             <ImageUploading
-              acceptType={['pdf']}
+              acceptType={acceptType ? acceptType : ['pdf']}
               allowNonImageType={true}
               dataURLKey="base64File"
               maxNumber={maxNumber}
@@ -100,7 +107,12 @@ export function FileInput({
                       {...dragProps}
                     >
                       <Typography color="text.disabled">Upload file</Typography>
-                      <IconButton aria-label="upload file" color="secondary" component="label">
+                      <IconButton
+                        aria-label="upload file"
+                        color="secondary"
+                        component="label"
+                        disabled={disabled}
+                      >
                         <FileUploadOutlinedIcon color="white" />
                       </IconButton>
                     </FileDrop>
@@ -115,7 +127,11 @@ export function FileInput({
                           maxWidth: '330px',
                         }}
                       >
-                        <PictureAsPdfIcon sx={{ mr: 1 }} />
+                        {acceptType ? (
+                          <UploadFileIcon sx={{ mr: 1 }} />
+                        ) : (
+                          <PictureAsPdfIcon sx={{ mr: 1 }} />
+                        )}
                         {image.file?.name}
                       </Typography>
                       <IconButton
@@ -130,8 +146,8 @@ export function FileInput({
                   ))}
                   {errors && (
                     <div>
-                      {errors.acceptType && <span>Your selected file type is not allow</span>}
-                      {errors.maxFileSize && <span>Selected file size exceed maxFileSize</span>}
+                      {errors.acceptType && <span>{t('errors.fileType')}</span>}
+                      {errors.maxFileSize && <span>{t('errors.fileMaxSize')}</span>}
                     </div>
                   )}
                 </Stack>

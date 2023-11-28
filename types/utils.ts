@@ -89,6 +89,7 @@ export type BackendFileResponse = {
   mimeType: string
   s3Url: string
   extension: string
+  ipfsUrl: string
   ipfs: string
 }
 
@@ -108,3 +109,8 @@ export type NFTAttribute = {
   value: string | number
   display_type?: undefined | 'date'
 }
+
+/**
+ * Wallet Connect Address Type
+ */
+export type WCAddress = `0x${string}`

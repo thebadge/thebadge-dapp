@@ -1,5 +1,5 @@
 import { useRouter } from 'next/navigation'
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 
 import { Box } from '@mui/material'
 import { ButtonV2, EmptyBadgePreview, TimeToExpireBadgeOverlay, colors } from '@thebadge/ui-library'
@@ -11,10 +11,12 @@ import TBSwiper from '@/src/components/helpers/TBSwiper'
 import { fillListWithPlaceholders } from '@/src/components/utils/emptyBadges'
 import { nowInSeconds, nowPlusOneMonthInSeconds } from '@/src/constants/helpers'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
-import { TimeLeft, useDate } from '@/src/hooks/useDate'
+import { TimeLeft, useDateHelpers } from '@/src/hooks/useDateHelpers'
 import { useSizeLG, useSizeMD } from '@/src/hooks/useSize'
 import BadgeModelPreview from '@/src/pagePartials/badge/BadgeModelPreview'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+import { useProfileProvider } from '@/src/providers/ProfileProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
+import { generateBadgePreviewUrl } from '@/src/utils/navigation/generateUrl'
 
 const now = nowInSeconds()
 const nowPlusOneMonth = nowPlusOneMonthInSeconds()
@@ -25,15 +27,20 @@ export default function NearToExpireList() {
   const gql = useSubgraph()
   const md = useSizeMD()
   const lg = useSizeLG()
-  const { getTimeLeftToExpire, timestampToDate } = useDate()
-  const { address: ownerAddress } = useWeb3Connection()
+  const { getTimeLeftToExpire, timestampToDate } = useDateHelpers()
+  const { address: ownerAddress, appChainId } = useWeb3Connection()
+  const { refreshWatcher } = useProfileProvider()
 
   // TODO now "NEAR TO EXPIRE" is in max 1 month, we will change this to configurable time
-  const badgesExpiringSoon = gql.useUserBadgesExpiringBetween({
+  const { mutate, ...badgesExpiringSoon } = gql.useUserBadgesExpiringBetween({
     ownerAddress: ownerAddress || '',
     startDate: now,
     endDate: nowPlusOneMonth,
   })
+
+  useEffect(() => {
+    mutate()
+  }, [mutate, refreshWatcher])
 
   const badgesList = useMemo(() => {
     const badges = badgesExpiringSoon.data?.user?.badges?.map((badge) => {
@@ -45,7 +52,14 @@ export default function NearToExpireList() {
             <SafeSuspense color={'purple'}>
               <Box sx={{ width: 'fit-content' }}>
                 <Box
-                  onClick={() => router.push(`/badge/preview/${badge.id}`)}
+                  onClick={() =>
+                    router.push(
+                      generateBadgePreviewUrl(badge.id, {
+                        theBadgeContractAddress: badge.contractAddress,
+                        connectedChainId: appChainId,
+                      }),
+                    )
+                  }
                   sx={{ cursor: 'pointer' }}
                 >
                   <TimeToExpireBadgeOverlay
@@ -87,7 +101,14 @@ export default function NearToExpireList() {
       </div>,
       3,
     )
-  }, [badgesExpiringSoon.data?.user?.badges, timestampToDate, getTimeLeftToExpire, t, router])
+  }, [
+    badgesExpiringSoon.data?.user?.badges,
+    timestampToDate,
+    getTimeLeftToExpire,
+    t,
+    router,
+    appChainId,
+  ])
 
   const amountItems = () => {
     if (md) {

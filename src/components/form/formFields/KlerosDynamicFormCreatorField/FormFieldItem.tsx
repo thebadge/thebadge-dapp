@@ -1,13 +1,19 @@
 import React, { useRef } from 'react'
 
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined'
-import GridViewIcon from '@mui/icons-material/GridView'
-import { Box, IconButton, Typography, styled } from '@mui/material'
+import PanToolIcon from '@mui/icons-material/PanTool'
+import { Box, IconButton, Stack, Typography, styled } from '@mui/material'
 import { Identifier, XYCoord } from 'dnd-core'
 import { useDrag, useDrop } from 'react-dnd'
 import { z } from 'zod'
 
+import BooleanFieldPlaceholder from '@/src/components/form/formFields/KlerosDynamicFormCreatorField/addons/BooleanFieldPlaceholder'
+import FilePlaceholder from '@/src/components/form/formFields/KlerosDynamicFormCreatorField/addons/FilePlaceholder'
+import ImagePlaceholder from '@/src/components/form/formFields/KlerosDynamicFormCreatorField/addons/ImagePlaceholder'
+import TextAreaPlaceholder from '@/src/components/form/formFields/KlerosDynamicFormCreatorField/addons/TextAreaPlaceholder'
+import TextFieldPlaceholder from '@/src/components/form/formFields/KlerosDynamicFormCreatorField/addons/TextFieldPlaceholder'
 import { KlerosFormFieldSchema } from '@/src/components/form/helpers/customSchemas'
+import { KLEROS_LIST_TYPES } from '@/types/kleros/types'
 
 type FormFieldItemProps = {
   index: number
@@ -132,8 +138,28 @@ export default function FormFieldItem({ field, index, moveItem, removeItem }: Fo
 
   drag(drop(ref))
 
-  function truncate(str: string, n = 10) {
-    return str.length > n ? str.slice(0, n - 1) + '...' : str
+  function renderItemType() {
+    switch (field.type) {
+      case KLEROS_LIST_TYPES.GTCR_ADDRESS:
+      case KLEROS_LIST_TYPES.ADDRESS:
+      case KLEROS_LIST_TYPES.RICH_ADDRESS:
+      case KLEROS_LIST_TYPES.TEXT:
+      case KLEROS_LIST_TYPES.NUMBER:
+      case KLEROS_LIST_TYPES.TWITTER_USER_ID:
+      case KLEROS_LIST_TYPES.LINK:
+        return <TextFieldPlaceholder description={field.description} label={field.label} />
+      case KLEROS_LIST_TYPES.BOOLEAN:
+        return <BooleanFieldPlaceholder description={field.description} label={field.label} />
+      case KLEROS_LIST_TYPES.LONG_TEXT:
+        return <TextAreaPlaceholder description={field.description} label={field.label} />
+      case KLEROS_LIST_TYPES.FILE: {
+        return <FilePlaceholder description={field.description} label={field.label} />
+      }
+      case KLEROS_LIST_TYPES.IMAGE:
+        return <ImagePlaceholder description={field.description} label={field.label} />
+      default:
+        return <Typography variant="labelMedium">Error: Unhandled Type {field.type}</Typography>
+    }
   }
 
   return (
@@ -144,30 +170,18 @@ export default function FormFieldItem({ field, index, moveItem, removeItem }: Fo
       ref={ref}
     >
       <BorderedBox>
-        <GridViewIcon />
-        <Box sx={{ display: 'flex', flex: 1, justifyContent: 'space-evenly' }}>
-          <Typography component="p" sx={{ flex: 2 }} variant="subtitle1">
-            {truncate(field.label, 30)}
-          </Typography>
-
-          <Typography component="p" sx={{ flex: 3 }} variant="subtitle1">
-            {truncate(field.description, 35)}
-          </Typography>
-
-          <Typography
-            component="p"
-            sx={{ flex: 1, textTransform: 'capitalize' }}
-            variant="subtitle1"
+        <Stack gap={2}>
+          <PanToolIcon sx={{ mx: 'auto' }} />
+          <IconButton
+            onClick={removeItem}
+            sx={{ ml: 'auto', cursor: 'pointer', justifyContent: 'center', display: 'flex' }}
           >
-            {field.type}
-          </Typography>
+            <DeleteOutlineOutlinedIcon />
+          </IconButton>
+        </Stack>
+        <Box sx={{ display: 'flex', flex: 1, justifyContent: 'space-evenly' }}>
+          {renderItemType()}
         </Box>
-        <IconButton
-          onClick={removeItem}
-          sx={{ ml: 'auto', cursor: 'pointer', justifyContent: 'center', display: 'flex' }}
-        >
-          <DeleteOutlineOutlinedIcon />
-        </IconButton>
       </BorderedBox>
     </DraggableContainer>
   )
