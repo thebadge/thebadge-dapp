@@ -31,7 +31,7 @@ export interface EmailClaimTx {
 
   badgeModelId: number
 
-  emailClaimer: string
+  emailClaimer?: string
 }
 
 export interface RelayedTxResult {
