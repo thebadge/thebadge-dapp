@@ -25,12 +25,13 @@ const STEP_0_TP = [
 const STEP_0_TP_DIPLOMA = [
   'name',
   'description',
-  'footerEnabled',
+  'template',
   'courseName',
   'achievementDescription',
   'achievementDate',
+  'footerEnabled',
   'signatureEnabled',
-  'template',
+  'customIssuerEnabled',
 ]
 
 const STEP_1_TP = ['mintFee', 'validFor', 'administrators']

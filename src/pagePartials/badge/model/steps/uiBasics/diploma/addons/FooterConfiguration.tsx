@@ -21,8 +21,11 @@ export default function FooterConfiguration() {
 
   useEffect(() => {
     // Automatically set the value when the footer is enabled, not editable right now
-    if (footerEnabled && creatorMetadata?.name) {
-      setValue('footerText', `${creatorMetadata?.name} hast confirmed the identity {{studentName}}`)
+    if (footerEnabled) {
+      setValue(
+        'footerText',
+        `${creatorMetadata?.name || 'The issuer'} has confirmed the identity {{studentName}}`,
+      )
     }
   }, [creatorMetadata?.name, footerEnabled, setValue])
 
