@@ -41,10 +41,10 @@ export default function AlreadyOwnThisBadgeError({ onClose }: { onClose: VoidFun
   const { mode } = useColorMode()
   const router = useRouter()
   const { address, appChainId } = useWeb3Connection()
-  const badgeModelId = useModelIdParam()
+  const { badgeModelId, contract } = useModelIdParam()
 
   const ownedBadges = useBadgeOwnershipData(badgeModelId, address)
-  const badgeModelQuery = useBadgeModel(badgeModelId)
+  const badgeModelQuery = useBadgeModel(badgeModelId, contract)
   const badgeModel = badgeModelQuery?.data?.badgeModel
 
   if (!ownedBadges || !ownedBadges.length) {

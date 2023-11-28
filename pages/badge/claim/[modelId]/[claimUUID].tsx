@@ -7,7 +7,8 @@ import { FormProvider, useForm } from 'react-hook-form'
 
 import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import { TransactionLoading } from '@/src/components/loading/TransactionLoading'
-import useClaimUUIDParam from '@/src/hooks/nextjs/useClaimUUIDParam'
+import useBadgeIDFromULID from '@/src/hooks/nextjs/useBadgeIDFromULID'
+import useClaimParams from '@/src/hooks/nextjs/useClaimParams'
 import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
 import useRelayerTransactionEndpoint from '@/src/hooks/useRelayerTransactionEndpoint'
@@ -30,9 +31,9 @@ import { NextPageWithLayout } from '@/types/next'
 
 const ClaimBadge: NextPageWithLayout = () => {
   const { t } = useTranslation()
-  const modelId = useModelIdParam()
+  const { badgeModelId, contract } = useModelIdParam()
   const { resetTxState, sendRequest, state: txState } = useRelayerTransactionEndpoint()
-  const badgeModelData = useBadgeModel(modelId)
+  const badgeModelData = useBadgeModel(badgeModelId, contract)
 
   const badgeCreatorMetadata = useS3Metadata<{ content: Creator }>(
     badgeModelData.data?.badgeModel?.creator.metadataUri || '',
@@ -59,8 +60,9 @@ const ClaimBadge: NextPageWithLayout = () => {
     return await triggerValidation(['claimAddress'])
   }
 
-  const claimUUID = useClaimUUIDParam()
-  if (!claimUUID) {
+  const { claimUUID } = useClaimParams()
+  const badgeId = useBadgeIDFromULID()
+  if (!claimUUID || !badgeId) {
     throw `No claimUUID provided us URL query param`
   }
 
@@ -80,24 +82,31 @@ const ClaimBadge: NextPageWithLayout = () => {
         )}
         {txState === TransactionStates.none && (
           <FormProvider {...methods}>
-            <StepClaimThirdPartyHeader
-              creatorAddress={badgeModelData.data.badgeModel.creator.id}
-              creatorName={badgeCreatorMetadata.data.content.name}
-            />
-            <StepClaimThirdPartyPreview />
-            <Divider />
-            <Container maxWidth="md">
-              <form onSubmit={methods.handleSubmit(onSubmit)} style={{ width: '100%' }}>
-                <Stack mt={4}>
-                  <StepClaimThirdParty />
-                  <Stack gap={4} mt={8}>
-                    <SubmitButton color="blue" sx={{ m: 'auto' }} type="submit" variant="contained">
-                      {t('badge.model.claim.thirdParty.preview.submit')}
-                    </SubmitButton>
+            <Stack gap={4}>
+              <StepClaimThirdPartyHeader
+                creatorAddress={badgeModelData.data.badgeModel.creator.id}
+                creatorName={badgeCreatorMetadata.data.content.name}
+              />
+              <StepClaimThirdPartyPreview />
+              <Divider />
+              <Container maxWidth="md">
+                <form onSubmit={methods.handleSubmit(onSubmit)} style={{ width: '100%' }}>
+                  <Stack mt={4}>
+                    <StepClaimThirdParty />
+                    <Stack gap={4} mt={8}>
+                      <SubmitButton
+                        color="blue"
+                        sx={{ m: 'auto' }}
+                        type="submit"
+                        variant="contained"
+                      >
+                        {t('badge.model.claim.thirdParty.preview.submit')}
+                      </SubmitButton>
+                    </Stack>
                   </Stack>
-                </Stack>
-              </form>
-            </Container>
+                </form>
+              </Container>
+            </Stack>
           </FormProvider>
         )}
         {txState === TransactionStates.success && (

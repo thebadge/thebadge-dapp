@@ -20,9 +20,9 @@ export default function DynamicForm({
   const formButtonRef = useRef<HTMLButtonElement>()
   const { setValue, watch } = useFormContext<MintBadgeSchemaType>()
 
-  const modelId = useModelIdParam()
+  const { badgeModelId } = useModelIdParam()
 
-  const badgeModelKleros = useRegistrationBadgeModelKlerosMetadata(modelId)
+  const badgeModelKleros = useRegistrationBadgeModelKlerosMetadata(badgeModelId)
   const klerosBadgeMetadata = badgeModelKleros.data?.badgeModelKlerosRegistrationMetadata
   if (!klerosBadgeMetadata) {
     throw `There was an error trying to fetch the metadata for the badge model`

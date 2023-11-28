@@ -12,8 +12,8 @@ export const THIRD_PARTY_BADGE_MODELS_BY_CREATOR_ID = gql`
   }
 `
 
-export const BADGE_MODELS = gql`
-  query badgeModels {
+export const COMMUNITY_BADGE_MODELS = gql`
+  query communityBadgeModels {
     badgeModels(
       orderBy: createdAt
       orderDirection: desc
@@ -24,9 +24,14 @@ export const BADGE_MODELS = gql`
   }
 `
 
-export const BADGE_MODELS_MAX_AMOUNT = gql`
-  query badgeModelsMaxAmount($first: Int!) {
-    badgeModels(first: $first, orderBy: createdAt, orderDirection: desc) {
+export const COMMUNITY_BADGE_MODELS_MAX_AMOUNT = gql`
+  query communityBadgeModelsMaxAmount($first: Int!) {
+    badgeModels(
+      first: $first
+      orderBy: createdAt
+      orderDirection: desc
+      where: { controllerType_not: "thirdParty" }
+    ) {
       ...BadgeModel
     }
   }
@@ -44,6 +49,14 @@ export const BADGE_MODEL_KLEROS_METADATA_BY_ID = gql`
   query badgeModelKlerosMetadataById($id: ID!) {
     badgeModelKlerosMetaData(id: $id) {
       ...BadgeModelKlerosMetadata
+    }
+  }
+`
+
+export const BADGE_MODEL_THIRD_PARTY_METADATA_BY_ID = gql`
+  query badgeModelThirdPartyMetaDataById($id: ID!) {
+    badgeModelThirdPartyMetaData(id: $id) {
+      ...BadgeModelThirdPartyMetaData
     }
   }
 `

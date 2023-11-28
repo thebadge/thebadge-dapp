@@ -1,12 +1,11 @@
-import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
-import { isBeforeToday } from '@/src/utils/dateUtils'
-import { BadgeStatus } from '@/types/generated/subgraph'
+import useSWR from 'swr'
+
+import useTBContract from '@/src/hooks/theBadge/useTBContract'
 
 export default function useIsClaimable(badgeId: string) {
-  const badge = useBadgeById(badgeId)
+  const theBadge = useTBContract()
 
-  return (
-    badge.data?.status === BadgeStatus.Requested &&
-    isBeforeToday(badge.data.badgeKlerosMetaData?.reviewDueDate)
-  )
+  return useSWR([`isClaimable:${badgeId}`, badgeId], ([,]) => theBadge.isClaimable(badgeId), {
+    revalidateOnMount: true,
+  })
 }

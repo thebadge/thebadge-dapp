@@ -28,7 +28,6 @@ const StyledButton = styled(Button)<{ border?: string }>(({ border }) => ({
   lineHeight: '14px',
   fontWeight: 700,
   boxShadow: 'none',
-  minHeight: '42px',
 }))
 
 type ButtonWithMenuProps = {
@@ -60,7 +59,7 @@ const ButtonWithMenu = ({ color, disabled, menuItems, title }: ButtonWithMenuPro
         aria-haspopup="true"
         border={`2px solid ${color}`}
         disabled={disabled}
-        endIcon={<KeyboardArrowDownIcon />}
+        endIcon={<KeyboardArrowDownIcon sx={{ width: '14px', height: '14px' }} />}
         id="create-menu-button"
         onClick={handleClick}
       >
@@ -140,7 +139,7 @@ export default function ActionButtons() {
   const createButton = menuButton({
     title: t('header.buttons.create'),
     color: colors.pink,
-    disabled: isWalletConnected && !user?.isCreator,
+    disabled: isWalletConnected && !user?.isRegistered,
     path: generateBadgeModelCreate(),
     menuItems: isThirdPartyUser
       ? [
@@ -167,7 +166,7 @@ export default function ActionButtons() {
       {exploreButton}
       {curateButton}
 
-      {isWalletConnected && !user?.isCreator ? (
+      {isWalletConnected && !user?.isRegistered ? (
         <Tooltip
           arrow
           title={

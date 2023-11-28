@@ -5,11 +5,9 @@ import { DiplomaPreview } from '@thebadge/ui-library'
 import { useFormContext } from 'react-hook-form'
 
 import { APP_URL } from '@/src/constants/common'
-import { useUserById } from '@/src/hooks/subgraph/useUserById'
 import useIsUserVerified from '@/src/hooks/theBadge/useIsUserVerified'
-import useS3Metadata from '@/src/hooks/useS3Metadata'
+import { useSizeSM } from '@/src/hooks/useSize'
 import { CreateThirdPartyModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateThirdPartyModelSchema'
-import { CreatorMetadata } from '@/types/badges/Creator'
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
 const BoxShadow = styled(Box)(({ theme }) => ({
@@ -27,9 +25,6 @@ export default function DiplomaCreationPreview() {
     throw 'You may need to connect your wallet'
   }
 
-  const { data } = useUserById(address)
-  const resCreatorMetadata = useS3Metadata<{ content: CreatorMetadata }>(data?.metadataUri || '')
-  const creatorMetadata = resCreatorMetadata.data?.content
   const isVerified = useIsUserVerified(address, 'kleros')
 
   // Diploma Badge Configs
@@ -40,16 +35,21 @@ export default function DiplomaCreationPreview() {
 
   // Footer
   const footerEnabled = watch('footerEnabled')
-  const footerText =
-    watch('footerText') || `${creatorMetadata?.name} hast confirmed the identity {{studentName}}`
+  const footerText = watch('footerText')
 
   // Signature
   const signatureEnabled = watch('signatureEnabled')
   const signatureImageUrl =
-    watch('signatureImage') ||
+    watch('signatureImage')?.base64File ||
     'https://images.unsplash.com/photo-1645484686977-dbddd9e1dc0a?q=80&w=3270&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
   const signerTitle = watch('signerTitle') || 'Max Mustermann'
   const signerSubline = watch('signerSubline') || 'CEO of TheGreatestCompany'
+
+  // Issuer
+  const issuedByLabel = watch('issuedByLabel') || 'Issued by'
+  const issuerAvatar = watch('issuerAvatar')?.base64File
+  const issuerTitle = watch('issuerTitle')
+  const issuerDescription = watch('issuerDescription')
 
   const signatureProps = signatureEnabled
     ? {
@@ -59,23 +59,26 @@ export default function DiplomaCreationPreview() {
       }
     : {}
 
-  // Issuer
-  const issuerAvatar = watch('issuerAvatar')?.base64File || creatorMetadata?.logo?.s3Url
+  const isMobile = useSizeSM()
 
   return (
-    <BoxShadow>
+    <BoxShadow sx={{ display: 'block' }}>
       <DiplomaPreview
-        animationEffects={['wobble', 'grow', 'glare']}
+        animationEffects={isMobile ? [] : ['wobble', 'grow', 'glare']}
         animationOnHover
         badgeUrl={APP_URL}
         courseName={courseName}
         date={achievementDate}
         description={achievementDescription}
         footerText={footerEnabled && footerText}
-        issuedByLabel={'Issued by'}
+        issuedByLabel={issuedByLabel}
         issuerAvatarUrl={issuerAvatar}
+        issuerDescription={issuerDescription}
         issuerIsVerified={isVerified}
+        issuerTitle={issuerTitle}
         studentName={'{{studentName}}'}
+        sx={isMobile ? { scale: '0.5', transform: 'translate(-50%, -50%)' } : {}}
+        textContrastRight="dark"
         {...signatureProps}
       />
     </BoxShadow>

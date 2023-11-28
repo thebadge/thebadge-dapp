@@ -6,7 +6,7 @@ import { ErrorBoundary } from 'react-error-boundary'
 import { GeneralError, GeneralPageError } from '@/src/components/helpers/GeneralError'
 import { Loading } from '@/src/components/loading/Loading'
 import { SpinnerProps } from '@/src/components/loading/Spinner'
-import isDev from '@/src/utils/isDev'
+import { IS_DEVELOP } from '@/src/constants/common'
 import { NextPageWithLayout } from '@/types/next'
 import { IntrinsicElements } from '@/types/utils'
 
@@ -37,7 +37,7 @@ export default function SafeSuspense({
       fallbackRender={({ error, resetErrorBoundary }) => (
         <GeneralError error={error} resetErrorBoundary={resetErrorBoundary} />
       )}
-      onError={(error, info) => isDev && console.error(error, info)}
+      onError={(error, info) => IS_DEVELOP && console.error(error, info)}
       resetKeys={[children]}
     >
       <Suspense fallback={fallback}>{children}</Suspense>
@@ -59,7 +59,7 @@ export function withPageGenericSuspense<TProps>(
       fallbackRender={({ error, resetErrorBoundary }) => (
         <GeneralPageError error={error} resetErrorBoundary={resetErrorBoundary} />
       )}
-      onError={(error, info) => isDev && console.error(error, info)}
+      onError={(error, info) => IS_DEVELOP && console.error(error, info)}
       resetKeys={[Page]}
     >
       <Suspense

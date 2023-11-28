@@ -31,7 +31,15 @@ export interface EmailClaimTx {
 
   badgeModelId: number
 
-  emailClaimer: string
+  emailClaimer?: string
+}
+
+export type EmailClaimTxSigned = EmailClaimTx & {
+  signature: string
+
+  signedMessage: string
+
+  ownerAddress: string
 }
 
 export interface RelayedTxResult {

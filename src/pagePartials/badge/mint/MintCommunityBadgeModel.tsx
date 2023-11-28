@@ -31,7 +31,7 @@ const MintCommunityBadgeModel: NextPageWithLayout = () => {
   const theBadge = useTBContract()
   const { resetTxState, sendRelayTx, sendTx, state } = useTransaction()
   const router = useRouter()
-  const badgeModelId = useModelIdParam()
+  const { badgeModelId, contract } = useModelIdParam()
 
   if (!badgeModelId) {
     throw `No modelId provided us URL query param`
@@ -44,7 +44,7 @@ const MintCommunityBadgeModel: NextPageWithLayout = () => {
     }
   }, [router, state])
 
-  const badgeModel = useBadgeModel(badgeModelId)
+  const badgeModel = useBadgeModel(badgeModelId, contract)
   const badgeModelKleros = useRegistrationBadgeModelKlerosMetadata(badgeModelId)
 
   const klerosBadgeMetadata = badgeModelKleros.data?.badgeModelKlerosRegistrationMetadata

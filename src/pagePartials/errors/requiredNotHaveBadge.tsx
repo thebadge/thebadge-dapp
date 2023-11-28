@@ -31,7 +31,7 @@ export const RequiredNotHaveBadge: React.FC<RequiredConnectionProps> = ({
   ...restProps
 }) => {
   const [wantToContinue, setWantToContinue] = useState(false)
-  const badgeModelId = useModelIdParam()
+  const { badgeModelId } = useModelIdParam()
   const isBadgeOwner = useIsBadgeOwner(badgeModelId, ownerAddress)
 
   if (!wantToContinue && isBadgeOwner) {

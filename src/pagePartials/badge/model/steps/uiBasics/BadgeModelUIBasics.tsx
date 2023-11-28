@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { Divider, Stack, Typography } from '@mui/material'
+import { useTranslation } from 'next-export-i18n'
 import { Controller, useFormContext } from 'react-hook-form'
 
 import { DropdownSelect } from '@/src/components/form/formFields/DropdownSelect'
@@ -35,12 +36,15 @@ export default function BadgeModelUIBasics() {
 
   const { control, watch } = useFormContext<CreateCommunityModelSchemaType>()
   const watchedTemplate = watch('template')
+  const { t } = useTranslation()
 
   return (
     <>
       {isThirdParty && (
         <Stack flex="1" gap={1} mb={4}>
-          <Typography variant="bodySmall">Choose what type of badge you want:</Typography>
+          <Typography variant="bodySmall">
+            {t('badge.model.create.uiBasics.templateConfig.badgeTypeSelectorTitle')}
+          </Typography>
 
           <Controller
             control={control}
@@ -50,8 +54,8 @@ export default function BadgeModelUIBasics() {
                 disabled={!isThirdParty}
                 error={error}
                 onChange={onChange}
-                options={[BadgeModelTemplate.Classic, BadgeModelTemplate.Diploma]}
-                value={value || BadgeModelTemplate.Classic}
+                options={[BadgeModelTemplate.Badge, BadgeModelTemplate.Diploma]}
+                value={value || BadgeModelTemplate.Badge}
               />
             )}
           />
@@ -60,7 +64,7 @@ export default function BadgeModelUIBasics() {
         </Stack>
       )}
 
-      {watchedTemplate === BadgeModelTemplate.Classic && <BadgeConfiguration />}
+      {watchedTemplate === BadgeModelTemplate.Badge && <BadgeConfiguration />}
       {watchedTemplate === BadgeModelTemplate.Diploma && <DiplomaConfiguration />}
 
       <Divider />

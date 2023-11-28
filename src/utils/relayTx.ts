@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 import { ZERO_ADDRESS } from '@/src/constants/bigNumber'
-import { EmailClaimTx, RelayedTx, RelayedTxResult } from '@/types/relayedTx'
+import { EmailClaimTxSigned, RelayedTx, RelayedTxResult } from '@/types/relayedTx'
 import { BackendResponse } from '@/types/utils'
 
 export const sendTxToRelayer = async (
@@ -16,7 +16,7 @@ export const sendTxToRelayer = async (
 
 // TODO This should be removed and this method should be directly inside the relayer, we just need to ask the relayer to relay the  tx
 export const sendEmailClaim = async (
-  param: EmailClaimTx,
+  param: EmailClaimTxSigned,
 ): Promise<BackendResponse<{ txHash: string | null }>> => {
   const res = await axios.post<BackendResponse<{ txHash: string | null }>>(
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/thirdPartyController/sendMintMail`,
@@ -59,4 +59,21 @@ export const sendClaimRequest = async (
     valid: false,
     errorMessage: res.data.message || '',
   }
+}
+
+export const getEncryptedValues = async (
+  networkId: string,
+  data: Record<string, unknown>,
+): Promise<string | null> => {
+  const res = await axios.post<BackendResponse<{ payload: string }>>(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/thirdPartyController/encryptPayload`,
+    { networkId, payload: data },
+  )
+
+  if (res.data.error || !res.data.result) {
+    console.warn('The encryption errored with message: ', res.data.message)
+    return null
+  }
+
+  return res.data.result.payload
 }

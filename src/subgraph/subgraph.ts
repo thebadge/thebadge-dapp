@@ -3,7 +3,7 @@ import nullthrows from 'nullthrows'
 
 import devEndpoints from '@/src/subgraph/subgraph-endpoints-dev.json'
 import endpoints from '@/src/subgraph/subgraph-endpoints.json'
-import isDev from '@/src/utils/isDev'
+import { isTestnet } from '@/src/utils/network'
 import { ChainsValues } from '@/types/chains'
 import { SdkWithHooks, getSdkWithHooks } from '@/types/generated/subgraph'
 
@@ -17,7 +17,9 @@ export function getSubgraphSdkByNetwork(
   chainId: ChainsValues,
   subgraphName: SubgraphName,
 ): ReturnType<typeof getSdkWithHooks> {
-  const subGraph = isDev ? devEndpoints[chainId][subgraphName] : endpoints[chainId][subgraphName]
+  const subGraph = isTestnet
+    ? devEndpoints[chainId][subgraphName]
+    : endpoints[chainId][subgraphName]
   const networkConfig = getSdkWithHooks(new GraphQLClient(subGraph))
   return nullthrows(networkConfig, `No sdk for chain id: ${chainId}`)
 }

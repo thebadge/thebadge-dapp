@@ -30,7 +30,7 @@ const ModalBody = styled(Box)(({ theme }) => ({
     maxWidth: '100%',
   },
 }))
-export default function NotACreatorError() {
+export default function NotRegisteredError() {
   const { t } = useTranslation()
   const router = useRouter()
 
@@ -49,10 +49,10 @@ export default function NotACreatorError() {
       <Stack alignItems="center" gap={1} justifyContent="center" m="auto">
         <BadgeAnimatedLogo />
         <Typography color={colors.purple} variant="dAppHeadline2">
-          {t('errors.notACreator')}
+          {t('errors.notRegistered')}
         </Typography>
         <Typography variant="body4">
-          {t('errors.notACreatorSubtitle')}
+          {t('errors.notRegisteredSubtitle')}
           <Box
             component="span"
             onClick={() => router.push(generateCreatorRegisterUrl())}

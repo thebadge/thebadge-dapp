@@ -10,6 +10,7 @@ gql`
     paused
     badgesMintedAmount
     contractAddress
+    createdTxHash
     creator {
       id
       metadataUri
@@ -25,5 +26,12 @@ gql`
     tcrList
     submissionBaseDeposit
     challengePeriodDuration
+  }
+`
+
+gql`
+  fragment BadgeModelThirdPartyMetaData on BadgeModelThirdPartyMetaData {
+    id
+    requirementsIPFSHash
   }
 `

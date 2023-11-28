@@ -20,6 +20,7 @@ import { notify } from '@/src/components/toast/Toast'
 import { APP_URL, THE_BADGE_LINKEDIN_ID } from '@/src/constants/common'
 import useBadgeIdParam from '@/src/hooks/nextjs/useBadgeIdParam'
 import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
+import useIsThirdPartyBadge from '@/src/hooks/subgraph/useIsThirdPartyBadge'
 import { useUserById } from '@/src/hooks/subgraph/useUserById'
 import useAddTokenIntoWallet from '@/src/hooks/theBadge/useAddTokenIntoWallet'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
@@ -68,6 +69,7 @@ export default function BadgeOwnedPreview() {
   const { appChainId } = useWeb3Connection()
   const badgeById = useBadgeById(badgeId, contract)
   const addTokenIntoWallet = useAddTokenIntoWallet()
+  const isThirdPartyBadge = useIsThirdPartyBadge(badgeId)
 
   const badge = badgeById.data
   const badgeModel = badge?.badgeModel
@@ -93,7 +95,7 @@ export default function BadgeOwnedPreview() {
   }
 
   function handleImport() {
-    addTokenIntoWallet(badgeId)
+    addTokenIntoWallet(badgeId, badge?.badgeMetadata?.image.s3Url)
   }
 
   async function handleImportLinkedin() {
@@ -102,8 +104,10 @@ export default function BadgeOwnedPreview() {
         throw new Error('The badge does not exists or there is an issue with the badgeModel!')
       }
       const { expirationMonth, expirationYear } = getExpirationYearAndMonth(badge.validUntil)
-      // TODO replace createdAt with claimedAt in case of third party
-      const { issueMonth, issueYear } = getIssueYearAndMonth(badge.createdAt)
+
+      const { issueMonth, issueYear } = isThirdPartyBadge
+        ? getIssueYearAndMonth(badge.claimedAt)
+        : getIssueYearAndMonth(badge.createdAt)
 
       const thirdPartyOrganizationId = generateLinkedinOrganization(creatorMetadata?.linkedin || '')
       const linkedinUrl = generateLinkedinUrl({

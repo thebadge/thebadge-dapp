@@ -52,7 +52,7 @@ const ExploreBadgeModels: NextPageWithLayout = () => {
     setLoading(true)
 
     // TODO filter badges using filters, category, text
-    const badgeModels = await gql.badgeModels()
+    const badgeModels = await gql.communityBadgeModels()
     const badges = (badgeModels.badgeModels as BadgeModel[]) || []
 
     setTimeout(() => {

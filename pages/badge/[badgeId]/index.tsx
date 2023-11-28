@@ -8,16 +8,20 @@ import { useTranslation } from 'next-export-i18n'
 import SafeSuspense, { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import useBadgeIdParam from '@/src/hooks/nextjs/useBadgeIdParam'
 import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
+import useIsThirdPartyBadge from '@/src/hooks/subgraph/useIsThirdPartyBadge'
 import useBadgeClaim from '@/src/hooks/theBadge/useBadgeClaim'
 import useBadgeHelpers, { ReviewBadge } from '@/src/hooks/theBadge/useBadgeHelpers'
+import useBadgeModelTemplate from '@/src/hooks/theBadge/useBadgeModelTemplate'
 import { useSizeSM } from '@/src/hooks/useSize'
 import BadgeOwnedPreview from '@/src/pagePartials/badge/preview/BadgeOwnedPreview'
 import BadgeOwnerPreview from '@/src/pagePartials/badge/preview/BadgeOwnerPreview'
 import BadgeStatusAndEvidence from '@/src/pagePartials/badge/preview/BadgeStatusAndEvidence'
+import DiplomaOwnedPreview from '@/src/pagePartials/badge/preview/DiplomaOwnedPreview'
 import ChallengedStatusLogo from '@/src/pagePartials/badge/preview/addons/ChallengedStatusLogo'
 import { useCurateProvider } from '@/src/providers/curateProvider'
 import { useColorMode } from '@/src/providers/themeProvider'
 import { generateMintUrl } from '@/src/utils/navigation/generateUrl'
+import { BadgeModelTemplate } from '@/types/badges/BadgeModel'
 import { BadgeStatus } from '@/types/generated/subgraph'
 import { NextPageWithLayout } from '@/types/next'
 import { WCAddress } from '@/types/utils'
@@ -50,22 +54,27 @@ const ViewBadge: NextPageWithLayout = () => {
   const { reviewTimeFinished: badgeReviewTimeFinished, status: badgeStatus } = getBadgeReviewStatus(
     badge as ReviewBadge,
   )
+  const template = useBadgeModelTemplate(badgeModelId)
+  const isThirdPartyBadge = useIsThirdPartyBadge(badgeId)
 
   // Show mint button if this is not the own badge
-  const showMintButton = address !== ownerAddress
+  const showMintButton = address !== ownerAddress && !isThirdPartyBadge
 
   // Show curate button if this is not the own badge and its not already challenged */
-  const showCurateButton = address !== ownerAddress && badgeStatus !== BadgeStatus.Challenged
+  const showCurateButton = address !== ownerAddress && !isThirdPartyBadge
 
   // Show claim button if it is an own badge, it has status requested and the review time finished
   const showClaimButton =
-    address === ownerAddress && badgeStatus === BadgeStatus.Requested && badgeReviewTimeFinished
+    address === ownerAddress &&
+    badgeStatus === BadgeStatus.Requested &&
+    badgeReviewTimeFinished &&
+    !isThirdPartyBadge
 
   return (
     <Box sx={{ position: 'relative' }}>
       <Stack maxWidth={900} mx={'auto'}>
         {badge?.status === BadgeStatus.Challenged && <ChallengedStatusLogo />}
-        <BadgeOwnedPreview />
+        {template === BadgeModelTemplate.Diploma ? <DiplomaOwnedPreview /> : <BadgeOwnedPreview />}
         <Box display="flex" gap={8}>
           {!isMobile && (
             <Box

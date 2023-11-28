@@ -89,6 +89,14 @@ export const BADGE_KLEROS_METADATA_BY_ID = gql`
   }
 `
 
+export const BADGE_THIRD_PARTY_METADATA_BY_ID = gql`
+  query badgeThirdPartyMetadataById($id: ID!) {
+    badgeThirdPartyMetaData(id: $id) {
+      ...BadgeThirdPartyMetadata
+    }
+  }
+`
+
 export const BADGE_BY_TYPE = gql`
   query badgeByModelId($id: String!) {
     badges(where: { badgeModel: $id }) {
@@ -104,6 +112,7 @@ export const BADGE_BY_USER_BY_MODEL_ID = gql`
         id
         status
         createdAt
+        claimedAt
         contractAddress
       }
     }
@@ -120,6 +129,7 @@ export const BADGE_BY_DISPUTE_ID = gql`
           validUntil
           createdTxHash
           createdAt
+          claimedAt
           contractAddress
           badgeModel {
             id

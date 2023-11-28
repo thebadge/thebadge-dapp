@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Container, Stack } from '@mui/material'
-import { FormProvider, SubmitHandler, useForm } from 'react-hook-form'
+import { FieldErrors, FormProvider, SubmitHandler, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import StepFooter from './steps/StepFooter'
@@ -10,6 +10,7 @@ import StepHeader from './steps/StepHeader'
 import { FIELDS_TO_VALIDATE_ON_STEP, defaultValues } from './utils'
 import StepPrompt from '@/src/components/form/formWithSteps/StepPrompt'
 import { TransactionLoading } from '@/src/components/loading/TransactionLoading'
+import { notify } from '@/src/components/toast/Toast'
 import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import { TransactionStates } from '@/src/hooks/useTransaction'
 import { useTriggerRHF } from '@/src/hooks/useTriggerRHF'
@@ -17,10 +18,12 @@ import {
   MintBadgeSchema,
   MintBadgeSchemaType,
 } from '@/src/pagePartials/badge/mint/schema/MintBadgeSchema'
-import DynamicForm from '@/src/pagePartials/badge/mint/steps/dynamicForm/DynamicEvidenceForm'
+import DynamicForm from '@/src/pagePartials/badge/mint/steps/dynamicForm/community/DynamicEvidenceForm'
 import MintSucceed from '@/src/pagePartials/badge/mint/steps/preview/MintSucceed'
 import SubmitPreview from '@/src/pagePartials/badge/mint/steps/preview/SubmitPreview'
 import HowItWorks from '@/src/pagePartials/badge/mint/steps/terms/HowItWorks'
+import { isTestnet } from '@/src/utils/network'
+import { ToastStates } from '@/types/toast'
 
 type MintStepsProps = {
   onSubmit: SubmitHandler<MintBadgeSchemaType>
@@ -35,14 +38,14 @@ export default function MintCommunityWithSteps({
 }: MintStepsProps) {
   const badgePreviewRef = useRef<HTMLDivElement>()
   const [currentStep, setCurrentStep] = useState(0)
-  const modelId = useModelIdParam()
+  const { badgeModelId } = useModelIdParam()
 
   // Naive completed step implementation
   const [completed, setCompleted] = useState<Record<string, boolean>>({})
 
   const methods = useForm<z.infer<typeof MintBadgeSchema>>({
     resolver: zodResolver(MintBadgeSchema),
-    defaultValues: defaultValues(modelId),
+    defaultValues: defaultValues(badgeModelId),
     reValidateMode: 'onChange',
     mode: 'onChange',
   })
@@ -83,6 +86,15 @@ export default function MintCommunityWithSteps({
     }
   }
 
+  function notifyFormError(e: FieldErrors<MintBadgeSchemaType>) {
+    if (isTestnet) console.warn(e)
+
+    notify({
+      message: 'You may have an error on the form, please take a closer look.',
+      type: ToastStates.infoFailed,
+    })
+  }
+
   return (
     <FormProvider {...methods}>
       <StepPrompt hasUnsavedChanges={methods.formState.isDirty} />
@@ -97,7 +109,7 @@ export default function MintCommunityWithSteps({
         )}
         {txState === TransactionStates.success && <MintSucceed />}
         {txState === TransactionStates.none && (
-          <form onSubmit={methods.handleSubmit(onSubmit)}>
+          <form onSubmit={methods.handleSubmit(onSubmit, notifyFormError)}>
             <Stack gap={3}>
               {currentStep === 0 && <HowItWorks />}
               {currentStep === 1 && (

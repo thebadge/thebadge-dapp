@@ -6,13 +6,14 @@ import { useTranslation } from 'next-export-i18n'
 
 import StepHeaderStepper from '@/src/components/form/formWithSteps/StepHeaderStepper'
 import StepHeaderSubtitle from '@/src/components/form/formWithSteps/StepHeaderSubtitle'
-import { DOCS_URL } from '@/src/constants/common'
+import { DOCS_URL, EMAIL_URL } from '@/src/constants/common'
 import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
+import useBadgeModelTemplate from '@/src/hooks/theBadge/useBadgeModelTemplate'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { Creator } from '@/types/badges/Creator'
 
-const steps = ['Help', 'Badge Evidence', 'Badge Preview']
+const steps = ['Help', 'Evidence', 'Preview']
 
 export default function StepHeaderThirdParty({
   completedSteps,
@@ -24,8 +25,9 @@ export default function StepHeaderThirdParty({
   completedSteps: Record<string, boolean>
 }) {
   const { t } = useTranslation()
-  const modelId = useModelIdParam()
-  const badgeModelData = useBadgeModel(modelId)
+  const { badgeModelId } = useModelIdParam()
+  const badgeModelData = useBadgeModel(badgeModelId)
+  const template = useBadgeModelTemplate(badgeModelId)
 
   const badgeCreatorMetadata = useS3Metadata<{ content: Creator }>(
     badgeModelData.data?.badgeModel?.creator.metadataUri || '',
@@ -39,7 +41,9 @@ export default function StepHeaderThirdParty({
   return (
     <Stack sx={{ display: 'flex', flexDirection: 'column', mb: 6, gap: 4, alignItems: 'center' }}>
       <Typography color={colors.blue} textAlign="center" variant="title2">
-        {t('badge.model.mint.title')}
+        {t('badge.model.mint.title', {
+          badgeModelTemplate: template,
+        })}
       </Typography>
 
       <StepHeaderStepper
@@ -51,17 +55,17 @@ export default function StepHeaderThirdParty({
       />
 
       <StepHeaderSubtitle
-        hint={t(`badge.model.mint.steps.${currentStep}.hint`, {
-          docsUrl: DOCS_URL + '/thebadge-documentation/protocol-mechanics/how-it-works',
-          createBadgeTypeDocs: DOCS_URL + '/thebadge-documentation/protocol-mechanics/how-it-works',
+        hint={t(`badge.model.mint.thirdParty.steps.${currentStep}.hint`, {
+          docsUrl: DOCS_URL,
+          badgeModelTemplate: template,
+          supportContact: EMAIL_URL,
         })}
         showHint={currentStep !== 5}
-        subTitle={t(`badge.model.mint.steps.${currentStep}.subTitle`, {
+        subTitle={t(`badge.model.mint.thirdParty.steps.${currentStep}.subTitle`, {
           badgeName: badgeModelMetadata?.name,
-          creatorContact: `mailto:${badgeCreatorMetadata.data?.content?.email}`,
-          badgeCreatorName: badgeCreatorMetadata.data?.content?.name,
-          curationDocsUrl: DOCS_URL + '/thebadge-documentation/protocol-mechanics/challenge',
-          costDocsUrls: DOCS_URL + '/thebadge-documentation/protocol-mechanics/challenge',
+          supportContact: EMAIL_URL,
+          badgeModelTemplate: template,
+          docsUrl: DOCS_URL,
         })}
       />
     </Stack>

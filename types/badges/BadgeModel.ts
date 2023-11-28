@@ -10,6 +10,6 @@ export enum BadgeModelControllerName {
 }
 
 export enum BadgeModelTemplate {
-  Classic = 'Classic',
+  Badge = 'Badge',
   Diploma = 'Diploma',
 }
