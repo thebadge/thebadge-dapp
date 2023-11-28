@@ -6,10 +6,10 @@ import { useTranslation } from 'next-export-i18n'
 
 import { notify } from '@/src/components/toast/Toast'
 import useIsClaimable from '@/src/hooks/subgraph/useIsClaimable'
+import useSendClaimEmail from '@/src/hooks/theBadge/useSendClaimEmail'
 import BadgeIdDisplay from '@/src/pagePartials/badge/explorer/addons/BadgeIdDisplay'
 import BadgeRequesterPreview from '@/src/pagePartials/badge/explorer/addons/BadgeRequesterPreview'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
-import { sendEmailClaim } from '@/src/utils/relayTx'
 import { Badge } from '@/types/generated/subgraph'
 import { ToastStates } from '@/types/toast'
 import { WCAddress } from '@/types/utils'
@@ -18,33 +18,19 @@ export default function ThirdPartyBadgeEvidenceInfoPreview({ badge }: { badge: B
   const { t } = useTranslation()
   const { data: isClaimable } = useIsClaimable(badge.id)
   const { appChainId, isAppConnected } = useWeb3Connection()
+  const { submitSendClaimEmail } = useSendClaimEmail()
   const [disableButtons, setDisableButtons] = useState(false)
 
   const sendClaimEmail = async () => {
     try {
       setDisableButtons(true)
-      const result = await sendEmailClaim({
+      const result = await submitSendClaimEmail({
         networkId: appChainId.toString(),
         mintTxHash: badge.createdTxHash,
         badgeModelId: Number(badge.badgeModel.id),
       })
 
-      if (result.error) {
-        notify({
-          id: badge.createdTxHash,
-          type: ToastStates.infoFailed,
-          message: result.message,
-          position: 'bottom-right',
-        })
-        return
-      }
-
-      notify({
-        id: badge.createdTxHash,
-        type: ToastStates.info,
-        message: result.message,
-        position: 'bottom-right',
-      })
+      console.log(result)
     } catch (error) {
       console.warn('Sending email errored ', error)
       notify({
