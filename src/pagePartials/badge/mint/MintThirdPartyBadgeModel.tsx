@@ -133,13 +133,12 @@ const MintThirdPartyBadgeModel: NextPageWithLayout = () => {
         )
         const { transactionHash } = await transactionReceipt.wait()
         if (preferMintMethod === 'email') {
-          const result = await submitSendClaimEmail({
+          await submitSendClaimEmail({
             networkId: appChainId.toString(),
             mintTxHash: transactionHash,
             badgeModelId: Number(badgeModelId),
             emailClaimer: destination,
           })
-          console.log(result)
         }
         return transactionReceipt
       })
