@@ -1,3 +1,5 @@
+import { useCallback } from 'react'
+
 import { useSignMessage } from 'wagmi'
 
 import { notify } from '@/src/components/toast/Toast'
@@ -9,47 +11,46 @@ import { BackendResponse } from '@/types/utils'
 
 type Response = Promise<BackendResponse<{ txHash: string | null }>>
 
-export default function useSendClaimEmail(): {
-  submitSendClaimEmail: (props: EmailClaimTx) => Response
-} {
+export default function useSendClaimEmail(): (props: EmailClaimTx) => Promise<Response> {
   const { signMessageAsync } = useSignMessage()
   const { address } = useWeb3Connection()
 
-  const submitSendClaimEmail = async (props: EmailClaimTx): Response => {
-    const { badgeModelId, emailClaimer, mintTxHash, networkId } = props
-    const signedMessage = `I accept the terms & conditions and I verify to be the owner of the address: ${address}`
-    const signature = await signMessageAsync({
-      message: signedMessage,
-    })
-
-    const result = await sendEmailClaim({
-      networkId,
-      mintTxHash,
-      badgeModelId,
-      emailClaimer,
-      signature,
-      signedMessage,
-      ownerAddress: address as string,
-    })
-
-    if (result.error) {
-      notify({
-        id: mintTxHash,
-        type: ToastStates.infoFailed,
-        message: result.message,
-        position: 'bottom-right',
+  return useCallback(
+    async (props: EmailClaimTx): Promise<Response> => {
+      const { badgeModelId, emailClaimer, mintTxHash, networkId } = props
+      const signedMessage = `I accept the terms & conditions and I verify to be the owner of the address: ${address}`
+      const signature = await signMessageAsync({
+        message: signedMessage,
       })
-    } else {
-      notify({
-        id: mintTxHash,
-        type: ToastStates.info,
-        message: result.message,
-        position: 'bottom-right',
+
+      const result = await sendEmailClaim({
+        networkId,
+        mintTxHash,
+        badgeModelId,
+        emailClaimer,
+        signature,
+        signedMessage,
+        ownerAddress: address as string,
       })
-    }
 
-    return result
-  }
+      if (result.error) {
+        notify({
+          id: mintTxHash,
+          type: ToastStates.infoFailed,
+          message: result.message,
+          position: 'bottom-right',
+        })
+      } else {
+        notify({
+          id: mintTxHash,
+          type: ToastStates.info,
+          message: result.message,
+          position: 'bottom-right',
+        })
+      }
 
-  return { submitSendClaimEmail }
+      return result
+    },
+    [address, signMessageAsync],
+  )
 }

@@ -36,7 +36,7 @@ const MintThirdPartyBadgeModel: NextPageWithLayout = () => {
   const { resetTxState, sendTx, state } = useTransaction()
   const router = useRouter()
   const { badgeModelId, contract } = useModelIdParam()
-  const { submitSendClaimEmail } = useSendClaimEmail()
+  const submitSendClaimEmail = useSendClaimEmail()
 
   if (!badgeModelId) {
     throw `No modelId provided us URL query param`

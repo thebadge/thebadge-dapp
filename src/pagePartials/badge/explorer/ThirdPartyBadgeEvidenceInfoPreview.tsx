@@ -18,7 +18,7 @@ export default function ThirdPartyBadgeEvidenceInfoPreview({ badge }: { badge: B
   const { t } = useTranslation()
   const { data: isClaimable } = useIsClaimable(badge.id)
   const { appChainId, isAppConnected } = useWeb3Connection()
-  const { submitSendClaimEmail } = useSendClaimEmail()
+  const submitSendClaimEmail = useSendClaimEmail()
   const [disableButtons, setDisableButtons] = useState(false)
 
   const sendClaimEmail = async () => {
