@@ -1,31 +1,40 @@
 import { useCallback } from 'react'
 
+import { useWeb3Modal } from '@web3modal/wagmi/react'
+import { useWalletClient } from 'wagmi'
+
 import { notify } from '@/src/components/toast/Toast'
-import { isJsonRpcProvider, useEthersProvider } from '@/src/hooks/etherjs/useEthersProvider'
 import useTBContract from '@/src/hooks/theBadge/useTBContract'
 import { ToastStates } from '@/types/toast'
 
-type AddTokenIntoWalletFn = (badgeId: string) => void
+type AddTokenIntoWalletFn = (badgeId: string, imageUrl?: string) => Promise<void>
 
 export default function useAddTokenIntoWallet() {
-  const web3Provider = useEthersProvider()
+  const { open: connectWallet } = useWeb3Modal()
+  const { data: walletClient } = useWalletClient()
+
   const theBadge = useTBContract()
 
   return useCallback<AddTokenIntoWalletFn>(
-    async (badgeId: string) => {
+    async (badgeId: string, imageUrl?: string) => {
       try {
         let wasAdded = false
         // 'wasAdded' is a boolean. Like any RPC method, an error can be thrown.
-        if (isJsonRpcProvider(web3Provider)) {
-          wasAdded = await web3Provider?.send('wallet_watchAsset', {
-            type: 'ERC1155',
-            options: {
-              address: theBadge.address,
-              tokenId: badgeId,
-            },
-          } as unknown as any)
+        if (walletClient) {
+          wasAdded = await walletClient.request({
+            method: 'wallet_watchAsset',
+            params: {
+              type: 'ERC1155',
+              options: {
+                address: theBadge.address,
+                tokenId: badgeId,
+                image: imageUrl,
+              },
+            } as unknown as any,
+          })
         } else {
-          console.warn('FallbackProvider is not able to send methods')
+          console.warn('Need to connect the wallet')
+          connectWallet()
         }
 
         if (wasAdded) {
@@ -44,6 +53,6 @@ export default function useAddTokenIntoWallet() {
         })
       }
     },
-    [theBadge.address, web3Provider],
+    [connectWallet, theBadge.address, walletClient],
   )
 }
