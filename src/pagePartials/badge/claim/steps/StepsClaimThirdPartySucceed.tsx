@@ -4,9 +4,11 @@ import * as React from 'react'
 import { Button, Divider, Stack, Typography, styled } from '@mui/material'
 import { colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
+import { TwitterShareButton, XIcon } from 'react-share'
 
 import { APP_URL } from '@/src/constants/common'
 import useClaimParams from '@/src/hooks/nextjs/useClaimParams'
+import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
 import { useBadgeThirdPartyRequiredData } from '@/src/hooks/subgraph/useBadgeModelThirdPartyMetadata'
 import { ThirdPartyPreview } from '@/src/pagePartials/badge/preview/ThirdPartyPreview'
 import { reCreateThirdPartyValuesObject } from '@/src/utils/badges/mintHelpers'
@@ -31,6 +33,8 @@ export default function StepsClaimThirdPartySucceed({
   const { badgeId, contract, modelId } = useClaimParams()
   const { address, chainId } = parsePrefixedAddress(contract)
 
+  const { data } = useBadgeModel(modelId)
+
   const requiredBadgeDataMetadata = useBadgeThirdPartyRequiredData(`${badgeId}` || '')
 
   const values = reCreateThirdPartyValuesObject(
@@ -41,6 +45,14 @@ export default function StepsClaimThirdPartySucceed({
   const handleSubmit = () => {
     router.push(generateProfileUrl({ address: claimAddress }))
   }
+
+  const badgeModelName = data?.badgeModelMetadata?.name || ''
+  const shareableUrl = APP_URL + generateBadgePreviewUrl(badgeId, { contractValue: contract })
+  const twitterShareTitle = `Hey World!
+
+I just got my #Web3 Certificate and Badge ${badgeModelName} from @TheBadgexyz 🤩 
+
+👉 You can check all my badge here ${shareableUrl}`
 
   return (
     <Stack
@@ -76,6 +88,12 @@ export default function StepsClaimThirdPartySucceed({
       >
         {t('badge.model.claim.thirdParty.preview.goToProfile')}
       </SubmitButton>
+
+      <Stack>
+        <TwitterShareButton related={['@thebadgexyz']} title={twitterShareTitle} url={shareableUrl}>
+          <XIcon round size={32} />
+        </TwitterShareButton>
+      </Stack>
     </Stack>
   )
 }

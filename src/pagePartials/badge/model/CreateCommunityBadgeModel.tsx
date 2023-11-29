@@ -2,6 +2,7 @@ import { isMetadataColumnArray } from '@/src/components/form/helpers/validators'
 import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import { DEFAULT_COURT_ID } from '@/src/constants/common'
 import { contracts } from '@/src/contracts/contracts'
+import useCreateModelFeeValue from '@/src/hooks/theBadge/useCreateModelFeeValue'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
 import useTransaction from '@/src/hooks/useTransaction'
 import CreateCommunityBadgeModelWithSteps from '@/src/pagePartials/badge/model/CreateCommunityBadgeModelWithSteps'
@@ -15,6 +16,7 @@ const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvid
 
 const CreateCommunityBadgeModel: NextPageWithLayout = () => {
   const { resetTxState, sendTx, state: transactionState } = useTransaction()
+  const { data: createModelProtocolFee } = useCreateModelFeeValue()
 
   const { address, appChainId, readOnlyAppProvider } = useWeb3Connection()
   const theBadgeModels = useContractInstance(TheBadgeModels__factory, 'TheBadgeModels')
@@ -91,7 +93,7 @@ const CreateCommunityBadgeModel: NextPageWithLayout = () => {
           },
           klerosBadgeModelControllerDataEncoded,
           {
-            value: 0,
+            value: createModelProtocolFee,
           },
         )
       })

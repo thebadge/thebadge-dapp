@@ -33,15 +33,27 @@ export function generateBadgeCurate() {
   return `/curate`
 }
 
+/**
+ *
+ * @param badgeId
+ * @param extraParams - Use contractValue if you already have the queryParam
+ * value, if not you can provided chain and contract address individually
+ */
 export function generateBadgePreviewUrl(
   badgeId: string,
-  extraParams: {
-    theBadgeContractAddress: string
-    connectedChainId: ChainsValues
-  },
+  extraParams:
+    | {
+        theBadgeContractAddress: string
+        connectedChainId: ChainsValues
+      }
+    | { contractValue: string },
 ) {
-  const { connectedChainId, theBadgeContractAddress } = extraParams
-  return `/badge/${badgeId}?contract=${connectedChainId}:${theBadgeContractAddress}`
+  if ('contractValue' in extraParams) {
+    return `/badge/${badgeId}?contract=${extraParams.contractValue}`
+  } else {
+    const { connectedChainId, theBadgeContractAddress } = extraParams
+    return `/badge/${badgeId}?contract=${connectedChainId}:${theBadgeContractAddress}`
+  }
 }
 
 export function generateProfileUrl(args?: {
