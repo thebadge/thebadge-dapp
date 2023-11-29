@@ -52,7 +52,7 @@ export default function StepsClaimThirdPartySucceed({
 
 I just got my #Web3 Certificate and Badge ${badgeModelName} from @TheBadgexyz 🤩 
 
-👉 You can check all my badge here ${shareableUrl}`
+👉 You can check my badge here ${shareableUrl}`
 
   return (
     <Stack
@@ -90,7 +90,7 @@ I just got my #Web3 Certificate and Badge ${badgeModelName} from @TheBadgexyz �
       </SubmitButton>
 
       <Stack>
-        <TwitterShareButton related={['@thebadgexyz']} title={twitterShareTitle} url={shareableUrl}>
+        <TwitterShareButton related={['@thebadgexyz']} title={twitterShareTitle} url={''}>
           <XIcon round size={32} />
         </TwitterShareButton>
       </Stack>

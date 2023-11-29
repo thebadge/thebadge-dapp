@@ -43,7 +43,7 @@ export default function BadgeModelUIBasics() {
       setValue('courseName', '')
       setValue('achievementDate', '')
     }
-  }, [setValue, watchedTemplate])
+  }, [setValue, watchedTemplate, isThirdParty])
 
   return (
     <>

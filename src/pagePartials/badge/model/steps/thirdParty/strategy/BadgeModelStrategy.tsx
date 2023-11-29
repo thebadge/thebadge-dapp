@@ -6,15 +6,11 @@ import { Controller, useFormContext } from 'react-hook-form'
 
 import { ExpirationField } from '@/src/components/form/formFields/ExpirationField'
 import { TextField } from '@/src/components/form/formFields/TextField'
-import { getNetworkConfig } from '@/src/config/web3'
 import { CreateThirdPartyModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateThirdPartyModelSchema'
-const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
 export default function BadgeModelStrategy() {
   const { t } = useTranslation()
   const { control } = useFormContext<CreateThirdPartyModelSchemaType>()
-  const { appChainId } = useWeb3Connection()
-  const networkConfig = getNetworkConfig(appChainId)
 
   // TODO: Add and input for array adding "administrators", make administrators visible again
   return (

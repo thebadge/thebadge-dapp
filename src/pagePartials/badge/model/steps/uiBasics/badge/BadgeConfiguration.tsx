@@ -17,7 +17,7 @@ import AdditionConfiguration from '@/src/pagePartials/badge/model/steps/uiBasics
 export default function BadgeConfiguration() {
   const { t } = useTranslation()
 
-  const { control, setValue } = useFormContext<CreateCommunityModelSchemaType>()
+  const { control } = useFormContext<CreateCommunityModelSchemaType>()
 
   return (
     <>
