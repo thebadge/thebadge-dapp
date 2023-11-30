@@ -58,7 +58,7 @@ export default function MintCostThirdParty() {
     >
       <CostContainer width="50%">
         <Typography color={colors.green} variant="dAppTitle2">
-          {t('badge.model.mint.totalCost')}
+          {t('badge.model.thirdPartyMint.totalCost')}
         </Typography>
         <ValueContainer>
           <Typography
@@ -71,9 +71,8 @@ export default function MintCostThirdParty() {
         </ValueContainer>
       </CostContainer>
 
-      <Typography mt={2} textAlign="center" variant="subtitle2">
-        {t('badge.model.mint.makeSure')}
-        {t('badge.model.mint.avoidChallenges')}
+      <Typography mt={2} sx={{ whiteSpace: 'pre-wrap' }} textAlign="center" variant="subtitle2">
+        {t('badge.model.thirdPartyMint.transactionCost')}
       </Typography>
     </Stack>
   )

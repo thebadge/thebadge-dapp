@@ -70,6 +70,7 @@
     "react-images-uploading": "^3.1.7",
     "react-in-viewport": "^1.0.0-alpha.30",
     "react-markdown": "^8.0.5",
+    "react-share": "^5.0.3",
     "react-sticky-el": "^2.0.9",
     "react-swipeable-views": "^0.14.0",
     "remark-gfm": "^3.0.1",

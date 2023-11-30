@@ -1,6 +1,7 @@
 import axios from 'axios'
 
 import { ZERO_ADDRESS } from '@/src/constants/bigNumber'
+import { BACKEND_URL } from '@/src/constants/common'
 import { EmailClaimTxSigned, RelayedTx, RelayedTxResult } from '@/types/relayedTx'
 import { BackendResponse } from '@/types/utils'
 
@@ -8,7 +9,7 @@ export const sendTxToRelayer = async (
   txToRelay: RelayedTx,
 ): Promise<BackendResponse<{ txHash: string | null }>> => {
   const res = await axios.post<BackendResponse<{ txHash: string | null }>>(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/relay/tx`,
+    `${BACKEND_URL}/api/relay/tx`,
     txToRelay,
   )
   return res.data
@@ -19,7 +20,17 @@ export const sendEmailClaim = async (
   param: EmailClaimTxSigned,
 ): Promise<BackendResponse<{ txHash: string | null }>> => {
   const res = await axios.post<BackendResponse<{ txHash: string | null }>>(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/thirdPartyController/sendMintMail`,
+    `${BACKEND_URL}/api/thirdPartyController/sendMintMail`,
+    param,
+  )
+  return res.data
+}
+
+export const sendDecryptEmailRequest = async (
+  param: EmailClaimTxSigned,
+): Promise<BackendResponse<{ email: string | null }>> => {
+  const res = await axios.post<BackendResponse<{ email: string | null }>>(
+    `${BACKEND_URL}/api/thirdPartyController/decryptMintEmail`,
     param,
   )
   return res.data
@@ -28,7 +39,7 @@ export const sendEmailClaim = async (
 export const checkClaimUUIDValid = async (claimUUID: string): Promise<boolean> => {
   try {
     const res = await axios.get<BackendResponse<boolean>>(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/thirdPartyController/claim/valid/${claimUUID}`,
+      `${BACKEND_URL}/api/thirdPartyController/claim/valid/${claimUUID}`,
     )
     if (res.data.error || !res.data.result) {
       return false
@@ -44,7 +55,7 @@ export const sendClaimRequest = async (
   claimAddress: string,
 ): Promise<RelayedTxResult> => {
   const res = await axios.post<BackendResponse<{ txHash: string }>>(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/thirdPartyController/claim`,
+    `${BACKEND_URL}/api/thirdPartyController/claim`,
     { claimUUID, claimAddress },
   )
   if (res.data && res.data.result) {
@@ -66,7 +77,7 @@ export const getEncryptedValues = async (
   data: Record<string, unknown>,
 ): Promise<string | null> => {
   const res = await axios.post<BackendResponse<{ payload: string }>>(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/thirdPartyController/encryptPayload`,
+    `${BACKEND_URL}/api/thirdPartyController/encryptPayload`,
     { networkId, payload: data },
   )
 

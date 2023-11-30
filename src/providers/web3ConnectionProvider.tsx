@@ -20,9 +20,8 @@ import { gnosis, goerli, sepolia } from 'viem/chains'
 import { WagmiConfig, configureChains, createConfig, useAccount, useDisconnect } from 'wagmi'
 import { publicProvider } from 'wagmi/providers/public'
 
-import { Chains, chainsConfig, getNetworkConfig } from '@/src/config/web3'
+import { Chains, INITIAL_APP_CHAIN_ID, chainsConfig, getNetworkConfig } from '@/src/config/web3'
 import {
-  APP_DEFAULT_CHAIN_ID,
   APP_URL,
   TERMS_AND_CONDITIONS_URL,
   WEB3_AUTH_CLIENT_ID_PRODUCTION,
@@ -234,7 +233,7 @@ export function useWeb3Connection(): Web3Context {
   const { selectedNetworkId } = useWeb3ModalState()
 
   const [appChainId, setAppChainId] = useState<ChainsValues>(
-    getValidNetwork(selectedNetworkId) || (Number(APP_DEFAULT_CHAIN_ID) as ChainsValues),
+    getValidNetwork(selectedNetworkId) || (Number(INITIAL_APP_CHAIN_ID) as ChainsValues),
   )
 
   // Social Login with Web3Auth

@@ -56,7 +56,7 @@ export const CreateThirdPartyModelSchema = z
     backgroundImage: z.string().optional(),
     template: z.nativeEnum(BadgeModelTemplate),
     // ------ STRATEGY FIELD ------
-    mintFee: TokenInputSchema,
+    mintFee: TokenInputSchema.default('0'),
     validFor: ExpirationTypeSchema,
     // administrators: ThirdPartyAdministratorsFields, // TODO ENABLE ONCE WE HAVE THE SUPPORT ON THE UI
     administrators: AddressSchema.optional(), // TODO REMOVE ONCE WE HAVE THE SUPPORT ON THE UI
