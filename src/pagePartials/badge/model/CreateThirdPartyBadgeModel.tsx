@@ -1,9 +1,14 @@
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
+
 import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
-import useTransaction from '@/src/hooks/useTransaction'
+import useTransaction, { TransactionStates } from '@/src/hooks/useTransaction'
 import CreateThirdPartyBadgeModelWithSteps from '@/src/pagePartials/badge/model/CreateThirdPartyBadgeModelWithSteps'
 import { CreateThirdPartyModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateThirdPartyModelSchema'
+import { ProfileType } from '@/src/pagePartials/profile/ProfileSelector'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 import { BadgeModelControllerName } from '@/types/badges/BadgeModel'
 import { TheBadgeModels__factory } from '@/types/generated/typechain'
 import { KLEROS_LIST_TYPES, ThirdPartyMetadataColumn } from '@/types/kleros/types'
@@ -11,9 +16,17 @@ import { NextPageWithLayout } from '@/types/next'
 
 const CreateThirdPartyBadgeModel: NextPageWithLayout = () => {
   const { resetTxState, sendTx, state: transactionState } = useTransaction()
+  const router = useRouter()
 
   const theBadgeModels = useContractInstance(TheBadgeModels__factory, 'TheBadgeModels')
   const { address } = useWeb3Connection()
+
+  useEffect(() => {
+    // Redirect to the profile
+    if (transactionState === TransactionStates.success) {
+      router.push(generateProfileUrl({ address, profileType: ProfileType.THIRD_PARTY_PROFILE }))
+    }
+  }, [router, transactionState, address])
 
   const onSubmit = async (data: CreateThirdPartyModelSchemaType) => {
     const administrators = address as string // TODO Replace once is well done
