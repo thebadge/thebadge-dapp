@@ -95,6 +95,7 @@ export default function MintThirdPartyWithSteps({
   }
 
   function notifyFormError(e: FieldErrors<MintThirdPartySchemaType>) {
+    console.warn(e)
     if (isTestnet) console.warn(e)
     notify({
       message: 'You may have an error on the form, please take a closer look.',

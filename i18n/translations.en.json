@@ -403,6 +403,10 @@
         "next": "Next",
         "submit": "Submit"
       },
+      "thirdPartyMint": {
+        "totalCost": "Total cost",
+        "transactionCost": "This is the cost of the transaction.\n TheBadge does not charge you for each badge that you emit."
+      },
       "mint": {
         "title": "{{badgeModelTemplate}} Mint",
         "helpSteps": [
