@@ -25,6 +25,16 @@ export const sendEmailClaim = async (
   return res.data
 }
 
+export const sendDecryptEmailRequest = async (
+  param: EmailClaimTxSigned,
+): Promise<BackendResponse<{ email: string | null }>> => {
+  const res = await axios.post<BackendResponse<{ email: string | null }>>(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/thirdPartyController/decryptMintEmail`,
+    param,
+  )
+  return res.data
+}
+
 export const checkClaimUUIDValid = async (claimUUID: string): Promise<boolean> => {
   try {
     const res = await axios.get<BackendResponse<boolean>>(
