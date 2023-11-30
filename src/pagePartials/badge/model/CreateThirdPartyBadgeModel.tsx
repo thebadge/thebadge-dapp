@@ -1,10 +1,15 @@
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
+
 import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import useCreateModelFeeValue from '@/src/hooks/theBadge/useCreateModelFeeValue'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
-import useTransaction from '@/src/hooks/useTransaction'
+import useTransaction, { TransactionStates } from '@/src/hooks/useTransaction'
 import CreateThirdPartyBadgeModelWithSteps from '@/src/pagePartials/badge/model/CreateThirdPartyBadgeModelWithSteps'
 import { CreateThirdPartyModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateThirdPartyModelSchema'
+import { ProfileType } from '@/src/pagePartials/profile/ProfileSelector'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 import { BadgeModelControllerName, BadgeModelTemplate } from '@/types/badges/BadgeModel'
 import { TheBadgeModels__factory } from '@/types/generated/typechain'
 import { KLEROS_LIST_TYPES, ThirdPartyMetadataColumn } from '@/types/kleros/types'
@@ -13,8 +18,17 @@ import { NextPageWithLayout } from '@/types/next'
 const CreateThirdPartyBadgeModel: NextPageWithLayout = () => {
   const { resetTxState, sendTx, state: transactionState } = useTransaction()
   const { data: createModelProtocolFee } = useCreateModelFeeValue()
+  const router = useRouter()
+
   const theBadgeModels = useContractInstance(TheBadgeModels__factory, 'TheBadgeModels')
   const { address } = useWeb3Connection()
+
+  useEffect(() => {
+    // Redirect to the profile
+    if (transactionState === TransactionStates.success) {
+      router.push(generateProfileUrl({ address, profileType: ProfileType.THIRD_PARTY_PROFILE }))
+    }
+  }, [router, transactionState, address])
 
   const onSubmit = async (data: CreateThirdPartyModelSchemaType) => {
     const administrators = address as string // TODO Replace once is well done
@@ -62,16 +76,6 @@ const CreateThirdPartyBadgeModel: NextPageWithLayout = () => {
           throw `There was an error uploading the data, try again`
         }
 
-        console.log({
-          asd: {
-            metadata: badgeModelMetadataIPFSHash,
-            controllerName: BadgeModelControllerName.ThirdParty,
-            mintCreatorFee: data.mintFee,
-            validFor: data.validFor, // in seconds, 0 infinite
-          },
-          thirdPartyBadgeModelControllerDataEncoded,
-          value: 0,
-        })
         return theBadgeModels.createBadgeModel(
           {
             metadata: badgeModelMetadataIPFSHash,

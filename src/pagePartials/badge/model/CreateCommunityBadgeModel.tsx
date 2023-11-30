@@ -1,13 +1,18 @@
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
+
 import { isMetadataColumnArray } from '@/src/components/form/helpers/validators'
 import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import { DEFAULT_COURT_ID } from '@/src/constants/common'
 import { contracts } from '@/src/contracts/contracts'
 import useCreateModelFeeValue from '@/src/hooks/theBadge/useCreateModelFeeValue'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
-import useTransaction from '@/src/hooks/useTransaction'
+import useTransaction, { TransactionStates } from '@/src/hooks/useTransaction'
 import CreateCommunityBadgeModelWithSteps from '@/src/pagePartials/badge/model/CreateCommunityBadgeModelWithSteps'
 import { CreateCommunityModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateCommunityModelSchema'
 import { BADGE_MODEL_TEXT_CONTRAST } from '@/src/pagePartials/badge/model/steps/uiBasics/BadgeModelUIBasics'
+import { ProfileType } from '@/src/pagePartials/profile/ProfileSelector'
+import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 import { BadgeModelControllerName, BadgeModelTemplate } from '@/types/badges/BadgeModel'
 import { TheBadgeModels__factory } from '@/types/generated/typechain'
 import { NextPageWithLayout } from '@/types/next'
@@ -17,9 +22,24 @@ const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvid
 const CreateCommunityBadgeModel: NextPageWithLayout = () => {
   const { resetTxState, sendTx, state: transactionState } = useTransaction()
   const { data: createModelProtocolFee } = useCreateModelFeeValue()
+  const router = useRouter()
+  const { state } = useTransaction()
 
   const { address, appChainId, readOnlyAppProvider } = useWeb3Connection()
   const theBadgeModels = useContractInstance(TheBadgeModels__factory, 'TheBadgeModels')
+
+  useEffect(() => {
+    // Redirect to the profile
+    if (state === TransactionStates.success) {
+      router.push(
+        generateProfileUrl({
+          address,
+          profileType: ProfileType.USER_PROFILE,
+          filter: 'createdBadges',
+        }),
+      )
+    }
+  }, [router, state, address])
 
   const onSubmit = async (data: CreateCommunityModelSchemaType) => {
     const {

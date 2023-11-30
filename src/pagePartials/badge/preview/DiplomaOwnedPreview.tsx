@@ -69,12 +69,12 @@ export default function DiplomaOwnedPreview() {
   const { appChainId } = useWeb3Connection()
   const badgeById = useBadgeById(badgeId, contract)
   const addTokenIntoWallet = useAddTokenIntoWallet()
-  const isThirdPartyBadge = useIsThirdPartyBadge(badgeId)
+  const isThirdPartyBadge = useIsThirdPartyBadge(badgeId, contract)
 
   const badge = badgeById.data
   const badgeModel = badge?.badgeModel
   const creatorAddress = badgeModel?.creator.id || '0x'
-  const creatorResponse = useUserById(creatorAddress as WCAddress)
+  const creatorResponse = useUserById(creatorAddress as WCAddress, contract)
   const creator = creatorResponse.data
   const resCreatorMetadata = useS3Metadata<{ content: CreatorMetadata }>(creator?.metadataUri || '')
   const requiredBadgeDataMetadata = useBadgeThirdPartyRequiredData(`${badgeId}` || '')
