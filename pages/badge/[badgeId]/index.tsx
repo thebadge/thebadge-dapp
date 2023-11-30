@@ -54,8 +54,8 @@ const ViewBadge: NextPageWithLayout = () => {
   const { reviewTimeFinished: badgeReviewTimeFinished, status: badgeStatus } = getBadgeReviewStatus(
     badge as ReviewBadge,
   )
-  const template = useBadgeModelTemplate(badgeModelId)
-  const isThirdPartyBadge = useIsThirdPartyBadge(badgeId)
+  const template = useBadgeModelTemplate(badgeModelId, contract)
+  const isThirdPartyBadge = useIsThirdPartyBadge(badgeId, contract)
 
   // Show mint button if this is not the own badge
   const showMintButton = address !== ownerAddress && !isThirdPartyBadge

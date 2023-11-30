@@ -315,6 +315,8 @@
     "claimButtonDisabledTooltip": "You cannot claim this badge yet.",
     "renewButton": "Renew",
     "resendEmailButton": "Resend email",
+    "viewEmailButton": "View encrypted email",
+    "resendEmailText": "Decrypt the email to be able to see it.",
     "model": {
       "create": {
         "howItWorks": "How it works",
@@ -400,6 +402,10 @@
         "back": "Back",
         "next": "Next",
         "submit": "Submit"
+      },
+      "thirdPartyMint": {
+        "totalCost": "Total cost",
+        "transactionCost": "This is the cost of the transaction.\n TheBadge does not charge you for each badge that you emit."
       },
       "mint": {
         "title": "{{badgeModelTemplate}} Mint",
