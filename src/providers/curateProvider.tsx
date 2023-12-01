@@ -1,5 +1,6 @@
 import React, { useCallback, useContext, useState } from 'react'
 
+import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import CurateModal from '@/src/pagePartials/badge/curate/CurateModal'
 import AddEvidenceModal from '@/src/pagePartials/badge/curate/addEvidence/AddEvidenceModal'
 import ChallengeModal from '@/src/pagePartials/badge/curate/challenge/ChallengeModal'
@@ -58,23 +59,26 @@ export default function CurateContextProvider({ children }: { children: React.Re
 
   return (
     <CurateContext.Provider value={{ curate, challenge, addMoreEvidence }}>
-      {challengeModalOpen && (
-        <ChallengeModal
-          badgeId={badgeId}
-          onClose={handleCloseChallenge}
-          open={challengeModalOpen}
-        />
-      )}
-      {curateModalOpen && (
-        <CurateModal badgeId={badgeId} onClose={handleCloseCurate} open={curateModalOpen} />
-      )}
-      {addEvidenceModalOpen && (
-        <AddEvidenceModal
-          badgeId={badgeId}
-          onClose={handleCloseAddEvidence}
-          open={addEvidenceModalOpen}
-        />
-      )}
+      {/* We don't want to have a loading spinner for these modals that are not even open - Just to be safe about errors */}
+      <SafeSuspense fallback={<></>}>
+        {challengeModalOpen && (
+          <ChallengeModal
+            badgeId={badgeId}
+            onClose={handleCloseChallenge}
+            open={challengeModalOpen}
+          />
+        )}
+        {curateModalOpen && (
+          <CurateModal badgeId={badgeId} onClose={handleCloseCurate} open={curateModalOpen} />
+        )}
+        {addEvidenceModalOpen && (
+          <AddEvidenceModal
+            badgeId={badgeId}
+            onClose={handleCloseAddEvidence}
+            open={addEvidenceModalOpen}
+          />
+        )}
+      </SafeSuspense>
       {children}
     </CurateContext.Provider>
   )
