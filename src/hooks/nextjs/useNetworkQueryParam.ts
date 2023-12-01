@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 
-import { parsePrefixedAddress } from '@/src/utils/prefixedAddress'
+import { parseNetworkIdQuery, parsePrefixedAddress } from '@/src/utils/prefixedAddress'
 import { ChainsValues } from '@/types/chains'
 
 /**
@@ -12,6 +12,10 @@ export default function useNetworkQueryParam(): ChainsValues | null {
   if (router.query.contract) {
     const { chainId } = parsePrefixedAddress(router.query.contract as string)
     return chainId
+  }
+
+  if (router.query.networkId) {
+    return parseNetworkIdQuery(router.query.networkId as string)
   }
 
   return null

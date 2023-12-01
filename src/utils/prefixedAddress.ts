@@ -1,4 +1,4 @@
-import { Chains, getNetworkConfig } from '@/src/config/web3'
+import { Chains } from '@/src/config/web3'
 import { contracts } from '@/src/contracts/contracts'
 import { SubgraphName } from '@/src/subgraph/subgraph'
 import { ChainsValues } from '@/types/chains'
@@ -17,6 +17,17 @@ const validateChainIdWithContractAddress = (
 
 const isValidChain = (chain: string): chain is keyof ChainsValues => {
   return Object.values(Chains).includes(Number(chain) as never)
+}
+
+export const parseNetworkIdQuery = (chainId: string): ChainsValues => {
+  // Validates that the networkId is valid
+  const isValid = isValidChain(chainId)
+
+  if (!isValid) {
+    throw new Error(`The following prefix: ${chainId} is not a valid chainId`)
+  }
+
+  return Number(chainId) as unknown as ChainsValues
 }
 
 export const parsePrefixedAddress = (
