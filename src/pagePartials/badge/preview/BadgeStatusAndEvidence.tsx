@@ -30,7 +30,7 @@ export default function BadgeStatusAndEvidence() {
   if (!badgeId) {
     throw `No badgeId provided us URL query param`
   }
-  const isThirdParty = useIsThirdPartyBadge(badgeId)
+  const isThirdParty = useIsThirdPartyBadge(badgeId, contract)
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setSelectedTab(newValue)
