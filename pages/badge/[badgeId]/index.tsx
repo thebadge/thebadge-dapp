@@ -7,6 +7,7 @@ import { Box, Stack } from '@mui/material'
 import { ButtonV2, colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 
+import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { ssrGetContentFromIPFS } from '@/src/hooks/subgraph/utils'
 import useBadgeClaim from '@/src/hooks/theBadge/useBadgeClaim'
 import useBadgeHelpers, { ReviewBadge } from '@/src/hooks/theBadge/useBadgeHelpers'
