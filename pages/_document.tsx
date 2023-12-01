@@ -84,7 +84,6 @@ export default class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
-          <title>{this.title}</title>
           <meta content="website" property="og:type" />
           <meta content={this.description} name="description" />
 
