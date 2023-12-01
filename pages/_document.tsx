@@ -84,9 +84,10 @@ export default class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
+          <title>{this.title}</title>
           <meta content="website" property="og:type" />
           <meta content={this.description} name="description" />
-          <meta content={this.title} property="og:title" />
+
           <meta content={`${APP_URL}`} property="og:url" />
 
           <meta content={`${APP_URL}/shareable/the_badge_banner.webp`} property="og:image" />
@@ -112,6 +113,9 @@ export default class MyDocument extends Document {
           <link color="#333" href="/favicon/safari-pinned-tab.svg" rel="mask-icon" />
           <meta content="#333" name="msapplication-TileColor" />
           <meta content="#333" name="theme-color" />
+
+          {/*!--link manifest.json --*/}
+          <link href="/manifest.json" rel="manifest" />
         </Head>
         <body>
           <Main />

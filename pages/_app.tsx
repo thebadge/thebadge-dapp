@@ -12,7 +12,6 @@ import { SWRConfig } from 'swr'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import Toast from '@/src/components/toast/Toast'
-import { Head } from '@/src/pagePartials/index/Head'
 import ThemeProvider from '@/src/providers/themeProvider'
 import { NextPageWithLayout } from '@/types/next'
 import 'node_modules/@thebadge/ui-library/dist/index.css'
@@ -75,7 +74,6 @@ export default function App({
   return (
     <>
       <GoogleAnalytics />
-      <Head />
       <CacheProvider value={emotionCache}>
         <Box sx={{ display: 'flex', minHeight: '100vh', flexDirection: 'column' }}>
           <SWRConfig
