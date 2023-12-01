@@ -33,6 +33,11 @@ export function generateBadgeCurate() {
   return `/curate`
 }
 
+type ChainAgnosticParams = {
+  theBadgeContractAddress: string
+  connectedChainId: ChainsValues
+}
+
 /**
  *
  * @param badgeId
@@ -41,12 +46,7 @@ export function generateBadgeCurate() {
  */
 export function generateBadgePreviewUrl(
   badgeId: string,
-  extraParams:
-    | {
-        theBadgeContractAddress: string
-        connectedChainId: ChainsValues
-      }
-    | { contractValue: string },
+  extraParams: ChainAgnosticParams | { contractValue: string },
 ) {
   if ('contractValue' in extraParams) {
     return `/badge/${badgeId}?contract=${extraParams.contractValue}`
@@ -60,8 +60,9 @@ export function generateProfileUrl(args?: {
   address?: string
   filter?: string
   profileType?: ProfileType
+  connectedChainId?: ChainsValues
 }) {
-  const { address, filter, profileType } = args || {}
+  const { address, connectedChainId, filter, profileType } = args || {}
   let url = `/user/profile`
 
   const queryParameters = []
@@ -80,6 +81,10 @@ export function generateProfileUrl(args?: {
 
   if (queryParameters.length > 0) {
     url += `?${queryParameters.join('&')}`
+  }
+
+  if (connectedChainId) {
+    url += `?networkId=${connectedChainId}`
   }
 
   return url

@@ -22,6 +22,7 @@ import { useTranslation } from 'next-export-i18n'
 import TBUserAvatar from '@/src/components/common/TBUserAvatar'
 import { Address } from '@/src/components/helpers/Address'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
+import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 import { truncateStringInTheMiddle } from '@/src/utils/strings'
 import { CreatorMetadata } from '@/types/badges/Creator'
@@ -71,6 +72,8 @@ export default function TBUserInfoExpandablePreview({
   const [anchorEl, setAnchorEl] = useState<null | HTMLDivElement>(null)
   const wrapperRef = useRef<HTMLDivElement>()
   const open = Boolean(anchorEl)
+  const { readOnlyChainId } = useWeb3Connection()
+
   const handleClick = () => {
     if (wrapperRef?.current) setAnchorEl(wrapperRef.current)
   }
@@ -79,7 +82,14 @@ export default function TBUserInfoExpandablePreview({
   }
 
   function handleViewProfileClick() {
-    window.open(router.basePath + generateProfileUrl({ address: userAddress }), '_ blank')
+    window.open(
+      router.basePath +
+        generateProfileUrl({
+          address: userAddress,
+          connectedChainId: readOnlyChainId,
+        }),
+      '_ blank',
+    )
   }
 
   return (
