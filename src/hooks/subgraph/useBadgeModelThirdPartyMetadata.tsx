@@ -4,6 +4,7 @@ import { BadgeModelHooksOptions } from '@/src/hooks/subgraph/types'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import { getFromIPFS } from '@/src/hooks/subgraph/utils'
 import useChainId from '@/src/hooks/theBadge/useChainId'
+import { SubgraphName } from '@/src/subgraph/subgraph'
 import { ThirdPartyMetadataColumn } from '@/types/kleros/types'
 
 /**
@@ -39,14 +40,18 @@ export function useBadgeModelThirdPartyMetadata(
   )
 }
 
-export function useBadgeThirdPartyRequiredData(badgeId: string, options?: BadgeModelHooksOptions) {
+export function useBadgeThirdPartyRequiredData(
+  badgeId: string,
+  targetContract?: string,
+  options?: BadgeModelHooksOptions,
+) {
   // It's going to do the fetch if it has ID and skip option on false
   const fetchIt = !options?.skip && badgeId.length
-  const gql = useSubgraph()
+  const gql = useSubgraph(SubgraphName.TheBadge, targetContract)
   const chainId = useChainId()
 
   return useSWR(
-    fetchIt ? [`BadgeModelThirdPartyMetaData:${badgeId}`, badgeId, chainId] : null,
+    fetchIt ? [`BadgeModelThirdPartyMetaData:${badgeId}`, badgeId, chainId, targetContract] : null,
     async ([, _id]) => {
       const graphResult = await gql.badgeThirdPartyMetadataById({ id: _id })
       const data = graphResult.badgeThirdPartyMetaData
