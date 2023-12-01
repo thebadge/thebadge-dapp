@@ -13,10 +13,10 @@ export const useContractInstance = <F extends AppFactories, RT extends ReturnTyp
   contractKey: ContractsKeys,
   address?: string,
 ) => {
-  const { appChainId } = useWeb3Connection()
-  const signer = useEthersSigner({ chainId: appChainId })
-  const _address = address ? address : contracts[contractKey]['address'][appChainId]
-  if (!_address) throw `Address for ${contractKey} and ${appChainId} is null`
+  const { readOnlyChainId } = useWeb3Connection()
+  const signer = useEthersSigner({ chainId: readOnlyChainId })
+  const _address = address ? address : contracts[contractKey]['address'][readOnlyChainId]
+  if (!_address) throw `Address for ${contractKey} and ${readOnlyChainId} is null`
   if (!signer) throw 'There is no signer to execute the transaction.'
 
   return contractFactory.connect(_address, signer) as RT

@@ -66,7 +66,7 @@ export default function BadgeOwnedPreview() {
     throw `No badgeId provided us URL query param`
   }
 
-  const { appChainId } = useWeb3Connection()
+  const { readOnlyChainId } = useWeb3Connection()
   const badgeById = useBadgeById(badgeId, contract)
   const addTokenIntoWallet = useAddTokenIntoWallet()
   const isThirdPartyBadge = useIsThirdPartyBadge(badgeId, contract)
@@ -126,7 +126,7 @@ export default function BadgeOwnedPreview() {
           APP_URL +
           generateBadgePreviewUrl(badge.id, {
             theBadgeContractAddress: badge.contractAddress,
-            connectedChainId: appChainId,
+            connectedChainId: readOnlyChainId,
           }),
         certId: badgeId,
       })
@@ -152,7 +152,7 @@ export default function BadgeOwnedPreview() {
             APP_URL +
             generateBadgePreviewUrl(badge.id, {
               theBadgeContractAddress: badge.contractAddress,
-              connectedChainId: appChainId,
+              connectedChainId: readOnlyChainId,
             })
           }
           effects

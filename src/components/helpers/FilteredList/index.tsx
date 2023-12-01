@@ -14,9 +14,9 @@ import { SpinnerColors } from '@/src/components/loading/Spinner'
 import TBSearchField from '@/src/components/select/SearchField'
 import TBadgeSelect from '@/src/components/select/Select'
 import useSelectedFilters from '@/src/hooks/nextjs/useSelectedFilters'
-import useChainId from '@/src/hooks/theBadge/useChainId'
 import { useSizeSM } from '@/src/hooks/useSize'
 import { useColorMode } from '@/src/providers/themeProvider'
+import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 
 export type ListFilter<K = unknown> = {
   title: string
@@ -70,7 +70,7 @@ export default function FilteredList({
   const isMobile = useSizeSM()
 
   const { mode } = useColorMode()
-  const chainId = useChainId()
+  const { appChainId } = useWeb3Connection()
 
   const { selectedFilters, setSelectedFilters } = useSelectedFilters({ listId, filters })
   const [selectedCategory, setSelectedCategory] = useState<string>('')
@@ -101,7 +101,7 @@ export default function FilteredList({
     // Not the best, but it's working... Feel free to recommend something better
     refresh()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [chainId])
+  }, [appChainId])
 
   const isFilterSelected = (filter: ListFilter) => {
     return !!selectedFilters.find((f) => f.title === filter.title)

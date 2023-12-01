@@ -1,17 +1,17 @@
 import useSWR from 'swr'
 
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
-import useChainId from '@/src/hooks/theBadge/useChainId'
+import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { SubgraphName } from '@/src/subgraph/subgraph'
 import { User } from '@/types/generated/subgraph'
 import { WCAddress } from '@/types/utils'
 
 export const useUserById = (address: WCAddress | undefined, targetContract?: string) => {
   const gql = useSubgraph(SubgraphName.TheBadge, targetContract)
-  const chainId = useChainId()
+  const { readOnlyChainId } = useWeb3Connection()
 
   return useSWR(
-    address ? [`user:${address}`, address, chainId, targetContract] : null,
+    address ? [`user:${address}`, address, readOnlyChainId, targetContract] : null,
     async ([, _address]) => {
       const userById = await gql.userById({ id: _address })
 
