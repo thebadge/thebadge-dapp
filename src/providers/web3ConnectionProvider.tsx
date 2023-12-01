@@ -29,6 +29,7 @@ import {
   WEB3_MODAL_PROJECT_ID,
   appName,
 } from '@/src/constants/common'
+import useNetworkQueryParam from '@/src/hooks/nextjs/useNetworkQueryParam'
 import { isTestnet } from '@/src/utils/network'
 import { ChainsValues } from '@/types/chains'
 import { WCAddress } from '@/types/utils'
@@ -209,7 +210,8 @@ export type Web3Context = {
 
   // dApp helpers
   appChainId: ChainsValues
-  selectedNetworkId: `${string}:${string}` | undefined
+  selectedNetworkId: ChainsValues | undefined
+  readOnlyChainId: ChainsValues
   getExplorerUrl: (hash: string) => string
   readOnlyAppProvider: JsonRpcProvider
 
@@ -218,27 +220,48 @@ export type Web3Context = {
   getSocialCompressedPubKey: () => Promise<string | undefined>
 }
 
+const useChainIds = (): {
+  appChainId: ChainsValues
+  selectedNetworkId: ChainsValues | undefined
+  readOnlyChainId: ChainsValues
+} => {
+  const { selectedNetworkId } = useWeb3ModalState()
+  const queryParamsChainId = useNetworkQueryParam()
+
+  const [appChainId, setAppChainId] = useState<ChainsValues>(
+    getValidNetwork(selectedNetworkId) || (Number(INITIAL_APP_CHAIN_ID) as ChainsValues),
+  )
+
+  // No sense logic to cast the type and ensure that appId is a supported network
+  useEffect(() => {
+    const newNetwork = getValidNetwork(selectedNetworkId)
+    if (newNetwork) setAppChainId(newNetwork)
+  }, [selectedNetworkId])
+
+  return {
+    appChainId,
+    selectedNetworkId: getValidNetwork(selectedNetworkId) as ChainsValues,
+    readOnlyChainId: queryParamsChainId ? queryParamsChainId : appChainId,
+  }
+}
+
 export function useWeb3Connection(): Web3Context {
   const {
     address: checkSummedAddress,
     isConnected: isWalletConnected,
     isConnecting: connectingWallet,
   } = useAccount()
-  // @TODO (agustin) check if there is a better way to do this
+
   const address = checkSummedAddress
     ? (checkSummedAddress.toLowerCase() as '0x${String}')
     : undefined
   const { disconnect: disconnectWallet } = useDisconnect()
   const { open: connectWallet } = useWeb3Modal()
-  const { selectedNetworkId } = useWeb3ModalState()
-
-  const [appChainId, setAppChainId] = useState<ChainsValues>(
-    getValidNetwork(selectedNetworkId) || (Number(INITIAL_APP_CHAIN_ID) as ChainsValues),
-  )
 
   // Social Login with Web3Auth
   const [web3Auth] = useState<Web3Auth | null>(web3AuthInstance)
   const [isSocialWallet, setIsSocialWallet] = useState<boolean>(false)
+  const { appChainId, readOnlyChainId, selectedNetworkId } = useChainIds()
 
   useEffect(() => {
     const checkIfItsSocialWallet = async () => {
@@ -264,21 +287,15 @@ export function useWeb3Connection(): Web3Context {
     )
   }, [isSocialWallet, web3Auth])
 
-  // No sense logic to cast the type and ensure that appId is a supported network
-  useEffect(() => {
-    const newNetwork = getValidNetwork(selectedNetworkId)
-    if (newNetwork) setAppChainId(newNetwork)
-  }, [selectedNetworkId])
-
   const isAppConnected = Boolean(isWalletConnected && appChainId)
 
   const getExplorerUrl = useMemo(() => {
-    const url = chainsConfig[appChainId]?.blockExplorerUrls[0]
+    const url = chainsConfig[readOnlyChainId]?.blockExplorerUrls[0]
     return (hash: string) => {
       const type = hash.length > 42 ? 'tx' : 'address'
       return `${url}${type}/${hash}`
     }
-  }, [appChainId])
+  }, [readOnlyChainId])
 
   const readOnlyAppProvider = useMemo(() => {
     return new JsonRpcProvider(getNetworkConfig(appChainId)?.rpcUrl, appChainId)
@@ -317,7 +334,10 @@ export function useWeb3Connection(): Web3Context {
 
     // dApp helpers
     appChainId,
-    selectedNetworkId,
+    selectedNetworkId: selectedNetworkId
+      ? (Number(selectedNetworkId) as unknown as ChainsValues)
+      : undefined,
+    readOnlyChainId,
     getExplorerUrl,
     readOnlyAppProvider,
     consoleAppConfig,
