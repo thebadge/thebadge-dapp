@@ -1,5 +1,6 @@
 import useSWR from 'swr'
 
+import useBadgeIdParam from '@/src/hooks/nextjs/useBadgeIdParam'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import { getFromIPFS } from '@/src/hooks/subgraph/utils'
 import useChainId from '@/src/hooks/theBadge/useChainId'
@@ -14,7 +15,10 @@ import { BackendFileResponse } from '@/types/utils'
  * @param targetContract
  */
 export default function useBadgeModel(id: string, targetContract?: string) {
-  const gql = useSubgraph(SubgraphName.TheBadge, targetContract)
+  // Safeguard to use the contract in the url
+  // If this hooks run under a page that has the "contract" query params it must use it
+  const { contract } = useBadgeIdParam()
+  const gql = useSubgraph(SubgraphName.TheBadge, targetContract || contract)
   const chainId = useChainId()
 
   return useSWR(id.length ? [`BadgeModel:${id}`, id, chainId] : null, async ([, _id]) => {
