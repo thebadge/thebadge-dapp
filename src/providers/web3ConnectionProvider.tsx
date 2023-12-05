@@ -286,7 +286,11 @@ export function useWeb3Connection(): Web3Context {
 
   const isWalletNetworkSupported = useMemo(() => {
     // Gnosis Chain is not supported on dev mode
-    if (isTestnet && `${selectedNetworkId}` === '100') return false
+    if (
+      (isTestnet && `${selectedNetworkId}` === '100') ||
+      (isTestnet && `${selectedNetworkId}` === '137')
+    )
+      return false
     return chains.some(({ id }) => {
       return `${id}` === `${selectedNetworkId}`
     })
