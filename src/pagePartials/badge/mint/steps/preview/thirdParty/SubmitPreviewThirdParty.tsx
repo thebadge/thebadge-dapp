@@ -5,17 +5,16 @@ import { useTranslation } from 'next-export-i18n'
 import { useFormContext } from 'react-hook-form'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
-import { APP_URL } from '@/src/constants/common'
 import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
 import { useBadgeModelThirdPartyMetadata } from '@/src/hooks/subgraph/useBadgeModelThirdPartyMetadata'
 import useBadgeModelTemplate from '@/src/hooks/theBadge/useBadgeModelTemplate'
+import useBadgePreviewUrl from '@/src/hooks/theBadge/useBadgePreviewUrl'
 import useEstimateBadgeId from '@/src/hooks/theBadge/useEstimateBadgeId'
 import { MintThirdPartySchemaType } from '@/src/pagePartials/badge/mint/schema/MintThirdPartySchema'
 import MintCostThirdParty from '@/src/pagePartials/badge/mint/steps/preview/thirdParty/MintCostThirdParty'
 import { BadgeThirdPartyPreviewGenerator } from '@/src/pagePartials/badge/preview/generators/BadgeThirdPartyPreviewGenerator'
 import { createThirdPartyValuesObject } from '@/src/utils/badges/mintHelpers'
-import { generateBadgePreviewUrl } from '@/src/utils/navigation/generateUrl'
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
 export default function SubmitPreviewThirdParty() {
@@ -39,6 +38,11 @@ export default function SubmitPreviewThirdParty() {
   }
 
   const estimatedBadgeIdForPreview = estimatedBadgeId ? estimatedBadgeId.toString() : '0'
+  const { badgePreviewUrl } = useBadgePreviewUrl(
+    estimatedBadgeIdForPreview,
+    badgeModelData.data.badgeModel.contractAddress,
+    appChainId,
+  )
 
   return (
     <Stack alignItems={'center'} gap={3} margin={1}>
@@ -48,13 +52,7 @@ export default function SubmitPreviewThirdParty() {
             additionalData={{
               ...values,
             }}
-            badgeUrl={
-              APP_URL +
-              generateBadgePreviewUrl(estimatedBadgeIdForPreview, {
-                theBadgeContractAddress: badgeModelData.data.badgeModel.contractAddress,
-                connectedChainId: appChainId,
-              })
-            }
+            badgeUrl={badgePreviewUrl}
             modelId={badgeModelId}
             setValue={setValue}
             title={t('badge.model.mint.previewTitle', {

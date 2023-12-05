@@ -40,7 +40,7 @@ export default function AlreadyOwnThisBadgeError({ onClose }: { onClose: VoidFun
   const { t } = useTranslation()
   const { mode } = useColorMode()
   const router = useRouter()
-  const { address, appChainId } = useWeb3Connection()
+  const { address, readOnlyChainId } = useWeb3Connection()
   const { badgeModelId, contract } = useModelIdParam()
 
   const ownedBadges = useBadgeOwnershipData(badgeModelId, address)
@@ -84,7 +84,7 @@ export default function AlreadyOwnThisBadgeError({ onClose }: { onClose: VoidFun
             return router.push(
               generateBadgePreviewUrl(selectedBadge.id, {
                 theBadgeContractAddress: selectedBadge.contractAddress,
-                connectedChainId: appChainId,
+                connectedChainId: readOnlyChainId,
               }),
             )
           }}

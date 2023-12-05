@@ -26,7 +26,7 @@ const ProfileSelector = () => {
   const params = useSearchParams()
   const selectedProfile = params.get('profileType')
 
-  const { address: connectedWalletAddress } = useWeb3Connection()
+  const { address: connectedWalletAddress, readOnlyChainId } = useWeb3Connection()
   const isThirdPartyUser = useIsThirdPartyUser(connectedWalletAddress)
 
   const mainProfileTab = (
@@ -67,6 +67,7 @@ const ProfileSelector = () => {
                 href={generateProfileUrl({
                   profileType: ProfileType.USER_PROFILE,
                   address: connectedWalletAddress ? connectedWalletAddress : '',
+                  connectedChainId: readOnlyChainId,
                 })}
               >
                 {mainProfileTab}
@@ -75,6 +76,7 @@ const ProfileSelector = () => {
                 href={generateProfileUrl({
                   profileType: ProfileType.THIRD_PARTY_PROFILE,
                   address: connectedWalletAddress ? connectedWalletAddress : '',
+                  connectedChainId: readOnlyChainId,
                 })}
               >
                 {thirdPartyProfileTab}

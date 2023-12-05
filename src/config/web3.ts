@@ -11,18 +11,28 @@ import {
 
 export const Chains = {
   //mainnet: 1,
-  //polygon: 137,
   goerli: 5,
   sepolia: 11155111,
   gnosis: 100,
+  polygon: 137,
+  mumbai: 80001,
 } as const
 
 export const ChainShortName = {
   mainnet: 'eth',
   polygon: 'matic',
+  mumbai: 'mumbai-matic',
   goerli: 'gor',
   sepolia: 'sep',
   gnosis: 'gno',
+}
+
+export const ChainName = {
+  [Chains.goerli]: 'goerli',
+  [Chains.sepolia]: 'sepolia',
+  [Chains.gnosis]: 'gnosis',
+  [Chains.polygon]: 'matic',
+  [Chains.mumbai]: 'mumbai',
 }
 
 export const providerChains: ProviderChains = {
@@ -30,13 +40,19 @@ export const providerChains: ProviderChains = {
     [Chains.goerli]: 'goerli',
     [Chains.sepolia]: 'sepolia',
     [Chains.gnosis]: 'gnosis',
+    [Chains.polygon]: 'polygon-mainnet',
+    [Chains.mumbai]: 'polygon-mumbai',
   },
   [RPCProviders.alchemy]: {
     [Chains.goerli]: 'eth-goerli',
     [Chains.sepolia]: 'eth-sepolia',
     [Chains.gnosis]: 'xDai-gnosis',
+    [Chains.polygon]: 'polygon',
+    [Chains.mumbai]: 'mumbai',
   },
 }
+
+export const getChainName = (chainId: ChainsValues) => ChainName[chainId]
 
 const getInfuraRPCUrl = (chainId: ChainsValues) =>
   `https://${providerChains[RPCProviders.infura][chainId]}.infura.io/v3/${
@@ -131,16 +147,26 @@ export const chainsConfig: Record<ChainsValues, ChainConfig> = {
   //   blockExplorerUrls: ['https://etherscan.io/'],
   //   token: 'ETH',
   // },
-  // [Chains.mainnet]: {
-  //   id: Chains.polygon,
-  //   name: 'Polygon',
-  //   shortName: ChainShortName.polygon,
-  //   chainId: Chains.polygon,
-  //   chainIdHex: '0x89',
-  //   rpcUrl: getProviderUrl(Chains.polygon),
-  //   blockExplorerUrls: ['https://polygonscan.com/'],
-  //   token: 'MATIC',
-  // },
+  [Chains.polygon]: {
+    id: Chains.polygon,
+    name: 'Polygon',
+    shortName: ChainShortName.polygon,
+    chainId: Chains.polygon,
+    chainIdHex: '0x89',
+    rpcUrl: getProviderUrl(Chains.polygon),
+    blockExplorerUrls: ['https://polygonscan.com/'],
+    token: 'MATIC',
+  },
+  [Chains.mumbai]: {
+    id: Chains.mumbai,
+    name: 'Mumbai',
+    shortName: ChainShortName.mumbai,
+    chainId: Chains.mumbai,
+    chainIdHex: '0x13881',
+    rpcUrl: getProviderUrl(Chains.mumbai),
+    blockExplorerUrls: ['https://mumbai.polygonscan.com/'],
+    token: 'MATIC',
+  },
 }
 
 export function getNetworkConfig(chainId: ChainsValues): ChainConfig {

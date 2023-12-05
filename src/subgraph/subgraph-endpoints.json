@@ -7,5 +7,11 @@
   },
   "100": {
     "theBadge": "https://api.studio.thegraph.com/query/51391/thebadge-gnosis-prod/version/latest"
+  },
+  "80001": {
+    "theBadge": "https://api.studio.thegraph.com/query/51391/thebadge-mumbai-prod/version/latest"
+  },
+  "137": {
+    "theBadge": "https://api.studio.thegraph.com/query/51391/thebadge-polygon-prod/version/latest"
   }
 }
