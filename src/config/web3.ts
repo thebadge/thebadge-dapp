@@ -33,8 +33,8 @@ export const providerChains: ProviderChains = {
     [Chains.goerli]: 'goerli',
     [Chains.sepolia]: 'sepolia',
     [Chains.gnosis]: 'gnosis',
-    [Chains.polygon]: 'polygon',
-    [Chains.mumbai]: 'mumbai',
+    [Chains.polygon]: 'polygon-mainnet',
+    [Chains.mumbai]: 'polygon-mumbai',
   },
   [RPCProviders.alchemy]: {
     [Chains.goerli]: 'eth-goerli',

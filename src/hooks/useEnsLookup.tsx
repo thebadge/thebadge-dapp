@@ -14,7 +14,7 @@ export const useEnsReverseLookup = function (address: WCAddress | undefined): En
   const { appChainId } = useWeb3Connection()
 
   // Gnosis does not support ens, we fallback to mainnet
-  const ensChainId = appChainId === Chains.gnosis ? 1 : appChainId
+  const ensChainId = appChainId === Chains.gnosis || appChainId === Chains.polygon ? 1 : appChainId
   const { data: ensName } = useEnsName({
     address,
     chainId: ensChainId,
