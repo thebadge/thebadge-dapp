@@ -93,7 +93,7 @@ export default function DiplomaView({ additionalData, badgeUrl, modelId }: Props
       studentName={enrichTextWithValues('{{studentName}}', additionalData as EnrichTextValues)}
       sx={
         isMobile
-          ? { scale: '0.5', transform: 'translate(-37.5%)', margin: '10px' }
+          ? { scale: '0.5', transform: 'translate(-50%, -50%)', margin: '10px' }
           : { margin: '10px' }
       }
       textContrastRight="dark"

@@ -14,7 +14,8 @@
     "typechain": "typechain --target=ethers-v5 ./src/contracts/abis/**/*.json --out-dir ./types/generated/typechain/",
     "subgraph-codegen": "graphql-codegen --config subgraph-config.js",
     "types-gen": "yarn typechain && yarn subgraph-codegen",
-    "postinstall": "yarn typechain && yarn subgraph-codegen"
+    "postinstall": "yarn typechain && yarn subgraph-codegen",
+    "bundle-analyzer": "ANALYZE=true yarn build"
   },
   "dependencies": {
     "@emotion/react": "^11.10.5",
