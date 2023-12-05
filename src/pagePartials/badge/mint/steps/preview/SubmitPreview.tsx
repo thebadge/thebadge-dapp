@@ -72,7 +72,7 @@ export default function SubmitPreview({
   }
 
   const estimatedBadgeIdForPreview = estimatedBadgeId ? estimatedBadgeId.toString() : '0'
-  const badgePreviewUrl = useBadgePreviewUrl(
+  const { badgePreviewUrl } = useBadgePreviewUrl(
     estimatedBadgeIdForPreview,
     badgeModelData.data.badgeModel.contractAddress,
     appChainId,

@@ -12,7 +12,7 @@ import { useBadgeThirdPartyRequiredData } from '@/src/hooks/subgraph/useBadgeMod
 import useBadgePreviewUrl from '@/src/hooks/theBadge/useBadgePreviewUrl'
 import { ThirdPartyPreview } from '@/src/pagePartials/badge/preview/ThirdPartyPreview'
 import { reCreateThirdPartyValuesObject } from '@/src/utils/badges/mintHelpers'
-import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
+import { generateProfileUrl, generateTwitterText } from '@/src/utils/navigation/generateUrl'
 
 type StepsClaimThirdPartySucceedProps = {
   claimAddress: string
@@ -34,7 +34,7 @@ export default function StepsClaimThirdPartySucceed({
   const { data } = useBadgeModel(modelId)
 
   const requiredBadgeDataMetadata = useBadgeThirdPartyRequiredData(`${badgeId}` || '')
-  const badgePreviewUrl = useBadgePreviewUrl(badgeId, contract)
+  const { badgePreviewUrl } = useBadgePreviewUrl(badgeId, contract)
 
   const values = reCreateThirdPartyValuesObject(
     requiredBadgeDataMetadata.data?.requirementsDataValues || {},
@@ -46,11 +46,6 @@ export default function StepsClaimThirdPartySucceed({
   }
 
   const badgeModelName = data?.badgeModelMetadata?.name || ''
-  const twitterShareTitle = `Hey World!
-
-I just got my #Web3 Certificate and Badge ${badgeModelName} from @TheBadgexyz 🤩 
-
-👉 You can check my badge here ${badgePreviewUrl}`
 
   return (
     <Stack
@@ -82,7 +77,10 @@ I just got my #Web3 Certificate and Badge ${badgeModelName} from @TheBadgexyz �
       </SubmitButton>
 
       <Stack>
-        <TwitterShareButton related={['@thebadgexyz']} title={twitterShareTitle} url={''}>
+        <TwitterShareButton
+          related={['@thebadgexyz']}
+          url={generateTwitterText(badgeModelName, badgePreviewUrl)}
+        >
           <XIcon round size={32} />
         </TwitterShareButton>
       </Stack>

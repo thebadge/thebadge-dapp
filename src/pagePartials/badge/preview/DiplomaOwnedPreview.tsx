@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import * as React from 'react'
 
@@ -15,6 +16,7 @@ import {
 } from '@mui/material'
 import { IconMetamask, colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
+import { TwitterShareButton, XIcon } from 'react-share'
 
 import { notify } from '@/src/components/toast/Toast'
 import { THE_BADGE_LINKEDIN_ID } from '@/src/constants/common'
@@ -36,6 +38,8 @@ import {
   generateLinkedinOrganization,
   generateLinkedinUrl,
   generateProfileUrl,
+  generateTwitterText,
+  isOpenseaSupported,
 } from '@/src/utils/navigation/generateUrl'
 import { BadgeModelControllerType } from '@/types/badges/BadgeModel'
 import { CreatorMetadata } from '@/types/badges/Creator'
@@ -78,11 +82,12 @@ export default function DiplomaOwnedPreview() {
   const creator = creatorResponse.data
   const resCreatorMetadata = useS3Metadata<{ content: CreatorMetadata }>(creator?.metadataUri || '')
   const requiredBadgeDataMetadata = useBadgeThirdPartyRequiredData(`${badgeId}` || '', contract)
-  const badgePreviewUrl = useBadgePreviewUrl(
+  const { badgeOpenseaUrl, badgePreviewUrl } = useBadgePreviewUrl(
     badge?.id || '',
     badge?.contractAddress || '',
     readOnlyChainId,
   )
+  const badgeModelName = badgeModel?.badgeModelMetadata?.name || ''
 
   if (!badge || !badgeModel) {
     return null
@@ -208,6 +213,30 @@ export default function DiplomaOwnedPreview() {
                     />
                   </IconButton>
                 </Tooltip>
+                <Tooltip arrow title={t('badge.viewBadge.shareTwitter')}>
+                  <TwitterShareButton
+                    related={['@thebadgexyz']}
+                    url={generateTwitterText(badgeModelName, badgePreviewUrl)}
+                  >
+                    <XIcon round size={32} />
+                  </TwitterShareButton>
+                </Tooltip>
+                {isOpenseaSupported(readOnlyChainId) ? (
+                  <Tooltip arrow title={t('badge.viewBadge.viewOpensea')}>
+                    <IconButton
+                      aria-label={t('badge.viewBadge.viewOpensea')}
+                      component="label"
+                      onClick={() => window.open(badgeOpenseaUrl)}
+                    >
+                      <Image
+                        alt={t('badge.viewBadge.viewOpensea')}
+                        height={theme.customSizes.icon}
+                        src="https://opensea.io/static/images/favicon/favicon.ico"
+                        width={theme.customSizes.icon}
+                      />
+                    </IconButton>
+                  </Tooltip>
+                ) : null}
               </Box>
             </Box>
 
