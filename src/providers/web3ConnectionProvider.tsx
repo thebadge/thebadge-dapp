@@ -341,9 +341,7 @@ export function useWeb3Connection(): Web3Context {
 
     // dApp helpers
     appChainId,
-    selectedNetworkId: selectedNetworkId
-      ? (Number(selectedNetworkId) as unknown as ChainsValues)
-      : undefined,
+    selectedNetworkId: selectedNetworkId ? selectedNetworkId : undefined,
     readOnlyChainId,
     getExplorerUrl,
     readOnlyAppProvider,
