@@ -28,6 +28,7 @@ import { useUserById } from '@/src/hooks/subgraph/useUserById'
 import useAddTokenIntoWallet from '@/src/hooks/theBadge/useAddTokenIntoWallet'
 import useBadgePreviewUrl from '@/src/hooks/theBadge/useBadgePreviewUrl'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
+import { useSizeSM } from '@/src/hooks/useSize'
 import DiplomaView from '@/src/pagePartials/badge/preview/DiplomaView'
 import BadgeTitle from '@/src/pagePartials/badge/preview/addons/BadgeTitle'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
@@ -63,6 +64,7 @@ const Wrapper = styled(Stack)(({ theme }) => ({
 export default function DiplomaOwnedPreview() {
   const { t } = useTranslation()
   const theme = useTheme()
+  const isMobile = useSizeSM()
 
   const { badgeId, contract } = useBadgeIdParam()
 
@@ -158,7 +160,7 @@ export default function DiplomaOwnedPreview() {
         <BadgeTitle />
 
         {/* Badge Image */}
-        <Stack flex={2} gap={3}>
+        <Stack style={isMobile ? { display: 'block', maxHeight: '220px' } : { flex: 2, gap: 3 }}>
           <DiplomaView
             additionalData={{ ...values }}
             badgeUrl={badgePreviewUrl}
