@@ -3,7 +3,7 @@ import useSWR from 'swr'
 import useBadgeIdParam from '@/src/hooks/nextjs/useBadgeIdParam'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import { getFromIPFS } from '@/src/hooks/subgraph/utils'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import { SubgraphName } from '@/src/subgraph/subgraph'
 import { BadgeModelMetadata } from '@/types/badges/BadgeMetadata'
 import { BackendFileResponse } from '@/types/utils'
