@@ -62,7 +62,7 @@ export default function DiplomaCreationPreview() {
   const isMobile = useSizeSM()
 
   return (
-    <BoxShadow sx={{ display: 'block' }}>
+    <BoxShadow sx={isMobile ? { display: 'block', maxHeight: '220px' } : {}}>
       <DiplomaPreview
         animationEffects={isMobile ? [] : ['wobble', 'grow', 'glare']}
         animationOnHover
