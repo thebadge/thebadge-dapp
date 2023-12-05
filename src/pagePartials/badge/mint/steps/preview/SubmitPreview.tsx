@@ -12,6 +12,7 @@ import MintCost from './MintCost'
 import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
 import useBadgeModelTemplate from '@/src/hooks/theBadge/useBadgeModelTemplate'
+import useBadgePreviewUrl from '@/src/hooks/theBadge/useBadgePreviewUrl'
 import useEstimateBadgeId from '@/src/hooks/theBadge/useEstimateBadgeId'
 import useMintValue from '@/src/hooks/theBadge/useMintValue'
 import { MintBadgeSchemaType } from '@/src/pagePartials/badge/mint/schema/MintBadgeSchema'
@@ -19,7 +20,6 @@ import { convertPreviewToImage } from '@/src/pagePartials/badge/mint/utils'
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import { getBackgroundBadgeUrl } from '@/src/utils/badges/getBackgroundBadgeUrl'
 import { BadgeNFTAttributesType } from '@/types/badges/BadgeMetadata'
-import useBadgePreviewUrl from '@/src/hooks/theBadge/useBadgePreviewUrl'
 
 export default function SubmitPreview({
   badgePreviewRef,
