@@ -9,7 +9,6 @@ import { useTranslation } from 'next-export-i18n'
 import { useFormContext } from 'react-hook-form'
 
 import MintCost from './MintCost'
-import { APP_URL } from '@/src/constants/common'
 import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
 import useBadgeModelTemplate from '@/src/hooks/theBadge/useBadgeModelTemplate'
@@ -19,8 +18,8 @@ import { MintBadgeSchemaType } from '@/src/pagePartials/badge/mint/schema/MintBa
 import { convertPreviewToImage } from '@/src/pagePartials/badge/mint/utils'
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import { getBackgroundBadgeUrl } from '@/src/utils/badges/getBackgroundBadgeUrl'
-import { generateBadgePreviewUrl } from '@/src/utils/navigation/generateUrl'
 import { BadgeNFTAttributesType } from '@/types/badges/BadgeMetadata'
+import useBadgePreviewUrl from '@/src/hooks/theBadge/useBadgePreviewUrl'
 
 export default function SubmitPreview({
   badgePreviewRef,
@@ -73,6 +72,11 @@ export default function SubmitPreview({
   }
 
   const estimatedBadgeIdForPreview = estimatedBadgeId ? estimatedBadgeId.toString() : '0'
+  const badgePreviewUrl = useBadgePreviewUrl(
+    estimatedBadgeIdForPreview,
+    badgeModelData.data.badgeModel.contractAddress,
+    appChainId,
+  )
 
   return (
     <Stack alignItems={'center'} gap={3} margin={1}>
@@ -86,13 +90,7 @@ export default function SubmitPreview({
           animationEffects={['wobble', 'grow', 'glare']}
           animationOnHover
           badgeBackgroundUrl={getBackgroundBadgeUrl(backgroundType?.value)}
-          badgeUrl={
-            APP_URL +
-            generateBadgePreviewUrl(estimatedBadgeIdForPreview, {
-              theBadgeContractAddress: badgeModelData.data.badgeModel.contractAddress,
-              connectedChainId: appChainId,
-            })
-          }
+          badgeUrl={badgePreviewUrl}
           category={badgeModelMetadata?.name}
           description={badgeModelMetadata?.description}
           imageUrl={badgeLogoImage?.s3Url}

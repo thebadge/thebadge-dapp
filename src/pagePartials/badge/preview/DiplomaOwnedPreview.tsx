@@ -17,13 +17,14 @@ import { IconMetamask, colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 
 import { notify } from '@/src/components/toast/Toast'
-import { APP_URL, THE_BADGE_LINKEDIN_ID } from '@/src/constants/common'
+import { THE_BADGE_LINKEDIN_ID } from '@/src/constants/common'
 import useBadgeIdParam from '@/src/hooks/nextjs/useBadgeIdParam'
 import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
 import { useBadgeThirdPartyRequiredData } from '@/src/hooks/subgraph/useBadgeModelThirdPartyMetadata'
 import useIsThirdPartyBadge from '@/src/hooks/subgraph/useIsThirdPartyBadge'
 import { useUserById } from '@/src/hooks/subgraph/useUserById'
 import useAddTokenIntoWallet from '@/src/hooks/theBadge/useAddTokenIntoWallet'
+import useBadgePreviewUrl from '@/src/hooks/theBadge/useBadgePreviewUrl'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
 import DiplomaView from '@/src/pagePartials/badge/preview/DiplomaView'
 import BadgeTitle from '@/src/pagePartials/badge/preview/addons/BadgeTitle'
@@ -32,7 +33,6 @@ import { reCreateThirdPartyValuesObject } from '@/src/utils/badges/mintHelpers'
 import { getExpirationYearAndMonth, getIssueYearAndMonth } from '@/src/utils/dateUtils'
 import {
   generateBadgeExplorer,
-  generateBadgePreviewUrl,
   generateLinkedinOrganization,
   generateLinkedinUrl,
   generateProfileUrl,
@@ -78,6 +78,11 @@ export default function DiplomaOwnedPreview() {
   const creator = creatorResponse.data
   const resCreatorMetadata = useS3Metadata<{ content: CreatorMetadata }>(creator?.metadataUri || '')
   const requiredBadgeDataMetadata = useBadgeThirdPartyRequiredData(`${badgeId}` || '', contract)
+  const badgePreviewUrl = useBadgePreviewUrl(
+    badge?.id || '',
+    badge?.contractAddress || '',
+    readOnlyChainId,
+  )
 
   if (!badge || !badgeModel) {
     return null
@@ -123,12 +128,7 @@ export default function DiplomaOwnedPreview() {
         issueMonth: String(issueMonth),
         expirationYear: String(expirationYear),
         expirationMonth: String(expirationMonth),
-        certUrl:
-          APP_URL +
-          generateBadgePreviewUrl(badge.id, {
-            theBadgeContractAddress: badge.contractAddress,
-            connectedChainId: readOnlyChainId,
-          }),
+        certUrl: badgePreviewUrl,
         certId: badgeId,
       })
 
@@ -156,13 +156,7 @@ export default function DiplomaOwnedPreview() {
         <Stack flex={2} gap={3}>
           <DiplomaView
             additionalData={{ ...values }}
-            badgeUrl={
-              APP_URL +
-              generateBadgePreviewUrl(badge.id, {
-                theBadgeContractAddress: badge.contractAddress,
-                connectedChainId: readOnlyChainId,
-              })
-            }
+            badgeUrl={badgePreviewUrl}
             modelId={badgeModel.id}
           />
         </Stack>
