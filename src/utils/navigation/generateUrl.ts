@@ -174,7 +174,7 @@ export function generateOpenseaUrl({
       return `https://opensea.io/assets/${chainName}/${contractAddress}/${badgeId}`
     }
     default: {
-      console.error(`Unsupported network: ${networkId}`)
+      console.warn(`Unsupported network: ${networkId}`)
       return null
     }
   }
