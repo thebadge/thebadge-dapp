@@ -30,7 +30,6 @@ import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { useSizeSM } from '@/src/hooks/useSize'
 import BadgeModelPreview from '@/src/pagePartials/badge/BadgeModelPreview'
 import BadgeTitle from '@/src/pagePartials/badge/preview/addons/BadgeTitle'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { getExpirationYearAndMonth, getIssueYearAndMonth } from '@/src/utils/dateUtils'
 import {
   generateBadgeExplorer,
@@ -69,7 +68,6 @@ export default function BadgeOwnedPreview() {
     throw `No badgeId provided us URL query param`
   }
 
-  const { readOnlyChainId } = useWeb3Connection()
   const badgeById = useBadgeById(badgeId, contract)
   const addTokenIntoWallet = useAddTokenIntoWallet()
   const isThirdPartyBadge = useIsThirdPartyBadge(badgeId, contract)
