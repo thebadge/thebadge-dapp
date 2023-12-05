@@ -38,6 +38,8 @@ export const providerChains: ProviderChains = {
   },
 }
 
+export const getChainName = (chainId: ChainsValues) => providerChains[RPCProviders.infura][chainId]
+
 const getInfuraRPCUrl = (chainId: ChainsValues) =>
   `https://${providerChains[RPCProviders.infura][chainId]}.infura.io/v3/${
     process.env.NEXT_PUBLIC_INFURA_TOKEN

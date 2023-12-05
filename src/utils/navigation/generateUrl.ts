@@ -1,5 +1,6 @@
 import _ from 'lodash'
 
+import { getChainName } from '@/src/config/web3'
 import { LINKEDIN_URL } from '@/src/constants/common'
 import { ProfileType } from '@/src/pagePartials/profile/ProfileSelector'
 import { BadgeModelControllerType } from '@/types/badges/BadgeModel'
@@ -140,4 +141,47 @@ export function generateLinkedinOrganization(linkedinUrl: string): string {
   const regex = /\/(\d+)\/?$/
   const match = linkedinUrl.match(regex)
   return match ? match[1] : linkedinUrl
+}
+
+export function generateTwitterText(badgeModelName: string, badgePreviewUrl: string): string {
+  return `Hey World!
+
+I just got my #Web3 Certificate: ${badgeModelName} from @TheBadgexyz 🤩 
+
+👉 You can check my badge here: ${badgePreviewUrl}`
+}
+
+type OpenseaParams = {
+  badgeId: string
+  contractAddress: string
+  networkId: ChainsValues
+}
+
+export const isOpenseaSupported = (networkId: ChainsValues): boolean => {
+  switch (networkId) {
+    case 5:
+    case 11155111: {
+      return true
+    }
+    default: {
+      return false
+    }
+  }
+}
+
+export function generateOpenseaUrl({ badgeId, contractAddress, networkId }: OpenseaParams): string {
+  switch (networkId) {
+    case 5:
+    case 11155111: {
+      const chainName = getChainName(networkId)
+      console.log('chain', chainName, 'network', networkId)
+      return `https://testnets.opensea.io/assets/${chainName}/${contractAddress}/${badgeId}`
+    }
+    case 100: {
+      throw new Error('Unsupported network')
+    }
+    default: {
+      throw new Error(`Invalid network: ${networkId}`)
+    }
+  }
 }
