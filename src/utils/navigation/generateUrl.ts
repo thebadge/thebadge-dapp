@@ -157,21 +157,11 @@ type OpenseaParams = {
   networkId: ChainsValues
 }
 
-export const isOpenseaSupported = (networkId: ChainsValues): boolean => {
-  switch (networkId) {
-    case Chains.goerli:
-    case Chains.sepolia:
-    case Chains.mumbai:
-    case Chains.polygon: {
-      return true
-    }
-    default: {
-      return false
-    }
-  }
-}
-
-export function generateOpenseaUrl({ badgeId, contractAddress, networkId }: OpenseaParams): string {
+export function generateOpenseaUrl({
+  badgeId,
+  contractAddress,
+  networkId,
+}: OpenseaParams): string | null {
   switch (networkId) {
     case Chains.goerli:
     case Chains.sepolia:
@@ -184,7 +174,8 @@ export function generateOpenseaUrl({ badgeId, contractAddress, networkId }: Open
       return `https://opensea.io/assets/${chainName}/${contractAddress}/${badgeId}`
     }
     default: {
-      throw new Error(`Unsupported network: ${networkId}`)
+      console.error(`Unsupported network: ${networkId}`)
+      return null
     }
   }
 }

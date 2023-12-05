@@ -40,7 +40,6 @@ import {
   generateLinkedinUrl,
   generateProfileUrl,
   generateTwitterText,
-  isOpenseaSupported,
 } from '@/src/utils/navigation/generateUrl'
 import { BadgeModelControllerType } from '@/types/badges/BadgeModel'
 import { CreatorMetadata } from '@/types/badges/Creator'
@@ -223,7 +222,7 @@ export default function DiplomaOwnedPreview() {
                     <XIcon round size={32} />
                   </TwitterShareButton>
                 </Tooltip>
-                {isOpenseaSupported(readOnlyChainId) ? (
+                {badgeOpenseaUrl ? (
                   <Tooltip arrow title={t('badge.viewBadge.viewOpensea')}>
                     <IconButton
                       aria-label={t('badge.viewBadge.viewOpensea')}
