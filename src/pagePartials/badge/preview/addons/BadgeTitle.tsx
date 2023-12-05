@@ -14,7 +14,6 @@ export default function BadgeTitle() {
   const { t } = useTranslation()
 
   const { badgeId } = useBadgeIdParam()
-  const { readOnlyChainId } = useWeb3Connection()
   const isMobile = useSizeSM()
 
   if (!badgeId) {
@@ -48,7 +47,7 @@ export default function BadgeTitle() {
         {t('badge.viewBadge.id')}
         {badge?.claimedTxHash && (
           <Link href={getExplorerUrl(badge?.claimedTxHash)} target={'_blank'}>
-            <strong style={{ textDecoration: 'underline' }}>#{readOnlyChainId}</strong>
+            <strong style={{ textDecoration: 'underline' }}>#{badgeId}</strong>
           </Link>
         )}
       </Typography>
