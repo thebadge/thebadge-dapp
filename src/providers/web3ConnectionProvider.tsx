@@ -16,7 +16,7 @@ import { Web3AuthConnector } from '@web3auth/web3auth-wagmi-connector'
 import { walletConnectProvider } from '@web3modal/wagmi'
 import { createWeb3Modal, useWeb3Modal, useWeb3ModalState } from '@web3modal/wagmi/react'
 import useSWR from 'swr'
-import { gnosis, goerli, sepolia } from 'viem/chains'
+import { gnosis, goerli, polygon, polygonMumbai, sepolia } from 'viem/chains'
 import { WagmiConfig, configureChains, createConfig, useAccount, useDisconnect } from 'wagmi'
 import { publicProvider } from 'wagmi/providers/public'
 
@@ -50,7 +50,7 @@ const metadata = {
 }
 
 // 2. Chains supported
-const defaultChains = [sepolia, goerli, gnosis]
+const defaultChains = [sepolia, goerli, polygonMumbai, polygon, gnosis]
 
 const { chains, publicClient } = configureChains(defaultChains, [
   walletConnectProvider({ projectId }),
@@ -306,7 +306,11 @@ export function useWeb3Connection(): Web3Context {
 
   const isWalletNetworkSupported = useMemo(() => {
     // Gnosis Chain is not supported on dev mode
-    if (isTestnet && `${selectedNetworkId}` === '100') return false
+    if (
+      (isTestnet && `${selectedNetworkId}` === '100') ||
+      (isTestnet && `${selectedNetworkId}` === '137')
+    )
+      return false
     return chains.some(({ id }) => {
       return `${id}` === `${selectedNetworkId}`
     })
