@@ -3,7 +3,7 @@ import useSWR from 'swr'
 import { BadgeModelHooksOptions } from '@/src/hooks/subgraph/types'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import { getFromIPFS } from '@/src/hooks/subgraph/utils'
-import useChainId from '@/src/hooks/theBadge/useChainId'
+import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { SubgraphName } from '@/src/subgraph/subgraph'
 import { ThirdPartyMetadataColumn } from '@/types/kleros/types'
 
@@ -20,10 +20,12 @@ export function useBadgeModelThirdPartyMetadata(
   // It's going to do the fetch if it has ID and skip option on false
   const fetchIt = !options?.skip && badgeModelId.length
   const gql = useSubgraph()
-  const chainId = useChainId()
+  const { readOnlyChainId } = useWeb3Connection()
 
   return useSWR(
-    fetchIt ? [`BadgeModelThirdPartyMetaData:${badgeModelId}`, badgeModelId, chainId] : null,
+    fetchIt
+      ? [`BadgeModelThirdPartyMetaData:${badgeModelId}`, badgeModelId, readOnlyChainId]
+      : null,
     async ([, _id]) => {
       const badgeModelKleros = await gql.badgeModelThirdPartyMetaDataById({ id: _id })
       const data = badgeModelKleros.badgeModelThirdPartyMetaData
@@ -48,10 +50,12 @@ export function useBadgeThirdPartyRequiredData(
   // It's going to do the fetch if it has ID and skip option on false
   const fetchIt = !options?.skip && badgeId.length
   const gql = useSubgraph(SubgraphName.TheBadge, targetContract)
-  const chainId = useChainId()
+  const { readOnlyChainId } = useWeb3Connection()
 
   return useSWR(
-    fetchIt ? [`BadgeModelThirdPartyMetaData:${badgeId}`, badgeId, chainId, targetContract] : null,
+    fetchIt
+      ? [`BadgeModelThirdPartyMetaData:${badgeId}`, badgeId, readOnlyChainId, targetContract]
+      : null,
     async ([, _id]) => {
       const graphResult = await gql.badgeThirdPartyMetadataById({ id: _id })
       const data = graphResult.badgeThirdPartyMetaData

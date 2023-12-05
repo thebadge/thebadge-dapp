@@ -1,4 +1,4 @@
-import { getNetworkConfig } from '@/src/config/web3'
+import { Chains } from '@/src/config/web3'
 import { contracts } from '@/src/contracts/contracts'
 import { SubgraphName } from '@/src/subgraph/subgraph'
 import { ChainsValues } from '@/types/chains'
@@ -15,6 +15,21 @@ const validateChainIdWithContractAddress = (
   return contracts.TheBadge.address[chainId].toLowerCase() === contractAddress.toLowerCase()
 }
 
+const isValidChain = (chain: string): chain is keyof ChainsValues => {
+  return Object.values(Chains).includes(Number(chain) as never)
+}
+
+export const parseNetworkIdQuery = (chainId: string): ChainsValues => {
+  // Validates that the networkId is valid
+  const isValid = isValidChain(chainId)
+
+  if (!isValid) {
+    throw new Error(`The following prefix: ${chainId} is not a valid chainId`)
+  }
+
+  return Number(chainId) as unknown as ChainsValues
+}
+
 export const parsePrefixedAddress = (
   fullContractAddress: string,
 ): {
@@ -24,12 +39,19 @@ export const parsePrefixedAddress = (
 } => {
   const parts = fullContractAddress.split(':')
   const address = parts.length > 1 ? parts[1] : parts[0] || ''
-  const chainId = (parts.length > 1 ? parts[0] : '') as unknown as ChainsValues
+  const chainId = parts.length > 1 ? parts[0] : ''
 
   // Validates that the networkId is valid
-  getNetworkConfig(chainId)
+  const isValid = isValidChain(chainId)
 
-  const prefixIsValid = validateChainIdWithContractAddress(chainId, address)
+  if (!isValid) {
+    throw new Error(`The following prefix: ${chainId} is not a valid chainId`)
+  }
+
+  const prefixIsValid = validateChainIdWithContractAddress(
+    chainId as unknown as ChainsValues,
+    address,
+  )
 
   if (!prefixIsValid) {
     throw new Error(
@@ -38,7 +60,7 @@ export const parsePrefixedAddress = (
   }
 
   return {
-    chainId: chainId as unknown as ChainsValues,
+    chainId: Number(chainId) as unknown as ChainsValues,
     address,
     subgraphName: SubgraphName.TheBadge,
   }

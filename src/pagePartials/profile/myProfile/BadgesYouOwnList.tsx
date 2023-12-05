@@ -22,7 +22,7 @@ type Props = {
 export default function BadgesYouOwnList({ address }: Props) {
   const { t } = useTranslation()
   const router = useRouter()
-  const { address: connectedWalletAddress, appChainId } = useWeb3Connection()
+  const { address: connectedWalletAddress, readOnlyChainId } = useWeb3Connection()
 
   const isLoggedInUser = connectedWalletAddress === address
 
@@ -56,10 +56,10 @@ export default function BadgesYouOwnList({ address }: Props) {
       router.push(
         generateBadgePreviewUrl(badge.id, {
           theBadgeContractAddress: badge.contractAddress,
-          connectedChainId: appChainId,
+          connectedChainId: readOnlyChainId,
         }),
       ),
-    [router, appChainId],
+    [router, readOnlyChainId],
   )
 
   const search = async (

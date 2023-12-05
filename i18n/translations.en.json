@@ -498,6 +498,8 @@
       "seeAll": "See All",
       "importBadge": "Import your badge into metamask",
       "importLinkedin": "Import your badge into your Linkedin",
+      "shareTwitter": "Share on twitter",
+      "viewOpensea": "Check it in openSea",
       "challengeStatus": {
         "title": "Challenge Status",
         "challenged": "CHALLENGED",

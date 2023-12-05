@@ -11,7 +11,6 @@ import {
 
 export const Chains = {
   //mainnet: 1,
-  //polygon: 137,
   goerli: 5,
   sepolia: 11155111,
   gnosis: 100,
@@ -26,6 +25,14 @@ export const ChainShortName = {
   goerli: 'gor',
   sepolia: 'sep',
   gnosis: 'gno',
+}
+
+export const ChainName = {
+  [Chains.goerli]: 'goerli',
+  [Chains.sepolia]: 'sepolia',
+  [Chains.gnosis]: 'gnosis',
+  [Chains.polygon]: 'matic',
+  [Chains.mumbai]: 'mumbai',
 }
 
 export const providerChains: ProviderChains = {
@@ -44,6 +51,8 @@ export const providerChains: ProviderChains = {
     [Chains.mumbai]: 'mumbai',
   },
 }
+
+export const getChainName = (chainId: ChainsValues) => ChainName[chainId]
 
 const getInfuraRPCUrl = (chainId: ChainsValues) =>
   `https://${providerChains[RPCProviders.infura][chainId]}.infura.io/v3/${
