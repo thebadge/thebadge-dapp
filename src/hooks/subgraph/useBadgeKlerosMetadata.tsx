@@ -41,7 +41,11 @@ export function useBadgeKlerosMetadata(
 export function useEvidenceBadgeKlerosMetadata(badgeId: string, options?: BadgeModelHooksOptions) {
   const { readOnlyChainId } = useWeb3Connection()
   const badge = useBadgeById(badgeId)
-  const badgeKlerosMetadata = useBadgeKlerosMetadata(badgeId, badge.data?.contractAddress, options)
+  const badgeKlerosMetadata = useBadgeKlerosMetadata(
+    badgeId,
+    `${readOnlyChainId}:${badge.data?.contractAddress}`,
+    options,
+  )
   // It's going to do the fetch if it has ID and skip option on false
   const fetchIt = !options?.skip && badgeId.length
   return useSWR(
