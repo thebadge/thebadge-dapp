@@ -23,6 +23,10 @@ gql`
     badge {
       id
       validUntil
+      createdTxHash
+      claimedTxHash
+      createdAt
+      claimedAt
       contractAddress
       account {
         id

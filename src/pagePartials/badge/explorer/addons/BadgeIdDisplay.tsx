@@ -19,7 +19,7 @@ const Container = styled(Box)(({ theme }) => ({
 
 export default function BadgeIdDisplay({
   id,
-  isBadgeModel = true,
+  isBadgeModel = false,
   mintTxHash,
 }: {
   id: string

@@ -31,8 +31,8 @@ export default function CreatorStatisticContent({
   statisticVisibility: StatisticVisibility
 }) {
   const { t } = useTranslation()
-  const { appChainId } = useWeb3Connection()
-  const networkConfig = getNetworkConfig(appChainId)
+  const { readOnlyChainId } = useWeb3Connection()
+  const networkConfig = getNetworkConfig(readOnlyChainId)
   const { refreshWatcher } = useProfileProvider()
 
   const { data, mutate } = useCreatorStatistics()

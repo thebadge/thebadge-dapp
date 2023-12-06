@@ -4,7 +4,7 @@ import { BadgeModelHooksOptions } from '@/src/hooks/subgraph/types'
 import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import { getFromIPFS } from '@/src/hooks/subgraph/utils'
-import useChainId from '@/src/hooks/theBadge/useChainId'
+import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { SubgraphName } from '@/src/subgraph/subgraph'
 import { BadgeEvidenceMetadata } from '@/types/badges/BadgeMetadata'
 import { KlerosBadgeRequest, KlerosRequestType } from '@/types/generated/subgraph'
@@ -39,13 +39,19 @@ export function useBadgeKlerosMetadata(
  * @param options
  */
 export function useEvidenceBadgeKlerosMetadata(badgeId: string, options?: BadgeModelHooksOptions) {
-  const chainId = useChainId()
+  const { readOnlyChainId } = useWeb3Connection()
   const badge = useBadgeById(badgeId)
-  const badgeKlerosMetadata = useBadgeKlerosMetadata(badgeId, badge.data?.contractAddress, options)
+  const badgeKlerosMetadata = useBadgeKlerosMetadata(
+    badgeId,
+    `${readOnlyChainId}:${badge.data?.contractAddress}`,
+    options,
+  )
   // It's going to do the fetch if it has ID and skip option on false
   const fetchIt = !options?.skip && badgeId.length
   return useSWR(
-    fetchIt ? [`EvidenceBadgeKlerosMetadata:${badgeId}`, badgeId, badge.data?.id, chainId] : null,
+    fetchIt
+      ? [`EvidenceBadgeKlerosMetadata:${badgeId}`, badgeId, badge.data?.id, readOnlyChainId]
+      : null,
     async () => {
       if (!badgeKlerosMetadata.data?.requests) {
         throw 'There was not possible to get the needed metadata. Try again in some minutes.'

@@ -21,8 +21,8 @@ export default function ChallengeCost({
   badgeId: string
 }) {
   const { t } = useTranslation()
-  const { appChainId } = useWeb3Connection()
-  const networkConfig = getNetworkConfig(appChainId)
+  const { readOnlyChainId } = useWeb3Connection()
+  const networkConfig = getNetworkConfig(readOnlyChainId)
 
   const badgeModelKlerosData = useRegistrationBadgeModelKlerosMetadata(badgeModelId)
   const challengeCost = useChallengeCost(badgeId)

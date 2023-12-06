@@ -498,6 +498,8 @@
       "seeAll": "See All",
       "importBadge": "Import your badge into metamask",
       "importLinkedin": "Import your badge into your Linkedin",
+      "shareTwitter": "Share on twitter",
+      "viewOpensea": "Check it in OpenSea",
       "challengeStatus": {
         "title": "Challenge Status",
         "challenged": "CHALLENGED",
@@ -560,7 +562,8 @@
         "ownBadgeChallenge": "You can't do a challenge to your own badge",
         "notClaimedBadge": "You can't do a challenge to a badge that is not yet claimed",
         "challengeButton": "Challenge",
-        "addMoreEvidence": "Add more evidence"
+        "addMoreEvidence": "Add more evidence",
+        "errorEvidenceDisplay": "There was an error fetching the badge evidence, try again in some minutes."
       },
       "criteriaLink": {
         "readCriteria": "Read the ",

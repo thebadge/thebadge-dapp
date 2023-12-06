@@ -19,7 +19,7 @@ import { NextPageWithLayout } from '@/types/next'
 
 const Register: NextPageWithLayout = () => {
   const router = useRouter()
-  const { address } = useWeb3Connection()
+  const { address, readOnlyChainId } = useWeb3Connection()
   const { resetTxState, sendTx, state } = useTransaction()
   const theBadgeUsers = useContractInstance(TheBadgeUsers__factory, 'TheBadgeUsers')
   const { signMessageAsync } = useSignMessage()
@@ -34,7 +34,12 @@ const Register: NextPageWithLayout = () => {
   const { data: userProfile } = useUserById(address)
 
   if (userProfile?.isRegistered) {
-    router.push(generateProfileUrl({ filter: NormalProfileFilter.CREATED_BADGES }))
+    router.push(
+      generateProfileUrl({
+        filter: NormalProfileFilter.CREATED_BADGES,
+        connectedChainId: readOnlyChainId,
+      }),
+    )
   }
 
   async function onSubmit(data: CreatorRegisterSchemaType) {

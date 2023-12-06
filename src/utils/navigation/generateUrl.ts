@@ -1,5 +1,6 @@
 import _ from 'lodash'
 
+import { Chains, getChainName } from '@/src/config/web3'
 import { LINKEDIN_URL } from '@/src/constants/common'
 import { ProfileType } from '@/src/pagePartials/profile/ProfileSelector'
 import { BadgeModelControllerType } from '@/types/badges/BadgeModel'
@@ -33,6 +34,11 @@ export function generateBadgeCurate() {
   return `/curate`
 }
 
+type ChainAgnosticParams = {
+  theBadgeContractAddress: string
+  connectedChainId: ChainsValues
+}
+
 /**
  *
  * @param badgeId
@@ -41,12 +47,7 @@ export function generateBadgeCurate() {
  */
 export function generateBadgePreviewUrl(
   badgeId: string,
-  extraParams:
-    | {
-        theBadgeContractAddress: string
-        connectedChainId: ChainsValues
-      }
-    | { contractValue: string },
+  extraParams: ChainAgnosticParams | { contractValue: string },
 ) {
   if ('contractValue' in extraParams) {
     return `/badge/${badgeId}?contract=${extraParams.contractValue}`
@@ -60,8 +61,9 @@ export function generateProfileUrl(args?: {
   address?: string
   filter?: string
   profileType?: ProfileType
+  connectedChainId?: ChainsValues
 }) {
-  const { address, filter, profileType } = args || {}
+  const { address, connectedChainId, filter, profileType } = args || {}
   let url = `/user/profile`
 
   const queryParameters = []
@@ -76,6 +78,10 @@ export function generateProfileUrl(args?: {
 
   if (profileType) {
     queryParameters.push(`profileType=${encodeURIComponent(profileType)}`)
+  }
+
+  if (connectedChainId) {
+    queryParameters.push(`networkId=${encodeURIComponent(connectedChainId)}`)
   }
 
   if (queryParameters.length > 0) {
@@ -135,4 +141,41 @@ export function generateLinkedinOrganization(linkedinUrl: string): string {
   const regex = /\/(\d+)\/?$/
   const match = linkedinUrl.match(regex)
   return match ? match[1] : linkedinUrl
+}
+
+export function generateTwitterText(badgeModelName: string, badgePreviewUrl: string): string {
+  return `Hey World!
+
+I just got my #Web3 Certificate: ${badgeModelName} from @TheBadgexyz 🤩 
+
+👉 You can check my badge here: ${badgePreviewUrl}`
+}
+
+type OpenseaParams = {
+  badgeId: string
+  contractAddress: string
+  networkId: ChainsValues
+}
+
+export function generateOpenseaUrl({
+  badgeId,
+  contractAddress,
+  networkId,
+}: OpenseaParams): string | null {
+  switch (networkId) {
+    case Chains.goerli:
+    case Chains.sepolia:
+    case Chains.mumbai: {
+      const chainName = getChainName(networkId)
+      return `https://testnets.opensea.io/assets/${chainName}/${contractAddress}/${badgeId}`
+    }
+    case Chains.polygon: {
+      const chainName = getChainName(networkId)
+      return `https://opensea.io/assets/${chainName}/${contractAddress}/${badgeId}`
+    }
+    default: {
+      console.warn(`Unsupported network: ${networkId}`)
+      return null
+    }
+  }
 }

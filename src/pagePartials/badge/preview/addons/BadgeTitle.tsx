@@ -27,6 +27,9 @@ export default function BadgeTitle() {
   const badgeModelMetadata = badgeModel?.badgeModelMetadata
   const { getExplorerUrl } = useWeb3Connection()
 
+  const badgeLinkUrl = badge?.claimedTxHash
+    ? getExplorerUrl(badge?.claimedTxHash)
+    : getExplorerUrl(badge?.createdTxHash)
   return (
     <Stack gap={isMobile ? 1 : 3}>
       <Typography
@@ -45,11 +48,9 @@ export default function BadgeTitle() {
         variant="caption"
       >
         {t('badge.viewBadge.id')}
-        {badge?.claimedTxHash && (
-          <Link href={getExplorerUrl(badge?.claimedTxHash)} target={'_blank'}>
-            <strong style={{ textDecoration: 'underline' }}>#{badgeId}</strong>
-          </Link>
-        )}
+        <Link href={badgeLinkUrl} target={'_blank'}>
+          <strong style={{ textDecoration: 'underline' }}>#{badgeId}</strong>
+        </Link>
       </Typography>
     </Stack>
   )
