@@ -14,6 +14,7 @@ import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 import { truncateStringInTheMiddle } from '@/src/utils/strings'
 import { CreatorMetadata } from '@/types/badges/Creator'
 import { WCAddress } from '@/types/utils'
+import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 
 const Wrapper = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -49,9 +50,14 @@ export default function TBUserInfoSmallPreview({
 }) {
   const { t } = useTranslation()
   const router = useRouter()
+  const { readOnlyChainId } = useWeb3Connection()
 
   function handleClick() {
-    window.open(router.basePath + generateProfileUrl({ address: userAddress }), '_ blank')
+    window.open(
+      router.basePath +
+        generateProfileUrl({ address: userAddress, connectedChainId: readOnlyChainId }),
+      '_ blank',
+    )
   }
 
   return (
