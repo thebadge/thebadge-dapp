@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router'
 import React from 'react'
 
 import FindInPageOutlinedIcon from '@mui/icons-material/FindInPageOutlined'
@@ -5,6 +6,7 @@ import { Box, Skeleton, Stack, Typography } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
 import { z } from 'zod'
 
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import TBModal from '@/src/components/common/TBModal'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { useChallengeCost } from '@/src/hooks/kleros/useChallengeCost'
@@ -19,12 +21,13 @@ import ChallengeCost from '@/src/pagePartials/badge/curate/challenge/ChallengeCo
 import EvidenceForm, {
   EvidenceSchema,
 } from '@/src/pagePartials/badge/curate/evidenceForm/EvidenceForm'
-const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
+import { ProfileType } from '@/src/pagePartials/profile/ProfileSelector'
 import {
   removeChallengedBadgeId,
   saveChallengedBadgeId,
 } from '@/src/utils/badges/challengeBadgesHelpers'
 import { encodeIpfsEvidence } from '@/src/utils/badges/createBadgeModelHelpers'
+import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 import { BadgeStatus } from '@/types/generated/subgraph'
 
 type ChallengeModalProps = {
@@ -51,6 +54,7 @@ function ChallengeModalContent({ badgeId, onClose }: { badgeId: string; onClose:
   const challengeCost = useChallengeCost(badgeId)
   const removalCost = useRemovalCost(badgeId)
   const { getBadgeReviewStatus } = useBadgeHelpers()
+  const router = useRouter()
 
   const badge = badgeById.data
   if (!badge) {
@@ -114,6 +118,10 @@ function ChallengeModalContent({ badgeId, onClose }: { badgeId: string; onClose:
       // If the TX fails, we remove the badge from the array
       await transaction.wait().catch(() => removeChallengedBadgeId(badgeId, address))
     }
+    // Finally redirects the user to his curation profile
+    router.push(
+      generateProfileUrl({ profileType: ProfileType.USER_PROFILE, filter: 'badgesIAmReviewing' }),
+    )
   }
 
   return (

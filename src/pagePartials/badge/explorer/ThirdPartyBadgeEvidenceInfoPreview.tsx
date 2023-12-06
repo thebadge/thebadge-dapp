@@ -97,7 +97,7 @@ export default function ThirdPartyBadgeEvidenceInfoPreview({ badge }: { badge: B
   return (
     <Stack gap={4} p={1}>
       <Box alignContent="center" display="flex" flex={1} justifyContent="space-between">
-        <BadgeIdDisplay id={badge?.id} isBadgeModel={false} mintTxHash={badge.createdTxHash} />
+        <BadgeIdDisplay id={badge?.id} mintTxHash={badge.createdTxHash} />
         {isClaimable ? (
           <Typography color={colors.redError} mb={4} textTransform="uppercase">
             {t('badge.unclaimed')}
