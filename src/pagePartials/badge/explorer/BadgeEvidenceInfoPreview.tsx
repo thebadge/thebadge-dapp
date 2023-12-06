@@ -23,14 +23,14 @@ export default function BadgeEvidenceInfoPreview({ badge }: { badge: Badge }) {
   const { t } = useTranslation()
   const { address } = useWeb3Connection()
   const { challenge } = useCurateProvider()
-  const isClaimable = useIsClaimable(badge.id)
+  const { data: isClaimable } = useIsClaimable(badge.id)
 
   const badgeKlerosMetadata = useEvidenceBadgeKlerosMetadata(badge?.id)
   const badgeEvidence = badgeKlerosMetadata.data?.requestBadgeEvidence
   const showTimeLeft = badge.status !== BadgeStatus.Approved
 
   if (!badgeEvidence || !badgeKlerosMetadata.data?.requestBadgeEvidenceRawUrl) {
-    throw 'There was an error fetching the badge evidence, try again in some minutes.'
+    throw t('badge.curate.modal.errorEvidenceDisplay')
   }
 
   const getTooltipText = () => {
