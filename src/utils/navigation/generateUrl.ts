@@ -80,12 +80,12 @@ export function generateProfileUrl(args?: {
     queryParameters.push(`profileType=${encodeURIComponent(profileType)}`)
   }
 
-  if (queryParameters.length > 0) {
-    url += `?${queryParameters.join('&')}`
+  if (connectedChainId) {
+    queryParameters.push(`networkId=${encodeURIComponent(connectedChainId)}`)
   }
 
-  if (connectedChainId) {
-    url += `?networkId=${connectedChainId}`
+  if (queryParameters.length > 0) {
+    url += `?${queryParameters.join('&')}`
   }
 
   return url
