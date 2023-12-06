@@ -35,7 +35,7 @@ function CurateModalContent({ badgeId, onClose }: { badgeId: string; onClose: ()
   const { address } = useWeb3Connection()
   const { addMoreEvidence, challenge } = useCurateProvider()
 
-  const isClaimable = useIsClaimable(badgeId)
+  const { data: isClaimable } = useIsClaimable(badgeId)
   const badgeById = useBadgeById(badgeId)
   const badge = badgeById.data
 

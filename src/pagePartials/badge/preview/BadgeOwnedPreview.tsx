@@ -30,6 +30,7 @@ import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { useSizeSM } from '@/src/hooks/useSize'
 import BadgeModelPreview from '@/src/pagePartials/badge/BadgeModelPreview'
 import BadgeTitle from '@/src/pagePartials/badge/preview/addons/BadgeTitle'
+import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { getExpirationYearAndMonth, getIssueYearAndMonth } from '@/src/utils/dateUtils'
 import {
   generateBadgeExplorer,
@@ -80,6 +81,7 @@ export default function BadgeOwnedPreview() {
   const resCreatorMetadata = useS3Metadata<{ content: CreatorMetadata }>(creator?.metadataUri || '')
   const { badgeOpenseaUrl, badgePreviewUrl } = useBadgePreviewUrl(badgeId, badge?.contractAddress)
   const badgeModelName = badgeModel?.badgeModelMetadata?.name || ''
+  const { readOnlyChainId } = useWeb3Connection()
 
   if (!badge || !badgeModel) {
     return null
@@ -159,7 +161,13 @@ export default function BadgeOwnedPreview() {
             <Typography variant="body2">
               {t('badge.viewBadge.issueBy')}
               {creatorAddress ? (
-                <Link href={generateProfileUrl({ address: creatorAddress })} target={'_blank'}>
+                <Link
+                  href={generateProfileUrl({
+                    address: creatorAddress,
+                    connectedChainId: readOnlyChainId,
+                  })}
+                  target={'_blank'}
+                >
                   <span style={{ textDecoration: 'underline' }}>{issuer}</span>
                 </Link>
               ) : (
