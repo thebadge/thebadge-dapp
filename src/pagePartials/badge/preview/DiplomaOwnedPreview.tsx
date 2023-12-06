@@ -175,7 +175,13 @@ export default function DiplomaOwnedPreview() {
               <Typography variant="body2">
                 {t('badge.viewBadge.issueBy')}
                 {creatorAddress ? (
-                  <Link href={generateProfileUrl({ address: creatorAddress })} target={'_blank'}>
+                  <Link
+                    href={generateProfileUrl({
+                      address: creatorAddress,
+                      connectedChainId: readOnlyChainId,
+                    })}
+                    target={'_blank'}
+                  >
                     <span style={{ textDecoration: 'underline' }}>{issuer}</span>
                   </Link>
                 ) : (
