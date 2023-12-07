@@ -33,6 +33,7 @@ import DiplomaView from '@/src/pagePartials/badge/preview/DiplomaView'
 import BadgeTitle from '@/src/pagePartials/badge/preview/addons/BadgeTitle'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { reCreateThirdPartyValuesObject } from '@/src/utils/badges/mintHelpers'
+import { handleShare } from '@/src/utils/badges/viewUtils'
 import { getExpirationYearAndMonth, getIssueYearAndMonth } from '@/src/utils/dateUtils'
 import {
   generateExplorer,
@@ -99,11 +100,6 @@ export default function DiplomaOwnedPreview() {
   let issuer = 'TheBadge'
   if (creatorMetadata && creatorMetadata.name) {
     issuer = creatorMetadata.name
-  }
-
-  function handleShare() {
-    navigator.clipboard.writeText(window.location.href)
-    notify({ message: 'URL Copied to clipboard', type: ToastStates.info })
   }
 
   function handleImport() {
@@ -192,7 +188,7 @@ export default function DiplomaOwnedPreview() {
                 <IconButton
                   aria-label="Share badge preview"
                   component="label"
-                  onClick={handleShare}
+                  onClick={() => handleShare()}
                 >
                   <ShareOutlinedIcon />
                 </IconButton>
