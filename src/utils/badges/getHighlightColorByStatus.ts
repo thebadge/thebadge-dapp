@@ -9,7 +9,6 @@ export default function getHighlightColorByStatus(badgeStatus?: BadgeStatus) {
     case BadgeStatus.Requested:
       return colors.greenLogo
     case BadgeStatus.RequestRemoval:
-      return colors.pink
     case BadgeStatus.Challenged:
       return colors.redError
     default:

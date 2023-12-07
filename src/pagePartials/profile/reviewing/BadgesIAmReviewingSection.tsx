@@ -35,7 +35,7 @@ const filters: Array<ListFilter<'In Review' | 'Challenged'>> = [
   },
   {
     title: 'Challenged',
-    color: 'pink',
+    color: 'error',
     fixed: true,
     defaultSelected: true,
   },
