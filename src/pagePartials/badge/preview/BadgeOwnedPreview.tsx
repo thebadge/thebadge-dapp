@@ -171,13 +171,15 @@ export default function BadgeOwnedPreview() {
               )}
             </Typography>
             <Box alignItems="center" display="flex" justifyContent="flex-end">
-              <IconButton
-                aria-label="Share badge preview"
-                component="label"
-                onClick={() => handleShare()}
-              >
-                <ShareOutlinedIcon />
-              </IconButton>
+              <Tooltip arrow title={t('badge.viewBadge.shareBadge')}>
+                <IconButton
+                  aria-label="Share badge preview"
+                  component="label"
+                  onClick={() => handleShare()}
+                >
+                  <ShareOutlinedIcon />
+                </IconButton>
+              </Tooltip>
               <Tooltip arrow title={t('badge.viewBadge.importBadge')}>
                 <IconButton
                   aria-label={t('badge.viewBadge.importBadge')}
