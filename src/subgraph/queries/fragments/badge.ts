@@ -90,6 +90,7 @@ gql`
       id
       uri
       contractAddress
+      controllerType
       badgeModelKleros {
         tcrList
         registrationUri
