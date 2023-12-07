@@ -10,8 +10,8 @@ import { useColorMode } from '@/src/providers/themeProvider'
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import { ThemeType } from '@/src/theme/types'
 import {
-  generateBadgeExplorer,
   generateBaseUrl,
+  generateExplorer,
   generateProfileUrl,
 } from '@/src/utils/navigation/generateUrl'
 
@@ -31,7 +31,7 @@ export const useMainMenuItems = () => {
       type: 'color',
       icon: <ExploreIcon />,
       title: 'Explore',
-      href: generateBadgeExplorer(),
+      href: generateExplorer(),
     },
     {
       type: 'color',

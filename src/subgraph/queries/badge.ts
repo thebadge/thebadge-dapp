@@ -1,5 +1,13 @@
 import gql from 'graphql-tag'
 
+export const BADGES_ALL = gql`
+  query allBadges {
+    badges {
+      ...BadgeWithJustIds
+    }
+  }
+`
+
 // TODO: hardcoded for kleros, fix it.
 export const BADGES_IN_REVIEW = gql`
   query badgesInReview($date: BigInt!) {

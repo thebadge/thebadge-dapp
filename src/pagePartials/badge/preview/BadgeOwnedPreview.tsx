@@ -31,9 +31,10 @@ import { useSizeSM } from '@/src/hooks/useSize'
 import BadgeModelPreview from '@/src/pagePartials/badge/BadgeModelPreview'
 import BadgeTitle from '@/src/pagePartials/badge/preview/addons/BadgeTitle'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+import { handleShare } from '@/src/utils/badges/viewUtils'
 import { getExpirationYearAndMonth, getIssueYearAndMonth } from '@/src/utils/dateUtils'
 import {
-  generateBadgeExplorer,
+  generateExplorer,
   generateLinkedinOrganization,
   generateLinkedinUrl,
   generateProfileUrl,
@@ -92,11 +93,6 @@ export default function BadgeOwnedPreview() {
   let issuer = 'TheBadge'
   if (creatorMetadata && creatorMetadata.name) {
     issuer = creatorMetadata.name
-  }
-
-  function handleShare() {
-    navigator.clipboard.writeText(window.location.href)
-    notify({ message: 'URL Copied to clipboard', type: ToastStates.info })
   }
 
   function handleImport() {
@@ -175,9 +171,15 @@ export default function BadgeOwnedPreview() {
               )}
             </Typography>
             <Box alignItems="center" display="flex" justifyContent="flex-end">
-              <IconButton aria-label="Share badge preview" component="label" onClick={handleShare}>
-                <ShareOutlinedIcon />
-              </IconButton>
+              <Tooltip arrow title={t('badge.viewBadge.shareBadge')}>
+                <IconButton
+                  aria-label="Share badge preview"
+                  component="label"
+                  onClick={() => handleShare()}
+                >
+                  <ShareOutlinedIcon />
+                </IconButton>
+              </Tooltip>
               <Tooltip arrow title={t('badge.viewBadge.importBadge')}>
                 <IconButton
                   aria-label={t('badge.viewBadge.importBadge')}
@@ -246,7 +248,7 @@ export default function BadgeOwnedPreview() {
 
           <Typography variant="body4">
             {t('badge.viewBadge.checkHowElse')}
-            <Link href={generateBadgeExplorer()}>
+            <Link href={generateExplorer()}>
               <span style={{ textDecoration: 'underline', textTransform: 'uppercase' }}>
                 {t('badge.viewBadge.seeAll')}
               </span>
