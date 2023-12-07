@@ -1,4 +1,3 @@
-import { useSearchParams } from 'next/navigation'
 import React, { useState } from 'react'
 
 import { Box, Stack, Typography } from '@mui/material'
@@ -15,7 +14,6 @@ enum AvailableExplorers {
 }
 
 const Explorer: NextPageWithLayout = () => {
-  const params = useSearchParams()
   const { t } = useTranslation()
   const [selectedExplorer, setSelectedExplorer] = useState<AvailableExplorers>(
     AvailableExplorers.Models,

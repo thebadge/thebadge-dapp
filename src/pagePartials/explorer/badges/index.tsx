@@ -1,6 +1,11 @@
+import { useRouter } from 'next/router'
 import React, { RefObject, createRef, useState } from 'react'
 
-import { Stack } from '@mui/material'
+import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined'
+import ExploreIcon from '@mui/icons-material/Explore'
+import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined'
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined'
+import { Box, IconButton, Stack, Tooltip } from '@mui/material'
 import { colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 
@@ -10,34 +15,31 @@ import {
   MiniBadgePreviewLoading,
 } from '@/src/components/common/MiniBadgePreviewContainer'
 import FilteredList, { ListFilter } from '@/src/components/helpers/FilteredList'
-import SelectedItemPreviewWrapper from '@/src/components/helpers/FilteredList/SelectedItemPreviewWrapper'
 import InViewPort from '@/src/components/helpers/InViewPort'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
+import { shuffleBadges } from '@/src/components/utils/sortBadgeList'
+import { APP_URL } from '@/src/constants/common'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
-import useListItemNavigation from '@/src/hooks/useListItemNavigation'
 import { useSizeSM } from '@/src/hooks/useSize'
 import MiniBadgeModelPreview from '@/src/pagePartials/badge/MiniBadgeModelPreview'
-import BadgeInfoPreview from '@/src/pagePartials/badge/explorer/BadgeInfoPreview'
+import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+import { handleShare } from '@/src/utils/badges/viewUtils'
+import { generateBadgePreviewUrl, generateMintUrl } from '@/src/utils/navigation/generateUrl'
+import { BadgeModelControllerType } from '@/types/badges/BadgeModel'
 import { Badge } from '@/types/generated/subgraph'
-import { shuffleBadges } from '@/src/components/utils/sortBadgeList'
 
 const ExploreBadges = () => {
   const { t } = useTranslation()
   const gql = useSubgraph()
+  const router = useRouter()
   const isMobile = useSizeSM()
 
+  const { readOnlyChainId } = useWeb3Connection()
   const [badges, setBadges] = useState<Badge[]>([])
   const [loading, setLoading] = useState<boolean>(false)
   const [selectedBadge, setSelectedBadge] = useState<number>(0)
 
   const badgeElementRefs: RefObject<HTMLLIElement>[] = badges.map(() => createRef<HTMLLIElement>())
-
-  const { selectNext, selectPrevious } = useListItemNavigation(
-    setSelectedBadge,
-    badgeElementRefs,
-    selectedBadge,
-    badges.length,
-  )
 
   const search = async (
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -61,22 +63,14 @@ const ExploreBadges = () => {
     }, 2000)
   }
 
-  function renderSelectedBadgePreview() {
-    if (!badges[selectedBadge]) return null
-    return (
-      <SelectedItemPreviewWrapper
-        color={colors.green}
-        onSelectNext={selectNext}
-        onSelectPrevious={selectPrevious}
-        title={t('explorer.badges.preview.title')}
-      >
-        <BadgeInfoPreview badge={badges[selectedBadge]} />
-      </SelectedItemPreviewWrapper>
-    )
-  }
-
   function renderBadgeItem(bt: Badge, index: number) {
     const isSelected = bt.id === badges[selectedBadge]?.id
+    const mintUrl = generateMintUrl(bt.badgeModel.controllerType, bt.badgeModel.id)
+    const viewUrl = generateBadgePreviewUrl(bt.id, {
+      theBadgeContractAddress: bt.contractAddress,
+      connectedChainId: readOnlyChainId,
+    })
+    const isThirdParty = bt.badgeModel.controllerType === BadgeModelControllerType.ThirdParty
     return (
       <InViewPort
         key={bt.id}
@@ -99,7 +93,43 @@ const ExploreBadges = () => {
               disableAnimations
               highlightColor={colors.green}
               metadata={bt.uri}
+              onClick={() => router.push(viewUrl)}
             />
+            <Box display="flex" flex="1" justifyContent="space-between">
+              <Box display="flex" flex="1">
+                <Tooltip arrow title={t('badge.viewBadge.viewBadge')}>
+                  <IconButton
+                    aria-label="View badge"
+                    component="label"
+                    onClick={() => router.push(viewUrl)}
+                  >
+                    <VisibilityOutlinedIcon />
+                  </IconButton>
+                </Tooltip>
+                {!isThirdParty ? (
+                  <Tooltip arrow title={t('badge.viewBadge.mintBadge')}>
+                    <IconButton
+                      aria-label="Mint badge"
+                      component="label"
+                      onClick={() => router.push(mintUrl)}
+                    >
+                      <AddBoxOutlinedIcon />
+                    </IconButton>
+                  </Tooltip>
+                ) : null}
+              </Box>
+              <Box display="flex" flex="1" justifyContent="flex-end">
+                <Tooltip arrow title={t('badge.viewBadge.shareBadge')}>
+                  <IconButton
+                    aria-label="Share badge preview"
+                    component="label"
+                    onClick={() => handleShare(APP_URL + viewUrl)}
+                  >
+                    <ShareOutlinedIcon />
+                  </IconButton>
+                </Tooltip>
+              </Box>
+            </Box>
           </MiniBadgePreviewContainer>
         </SafeSuspense>
       </InViewPort>
@@ -123,10 +153,10 @@ const ExploreBadges = () => {
         items={generateListItems()}
         loading={loading}
         loadingColor={'green'}
-        preview={renderSelectedBadgePreview()}
         search={search}
         title={t('explorer.badges.title')}
         titleColor={colors.green}
+        titleIcon={<ExploreIcon />}
       />
     </>
   )
