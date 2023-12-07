@@ -33,7 +33,7 @@ import BadgeTitle from '@/src/pagePartials/badge/preview/addons/BadgeTitle'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { getExpirationYearAndMonth, getIssueYearAndMonth } from '@/src/utils/dateUtils'
 import {
-  generateBadgeExplorer,
+  generateExplorer,
   generateLinkedinOrganization,
   generateLinkedinUrl,
   generateProfileUrl,
@@ -246,7 +246,7 @@ export default function BadgeOwnedPreview() {
 
           <Typography variant="body4">
             {t('badge.viewBadge.checkHowElse')}
-            <Link href={generateBadgeExplorer()}>
+            <Link href={generateExplorer()}>
               <span style={{ textDecoration: 'underline', textTransform: 'uppercase' }}>
                 {t('badge.viewBadge.seeAll')}
               </span>

@@ -26,8 +26,8 @@ export function generateBadgeModelCreate(
   return `/badgeModel/create/${controllerType}`
 }
 
-export function generateBadgeExplorer() {
-  return `/badgeModel/explorer`
+export function generateExplorer() {
+  return `/explorer`
 }
 
 export function generateBadgeCurate() {

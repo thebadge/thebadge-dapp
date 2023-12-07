@@ -35,7 +35,7 @@ import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { reCreateThirdPartyValuesObject } from '@/src/utils/badges/mintHelpers'
 import { getExpirationYearAndMonth, getIssueYearAndMonth } from '@/src/utils/dateUtils'
 import {
-  generateBadgeExplorer,
+  generateExplorer,
   generateLinkedinOrganization,
   generateLinkedinUrl,
   generateProfileUrl,
@@ -264,7 +264,7 @@ export default function DiplomaOwnedPreview() {
 
             <Typography variant="body4">
               {t('badge.viewBadge.checkHowElse')}
-              <Link href={generateBadgeExplorer()}>
+              <Link href={generateExplorer()}>
                 <span style={{ textDecoration: 'underline', textTransform: 'uppercase' }}>
                   {t('badge.viewBadge.seeAll')}
                 </span>

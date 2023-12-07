@@ -12,7 +12,7 @@ import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import MiniBadgeModelPreview from '@/src/pagePartials/badge/MiniBadgeModelPreview'
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import getHighlightColorByStatus from '@/src/utils/badges/getHighlightColorByStatus'
-import { generateBadgeExplorer, generateBadgePreviewUrl } from '@/src/utils/navigation/generateUrl'
+import { generateBadgePreviewUrl, generateExplorer } from '@/src/utils/navigation/generateUrl'
 import { Badge, BadgeStatus, Badge_Filter } from '@/types/generated/subgraph'
 
 type Props = {
@@ -96,7 +96,7 @@ export default function BadgesYouOwnList({ address }: Props) {
           <ButtonV2
             backgroundColor={colors.transparent}
             fontColor={colors.blue}
-            onClick={() => router.push(generateBadgeExplorer())}
+            onClick={() => router.push(generateExplorer())}
             sx={{ m: 'auto' }}
           >
             <Typography>{t('profile.badgesYouOwn.mint')}</Typography>
