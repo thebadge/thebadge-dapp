@@ -1,5 +1,6 @@
-import { Badge } from '@/types/generated/subgraph'
 import _ from 'lodash'
+
+import { Badge } from '@/types/generated/subgraph'
 
 type BadgesByModelIdMapping = Record<string, Badge[]>
 
