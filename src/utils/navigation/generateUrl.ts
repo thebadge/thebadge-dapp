@@ -7,8 +7,8 @@ import { BadgeModelControllerType } from '@/types/badges/BadgeModel'
 import { ChainsValues } from '@/types/chains'
 
 export function generateMintUrl(
-  controllerType: string,
-  badgeModelId: string = BadgeModelControllerType.Community,
+  controllerType: string = BadgeModelControllerType.Community,
+  badgeModelId: string,
 ) {
   return `/badgeModel/${controllerType}/${badgeModelId}/mint`
 }
