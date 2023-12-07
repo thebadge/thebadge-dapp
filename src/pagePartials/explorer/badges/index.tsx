@@ -19,6 +19,7 @@ import { useSizeSM } from '@/src/hooks/useSize'
 import MiniBadgeModelPreview from '@/src/pagePartials/badge/MiniBadgeModelPreview'
 import BadgeInfoPreview from '@/src/pagePartials/badge/explorer/BadgeInfoPreview'
 import { Badge } from '@/types/generated/subgraph'
+import { shuffleBadges } from '@/src/components/utils/sortBadgeList'
 
 const ExploreBadges = () => {
   const { t } = useTranslation()
@@ -51,10 +52,11 @@ const ExploreBadges = () => {
     // TODO filter badges using filters, category, text
     const allBadgesQuery = await gql.allBadges()
     const badges = (allBadgesQuery.badges as Badge[]) || []
-
+    // Shuffles the badges to avoid having badges with the same model near to others
+    const shuffledBadges = shuffleBadges(badges)
     setTimeout(() => {
       setLoading(false)
-      setBadges(badges)
+      setBadges(shuffledBadges)
       setSelectedBadge(0)
     }, 2000)
   }
