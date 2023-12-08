@@ -58,3 +58,11 @@ export const CreateCommunityModelSchema = z.object({
 
 export type BadgeModelCommunityCriteriaType = z.infer<typeof CommunityBadgeModelCriteriaSchema>
 export type CreateCommunityModelSchemaType = z.infer<typeof CreateCommunityModelSchema>
+
+export const CustomFieldsConfigurationSchema = z.object({
+  // ------ BADGE BASICS FIELD ------
+  customFieldsEnabled: z.boolean().optional(),
+  badgeTitle: z.string().optional(),
+  badgeDescription: z.string().optional(),
+})
+export type CustomFieldsConfigurationSchemaType = z.infer<typeof CustomFieldsConfigurationSchema>

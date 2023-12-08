@@ -7,6 +7,19 @@ export const ENRICH_TEXT_VARIABLES = [
 
 export type EnrichTextVariables = (typeof ENRICH_TEXT_VARIABLES)[number]
 
+export type TemplateVariable =
+  | '{{address}}'
+  | '{{displayName}}'
+  | '{{expirationTime}}'
+  | '{{studentName}}'
+
+export const SUPPORTED_VARIABLES: TemplateVariable[] = [
+  '{{address}}',
+  '{{displayName}}',
+  '{{expirationTime}}',
+  '{{studentName}}',
+]
+
 export type EnrichTextValues = {
   [key in EnrichTextVariables]: string
 }
