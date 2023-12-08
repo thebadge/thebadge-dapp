@@ -1,7 +1,7 @@
 import * as React from 'react'
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 
-import { JsonRpcProvider } from '@ethersproject/providers'
+import { JsonRpcProvider, JsonRpcSigner } from '@ethersproject/providers'
 import { providers } from 'ethers'
 import useSWR from 'swr'
 import { Connector, type WalletClient, useConnect } from 'wagmi'
@@ -56,16 +56,14 @@ export function useWalletClientHandcraft({
   })
 }
 
-/** Hook to convert a viem Wallet Client to an ethers.js Signer. */
-export function useEthersSigner({
-  address,
-  chainId,
-  isAppChainReadOnly,
-}: {
+type EthersSignerProps = {
   chainId: ChainsValues
   isAppChainReadOnly: boolean
   address?: string
-}) {
+}
+
+/** Hook to convert a viem Wallet Client to an ethers.js Signer. */
+export function useEthersSigner({ address, chainId, isAppChainReadOnly }: EthersSignerProps) {
   const { data: walletClient } = useWalletClientHandcraft({ chainId, address })
 
   const readOnlyAppProvider = useMemo(() => {
@@ -76,8 +74,16 @@ export function useEthersSigner({
     return walletClient ? walletClientToSigner(walletClient) : readOnlyAppProvider
   }, [walletClient, readOnlyAppProvider])
 
+  const getCustomEthersSigner = useCallback(
+    ({ chainId }: EthersSignerProps): JsonRpcProvider | JsonRpcSigner => {
+      return new JsonRpcProvider(getNetworkConfig(chainId)?.rpcUrl, chainId)
+    },
+    [],
+  )
+
   return {
     ethersSigner: isAppChainReadOnly ? readOnlyAppProvider : ethersSigner,
     readOnlyAppProvider,
+    getCustomEthersSigner,
   }
 }
