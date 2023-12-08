@@ -35,14 +35,74 @@ export const BADGE_MODEL_BACKGROUNDS: ModelsBackgrounds = {
     url: 'https://images.unsplash.com/photo-1567359781514-3b964e2b04d6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=536&q=80',
     badgesRequired: [],
   },
-  'Purple Lava (Premium)': {
-    url: 'https://images.unsplash.com/photo-1567359781514-3b964e2b04d6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=536&q=80',
+  'Winners wave (Premium)': {
+    url: 'https://images.unsplash.com/photo-1556691421-cf15fe27a0b6?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=536&q=80',
     badgesRequired: [
-      {
-        badgeId: 0,
-        networkId: Chains.sepolia,
-        contractAddress: contracts.TheBadge.address[Chains.sepolia],
-      },
+      // {
+      //   badgeId: 0,
+      //   networkId: Chains.sepolia,
+      //   contractAddress: contracts.TheBadge.address[Chains.sepolia],
+      // },
+    ],
+  },
+  'Hackers in black (Premium)': {
+    url: 'https://images.unsplash.com/photo-1464639351491-a172c2aa2911?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=536&q=80',
+    badgesRequired: [
+      // {
+      //   badgeId: 0,
+      //   networkId: Chains.sepolia,
+      //   contractAddress: contracts.TheBadge.address[Chains.sepolia],
+      // },
+    ],
+  },
+  'Blue Confetti (Premium)': {
+    url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=536&q=80',
+    badgesRequired: [
+      // {
+      //   badgeId: 0,
+      //   networkId: Chains.sepolia,
+      //   contractAddress: contracts.TheBadge.address[Chains.sepolia],
+      // },
+    ],
+  },
+  'Celestial orange (Premium)': {
+    url: 'https://images.unsplash.com/photo-1576502200272-341a4b8d5ebb?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=536&q=80',
+    badgesRequired: [
+      // {
+      //   badgeId: 0,
+      //   networkId: Chains.sepolia,
+      //   contractAddress: contracts.TheBadge.address[Chains.sepolia],
+      // },
+    ],
+  },
+  'Galactic blue(Premium)': {
+    url: 'https://images.unsplash.com/photo-1627704362507-59aeb78090c5?q=80&w=2340&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=536&q=80',
+    badgesRequired: [
+      // {
+      //   badgeId: 0,
+      //   networkId: Chains.sepolia,
+      //   contractAddress: contracts.TheBadge.address[Chains.sepolia],
+      // },
+    ],
+  },
+  'Void Black (Premium)': {
+    url: 'https://images.unsplash.com/photo-1637946175559-22c4fe13fc54?q=80&w=2160&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=536&q=80',
+    badgesRequired: [
+      // {
+      //   badgeId: 0,
+      //   networkId: Chains.sepolia,
+      //   contractAddress: contracts.TheBadge.address[Chains.sepolia],
+      // },
+    ],
+  },
+  'Sea Purple (Premium)': {
+    url: 'https://images.unsplash.com/photo-1658483451190-d3b9bdc2ee43?q=80&w=2568&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=536&q=80',
+    badgesRequired: [
+      // {
+      //   badgeId: 0,
+      //   networkId: Chains.sepolia,
+      //   contractAddress: contracts.TheBadge.address[Chains.sepolia],
+      // },
     ],
   },
 }
