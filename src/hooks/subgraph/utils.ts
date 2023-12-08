@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from 'axios'
+import axios, { AxiosError, AxiosResponse } from 'axios'
 
 import { BACKEND_URL } from '@/src/constants/common'
 import { cleanHash } from '@/src/utils/fileUtils'
@@ -11,7 +11,7 @@ import { BackendResponse } from '@/types/utils'
  * @template X - Additional type parameter that can be optionally provided to extend the backend response type.
  * @param {string} hash - The IPFS hash representing the content to retrieve.
  */
-export async function getFromIPFS<T, X = {}>(hash?: string): Promise<any> {
+export async function getFromIPFS<T, X>(hash?: string): Promise<any> {
   if (!hash) return
   const cleanedHash = cleanHash(hash as string)
   if (!cleanedHash) {
@@ -41,8 +41,7 @@ export async function getFromIPFS<T, X = {}>(hash?: string): Promise<any> {
     return backendResponse
   } catch (error) {
     // Handle 304 Not Modified response
-    // @ts-ignore
-    if (error.response && error.response.status === 304) {
+    if ((error as AxiosError)?.response?.status === 304) {
       // Handle the case where the resource has not been modified
       console.log('Resource not modified')
       return getCacheResponse(itemCacheKey)

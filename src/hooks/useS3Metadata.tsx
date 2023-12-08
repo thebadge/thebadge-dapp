@@ -12,7 +12,7 @@ export default function useS3Metadata<T>(hash: string) {
   return useSWR(hash.length ? hash : null, async (_hash) => {
     const cleanedHash = cleanHash(_hash as string)
 
-    const res = await getFromIPFS(cleanedHash)
+    const res = await getFromIPFS<T>(cleanedHash)
     return res.data.result
   })
 }
