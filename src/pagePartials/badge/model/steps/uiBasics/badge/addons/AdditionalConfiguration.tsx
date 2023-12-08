@@ -5,14 +5,18 @@ import { useTranslation } from 'next-export-i18n'
 import { Controller, useFormContext } from 'react-hook-form'
 
 import { DropdownSelect } from '@/src/components/form/formFields/DropdownSelect'
-import { BADGE_MODEL_BACKGROUNDS, BADGE_MODEL_TEXT_CONTRAST } from '@/src/constants/backgrounds'
+import { BADGE_MODEL_TEXT_CONTRAST } from '@/src/constants/backgrounds'
+import { useAvailableBackgrounds } from '@/src/hooks/useAvailableBackgrounds'
 import { CreateCommunityModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateCommunityModelSchema'
 import SectionContainer from '@/src/pagePartials/badge/model/steps/uiBasics/addons/SectionContainer'
+import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 
 export default function AdditionConfiguration() {
   const { t } = useTranslation()
 
   const { control } = useFormContext<CreateCommunityModelSchemaType>()
+  const { address, readOnlyChainId } = useWeb3Connection()
+  const availableBackgrounds = useAvailableBackgrounds(readOnlyChainId, address)
 
   return (
     <>
@@ -44,7 +48,7 @@ export default function AdditionConfiguration() {
                 error={error}
                 label={t('badge.model.create.uiBasics.backgroundImage')}
                 onChange={onChange}
-                options={Object.keys(BADGE_MODEL_BACKGROUNDS)}
+                options={availableBackgrounds}
                 value={value || 'Two'}
               />
             )}
