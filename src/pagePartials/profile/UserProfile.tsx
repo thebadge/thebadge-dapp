@@ -26,7 +26,7 @@ const UserProfile = () => {
   const { t } = useTranslation()
 
   const params = useSearchParams()
-  const selectedFilter = params.get('filter')
+  const selectedFilter = params?.get('filter')
 
   const { data: user } = useCurrentUser()
   const router = useRouter()

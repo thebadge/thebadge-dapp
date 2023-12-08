@@ -24,7 +24,7 @@ const ProfileSelector = () => {
   const { t } = useTranslation()
 
   const params = useSearchParams()
-  const selectedProfile = params.get('profileType')
+  const selectedProfile = params?.get('profileType')
 
   const { address: connectedWalletAddress, readOnlyChainId } = useWeb3Connection()
   const isThirdPartyUser = useIsThirdPartyUser(connectedWalletAddress)
