@@ -29,11 +29,13 @@ function MiniBadgeModelPreview({
   const badgeMetadata = res.data?.content
 
   const backgroundType = badgeMetadata?.attributes?.find(
-    (at) => at.trait_type === BadgeNFTAttributesType.Background,
+    (at: { trait_type: BadgeNFTAttributesType }) =>
+      at.trait_type === BadgeNFTAttributesType.Background,
   )
 
   const textContrast = badgeMetadata?.attributes?.find(
-    (at) => at.trait_type === BadgeNFTAttributesType.TextContrast,
+    (at: { trait_type: BadgeNFTAttributesType }) =>
+      at.trait_type === BadgeNFTAttributesType.TextContrast,
   )
 
   return (

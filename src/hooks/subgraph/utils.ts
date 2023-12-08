@@ -11,7 +11,7 @@ import { BackendResponse } from '@/types/utils'
  * @template X - Additional type parameter that can be optionally provided to extend the backend response type.
  * @param {string} hash - The IPFS hash representing the content to retrieve.
  */
-export async function getFromIPFS<T, X>(hash?: string): Promise<any> {
+export async function getFromIPFS<T, X = NonNullable<unknown>>(hash?: string): Promise<any> {
   if (!hash) return
   const cleanedHash = cleanHash(hash as string)
   if (!cleanedHash) {

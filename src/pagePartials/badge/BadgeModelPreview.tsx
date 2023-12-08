@@ -21,11 +21,13 @@ function BadgeModelPreview({ badgeUrl, clickable, effects, metadata, size = 'med
   const res = useS3Metadata<{ content: BadgeModelMetadata<BackendFileResponse> }>(metadata || '')
   const badgeMetadata = res.data?.content
   const backgroundType = badgeMetadata?.attributes?.find(
-    (at) => at.trait_type === BadgeNFTAttributesType.Background,
+    (at: { trait_type: BadgeNFTAttributesType }) =>
+      at.trait_type === BadgeNFTAttributesType.Background,
   )
 
   const textContrast = badgeMetadata?.attributes?.find(
-    (at) => at.trait_type === BadgeNFTAttributesType.TextContrast,
+    (at: { trait_type: BadgeNFTAttributesType }) =>
+      at.trait_type === BadgeNFTAttributesType.TextContrast,
   )
 
   return (

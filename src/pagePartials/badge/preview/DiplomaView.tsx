@@ -26,22 +26,28 @@ export default function DiplomaView({ additionalData, badgeUrl, modelId }: Props
   const badgeModelMetadata = badgeModelData.data?.badgeModelMetadata
 
   const courseName = badgeModelMetadata?.attributes?.find(
-    (at) => at.trait_type === DiplomaNFTAttributesType.CourseName,
+    (at: { trait_type: DiplomaNFTAttributesType }) =>
+      at.trait_type === DiplomaNFTAttributesType.CourseName,
   )
   const achievementDescription = badgeModelMetadata?.attributes?.find(
-    (at) => at.trait_type === DiplomaNFTAttributesType.AchievementDescription,
+    (at: { trait_type: DiplomaNFTAttributesType }) =>
+      at.trait_type === DiplomaNFTAttributesType.AchievementDescription,
   )
   const achievementDate = badgeModelMetadata?.attributes?.find(
-    (at) => at.trait_type === DiplomaNFTAttributesType.AchievementDate,
+    (at: { trait_type: DiplomaNFTAttributesType }) =>
+      at.trait_type === DiplomaNFTAttributesType.AchievementDate,
   )
   const issuerConfigs = badgeModelMetadata?.attributes?.find(
-    (at) => at.trait_type === DiplomaNFTAttributesType.IssuerConfigs,
+    (at: { trait_type: DiplomaNFTAttributesType }) =>
+      at.trait_type === DiplomaNFTAttributesType.IssuerConfigs,
   )
   const footerConfigs = badgeModelMetadata?.attributes?.find(
-    (at) => at.trait_type === DiplomaNFTAttributesType.FooterConfigs,
+    (at: { trait_type: DiplomaNFTAttributesType }) =>
+      at.trait_type === DiplomaNFTAttributesType.FooterConfigs,
   )
   const signerConfigs = badgeModelMetadata?.attributes?.find(
-    (at) => at.trait_type === DiplomaNFTAttributesType.SignerConfigs,
+    (at: { trait_type: DiplomaNFTAttributesType }) =>
+      at.trait_type === DiplomaNFTAttributesType.SignerConfigs,
   )
 
   const signerConfigsMetadata = useS3Metadata<{

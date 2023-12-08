@@ -18,11 +18,13 @@ export const BadgeView = ({ badgeUrl, modelId }: BadgePreviewGeneratorProps) => 
   const badgeLogoImage = badgeModelData.data?.badgeModelMetadata?.image
 
   const backgroundType = badgeModelMetadata?.attributes?.find(
-    (at) => at.trait_type === BadgeNFTAttributesType.Background,
+    (at: { trait_type: BadgeNFTAttributesType }) =>
+      at.trait_type === BadgeNFTAttributesType.Background,
   )
 
   const textContrast = badgeModelMetadata?.attributes?.find(
-    (at) => at.trait_type === BadgeNFTAttributesType.TextContrast,
+    (at: { trait_type: BadgeNFTAttributesType }) =>
+      at.trait_type === BadgeNFTAttributesType.TextContrast,
   )
 
   return (

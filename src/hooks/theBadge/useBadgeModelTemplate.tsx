@@ -10,7 +10,8 @@ export default function useBadgeModelTemplate(
   const badgeModelMetadata = badgeModelData.data?.badgeModelMetadata
 
   const template = badgeModelMetadata?.attributes?.find(
-    (at) => at.trait_type === DiplomaNFTAttributesType.Template,
+    (at: { trait_type: DiplomaNFTAttributesType }) =>
+      at.trait_type === DiplomaNFTAttributesType.Template,
   )
 
   if (!template) {
