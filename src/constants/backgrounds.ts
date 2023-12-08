@@ -1,7 +1,22 @@
 import { BadgeRequired } from '@/src/hooks/theBadge/useBadgesRequired'
 
+export type ModelsBackgroundsNames =
+  | 'Rainbow Vortex'
+  | 'White Waves'
+  | 'Calm'
+  | 'Neon Storm'
+  | 'Mountain Sea'
+  | 'Purple Lava'
+  | 'Winners wave (Premium)'
+  | 'Hackers in black (Premium)'
+  | 'Blue Confetti (Premium)'
+  | 'Celestial Orange (Premium)'
+  | 'Galactic Blue (Premium)'
+  | 'Void Black (Premium)'
+  | 'Sea Purple (Premium)'
+
 export type ModelsBackgrounds = {
-  [key: string]: {
+  [key in ModelsBackgroundsNames]: {
     url: string
     badgesRequired: BadgeRequired[]
     disabled?: boolean
@@ -63,7 +78,7 @@ export const BADGE_MODEL_BACKGROUNDS: ModelsBackgrounds = {
       // },
     ],
   },
-  'Celestial orange (Premium)': {
+  'Celestial Orange (Premium)': {
     url: 'https://images.unsplash.com/photo-1576502200272-341a4b8d5ebb?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=536&q=80',
     badgesRequired: [
       // {
@@ -73,7 +88,7 @@ export const BADGE_MODEL_BACKGROUNDS: ModelsBackgrounds = {
       // },
     ],
   },
-  'Galactic blue(Premium)': {
+  'Galactic Blue (Premium)': {
     url: 'https://images.unsplash.com/photo-1627704362507-59aeb78090c5?q=80&w=2340&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=536&q=80',
     badgesRequired: [
       // {
@@ -110,7 +125,9 @@ export const BADGE_MODEL_TEXT_CONTRAST: { [key: string]: string } = {
   Black: 'light-withTextBackground',
 }
 
-export const getBackgroundBadgeUrl = (backgroundName?: string | number): string => {
+export const getBackgroundBadgeUrl = (
+  backgroundName: ModelsBackgroundsNames | undefined,
+): string => {
   if (backgroundName) {
     return BADGE_MODEL_BACKGROUNDS[backgroundName].url || BADGE_MODEL_BACKGROUNDS['White Waves'].url
   }

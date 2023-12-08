@@ -6,10 +6,11 @@ import { BadgePreview } from '@thebadge/ui-library'
 import { getBackgroundBadgeUrl } from '@/src/constants/backgrounds'
 import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
-const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import useBadgePreviewUrl from '@/src/hooks/theBadge/useBadgePreviewUrl'
 import useEstimateBadgeId from '@/src/hooks/theBadge/useEstimateBadgeId'
-import { BadgeNFTAttributesType } from '@/types/badges/BadgeMetadata'
+import { getBackgroundType, getTextContrast } from '@/src/utils/badges/metadataHelpers'
+
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
 export default function MintSucceed() {
   const { appChainId } = useWeb3Connection()
@@ -21,13 +22,8 @@ export default function MintSucceed() {
 
   const badgeLogoImage = badgeModelData.data?.badgeModelMetadata?.image
 
-  const backgroundType = badgeModelMetadata?.attributes?.find(
-    (at) => at.trait_type === BadgeNFTAttributesType.Background,
-  )
-
-  const textContrast = badgeModelMetadata?.attributes?.find(
-    (at) => at.trait_type === BadgeNFTAttributesType.TextContrast,
-  )
+  const backgroundType = getBackgroundType(badgeModelMetadata?.attributes)
+  const textContrast = getTextContrast(badgeModelMetadata?.attributes)
 
   if (badgeModelData.error || !badgeModelData.data) {
     throw `There was an error trying to fetch the metadata for the badge model`
