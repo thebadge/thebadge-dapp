@@ -25,7 +25,7 @@ import {
 } from '@/types/badges/BadgeMetadata'
 import { BadgeModelTemplate } from '@/types/badges/BadgeModel'
 import { Kleros__factory } from '@/types/generated/typechain'
-import { MetadataColumn, ThirdPartyMetadataColumn } from '@/types/kleros/types'
+import { KLEROS_LIST_TYPES, MetadataColumn, ThirdPartyMetadataColumn } from '@/types/kleros/types'
 import { BackendFileUpload } from '@/types/utils'
 
 export async function createAndUploadBadgeModelMetadata(data: CreateThirdPartyModelSchemaType) {
@@ -360,4 +360,64 @@ async function transformDeltaToPDF(pdfValues: z.infer<typeof DeltaPDFSchema>) {
   // we pass the delta object to the generatePdf function of the pdfExporter
   // it will resolve to a Blob of the PDF document
   return (await pdfExporter.generatePdfBase64(delta)) as string
+}
+
+export function getNeededVariables({
+  description,
+  title,
+}: {
+  title?: string
+  description?: string
+}): ThirdPartyMetadataColumn[] {
+  const thirdPartyColumns = []
+  const isStudentNameRequired =
+    title?.includes('{{studentName}}') || description?.includes('{{studentName}}')
+  const isAddressRequired = title?.includes('{{address}}') || description?.includes('{{address}}')
+  const isDisplayNameRequired =
+    title?.includes('{{displayName}}') || description?.includes('{{displayName}}')
+
+  if (isStudentNameRequired) {
+    thirdPartyColumns.push(
+      // Diploma required fields
+      {
+        label: 'Student Name',
+        description: 'You must add your name and surname, to have your diploma',
+        type: KLEROS_LIST_TYPES.TEXT,
+        // Key that is going to be used to search and replace the value on
+        // the diploma, like {{studentName}}
+        replacementKey: 'studentName',
+        isIdentifier: false,
+      },
+    )
+  }
+  if (isAddressRequired) {
+    // TODO Address may not be required, and can be taken from the minter itself
+    thirdPartyColumns.push(
+      // Diploma required fields
+      {
+        label: 'Address',
+        description: 'You must add your address, to be used on the badge.',
+        type: KLEROS_LIST_TYPES.TEXT,
+        // Key that is going to be used to search and replace the value on
+        // the diploma, like {{address}}
+        replacementKey: 'address',
+        isIdentifier: false,
+      },
+    )
+  }
+  if (isDisplayNameRequired) {
+    thirdPartyColumns.push(
+      // Diploma required fields
+      {
+        label: 'Display Name',
+        description: 'You must add a display name, to be used on the badge',
+        type: KLEROS_LIST_TYPES.TEXT,
+        // Key that is going to be used to search and replace the value on
+        // the diploma, like {{displayName}}
+        replacementKey: 'displayName',
+        isIdentifier: false,
+      },
+    )
+  }
+  return []
 }

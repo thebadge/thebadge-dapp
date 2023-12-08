@@ -4,6 +4,7 @@ import { Alert, Stack, Typography } from '@mui/material'
 import { Controller, useFormContext } from 'react-hook-form'
 
 import { CheckBox } from '@/src/components/form/formFields/CheckBox'
+import { TextArea } from '@/src/components/form/formFields/TextArea'
 import { TextField } from '@/src/components/form/formFields/TextField'
 import { CustomFieldsConfigurationSchemaType } from '@/src/pagePartials/badge/model/schema/CreateCommunityModelSchema'
 import SectionContainer from '@/src/pagePartials/badge/model/steps/uiBasics/addons/SectionContainer'
@@ -47,7 +48,7 @@ export default function CustomFieldsConfiguration() {
                   <TextField
                     allowVariables
                     error={error}
-                    ghostLabel={'Max Mustermann'}
+                    ghostLabel={'Badge Title'}
                     onChange={onChange}
                     value={value}
                   />
@@ -61,13 +62,7 @@ export default function CustomFieldsConfiguration() {
                 control={control}
                 name={'badgeDescription'}
                 render={({ field: { onChange, value }, fieldState: { error } }) => (
-                  <TextField
-                    allowVariables
-                    error={error}
-                    ghostLabel={'CEO of TheGreatestCompany'}
-                    onChange={onChange}
-                    value={value}
-                  />
+                  <TextArea allowVariables error={error} onChange={onChange} value={value} />
                 )}
               />
             </Stack>

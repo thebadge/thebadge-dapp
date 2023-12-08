@@ -1,3 +1,14 @@
+/**
+ * Variables that are automatically completed using the badge information
+ */
+export type AutocompletedTemplateVariable = '{{address}}' | '{{expirationTime}}'
+/**
+ * Variables that need to be required to the user at mint time
+ */
+export type UserRequestedTemplateVariables = '{{displayName}}' | '{{studentName}}'
+
+export type TemplateVariable = AutocompletedTemplateVariable | UserRequestedTemplateVariables
+
 export const ENRICH_TEXT_VARIABLES = [
   'address',
   'displayName',
@@ -6,12 +17,6 @@ export const ENRICH_TEXT_VARIABLES = [
 ] as const
 
 export type EnrichTextVariables = (typeof ENRICH_TEXT_VARIABLES)[number]
-
-export type TemplateVariable =
-  | '{{address}}'
-  | '{{displayName}}'
-  | '{{expirationTime}}'
-  | '{{studentName}}'
 
 export const SUPPORTED_VARIABLES: TemplateVariable[] = [
   '{{address}}',
