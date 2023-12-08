@@ -3,9 +3,9 @@ import * as React from 'react'
 import { Stack } from '@mui/material'
 import { BadgePreview } from '@thebadge/ui-library'
 
+import { getBackgroundBadgeUrl } from '@/src/constants/backgrounds'
 import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
-import { getBackgroundBadgeUrl } from '@/src/constants/backgrounds'
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import useBadgePreviewUrl from '@/src/hooks/theBadge/useBadgePreviewUrl'
 import useEstimateBadgeId from '@/src/hooks/theBadge/useEstimateBadgeId'

@@ -1,5 +1,3 @@
-import { Chains } from '@/src/config/web3'
-import { contracts } from '@/src/contracts/contracts'
 import { BadgeRequired } from '@/src/hooks/theBadge/useBadgesRequired'
 
 export type ModelsBackgrounds = {
