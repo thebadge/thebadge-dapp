@@ -4,8 +4,8 @@ import { Box } from '@mui/material'
 import { BadgePreview, BadgePreviewProps } from '@thebadge/ui-library'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
+import { getBackgroundBadgeUrl } from '@/src/constants/backgrounds'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
-import { getBackgroundBadgeUrl } from '@/src/utils/badges/getBackgroundBadgeUrl'
 import { BadgeModelMetadata, BadgeNFTAttributesType } from '@/types/badges/BadgeMetadata'
 import { BackendFileResponse } from '@/types/utils'
 

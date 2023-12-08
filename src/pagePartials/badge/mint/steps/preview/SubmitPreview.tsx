@@ -9,6 +9,7 @@ import { useTranslation } from 'next-export-i18n'
 import { useFormContext } from 'react-hook-form'
 
 import MintCost from './MintCost'
+import { getBackgroundBadgeUrl } from '@/src/constants/backgrounds'
 import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
 import useBadgeModelTemplate from '@/src/hooks/theBadge/useBadgeModelTemplate'
@@ -18,7 +19,6 @@ import useMintValue from '@/src/hooks/theBadge/useMintValue'
 import { MintBadgeSchemaType } from '@/src/pagePartials/badge/mint/schema/MintBadgeSchema'
 import { convertPreviewToImage } from '@/src/pagePartials/badge/mint/utils'
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
-import { getBackgroundBadgeUrl } from '@/src/utils/badges/getBackgroundBadgeUrl'
 import { BadgeNFTAttributesType } from '@/types/badges/BadgeMetadata'
 
 export default function SubmitPreview({

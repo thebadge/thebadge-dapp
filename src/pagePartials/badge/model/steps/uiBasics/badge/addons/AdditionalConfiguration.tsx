@@ -5,11 +5,8 @@ import { useTranslation } from 'next-export-i18n'
 import { Controller, useFormContext } from 'react-hook-form'
 
 import { DropdownSelect } from '@/src/components/form/formFields/DropdownSelect'
+import { BADGE_MODEL_BACKGROUNDS, BADGE_MODEL_TEXT_CONTRAST } from '@/src/constants/backgrounds'
 import { CreateCommunityModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateCommunityModelSchema'
-import {
-  BADGE_MODEL_BACKGROUNDS,
-  BADGE_MODEL_TEXT_CONTRAST,
-} from '@/src/pagePartials/badge/model/steps/uiBasics/BadgeModelUIBasics'
 import SectionContainer from '@/src/pagePartials/badge/model/steps/uiBasics/addons/SectionContainer'
 
 export default function AdditionConfiguration() {

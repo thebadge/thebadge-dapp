@@ -2,8 +2,8 @@ import * as React from 'react'
 
 import { BadgePreview } from '@thebadge/ui-library'
 
+import { getBackgroundBadgeUrl } from '@/src/constants/backgrounds'
 import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
-import { getBackgroundBadgeUrl } from '@/src/utils/badges/getBackgroundBadgeUrl'
 import { BadgeNFTAttributesType } from '@/types/badges/BadgeMetadata'
 
 type BadgePreviewGeneratorProps = {

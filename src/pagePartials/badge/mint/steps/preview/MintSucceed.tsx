@@ -5,10 +5,10 @@ import { BadgePreview } from '@thebadge/ui-library'
 
 import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
+import { getBackgroundBadgeUrl } from '@/src/constants/backgrounds'
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import useBadgePreviewUrl from '@/src/hooks/theBadge/useBadgePreviewUrl'
 import useEstimateBadgeId from '@/src/hooks/theBadge/useEstimateBadgeId'
-import { getBackgroundBadgeUrl } from '@/src/utils/badges/getBackgroundBadgeUrl'
 import { BadgeNFTAttributesType } from '@/types/badges/BadgeMetadata'
 
 export default function MintSucceed() {
