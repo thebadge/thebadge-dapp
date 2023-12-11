@@ -7,6 +7,7 @@ import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import TBSwiper from '@/src/components/helpers/TBSwiper'
 import { useEvidenceBadgeKlerosMetadata } from '@/src/hooks/subgraph/useBadgeKlerosMetadata'
 import { getEvidenceValue } from '@/src/utils/kleros/getEvidenceValue'
+import { MetadataColumn } from '@/types/kleros/types'
 
 export default function BadgeEvidenceDisplay({ badgeId }: { badgeId: string }) {
   const badgeKlerosMetadata = useEvidenceBadgeKlerosMetadata(badgeId)
@@ -19,7 +20,7 @@ export default function BadgeEvidenceDisplay({ badgeId }: { badgeId: string }) {
   return (
     <TBSwiper
       items={
-        badgeEvidence?.columns.map((column, index) => (
+        badgeEvidence?.columns.map((column: MetadataColumn, index: string) => (
           <Box
             key={'evidence-' + index}
             sx={{
