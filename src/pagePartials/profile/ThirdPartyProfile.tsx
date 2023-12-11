@@ -19,7 +19,7 @@ export enum ThirdPartyProfileFilter {
 const ThirdPartyProfile = () => {
   const { t } = useTranslation()
   const params = useSearchParams()
-  const selectedFilter = params.get('filter')
+  const selectedFilter = params?.get('filter')
 
   const manageBadgesTab = (
     <Typography

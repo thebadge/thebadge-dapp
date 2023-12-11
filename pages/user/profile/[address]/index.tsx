@@ -9,7 +9,7 @@ const SharedProfilePage: NextPageWithLayout = () => {
   const router = useRouter()
   const searchParams = useSearchParams()
 
-  const addressOnUrl = searchParams.get('address')?.toLowerCase()
+  const addressOnUrl = searchParams?.get('address')?.toLowerCase()
 
   if (!addressOnUrl) {
     router.replace(generateProfileUrl())

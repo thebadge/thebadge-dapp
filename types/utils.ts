@@ -104,9 +104,9 @@ export const Severity_Keys = ['Normal', 'Above average', 'Heavy'] as const
 
 export type IPFSHash = string
 
-export type NFTAttribute = {
+export type NFTAttribute<T = string | number> = {
   trait_type: string
-  value: string | number
+  value: T
   display_type?: undefined | 'date'
 }
 

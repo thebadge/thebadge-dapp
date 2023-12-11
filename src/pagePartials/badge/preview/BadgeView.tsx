@@ -2,9 +2,9 @@ import * as React from 'react'
 
 import { BadgePreview } from '@thebadge/ui-library'
 
+import { getBackgroundBadgeUrl } from '@/src/constants/backgrounds'
 import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
-import { getBackgroundBadgeUrl } from '@/src/utils/badges/getBackgroundBadgeUrl'
-import { BadgeNFTAttributesType } from '@/types/badges/BadgeMetadata'
+import { getBackgroundType, getTextContrast } from '@/src/utils/badges/metadataHelpers'
 
 type BadgePreviewGeneratorProps = {
   modelId: string
@@ -17,15 +17,9 @@ export const BadgeView = ({ badgeUrl, modelId }: BadgePreviewGeneratorProps) => 
   const badgeModelMetadata = badgeModelData.data?.badgeModelMetadata
   const badgeLogoImage = badgeModelData.data?.badgeModelMetadata?.image
 
-  const backgroundType = badgeModelMetadata?.attributes?.find(
-    (at: { trait_type: BadgeNFTAttributesType }) =>
-      at.trait_type === BadgeNFTAttributesType.Background,
-  )
+  const backgroundType = getBackgroundType(badgeModelMetadata?.attributes)
 
-  const textContrast = badgeModelMetadata?.attributes?.find(
-    (at: { trait_type: BadgeNFTAttributesType }) =>
-      at.trait_type === BadgeNFTAttributesType.TextContrast,
-  )
+  const textContrast = getTextContrast(badgeModelMetadata?.attributes)
 
   return (
     <BadgePreview

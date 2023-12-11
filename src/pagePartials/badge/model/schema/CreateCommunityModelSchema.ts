@@ -12,6 +12,7 @@ import {
   SeverityTypeSchema,
   TokenInputSchema,
 } from '@/src/components/form/helpers/customSchemas'
+import { ModelsBackgroundsNames } from '@/src/constants/backgrounds'
 
 /**
  * Auxiliary schema to support the PDF upload or the PDF creation on the same form
@@ -44,7 +45,7 @@ export const CreateCommunityModelSchema = z.object({
   description: LongTextSchema,
   badgeModelLogoUri: ImageSchema,
   textContrast: z.string(),
-  backgroundImage: z.string(),
+  backgroundImage: z.custom<ModelsBackgroundsNames>(),
   template: z.string(),
   // ------ STRATEGY FIELD ------
   criteria: CommunityBadgeModelCriteriaSchema,

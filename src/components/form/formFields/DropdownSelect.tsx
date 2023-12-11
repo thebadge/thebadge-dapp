@@ -13,7 +13,7 @@ type DropdownSelectProps<T> = {
   onChange: (value: T) => void
   placeholder?: string
   value: T | undefined
-  options: string[]
+  options: string[] | { key: string; disabled: boolean }[]
   native?: boolean
   disabled?: boolean
   sx?: SxProps<Theme>
@@ -78,9 +78,13 @@ export function DropdownSelect<T>({
       variant="standard"
     >
       {options.map((op) => {
-        return (
+        return typeof op === 'string' ? (
           <option key={op} value={op}>
             {capitalizeFirstLetter(op)}
+          </option>
+        ) : (
+          <option disabled={op.disabled} key={op.key} value={op.key}>
+            {capitalizeFirstLetter(op.key)}
           </option>
         )
       })}
