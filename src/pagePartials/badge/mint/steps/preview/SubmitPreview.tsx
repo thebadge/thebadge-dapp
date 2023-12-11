@@ -9,6 +9,7 @@ import { useTranslation } from 'next-export-i18n'
 import { useFormContext } from 'react-hook-form'
 
 import MintCost from './MintCost'
+import { getBackgroundBadgeUrl } from '@/src/constants/backgrounds'
 import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
 import useBadgeModelTemplate from '@/src/hooks/theBadge/useBadgeModelTemplate'
@@ -17,9 +18,8 @@ import useEstimateBadgeId from '@/src/hooks/theBadge/useEstimateBadgeId'
 import useMintValue from '@/src/hooks/theBadge/useMintValue'
 import { MintBadgeSchemaType } from '@/src/pagePartials/badge/mint/schema/MintBadgeSchema'
 import { convertPreviewToImage } from '@/src/pagePartials/badge/mint/utils'
+import { getBackgroundType, getTextContrast } from '@/src/utils/badges/metadataHelpers'
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
-import { getBackgroundBadgeUrl } from '@/src/utils/badges/getBackgroundBadgeUrl'
-import { BadgeNFTAttributesType } from '@/types/badges/BadgeMetadata'
 
 export default function SubmitPreview({
   badgePreviewRef,
@@ -38,15 +38,9 @@ export default function SubmitPreview({
 
   const badgeLogoImage = badgeModelData.data?.badgeModelMetadata?.image
 
-  const backgroundType = badgeModelMetadata?.attributes?.find(
-    (at: { trait_type: BadgeNFTAttributesType }) =>
-      at.trait_type === BadgeNFTAttributesType.Background,
-  )
+  const backgroundType = getBackgroundType(badgeModelMetadata?.attributes)
 
-  const textContrast = badgeModelMetadata?.attributes?.find(
-    (at: { trait_type: BadgeNFTAttributesType }) =>
-      at.trait_type === BadgeNFTAttributesType.TextContrast,
-  )
+  const textContrast = getTextContrast(badgeModelMetadata?.attributes)
 
   // Get kleros deposit value for the badge model
   const { data: mintValue } = useMintValue(badgeModelId)
