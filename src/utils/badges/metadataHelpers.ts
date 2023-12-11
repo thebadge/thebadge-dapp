@@ -21,6 +21,17 @@ export const getBadgeModelTemplate = (attributes: NFTAttribute[] | undefined) =>
   )
 }
 
+export const getClassicConfigs = (attributes: NFTAttribute[] | undefined) => {
+  const backgroundType = getBackgroundType(attributes)
+  const textContrast = getTextContrast(attributes)
+
+  const fieldsConfigs = attributes?.find(
+    (at) => at.trait_type === BadgeNFTAttributesType.FieldsConfigs,
+  )
+
+  return { fieldsConfigs, backgroundType, textContrast }
+}
+
 export const getDiplomaConfigs = (attributes: NFTAttribute[] | undefined) => {
   const courseName = attributes?.find((at) => at.trait_type === DiplomaNFTAttributesType.CourseName)
   const achievementDescription = attributes?.find(

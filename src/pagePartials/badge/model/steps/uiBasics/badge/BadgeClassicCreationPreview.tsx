@@ -5,7 +5,10 @@ import { BadgePreview } from '@thebadge/ui-library'
 import { useFormContext } from 'react-hook-form'
 
 import { BADGE_MODEL_TEXT_CONTRAST, getBackgroundBadgeUrl } from '@/src/constants/backgrounds'
-import { CreateCommunityModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateCommunityModelSchema'
+import {
+  CreateCommunityModelSchemaType,
+  CustomFieldsConfigurationSchemaType,
+} from '@/src/pagePartials/badge/model/schema/CreateCommunityModelSchema'
 
 const BoxShadow = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -14,10 +17,14 @@ const BoxShadow = styled(Box)(({ theme }) => ({
 }))
 
 export default function BadgeClassicCreationPreview() {
-  const { watch } = useFormContext<CreateCommunityModelSchemaType>()
+  const { watch } = useFormContext<
+    CreateCommunityModelSchemaType & CustomFieldsConfigurationSchemaType
+  >()
 
-  const watchedName = watch('name') || 'Security Certificate'
+  // If custom fields are enabled, we need to show on the Badge Preview the badgeTitle and badgeDescription
+  const watchedName = watch('badgeTitle') || watch('name') || 'Security Certificate'
   const watchedDescription =
+    watch('badgeDescription') ||
     watch('description') ||
     'This badges certifies that the address that has it complies with the regulations about...'
 

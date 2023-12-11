@@ -38,28 +38,6 @@ const CommunityBadgeModelCriteriaSchema = z
     }
   })
 
-export const CreateCommunityModelSchema = z.object({
-  howItWorks: AgreementSchema,
-  // ------ UI BASICS FIELD ------
-  name: z.string().max(28),
-  description: LongTextSchema,
-  badgeModelLogoUri: ImageSchema,
-  textContrast: z.string(),
-  backgroundImage: z.custom<ModelsBackgroundsNames>(),
-  template: z.string(),
-  // ------ STRATEGY FIELD ------
-  criteria: CommunityBadgeModelCriteriaSchema,
-  challengePeriodDuration: ChallengePeriodTypeSchema,
-  rigorousness: SeverityTypeSchema,
-  mintFee: TokenInputSchema,
-  validFor: ExpirationTypeSchema,
-  // ------ EVIDENCE FORM FIELD ------
-  badgeMetadataColumns: KlerosDynamicFields,
-})
-
-export type BadgeModelCommunityCriteriaType = z.infer<typeof CommunityBadgeModelCriteriaSchema>
-export type CreateCommunityModelSchemaType = z.infer<typeof CreateCommunityModelSchema>
-
 export const CustomFieldsConfigurationSchema = z.object({
   // ------ BADGE BASICS FIELD ------
   customFieldsEnabled: z.boolean().optional(),
@@ -67,3 +45,27 @@ export const CustomFieldsConfigurationSchema = z.object({
   badgeDescription: z.string().optional(),
 })
 export type CustomFieldsConfigurationSchemaType = z.infer<typeof CustomFieldsConfigurationSchema>
+
+export const CreateCommunityModelSchema = z
+  .object({
+    howItWorks: AgreementSchema,
+    // ------ UI BASICS FIELD ------
+    name: z.string().max(28),
+    description: LongTextSchema,
+    badgeModelLogoUri: ImageSchema,
+    textContrast: z.string(),
+    backgroundImage: z.custom<ModelsBackgroundsNames>(),
+    template: z.string(),
+    // ------ STRATEGY FIELD ------
+    criteria: CommunityBadgeModelCriteriaSchema,
+    challengePeriodDuration: ChallengePeriodTypeSchema,
+    rigorousness: SeverityTypeSchema,
+    mintFee: TokenInputSchema,
+    validFor: ExpirationTypeSchema,
+    // ------ EVIDENCE FORM FIELD ------
+    badgeMetadataColumns: KlerosDynamicFields,
+  })
+  .merge(CustomFieldsConfigurationSchema)
+
+export type BadgeModelCommunityCriteriaType = z.infer<typeof CommunityBadgeModelCriteriaSchema>
+export type CreateCommunityModelSchemaType = z.infer<typeof CreateCommunityModelSchema>

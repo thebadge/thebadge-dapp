@@ -6,7 +6,10 @@ import { z } from 'zod'
 import { DeltaPDFSchema } from '@/src/components/form/helpers/customSchemas'
 import { BADGE_MODEL_TEXT_CONTRAST } from '@/src/constants/backgrounds'
 import { APP_URL } from '@/src/constants/common'
-import { BadgeModelCommunityCriteriaType } from '@/src/pagePartials/badge/model/schema/CreateCommunityModelSchema'
+import {
+  BadgeModelCommunityCriteriaType,
+  CreateCommunityModelSchemaType,
+} from '@/src/pagePartials/badge/model/schema/CreateCommunityModelSchema'
 import { CreateThirdPartyModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateThirdPartyModelSchema'
 import { convertHashToValidIPFSKlerosHash, isIPFSUrl } from '@/src/utils/fileUtils'
 import ipfsUpload from '@/src/utils/ipfsUpload'
@@ -18,6 +21,7 @@ import { isTestnet } from '@/src/utils/network'
 import {
   BadgeModelMetadata,
   BadgeNFTAttributesType,
+  ClassicBadgeFieldsConfig,
   DiplomaFooterConfig,
   DiplomaIssuerConfig,
   DiplomaNFTAttributesType,
@@ -35,7 +39,15 @@ export async function createAndUploadBadgeModelMetadata(data: CreateThirdPartyMo
     return createAndUploadDiplomaBadgeModelMetadata(name, description, rest)
   }
   if (template === BadgeModelTemplate.Badge) {
-    const { backgroundImage, badgeModelLogoUri, description, name, template, textContrast } = data
+    const {
+      backgroundImage,
+      badgeModelLogoUri,
+      description,
+      name,
+      template,
+      textContrast,
+      ...rest
+    } = data
     // This is a safe validation, the form already validates that the data is here
     if (!backgroundImage || !textContrast) {
       throw `Missing data backgroundImage || textContrast`
@@ -47,6 +59,7 @@ export async function createAndUploadBadgeModelMetadata(data: CreateThirdPartyMo
       backgroundImage,
       BADGE_MODEL_TEXT_CONTRAST[textContrast],
       template,
+      rest,
     )
   }
 }
@@ -58,7 +71,17 @@ export async function createAndUploadClassicBadgeModelMetadata(
   backgroundType: string,
   textContrast: string,
   template: BadgeModelTemplate,
+  rest?: Partial<CreateCommunityModelSchemaType>,
 ) {
+  const fieldsConfigs = await ipfsUpload<ClassicBadgeFieldsConfig>({
+    attributes: {
+      customFieldsEnabled: !!rest?.customFieldsEnabled,
+      badgeTitle: rest?.badgeTitle ? rest?.badgeTitle : '',
+      badgeDescription: rest?.badgeDescription ? rest?.badgeTitle : '',
+    },
+    filePaths: [],
+  })
+
   const badgeModelMetadataIPFSUploaded = await ipfsUpload<BadgeModelMetadata<BackendFileUpload>>({
     attributes: {
       name: badgeModelName,
@@ -77,6 +100,10 @@ export async function createAndUploadClassicBadgeModelMetadata(
         {
           trait_type: BadgeNFTAttributesType.Template,
           value: template,
+        },
+        {
+          trait_type: BadgeNFTAttributesType.FieldsConfigs,
+          value: fieldsConfigs.result?.ipfsHash || '', // IPFS Hash to config file
         },
       ],
     },

@@ -33,7 +33,8 @@ export default function enrichTextWithValues(
   textToEnrich: string | undefined,
   values: EnrichTextValues | undefined,
 ) {
-  if (!textToEnrich || !values) return ''
+  if (!textToEnrich) return ''
+  if (!values) return textToEnrich
   const enrichTextKeys = Object.keys(values) as EnrichTextVariables[]
 
   enrichTextKeys.forEach((key) => {
