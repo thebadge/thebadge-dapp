@@ -5,11 +5,11 @@ import { DiplomaPreview } from '@thebadge/ui-library'
 import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { useSizeSM } from '@/src/hooks/useSize'
+import { getDiplomaConfigs } from '@/src/utils/badges/metadataHelpers'
 import enrichTextWithValues, { EnrichTextValues } from '@/src/utils/enrichTextWithValues'
 import {
   DiplomaFooterConfig,
   DiplomaIssuerConfig,
-  DiplomaNFTAttributesType,
   DiplomaSignatureConfig,
 } from '@/types/badges/BadgeMetadata'
 import { BackendFileResponse } from '@/types/utils'
@@ -25,24 +25,14 @@ export default function DiplomaView({ additionalData, badgeUrl, modelId }: Props
   const badgeModelData = useBadgeModel(modelId)
   const badgeModelMetadata = badgeModelData.data?.badgeModelMetadata
 
-  const courseName = badgeModelMetadata?.attributes?.find(
-    (at) => at.trait_type === DiplomaNFTAttributesType.CourseName,
-  )
-  const achievementDescription = badgeModelMetadata?.attributes?.find(
-    (at) => at.trait_type === DiplomaNFTAttributesType.AchievementDescription,
-  )
-  const achievementDate = badgeModelMetadata?.attributes?.find(
-    (at) => at.trait_type === DiplomaNFTAttributesType.AchievementDate,
-  )
-  const issuerConfigs = badgeModelMetadata?.attributes?.find(
-    (at) => at.trait_type === DiplomaNFTAttributesType.IssuerConfigs,
-  )
-  const footerConfigs = badgeModelMetadata?.attributes?.find(
-    (at) => at.trait_type === DiplomaNFTAttributesType.FooterConfigs,
-  )
-  const signerConfigs = badgeModelMetadata?.attributes?.find(
-    (at) => at.trait_type === DiplomaNFTAttributesType.SignerConfigs,
-  )
+  const {
+    achievementDate,
+    achievementDescription,
+    courseName,
+    footerConfigs,
+    issuerConfigs,
+    signerConfigs,
+  } = getDiplomaConfigs(badgeModelMetadata?.attributes)
 
   const signerConfigsMetadata = useS3Metadata<{
     content: DiplomaSignatureConfig<BackendFileResponse>

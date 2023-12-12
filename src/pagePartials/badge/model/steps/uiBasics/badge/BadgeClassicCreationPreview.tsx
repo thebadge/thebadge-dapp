@@ -4,11 +4,8 @@ import { Box, alpha, styled } from '@mui/material'
 import { BadgePreview } from '@thebadge/ui-library'
 import { useFormContext } from 'react-hook-form'
 
+import { BADGE_MODEL_TEXT_CONTRAST, getBackgroundBadgeUrl } from '@/src/constants/backgrounds'
 import { CreateCommunityModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateCommunityModelSchema'
-import {
-  BADGE_MODEL_BACKGROUNDS,
-  BADGE_MODEL_TEXT_CONTRAST,
-} from '@/src/pagePartials/badge/model/steps/uiBasics/BadgeModelUIBasics'
 
 const BoxShadow = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -34,7 +31,7 @@ export default function BadgeClassicCreationPreview() {
       <BadgePreview
         animationEffects={['wobble', 'grow', 'glare']}
         animationOnHover
-        badgeBackgroundUrl={BADGE_MODEL_BACKGROUNDS[watchedBackground]}
+        badgeBackgroundUrl={getBackgroundBadgeUrl(watchedBackground)}
         badgeUrl="https://www.thebadge.xyz"
         description={watchedDescription}
         imageUrl={watchedLogoUri?.base64File}

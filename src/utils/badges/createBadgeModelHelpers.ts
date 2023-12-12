@@ -4,10 +4,10 @@ import { defaultAbiCoder } from 'ethers/lib/utils'
 import { z } from 'zod'
 
 import { DeltaPDFSchema } from '@/src/components/form/helpers/customSchemas'
+import { BADGE_MODEL_TEXT_CONTRAST } from '@/src/constants/backgrounds'
 import { APP_URL } from '@/src/constants/common'
 import { BadgeModelCommunityCriteriaType } from '@/src/pagePartials/badge/model/schema/CreateCommunityModelSchema'
 import { CreateThirdPartyModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateThirdPartyModelSchema'
-import { BADGE_MODEL_TEXT_CONTRAST } from '@/src/pagePartials/badge/model/steps/uiBasics/BadgeModelUIBasics'
 import { convertHashToValidIPFSKlerosHash, isIPFSUrl } from '@/src/utils/fileUtils'
 import ipfsUpload from '@/src/utils/ipfsUpload'
 import {

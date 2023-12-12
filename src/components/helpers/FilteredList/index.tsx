@@ -34,6 +34,7 @@ type FilteredListProps = PropsWithChildren & {
   // listId is used to store the selected filters by the user
   listId?: string
   title: string
+  titleIcon?: ReactNode | undefined
   titleColor?: string
   filters?: Array<ListFilter>
   categories?: Array<string>
@@ -138,7 +139,7 @@ export default function FilteredList({
           lineHeight={'30px'}
           padding={[1, 1, 1, 0]}
         >
-          {props.title}
+          {props.titleIcon} {props.title}
         </Typography>
 
         {!isMobile && (
