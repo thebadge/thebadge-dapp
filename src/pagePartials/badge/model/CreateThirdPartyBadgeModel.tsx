@@ -52,6 +52,10 @@ const CreateThirdPartyBadgeModel: NextPageWithLayout = () => {
             ? getNeededVariables({ title: '{{studentName}}' }) // Diploma required fields
             : getNeededVariables({ title: data.badgeTitle, description: data.badgeDescription }) // Badge required fields
 
+        console.log(badgeMetadataColumns, {
+          title: data.badgeTitle,
+          description: data.badgeDescription,
+        })
         const requirementsIPFSHash = await createAndUploadThirdPartyBadgeModelRequirements(
           badgeMetadataColumns,
         )

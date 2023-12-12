@@ -396,7 +396,7 @@ export function getNeededVariables({
   title?: string
   description?: string
 }): ThirdPartyMetadataColumn[] {
-  const thirdPartyColumns = []
+  const thirdPartyColumns: ThirdPartyMetadataColumn[] = []
   const isStudentNameRequired =
     title?.includes('{{studentName}}') || description?.includes('{{studentName}}')
   const isAddressRequired = title?.includes('{{address}}') || description?.includes('{{address}}')
@@ -446,5 +446,5 @@ export function getNeededVariables({
       },
     )
   }
-  return []
+  return thirdPartyColumns
 }
