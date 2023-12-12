@@ -23,7 +23,7 @@ export function generateModelExplorerUrl(
 export function generateBadgeModelCreate(
   controllerType: string = BadgeModelControllerType.Community,
 ) {
-  return `/badgeModel/create/${controllerType}`
+  return `/badgeModel/${controllerType}/create`
 }
 
 export function generateExplorer() {
