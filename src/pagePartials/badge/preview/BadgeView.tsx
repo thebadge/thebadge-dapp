@@ -28,7 +28,7 @@ export const BadgeView = ({ additionalData, badgeUrl, modelId }: BadgePreviewGen
     content: ClassicBadgeFieldsConfig
   }>((fieldsConfigs?.value as string) || '')
 
-  const customFieldsEnable = fieldsConfigData.customFieldsEnabled
+  const customFieldsEnable = fieldsConfigData.content.customFieldsEnabled
 
   return (
     <BadgePreview
@@ -38,13 +38,16 @@ export const BadgeView = ({ additionalData, badgeUrl, modelId }: BadgePreviewGen
       badgeUrl={badgeUrl}
       category={
         customFieldsEnable
-          ? enrichTextWithValues(fieldsConfigData?.badgeTitle, additionalData as EnrichTextValues)
+          ? enrichTextWithValues(
+              fieldsConfigData?.content.badgeTitle,
+              additionalData as EnrichTextValues,
+            )
           : badgeModelMetadata?.name
       }
       description={
         customFieldsEnable
           ? enrichTextWithValues(
-              fieldsConfigData?.badgeDescription,
+              fieldsConfigData?.content.badgeDescription,
               additionalData as EnrichTextValues,
             )
           : badgeModelMetadata?.description

@@ -77,7 +77,7 @@ export async function createAndUploadClassicBadgeModelMetadata(
     attributes: {
       customFieldsEnabled: !!rest?.customFieldsEnabled,
       badgeTitle: rest?.badgeTitle ? rest?.badgeTitle : '',
-      badgeDescription: rest?.badgeDescription ? rest?.badgeTitle : '',
+      badgeDescription: rest?.badgeDescription ? rest?.badgeDescription : '',
     },
     filePaths: [],
   })
