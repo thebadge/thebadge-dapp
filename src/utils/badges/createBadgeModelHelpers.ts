@@ -401,54 +401,86 @@ export function getNeededVariables({
   const isStudentNameRequired =
     title?.includes(TemplateVariables.studentName) ||
     description?.includes(TemplateVariables.studentName)
+
   const isAddressRequired =
     title?.includes(TemplateVariables.address) || description?.includes(TemplateVariables.address)
+
   const isDisplayNameRequired =
     title?.includes(TemplateVariables.displayName) ||
     description?.includes(TemplateVariables.displayName)
 
+  const isIssueDateRequired =
+    title?.includes(TemplateVariables.issueDate) ||
+    description?.includes(TemplateVariables.issueDate)
+
+  const isExpirationDateRequired =
+    title?.includes(TemplateVariables.expirationDate) ||
+    description?.includes(TemplateVariables.expirationDate)
+
   if (isStudentNameRequired) {
-    thirdPartyColumns.push(
-      // Diploma required fields
-      {
-        label: 'Student Name',
-        description: 'You must add your name and surname, to have your diploma',
-        type: KLEROS_LIST_TYPES.TEXT,
-        // Key that is going to be used to search and replace the value on
-        // the diploma, like {{studentName}}
-        replacementKey: ReplacementKeys.studentName,
-        isIdentifier: false,
-      },
-    )
-  }
-  if (isAddressRequired) {
-    // TODO Address may not be required, and can be taken from the minter itself
-    thirdPartyColumns.push(
-      // Diploma required fields
-      {
-        label: 'Address',
-        description: 'You must add your address, to be used on the badge.',
-        type: KLEROS_LIST_TYPES.TEXT,
-        // Key that is going to be used to search and replace the value on
-        // the diploma, like {{address}}
-        replacementKey: ReplacementKeys.address,
-        isIdentifier: false,
-      },
-    )
+    thirdPartyColumns.push({
+      label: 'Student Name',
+      description: 'You must add your name and surname, to have your diploma',
+      type: KLEROS_LIST_TYPES.TEXT,
+      // Key that is going to be used to search and replace the value on
+      // the diploma, like {{studentName}}
+      replacementKey: ReplacementKeys.studentName,
+      isAutoFillable: false,
+      isIdentifier: false,
+    })
   }
   if (isDisplayNameRequired) {
-    thirdPartyColumns.push(
-      // Diploma required fields
-      {
-        label: 'Display Name',
-        description: 'You must add a display name, to be used on the badge',
-        type: KLEROS_LIST_TYPES.TEXT,
-        // Key that is going to be used to search and replace the value on
-        // the diploma, like {{displayName}}
-        replacementKey: ReplacementKeys.displayName,
-        isIdentifier: false,
-      },
-    )
+    thirdPartyColumns.push({
+      label: 'Display Name',
+      description: 'You must add a display name, to be used on the badge',
+      type: KLEROS_LIST_TYPES.TEXT,
+      // Key that is going to be used to search and replace the value on
+      // the diploma, like {{displayName}}
+      replacementKey: ReplacementKeys.displayName,
+      isAutoFillable: false,
+      isIdentifier: false,
+    })
+  }
+  /** ************** Auto fillable fields ************** **/
+
+  if (isAddressRequired) {
+    // Address may not be required, and can be taken from the minter itself
+    thirdPartyColumns.push({
+      label: 'Address',
+      description: 'You must add your address, to be used on the badge.',
+      type: KLEROS_LIST_TYPES.TEXT,
+      // Key that is going to be used to search and replace the value on
+      // the diploma, like {{address}}
+      replacementKey: ReplacementKeys.address,
+      isAutoFillable: false,
+      isIdentifier: false,
+    })
+  }
+  if (isIssueDateRequired) {
+    // Issue Date is not be required, and can be taken from the minter itself
+    thirdPartyColumns.push({
+      label: 'Issue Date',
+      description: 'The Issue Date of the badge.',
+      type: KLEROS_LIST_TYPES.TEXT,
+      // Key that is going to be used to search and replace the value on
+      // the diploma, like {{issueDate}}
+      replacementKey: ReplacementKeys.issueDate,
+      isAutoFillable: true,
+      isIdentifier: false,
+    })
+  }
+  if (isExpirationDateRequired) {
+    // Expiration Date is not be required, and can be taken from the minter itself
+    thirdPartyColumns.push({
+      label: 'Expiration Date',
+      description: 'The Expiration Date of the badge.',
+      type: KLEROS_LIST_TYPES.TEXT,
+      // Key that is going to be used to search and replace the value on
+      // the diploma, like {{expirationDate}}
+      replacementKey: ReplacementKeys.expirationDate,
+      isAutoFillable: true,
+      isIdentifier: false,
+    })
   }
   return thirdPartyColumns
 }

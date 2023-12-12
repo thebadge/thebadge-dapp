@@ -11,7 +11,7 @@ import {
   NumberSchema,
   TwitterSchema,
 } from '@/src/components/form/helpers/customSchemas'
-import { KLEROS_LIST_TYPES, MetadataColumn } from '@/types/kleros/types'
+import { KLEROS_LIST_TYPES, MetadataColumn, isThirdPartyMetadataColumn } from '@/types/kleros/types'
 
 const zText = z
   .string({
@@ -64,12 +64,14 @@ export function isMetadataColumnArray(obj: any): obj is MetadataColumn[] {
 export default function klerosSchemaFactory(fields: MetadataColumn[]) {
   const shape: { [key: string]: ZodType } = {}
   fields.forEach((field, i) => {
+    // If the field is auto completed by us, we dont need to show it on the UI
+    if (isThirdPartyMetadataColumn(field) && field.isAutoFillable) return
+
     // If we change this "shape" key values, we need to update the createKlerosValuesObject on mintHelpers.ts
     shape[`${i}`] = getZValidator(field.type).describe(`${field.label} // ${field.description}`)
     //Magic explained here: https://github.com/iway1/react-ts-form#qol
   })
   return shape
-  // return z.object(shape)
 }
 
 export function convertToFieldError(error: any): FieldError {
