@@ -11,6 +11,7 @@ import {
   CreateCommunityModelSchemaType,
 } from '@/src/pagePartials/badge/model/schema/CreateCommunityModelSchema'
 import { CreateThirdPartyModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateThirdPartyModelSchema'
+import { ReplacementKeys, TemplateVariables } from '@/src/utils/enrichTextWithValues'
 import { convertHashToValidIPFSKlerosHash, isIPFSUrl } from '@/src/utils/fileUtils'
 import ipfsUpload from '@/src/utils/ipfsUpload'
 import {
@@ -398,10 +399,13 @@ export function getNeededVariables({
 }): ThirdPartyMetadataColumn[] {
   const thirdPartyColumns: ThirdPartyMetadataColumn[] = []
   const isStudentNameRequired =
-    title?.includes('{{studentName}}') || description?.includes('{{studentName}}')
-  const isAddressRequired = title?.includes('{{address}}') || description?.includes('{{address}}')
+    title?.includes(TemplateVariables.studentName) ||
+    description?.includes(TemplateVariables.studentName)
+  const isAddressRequired =
+    title?.includes(TemplateVariables.address) || description?.includes(TemplateVariables.address)
   const isDisplayNameRequired =
-    title?.includes('{{displayName}}') || description?.includes('{{displayName}}')
+    title?.includes(TemplateVariables.displayName) ||
+    description?.includes(TemplateVariables.displayName)
 
   if (isStudentNameRequired) {
     thirdPartyColumns.push(
@@ -412,7 +416,7 @@ export function getNeededVariables({
         type: KLEROS_LIST_TYPES.TEXT,
         // Key that is going to be used to search and replace the value on
         // the diploma, like {{studentName}}
-        replacementKey: 'studentName',
+        replacementKey: ReplacementKeys.studentName,
         isIdentifier: false,
       },
     )
@@ -427,7 +431,7 @@ export function getNeededVariables({
         type: KLEROS_LIST_TYPES.TEXT,
         // Key that is going to be used to search and replace the value on
         // the diploma, like {{address}}
-        replacementKey: 'address',
+        replacementKey: ReplacementKeys.address,
         isIdentifier: false,
       },
     )
@@ -441,7 +445,7 @@ export function getNeededVariables({
         type: KLEROS_LIST_TYPES.TEXT,
         // Key that is going to be used to search and replace the value on
         // the diploma, like {{displayName}}
-        replacementKey: 'displayName',
+        replacementKey: ReplacementKeys.displayName,
         isIdentifier: false,
       },
     )

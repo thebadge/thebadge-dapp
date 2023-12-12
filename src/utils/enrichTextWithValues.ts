@@ -1,7 +1,23 @@
+export enum TemplateVariables {
+  address = '{{address}}',
+  displayName = '{{displayName}}',
+  expirationDate = '{{expirationDate}}',
+  studentName = '{{studentName}}',
+  issueDate = '{{issueDate}}',
+}
+
+export enum ReplacementKeys {
+  address = 'address',
+  displayName = 'displayName',
+  expirationDate = 'expirationDate',
+  studentName = 'studentName',
+  issueDate = 'issueDate',
+}
+
 /**
  * Variables that are automatically completed using the badge information
  */
-export type AutocompletedTemplateVariable = '{{address}}' | '{{expirationTime}}'
+export type AutocompletedTemplateVariable = '{{address}}' | '{{expirationDate}}' | '{{issueDate}}'
 /**
  * Variables that need to be required to the user at mint time
  */
@@ -9,21 +25,23 @@ export type UserRequestedTemplateVariables = '{{displayName}}' | '{{studentName}
 
 export type TemplateVariable = AutocompletedTemplateVariable | UserRequestedTemplateVariables
 
+export const SUPPORTED_VARIABLES: TemplateVariable[] = [
+  TemplateVariables.address,
+  TemplateVariables.expirationDate,
+  TemplateVariables.issueDate,
+  TemplateVariables.studentName,
+  TemplateVariables.displayName,
+]
+
 export const ENRICH_TEXT_VARIABLES = [
-  'address',
-  'displayName',
-  'expirationTime',
-  'studentName',
+  ReplacementKeys.address,
+  ReplacementKeys.expirationDate,
+  ReplacementKeys.issueDate,
+  ReplacementKeys.studentName,
+  ReplacementKeys.displayName,
 ] as const
 
 export type EnrichTextVariables = (typeof ENRICH_TEXT_VARIABLES)[number]
-
-export const SUPPORTED_VARIABLES: TemplateVariable[] = [
-  '{{address}}',
-  '{{displayName}}',
-  '{{expirationTime}}',
-  '{{studentName}}',
-]
 
 export type EnrichTextValues = {
   [key in EnrichTextVariables]: string
