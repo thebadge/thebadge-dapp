@@ -5,7 +5,9 @@ import { BadgePreview, BadgePreviewProps } from '@thebadge/ui-library'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { getBackgroundBadgeUrl } from '@/src/constants/backgrounds'
+import { useAvailableBackgrounds } from '@/src/hooks/useAvailableBackgrounds'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
+import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { getBackgroundType, getTextContrast } from '@/src/utils/badges/metadataHelpers'
 import { BadgeModelMetadata } from '@/types/badges/BadgeMetadata'
 import { BackendFileResponse } from '@/types/utils'
@@ -24,6 +26,8 @@ function BadgeModelPreview({ badgeUrl, clickable, effects, metadata, size = 'med
 
   const backgroundType = getBackgroundType(badgeMetadata?.attributes)
   const textContrast = getTextContrast(badgeMetadata?.attributes)
+  const { address, readOnlyChainId } = useWeb3Connection()
+  const { modelBackgrounds } = useAvailableBackgrounds(readOnlyChainId, address)
 
   return (
     <SafeSuspense>
@@ -31,7 +35,7 @@ function BadgeModelPreview({ badgeUrl, clickable, effects, metadata, size = 'med
         <BadgePreview
           animationEffects={effects ? ['wobble', 'grow', 'glare'] : []}
           animationOnHover
-          badgeBackgroundUrl={getBackgroundBadgeUrl(backgroundType?.value)}
+          badgeBackgroundUrl={getBackgroundBadgeUrl(backgroundType?.value, modelBackgrounds)}
           badgeUrl={badgeUrl ? badgeUrl : 'https://www.thebadge.xyz'}
           category={badgeMetadata?.name}
           description={badgeMetadata?.description}
