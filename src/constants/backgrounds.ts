@@ -1,4 +1,9 @@
+import axios from 'axios'
+
+import { BACKEND_URL } from '@/src/constants/common'
 import { BadgeRequired } from '@/src/hooks/theBadge/useBadgesRequired'
+import { getCacheResponse, saveResponseOnCache } from '@/src/utils/cache'
+import { BackendResponse } from '@/types/utils'
 
 export type ModelsBackgroundsNames =
   | 'Rainbow Vortex'
@@ -7,13 +12,6 @@ export type ModelsBackgroundsNames =
   | 'Neon Storm'
   | 'Mountain Sea'
   | 'Purple Lava'
-  | 'Winners wave (Premium)'
-  | 'Hackers in black (Premium)'
-  | 'Blue Confetti (Premium)'
-  | 'Celestial Orange (Premium)'
-  | 'Galactic Blue (Premium)'
-  | 'Void Black (Premium)'
-  | 'Sea Purple (Premium)'
 
 export type ModelsBackgrounds = {
   [key in ModelsBackgroundsNames]: {
@@ -23,7 +21,7 @@ export type ModelsBackgrounds = {
   }
 }
 
-export const BADGE_MODEL_BACKGROUNDS: ModelsBackgrounds = {
+export const DEFAULT_BADGE_MODEL_BACKGROUNDS: ModelsBackgrounds = {
   'Rainbow Vortex': {
     url: 'https://images.unsplash.com/photo-1620421680010-0766ff230392?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=536&q=80',
     badgesRequired: [],
@@ -48,76 +46,27 @@ export const BADGE_MODEL_BACKGROUNDS: ModelsBackgrounds = {
     url: 'https://images.unsplash.com/photo-1567359781514-3b964e2b04d6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=536&q=80',
     badgesRequired: [],
   },
-  'Winners wave (Premium)': {
-    url: 'https://images.unsplash.com/photo-1556691421-cf15fe27a0b6?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=536&q=80',
-    badgesRequired: [
-      // {
-      //   badgeId: 0,
-      //   networkId: Chains.sepolia,
-      //   contractAddress: contracts.TheBadge.address[Chains.sepolia],
-      // },
-    ],
-  },
-  'Hackers in black (Premium)': {
-    url: 'https://images.unsplash.com/photo-1464639351491-a172c2aa2911?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=536&q=80',
-    badgesRequired: [
-      // {
-      //   badgeId: 0,
-      //   networkId: Chains.sepolia,
-      //   contractAddress: contracts.TheBadge.address[Chains.sepolia],
-      // },
-    ],
-  },
-  'Blue Confetti (Premium)': {
-    url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=536&q=80',
-    badgesRequired: [
-      // {
-      //   badgeId: 0,
-      //   networkId: Chains.sepolia,
-      //   contractAddress: contracts.TheBadge.address[Chains.sepolia],
-      // },
-    ],
-  },
-  'Celestial Orange (Premium)': {
-    url: 'https://images.unsplash.com/photo-1576502200272-341a4b8d5ebb?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=536&q=80',
-    badgesRequired: [
-      // {
-      //   badgeId: 0,
-      //   networkId: Chains.sepolia,
-      //   contractAddress: contracts.TheBadge.address[Chains.sepolia],
-      // },
-    ],
-  },
-  'Galactic Blue (Premium)': {
-    url: 'https://images.unsplash.com/photo-1627704362507-59aeb78090c5?q=80&w=2340&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=536&q=80',
-    badgesRequired: [
-      // {
-      //   badgeId: 0,
-      //   networkId: Chains.sepolia,
-      //   contractAddress: contracts.TheBadge.address[Chains.sepolia],
-      // },
-    ],
-  },
-  'Void Black (Premium)': {
-    url: 'https://images.unsplash.com/photo-1637946175559-22c4fe13fc54?q=80&w=2160&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=536&q=80',
-    badgesRequired: [
-      // {
-      //   badgeId: 0,
-      //   networkId: Chains.sepolia,
-      //   contractAddress: contracts.TheBadge.address[Chains.sepolia],
-      // },
-    ],
-  },
-  'Sea Purple (Premium)': {
-    url: 'https://images.unsplash.com/photo-1658483451190-d3b9bdc2ee43?q=80&w=2568&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=536&q=80',
-    badgesRequired: [
-      // {
-      //   badgeId: 0,
-      //   networkId: Chains.sepolia,
-      //   contractAddress: contracts.TheBadge.address[Chains.sepolia],
-      // },
-    ],
-  },
+}
+
+export const getBadgeModelBackgrounds = async (): Promise<ModelsBackgrounds> => {
+  try {
+    const cacheKey = 'api/appConfigs/backgroundConfigs'
+
+    const cachedModelBackgrounds = getCacheResponse<ModelsBackgrounds>(cacheKey)
+
+    if (cachedModelBackgrounds) {
+      return cachedModelBackgrounds.data
+    }
+
+    const res = await axios.get<BackendResponse<ModelsBackgrounds>>(`${BACKEND_URL}/${cacheKey}`)
+    if (res.data && res.data.result) {
+      saveResponseOnCache(cacheKey, res)
+      return res.data.result
+    }
+  } catch (error) {
+    console.warn('Error getting backgrounds...', error)
+  }
+  return DEFAULT_BADGE_MODEL_BACKGROUNDS
 }
 
 export const BADGE_MODEL_TEXT_CONTRAST: { [key: string]: string } = {
@@ -127,9 +76,14 @@ export const BADGE_MODEL_TEXT_CONTRAST: { [key: string]: string } = {
 
 export const getBackgroundBadgeUrl = (
   backgroundName: ModelsBackgroundsNames | undefined,
+  badgeModelBackgrounds: ModelsBackgrounds = DEFAULT_BADGE_MODEL_BACKGROUNDS,
 ): string => {
-  if (backgroundName) {
-    return BADGE_MODEL_BACKGROUNDS[backgroundName].url || BADGE_MODEL_BACKGROUNDS['White Waves'].url
+  try {
+    if (backgroundName) {
+      return badgeModelBackgrounds[backgroundName].url || badgeModelBackgrounds['White Waves'].url
+    }
+  } catch (error) {
+    console.warn(`${backgroundName} not found in backgrounds list..`)
   }
-  return BADGE_MODEL_BACKGROUNDS['White Waves'].url
+  return badgeModelBackgrounds['White Waves'].url
 }

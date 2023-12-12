@@ -4,8 +4,10 @@ import { IconBadge, MiniBadgePreview, colors } from '@thebadge/ui-library'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { getBackgroundBadgeUrl } from '@/src/constants/backgrounds'
+import { useAvailableBackgrounds } from '@/src/hooks/useAvailableBackgrounds'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { useColorMode } from '@/src/providers/themeProvider'
+import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { getBackgroundType, getTextContrast } from '@/src/utils/badges/metadataHelpers'
 import { BadgeModelMetadata } from '@/types/badges/BadgeMetadata'
 import { BackendFileResponse } from '@/types/utils'
@@ -31,13 +33,15 @@ function MiniBadgeModelPreview({
 
   const backgroundType = getBackgroundType(badgeMetadata?.attributes)
   const textContrast = getTextContrast(badgeMetadata?.attributes)
+  const { address, readOnlyChainId } = useWeb3Connection()
+  const { modelBackgrounds } = useAvailableBackgrounds(readOnlyChainId, address)
 
   return (
     <SafeSuspense>
       <MiniBadgePreview
         animationEffects={!disableAnimations ? ['wobble', 'grow', 'glare'] : []}
         animationOnHover
-        badgeBackgroundUrl={getBackgroundBadgeUrl(backgroundType?.value)}
+        badgeBackgroundUrl={getBackgroundBadgeUrl(backgroundType?.value, modelBackgrounds)}
         buttonTitle={buttonTitle}
         description={badgeMetadata?.description}
         height={'50px'}
