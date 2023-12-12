@@ -2,6 +2,7 @@ import axios from 'axios'
 
 import { BACKEND_URL } from '@/src/constants/common'
 import { BadgeRequired } from '@/src/hooks/theBadge/useBadgesRequired'
+import { getCacheResponse, saveResponseOnCache } from '@/src/utils/cache'
 import { BackendResponse } from '@/types/utils'
 
 export type ModelsBackgroundsNames =
@@ -49,10 +50,17 @@ export const DEFAULT_BADGE_MODEL_BACKGROUNDS: ModelsBackgrounds = {
 
 export const getBadgeModelBackgrounds = async (): Promise<ModelsBackgrounds> => {
   try {
-    const res = await axios.get<BackendResponse<ModelsBackgrounds>>(
-      `${BACKEND_URL}/api/appConfigs/backgroundConfigs`,
-    )
+    const cacheKey = 'api/appConfigs/backgroundConfigs'
+
+    const cachedModelBackgrounds = getCacheResponse<ModelsBackgrounds>(cacheKey)
+
+    if (cachedModelBackgrounds) {
+      return cachedModelBackgrounds.data
+    }
+
+    const res = await axios.get<BackendResponse<ModelsBackgrounds>>(`${BACKEND_URL}/${cacheKey}`)
     if (res.data && res.data.result) {
+      saveResponseOnCache(cacheKey, res)
       return res.data.result
     }
   } catch (error) {

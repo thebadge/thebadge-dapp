@@ -1,6 +1,7 @@
-import axios, { AxiosError, AxiosResponse } from 'axios'
+import axios, { AxiosError } from 'axios'
 
 import { BACKEND_URL } from '@/src/constants/common'
+import { getCacheResponse, saveResponseOnCache } from '@/src/utils/cache'
 import { cleanHash } from '@/src/utils/fileUtils'
 import { BackendResponse } from '@/types/utils'
 
@@ -50,36 +51,4 @@ export async function getFromIPFS<T, X = NonNullable<unknown>>(hash?: string): P
     console.error('Error fetching from IPFS', error)
     throw error
   }
-}
-
-/**
- * Check if item exist on session storage, and if it's older than 15min or not
- * @param key
- */
-function checkIfExistOnCache(key: string) {
-  const item = sessionStorage.getItem(key)
-  return !!item && Date.now() < JSON.parse(item).expirationTime
-}
-
-/**
- * Helper function to retrieve cache response from the local store, before call
- * it you should check if the cacheExist
- * @param key
- */
-function getCacheResponse<T>(key: string) {
-  if (checkIfExistOnCache(key)) {
-    const item = JSON.parse(sessionStorage.getItem(key) as string)
-    if ('response' in item) return item.response as AxiosResponse<T>
-    else return null
-  }
-  return null
-}
-
-function saveResponseOnCache(key: string, response: any) {
-  const FIFTEEN_MIN = 15 * 60 * 1000 /* ms */
-
-  sessionStorage.setItem(
-    key,
-    JSON.stringify({ response, expirationTime: Date.now() + FIFTEEN_MIN }),
-  )
 }
