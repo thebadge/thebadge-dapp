@@ -30,7 +30,7 @@ import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { useSizeSM } from '@/src/hooks/useSize'
 import BadgeModelPreview from '@/src/pagePartials/badge/BadgeModelPreview'
 import BadgeTitle from '@/src/pagePartials/badge/preview/addons/BadgeTitle'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import { handleShare } from '@/src/utils/badges/viewUtils'
 import { getExpirationYearAndMonth, getIssueYearAndMonth } from '@/src/utils/dateUtils'
 import {

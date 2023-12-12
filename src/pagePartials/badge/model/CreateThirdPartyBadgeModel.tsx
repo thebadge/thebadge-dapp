@@ -8,7 +8,7 @@ import useTransaction, { TransactionStates } from '@/src/hooks/useTransaction'
 import CreateThirdPartyBadgeModelWithSteps from '@/src/pagePartials/badge/model/CreateThirdPartyBadgeModelWithSteps'
 import { CreateThirdPartyModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateThirdPartyModelSchema'
 import { ProfileType } from '@/src/pagePartials/profile/ProfileSelector'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import { getNeededVariables } from '@/src/utils/badges/createBadgeModelHelpers'
 import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 import { BadgeModelControllerName, BadgeModelTemplate } from '@/types/badges/BadgeModel'

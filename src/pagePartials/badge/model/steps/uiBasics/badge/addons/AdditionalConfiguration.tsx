@@ -9,7 +9,7 @@ import { BADGE_MODEL_TEXT_CONTRAST } from '@/src/constants/backgrounds'
 import { useAvailableBackgrounds } from '@/src/hooks/useAvailableBackgrounds'
 import { CreateCommunityModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateCommunityModelSchema'
 import SectionContainer from '@/src/pagePartials/badge/model/steps/uiBasics/addons/SectionContainer'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
 export default function AdditionConfiguration() {
   const { t } = useTranslation()
