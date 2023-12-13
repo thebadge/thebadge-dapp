@@ -9,6 +9,17 @@ export enum EventKey {
   Escape = 'Escape',
 }
 
+function scrollIntoView<T extends HTMLElement>(itemRef: RefObject<T>) {
+  const itemCurrentRef = itemRef.current
+  if (itemCurrentRef) {
+    itemCurrentRef.scrollIntoView({
+      behavior: 'smooth',
+      block: 'end',
+      inline: 'center',
+    })
+  }
+}
+
 export function useListHighlightItem<T extends HTMLElement>(
   listLenght: number,
   listRefs: RefObject<T>[],
@@ -41,14 +52,7 @@ export function useListHighlightItem<T extends HTMLElement>(
             setHighlightedIndex(index)
           }
 
-          const itemRef = listRefs[index].current
-          if (itemRef) {
-            itemRef.scrollIntoView({
-              behavior: 'smooth',
-              block: 'end',
-              inline: 'center',
-            })
-          }
+          scrollIntoView(listRefs[index])
           break
         }
         case EventKey.ArrowUp: {
@@ -61,15 +65,7 @@ export function useListHighlightItem<T extends HTMLElement>(
             setHighlightedIndex(index)
           }
 
-          const itemRef = listRefs[index].current
-          if (itemRef) {
-            itemRef.scrollIntoView({
-              behavior: 'smooth',
-              block: 'end',
-              inline: 'center',
-            })
-          }
-
+          scrollIntoView(listRefs[index])
           break
         }
         case EventKey.Enter: {
