@@ -16,7 +16,7 @@ export default function AdditionConfiguration() {
 
   const { control } = useFormContext<CreateCommunityModelSchemaType>()
   const { address, readOnlyChainId } = useWeb3Connection()
-  const availableBackgrounds = useAvailableBackgrounds(readOnlyChainId, address)
+  const { availableBackgrounds } = useAvailableBackgrounds(readOnlyChainId, address)
 
   return (
     <>

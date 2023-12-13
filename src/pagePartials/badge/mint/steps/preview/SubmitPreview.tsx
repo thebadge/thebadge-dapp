@@ -16,6 +16,7 @@ import useBadgeModelTemplate from '@/src/hooks/theBadge/useBadgeModelTemplate'
 import useBadgePreviewUrl from '@/src/hooks/theBadge/useBadgePreviewUrl'
 import useEstimateBadgeId from '@/src/hooks/theBadge/useEstimateBadgeId'
 import useMintValue from '@/src/hooks/theBadge/useMintValue'
+import { useAvailableBackgrounds } from '@/src/hooks/useAvailableBackgrounds'
 import { MintBadgeSchemaType } from '@/src/pagePartials/badge/mint/schema/MintBadgeSchema'
 import { convertPreviewToImage } from '@/src/pagePartials/badge/mint/utils'
 import { getBackgroundType, getTextContrast } from '@/src/utils/badges/metadataHelpers'
@@ -27,7 +28,7 @@ export default function SubmitPreview({
   badgePreviewRef: React.MutableRefObject<HTMLDivElement | undefined>
 }) {
   const { t } = useTranslation()
-  const { appChainId } = useWeb3Connection()
+  const { address, appChainId, readOnlyChainId } = useWeb3Connection()
   const { setValue } = useFormContext<MintBadgeSchemaType>() // retrieve all hook methods
 
   const { badgeModelId } = useModelIdParam()
@@ -35,6 +36,7 @@ export default function SubmitPreview({
   const template = useBadgeModelTemplate(badgeModelId)
   const badgeModelMetadata = badgeModelData.data?.badgeModelMetadata
   const { data: estimatedBadgeId } = useEstimateBadgeId()
+  const { modelBackgrounds } = useAvailableBackgrounds(readOnlyChainId, address)
 
   const badgeLogoImage = badgeModelData.data?.badgeModelMetadata?.image
 
@@ -85,7 +87,7 @@ export default function SubmitPreview({
         <BadgePreview
           animationEffects={['wobble', 'grow', 'glare']}
           animationOnHover
-          badgeBackgroundUrl={getBackgroundBadgeUrl(backgroundType?.value)}
+          badgeBackgroundUrl={getBackgroundBadgeUrl(backgroundType?.value, modelBackgrounds)}
           badgeUrl={badgePreviewUrl}
           category={badgeModelMetadata?.name}
           description={badgeModelMetadata?.description}

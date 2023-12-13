@@ -5,10 +5,12 @@ import { BadgePreview } from '@thebadge/ui-library'
 import { useFormContext } from 'react-hook-form'
 
 import { BADGE_MODEL_TEXT_CONTRAST, getBackgroundBadgeUrl } from '@/src/constants/backgrounds'
+import { useAvailableBackgrounds } from '@/src/hooks/useAvailableBackgrounds'
 import {
   CreateCommunityModelSchemaType,
   CustomFieldsConfigurationSchemaType,
 } from '@/src/pagePartials/badge/model/schema/CreateCommunityModelSchema'
+import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 
 const BoxShadow = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -20,6 +22,8 @@ export default function BadgeClassicCreationPreview() {
   const { watch } = useFormContext<
     CreateCommunityModelSchemaType & CustomFieldsConfigurationSchemaType
   >()
+  const { address, readOnlyChainId } = useWeb3Connection()
+  const { modelBackgrounds } = useAvailableBackgrounds(readOnlyChainId, address)
 
   // If custom fields are enabled, we need to show on the Badge Preview the badgeTitle and badgeDescription
   const watchedName = watch('badgeTitle') || watch('name') || 'Security Certificate'
@@ -38,7 +42,7 @@ export default function BadgeClassicCreationPreview() {
       <BadgePreview
         animationEffects={['wobble', 'grow', 'glare']}
         animationOnHover
-        badgeBackgroundUrl={getBackgroundBadgeUrl(watchedBackground)}
+        badgeBackgroundUrl={getBackgroundBadgeUrl(watchedBackground, modelBackgrounds)}
         badgeUrl="https://www.thebadge.xyz"
         description={watchedDescription}
         imageUrl={watchedLogoUri?.base64File}

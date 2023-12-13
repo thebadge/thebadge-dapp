@@ -4,6 +4,8 @@ import { BadgePreview } from '@thebadge/ui-library'
 
 import { getBackgroundBadgeUrl } from '@/src/constants/backgrounds'
 import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
+import { useAvailableBackgrounds } from '@/src/hooks/useAvailableBackgrounds'
+import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { getClassicConfigs } from '@/src/utils/badges/metadataHelpers'
 import enrichTextWithValues, { EnrichTextValues } from '@/src/utils/enrichTextWithValues'
@@ -19,6 +21,8 @@ export const BadgeView = ({ additionalData, badgeUrl, modelId }: BadgePreviewGen
   const badgeModelData = useBadgeModel(modelId)
   const badgeModelMetadata = badgeModelData.data?.badgeModelMetadata
   const badgeLogoImage = badgeModelData.data?.badgeModelMetadata?.image
+  const { address, readOnlyChainId } = useWeb3Connection()
+  const { modelBackgrounds } = useAvailableBackgrounds(readOnlyChainId, address)
 
   const { backgroundType, fieldsConfigs, textContrast } = getClassicConfigs(
     badgeModelMetadata?.attributes,
@@ -34,7 +38,7 @@ export const BadgeView = ({ additionalData, badgeUrl, modelId }: BadgePreviewGen
     <BadgePreview
       animationEffects={['wobble', 'grow', 'glare']}
       animationOnHover
-      badgeBackgroundUrl={getBackgroundBadgeUrl(backgroundType?.value)}
+      badgeBackgroundUrl={getBackgroundBadgeUrl(backgroundType?.value, modelBackgrounds)}
       badgeUrl={badgeUrl}
       category={
         customFieldsEnable
