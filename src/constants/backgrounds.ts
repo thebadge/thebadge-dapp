@@ -78,13 +78,21 @@ export const getBackgroundBadgeUrl = (
   backgroundName: ModelsBackgroundsNames | undefined,
   badgeModelBackgrounds: ModelsBackgrounds = DEFAULT_BADGE_MODEL_BACKGROUNDS,
 ): string => {
+  const defaultBackgroundName = 'White Waves'
   try {
     if (backgroundName) {
-      return badgeModelBackgrounds[backgroundName].url || badgeModelBackgrounds['White Waves'].url
+      return (
+        badgeModelBackgrounds[backgroundName].url ||
+        badgeModelBackgrounds[defaultBackgroundName].url
+      )
     }
   } catch (error) {
     console.warn(`${backgroundName} not found in backgrounds list..`)
   }
-  console.log('dsa', badgeModelBackgrounds)
-  return badgeModelBackgrounds['White Waves'].url
+  // Safe check to prevent any inconstancy error
+  if ('White waves' in badgeModelBackgrounds) {
+    return badgeModelBackgrounds[defaultBackgroundName].url
+  } else {
+    return DEFAULT_BADGE_MODEL_BACKGROUNDS[defaultBackgroundName].url
+  }
 }
