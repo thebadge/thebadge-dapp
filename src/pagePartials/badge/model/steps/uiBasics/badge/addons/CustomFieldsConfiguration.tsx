@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { Alert, Stack, Typography } from '@mui/material'
+import { useTranslation } from 'next-export-i18n'
 import { Controller, useFormContext } from 'react-hook-form'
 
 import { CheckBox } from '@/src/components/form/formFields/CheckBox'
@@ -10,6 +11,7 @@ import { CustomFieldsConfigurationSchemaType } from '@/src/pagePartials/badge/mo
 import SectionContainer from '@/src/pagePartials/badge/model/steps/uiBasics/addons/SectionContainer'
 
 export default function CustomFieldsConfiguration() {
+  const { t } = useTranslation()
   const { control, watch } = useFormContext<CustomFieldsConfigurationSchemaType>()
 
   const enabledFields = watch('customFieldsEnabled')
@@ -24,7 +26,7 @@ export default function CustomFieldsConfiguration() {
             render={({ field: { onChange, value }, fieldState: { error } }) => (
               <CheckBox
                 error={error}
-                label="Do you want to customiza the texts?"
+                label={t('badge.model.create.uiBasics.customFields.customFieldsEnabled')}
                 onChange={onChange}
                 value={value}
               />
@@ -36,11 +38,15 @@ export default function CustomFieldsConfiguration() {
         <SectionContainer>
           <Stack flex="1" gap={4}>
             <Alert severity="info">
-              <Typography variant="labelMedium">{`You can press '{' to use custom variables on your fields`}</Typography>
+              <Typography variant="labelMedium">
+                {t('badge.model.create.uiBasics.customFields.hint')}
+              </Typography>
             </Alert>
 
             <Stack>
-              <Typography variant="bodySmall">Badge Title</Typography>
+              <Typography variant="bodySmall">
+                {t('badge.model.create.uiBasics.customFields.badgeTitle')}
+              </Typography>
               <Controller
                 control={control}
                 name={'badgeTitle'}
@@ -48,7 +54,7 @@ export default function CustomFieldsConfiguration() {
                   <TextField
                     allowVariables
                     error={error}
-                    ghostLabel={'Badge Title'}
+                    ghostLabel={t('badge.model.create.uiBasics.customFields.badgeTitle')}
                     onChange={onChange}
                     value={value}
                   />
@@ -57,7 +63,9 @@ export default function CustomFieldsConfiguration() {
             </Stack>
 
             <Stack>
-              <Typography variant="bodySmall">Badge Description</Typography>
+              <Typography variant="bodySmall">
+                {t('badge.model.create.uiBasics.customFields.badgeDescription')}
+              </Typography>
               <Controller
                 control={control}
                 name={'badgeDescription'}

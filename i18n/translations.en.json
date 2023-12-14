@@ -390,6 +390,12 @@
             "additionalConfigsTitle": "Additional configs ",
             "diplomaName": "Course name",
             "diplomaDate": "Date"
+          },
+          "customFields": {
+            "customFieldsEnabled":"Do you want to customize the texts?",
+            "hint": "You can press '{' to use custom variables on your fields",
+            "badgeTitle": "Badge Title",
+            "badgeDescription": "Badge Description"
           }
         },
         "formField": {
