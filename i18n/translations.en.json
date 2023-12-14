@@ -472,7 +472,8 @@
         "thirdParty": {
           "evidence": {
             "title": "Issue a {{badgeModelTemplate}} to your user",
-            "sendMethodText": "Choose the method to send the {{badgeModelTemplate}} to your user"
+            "sendMethodText": "Choose the method to send the {{badgeModelTemplate}} to your user",
+            "additionalData:": "Needed information about your user"
           },
           "helpSteps": [
             "You will have to fill up the required information about the user you want to issue its diploma",
@@ -526,6 +527,7 @@
       "importLinkedin": "Import your badge into your Linkedin",
       "shareTwitter": "Share on twitter",
       "viewOpensea": "Check it in OpenSea",
+      "neverExpires": "Never expires",
       "challengeStatus": {
         "title": "Challenge Status",
         "challenged": "CHALLENGED",
