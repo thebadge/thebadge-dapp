@@ -84,7 +84,7 @@ export default function DiplomaOwnedPreview() {
   const creator = creatorResponse.data
   const resCreatorMetadata = useS3Metadata<{ content: CreatorMetadata }>(creator?.metadataUri || '')
   const requiredBadgeDataMetadata = useBadgeThirdPartyRequiredData(`${badgeId}` || '', contract)
-  const { badgeOpenseaUrl, badgePreviewUrl } = useBadgePreviewUrl(
+  const { badgeOpenseaUrl, badgePreviewUrl, shortPreviewURl } = useBadgePreviewUrl(
     badge?.id || '',
     badge?.contractAddress || '',
     readOnlyChainId,
@@ -221,7 +221,7 @@ export default function DiplomaOwnedPreview() {
                 <Tooltip arrow title={t('badge.viewBadge.shareTwitter')}>
                   <TwitterShareButton
                     related={['@thebadgexyz']}
-                    url={generateTwitterText(badgeModelName, badgePreviewUrl)}
+                    url={generateTwitterText(badgeModelName, shortPreviewURl)}
                   >
                     <XIcon round size={32} />
                   </TwitterShareButton>
