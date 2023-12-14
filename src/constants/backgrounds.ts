@@ -55,12 +55,12 @@ export const getBadgeModelBackgrounds = async (): Promise<ModelsBackgrounds> => 
     const cachedModelBackgrounds = getCacheResponse<ModelsBackgrounds>(cacheKey)
 
     if (cachedModelBackgrounds) {
-      return cachedModelBackgrounds.data
+      return cachedModelBackgrounds as unknown as ModelsBackgrounds
     }
 
     const res = await axios.get<BackendResponse<ModelsBackgrounds>>(`${BACKEND_URL}/${cacheKey}`)
     if (res.data && res.data.result) {
-      saveResponseOnCache(cacheKey, res)
+      saveResponseOnCache(cacheKey, res.data.result)
       return res.data.result
     }
   } catch (error) {
@@ -85,5 +85,6 @@ export const getBackgroundBadgeUrl = (
   } catch (error) {
     console.warn(`${backgroundName} not found in backgrounds list..`)
   }
+  console.log('dsa', badgeModelBackgrounds)
   return badgeModelBackgrounds['White Waves'].url
 }

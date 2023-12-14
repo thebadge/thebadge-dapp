@@ -80,7 +80,10 @@ export default function BadgeOwnedPreview() {
   const creatorResponse = useUserById(creatorAddress as WCAddress, contract)
   const creator = creatorResponse.data
   const resCreatorMetadata = useS3Metadata<{ content: CreatorMetadata }>(creator?.metadataUri || '')
-  const { badgeOpenseaUrl, badgePreviewUrl } = useBadgePreviewUrl(badgeId, badge?.contractAddress)
+  const { badgeOpenseaUrl, badgePreviewUrl, shortPreviewURl } = useBadgePreviewUrl(
+    badgeId,
+    badge?.contractAddress,
+  )
   const badgeModelName = badgeModel?.badgeModelMetadata?.name || ''
   const { readOnlyChainId } = useWeb3Connection()
 
@@ -207,7 +210,7 @@ export default function BadgeOwnedPreview() {
               <Tooltip arrow title={t('badge.viewBadge.shareTwitter')}>
                 <TwitterShareButton
                   related={['@thebadgexyz']}
-                  url={generateTwitterText(badgeModelName, badgePreviewUrl)}
+                  url={generateTwitterText(badgeModelName, shortPreviewURl)}
                 >
                   <XIcon round size={32} />
                 </TwitterShareButton>
