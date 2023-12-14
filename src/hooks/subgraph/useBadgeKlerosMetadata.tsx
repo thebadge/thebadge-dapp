@@ -4,7 +4,7 @@ import { BadgeModelHooksOptions } from '@/src/hooks/subgraph/types'
 import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import { getFromIPFS } from '@/src/hooks/subgraph/utils'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import { SubgraphName } from '@/src/subgraph/subgraph'
 import { BadgeEvidenceMetadata } from '@/types/badges/BadgeMetadata'
 import { KlerosBadgeRequest, KlerosRequestType } from '@/types/generated/subgraph'

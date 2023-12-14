@@ -16,7 +16,7 @@ import TBadgeSelect from '@/src/components/select/Select'
 import useSelectedFilters from '@/src/hooks/nextjs/useSelectedFilters'
 import { useSizeSM } from '@/src/hooks/useSize'
 import { useColorMode } from '@/src/providers/themeProvider'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
 export type ListFilter<K = unknown> = {
   title: string

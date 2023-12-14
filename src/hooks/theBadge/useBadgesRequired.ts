@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 
 import { useEthersSigner } from '@/src/hooks/etherjs/useEthersSigner'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import { ChainsValues } from '@/types/chains'
 import { ERC1155__factory } from '@/types/generated/typechain'
 

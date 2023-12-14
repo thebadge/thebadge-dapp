@@ -3,9 +3,9 @@ import { useEffect, useMemo, useState } from 'react'
 import axios from 'axios'
 
 import { APP_URL, BACKEND_URL, SHORT_APP_URL } from '@/src/constants/common'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { generateBadgePreviewUrl, generateOpenseaUrl } from '@/src/utils/navigation/generateUrl'
 import { ChainsValues } from '@/types/chains'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
 export default function useBadgePreviewUrl(
   badgeId: string,

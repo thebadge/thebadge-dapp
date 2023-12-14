@@ -28,6 +28,7 @@ export enum BadgeNFTAttributesType {
   Background = 'Background',
   TextContrast = 'TextContrast',
   Template = 'Template',
+  FieldsConfigs = 'FieldsConfigs',
 }
 
 export enum DiplomaNFTAttributesType {
@@ -48,6 +49,12 @@ export type EvidenceMetadata = {
   fileTypeExtension?: string
   // File Mimetype
   type?: string
+}
+
+export type ClassicBadgeFieldsConfig = {
+  customFieldsEnabled: boolean
+  badgeTitle?: string
+  badgeDescription?: string
 }
 
 export type DiplomaSignatureConfig<T = IPFSHash | BackendFileResponse | BackendFileUpload> = {

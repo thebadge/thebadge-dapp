@@ -1,6 +1,7 @@
-const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import { SubgraphName, getSubgraphSdkByNetwork } from '@/src/subgraph/subgraph'
 import { parsePrefixedAddress } from '@/src/utils/prefixedAddress'
+
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
 export default function useSubgraph(
   subgraphName: SubgraphName = SubgraphName.TheBadge,

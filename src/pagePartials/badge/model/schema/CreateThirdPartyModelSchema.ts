@@ -9,6 +9,7 @@ import {
   LongTextSchema,
   TokenInputSchema,
 } from '@/src/components/form/helpers/customSchemas'
+import { CustomFieldsConfigurationSchema } from '@/src/pagePartials/badge/model/schema/CreateCommunityModelSchema'
 import { BadgeModelTemplate } from '@/types/badges/BadgeModel'
 
 export const BodyDataConfigurationSchema = z.object({
@@ -65,6 +66,7 @@ export const CreateThirdPartyModelSchema = z
   .merge(IssuerConfigurationSchema)
   .merge(SignatureConfigurationSchema)
   .merge(FooterConfigurationSchema)
+  .merge(CustomFieldsConfigurationSchema)
   .superRefine(refineDiploma)
   .superRefine(refineClassic)
 
@@ -93,6 +95,15 @@ function refineClassic(data: any, ctx: RefinementCtx) {
       path: ['backgroundImage'],
       message: 'Required',
     })
+  }
+  if (data.customFieldsEnabled) {
+    if (!data.badgeTitle || !data.badgeDescription) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ['badgeTitle', 'badgeDescription'],
+        message: 'Required',
+      })
+    }
   }
 }
 

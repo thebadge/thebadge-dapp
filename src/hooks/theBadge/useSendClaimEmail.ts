@@ -3,7 +3,7 @@ import { useCallback } from 'react'
 import { useSignMessage } from 'wagmi'
 
 import { notify } from '@/src/components/toast/Toast'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import { sendEmailClaim } from '@/src/utils/relayTx'
 import { EmailClaimTx } from '@/types/relayedTx'
 import { ToastStates } from '@/types/toast'
