@@ -7,7 +7,7 @@ import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { getBackgroundBadgeUrl } from '@/src/constants/backgrounds'
 import { useAvailableBackgrounds } from '@/src/hooks/useAvailableBackgrounds'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import { getBackgroundType, getTextContrast } from '@/src/utils/badges/metadataHelpers'
 import { BadgeModelMetadata } from '@/types/badges/BadgeMetadata'
 import { BackendFileResponse } from '@/types/utils'

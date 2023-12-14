@@ -6,7 +6,7 @@ import { getBackgroundBadgeUrl } from '@/src/constants/backgrounds'
 import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
 import { useAvailableBackgrounds } from '@/src/hooks/useAvailableBackgrounds'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import { getClassicConfigs } from '@/src/utils/badges/metadataHelpers'
 import enrichTextWithValues, { EnrichTextValues } from '@/src/utils/enrichTextWithValues'
 import { ClassicBadgeFieldsConfig } from '@/types/badges/BadgeMetadata'
