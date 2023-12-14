@@ -32,7 +32,6 @@ import { useSizeSM } from '@/src/hooks/useSize'
 import { BadgeView } from '@/src/pagePartials/badge/preview/BadgeView'
 import BadgeTitle from '@/src/pagePartials/badge/preview/addons/BadgeTitle'
 import { reCreateThirdPartyValuesObject } from '@/src/utils/badges/mintHelpers'
-const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import { handleShare } from '@/src/utils/badges/viewUtils'
 import { getExpirationYearAndMonth, getIssueYearAndMonth } from '@/src/utils/dateUtils'
 import {
@@ -46,6 +45,7 @@ import { BadgeModelControllerType } from '@/types/badges/BadgeModel'
 import { CreatorMetadata } from '@/types/badges/Creator'
 import { ToastStates } from '@/types/toast'
 import { WCAddress } from '@/types/utils'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
 const Wrapper = styled(Stack)(({ theme }) => ({
   gap: theme.spacing(4),
@@ -82,12 +82,14 @@ export default function BadgeOwnedPreview() {
   const creatorResponse = useUserById(creatorAddress as WCAddress, contract)
   const creator = creatorResponse.data
   const resCreatorMetadata = useS3Metadata<{ content: CreatorMetadata }>(creator?.metadataUri || '')
-  const { badgeOpenseaUrl, badgePreviewUrl } = useBadgePreviewUrl(badgeId, badge?.contractAddress)
+  const { badgeOpenseaUrl, badgePreviewUrl, shortPreviewURl } = useBadgePreviewUrl(
+    badgeId,
+    badge?.contractAddress,
+  )
   const requiredBadgeDataMetadata = useBadgeThirdPartyRequiredData(
     `${badgeId}` || '',
     badge?.contractAddress,
   )
-
   const badgeModelName = badgeModel?.badgeModelMetadata?.name || ''
   const { readOnlyChainId } = useWeb3Connection()
 
@@ -223,7 +225,7 @@ export default function BadgeOwnedPreview() {
               <Tooltip arrow title={t('badge.viewBadge.shareTwitter')}>
                 <TwitterShareButton
                   related={['@thebadgexyz']}
-                  url={generateTwitterText(badgeModelName, badgePreviewUrl)}
+                  url={generateTwitterText(badgeModelName, shortPreviewURl)}
                 >
                   <XIcon round size={32} />
                 </TwitterShareButton>
