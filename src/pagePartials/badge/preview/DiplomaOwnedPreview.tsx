@@ -31,7 +31,7 @@ import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { useSizeSM } from '@/src/hooks/useSize'
 import DiplomaView from '@/src/pagePartials/badge/preview/DiplomaView'
 import BadgeTitle from '@/src/pagePartials/badge/preview/addons/BadgeTitle'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import { reCreateThirdPartyValuesObject } from '@/src/utils/badges/mintHelpers'
 import { handleShare } from '@/src/utils/badges/viewUtils'
 import { getExpirationYearAndMonth, getIssueYearAndMonth } from '@/src/utils/dateUtils'
@@ -84,7 +84,7 @@ export default function DiplomaOwnedPreview() {
   const creator = creatorResponse.data
   const resCreatorMetadata = useS3Metadata<{ content: CreatorMetadata }>(creator?.metadataUri || '')
   const requiredBadgeDataMetadata = useBadgeThirdPartyRequiredData(`${badgeId}` || '', contract)
-  const { badgeOpenseaUrl, badgePreviewUrl } = useBadgePreviewUrl(
+  const { badgeOpenseaUrl, badgePreviewUrl, shortPreviewURl } = useBadgePreviewUrl(
     badge?.id || '',
     badge?.contractAddress || '',
     readOnlyChainId,
@@ -221,7 +221,7 @@ export default function DiplomaOwnedPreview() {
                 <Tooltip arrow title={t('badge.viewBadge.shareTwitter')}>
                   <TwitterShareButton
                     related={['@thebadgexyz']}
-                    url={generateTwitterText(badgeModelName, badgePreviewUrl)}
+                    url={generateTwitterText(badgeModelName, shortPreviewURl)}
                   >
                     <XIcon round size={32} />
                   </TwitterShareButton>

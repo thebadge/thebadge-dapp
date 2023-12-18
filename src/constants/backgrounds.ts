@@ -55,12 +55,12 @@ export const getBadgeModelBackgrounds = async (): Promise<ModelsBackgrounds> => 
     const cachedModelBackgrounds = getCacheResponse<ModelsBackgrounds>(cacheKey)
 
     if (cachedModelBackgrounds) {
-      return cachedModelBackgrounds.data
+      return cachedModelBackgrounds as unknown as ModelsBackgrounds
     }
 
     const res = await axios.get<BackendResponse<ModelsBackgrounds>>(`${BACKEND_URL}/${cacheKey}`)
     if (res.data && res.data.result) {
-      saveResponseOnCache(cacheKey, res)
+      saveResponseOnCache(cacheKey, res.data.result)
       return res.data.result
     }
   } catch (error) {
@@ -78,12 +78,21 @@ export const getBackgroundBadgeUrl = (
   backgroundName: ModelsBackgroundsNames | undefined,
   badgeModelBackgrounds: ModelsBackgrounds = DEFAULT_BADGE_MODEL_BACKGROUNDS,
 ): string => {
+  const defaultBackgroundName = 'White Waves'
   try {
     if (backgroundName) {
-      return badgeModelBackgrounds[backgroundName].url || badgeModelBackgrounds['White Waves'].url
+      return (
+        badgeModelBackgrounds[backgroundName].url ||
+        badgeModelBackgrounds[defaultBackgroundName].url
+      )
     }
   } catch (error) {
     console.warn(`${backgroundName} not found in backgrounds list..`)
   }
-  return badgeModelBackgrounds['White Waves'].url
+  // Safe check to prevent any inconstancy error
+  if ('White waves' in badgeModelBackgrounds) {
+    return badgeModelBackgrounds[defaultBackgroundName].url
+  } else {
+    return DEFAULT_BADGE_MODEL_BACKGROUNDS[defaultBackgroundName].url
+  }
 }

@@ -13,6 +13,7 @@ import { TextField } from '@/src/components/form/formFields/TextField'
 import { CreateCommunityModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateCommunityModelSchema'
 import BadgeModelCreationPreview from '@/src/pagePartials/badge/model/steps/uiBasics/BadgeModelCreationPreview'
 import AdditionConfiguration from '@/src/pagePartials/badge/model/steps/uiBasics/badge/addons/AdditionalConfiguration'
+import CustomFieldsConfiguration from '@/src/pagePartials/badge/model/steps/uiBasics/badge/addons/CustomFieldsConfiguration'
 
 export default function BadgeConfiguration() {
   const { t } = useTranslation()
@@ -94,6 +95,8 @@ export default function BadgeConfiguration() {
       </SectionContainer>
 
       <AdditionConfiguration />
+
+      <CustomFieldsConfiguration />
     </>
   )
 }

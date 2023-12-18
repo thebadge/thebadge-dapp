@@ -11,7 +11,7 @@ import useDecryptEmail from '@/src/hooks/theBadge/useDecryptEmail'
 import useSendClaimEmail from '@/src/hooks/theBadge/useSendClaimEmail'
 import BadgeIdDisplay from '@/src/pagePartials/badge/explorer/addons/BadgeIdDisplay'
 import BadgeRequesterPreview from '@/src/pagePartials/badge/explorer/addons/BadgeRequesterPreview'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import { Badge } from '@/types/generated/subgraph'
 import { ToastStates } from '@/types/toast'
 import { WCAddress } from '@/types/utils'

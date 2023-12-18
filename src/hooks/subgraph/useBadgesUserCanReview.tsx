@@ -2,7 +2,7 @@ import useSWR from 'swr'
 
 import { nowInSeconds } from '@/src/constants/helpers'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import { Badge } from '@/types/generated/subgraph'
 import { WCAddress } from '@/types/utils'
 

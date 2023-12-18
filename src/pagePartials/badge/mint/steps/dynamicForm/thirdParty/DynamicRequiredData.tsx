@@ -2,14 +2,19 @@ import { useRef } from 'react'
 import * as React from 'react'
 
 import { Stack, Typography } from '@mui/material'
+import dayjs from 'dayjs'
+import { useTranslation } from 'next-export-i18n'
 import { useFormContext } from 'react-hook-form'
 import { z } from 'zod'
 
 import { CustomFormFromSchemaWithoutSubmit } from '@/src/components/form/customForms/CustomForm'
 import klerosSchemaFactory from '@/src/components/form/helpers/validators'
 import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
+import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
 import { useBadgeModelThirdPartyMetadata } from '@/src/hooks/subgraph/useBadgeModelThirdPartyMetadata'
 import { MintThirdPartySchemaType } from '@/src/pagePartials/badge/mint/schema/MintThirdPartySchema'
+import { generateAutofilledValues } from '@/src/utils/badges/mintHelpers'
+import { ReplacementKeys } from '@/src/utils/enrichTextWithValues'
 
 export default function DynamicRequiredData({
   onBackCallback,
@@ -18,9 +23,12 @@ export default function DynamicRequiredData({
   onNextCallback: VoidFunction
   onBackCallback: VoidFunction
 }) {
+  const { t } = useTranslation()
   const formButtonRef = useRef<HTMLButtonElement>()
   const { setValue, watch } = useFormContext<MintThirdPartySchemaType>()
-  const { badgeModelId } = useModelIdParam()
+  const { badgeModelId, contract } = useModelIdParam()
+  const { data: badgeModelData } = useBadgeModel(badgeModelId, contract)
+  const expirationTime = badgeModelData?.badgeModel.validFor
 
   const requiredBadgeDataMetadata = useBadgeModelThirdPartyMetadata(badgeModelId)
 
@@ -33,9 +41,21 @@ export default function DynamicRequiredData({
   )
 
   const handleSubmitNext = (data: z.infer<typeof RequiredDataSchema>) => {
+    const autoFilledData = generateAutofilledValues(
+      {
+        [ReplacementKeys.issueDate]: dayjs().format('DD/MM/YYYY'),
+        [ReplacementKeys.expirationDate]: expirationTime
+          ? dayjs().add(expirationTime, 'seconds').format('DD/MM/YYYY')
+          : t('badge.viewBadge.neverExpires'),
+      },
+      requiredBadgeDataMetadata.data?.requirementsData?.requirementsColumns || [],
+    )
     // We set the data collected on the 2dn form as evidence on the main one, so it will be stored
     // when onNextCallback is executed
-    setValue('requiredData', data)
+    setValue('requiredData', {
+      ...data,
+      ...autoFilledData,
+    })
     onNextCallback()
   }
 
@@ -47,7 +67,7 @@ export default function DynamicRequiredData({
     <Stack gap={2}>
       {hasRequiredData && (
         <Typography align={'center'} variant="dAppTitle1">
-          Needed information about your user
+          {t('badge.model.mint.thirdParty.evidence.additionalData')}
         </Typography>
       )}
 
