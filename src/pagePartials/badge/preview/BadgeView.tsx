@@ -5,8 +5,11 @@ import { BadgePreview } from '@thebadge/ui-library'
 import { getBackgroundBadgeUrl } from '@/src/constants/backgrounds'
 import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
 import { useAvailableBackgrounds } from '@/src/hooks/useAvailableBackgrounds'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
-import { getBackgroundType, getTextContrast } from '@/src/utils/badges/metadataHelpers'
+import useS3Metadata from '@/src/hooks/useS3Metadata'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
+import { getClassicConfigs } from '@/src/utils/badges/metadataHelpers'
+import enrichTextWithValues, { EnrichTextValues } from '@/src/utils/enrichTextWithValues'
+import { ClassicBadgeFieldsConfig } from '@/types/badges/BadgeMetadata'
 
 type BadgePreviewGeneratorProps = {
   modelId: string
@@ -14,16 +17,22 @@ type BadgePreviewGeneratorProps = {
   additionalData?: Record<string, any>
 }
 
-export const BadgeView = ({ badgeUrl, modelId }: BadgePreviewGeneratorProps) => {
+export const BadgeView = ({ additionalData, badgeUrl, modelId }: BadgePreviewGeneratorProps) => {
   const badgeModelData = useBadgeModel(modelId)
   const badgeModelMetadata = badgeModelData.data?.badgeModelMetadata
   const badgeLogoImage = badgeModelData.data?.badgeModelMetadata?.image
   const { address, readOnlyChainId } = useWeb3Connection()
   const { modelBackgrounds } = useAvailableBackgrounds(readOnlyChainId, address)
 
-  const backgroundType = getBackgroundType(badgeModelMetadata?.attributes)
+  const { backgroundType, fieldsConfigs, textContrast } = getClassicConfigs(
+    badgeModelMetadata?.attributes,
+  )
 
-  const textContrast = getTextContrast(badgeModelMetadata?.attributes)
+  const { data: fieldsConfigData } = useS3Metadata<{
+    content: ClassicBadgeFieldsConfig
+  }>((fieldsConfigs?.value as string) || '')
+
+  const customFieldsEnable = fieldsConfigData.content.customFieldsEnabled
 
   return (
     <BadgePreview
@@ -31,8 +40,22 @@ export const BadgeView = ({ badgeUrl, modelId }: BadgePreviewGeneratorProps) => 
       animationOnHover
       badgeBackgroundUrl={getBackgroundBadgeUrl(backgroundType?.value, modelBackgrounds)}
       badgeUrl={badgeUrl}
-      category={badgeModelMetadata?.name}
-      description={badgeModelMetadata?.description}
+      category={
+        customFieldsEnable
+          ? enrichTextWithValues(
+              fieldsConfigData?.content.badgeTitle,
+              additionalData as EnrichTextValues,
+            )
+          : badgeModelMetadata?.name
+      }
+      description={
+        customFieldsEnable
+          ? enrichTextWithValues(
+              fieldsConfigData?.content.badgeDescription,
+              additionalData as EnrichTextValues,
+            )
+          : badgeModelMetadata?.description
+      }
       imageUrl={badgeLogoImage?.s3Url}
       size="medium"
       textContrast={textContrast?.value || 'light-withTextBackground'}

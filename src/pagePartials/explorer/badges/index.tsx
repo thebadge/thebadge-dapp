@@ -22,7 +22,7 @@ import { APP_URL } from '@/src/constants/common'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import { useSizeSM } from '@/src/hooks/useSize'
 import MiniBadgeModelPreview from '@/src/pagePartials/badge/MiniBadgeModelPreview'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import { handleShare } from '@/src/utils/badges/viewUtils'
 import { generateBadgePreviewUrl, generateMintUrl } from '@/src/utils/navigation/generateUrl'
 import { BadgeModelControllerType } from '@/types/badges/BadgeModel'

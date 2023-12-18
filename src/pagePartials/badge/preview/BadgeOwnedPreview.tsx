@@ -22,15 +22,16 @@ import { notify } from '@/src/components/toast/Toast'
 import { THE_BADGE_LINKEDIN_ID } from '@/src/constants/common'
 import useBadgeIdParam from '@/src/hooks/nextjs/useBadgeIdParam'
 import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
+import { useBadgeThirdPartyRequiredData } from '@/src/hooks/subgraph/useBadgeModelThirdPartyMetadata'
 import useIsThirdPartyBadge from '@/src/hooks/subgraph/useIsThirdPartyBadge'
 import { useUserById } from '@/src/hooks/subgraph/useUserById'
 import useAddTokenIntoWallet from '@/src/hooks/theBadge/useAddTokenIntoWallet'
 import useBadgePreviewUrl from '@/src/hooks/theBadge/useBadgePreviewUrl'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { useSizeSM } from '@/src/hooks/useSize'
-import BadgeModelPreview from '@/src/pagePartials/badge/BadgeModelPreview'
+import { BadgeView } from '@/src/pagePartials/badge/preview/BadgeView'
 import BadgeTitle from '@/src/pagePartials/badge/preview/addons/BadgeTitle'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+import { reCreateThirdPartyValuesObject } from '@/src/utils/badges/mintHelpers'
 import { handleShare } from '@/src/utils/badges/viewUtils'
 import { getExpirationYearAndMonth, getIssueYearAndMonth } from '@/src/utils/dateUtils'
 import {
@@ -44,6 +45,7 @@ import { BadgeModelControllerType } from '@/types/badges/BadgeModel'
 import { CreatorMetadata } from '@/types/badges/Creator'
 import { ToastStates } from '@/types/toast'
 import { WCAddress } from '@/types/utils'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
 const Wrapper = styled(Stack)(({ theme }) => ({
   gap: theme.spacing(4),
@@ -80,7 +82,14 @@ export default function BadgeOwnedPreview() {
   const creatorResponse = useUserById(creatorAddress as WCAddress, contract)
   const creator = creatorResponse.data
   const resCreatorMetadata = useS3Metadata<{ content: CreatorMetadata }>(creator?.metadataUri || '')
-  const { badgeOpenseaUrl, badgePreviewUrl } = useBadgePreviewUrl(badgeId, badge?.contractAddress)
+  const { badgeOpenseaUrl, badgePreviewUrl, shortPreviewURl } = useBadgePreviewUrl(
+    badgeId,
+    badge?.contractAddress,
+  )
+  const requiredBadgeDataMetadata = useBadgeThirdPartyRequiredData(
+    `${badgeId}` || '',
+    badge?.contractAddress,
+  )
   const badgeModelName = badgeModel?.badgeModelMetadata?.name || ''
   const { readOnlyChainId } = useWeb3Connection()
 
@@ -137,13 +146,22 @@ export default function BadgeOwnedPreview() {
     }
   }
 
+  const values = reCreateThirdPartyValuesObject(
+    requiredBadgeDataMetadata.data?.requirementsDataValues || {},
+    requiredBadgeDataMetadata.data?.requirementsDataColumns,
+  )
+
   return (
     <Wrapper>
       {isMobile && <BadgeTitle />}
 
       {/* Badge Image */}
       <Stack alignItems="center">
-        <BadgeModelPreview badgeUrl={badgePreviewUrl} effects metadata={badgeModel?.uri} />
+        <BadgeView
+          additionalData={{ ...values }}
+          badgeUrl={badgePreviewUrl}
+          modelId={badgeModel.id}
+        />
       </Stack>
 
       {/* Badge Metadata */}
@@ -207,7 +225,7 @@ export default function BadgeOwnedPreview() {
               <Tooltip arrow title={t('badge.viewBadge.shareTwitter')}>
                 <TwitterShareButton
                   related={['@thebadgexyz']}
-                  url={generateTwitterText(badgeModelName, badgePreviewUrl)}
+                  url={generateTwitterText(badgeModelName, shortPreviewURl)}
                 >
                   <XIcon round size={32} />
                 </TwitterShareButton>

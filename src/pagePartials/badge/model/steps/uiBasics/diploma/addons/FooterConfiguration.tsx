@@ -24,7 +24,7 @@ export default function FooterConfiguration() {
     if (footerEnabled) {
       setValue(
         'footerText',
-        `${creatorMetadata?.name || 'The issuer'} has confirmed the identity {{studentName}}`,
+        `${creatorMetadata?.name || 'The issuer'} has confirmed the identity of {{studentName}}`,
       )
     }
   }, [creatorMetadata?.name, footerEnabled, setValue])
