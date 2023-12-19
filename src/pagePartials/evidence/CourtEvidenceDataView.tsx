@@ -1,4 +1,3 @@
-import { useRouter } from 'next/navigation'
 import React from 'react'
 
 import { Button, Skeleton, Stack, Typography, styled } from '@mui/material'
@@ -26,7 +25,6 @@ export default function CourtEvidenceDataView({
 }) {
   const { t } = useTranslation()
 
-  const router = useRouter()
   const graphQueryResult = useBadgeByDisputeId(arbitrableChainID, disputeID)
 
   if (!graphQueryResult.data || !graphQueryResult.data.badge || !graphQueryResult.data.badgeModel) {
@@ -40,7 +38,7 @@ export default function CourtEvidenceDataView({
       return null
     }
     const linkToSubmissionView =
-      router.basePath +
+      window.location.origin +
       generateBadgePreviewUrl(badge.id, {
         theBadgeContractAddress: badge.contractAddress,
         connectedChainId: arbitrableChainID,

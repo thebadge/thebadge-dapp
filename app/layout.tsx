@@ -71,7 +71,6 @@ export async function generateMetadata(): Promise<Metadata> {
         {
           rel: 'mask-icon',
           url: '/favicon/safari-pinned-tab.svg',
-          color: '#333',
         },
       ],
     },

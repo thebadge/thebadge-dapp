@@ -1,6 +1,4 @@
 'use client'
-import { useEffect } from 'react'
-
 import { Box, styled } from '@mui/material'
 import useTranslation from 'next-translate/useTranslation'
 
@@ -11,6 +9,7 @@ import { UserDropdown } from '@/src/components/header/UserDropdown'
 import WrongNetwork from '@/src/components/utils/WrongNetwork'
 import { useSizeSM } from '@/src/hooks/useSize'
 import { PreventActionIfOutOfService } from '@/src/pagePartials/errors/preventActionIfOutOfService'
+
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
 const HeaderContainer = styled(Box)(({ theme }) => ({

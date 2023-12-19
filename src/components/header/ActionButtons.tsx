@@ -13,7 +13,6 @@ import { useSectionReferences } from '@/src/providers/referencesProvider'
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import {
   generateBadgeCurate,
-  generateBadgeExplorer,
   generateBadgeModelCreate,
   generateCreatorRegisterUrl,
   generateExplorer,

@@ -1,4 +1,3 @@
-import { useRouter } from 'next/navigation'
 import React, { useRef, useState } from 'react'
 
 import AddRoundedIcon from '@mui/icons-material/AddRounded'
@@ -22,11 +21,12 @@ import useTranslation from 'next-translate/useTranslation'
 import TBUserAvatar from '@/src/components/common/TBUserAvatar'
 import { Address } from '@/src/components/helpers/Address'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
-const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 import { truncateStringInTheMiddle } from '@/src/utils/strings'
 import { CreatorMetadata } from '@/types/badges/Creator'
 import { WCAddress } from '@/types/utils'
+
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
 const Wrapper = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -66,7 +66,6 @@ export default function TBUserInfoExpandablePreview({
   label?: string
   isVerified?: boolean
 }) {
-  const router = useRouter()
   const { t } = useTranslation()
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLDivElement>(null)
@@ -83,7 +82,7 @@ export default function TBUserInfoExpandablePreview({
 
   function handleViewProfileClick() {
     window.open(
-      router.basePath +
+      window.location.origin +
         generateProfileUrl({
           address: userAddress,
           connectedChainId: readOnlyChainId,

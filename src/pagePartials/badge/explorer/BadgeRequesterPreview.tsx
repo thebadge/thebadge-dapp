@@ -17,7 +17,6 @@ import {
 } from '@mui/material'
 import { ButtonV2, IconDiscord, colors } from '@thebadge/ui-library'
 import useTranslation from 'next-translate/useTranslation'
-import Blockies from 'react-18-blockies'
 
 import TBUserAvatar from '@/src/components/common/TBUserAvatar'
 import { Address } from '@/src/components/helpers/Address'

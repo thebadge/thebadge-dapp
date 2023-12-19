@@ -39,7 +39,7 @@ const StyledBody = styled(Box)(() => ({
 }))
 
 type DefaultLayoutProps = {
-  children: React.ReactElement | React.ReactNode
+  children: React.ReactNode
 }
 
 const NavigationRoom = styled(Box)(({ theme }) => ({

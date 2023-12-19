@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 import { HTMLAttributes, PropsWithChildren } from 'react'
 
 interface Props extends HTMLAttributes<HTMLAnchorElement> {
@@ -12,11 +12,11 @@ export const NavLink: React.FC<PropsWithChildren<Props>> = ({
   href,
   ...restProps
 }) => {
-  const router = useRouter()
+  const pathname = usePathname()
 
   return (
     <Link href={href} legacyBehavior passHref prefetch={false}>
-      <a className={`${className} ${router.pathname === href && 'active'}`} {...restProps}>
+      <a className={`${className} ${pathname === href && 'active'}`} {...restProps}>
         {children}
       </a>
     </Link>

@@ -1,16 +1,16 @@
-import { useRouter } from 'next/navigation'
+import { useParams } from 'next/navigation'
 
 /**
  * Helper hook to get the claimUUID from the url params, as we are not using the app directory yet, we encapsulate this on a
  * custom hook that is easy to replace if we migrate
  */
 export default function useClaimParams() {
-  const router = useRouter()
+  const params = useParams()
 
   return {
-    claimUUID: router.query.claimUUID as string,
-    contract: router.query.contract as string,
-    modelId: router.query.modelId as string,
-    badgeId: router.query.badgeId as string,
+    claimUUID: params?.claimUUID as string,
+    contract: params?.contract as string,
+    modelId: params?.modelId as string,
+    badgeId: params?.badgeId as string,
   }
 }

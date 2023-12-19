@@ -1,12 +1,11 @@
-import '/node_modules/react-grid-layout/css/styles.css'
-import '/node_modules/react-resizable/css/styles.css'
 import type { AppProps } from 'next/app'
 import dynamic from 'next/dynamic'
 
 import createCache from '@emotion/cache'
-import { CacheProvider, EmotionCache } from '@emotion/react'
+import { EmotionCache } from '@emotion/react'
 import { styled } from '@mui/material'
 import { Box } from '@mui/material'
+import { AppCacheProvider } from '@mui/material-nextjs/v14-pagesRouter' // or `v13-pages` if you are using Next.js v14
 import { GoogleAnalytics } from 'nextjs-google-analytics'
 import { SWRConfig } from 'swr'
 
@@ -15,6 +14,10 @@ import Toast from '@/src/components/toast/Toast'
 import { Head } from '@/src/pagePartials/index/Head'
 import ThemeProvider from '@/src/providers/themeProvider'
 import { NextPageWithLayout } from '@/types/next'
+
+// Css
+import '/node_modules/react-grid-layout/css/styles.css'
+import '/node_modules/react-resizable/css/styles.css'
 import 'node_modules/@thebadge/ui-library/dist/index.css'
 import 'sanitize.css'
 import 'src/theme/global.css'
@@ -76,7 +79,7 @@ export default function App({
     <>
       <GoogleAnalytics />
       <Head />
-      <CacheProvider value={emotionCache}>
+      <AppCacheProvider emotionCache={emotionCache}>
         <Box sx={{ display: 'flex', minHeight: '100vh', flexDirection: 'column' }}>
           <SWRConfig
             value={{
@@ -100,7 +103,7 @@ export default function App({
             </ThemeProvider>
           </SWRConfig>
         </Box>
-      </CacheProvider>
+      </AppCacheProvider>
     </>
   )
 }

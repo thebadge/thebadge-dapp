@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement, ReactNode } from 'react'
 
 import { Container, Skeleton, Stack, styled } from '@mui/material'
 
@@ -15,7 +15,7 @@ const Wrapper = styled('div')`
 `
 
 type Props = {
-  children: ReactElement
+  children: ReactNode
   fallback?: ReactElement
   minHeight?: number
 }

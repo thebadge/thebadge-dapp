@@ -2,13 +2,13 @@
 import dynamic from 'next/dynamic'
 
 import { Box, styled } from '@mui/material'
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter' // or `v14-appRouter` if you are using Next.js v14
 import { SWRConfig } from 'swr'
 
 import Toast from '@/src/components/toast/Toast'
 import { PreventActionIfOutOfService } from '@/src/pagePartials/errors/preventActionIfOutOfService'
 import TransactionNotificationProvider from '@/src/providers/TransactionNotificationProvider'
 import SectionReferencesProvider from '@/src/providers/referencesProvider'
-import StyledComponentsRegistry from '@/src/providers/styling/StyledRegistry'
 import ThemeProvider from '@/src/providers/themeProvider'
 
 const Web3ConnectionProvider = dynamic(() => import('@/src/providers/web3ConnectionProvider'), {
@@ -34,7 +34,7 @@ export default function RootAppLayout({ children }: { children: React.ReactNode 
         }}
       >
         <Web3ConnectionProvider>
-          <StyledComponentsRegistry>
+          <AppRouterCacheProvider>
             <ThemeProvider>
               <SectionReferencesProvider>
                 <TransactionNotificationProvider>
@@ -45,7 +45,7 @@ export default function RootAppLayout({ children }: { children: React.ReactNode 
               </SectionReferencesProvider>
               <Toast />
             </ThemeProvider>
-          </StyledComponentsRegistry>
+          </AppRouterCacheProvider>
         </Web3ConnectionProvider>
       </SWRConfig>
     </Box>

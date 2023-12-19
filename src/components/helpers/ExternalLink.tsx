@@ -67,7 +67,7 @@ const ExternalLinkComponent: React.FC<Props> = ({
     toast.remove(toastId)
     toast.custom(
       (toast: Toast) => {
-        setToastId(t.id)
+        setToastId(toast.id)
         return <ToastComponent message={t('externalLink.copied')} t={toast} />
       },
       {

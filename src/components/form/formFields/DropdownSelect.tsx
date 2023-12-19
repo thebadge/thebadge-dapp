@@ -13,7 +13,7 @@ type DropdownSelectProps<T> = {
   onChange: (value: T) => void
   placeholder?: string
   value: T | undefined
-  options: string[] | { key: string; disabled: boolean }[]
+  options: Array<string | { key: string; disabled: boolean }>
   native?: boolean
   disabled?: boolean
   sx?: SxProps<Theme>

@@ -1,4 +1,3 @@
-import { useRouter } from 'next/navigation'
 import React from 'react'
 
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined'
@@ -49,12 +48,11 @@ export default function TBUserInfoSmallPreview({
   isVerified?: boolean
 }) {
   const { t } = useTranslation()
-  const router = useRouter()
   const { readOnlyChainId } = useWeb3Connection()
 
   function handleClick() {
     window.open(
-      router.basePath +
+      window.location.origin +
         generateProfileUrl({ address: userAddress, connectedChainId: readOnlyChainId }),
       '_ blank',
     )

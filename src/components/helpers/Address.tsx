@@ -1,4 +1,3 @@
-import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
 import { styled } from '@mui/material'
@@ -72,7 +71,6 @@ export const Address: React.FC<Props> = ({
   truncate = true,
   ...restProps
 }) => {
-  const router = useRouter()
   const { getExplorerUrl } = useWeb3Connection()
   const [toastId, setToastId] = useState('')
   const { ensNameOrAddress, isEnsName } = useEnsReverseLookup(address)
@@ -93,7 +91,7 @@ export const Address: React.FC<Props> = ({
   }
 
   function getProfileUrl() {
-    return router.basePath + generateProfileUrl({ address })
+    return window.location.origin + generateProfileUrl({ address })
   }
 
   const displayAddress = truncate ? truncateStringInTheMiddle(address, 8, 6) : address
