@@ -74,9 +74,10 @@ export default class MyDocument extends Document {
     }
   }
 
-  title = 'The Badge dApp - Decentralized certifications tokenized as NFTs'
+  title = 'The Badge dApp - Decentralized Certifications Platform'
   description =
-    'The Badge is a decentralized certification platform powered by Ethereum. It provides users with the opportunity to tokenize any piece of information from the real world in the form of badges. These badges are verified and validated by the community, which decides what should be accepted and what should not be.'
+    'TheBadge is a decentralized certification platform that allows companies, institutions, and individuals to bring verified real-world certifications to the blockchain.'
+
   twitterHandle = '@thebadgexyz'
 
   render = () => {

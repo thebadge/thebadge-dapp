@@ -20,7 +20,7 @@ import useCuratorStatistics from '@/src/hooks/subgraph/useCuratorStatistics'
 import StatisticRow from '@/src/pagePartials/profile/statistics/addons/StatisticRow'
 import { CuratorStatistic } from '@/src/pagePartials/profile/statistics/curator/CuratorStatistics'
 import { useProfileProvider } from '@/src/providers/ProfileProvider'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import { percentage } from '@/src/utils/numbers'
 
 export default function CuratorStatisticContent({
@@ -29,8 +29,8 @@ export default function CuratorStatisticContent({
   statisticVisibility: StatisticVisibility
 }) {
   const { t } = useTranslation()
-  const { appChainId } = useWeb3Connection()
-  const networkConfig = getNetworkConfig(appChainId)
+  const { readOnlyChainId } = useWeb3Connection()
+  const networkConfig = getNetworkConfig(readOnlyChainId)
   const { refreshWatcher } = useProfileProvider()
 
   const { data, mutate } = useCuratorStatistics()

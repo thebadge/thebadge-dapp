@@ -13,6 +13,7 @@ import ViewEvidenceButton from '@/src/pagePartials/badge/explorer/addons/ViewEvi
 import EvidencesList from '@/src/pagePartials/badge/preview/addons/EvidencesList'
 import DisputeDisplay from '@/src/pagePartials/profile/reviewing/addons/DisputeDisplay'
 import { useCurateProvider } from '@/src/providers/curateProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import { generateBadgePreviewUrl } from '@/src/utils/navigation/generateUrl'
 import { Badge, KlerosBadgeRequest, KlerosRequestType } from '@/types/generated/subgraph'
 
@@ -20,6 +21,7 @@ export default function BadgeReviewingInfoPreview({ badge }: { badge: Badge }) {
   const { t } = useTranslation()
   const router = useRouter()
   const { addMoreEvidence } = useCurateProvider()
+  const { readOnlyChainId } = useWeb3Connection()
 
   const badgeKlerosMetadata = useEvidenceBadgeKlerosMetadata(badge?.id)
   const badgeEvidence = badgeKlerosMetadata.data?.requestBadgeEvidence
@@ -40,12 +42,12 @@ export default function BadgeReviewingInfoPreview({ badge }: { badge: Badge }) {
 
       <Alert severity="info">
         {isRegistration
-          ? t('profile.badgesIAmReviewing.submissionChallenge')
-          : t('profile.badgesIAmReviewing.removalChallenge')}
+          ? t('profile.user.badgesIAmReviewing.submissionChallenge')
+          : t('profile.user.badgesIAmReviewing.removalChallenge')}
       </Alert>
 
       <Box alignContent="center" display="flex" flex={1} justifyContent="space-between">
-        <BadgeIdDisplay id={badge?.id} />
+        <BadgeIdDisplay id={badge?.id} mintTxHash={badge.createdTxHash} />
         {activeRequest.disputeID ? (
           <DisputeDisplay disputeId={activeRequest.disputeID} />
         ) : (
@@ -71,9 +73,16 @@ export default function BadgeReviewingInfoPreview({ badge }: { badge: Badge }) {
         <ButtonV2
           backgroundColor={colors.transparent}
           fontColor={colors.white}
-          onClick={() => router.push(generateBadgePreviewUrl(badge.id))}
+          onClick={() =>
+            router.push(
+              generateBadgePreviewUrl(badge.id, {
+                theBadgeContractAddress: badge.contractAddress,
+                connectedChainId: readOnlyChainId,
+              }),
+            )
+          }
         >
-          {t('profile.badgesIAmReviewing.viewAll')}
+          {t('profile.user.badgesIAmReviewing.viewAll')}
         </ButtonV2>
         <ButtonV2
           backgroundColor={colors.transparent}
@@ -81,7 +90,7 @@ export default function BadgeReviewingInfoPreview({ badge }: { badge: Badge }) {
           onClick={() => addMoreEvidence(badge?.id)}
           variant="outlined"
         >
-          {t('profile.badgesIAmReviewing.addEvidence')}
+          {t('profile.user.badgesIAmReviewing.addEvidence')}
         </ButtonV2>
       </Box>
 

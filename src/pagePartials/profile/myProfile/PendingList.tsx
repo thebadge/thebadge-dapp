@@ -15,7 +15,7 @@ import useBadgeHelpers, { ReviewBadge } from '@/src/hooks/theBadge/useBadgeHelpe
 import { useSizeLG } from '@/src/hooks/useSize'
 import BadgeModelPreview from '@/src/pagePartials/badge/BadgeModelPreview'
 import { useProfileProvider } from '@/src/providers/ProfileProvider'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import { generateBadgePreviewUrl } from '@/src/utils/navigation/generateUrl'
 
 export default function PendingList() {
@@ -24,7 +24,7 @@ export default function PendingList() {
   const gql = useSubgraph()
   const { refreshWatcher } = useProfileProvider()
   const { getBadgeReviewStatus } = useBadgeHelpers()
-  const { address: ownerAddress } = useWeb3Connection()
+  const { address: ownerAddress, readOnlyChainId } = useWeb3Connection()
   const handleClaimBadge = useBadgeClaim()
 
   const { mutate, ...badgesInReview } = gql.useUserBadgesInReview({
@@ -47,7 +47,14 @@ export default function PendingList() {
             <SafeSuspense color={'green'}>
               <Box sx={{ width: 'fit-content' }}>
                 <Box
-                  onClick={() => router.push(generateBadgePreviewUrl(badge.id))}
+                  onClick={() =>
+                    router.push(
+                      generateBadgePreviewUrl(badge.id, {
+                        theBadgeContractAddress: badge.contractAddress,
+                        connectedChainId: readOnlyChainId,
+                      }),
+                    )
+                  }
                   sx={{ cursor: 'pointer' }}
                 >
                   <PendingBadgeOverlay
@@ -98,7 +105,14 @@ export default function PendingList() {
       </div>,
       2,
     )
-  }, [badgesInReview.data?.user?.badges, getBadgeReviewStatus, t, router, handleClaimBadge])
+  }, [
+    badgesInReview.data?.user?.badges,
+    getBadgeReviewStatus,
+    t,
+    router,
+    handleClaimBadge,
+    readOnlyChainId,
+  ])
 
   return (
     <TBSwiper

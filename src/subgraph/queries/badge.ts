@@ -1,5 +1,13 @@
 import gql from 'graphql-tag'
 
+export const BADGES_ALL = gql`
+  query allBadges {
+    badges {
+      ...BadgeWithJustIds
+    }
+  }
+`
+
 // TODO: hardcoded for kleros, fix it.
 export const BADGES_IN_REVIEW = gql`
   query badgesInReview($date: BigInt!) {
@@ -32,6 +40,7 @@ export const BADGES_USER_CAN_REVIEW = gql`
         badgeKlerosMetaData_: { reviewDueDate_gt: $date }
         status_in: [Requested, Challenged]
         account_not: $userAddress
+        badgeModel_: { controllerType_not: "thirdParty" }
       }
     ) {
       ...BadgesInReview
@@ -56,6 +65,7 @@ export const BADGES_USER_CAN_REVIEW_SMALL_SET = gql`
             status: Requested
             account_starts_with: $badgeReceiver
             account_not: $userAddress
+            badgeModel_: { controllerType_not: "thirdParty" }
           }
           {
             # This state filter all the badges that are not on Requested status,
@@ -64,6 +74,7 @@ export const BADGES_USER_CAN_REVIEW_SMALL_SET = gql`
             status_not: Requested
             account_starts_with: $badgeReceiver
             account_not: $userAddress
+            badgeModel_: { controllerType_not: "thirdParty" }
           }
         ]
       }
@@ -89,6 +100,14 @@ export const BADGE_KLEROS_METADATA_BY_ID = gql`
   }
 `
 
+export const BADGE_THIRD_PARTY_METADATA_BY_ID = gql`
+  query badgeThirdPartyMetadataById($id: ID!) {
+    badgeThirdPartyMetaData(id: $id) {
+      ...BadgeThirdPartyMetadata
+    }
+  }
+`
+
 export const BADGE_BY_TYPE = gql`
   query badgeByModelId($id: String!) {
     badges(where: { badgeModel: $id }) {
@@ -104,6 +123,8 @@ export const BADGE_BY_USER_BY_MODEL_ID = gql`
         id
         status
         createdAt
+        claimedAt
+        contractAddress
       }
     }
   }
@@ -119,9 +140,12 @@ export const BADGE_BY_DISPUTE_ID = gql`
           validUntil
           createdTxHash
           createdAt
+          claimedAt
+          contractAddress
           badgeModel {
             id
             uri
+            contractAddress
             badgeModelKleros {
               removalUri
               registrationUri

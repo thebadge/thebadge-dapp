@@ -8,6 +8,7 @@ import SwipeableViews from 'react-swipeable-views'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import useBadgeIdParam from '@/src/hooks/nextjs/useBadgeIdParam'
+import useIsThirdPartyBadge from '@/src/hooks/subgraph/useIsThirdPartyBadge'
 import { useSizeSM } from '@/src/hooks/useSize'
 import ChallengeStatus from '@/src/pagePartials/badge/preview/addons/ChallengeStatus'
 import EvidencesList from '@/src/pagePartials/badge/preview/addons/EvidencesList'
@@ -25,10 +26,11 @@ export default function BadgeStatusAndEvidence() {
 
   const [selectedTab, setSelectedTab] = useState(0)
 
-  const badgeId = useBadgeIdParam()
+  const { badgeId, contract } = useBadgeIdParam()
   if (!badgeId) {
     throw `No badgeId provided us URL query param`
   }
+  const isThirdParty = useIsThirdPartyBadge(badgeId, contract)
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setSelectedTab(newValue)
@@ -36,6 +38,10 @@ export default function BadgeStatusAndEvidence() {
 
   const handleChangeIndex = (index: number) => {
     setSelectedTab(index)
+  }
+
+  if (isThirdParty) {
+    return null
   }
 
   return (
@@ -77,7 +83,7 @@ export default function BadgeStatusAndEvidence() {
           </SafeSuspense>
           <Divider color={colors.white} />
           <SafeSuspense>
-            <EvidencesList badgeId={badgeId} />
+            <EvidencesList badgeId={badgeId} contract={contract} />
           </SafeSuspense>
         </>
       )}

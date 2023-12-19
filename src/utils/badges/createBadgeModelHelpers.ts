@@ -4,27 +4,85 @@ import { defaultAbiCoder } from 'ethers/lib/utils'
 import { z } from 'zod'
 
 import { DeltaPDFSchema } from '@/src/components/form/helpers/customSchemas'
+import { BADGE_MODEL_TEXT_CONTRAST } from '@/src/constants/backgrounds'
 import { APP_URL } from '@/src/constants/common'
-import { BadgeModelCriteriaType } from '@/src/pagePartials/badge/model/schema/CreateModelSchema'
-import { convertHashToValidIPFSKlerosHash } from '@/src/utils/fileUtils'
+import {
+  BadgeModelCommunityCriteriaType,
+  CreateCommunityModelSchemaType,
+} from '@/src/pagePartials/badge/model/schema/CreateCommunityModelSchema'
+import { CreateThirdPartyModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateThirdPartyModelSchema'
+import { ReplacementKeys, TemplateVariables } from '@/src/utils/enrichTextWithValues'
+import { convertHashToValidIPFSKlerosHash, isIPFSUrl } from '@/src/utils/fileUtils'
 import ipfsUpload from '@/src/utils/ipfsUpload'
 import {
   KlerosListStructure,
   generateKlerosListMetaEvidence,
 } from '@/src/utils/kleros/generateKlerosListMetaEvidence'
 import { isTestnet } from '@/src/utils/network'
-import { BadgeModelMetadata, BadgeNFTAttributesType } from '@/types/badges/BadgeMetadata'
+import {
+  BadgeModelMetadata,
+  BadgeNFTAttributesType,
+  ClassicBadgeFieldsConfig,
+  DiplomaFooterConfig,
+  DiplomaIssuerConfig,
+  DiplomaNFTAttributesType,
+  DiplomaSignatureConfig,
+} from '@/types/badges/BadgeMetadata'
+import { BadgeModelTemplate } from '@/types/badges/BadgeModel'
 import { Kleros__factory } from '@/types/generated/typechain'
-import { MetadataColumn } from '@/types/kleros/types'
+import { KLEROS_LIST_TYPES, MetadataColumn, ThirdPartyMetadataColumn } from '@/types/kleros/types'
 import { BackendFileUpload } from '@/types/utils'
 
-export async function createAndUploadBadgeModelMetadata(
+export async function createAndUploadBadgeModelMetadata(data: CreateThirdPartyModelSchemaType) {
+  const { template } = data
+  if (template === BadgeModelTemplate.Diploma) {
+    const { description, name, ...rest } = data
+    return createAndUploadDiplomaBadgeModelMetadata(name, description, rest)
+  }
+  if (template === BadgeModelTemplate.Badge) {
+    const {
+      backgroundImage,
+      badgeModelLogoUri,
+      description,
+      name,
+      template,
+      textContrast,
+      ...rest
+    } = data
+    // This is a safe validation, the form already validates that the data is here
+    if (!backgroundImage || !textContrast) {
+      throw `Missing data backgroundImage || textContrast`
+    }
+    return createAndUploadClassicBadgeModelMetadata(
+      name,
+      description,
+      badgeModelLogoUri,
+      backgroundImage,
+      BADGE_MODEL_TEXT_CONTRAST[textContrast],
+      template,
+      rest,
+    )
+  }
+}
+
+export async function createAndUploadClassicBadgeModelMetadata(
   badgeModelName: string,
   badgeModelDescription: string,
   badgeModelLogoUri: BackendFileUpload,
   backgroundType: string,
   textContrast: string,
+  template: BadgeModelTemplate,
+  rest?: Partial<CreateCommunityModelSchemaType>,
 ) {
+  const fieldsConfigs = await ipfsUpload<ClassicBadgeFieldsConfig>({
+    attributes: {
+      customFieldsEnabled: !!rest?.customFieldsEnabled,
+      badgeTitle: rest?.badgeTitle ? rest?.badgeTitle : '',
+      badgeDescription: rest?.badgeDescription ? rest?.badgeDescription : '',
+    },
+    filePaths: [],
+  })
+
   const badgeModelMetadataIPFSUploaded = await ipfsUpload<BadgeModelMetadata<BackendFileUpload>>({
     attributes: {
       name: badgeModelName,
@@ -40,12 +98,135 @@ export async function createAndUploadBadgeModelMetadata(
           trait_type: BadgeNFTAttributesType.TextContrast,
           value: textContrast,
         },
+        {
+          trait_type: BadgeNFTAttributesType.Template,
+          value: template,
+        },
+        {
+          trait_type: BadgeNFTAttributesType.FieldsConfigs,
+          value: fieldsConfigs.result?.ipfsHash || '', // IPFS Hash to config file
+        },
       ],
     },
     filePaths: ['image'],
   })
 
   return `ipfs://${badgeModelMetadataIPFSUploaded.result?.ipfsHash}`
+}
+
+async function createAndUploadDiplomaBadgeModelMetadata(
+  badgeModelName: string,
+  badgeModelDescription: string,
+  {
+    achievementDate,
+    achievementDescription,
+    courseName,
+    template,
+    ...rest
+  }: Partial<CreateThirdPartyModelSchemaType>,
+) {
+  if (!courseName || !achievementDescription || !achievementDate || !template) {
+    // This is a safe validation, the form already validates that the data is here
+    throw `Missing data courseName || achievementDescription || achievementDate`
+  }
+  const configsToUpload = []
+
+  configsToUpload.push(
+    await ipfsUpload<DiplomaSignatureConfig>({
+      attributes: {
+        signatureEnabled: !!rest.signatureEnabled,
+        signatureImage: rest.signatureEnabled ? rest.signatureImage : '',
+        signerTitle: rest.signatureEnabled ? rest.signerTitle : '',
+        signerSubline: rest.signatureEnabled ? rest.signerSubline : '',
+      },
+      filePaths: rest.signatureEnabled ? ['signatureImage'] : [],
+    }),
+  )
+
+  configsToUpload.push(
+    await ipfsUpload<DiplomaIssuerConfig>({
+      attributes: {
+        customIssuerEnabled: !!rest.customIssuerEnabled,
+        // If it's an IPFS Url we are re-using the creator avatar, so we dont need to re-upload the file
+        issuerAvatar: isIPFSUrl(rest.issuerAvatar?.ipfsUrl)
+          ? rest.issuerAvatar?.ipfsUrl
+          : rest.issuerAvatar,
+        issuedByLabel: rest.issuedByLabel,
+        issuerTitle: rest.issuerTitle,
+        issuerDescription: rest.issuerDescription,
+      },
+      filePaths: isIPFSUrl(rest.issuerAvatar?.ipfsUrl) ? [] : ['issuerAvatar'],
+    }),
+  )
+
+  configsToUpload.push(
+    await ipfsUpload<DiplomaFooterConfig>({
+      attributes: {
+        footerEnabled: !!rest.footerEnabled,
+        footerText: rest.footerEnabled ? rest.footerText : '',
+      },
+      filePaths: [],
+    }),
+  )
+
+  const [signatureConfig, issuerConfig, footerConfig] = await Promise.all(configsToUpload)
+
+  const badgeModelMetadataIPFSUploaded = await ipfsUpload<BadgeModelMetadata<BackendFileUpload>>({
+    attributes: {
+      name: badgeModelName,
+      description: badgeModelDescription,
+      image: rest.issuerAvatar,
+      external_link: `${APP_URL}/explore`,
+      attributes: [
+        {
+          trait_type: DiplomaNFTAttributesType.CourseName,
+          value: courseName,
+        },
+        {
+          trait_type: DiplomaNFTAttributesType.AchievementDescription,
+          value: achievementDescription,
+        },
+        {
+          trait_type: DiplomaNFTAttributesType.AchievementDate,
+          value: achievementDate,
+        },
+        {
+          trait_type: DiplomaNFTAttributesType.Template,
+          value: template,
+        },
+        {
+          trait_type: DiplomaNFTAttributesType.SignerConfigs,
+          value: signatureConfig.result?.ipfsHash || '', // IPFS Hash to config file
+        },
+        {
+          trait_type: DiplomaNFTAttributesType.FooterConfigs,
+          value: footerConfig.result?.ipfsHash || '', // IPFS Hash to config file
+        },
+        {
+          trait_type: DiplomaNFTAttributesType.IssuerConfigs,
+          value: issuerConfig.result?.ipfsHash || '', // IPFS Hash to config file
+        },
+      ],
+    },
+    filePaths: ['image'],
+  })
+
+  return `ipfs://${badgeModelMetadataIPFSUploaded.result?.ipfsHash}`
+}
+
+export async function createAndUploadThirdPartyBadgeModelRequirements(
+  badgeModelRequirementColumns: ThirdPartyMetadataColumn[],
+) {
+  // We upload the required data to mint the TP badge, as we do with the
+  // community ones, so then we can create the form on the UI
+  const registrationIPFSUploaded = await ipfsUpload({
+    attributes: {
+      requirementsColumns: badgeModelRequirementColumns,
+    },
+    filePaths: [],
+  })
+
+  return `ipfs://${registrationIPFSUploaded.result?.ipfsHash}`
 }
 
 /**
@@ -63,7 +244,7 @@ export async function createAndUploadClearingAndRegistrationFilesForKleros(
   badgeModelName: string,
   badgeModelDescription: string,
   badgeModelLogoUri: BackendFileUpload,
-  badgeModelCriteria: BadgeModelCriteriaType,
+  badgeModelCriteria: BadgeModelCommunityCriteriaType,
   badgeModelKlerosColumns: MetadataColumn[],
 ) {
   let badgeModelCriteriaFile: BackendFileUpload = {
@@ -176,12 +357,22 @@ export async function encodeKlerosBadgeModelControllerData(
   )
 }
 
+export async function encodeThirdPartyBadgeModelControllerData(
+  administrators: string[],
+  requirementsIPFSHash: string,
+) {
+  return defaultAbiCoder.encode(
+    ['tuple(address[], string)'],
+    [[administrators, requirementsIPFSHash]],
+  )
+}
+
 export const encodeIpfsEvidence = (ipfsEvidenceHash: string): string => {
   return defaultAbiCoder.encode([`tuple(string)`], [[ipfsEvidenceHash]])
 }
 
-export const encodeIpfsBadgeMetadata = (badgeMetadataIpsHash: string): string => {
-  return defaultAbiCoder.encode([`tuple(string)`], [[badgeMetadataIpsHash]])
+export const encodeIpfsThirdPartyRequiredData = (badgeRequiredDataIpsHash: string): string => {
+  return defaultAbiCoder.encode([`tuple(string)`], [[badgeRequiredDataIpsHash]])
 }
 
 async function transformDeltaToPDF(pdfValues: z.infer<typeof DeltaPDFSchema>) {
@@ -197,4 +388,99 @@ async function transformDeltaToPDF(pdfValues: z.infer<typeof DeltaPDFSchema>) {
   // we pass the delta object to the generatePdf function of the pdfExporter
   // it will resolve to a Blob of the PDF document
   return (await pdfExporter.generatePdfBase64(delta)) as string
+}
+
+export function getNeededVariables({
+  description,
+  title,
+}: {
+  title?: string
+  description?: string
+}): ThirdPartyMetadataColumn[] {
+  const thirdPartyColumns: ThirdPartyMetadataColumn[] = []
+  const isStudentNameRequired =
+    title?.includes(TemplateVariables.studentName) ||
+    description?.includes(TemplateVariables.studentName)
+
+  const isAddressRequired =
+    title?.includes(TemplateVariables.address) || description?.includes(TemplateVariables.address)
+
+  const isDisplayNameRequired =
+    title?.includes(TemplateVariables.displayName) ||
+    description?.includes(TemplateVariables.displayName)
+
+  const isIssueDateRequired =
+    title?.includes(TemplateVariables.issueDate) ||
+    description?.includes(TemplateVariables.issueDate)
+
+  const isExpirationDateRequired =
+    title?.includes(TemplateVariables.expirationDate) ||
+    description?.includes(TemplateVariables.expirationDate)
+
+  if (isStudentNameRequired) {
+    thirdPartyColumns.push({
+      label: 'Student Name',
+      description: 'You must add your name and surname, to have your diploma',
+      type: KLEROS_LIST_TYPES.TEXT,
+      // Key that is going to be used to search and replace the value on
+      // the diploma, like {{studentName}}
+      replacementKey: ReplacementKeys.studentName,
+      isAutoFillable: false,
+      isIdentifier: false,
+    })
+  }
+  if (isDisplayNameRequired) {
+    thirdPartyColumns.push({
+      label: 'Display Name',
+      description: 'You must add a display name, to be used on the badge',
+      type: KLEROS_LIST_TYPES.TEXT,
+      // Key that is going to be used to search and replace the value on
+      // the diploma, like {{displayName}}
+      replacementKey: ReplacementKeys.displayName,
+      isAutoFillable: false,
+      isIdentifier: false,
+    })
+  }
+  /** ************** Auto fillable fields ************** **/
+
+  if (isAddressRequired) {
+    // Address may not be required, and can be taken from the minter itself
+    thirdPartyColumns.push({
+      label: 'Address',
+      description: 'You must add your address, to be used on the badge.',
+      type: KLEROS_LIST_TYPES.TEXT,
+      // Key that is going to be used to search and replace the value on
+      // the diploma, like {{address}}
+      replacementKey: ReplacementKeys.address,
+      isAutoFillable: false,
+      isIdentifier: false,
+    })
+  }
+  if (isIssueDateRequired) {
+    // Issue Date is not be required, and can be taken from the minter itself
+    thirdPartyColumns.push({
+      label: 'Issue Date',
+      description: 'The Issue Date of the badge.',
+      type: KLEROS_LIST_TYPES.TEXT,
+      // Key that is going to be used to search and replace the value on
+      // the diploma, like {{issueDate}}
+      replacementKey: ReplacementKeys.issueDate,
+      isAutoFillable: true,
+      isIdentifier: false,
+    })
+  }
+  if (isExpirationDateRequired) {
+    // Expiration Date is not be required, and can be taken from the minter itself
+    thirdPartyColumns.push({
+      label: 'Expiration Date',
+      description: 'The Expiration Date of the badge.',
+      type: KLEROS_LIST_TYPES.TEXT,
+      // Key that is going to be used to search and replace the value on
+      // the diploma, like {{expirationDate}}
+      replacementKey: ReplacementKeys.expirationDate,
+      isAutoFillable: true,
+      isIdentifier: false,
+    })
+  }
+  return thirdPartyColumns
 }

@@ -13,8 +13,9 @@ import useIsClaimable from '@/src/hooks/subgraph/useIsClaimable'
 import CurationCriteriaLink from '@/src/pagePartials/badge/curate/CurationCriteriaLink'
 import BadgeEvidenceDisplay from '@/src/pagePartials/badge/curate/viewEvidence/BadgeEvidenceDisplay'
 import { useCurateProvider } from '@/src/providers/curateProvider'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { BadgeStatus } from '@/types/generated/subgraph'
+import { WCAddress } from '@/types/utils'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
 type CurateModalProps = {
   open: boolean
@@ -34,7 +35,7 @@ function CurateModalContent({ badgeId, onClose }: { badgeId: string; onClose: ()
   const { address } = useWeb3Connection()
   const { addMoreEvidence, challenge } = useCurateProvider()
 
-  const isClaimable = useIsClaimable(badgeId)
+  const { data: isClaimable } = useIsClaimable(badgeId)
   const badgeById = useBadgeById(badgeId)
   const badge = badgeById.data
 
@@ -48,7 +49,7 @@ function CurateModalContent({ badgeId, onClose }: { badgeId: string; onClose: ()
   }
 
   const badgeModelId = badge.badgeModel.id
-  const ownerAddress = badge.account.id
+  const ownerAddress = badge.account.id as WCAddress
 
   const badgeKlerosMetadata = useEvidenceBadgeKlerosMetadata(badgeId)
 

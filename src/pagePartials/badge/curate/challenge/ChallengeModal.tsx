@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router'
 import React from 'react'
 
 import FindInPageOutlinedIcon from '@mui/icons-material/FindInPageOutlined'
@@ -5,6 +6,7 @@ import { Box, Skeleton, Stack, Typography } from '@mui/material'
 import useTranslation from 'next-translate/useTranslation'
 import { z } from 'zod'
 
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import TBModal from '@/src/components/common/TBModal'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { useChallengeCost } from '@/src/hooks/kleros/useChallengeCost'
@@ -12,21 +14,21 @@ import { useRemovalCost } from '@/src/hooks/kleros/useRemovalCost'
 import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
 import { useBadgeKlerosMetadata } from '@/src/hooks/subgraph/useBadgeKlerosMetadata'
 import useBadgeHelpers, { ReviewBadge } from '@/src/hooks/theBadge/useBadgeHelpers'
-import { useContractInstance } from '@/src/hooks/useContractInstance'
+import useTBContract from '@/src/hooks/theBadge/useTBContract'
 import useTransaction from '@/src/hooks/useTransaction'
 import CurationCriteriaLink from '@/src/pagePartials/badge/curate/CurationCriteriaLink'
 import ChallengeCost from '@/src/pagePartials/badge/curate/challenge/ChallengeCost'
 import EvidenceForm, {
   EvidenceSchema,
 } from '@/src/pagePartials/badge/curate/evidenceForm/EvidenceForm'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+import { ProfileType } from '@/src/pagePartials/profile/ProfileSelector'
 import {
   removeChallengedBadgeId,
   saveChallengedBadgeId,
 } from '@/src/utils/badges/challengeBadgesHelpers'
 import { encodeIpfsEvidence } from '@/src/utils/badges/createBadgeModelHelpers'
+import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 import { BadgeStatus } from '@/types/generated/subgraph'
-import { TheBadge__factory } from '@/types/generated/typechain'
 
 type ChallengeModalProps = {
   open: boolean
@@ -52,6 +54,7 @@ function ChallengeModalContent({ badgeId, onClose }: { badgeId: string; onClose:
   const challengeCost = useChallengeCost(badgeId)
   const removalCost = useRemovalCost(badgeId)
   const { getBadgeReviewStatus } = useBadgeHelpers()
+  const router = useRouter()
 
   const badge = badgeById.data
   if (!badge) {
@@ -59,7 +62,7 @@ function ChallengeModalContent({ badgeId, onClose }: { badgeId: string; onClose:
   }
 
   const badgeModelId = badge.badgeModel.id
-  const theBadge = useContractInstance(TheBadge__factory, 'TheBadge')
+  const theBadge = useTBContract()
 
   async function onSubmit(data: z.infer<typeof EvidenceSchema>) {
     if (!badge || !badge.status) {
@@ -115,6 +118,10 @@ function ChallengeModalContent({ badgeId, onClose }: { badgeId: string; onClose:
       // If the TX fails, we remove the badge from the array
       await transaction.wait().catch(() => removeChallengedBadgeId(badgeId, address))
     }
+    // Finally redirects the user to his curation profile
+    router.push(
+      generateProfileUrl({ profileType: ProfileType.USER_PROFILE, filter: 'badgesIAmReviewing' }),
+    )
   }
 
   return (

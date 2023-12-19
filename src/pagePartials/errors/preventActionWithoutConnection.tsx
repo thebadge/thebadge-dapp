@@ -1,15 +1,14 @@
 import React, { ReactElement, ReactNode } from 'react'
 
-import { Button, styled } from '@mui/material'
+import { styled } from '@mui/material'
 import { Theme } from '@mui/material/styles'
 import { SxProps } from '@mui/system'
 
 import { DisableOverlay, DisableWrapper } from '@/src/components/helpers/DisableElements'
-import { chainsConfig } from '@/src/config/web3'
-import useIsCreator from '@/src/hooks/subgraph/useIsCreator'
+import useIsRegistered from '@/src/hooks/subgraph/useIsRegistered'
 import ConnectWalletActionError from '@/src/pagePartials/errors/displays/ConnectWalletActionError'
-import { RequiredCreatorAccess } from '@/src/pagePartials/errors/requiresCreatorAccess'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+import { RegistrationRequired } from '@/src/pagePartials/errors/requiresCreatorAccess'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
 const Wrapper = styled('div')`
   display: flex;
@@ -32,10 +31,9 @@ const PreventActionWithoutConnection: React.FC<RequiredConnectionProps> = ({
   onlyCreator,
   ...restProps
 }) => {
-  const { address, appChainId, isWalletConnected, pushNetwork, walletChainId } = useWeb3Connection()
-  const { data: isCreator } = useIsCreator()
+  const { address, isWalletConnected, isWalletNetworkSupported } = useWeb3Connection()
+  const { data: isRegistered } = useIsRegistered()
   const isConnected = isWalletConnected && address
-  const isWrongNetwork = isConnected && walletChainId !== appChainId
 
   if (!isConnected) {
     return (
@@ -49,12 +47,10 @@ const PreventActionWithoutConnection: React.FC<RequiredConnectionProps> = ({
     )
   }
 
-  if (isWrongNetwork) {
+  if (!isWalletNetworkSupported) {
     return (
       <Wrapper style={{ minHeight }} {...restProps}>
-        <Button onClick={() => pushNetwork({ chainId: chainsConfig[appChainId].chainIdHex })}>
-          Switch to {chainsConfig[appChainId].name}
-        </Button>
+        <w3m-network-button />
         <DisableWrapper onClick={(e) => e.stopPropagation()} sx={{ mt: 2 }}>
           {children}
           <DisableOverlay />
@@ -63,14 +59,14 @@ const PreventActionWithoutConnection: React.FC<RequiredConnectionProps> = ({
     )
   }
 
-  if (onlyCreator && !isCreator) {
+  if (onlyCreator && !isRegistered) {
     return (
-      <RequiredCreatorAccess>
+      <RegistrationRequired>
         <DisableWrapper onClick={(e) => e.stopPropagation()} sx={{ mt: 2 }}>
           {children}
           <DisableOverlay />
         </DisableWrapper>
-      </RequiredCreatorAccess>
+      </RegistrationRequired>
     )
   }
 

@@ -7,5 +7,8 @@ import { useRouter } from 'next/navigation'
 export default function useBadgeIdParam() {
   const router = useRouter()
 
-  return router.query.badgeId as string
+  return {
+    badgeId: router.query.badgeId as string,
+    contract: router.query.contract as string,
+  }
 }

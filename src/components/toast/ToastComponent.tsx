@@ -33,7 +33,7 @@ export const ToastComponent: React.FC<{
     }
     icon={icon}
     severity="info"
-    sx={{ background: 'background.default' }}
+    sx={{ backgroundColor: 'background.default' }}
   >
     {title && <AlertTitle>{title}</AlertTitle>}
     {message && (

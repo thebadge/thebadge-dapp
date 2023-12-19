@@ -7,13 +7,16 @@ import MarkdownTypography from '@/src/components/common/MarkdownTypography'
 export default function HowItWorksStep({ index, text }: { index: string | number; text: string }) {
   return (
     <Box display="flex" gap={1}>
-      <Typography variant="titleLarge">{index}.</Typography>
+      <Typography fontWeight={600} variant="titleLarge">
+        {index}.
+      </Typography>
       <MarkdownTypography
         sx={{
-          alignItems: 'center',
+          alignItems: 'flex-end',
           display: 'flex',
+          paddingBottom: '2px',
         }}
-        variant="bodySmall"
+        variant="labelSmall"
       >
         {text}
       </MarkdownTypography>

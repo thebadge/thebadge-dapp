@@ -3,7 +3,7 @@ import React, { ReactElement, useEffect, useState } from 'react'
 import { styled } from '@mui/material'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
-import useClaimUUIDParam from '@/src/hooks/nextjs/useClaimUUIDParam'
+import useClaimParams from '@/src/hooks/nextjs/useClaimParams'
 import ClaimUUIDIsInvalid from '@/src/pagePartials/errors/displays/ClaimUUIDIsInvalid'
 import { checkClaimUUIDValid } from '@/src/utils/relayTx'
 
@@ -27,7 +27,7 @@ export const PreventActionIfClaimUUIDInvalid: React.FC<Props> = ({
   minHeight,
 }) => {
   const [isClaimUUIDValid, setIsClaimUUIDValid] = useState(false)
-  const claimUUID = useClaimUUIDParam()
+  const { claimUUID } = useClaimParams()
 
   useEffect(() => {
     const checkInvalidUUID = async () => {

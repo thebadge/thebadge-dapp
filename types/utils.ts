@@ -17,6 +17,7 @@ export type MySWRResponse<T> = [
   KeyedMutator<T>,
 ]
 export type Writeable<T> = { -readonly [P in keyof T]: T[P] }
+export type CallbackFunction<T> = (item: T) => void;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type UnwrapReturnType<T> = T extends (...args: any) => any ? Awaited<ReturnType<T>> : never
@@ -89,6 +90,7 @@ export type BackendFileResponse = {
   mimeType: string
   s3Url: string
   extension: string
+  ipfsUrl: string
   ipfs: string
 }
 
@@ -103,8 +105,13 @@ export const Severity_Keys = ['Normal', 'Above average', 'Heavy'] as const
 
 export type IPFSHash = string
 
-export type NFTAttribute = {
+export type NFTAttribute<T = string | number> = {
   trait_type: string
-  value: string | number
+  value: T
   display_type?: undefined | 'date'
 }
+
+/**
+ * Wallet Connect Address Type
+ */
+export type WCAddress = `0x${string}`

@@ -7,6 +7,7 @@ gql`
       mintedBadgesAmount
     }
     isCreator
+    isRegistered
     metadataUri
   }
 `
@@ -15,6 +16,7 @@ gql`
   fragment UserWithBadges on User {
     id
     isCreator
+    isRegistered
     metadataUri
     badges {
       ...UserBadges

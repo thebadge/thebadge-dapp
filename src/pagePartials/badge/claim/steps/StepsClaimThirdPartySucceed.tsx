@@ -2,15 +2,17 @@ import { useRouter } from 'next/navigation'
 import * as React from 'react'
 
 import { Button, Divider, Stack, Typography, styled } from '@mui/material'
-import { BadgePreview, colors } from '@thebadge/ui-library'
+import { colors } from '@thebadge/ui-library'
 import useTranslation from 'next-translate/useTranslation'
+import { TwitterShareButton, XIcon } from 'react-share'
 
-import { APP_URL } from '@/src/constants/common'
-import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
+import useClaimParams from '@/src/hooks/nextjs/useClaimParams'
 import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
-import { getBackgroundBadgeUrl } from '@/src/utils/badges/getBackgroundBadgeUrl'
-import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
-import { BadgeNFTAttributesType } from '@/types/badges/BadgeMetadata'
+import { useBadgeThirdPartyRequiredData } from '@/src/hooks/subgraph/useBadgeModelThirdPartyMetadata'
+import useBadgePreviewUrl from '@/src/hooks/theBadge/useBadgePreviewUrl'
+import { ThirdPartyPreview } from '@/src/pagePartials/badge/preview/ThirdPartyPreview'
+import { reCreateThirdPartyValuesObject } from '@/src/utils/badges/mintHelpers'
+import { generateProfileUrl, generateTwitterText } from '@/src/utils/navigation/generateUrl'
 
 type StepsClaimThirdPartySucceedProps = {
   claimAddress: string
@@ -27,24 +29,23 @@ export default function StepsClaimThirdPartySucceed({
 }: StepsClaimThirdPartySucceedProps) {
   const { t } = useTranslation()
   const router = useRouter()
-  const modelId = useModelIdParam()
+  const { badgeId, contract, modelId } = useClaimParams()
 
-  const badgeModelData = useBadgeModel(modelId)
-  const badgeModelMetadata = badgeModelData.data?.badgeModelMetadata
+  const { data } = useBadgeModel(modelId)
 
-  const badgeLogoImage = badgeModelData.data?.badgeModelMetadata?.image
+  const requiredBadgeDataMetadata = useBadgeThirdPartyRequiredData(`${badgeId}` || '')
+  const { badgePreviewUrl, shortPreviewURl } = useBadgePreviewUrl(badgeId, contract)
 
-  const backgroundType = badgeModelMetadata?.attributes?.find(
-    (at) => at.trait_type === BadgeNFTAttributesType.Background,
-  )
-
-  const textContrast = badgeModelMetadata?.attributes?.find(
-    (at) => at.trait_type === BadgeNFTAttributesType.TextContrast,
+  const values = reCreateThirdPartyValuesObject(
+    requiredBadgeDataMetadata.data?.requirementsDataValues || {},
+    requiredBadgeDataMetadata.data?.requirementsDataColumns,
   )
 
   const handleSubmit = () => {
     router.push(generateProfileUrl({ address: claimAddress }))
   }
+
+  const badgeModelName = data?.badgeModelMetadata?.name || ''
 
   return (
     <Stack
@@ -59,16 +60,10 @@ export default function StepsClaimThirdPartySucceed({
       <Typography color={colors.blue} textAlign="center" variant="title2">
         {t('badge.model.claim.thirdParty.header.titleSuccess')}
       </Typography>
-      <BadgePreview
-        animationEffects={['wobble', 'grow', 'glare']}
-        animationOnHover
-        badgeBackgroundUrl={getBackgroundBadgeUrl(backgroundType?.value)}
-        badgeUrl={`${APP_URL}/${modelId}/${claimAddress}`}
-        category={badgeModelMetadata?.name}
-        description={badgeModelMetadata?.description}
-        imageUrl={badgeLogoImage?.s3Url}
-        size="medium"
-        textContrast={textContrast?.value || 'light-withTextBackground'}
+      <ThirdPartyPreview
+        additionalData={{ ...values }}
+        badgeUrl={badgePreviewUrl}
+        modelId={modelId}
       />
       <Divider />
       <SubmitButton
@@ -80,6 +75,15 @@ export default function StepsClaimThirdPartySucceed({
       >
         {t('badge.model.claim.thirdParty.preview.goToProfile')}
       </SubmitButton>
+
+      <Stack>
+        <TwitterShareButton
+          related={['@thebadgexyz']}
+          url={generateTwitterText(badgeModelName, shortPreviewURl)}
+        >
+          <XIcon round size={32} />
+        </TwitterShareButton>
+      </Stack>
     </Stack>
   )
 }

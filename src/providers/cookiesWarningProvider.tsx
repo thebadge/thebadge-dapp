@@ -79,7 +79,7 @@ const CookiesWarning: React.FC<{
       <Content>
         <Text>
           We use cookies to give you the best experience and to help improve our website. Please
-          read our <TextLink href={'/cookie-policy'}>Cookie Policy</TextLink> for more information.
+          read our <TextLink href={'/cookiePolicy'}>Cookie Policy</TextLink> for more information.
           By clicking <strong>&quot;Accept&quot;</strong>, you agree to the storing of cookies on
           your device to enhance site navigation, analyze site usage and provide customer support.
         </Text>

@@ -19,6 +19,7 @@ export type CreatorMetadata = {
   logo?: BackendFileResponse
   discord?: string
   twitter?: string
+  linkedin?: string
   website?: string
 
   terms: boolean

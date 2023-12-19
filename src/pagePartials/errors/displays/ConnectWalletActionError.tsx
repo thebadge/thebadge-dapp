@@ -5,7 +5,7 @@ import { colors } from '@thebadge/ui-library'
 import useTranslation from 'next-translate/useTranslation'
 
 import { WalletAnimated } from '@/src/components/assets/animated/WalletAnimated'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
 export default function ConnectWalletActionError() {
   const { t } = useTranslation()

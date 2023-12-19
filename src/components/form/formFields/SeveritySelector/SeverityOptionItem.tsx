@@ -1,6 +1,7 @@
 import { useCallback } from 'react'
 import * as React from 'react'
 
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import { Box, Divider } from '@mui/material'
 import { formatUnits } from 'ethers/lib/utils'
 import useTranslation from 'next-translate/useTranslation'
@@ -50,6 +51,12 @@ export default function SeverityOptionItem({
       onClick={onSelectHandler}
       selected={selected}
     >
+      {selected && (
+        <CheckCircleIcon
+          color="green"
+          sx={{ position: 'absolute', right: 0, top: 0, transform: 'translate(50%, -50%)' }}
+        />
+      )}
       <Box display="flex">
         <Box alignItems="center" flex="1">
           <Title>{t('severity.amountOfJurors')}</Title>

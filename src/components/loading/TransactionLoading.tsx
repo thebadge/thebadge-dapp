@@ -36,6 +36,9 @@ export const TransactionLoading: React.FC<Props> = ({ resetTxState, state, ...re
         return (
           <>
             <Typography variant="dAppTitle1">{t('transactionLoading.signature')}</Typography>
+            <Typography variant="labelMedium">
+              {t('transactionLoading.bePatientSignature')}
+            </Typography>
             <LoadingArrow />
           </>
         )
@@ -43,6 +46,9 @@ export const TransactionLoading: React.FC<Props> = ({ resetTxState, state, ...re
         return (
           <>
             <Typography variant="dAppTitle1">{t('transactionLoading.confirmation')}</Typography>
+            <Typography variant="labelMedium">
+              {t('transactionLoading.bePatientConfirmation')}
+            </Typography>
             <LoadingDots />
           </>
         )

@@ -2,18 +2,19 @@ import React from 'react'
 
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined'
 import TwitterIcon from '@mui/icons-material/Twitter'
-import { Box, Stack, Typography } from '@mui/material'
+import { Box, Skeleton, Stack, Typography } from '@mui/material'
 import { IconDiscord } from '@thebadge/ui-library'
 
 import TBUserAvatar from '@/src/components/common/TBUserAvatar'
 import { Address } from '@/src/components/helpers/Address'
+import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { useUserById } from '@/src/hooks/subgraph/useUserById'
-import useIsUserVerified from '@/src/hooks/theBadge/useIsUserVerified'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { CreatorMetadata } from '@/types/badges/Creator'
+import { WCAddress } from '@/types/utils'
 
 type Props = {
-  address: string
+  address: WCAddress
 }
 
 export default function InfoPreviewRead({ address }: Props) {
@@ -21,20 +22,17 @@ export default function InfoPreviewRead({ address }: Props) {
   const user = userResponse.data
   const resCreatorMetadata = useS3Metadata<{ content: CreatorMetadata }>(user?.metadataUri || '')
   const creatorMetadata = resCreatorMetadata.data?.content
-  const isVerified = useIsUserVerified(address, 'kleros')
   const hasCustomProfileData = !!creatorMetadata
 
   return (
     <>
-      <TBUserAvatar
-        isVerified={isVerified.data}
-        size={hasCustomProfileData ? 170 : 90}
-        src={creatorMetadata?.logo?.s3Url}
-      />
+      <SafeSuspense fallback={<Skeleton variant="circular" width={creatorMetadata ? 171 : 90} />}>
+        <TBUserAvatar size={hasCustomProfileData ? 170 : 90} src={creatorMetadata?.logo?.s3Url} />
+      </SafeSuspense>
       <Stack flex="5" justifyContent="space-between" overflow="auto">
         <Stack gap={1}>
           <Typography variant="dAppHeadline2">{creatorMetadata?.name}</Typography>
-          <Address address={address || user?.id || ''} truncate={false} />
+          <Address address={address || (user?.id as WCAddress) || '0x'} truncate={false} />
         </Stack>
         {hasCustomProfileData && (
           <Box display="flex">

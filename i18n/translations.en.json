@@ -84,7 +84,11 @@
     "buttons": {
       "mint": "MINT",
       "curate": "CURATE",
-      "create": "CREATE"
+      "create": "CREATE",
+      "menu": {
+        "community": "Community",
+        "thirdParty": "Third Party"
+      }
     },
     "tooltips": {
       "becomeACreator": {
@@ -94,18 +98,45 @@
     }
   },
   "explorer": {
+    "badgeModels": {
+      "tabTitle": "Models",
+      "title": "Badge models explorer"
+    },
+    "badges": {
+      "tabTitle": "Badges",
+      "title": "Badges explorer",
+      "preview": {
+        "title": "Badge information",
+        "badge": {
+          "name": "Name",
+          "description": "Description",
+          "mintCost": "Mint cost:",
+          "depositCost": "Deposit cost:",
+          "totalMinted": "Total minted amount:",
+          "view": "View",
+          "applyForIt": "Apply for it"
+        },
+        "minter": {
+          "mintedBy": "Minted By"
+        }
+      }
+    },
     "title": "Badge models explorer",
     "noBadgesFound": "There are no badges that match these filters...",
     "button": "MINT",
     "preview": {
-      "title": "Badge information",
+      "title": "Model information",
       "badge": {
         "name": "Name",
         "description": "Description",
         "mintCost": "Mint cost:",
+        "depositCost": "Deposit cost:",
         "totalMinted": "Total minted amount:",
         "mint": "Mint",
-        "showOthers": "See minted badges"
+        "showOthers": "See minted badges",
+        "thirdParty": {
+          "showOthers": "See minted"
+        }
       },
       "creator": {
         "createdBy": "Created By"
@@ -119,6 +150,7 @@
       "title": "Badge details",
       "curationList": "Contract Address:",
       "badgeId": "Badge ID: ",
+      "badgeModelId": "Model ID: ",
       "disputeId": "Kleros Dispute ID",
       "timeLeft": "The curation period ends {{time}}",
       "challenge": "Challenge",
@@ -126,6 +158,9 @@
       "viewEvidence": "View raw evidence (.json)",
       "evidences": "Evidence",
       "listingCriteria": "Curation Criteria"
+    },
+    "thirdParty": {
+      "title": "Third party badges explorer"
     }
   },
   "curateExplorer": {
@@ -156,25 +191,37 @@
       "explorerBadgeMinted": "Minted: ",
       "create": "Create a Badge Model"
     },
-    "badgesToCurate": "Browse other badges to curate",
-    "createdBadges": "Earn by creating new badges",
-    "tab1": "My badges",
-    "tab2": "Curated badges",
-    "tab3": "Created badges",
-    "badgesIAmReviewing": {
-      "title": "Badges I am reviewing",
-      "seeDispute": "See dispute",
-      "seeDisputeTooltip": "When you raise a challenge, a kleros dispute is created to resolve it and you can see how it's going on the Kleros Court",
-      "previewTitle": "Challenged Badge",
-      "noResults": "There are no badges you are already reviewing...",
-      "addEvidence": "Add more evidence",
-      "viewAll": "View details",
-      "lastActivity": "Last Activity",
-      "submissionChallenge": "You have challenged the submission of this badge",
-      "removalChallenge": "You have requested the removal of this badge",
-      "curate": "Curate a badge"
+    "user": {
+      "title": "My Profile",
+      "badgesToCurate": "Browse other badges to curate",
+      "createdBadges": "Earn by creating new badges",
+      "tab1": "My badges",
+      "tab2": "Curated badges",
+      "tab3": "Created badges",
+      "badgesIAmReviewing": {
+        "title": "Badges I am reviewing",
+        "seeDispute": "See dispute",
+        "seeDisputeTooltip": "When you raise a challenge, a kleros dispute is created to resolve it and you can see how it's going on the Kleros Court",
+        "previewTitle": "Challenged Badge",
+        "noResults": "There are no badges you are already reviewing...",
+        "addEvidence": "Add more evidence",
+        "viewAll": "View details",
+        "lastActivity": "Last Activity",
+        "submissionChallenge": "You have challenged the submission of this badge",
+        "removalChallenge": "You have requested the removal of this badge",
+        "curate": "Curate a badge"
+      },
+      "verified": "Verified user"
     },
-    "verified": "Verified user",
+    "thirdParty": {
+      "title": "Management",
+      "subtitle": "{{thirdPartyName}} Models Management",
+      "tab1": "Manage account",
+      "tab2": "Manage badges",
+      "manageBadges": {
+        "title": "Manage third party badges"
+      }
+    },
     "statistics": {
       "title": "Statistics",
       "lastUpdated": "Updated:",
@@ -233,8 +280,8 @@
   "errors": {
     "connectWallet": "Connect your wallet",
     "connectWalletSubtitle": "Please, to continue it is necessary that you connect your wallet",
-    "notACreator": "You are not a creator yet.",
-    "notACreatorSubtitle": "Please, to continue it is necessary that you have registered as a creator, ",
+    "notRegistered": "You are not a registered yet.",
+    "notRegisteredSubtitle": "Please, to continue it is necessary that you register.",
     "alreadyOwnedBadge": "You already own this badge",
     "pausedAction": "This action has been temporarily paused.",
     "pausedActionSubtitle": "Please, head over to our Discord channel for more information.",
@@ -242,7 +289,11 @@
     "outOfServiceSubtitle": "Please, head over to our Discord channel for more information.",
     "outOfServiceErrorCode": "Error code: `{{errorCode}}`",
     "fileType": "The selected file's type is not allowed",
-    "fileMaxSize": "The selected file's size exceeds maxFileSize"
+    "fileMaxSize": "The selected file's size exceeds maxFileSize",
+    "noTheBadgeModelCreator": "Oops, something went wrong!",
+    "noTheBadgeModelCreatorSubtitle": "Seems like you dont have access to this badge model. Please get in touch with the creator.",
+    "claimUUIDInvalid": "Claim link expired!",
+    "claimUUIDInvalidSubtitle": "The link is invalid or the badge has been already claimed"
   },
   "creator": {
     "register": {
@@ -281,40 +332,46 @@
     "curateButton": "Curate",
     "curateButtonDisabledTooltip": "You cannot curate your own badge.",
     "claimButton": "Claim",
+    "claimed": "Claimed",
+    "unclaimed": "Unclaimed",
+    "thirdPartyBadgeUnclaimedText": "The badge has not been claimed, an email has been sent to the user.",
     "claimButtonDisabledTooltip": "You cannot claim this badge yet.",
     "renewButton": "Renew",
+    "resendEmailButton": "Resend email",
+    "viewEmailButton": "View encrypted email",
+    "resendEmailText": "Decrypt the email to be able to see it.",
     "model": {
       "create": {
         "howItWorks": "How it works",
         "title": "Create your Badge Model",
         "subTitle": "Do you want to design and publish custom badges that other users can apply for to verify real-world information? Also, you could set the price for the badges you create and receive a share of the fee when users apply for them... So please, complete the form and let´s start creating!",
         "helpSteps": [
-          "For creating a badge model you will have to set up the name, description, and logo that users will see when searching for badges",
-          "You also have to upload **curation criteria**. For guidelines and examples about how to define good curation criteria please check our [docs]({{curationCriteriaDocsUrl}})",
-          "Please note that in order for your badge model to be approved and listed, the curation criteria should be in compliance with the [curation criteria standards]({{curationCriteriaStandardDocsUrl}}) and the [terms and conditions]({{termsUrls}})",
+          "For creating a badge model you will have to set up the name, description, and logo that users will see when searching for badges.",
+          "You also have to upload **curation criteria**. For guidelines and examples about how to define good curation criteria please check our [docs.]({{curationCriteriaDocsUrl}})",
+          "Please note that in order for your badge model to be approved and listed, the curation criteria should be in compliance with the [curation criteria standards]({{curationCriteriaStandardDocsUrl}}) and the [terms and conditions]({{termsUrls}}).",
           "If you have any doubts please check the [docs]({{docsUrl}}) or ask for help in our [discord]({{discordUrl}})."
         ],
-        "previewTitle": "This is how your badge is going to look when a user obtains it.",
+        "previewTitle": "This is how your {{badgeModelTemplate}} is going to look when a user obtains it.",
         "steps": [
           {
-            "subTitle": " **1**. You are starting the process of creating a new badge model. Please read the following instructions carefully in order to be able to complete the process correctly.",
-            "hint": "You can click on the links below, and read more about this process on the docs."
+            "subTitle": "You are starting the process of creating a new badge model. Please read the following instructions carefully in order to be able to complete the process correctly.",
+            "hint": "You can read more about this process on the [docs]({{docsUrl}})."
           },
           {
-            "subTitle": " **2**. Let's start with the look and feel of your badge, so please complete the following form until you are happy with how your badge is going to looks like",
-            "hint": "If you leave the creation process in the middle, and your data will be backed up for one day."
+            "subTitle": "Let's start with the look and feel of your badge, so please complete the following form until you are happy with how your badge is going to looks like.",
+            "hint": "If you happen to step away in the middle of creating, no worries! Your data will be safely backed up for a day."
           },
           {
-            "subTitle": " **3**. In order to create a new badge model you have to complete the following form containing the basic configuration of your badge.",
+            "subTitle": "In order to create a new badge model you have to complete the following form containing the basic configuration of your badge.",
             "hint": "For examples or more details about how to create a good badge model, please check our [docs]({{docsUrl}})."
           },
           {
-            "subTitle": "**4**. You have to define the fields your badge minters will have to complete in order to accomplish your badge curation criteria. The curation criteria should match with the fields you are requesting for your users and should complain with TheBadge badge [model criteria]({{criteriaDocsUrl}}), otherwise, your badge model will be rejected. ",
-            "hint": "For examples or more details about how to create a good badge model, please check our [docs]({{createBadgeTypeDocs}})."
+            "subTitle": "You have to define the fields your badge minters will have to complete in order to accomplish your badge curation criteria. The curation criteria should match with the fields you are requesting for your users and should complain with TheBadge badge [model criteria]({{criteriaDocsUrl}}), otherwise, your badge model will be rejected. ",
+            "hint": "For examples or more details about how to create a good badge model, please check our [docs]({{createBadgeModelDocs}})."
           },
           {
-            "subTitle": "**5**. Please review that the information is correct, if you agree, create your badge model by submitting the transaction.",
-            "hint": "For examples or more details about how to create a good badge model, please check our [docs]({{createBadgeTypeDocs}})."
+            "subTitle": "Please review that the information is correct, if you agree, create your badge model by submitting the transaction.",
+            "hint": "For examples or more details about how to create a good badge model, please check our [docs]({{createBadgeModelDocs}})."
           }
         ],
         "uiBasics": {
@@ -323,7 +380,23 @@
           "logo": "The logo for your badge",
           "textContrast": "Text color",
           "backgroundImage": "Background",
-          "template": "Template (Not implemented yet)"
+          "template": "Template (Not implemented yet)",
+          "templateConfig": {
+            "title": "Choose a name for your badge model",
+            "description": "Briefly describe what your badge certifies",
+            "logoDescription": "Choose an image or logo that will make your model unique",
+            "logoTooltip": "For your badge to look great, it is ideal that the image has 1:1 proportions.",
+            "badgeTypeSelectorTitle": "Choose what type of badge you want: ",
+            "additionalConfigsTitle": "Additional configs ",
+            "diplomaName": "Course name",
+            "diplomaDate": "Date"
+          },
+          "customFields": {
+            "customFieldsEnabled":"Do you want to customize the texts?",
+            "hint": "You can press '{' to use custom variables on your fields",
+            "badgeTitle": "Badge Title",
+            "badgeDescription": "Badge Description"
+          }
         },
         "formField": {
           "name": "Field name",
@@ -341,10 +414,10 @@
           "challengePeriodDuration": "Challenge period duration",
           "rigorousness": "Rigorousness",
           "validFor": "Expiration time",
-          "mintFee": "Mint fee"
+          "mintFee": "Mint fee",
+          "administrators": "The addresses of the administrators"
         },
-        "evidence": {
-        },
+        "evidence": {},
         "confirmation": {
           "youAgree": "By continuing, you agree to our ",
           "termsOfUse": "terms of use",
@@ -359,15 +432,19 @@
         "next": "Next",
         "submit": "Submit"
       },
+      "thirdPartyMint": {
+        "totalCost": "Total cost",
+        "transactionCost": "This is the cost of the transaction.\n TheBadge does not charge you for each badge that you emit."
+      },
       "mint": {
-        "title": "Badge Mint",
+        "title": "{{badgeModelTemplate}} Mint",
         "helpSteps": [
           "Please be aware that you have to provide certain proofs defined by [{{badgeCreatorName}}]({{badgeCreatorProfileLink}})",
           "These proofs will allow the community of curators to validate that you are eligible for obtaining the badge, for more details please check the [docs]({{curationDocsUrl}})",
           "Please note that the proofs should complain to the [following guidelines]({{curationCriteriaUrl}}) in order to be approved.",
           "After you submitted the request, the curation process will start and it would take up to *{{challengePeriodDuration}} {{timeUnit}}* to finish, meanwhile, your badge will be in review. Once the curation ends, it will be automatically available in your profile. For more information about this process, check the [docs]({{curationDocsUrl}})"
         ],
-        "previewTitle": "This is how your Badge is going to look like",
+        "previewTitle": "This is how your {{badgeModelTemplate}} is going to look like",
         "depositCost": "Curation deposit ",
         "depositDisclaimer": "Note that this is a deposit, not a fee and it will be reimbursed if the request is accepted. The challenge period last *{{challengePeriodDuration}} {{timeUnit}}*. \n\n For more information check the [docs]({{docsUrl}})",
         "mintCost": "Badge fee ",
@@ -397,15 +474,66 @@
         ],
         "back": "Back",
         "next": "Next",
-        "submit": "Submit"
+        "submit": "Submit",
+        "thirdParty": {
+          "evidence": {
+            "title": "Issue a {{badgeModelTemplate}} to your user",
+            "sendMethodText": "Choose the method to send the {{badgeModelTemplate}} to your user",
+            "additionalData:": "Needed information about your user"
+          },
+          "helpSteps": [
+            "You will have to fill up the required information about the user you want to issue its diploma",
+            "After filling up that information you will receive a confirmation email and your users will be able to claim the {{badgeModelTemplate}}"
+          ],
+          "steps": [
+            {
+              "subTitle": "**1**. You are starting the certification process for issuing a {{badgeName}} {{badgeModelTemplate}}. Please read the following instructions carefully in order to be able to complete the process correctly, if you have any doubts please check the [docs]({{docsUrl}}) or get in contact with [support]({{supportContact}}).",
+              "hint": "You can read more about this process [here]({{docsUrl}}) or get in contact with [support]({{supportContact}})."
+            },
+            {
+              "subTitle": "**2**. Please complete the following form with the evidence required, if you have any doubts please check the [docs]({{docsUrl}}).",
+              "hint": "If you are not sure about how to complete something, do not hesitate to [get in touch]({{supportContact}})."
+            },
+            {
+              "subTitle": "**3**. Your {{badgeModelTemplate}} preview is ready, please review carefully the details of it and submit the transaction.",
+              "hint": "Please do not close the tab until you see the confirmation notification."
+            }
+          ]
+        }
+      },
+      "claim": {
+        "thirdParty": {
+          "header": {
+            "title": "Claim your badge",
+            "subTitle": "You have received a badge from [{{creatorName}}]({{creatorProfileUrl}}). Please complete the following form to receive it.",
+            "titleSuccess": "Your badge has been successfully claimed!"
+          },
+          "body": {
+            "title": "Please fill up with your Ethereum Address",
+            "addressPlaceholder": "address"
+          },
+          "preview": {
+            "title": "This is how your new Badge is going to look like:",
+            "goToProfile": "Check your new badge",
+            "submit": "Submit"
+          }
+        }
       }
     },
     "viewBadge": {
-      "id": "Badge ID: #{{id}}",
-      "issueBy": "Issued by: {{issuer}}",
+      "id": "Badge ID: ",
+      "issueBy": "Issued by: ",
       "claims": " {{amount}} # badges claimed",
       "checkHowElse": "Check who else claimed it. ",
       "seeAll": "See All",
+      "shareBadge": "Share your badge",
+      "importBadge": "Import your badge into metamask",
+      "mintBadge": "Mint this badge",
+      "viewBadge": "View this badge",
+      "importLinkedin": "Import your badge into your Linkedin",
+      "shareTwitter": "Share on twitter",
+      "viewOpensea": "Check it in OpenSea",
+      "neverExpires": "Never expires",
       "challengeStatus": {
         "title": "Challenge Status",
         "challenged": "CHALLENGED",
@@ -468,7 +596,8 @@
         "ownBadgeChallenge": "You can't do a challenge to your own badge",
         "notClaimedBadge": "You can't do a challenge to a badge that is not yet claimed",
         "challengeButton": "Challenge",
-        "addMoreEvidence": "Add more evidence"
+        "addMoreEvidence": "Add more evidence",
+        "errorEvidenceDisplay": "There was an error fetching the badge evidence, try again in some minutes."
       },
       "criteriaLink": {
         "readCriteria": "Read the ",
@@ -553,6 +682,7 @@
   },
   "severity": {
     "advance": "Advance",
+    "onlyOnDesktop": " (Only available on desktop)",
     "amountOfJurors": "Amount \n of Jurors",
     "challengeBounty": " Challenge \n Bounty",
     "baseDeposit": "Base \n deposit",
@@ -590,7 +720,9 @@
   },
   "transactionLoading": {
     "signature": "Waiting signature",
+    "bePatientSignature": "You wallet is processing the request, be patient...",
     "confirmation": "Waiting confirmation",
+    "bePatientConfirmation": "Validating transaction on the blockchain. This may take a moment...",
     "done": "Transaction done",
     "failed": "Transaction failed"
   },

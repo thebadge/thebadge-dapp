@@ -1,12 +1,14 @@
+import Link from 'next/link'
 import React, { useState } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { LinkedIn } from '@mui/icons-material'
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined'
 import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined'
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined'
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined'
 import TwitterIcon from '@mui/icons-material/Twitter'
-import { Box, IconButton, Stack, styled } from '@mui/material'
+import { Box, IconButton, Skeleton, Stack, styled } from '@mui/material'
 import { IconDiscord } from '@thebadge/ui-library'
 import { Controller, useForm } from 'react-hook-form'
 import { ImageType } from 'react-images-uploading'
@@ -15,8 +17,8 @@ import TBEditableTypography from '@/src/components/common/TBEditableTypography'
 import TBUserAvatar from '@/src/components/common/TBUserAvatar'
 import { AvatarInput } from '@/src/components/form/formFields/AvatarInput'
 import { Address } from '@/src/components/helpers/Address'
+import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { useUserById } from '@/src/hooks/subgraph/useUserById'
-import useIsUserVerified from '@/src/hooks/theBadge/useIsUserVerified'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
 import useTransaction from '@/src/hooks/useTransaction'
@@ -25,9 +27,11 @@ import {
   EditProfileSchema,
   EditProfileSchemaType,
 } from '@/src/pagePartials/creator/register/schema/CreatorRegisterSchema'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { CreatorMetadata } from '@/types/badges/Creator'
 import { TheBadgeUsers__factory } from '@/types/generated/typechain'
+import { WCAddress } from '@/types/utils'
+
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
 const TextFieldContainer = styled(Box)(({ theme }) => ({
   alignItems: 'center',
@@ -37,7 +41,7 @@ const TextFieldContainer = styled(Box)(({ theme }) => ({
 }))
 
 type Props = {
-  address: string
+  address: WCAddress
 }
 
 export default function InfoPreviewEdit({ address }: Props) {
@@ -51,7 +55,6 @@ export default function InfoPreviewEdit({ address }: Props) {
   const theBadgeUsers = useContractInstance(TheBadgeUsers__factory, 'TheBadgeUsers')
 
   const { data } = useUserById(address)
-  const isVerified = useIsUserVerified(address, 'kleros')
 
   const resCreatorMetadata = useS3Metadata<{ content: CreatorMetadata }>(data?.metadataUri || '')
   const creatorMetadata = resCreatorMetadata.data?.content
@@ -116,15 +119,31 @@ export default function InfoPreviewEdit({ address }: Props) {
     }
   }
 
+  function shortenLinkedinString(inputString: string, maxLength: number): string {
+    if (!inputString || inputString.length <= maxLength) {
+      return inputString
+    } else {
+      const prefixToRemove = 'https://www.linkedin.com/'
+      const replacedUrl = inputString
+        .replace(new RegExp('^' + prefixToRemove), '')
+        .slice(0, maxLength)
+      return replacedUrl.slice(0, maxLength)
+    }
+  }
+
   return (
     <>
       {readView && (
         <Stack my={0.5}>
-          <TBUserAvatar
-            isVerified={isVerified.data}
-            size={creatorMetadata ? 171 : 90}
-            src={creatorMetadata?.logo?.s3Url}
-          />
+          <SafeSuspense
+            fallback={<Skeleton variant="circular" width={creatorMetadata ? 171 : 90} />}
+          >
+            <TBUserAvatar
+              address={address}
+              size={creatorMetadata ? 171 : 90}
+              src={creatorMetadata?.logo?.s3Url}
+            />
+          </SafeSuspense>
         </Stack>
       )}
       {!readView && (
@@ -184,9 +203,16 @@ export default function InfoPreviewEdit({ address }: Props) {
                       disabled={readView}
                       error={error}
                       onChange={onChange}
+                      placeholder={'Email'}
                       variant="dAppTitle2"
                     >
-                      {value}
+                      {value && readView ? (
+                        <Link href={`mailto:${value}`} target={'_blank'}>
+                          {value}
+                        </Link>
+                      ) : (
+                        value
+                      )}
                     </TBEditableTypography>
                   )}
                 />
@@ -203,9 +229,16 @@ export default function InfoPreviewEdit({ address }: Props) {
                       disabled={readView}
                       error={error}
                       onChange={onChange}
+                      placeholder={'Twitter'}
                       variant="dAppTitle2"
                     >
-                      {value}
+                      {value && readView ? (
+                        <Link href={value} target={'_blank'}>
+                          {value}
+                        </Link>
+                      ) : (
+                        value
+                      )}
                     </TBEditableTypography>
                   )}
                 />
@@ -222,9 +255,42 @@ export default function InfoPreviewEdit({ address }: Props) {
                       disabled={readView}
                       error={error}
                       onChange={onChange}
+                      placeholder={'Discord'}
                       variant="dAppTitle2"
                     >
-                      {value}
+                      {value && readView ? (
+                        <Link href={value} target={'_blank'}>
+                          {value}
+                        </Link>
+                      ) : (
+                        value
+                      )}
+                    </TBEditableTypography>
+                  )}
+                />
+              </TextFieldContainer>
+            )}
+            {(creatorMetadata?.linkedin || !readView) && (
+              <TextFieldContainer>
+                <LinkedIn sx={{ mr: 1 }} />
+                <Controller
+                  control={control}
+                  name={'linkedin'}
+                  render={({ field: { onChange, value }, fieldState: { error } }) => (
+                    <TBEditableTypography
+                      disabled={readView}
+                      error={error}
+                      onChange={onChange}
+                      placeholder={'Company Url'}
+                      variant="dAppTitle2"
+                    >
+                      {value && readView ? (
+                        <Link href={value} target={'_blank'}>
+                          {shortenLinkedinString(value || '', 20)}
+                        </Link>
+                      ) : (
+                        value
+                      )}
                     </TBEditableTypography>
                   )}
                 />

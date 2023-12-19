@@ -1,16 +1,15 @@
 import { useRouter } from 'next/navigation'
 import React from 'react'
 
-import { Box, Divider, Stack, Typography } from '@mui/material'
+import { Box, Divider, Skeleton, Stack, Typography } from '@mui/material'
 import { ButtonV2, colors } from '@thebadge/ui-library'
-import { formatUnits } from 'ethers/lib/utils'
 import useTranslation from 'next-translate/useTranslation'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
-import { getNetworkConfig } from '@/src/config/web3'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
+import { useSizeSM } from '@/src/hooks/useSize'
+import BadgeMintCost from '@/src/pagePartials/badge/explorer/addons/BadgeMintCost'
 import CreatorInfoSmallPreview from '@/src/pagePartials/badge/explorer/addons/CreatorInfoSmallPreview'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { generateMintUrl, generateModelExplorerUrl } from '@/src/utils/navigation/generateUrl'
 import { BadgeModelMetadata } from '@/types/badges/BadgeMetadata'
 import { BadgeModel } from '@/types/generated/subgraph'
@@ -18,54 +17,44 @@ import { BadgeModel } from '@/types/generated/subgraph'
 export default function BadgeModelInfoPreview({ badgeModel }: { badgeModel: BadgeModel }) {
   const { t } = useTranslation()
   const router = useRouter()
-  const { appChainId } = useWeb3Connection()
-  const networkConfig = getNetworkConfig(appChainId)
+  const isMobile = useSizeSM()
 
   const resBadgeModelMetadata = useS3Metadata<{ content: BadgeModelMetadata }>(badgeModel.uri || '')
   const badgeMetadata = resBadgeModelMetadata.data?.content
 
   return (
-    <Stack gap={4}>
+    <Stack gap={4} mt={4}>
       {/* Badge Model info */}
       <Stack gap={2}>
-        <Stack gap={1}>
-          <Typography fontWeight="normal" variant="dAppTitle1">
-            {t('explorer.preview.badge.name')}
-          </Typography>
-          <Typography variant="dAppTitle2">{badgeMetadata?.name}</Typography>
-          <Divider color={colors.white} />
-        </Stack>
-        <Stack gap={1}>
-          <Typography fontWeight="normal" variant="dAppTitle1">
-            {t('explorer.preview.badge.description')}
-          </Typography>
-          <Typography variant="dAppTitle2">{badgeMetadata?.description}</Typography>
-          <Divider color={colors.white} />
-        </Stack>
+        <Typography variant="titleLarge">{badgeMetadata?.name}</Typography>
+
+        <Typography variant="bodyMedium">{badgeMetadata?.description}</Typography>
       </Stack>
+
+      <Divider color={colors.white} />
 
       {/* Mint info */}
       <Stack gap={1}>
-        <Typography fontWeight="bold" variant="dAppTitle2">
-          {t('explorer.preview.badge.mintCost')}
-          <Typography component="span" sx={{ ml: 1 }} variant="dAppTitle2">
-            {formatUnits(badgeModel.creatorFee, 18)} {networkConfig.token}
-          </Typography>
-        </Typography>
+        <SafeSuspense fallback={<Skeleton variant="text" width={100} />}>
+          <BadgeMintCost modelId={badgeModel.id} />
+        </SafeSuspense>
 
-        <Typography fontWeight="bold" variant="dAppTitle2">
+        {isMobile && <Divider color={colors.white} sx={{ my: 2 }} />}
+
+        <Typography fontWeight="bold" variant="titleMedium">
           {t('explorer.preview.badge.totalMinted')}
           <Typography component="span" sx={{ ml: 1 }} variant="dAppTitle2">
             {badgeModel.badgesMintedAmount}
           </Typography>
         </Typography>
-        <Divider color={colors.white} />
       </Stack>
 
       <Box display="flex" flex="1" justifyContent="space-between">
         <ButtonV2
           backgroundColor={colors.transparent}
-          onClick={() => router.push(generateModelExplorerUrl(badgeModel.id))}
+          onClick={() =>
+            router.push(generateModelExplorerUrl(badgeModel.id, badgeModel.controllerType))
+          }
           variant="outlined"
         >
           {t('explorer.preview.badge.showOthers')}

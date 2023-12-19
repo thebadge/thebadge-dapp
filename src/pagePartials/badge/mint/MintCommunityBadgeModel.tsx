@@ -2,34 +2,36 @@ import { useRouter } from 'next/navigation'
 import * as React from 'react'
 import { useEffect } from 'react'
 
+import { useSignMessage } from 'wagmi'
+
 import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
 import { useRegistrationBadgeModelKlerosMetadata } from '@/src/hooks/subgraph/useBadgeModelKlerosMetadata'
 import useMintValue from '@/src/hooks/theBadge/useMintValue'
-import { useContractInstance } from '@/src/hooks/useContractInstance'
+import useTBContract from '@/src/hooks/theBadge/useTBContract'
 import useTransaction, { TransactionStates } from '@/src/hooks/useTransaction'
 import MintCommunityWithSteps from '@/src/pagePartials/badge/mint/MintCommunityWithSteps'
 import { MintBadgeSchemaType } from '@/src/pagePartials/badge/mint/schema/MintBadgeSchema'
 import { cleanMintFormValues } from '@/src/pagePartials/badge/mint/utils'
 import { PreventActionIfBadgeModelPaused } from '@/src/pagePartials/errors/preventActionIfPaused'
 import { RequiredNotHaveBadge } from '@/src/pagePartials/errors/requiredNotHaveBadge'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import { encodeIpfsEvidence } from '@/src/utils/badges/createBadgeModelHelpers'
 import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 import { BadgeModelMetadata } from '@/types/badges/BadgeMetadata'
-import { TheBadge__factory } from '@/types/generated/typechain'
 import { MetadataColumn } from '@/types/kleros/types'
 import { NextPageWithLayout } from '@/types/next'
 import { SupportedRelayMethods } from '@/types/relayedTx'
 
 const MintCommunityBadgeModel: NextPageWithLayout = () => {
-  const { address, appChainId, appPubKey, isSocialWallet, userSocialInfo, web3Provider } =
+  const { address, appChainId, getSocialCompressedPubKey, isSocialWallet, web3Auth } =
     useWeb3Connection()
-  const theBadge = useContractInstance(TheBadge__factory, 'TheBadge')
+  const { signMessageAsync } = useSignMessage()
+  const theBadge = useTBContract()
   const { resetTxState, sendRelayTx, sendTx, state } = useTransaction()
   const router = useRouter()
-  const badgeModelId = useModelIdParam()
+  const { badgeModelId, contract } = useModelIdParam()
 
   if (!badgeModelId) {
     throw `No modelId provided us URL query param`
@@ -42,7 +44,7 @@ const MintCommunityBadgeModel: NextPageWithLayout = () => {
     }
   }, [router, state])
 
-  const badgeModel = useBadgeModel(badgeModelId)
+  const badgeModel = useBadgeModel(badgeModelId, contract)
   const badgeModelKleros = useRegistrationBadgeModelKlerosMetadata(badgeModelId)
 
   const klerosBadgeMetadata = badgeModelKleros.data?.badgeModelKlerosRegistrationMetadata
@@ -87,7 +89,7 @@ const MintCommunityBadgeModel: NextPageWithLayout = () => {
         const klerosBadgeModelControllerDataEncoded = encodeIpfsEvidence(evidenceIPFSHash)
 
         // If social login relay tx
-        if (isSocialWallet && address && userSocialInfo && appPubKey) {
+        if (isSocialWallet && address) {
           const data = JSON.stringify({
             badgeModelId,
             address,
@@ -98,10 +100,17 @@ const MintCommunityBadgeModel: NextPageWithLayout = () => {
             },
           })
 
-          const signature = await web3Provider?.getSigner().signMessage(data)
+          const signature = await signMessageAsync({ message: data })
 
           if (!signature) {
-            throw new Error('User rejected the signing of the message')
+            throw new Error('User rejected the signing of the message.')
+          }
+
+          const userSocialInfo = await web3Auth?.getUserInfo()
+          const appPubKey = await getSocialCompressedPubKey()
+
+          if (!userSocialInfo || !appPubKey) {
+            throw new Error('User information is missing.')
           }
 
           // Send to backend

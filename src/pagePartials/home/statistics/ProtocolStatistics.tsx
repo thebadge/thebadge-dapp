@@ -8,6 +8,7 @@ import StatisticDoubleDisplay from '@/src/pagePartials/home/statistics/Statistic
 
 const Container = styled(Box)(({ theme }) => ({
   display: 'flex',
+  flexWrap: 'wrap',
   padding: theme.spacing(4, 2),
   gap: theme.spacing(2),
   justifyContent: 'space-between',
@@ -17,6 +18,12 @@ const Container = styled(Box)(({ theme }) => ({
     'linear-gradient(90deg, #008362 0%, #5BBCAD 21.88%, #002CBF 51.56%, #B74AD6 76.04%, #891CFB 100%)',
   [theme.breakpoints.down('sm')]: {
     flexDirection: 'column',
+    maxHeight: '500px',
+  },
+  [theme.breakpoints.down(512)]: {
+    maxHeight: 'inherit',
+    width: '350px',
+    margin: 'auto',
   },
 }))
 

@@ -1,7 +1,5 @@
 import { UserInfo } from '@web3auth/base'
 
-import { ChainsValues } from '@/types/chains'
-
 export enum SupportedRelayMethods {
   MINT = 'mint',
   IS_ASSET_ACTIVE = 'isAssetActive',
@@ -33,7 +31,15 @@ export interface EmailClaimTx {
 
   badgeModelId: number
 
-  emailClaimer: string
+  emailClaimer?: string
+}
+
+export type EmailClaimTxSigned = EmailClaimTx & {
+  signature: string
+
+  signedMessage: string
+
+  ownerAddress: string
 }
 
 export interface RelayedTxResult {

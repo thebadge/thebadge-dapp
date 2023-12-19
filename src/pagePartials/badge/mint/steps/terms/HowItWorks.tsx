@@ -37,9 +37,9 @@ export default function HowItWorks() {
   const { t } = useTranslation()
   const { control } = useFormContext<MintBadgeSchemaType>() // retrieve all hook methods
 
-  const modelId = useModelIdParam()
-  const badgeModelData = useBadgeModel(modelId)
-  const klerosBadgeModel = useRegistrationBadgeModelKlerosMetadata(modelId)
+  const { badgeModelId } = useModelIdParam()
+  const badgeModelData = useBadgeModel(badgeModelId)
+  const klerosBadgeModel = useRegistrationBadgeModelKlerosMetadata(badgeModelId)
 
   const badgeModelKlerosMetadata = klerosBadgeModel.data?.badgeModelKlerosRegistrationMetadata
   const badgeCriteria = klerosBadgeModel.data?.badgeRegistrationCriteria

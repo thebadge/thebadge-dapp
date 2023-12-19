@@ -14,20 +14,45 @@ export const Chains = {
   goerli: 5,
   sepolia: 11155111,
   gnosis: 100,
+  polygon: 137,
+  mumbai: 80001,
 } as const
+
+export const ChainShortName = {
+  mainnet: 'eth',
+  polygon: 'matic',
+  mumbai: 'mumbai-matic',
+  goerli: 'gor',
+  sepolia: 'sep',
+  gnosis: 'gno',
+}
+
+export const ChainName = {
+  [Chains.goerli]: 'goerli',
+  [Chains.sepolia]: 'sepolia',
+  [Chains.gnosis]: 'gnosis',
+  [Chains.polygon]: 'matic',
+  [Chains.mumbai]: 'mumbai',
+}
 
 export const providerChains: ProviderChains = {
   [RPCProviders.infura]: {
     [Chains.goerli]: 'goerli',
     [Chains.sepolia]: 'sepolia',
     [Chains.gnosis]: 'gnosis',
+    [Chains.polygon]: 'polygon-mainnet',
+    [Chains.mumbai]: 'polygon-mumbai',
   },
   [RPCProviders.alchemy]: {
     [Chains.goerli]: 'eth-goerli',
     [Chains.sepolia]: 'eth-sepolia',
     [Chains.gnosis]: 'xDai-gnosis',
+    [Chains.polygon]: 'polygon',
+    [Chains.mumbai]: 'mumbai',
   },
 }
+
+export const getChainName = (chainId: ChainsValues) => ChainName[chainId]
 
 const getInfuraRPCUrl = (chainId: ChainsValues) =>
   `https://${providerChains[RPCProviders.infura][chainId]}.infura.io/v3/${
@@ -51,6 +76,10 @@ export const getProviderUrl = (
     throw new Error(`You must set infura/alchemy token provider in environment variable`)
   }
 
+  // Gnosis has its own rpc provider
+  if (chainId === Chains.gnosis) {
+    return 'https://gnosis.drpc.org'
+  }
   //Manual provider
   if (provider === RPCProviders.infura && RPCProvidersENV[RPCProviders.infura])
     return getInfuraRPCUrl(chainId)
@@ -81,7 +110,7 @@ export const chainsConfig: Record<ChainsValues, ChainConfig> = {
   [Chains.goerli]: {
     id: Chains.goerli,
     name: 'Görli Testnet',
-    shortName: 'Goerli',
+    shortName: ChainShortName.goerli,
     chainId: Chains.goerli,
     chainIdHex: '0x5',
     rpcUrl: getProviderUrl(Chains.goerli),
@@ -91,7 +120,7 @@ export const chainsConfig: Record<ChainsValues, ChainConfig> = {
   [Chains.sepolia]: {
     id: Chains.sepolia,
     name: 'Ethereum Sepolia',
-    shortName: 'sepoliaeth',
+    shortName: ChainShortName.sepolia,
     chainId: Chains.sepolia,
     chainIdHex: '0xaa36a7',
     rpcUrl: getProviderUrl(Chains.sepolia),
@@ -101,7 +130,7 @@ export const chainsConfig: Record<ChainsValues, ChainConfig> = {
   [Chains.gnosis]: {
     id: Chains.gnosis,
     name: 'Gnosis Chain',
-    shortName: 'xDai',
+    shortName: ChainShortName.gnosis,
     chainId: Chains.gnosis,
     chainIdHex: '0x64',
     rpcUrl: getProviderUrl(Chains.gnosis),
@@ -111,13 +140,33 @@ export const chainsConfig: Record<ChainsValues, ChainConfig> = {
   // [Chains.mainnet]: {
   //   id: Chains.mainnet,
   //   name: 'Mainnet',
-  //   shortName: 'Mainnet',
+  //   shortName: ChainShortName.mainnet,
   //   chainId: Chains.mainnet,
   //   chainIdHex: '0x1',
   //   rpcUrl: getProviderUrl(Chains.mainnet),
   //   blockExplorerUrls: ['https://etherscan.io/'],
   //   token: 'ETH',
   // },
+  [Chains.polygon]: {
+    id: Chains.polygon,
+    name: 'Polygon',
+    shortName: ChainShortName.polygon,
+    chainId: Chains.polygon,
+    chainIdHex: '0x89',
+    rpcUrl: getProviderUrl(Chains.polygon),
+    blockExplorerUrls: ['https://polygonscan.com/'],
+    token: 'MATIC',
+  },
+  [Chains.mumbai]: {
+    id: Chains.mumbai,
+    name: 'Mumbai',
+    shortName: ChainShortName.mumbai,
+    chainId: Chains.mumbai,
+    chainIdHex: '0x13881',
+    rpcUrl: getProviderUrl(Chains.mumbai),
+    blockExplorerUrls: ['https://mumbai.polygonscan.com/'],
+    token: 'MATIC',
+  },
 }
 
 export function getNetworkConfig(chainId: ChainsValues): ChainConfig {

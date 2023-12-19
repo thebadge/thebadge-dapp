@@ -14,6 +14,7 @@ import { useSizeSM } from '@/src/hooks/useSize'
 import { useCurateProvider } from '@/src/providers/curateProvider'
 import { KlerosBadgeRequest, KlerosRequestType } from '@/types/generated/subgraph'
 import { BadgeStatus } from '@/types/generated/subgraph'
+import { WCAddress } from '@/types/utils'
 
 const DisplayWrapper = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -26,18 +27,18 @@ export default function ChallengeStatus() {
   const { t } = useTranslation()
   const { addMoreEvidence, challenge } = useCurateProvider()
 
+  // Params from url badge/preview/[badgeId]?contract=xxx:xxx
+  const { badgeId, contract } = useBadgeIdParam()
+
   const isMobile = useSizeSM()
 
-  const badgeId = useBadgeIdParam()
-  if (!badgeId) {
-    throw `No badgeId provided us URL query param`
-  }
-  const badgeById = useBadgeById(badgeId)
+  const badgeById = useBadgeById(badgeId, contract)
   const badge = badgeById.data
+
   if (!badge) {
     throw 'There was not possible to get the needed data. Try again in some minutes.'
   }
-  const badgeKlerosMetadata = useBadgeKlerosMetadata(badgeId)
+  const badgeKlerosMetadata = useBadgeKlerosMetadata(badgeId, contract)
 
   const activeRequest = badgeKlerosMetadata.data?.requests[
     badgeKlerosMetadata.data?.requests.length - 1
@@ -108,13 +109,13 @@ export default function ChallengeStatus() {
             <Typography variant="dAppBody4">
               {t('badge.viewBadge.challengeStatus.requester')}
             </Typography>
-            <Address address={activeRequest.requester} />
+            <Address address={activeRequest.requester as WCAddress} />
           </DisplayWrapper>
           <DisplayWrapper>
             <Typography variant="dAppBody4">
               {t('badge.viewBadge.challengeStatus.challenger')}
             </Typography>
-            <Address address={activeRequest.challenger} />
+            <Address address={activeRequest.challenger as WCAddress} />
           </DisplayWrapper>
         </Stack>
       </Box>

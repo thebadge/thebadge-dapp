@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react'
 
 import { useTransactionNotification } from '@/src/providers/TransactionNotificationProvider'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import { TransactionError } from '@/src/utils/TransactionError'
 import { RelayMethod } from '@/types/relayedTx'
 
@@ -56,15 +56,11 @@ export default function useRelayerTransactionEndpoint() {
       try {
         notifyWaitingForSignature()
         setTransactionState(TransactionStates.waitingSignature)
-        console.log('requesting method')
         const { errorMessage, txHash, valid } = await requestedMethod()
-        console.log('result', txHash, 'valid', valid, 'error', errorMessage)
         if (!valid || !txHash) {
           throw new Error(errorMessage)
         }
-        console.log('atuei')
         await waitForAsyncTxExecution(txHash)
-        console.log('dutie')
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (e: any) {
         const error = new TransactionError(

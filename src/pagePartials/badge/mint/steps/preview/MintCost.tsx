@@ -10,7 +10,7 @@ import { getNetworkConfig } from '@/src/config/web3'
 import { DOCS_URL } from '@/src/constants/common'
 import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import { useRegistrationBadgeModelKlerosMetadata } from '@/src/hooks/subgraph/useBadgeModelKlerosMetadata'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import { secondsToDays, secondsToMinutes } from '@/src/utils/dateUtils'
 import { isTestnet } from '@/src/utils/network'
 
@@ -27,6 +27,9 @@ const CostContainer = styled(Stack)(({ theme }) => ({
   gap: theme.spacing(1),
   borderBottom: '1px solid white',
   margin: 'auto',
+  [theme.breakpoints.down('sm')]: {
+    width: '100%',
+  },
 }))
 
 const ValueContainer = styled(Box)(({ theme }) => ({
@@ -40,12 +43,12 @@ export default function MintCost({ costs }: Props) {
   const { t } = useTranslation()
   const { appChainId } = useWeb3Connection()
   const networkConfig = getNetworkConfig(appChainId)
-  const modelId = useModelIdParam()
+  const { badgeModelId } = useModelIdParam()
 
-  if (!modelId) {
+  if (!badgeModelId) {
     throw `No modelId provided as URL query param`
   }
-  const badgeModelKlerosData = useRegistrationBadgeModelKlerosMetadata(modelId)
+  const badgeModelKlerosData = useRegistrationBadgeModelKlerosMetadata(badgeModelId)
 
   if (badgeModelKlerosData.error || !badgeModelKlerosData.data) {
     throw `There was an error trying to fetch the metadata for the badge model`
@@ -115,7 +118,7 @@ export default function MintCost({ costs }: Props) {
 
       <Divider />
 
-      <CostContainer width="50%">
+      <CostContainer>
         <Typography color={colors.green} variant="dAppTitle2">
           {t('badge.model.mint.totalCost')}
         </Typography>

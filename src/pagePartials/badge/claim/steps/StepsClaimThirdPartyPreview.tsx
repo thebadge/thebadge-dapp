@@ -1,30 +1,42 @@
 import * as React from 'react'
-import { useRef } from 'react'
 
-import { Box, Stack } from '@mui/material'
+import { Stack } from '@mui/material'
 import useTranslation from 'next-translate/useTranslation'
 import { useFormContext } from 'react-hook-form'
 
-import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
+import SafeSuspense from '@/src/components/helpers/SafeSuspense'
+import useClaimParams from '@/src/hooks/nextjs/useClaimParams'
+import { useBadgeThirdPartyRequiredData } from '@/src/hooks/subgraph/useBadgeModelThirdPartyMetadata'
+import useBadgePreviewUrl from '@/src/hooks/theBadge/useBadgePreviewUrl'
 import { ClaimThirdPartyBadgeSchemaType } from '@/src/pagePartials/badge/claim/schema/ClaimThirdPartyBadgeSchema'
-import { BadgePreviewGenerator } from '@/src/pagePartials/badge/preview/BadgePreviewGenerator'
+import { BadgeThirdPartyPreviewGenerator } from '@/src/pagePartials/badge/preview/generators/BadgeThirdPartyPreviewGenerator'
+import { reCreateThirdPartyValuesObject } from '@/src/utils/badges/mintHelpers'
+import { parsePrefixedAddress } from '@/src/utils/prefixedAddress'
 
 export const StepClaimThirdPartyPreview = () => {
   const { t } = useTranslation()
-  const badgePreviewRef = useRef<HTMLDivElement>()
   const { setValue } = useFormContext<ClaimThirdPartyBadgeSchemaType>()
-  const modelId = useModelIdParam()
+  const { badgeId, contract, modelId } = useClaimParams()
+  const { address, chainId } = parsePrefixedAddress(contract)
+  const { badgePreviewUrl } = useBadgePreviewUrl(badgeId, address, chainId)
+  const requiredBadgeDataMetadata = useBadgeThirdPartyRequiredData(`${badgeId}` || '')
+
+  const values = reCreateThirdPartyValuesObject(
+    requiredBadgeDataMetadata.data?.requirementsDataValues || {},
+    requiredBadgeDataMetadata.data?.requirementsDataColumns,
+  )
 
   return (
     <Stack alignItems={'center'} gap={3} margin={1}>
-      <Box ref={badgePreviewRef}>
-        <BadgePreviewGenerator
-          badgePreviewRef={badgePreviewRef}
+      <SafeSuspense>
+        <BadgeThirdPartyPreviewGenerator
+          additionalData={{ ...values }}
+          badgeUrl={badgePreviewUrl}
           modelId={modelId}
           setValue={setValue}
           title={t('badge.model.claim.thirdParty.preview.title')}
         />
-      </Box>
+      </SafeSuspense>
     </Stack>
   )
 }

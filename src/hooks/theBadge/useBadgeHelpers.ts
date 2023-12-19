@@ -28,17 +28,30 @@ export default function useBadgeHelpers(): UseBadgeReturn {
   const { getPendingTimeProgressPercentage, getTimeLeft, timestampToDate } = useDateHelpers()
 
   function getBadgeReviewStatus(badge: ReviewBadge): BadgeReviewStatus {
-    const dueDate: Date = timestampToDate(badge.badgeKlerosMetaData?.reviewDueDate)
-    const pendingTimeDurationSeconds: number =
-      badge.badgeModel.badgeModelKleros?.challengePeriodDuration
-    const timeLeft: TimeLeft = getTimeLeft(dueDate)
-    const progressPercentage = getPendingTimeProgressPercentage(dueDate, pendingTimeDurationSeconds)
+    if (badge.badgeKlerosMetaData) {
+      const dueDate: Date = timestampToDate(badge.badgeKlerosMetaData?.reviewDueDate)
+      const pendingTimeDurationSeconds: number =
+        badge.badgeModel.badgeModelKleros?.challengePeriodDuration
+      const timeLeft: TimeLeft = getTimeLeft(dueDate)
+      const progressPercentage = getPendingTimeProgressPercentage(
+        dueDate,
+        pendingTimeDurationSeconds,
+      )
 
+      return {
+        status: badge.status,
+        reviewTimeLeft: timeLeft,
+        reviewProgressPercentage: progressPercentage,
+        reviewTimeFinished: progressPercentage >= 100,
+      }
+    }
+    // TODO VERIFY
+    const timeLeft: TimeLeft = getTimeLeft(new Date())
     return {
       status: badge.status,
       reviewTimeLeft: timeLeft,
-      reviewProgressPercentage: progressPercentage,
-      reviewTimeFinished: progressPercentage >= 100,
+      reviewProgressPercentage: 0,
+      reviewTimeFinished: 0 >= 100,
     }
   }
 

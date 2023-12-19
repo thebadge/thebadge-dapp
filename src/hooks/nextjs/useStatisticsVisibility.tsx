@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
 export type StatisticVisibility = { [key: string]: boolean }
 
@@ -68,7 +68,7 @@ export default function useStatisticVisibility(
 
 function getStoredStatisticVisibility(
   category: string,
-  address: string | null,
+  address: string | undefined,
 ): StatisticVisibility | null {
   if (!address) return null
   const stored = sessionStorage.getItem(`${category}-statisticVisibility-${address}`)

@@ -24,24 +24,24 @@ export async function createAndUploadChallengeEvidence(
   return convertHashToValidIPFSKlerosHash(evidenceIPFSUploaded.result?.ipfsHash)
 }
 
-export function saveChallengedBadgeId(badgeId: string, userAddress: string | null) {
+export function saveChallengedBadgeId(badgeId: string, userAddress: string | undefined) {
   const existingSessionValue = getChallengedBadgesId(userAddress)
   const key = `${userAddress}:challengedBadges`
 
   sessionStorage.setItem(key, JSON.stringify([badgeId, ...existingSessionValue]))
 }
 
-export function updateChallengedBadgesId(badgesId: string[], userAddress: string | null) {
+export function updateChallengedBadgesId(badgesId: string[], userAddress: string | undefined) {
   const key = `${userAddress}:challengedBadges`
   sessionStorage.setItem(key, JSON.stringify(badgesId))
 }
 
-export function getChallengedBadgesId(userAddress: string | null): string[] {
+export function getChallengedBadgesId(userAddress: string | undefined): string[] {
   const key = `${userAddress}:challengedBadges`
   return JSON.parse(sessionStorage.getItem(key) ?? '[]')
 }
 
-export function removeChallengedBadgeId(badgeIdToRemove: string, userAddress: string | null) {
+export function removeChallengedBadgeId(badgeIdToRemove: string, userAddress: string | undefined) {
   const existingSessionValue = getChallengedBadgesId(userAddress)
   const key = `${userAddress}:challengedBadges`
 

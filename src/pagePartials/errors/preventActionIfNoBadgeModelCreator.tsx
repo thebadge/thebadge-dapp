@@ -6,7 +6,7 @@ import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
 import NotTheBadgeModelCreatorError from '@/src/pagePartials/errors/displays/NotTheBadgeModelCreatorError'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import isSameAddress from '@/src/utils/addressValidations'
 
 const Wrapper = styled('div')`
@@ -23,8 +23,8 @@ type Props = {
 }
 
 export const PreventActionIfNoBadgeModelCreator: React.FC<Props> = ({ children, minHeight }) => {
-  const badgeModelId = useModelIdParam()
-  const badgeModel = useBadgeModel(badgeModelId)
+  const { badgeModelId, contract } = useModelIdParam()
+  const badgeModel = useBadgeModel(badgeModelId, contract)
   const { address } = useWeb3Connection()
 
   if (
