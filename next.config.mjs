@@ -39,7 +39,7 @@ export default withMDX(nextTranslate(withBundleAnalyzerWrapper(
     compiler: {
       styledComponents: true,
     },
-    transpilePackages: ['@mui/material', '@thebadge/ui-library', '@web3-onboard/*'],
+    transpilePackages: ['@mui/material', '@thebadge/ui-library'],
     images: {
       unoptimized: true,
       domains: [
@@ -52,9 +52,6 @@ export default withMDX(nextTranslate(withBundleAnalyzerWrapper(
       if (isServer) {
         config.resolve.alias.lokijs = false;
         config.resolve.alias.encoding = false;
-        config.resolve.alias["pino-pretty"] = false;
-        config.resolve.alias["@web3-onboard/react"] = false;
-        config.resolve.alias['@thebadge/ui-library'] = false;
       }
       // load worker files as a urls by using Asset Modules
       // https://webpack.js.org/guides/asset-modules/
@@ -66,7 +63,6 @@ export default withMDX(nextTranslate(withBundleAnalyzerWrapper(
         }
       });
       config.externals.push(
-        "pino-pretty",
         "lokijs",
         "encoding"
       );

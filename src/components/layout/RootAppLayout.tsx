@@ -34,7 +34,7 @@ export default function RootAppLayout({ children }: { children: React.ReactNode 
         }}
       >
         <Web3ConnectionProvider>
-          <AppRouterCacheProvider>
+          <AppRouterCacheProvider options={{ enableCssLayer: true }}>
             <ThemeProvider>
               <SectionReferencesProvider>
                 <TransactionNotificationProvider>

@@ -1,11 +1,11 @@
 import { Head, Html, Main, NextScript } from 'next/document'
 
-// or `v14-pagesRouter` if you are using Next.js v14
 import { DocumentHeadTags, documentGetInitialProps } from '@mui/material-nextjs/v14-pagesRouter'
+import type { DocumentHeadTagsProps } from '@mui/material-nextjs/v14-pagesRouter'
 
 import { APP_URL } from '@/src/constants/common'
 
-export default function MyDocument(props) {
+export default function MyDocument(props: DocumentHeadTagsProps) {
   const title = 'The Badge dApp - Decentralized Certifications Platform'
   const description =
     'TheBadge is a decentralized certification platform that allows companies, institutions, and individuals to bring verified real-world certifications to the blockchain.'

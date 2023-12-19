@@ -1,3 +1,4 @@
+'use client'
 import { Box, Stack, styled, useTheme } from '@mui/material'
 import { SectionLayout, colors, gradients } from '@thebadge/ui-library'
 
