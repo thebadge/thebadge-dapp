@@ -118,11 +118,11 @@ export default function InfoPreview({ address }: Props) {
         </InfoPreviewAboutContainer>
       )
     }
-    return (
+    return !readView ? (
       <InfoPreviewAboutContainer>
         <InfoAbout address={address as WCAddress} readView={readView} />
       </InfoPreviewAboutContainer>
-    )
+    ) : null
   }
 
   const renderSocialSection = () => {
@@ -133,11 +133,11 @@ export default function InfoPreview({ address }: Props) {
         </InfoPreviewSocialContainer>
       )
     }
-    return (
+    return !readView ? (
       <InfoPreviewSocialContainer isMobile={isMobile}>
         <InfoSocial address={address as WCAddress} readView={readView} />
       </InfoPreviewSocialContainer>
-    )
+    ) : null
   }
 
   return (
