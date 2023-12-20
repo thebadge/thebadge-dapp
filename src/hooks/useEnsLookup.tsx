@@ -37,14 +37,11 @@ type EnsLookupResult =
 
 const getChainByChainId = (chainId: ChainsValues): Chain => {
   switch (chainId) {
-    case Chains.gnosis: {
-      return gnosis
-    }
-    case Chains.polygon: {
-      return polygon
-    }
+    // Returns mainnet because ens is not supported in polygon and gnosis
+    case Chains.gnosis:
+    case Chains.polygon:
     case Chains.mumbai: {
-      return polygonMumbai
+      return mainnet
     }
     case Chains.sepolia: {
       return sepolia
