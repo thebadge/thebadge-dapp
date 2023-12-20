@@ -25,16 +25,25 @@ export default function useUserMetadata(
     ? ensMetadata?.data.ensNameOrAddress
     : address || connectedWalletAddress
   const isEnsName = ensMetadata?.data ? ensMetadata.data.isEnsName : false
-  return {
-    name: creatorMetadata?.name || ensMetadataResult?.name,
-    description: creatorMetadata?.description || ensMetadataResult?.description,
-    email: creatorMetadata?.email || ensMetadataResult?.email,
-    website: creatorMetadata?.website || ensMetadataResult?.website,
+
+  const socialData = {
     twitter: extractTwitterUsername(creatorMetadata?.twitter || ensMetadataResult?.twitter),
     discord: creatorMetadata?.discord || ensMetadataResult?.discord,
     linkedin: creatorMetadata?.linkedin || ensMetadataResult?.linkedin,
     github: extractGitHubUsername(creatorMetadata?.github || ensMetadataResult?.github),
     telegram: creatorMetadata?.telegram || ensMetadataResult?.telegram,
+  }
+
+  const aboutData = {
+    description: creatorMetadata?.description || ensMetadataResult?.description,
+    email: creatorMetadata?.email || ensMetadataResult?.email,
+    website: creatorMetadata?.website || ensMetadataResult?.website,
+  }
+
+  return {
+    name: creatorMetadata?.name || ensMetadataResult?.name,
+    ...aboutData,
+    ...socialData,
     logo: {
       mimeType: 'image/jpeg',
       s3Url: creatorMetadata?.logo?.s3Url || ensMetadata.data?.avatar,
@@ -47,5 +56,12 @@ export default function useUserMetadata(
     ensNameOrAddress,
     isEnsName,
     terms: resCreatorMetadata.data?.terms,
+    hasAboutData: aboutData.description || aboutData.email || aboutData.website,
+    hasSocialData:
+      socialData.twitter ||
+      socialData.discord ||
+      socialData.linkedin ||
+      socialData.github ||
+      socialData.telegram,
   }
 }

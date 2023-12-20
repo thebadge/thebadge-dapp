@@ -129,12 +129,16 @@ export default function InfoPreview({ address }: Props) {
             />
           </InfoPreviewContainer>
           <Box display="flex" flexDirection="column">
-            <InfoPreviewAboutContainer>
-              <InfoAbout address={address as WCAddress} readView={readView} />
-            </InfoPreviewAboutContainer>
-            <InfoPreviewSocialContainer isMobile={isMobile}>
-              <InfoSocial address={address as WCAddress} readView={readView} />
-            </InfoPreviewSocialContainer>
+            {userMetadata.hasAboutData ? (
+              <InfoPreviewAboutContainer>
+                <InfoAbout address={address as WCAddress} readView={readView} />
+              </InfoPreviewAboutContainer>
+            ) : null}
+            {userMetadata.hasSocialData ? (
+              <InfoPreviewSocialContainer isMobile={isMobile}>
+                <InfoSocial address={address as WCAddress} readView={readView} />
+              </InfoPreviewSocialContainer>
+            ) : null}
           </Box>
         </AnimateHeight>
       </Box>
