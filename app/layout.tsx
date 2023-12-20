@@ -1,8 +1,8 @@
 import { Metadata } from 'next'
 
-import RootAppLayout from '@/src/components/layout/RootAppLayout'
+import { Mulish } from 'next/font/google'
+
 import { APP_URL } from '@/src/constants/common'
-import { mulishFont } from '@/src/theme/theme'
 
 import '/node_modules/react-grid-layout/css/styles.css'
 import '/node_modules/react-resizable/css/styles.css'
@@ -11,11 +11,18 @@ import 'sanitize.css'
 import 'src/theme/global.css'
 import 'src/theme/icon-animation.css'
 
+const mulishFont = Mulish({
+  weight: ['300', '400', '500', '600', '700', '800', '900'],
+  subsets: ['latin'],
+  display: 'swap', // 👈 The documentation seems to be wrong. 'swap' is not the default value, so we need to specify it
+})
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body className={mulishFont.className}>
-        <RootAppLayout>{children}</RootAppLayout>
+        {/*<RootAppLayout>{}</RootAppLayout>*/}
+        {children}
       </body>
     </html>
   )

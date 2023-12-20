@@ -1,5 +1,7 @@
 import { Metadata, ResolvingMetadata } from 'next'
+import { redirect } from 'next/navigation'
 
+import useBadgeIdParam from '@/src/hooks/nextjs/useBadgeIdParam'
 import { ssrGetContentFromIPFS } from '@/src/hooks/subgraph/utils'
 import { gqlQuery } from '@/src/subgraph/subgraph'
 import { isTestnet } from '@/src/utils/network'
@@ -9,7 +11,9 @@ import { BadgeByIdDocument } from '@/types/generated/subgraph'
 import { BackendFileResponse } from '@/types/utils'
 
 export default function Page() {
-  return <></>
+  const { badgeId, contract } = useBadgeIdParam()
+
+  redirect(`/badge/${badgeId}?contract=${contract}`)
 }
 
 type Props = {

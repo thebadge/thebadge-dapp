@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic'
 import { EmotionCache } from '@emotion/react'
 import { styled } from '@mui/material'
 import { Box } from '@mui/material'
-import { AppCacheProvider } from '@mui/material-nextjs/v14-pagesRouter' // or `v13-pages` if you are using Next.js v14
+import { AppCacheProvider } from '@mui/material-nextjs/v13-pagesRouter' // or `v13-pages` if you are using Next.js v14
 import { GoogleAnalytics } from 'nextjs-google-analytics'
 import { SWRConfig } from 'swr'
 

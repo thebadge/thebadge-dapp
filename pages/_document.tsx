@@ -1,7 +1,7 @@
 import { Head, Html, Main, NextScript } from 'next/document'
 
-import { DocumentHeadTags, documentGetInitialProps } from '@mui/material-nextjs/v14-pagesRouter'
-import type { DocumentHeadTagsProps } from '@mui/material-nextjs/v14-pagesRouter'
+import { DocumentHeadTags, documentGetInitialProps } from '@mui/material-nextjs/v13-pagesRouter'
+import type { DocumentHeadTagsProps } from '@mui/material-nextjs/v13-pagesRouter'
 
 import { APP_URL } from '@/src/constants/common'
 
