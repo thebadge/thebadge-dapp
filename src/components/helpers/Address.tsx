@@ -7,7 +7,7 @@ import { Toast, toast } from 'react-hot-toast'
 import { Copy } from '@/src/components/assets/Copy'
 import { Link } from '@/src/components/assets/Link'
 import { ToastComponent } from '@/src/components/toast/ToastComponent'
-import { useEnsReverseLookup } from '@/src/hooks/useEnsLookup'
+import useUserMetadata from '@/src/hooks/useUserMetadata'
 import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 import { truncateStringInTheMiddle } from '@/src/utils/strings'
 import { WCAddress } from '@/types/utils'
@@ -75,7 +75,7 @@ export const Address: React.FC<Props> = ({
   const router = useRouter()
   const { getExplorerUrl } = useWeb3Connection()
   const [toastId, setToastId] = useState('')
-  const { ensNameOrAddress, isEnsName } = useEnsReverseLookup(address)
+  const { ensNameOrAddress, isEnsName } = useUserMetadata(address)
 
   const copyAddress = (address: string) => {
     navigator.clipboard.writeText(address)

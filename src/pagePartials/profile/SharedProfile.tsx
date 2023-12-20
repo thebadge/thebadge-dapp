@@ -13,7 +13,6 @@ const SharedProfile = ({ address }: Props) => {
   const { address: connectedWalletAddress } = useWeb3Connection()
   const isLoggedInUser = connectedWalletAddress === address
 
-  console.log('share d profile', isLoggedInUser)
   if (isLoggedInUser) {
     return <ProfileSelector />
   }
