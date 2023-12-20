@@ -10,6 +10,7 @@ import { Controller, useFormContext } from 'react-hook-form'
 
 import TBEditableTypography from '@/src/components/common/TBEditableTypography'
 import { useUserById } from '@/src/hooks/subgraph/useUserById'
+import { useSizeSM } from '@/src/hooks/useSize'
 import useUserMetadata from '@/src/hooks/useUserMetadata'
 import { EditProfileSchemaType } from '@/src/pagePartials/creator/register/schema/CreatorRegisterSchema'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
@@ -32,6 +33,7 @@ export default function InfoSocial({ address, readView }: Props) {
   const { address: connectedWalletAddress } = useWeb3Connection()
   const { data } = useUserById(address)
   const userMetadata = useUserMetadata(address || connectedWalletAddress, data?.metadataUri || '')
+  const isMobile = useSizeSM()
 
   const { control } = useFormContext<EditProfileSchemaType>()
 
@@ -41,7 +43,13 @@ export default function InfoSocial({ address, readView }: Props) {
         Social
       </Typography>
       <Box display="flex">
-        <Stack flex="1" gap={1} height="100%" justifyContent="space-evenly" overflow="auto">
+        <Stack
+          flex="1"
+          gap={1}
+          height="100%"
+          justifyContent="space-evenly"
+          overflow={isMobile ? 'hidden' : 'auto'}
+        >
           {(userMetadata?.twitter || !readView) && (
             <TextFieldContainer>
               <TwitterIcon sx={{ mr: 1 }} />

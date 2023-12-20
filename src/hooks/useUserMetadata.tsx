@@ -1,7 +1,7 @@
 import { useEnsReverseLookup } from '@/src/hooks/useEnsLookup'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
-import { extractGitHubUsername, extractTwitterUsername, getTwitterUrl } from '@/src/utils/strings'
+import { extractGitHubUsername, extractTwitterUsername } from '@/src/utils/strings'
 import { CreatorMetadata } from '@/types/badges/Creator'
 import { WCAddress } from '@/types/utils'
 

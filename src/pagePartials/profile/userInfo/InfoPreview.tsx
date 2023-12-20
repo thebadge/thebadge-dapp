@@ -7,6 +7,7 @@ import { FormProvider, useForm } from 'react-hook-form'
 
 import { useUserById } from '@/src/hooks/subgraph/useUserById'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
+import { useSizeSM } from '@/src/hooks/useSize'
 import useTransaction from '@/src/hooks/useTransaction'
 import useUserMetadata from '@/src/hooks/useUserMetadata'
 import {
@@ -28,6 +29,7 @@ type Props = {
   address: WCAddress | string
 }
 export default function InfoPreview({ address }: Props) {
+  const isMobile = useSizeSM()
   const [height, setHeight] = useState<Height>('auto')
   const contentDiv = useRef<HTMLDivElement | null>(null)
   const { address: connectedWalletAddress } = useWeb3Connection()
@@ -126,11 +128,11 @@ export default function InfoPreview({ address }: Props) {
               readView={readView}
             />
           </InfoPreviewContainer>
-          <Box display="flex">
+          <Box display="flex" flexDirection="column">
             <InfoPreviewAboutContainer>
               <InfoAbout address={address as WCAddress} readView={readView} />
             </InfoPreviewAboutContainer>
-            <InfoPreviewSocialContainer>
+            <InfoPreviewSocialContainer isMobile={isMobile}>
               <InfoSocial address={address as WCAddress} readView={readView} />
             </InfoPreviewSocialContainer>
           </Box>
