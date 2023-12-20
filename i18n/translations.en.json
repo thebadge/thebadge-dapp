@@ -304,19 +304,25 @@
         "accountDetails": {
           "title": "Account details",
           "logo": "Profile Photo",
-          "description": "Bio",
-          "displayName": "Display Name"
+          "description": "Description",
+          "displayName": "Display Name *"
         },
-        "contactData": {
-          "title": "Contact information",
-          "email": "Email",
+        "aboutData": {
+          "title": "About",
+          "website": "Website",
+          "email": "Email *"
+        },
+        "socialData": {
+          "title": "Social",
           "twitter": "Twitter",
           "discord": "Discord",
-          "website": "Website",
-          "preferContactMethod": "Choose your favorite means of contact:"
+          "linkedin": "Linkedin",
+          "github": "Github",
+          "telegram": "Telegram"
         },
         "termsConditions": {
-          "readAndAgree": "I have read and agree",
+          "preferContactMethod": "Choose your favorite means of contact:",
+          "readAndAgree": "I have read and agree *",
           "youAgree": "By continuing, you agree to our ",
           "termsOfUse": "terms of use",
           "and": " and ",
@@ -392,7 +398,7 @@
             "diplomaDate": "Date"
           },
           "customFields": {
-            "customFieldsEnabled":"Do you want to customize the texts?",
+            "customFieldsEnabled": "Do you want to customize the texts?",
             "hint": "You can press '{' to use custom variables on your fields",
             "badgeTitle": "Badge Title",
             "badgeDescription": "Badge Description"
