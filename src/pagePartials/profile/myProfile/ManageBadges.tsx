@@ -17,15 +17,14 @@ import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import { useUserById } from '@/src/hooks/subgraph/useUserById'
 import useListItemNavigation from '@/src/hooks/useListItemNavigation'
-import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { useSizeSM } from '@/src/hooks/useSize'
 import MiniBadgeModelPreview from '@/src/pagePartials/badge/MiniBadgeModelPreview'
 import ThirdPartyBadgeModelInfoPreview from '@/src/pagePartials/badge/explorer/ThirdPartyBadgeModelInfoPreview'
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import { generateBadgeModelCreate } from '@/src/utils/navigation/generateUrl'
 import { BadgeModelControllerType } from '@/types/badges/BadgeModel'
-import { CreatorMetadata } from '@/types/badges/Creator'
 import { BadgeModel } from '@/types/generated/subgraph'
+import useUserMetadata from '@/src/hooks/useUserMetadata'
 
 export default function ManageBadges() {
   const { t } = useTranslation()
@@ -37,8 +36,7 @@ export default function ManageBadges() {
   const [loading, setLoading] = useState<boolean>(false)
   const [selectedBadgeModelIndex, setSelectedBadgeModelIndex] = useState<number>(0)
   const { data } = useUserById(address)
-  const resCreatorMetadata = useS3Metadata<{ content: CreatorMetadata }>(data?.metadataUri || '')
-  const creatorMetadata = resCreatorMetadata.data?.content
+  const creatorMetadata = useUserMetadata(address, data?.metadataUri || '')
   const router = useRouter()
 
   const badgeModelsElementRefs: RefObject<HTMLLIElement>[] = badgeModels.map(() =>

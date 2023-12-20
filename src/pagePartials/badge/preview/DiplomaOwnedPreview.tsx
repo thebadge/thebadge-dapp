@@ -27,8 +27,8 @@ import useIsThirdPartyBadge from '@/src/hooks/subgraph/useIsThirdPartyBadge'
 import { useUserById } from '@/src/hooks/subgraph/useUserById'
 import useAddTokenIntoWallet from '@/src/hooks/theBadge/useAddTokenIntoWallet'
 import useBadgePreviewUrl from '@/src/hooks/theBadge/useBadgePreviewUrl'
-import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { useSizeSM } from '@/src/hooks/useSize'
+import useUserMetadata from '@/src/hooks/useUserMetadata'
 import DiplomaView from '@/src/pagePartials/badge/preview/DiplomaView'
 import BadgeTitle from '@/src/pagePartials/badge/preview/addons/BadgeTitle'
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
@@ -43,7 +43,6 @@ import {
   generateTwitterText,
 } from '@/src/utils/navigation/generateUrl'
 import { BadgeModelControllerType } from '@/types/badges/BadgeModel'
-import { CreatorMetadata } from '@/types/badges/Creator'
 import { ToastStates } from '@/types/toast'
 import { WCAddress } from '@/types/utils'
 
@@ -82,7 +81,7 @@ export default function DiplomaOwnedPreview() {
   const creatorAddress = badgeModel?.creator.id || '0x'
   const creatorResponse = useUserById(creatorAddress as WCAddress, contract)
   const creator = creatorResponse.data
-  const resCreatorMetadata = useS3Metadata<{ content: CreatorMetadata }>(creator?.metadataUri || '')
+  const creatorMetadata = useUserMetadata(creator?.id, creator?.metadataUri || '')
   const requiredBadgeDataMetadata = useBadgeThirdPartyRequiredData(`${badgeId}` || '', contract)
   const { badgeOpenseaUrl, badgePreviewUrl, shortPreviewURl } = useBadgePreviewUrl(
     badge?.id || '',
@@ -96,7 +95,6 @@ export default function DiplomaOwnedPreview() {
   }
 
   const badgeModelMetadata = badgeModel?.badgeModelMetadata
-  const creatorMetadata = resCreatorMetadata.data?.content
   let issuer = 'TheBadge'
   if (creatorMetadata && creatorMetadata.name) {
     issuer = creatorMetadata.name

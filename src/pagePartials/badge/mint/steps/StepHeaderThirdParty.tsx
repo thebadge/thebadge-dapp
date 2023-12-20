@@ -10,8 +10,7 @@ import { DOCS_URL, EMAIL_URL } from '@/src/constants/common'
 import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
 import useBadgeModelTemplate from '@/src/hooks/theBadge/useBadgeModelTemplate'
-import useS3Metadata from '@/src/hooks/useS3Metadata'
-import { Creator } from '@/types/badges/Creator'
+import useUserMetadata from '@/src/hooks/useUserMetadata'
 
 const steps = ['Help', 'Evidence', 'Preview']
 
@@ -29,7 +28,8 @@ export default function StepHeaderThirdParty({
   const badgeModelData = useBadgeModel(badgeModelId)
   const template = useBadgeModelTemplate(badgeModelId)
 
-  const badgeCreatorMetadata = useS3Metadata<{ content: Creator }>(
+  const badgeCreatorMetadata = useUserMetadata(
+    undefined,
     badgeModelData.data?.badgeModel?.creator.metadataUri || '',
   )
 

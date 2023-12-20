@@ -81,11 +81,11 @@ export default function BadgeOwnedPreview() {
   const creatorAddress = badgeModel?.creator.id || '0x'
   const creatorResponse = useUserById(creatorAddress as WCAddress, contract)
   const creator = creatorResponse.data
-  const resCreatorMetadata = useS3Metadata<{ content: CreatorMetadata }>(creator?.metadataUri || '')
   const { badgeOpenseaUrl, badgePreviewUrl, shortPreviewURl } = useBadgePreviewUrl(
     badgeId,
     badge?.contractAddress,
   )
+  //  const creatorMetadata = useUserMetadata(creator?.id, creator?.metadataUri || '')
   const requiredBadgeDataMetadata = useBadgeThirdPartyRequiredData(
     `${badgeId}` || '',
     badge?.contractAddress,
@@ -93,12 +93,14 @@ export default function BadgeOwnedPreview() {
   const badgeModelName = badgeModel?.badgeModelMetadata?.name || ''
   const { readOnlyChainId } = useWeb3Connection()
 
+  const resCreatorMetadata = useS3Metadata<{ content: CreatorMetadata }>(creator?.metadataUri || '')
+  const creatorMetadata = resCreatorMetadata.data?.content
+
   if (!badge || !badgeModel) {
     return null
   }
 
   const badgeModelMetadata = badgeModel?.badgeModelMetadata
-  const creatorMetadata = resCreatorMetadata.data?.content
   let issuer = 'TheBadge'
   if (creatorMetadata && creatorMetadata.name) {
     issuer = creatorMetadata.name
