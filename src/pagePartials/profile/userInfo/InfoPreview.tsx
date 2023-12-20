@@ -24,6 +24,7 @@ import InfoSocial from '@/src/pagePartials/profile/userInfo/InfoSocial'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { TheBadgeUsers__factory } from '@/types/generated/typechain'
 import { WCAddress } from '@/types/utils'
+import { useRouter } from 'next/navigation'
 
 type Props = {
   address: WCAddress | string
@@ -35,6 +36,7 @@ export default function InfoPreview({ address }: Props) {
   const { address: connectedWalletAddress } = useWeb3Connection()
   const [readView, setReadView] = useState(true)
   const theBadgeUsers = useContractInstance(TheBadgeUsers__factory, 'TheBadgeUsers')
+  const router = useRouter()
 
   const { data } = useUserById(address as WCAddress)
   const userMetadata = useUserMetadata(address || connectedWalletAddress, data?.metadataUri || '')
@@ -94,6 +96,7 @@ export default function InfoPreview({ address }: Props) {
 
       if (transaction) {
         await transaction.wait()
+        router.refresh()
       }
     } catch (e) {
       setReadView(false)
