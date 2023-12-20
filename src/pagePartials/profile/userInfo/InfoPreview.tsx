@@ -110,6 +110,36 @@ export default function InfoPreview({ address }: Props) {
     setReadView(true)
   }
 
+  const renderAboutSection = () => {
+    if (userMetadata.hasAboutData) {
+      return (
+        <InfoPreviewAboutContainer>
+          <InfoAbout address={address as WCAddress} readView={readView} />
+        </InfoPreviewAboutContainer>
+      )
+    }
+    return (
+      <InfoPreviewAboutContainer>
+        <InfoAbout address={address as WCAddress} readView={readView} />
+      </InfoPreviewAboutContainer>
+    )
+  }
+
+  const renderSocialSection = () => {
+    if (userMetadata.hasSocialData) {
+      return (
+        <InfoPreviewSocialContainer isMobile={isMobile}>
+          <InfoSocial address={address as WCAddress} readView={readView} />
+        </InfoPreviewSocialContainer>
+      )
+    }
+    return (
+      <InfoPreviewSocialContainer isMobile={isMobile}>
+        <InfoSocial address={address as WCAddress} readView={readView} />
+      </InfoPreviewSocialContainer>
+    )
+  }
+
   return (
     <FormProvider {...methods}>
       <Box mb={6}>
@@ -128,17 +158,9 @@ export default function InfoPreview({ address }: Props) {
               readView={readView}
             />
           </InfoPreviewContainer>
-          <Box display="flex" flexDirection="column">
-            {userMetadata.hasAboutData ? (
-              <InfoPreviewAboutContainer>
-                <InfoAbout address={address as WCAddress} readView={readView} />
-              </InfoPreviewAboutContainer>
-            ) : null}
-            {userMetadata.hasSocialData ? (
-              <InfoPreviewSocialContainer isMobile={isMobile}>
-                <InfoSocial address={address as WCAddress} readView={readView} />
-              </InfoPreviewSocialContainer>
-            ) : null}
+          <Box display="flex" flexDirection={isMobile ? 'column' : 'row'}>
+            {renderAboutSection()}
+            {renderSocialSection()}
           </Box>
         </AnimateHeight>
       </Box>

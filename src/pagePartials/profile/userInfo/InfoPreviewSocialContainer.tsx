@@ -12,6 +12,6 @@ export const InfoPreviewSocialContainer = styled(Box)(
     padding: theme?.spacing(4),
     gap: theme?.spacing(5),
     marginTop: theme?.spacing(4),
-    marginLeft: !isMobile ? theme?.spacing(4) : '',
+    marginLeft: !isMobile ? theme?.spacing(4) : 0,
   }),
 )

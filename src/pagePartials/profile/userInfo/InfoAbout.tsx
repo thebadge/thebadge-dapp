@@ -46,6 +46,7 @@ export default function InfoAbout({ address, readView }: Props) {
             disabled={readView}
             error={error}
             onChange={onChange}
+            placeholder={'Description'}
             variant="subtitle1"
           >
             {value}

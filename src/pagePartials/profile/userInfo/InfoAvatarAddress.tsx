@@ -33,7 +33,6 @@ export default function InfoAvatarAddress({ address, onClose, onEdit, onSubmit, 
   const isLoggedInUser = connectedWalletAddress === address
 
   const { control } = useFormContext<EditProfileSchemaType>()
-
   if (isMobile) {
     return (
       <Box alignItems="center" display="flex" flex="1" flexDirection="column">
@@ -55,14 +54,31 @@ export default function InfoAvatarAddress({ address, onClose, onEdit, onSubmit, 
                 disabled={readView}
                 error={error}
                 onChange={onChange}
+                placeholder={'Display Name'}
                 variant="dAppHeadline2"
               >
                 {value}
               </TBEditableTypography>
             )}
           />
-          <Address address={address} truncate={false} />
+          <Address address={address} truncate={true} />
         </Stack>
+        {!readView && (
+          <>
+            <IconButton onClick={onSubmit} sx={{ position: 'absolute', right: 24, top: 24 }}>
+              <SaveOutlinedIcon />
+            </IconButton>
+            <IconButton onClick={onClose} sx={{ position: 'absolute', right: 48, top: 24 }}>
+              <CancelOutlinedIcon />
+            </IconButton>
+          </>
+        )}
+
+        {isLoggedInUser && readView && (
+          <IconButton onClick={onEdit} sx={{ position: 'absolute', right: 24, top: 24 }}>
+            <CreateOutlinedIcon />
+          </IconButton>
+        )}
       </Box>
     )
   }
@@ -88,6 +104,7 @@ export default function InfoAvatarAddress({ address, onClose, onEdit, onSubmit, 
                 disabled={readView}
                 error={error}
                 onChange={onChange}
+                placeholder={'Display Name'}
                 variant="dAppHeadline2"
               >
                 {value}
