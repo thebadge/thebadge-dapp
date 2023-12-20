@@ -19,6 +19,10 @@ import AccountDetails from '@/src/pagePartials/creator/register/steps/generalInf
 import ContactInformation from '@/src/pagePartials/creator/register/steps/generalInfo/ContactInformation'
 import TermsAndConditions from '@/src/pagePartials/creator/register/steps/terms/TermsAndConditions'
 import { PreventActionWithoutConnection } from '@/src/pagePartials/errors/preventActionWithoutConnection'
+import useUserMetadata from '@/src/hooks/useUserMetadata'
+import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+import { useUserById } from '@/src/hooks/subgraph/useUserById'
+import { WCAddress } from '@/types/utils'
 
 type RegistrationStepsProps = {
   onSubmit: SubmitHandler<CreatorRegisterSchemaType>
@@ -38,10 +42,13 @@ export default function RegistrationWithSteps({
   txState = TransactionStates.none,
 }: RegistrationStepsProps) {
   const { t } = useTranslation()
-
+  const { address: connectedWalletAddress } = useWeb3Connection()
+  const { data } = useUserById(connectedWalletAddress)
+  const userMetadata = useUserMetadata(connectedWalletAddress, data?.metadataUri || '')
   const methods = useForm<z.infer<typeof CreatorRegisterSchema>>({
     resolver: zodResolver(CreatorRegisterSchema),
     defaultValues: {
+      ...userMetadata,
       preferContactMethod: 'email',
     },
     reValidateMode: 'onChange',
