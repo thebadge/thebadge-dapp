@@ -12,7 +12,7 @@ import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import MiniBadgeModelPreview from '@/src/pagePartials/badge/MiniBadgeModelPreview'
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import getHighlightColorByStatus from '@/src/utils/badges/getHighlightColorByStatus'
-import { generateBadgeExplorer, generateBadgePreviewUrl } from '@/src/utils/navigation/generateUrl'
+import { generateBadgePreviewUrl, generateExplorer } from '@/src/utils/navigation/generateUrl'
 import { Badge, BadgeStatus, Badge_Filter } from '@/types/generated/subgraph'
 
 type Props = {
@@ -22,7 +22,7 @@ type Props = {
 export default function BadgesYouOwnList({ address }: Props) {
   const { t } = useTranslation()
   const router = useRouter()
-  const { address: connectedWalletAddress, appChainId } = useWeb3Connection()
+  const { address: connectedWalletAddress, readOnlyChainId } = useWeb3Connection()
 
   const isLoggedInUser = connectedWalletAddress === address
 
@@ -56,10 +56,10 @@ export default function BadgesYouOwnList({ address }: Props) {
       router.push(
         generateBadgePreviewUrl(badge.id, {
           theBadgeContractAddress: badge.contractAddress,
-          connectedChainId: appChainId,
+          connectedChainId: readOnlyChainId,
         }),
       ),
-    [router, appChainId],
+    [router, readOnlyChainId],
   )
 
   const search = async (
@@ -96,7 +96,7 @@ export default function BadgesYouOwnList({ address }: Props) {
           <ButtonV2
             backgroundColor={colors.transparent}
             fontColor={colors.blue}
-            onClick={() => router.push(generateBadgeExplorer())}
+            onClick={() => router.push(generateExplorer())}
             sx={{ m: 'auto' }}
           >
             <Typography>{t('profile.badgesYouOwn.mint')}</Typography>

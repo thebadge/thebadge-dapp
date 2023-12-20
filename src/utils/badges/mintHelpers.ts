@@ -167,12 +167,26 @@ export function reCreateThirdPartyValuesObject(
   data: Record<string, unknown>,
   columns?: ThirdPartyMetadataColumn[],
 ): Record<string, unknown> {
-  const values: Record<string, unknown> = {}
+  const values: Record<string, unknown> = { ...data }
   if (!columns) return values
   // If we change this "shape" key values, we need to update the klerosSchemaFactory on src/components/form/helpers/validators.ts
   columns.forEach((column) => {
     // Right now the keys are the same, it will keep this function to be able to change it later if we need
     values[`${column.replacementKey}`] = data[`${column.replacementKey}`]
+  })
+  return values
+}
+
+export function generateAutofilledValues(
+  data: Record<string, unknown>,
+  columns?: ThirdPartyMetadataColumn[],
+) {
+  const values: Record<string, unknown> = { ...data }
+  if (!columns) return values
+  columns.forEach((column, i) => {
+    if (column.isAutoFillable) {
+      values[`${i}`] = data[`${column.replacementKey}`]
+    }
   })
   return values
 }

@@ -37,4 +37,12 @@ export type MetadataColumn = {
 
 export type ThirdPartyMetadataColumn = MetadataColumn & {
   replacementKey?: EnrichTextVariables
+  isAutoFillable: boolean
+}
+
+export function isThirdPartyMetadataColumn(object: any): object is ThirdPartyMetadataColumn {
+  if (object !== null && typeof object === 'object') {
+    return 'isAutoFillable' in object && 'replacementKey' in object
+  }
+  return false
 }

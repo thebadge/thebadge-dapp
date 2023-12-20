@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import * as React from 'react'
 
@@ -15,30 +16,33 @@ import {
 } from '@mui/material'
 import { IconMetamask, colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
+import { TwitterShareButton, XIcon } from 'react-share'
 
 import { notify } from '@/src/components/toast/Toast'
-import { APP_URL, THE_BADGE_LINKEDIN_ID } from '@/src/constants/common'
+import { THE_BADGE_LINKEDIN_ID } from '@/src/constants/common'
 import useBadgeIdParam from '@/src/hooks/nextjs/useBadgeIdParam'
 import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
 import { useBadgeThirdPartyRequiredData } from '@/src/hooks/subgraph/useBadgeModelThirdPartyMetadata'
 import useIsThirdPartyBadge from '@/src/hooks/subgraph/useIsThirdPartyBadge'
 import { useUserById } from '@/src/hooks/subgraph/useUserById'
 import useAddTokenIntoWallet from '@/src/hooks/theBadge/useAddTokenIntoWallet'
-import useS3Metadata from '@/src/hooks/useS3Metadata'
+import useBadgePreviewUrl from '@/src/hooks/theBadge/useBadgePreviewUrl'
+import { useSizeSM } from '@/src/hooks/useSize'
+import useUserMetadata from '@/src/hooks/useUserMetadata'
 import DiplomaView from '@/src/pagePartials/badge/preview/DiplomaView'
 import BadgeTitle from '@/src/pagePartials/badge/preview/addons/BadgeTitle'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import { reCreateThirdPartyValuesObject } from '@/src/utils/badges/mintHelpers'
+import { handleShare } from '@/src/utils/badges/viewUtils'
 import { getExpirationYearAndMonth, getIssueYearAndMonth } from '@/src/utils/dateUtils'
 import {
-  generateBadgeExplorer,
-  generateBadgePreviewUrl,
+  generateExplorer,
   generateLinkedinOrganization,
   generateLinkedinUrl,
   generateProfileUrl,
+  generateTwitterText,
 } from '@/src/utils/navigation/generateUrl'
 import { BadgeModelControllerType } from '@/types/badges/BadgeModel'
-import { CreatorMetadata } from '@/types/badges/Creator'
 import { ToastStates } from '@/types/toast'
 import { WCAddress } from '@/types/utils'
 
@@ -59,6 +63,7 @@ const Wrapper = styled(Stack)(({ theme }) => ({
 export default function DiplomaOwnedPreview() {
   const { t } = useTranslation()
   const theme = useTheme()
+  const isMobile = useSizeSM()
 
   const { badgeId, contract } = useBadgeIdParam()
 
@@ -66,7 +71,7 @@ export default function DiplomaOwnedPreview() {
     throw `No badgeId provided us URL query param`
   }
 
-  const { appChainId } = useWeb3Connection()
+  const { readOnlyChainId } = useWeb3Connection()
   const badgeById = useBadgeById(badgeId, contract)
   const addTokenIntoWallet = useAddTokenIntoWallet()
   const isThirdPartyBadge = useIsThirdPartyBadge(badgeId, contract)
@@ -76,23 +81,23 @@ export default function DiplomaOwnedPreview() {
   const creatorAddress = badgeModel?.creator.id || '0x'
   const creatorResponse = useUserById(creatorAddress as WCAddress, contract)
   const creator = creatorResponse.data
-  const resCreatorMetadata = useS3Metadata<{ content: CreatorMetadata }>(creator?.metadataUri || '')
-  const requiredBadgeDataMetadata = useBadgeThirdPartyRequiredData(`${badgeId}` || '')
+  const creatorMetadata = useUserMetadata(creator?.id, creator?.metadataUri || '')
+  const requiredBadgeDataMetadata = useBadgeThirdPartyRequiredData(`${badgeId}` || '', contract)
+  const { badgeOpenseaUrl, badgePreviewUrl, shortPreviewURl } = useBadgePreviewUrl(
+    badge?.id || '',
+    badge?.contractAddress || '',
+    readOnlyChainId,
+  )
+  const badgeModelName = badgeModel?.badgeModelMetadata?.name || ''
 
   if (!badge || !badgeModel) {
     return null
   }
 
   const badgeModelMetadata = badgeModel?.badgeModelMetadata
-  const creatorMetadata = resCreatorMetadata.data?.content
   let issuer = 'TheBadge'
   if (creatorMetadata && creatorMetadata.name) {
     issuer = creatorMetadata.name
-  }
-
-  function handleShare() {
-    navigator.clipboard.writeText(window.location.href)
-    notify({ message: 'URL Copied to clipboard', type: ToastStates.info })
   }
 
   function handleImport() {
@@ -123,12 +128,7 @@ export default function DiplomaOwnedPreview() {
         issueMonth: String(issueMonth),
         expirationYear: String(expirationYear),
         expirationMonth: String(expirationMonth),
-        certUrl:
-          APP_URL +
-          generateBadgePreviewUrl(badge.id, {
-            theBadgeContractAddress: badge.contractAddress,
-            connectedChainId: appChainId,
-          }),
+        certUrl: badgePreviewUrl,
         certId: badgeId,
       })
 
@@ -153,16 +153,10 @@ export default function DiplomaOwnedPreview() {
         <BadgeTitle />
 
         {/* Badge Image */}
-        <Stack flex={2} gap={3}>
+        <Stack style={isMobile ? { display: 'block', maxHeight: '220px' } : { flex: 2, gap: 3 }}>
           <DiplomaView
             additionalData={{ ...values }}
-            badgeUrl={
-              APP_URL +
-              generateBadgePreviewUrl(badge.id, {
-                theBadgeContractAddress: badge.contractAddress,
-                connectedChainId: appChainId,
-              })
-            }
+            badgeUrl={badgePreviewUrl}
             modelId={badgeModel.id}
           />
         </Stack>
@@ -175,7 +169,13 @@ export default function DiplomaOwnedPreview() {
               <Typography variant="body2">
                 {t('badge.viewBadge.issueBy')}
                 {creatorAddress ? (
-                  <Link href={generateProfileUrl({ address: creatorAddress })} target={'_blank'}>
+                  <Link
+                    href={generateProfileUrl({
+                      address: creatorAddress,
+                      connectedChainId: readOnlyChainId,
+                    })}
+                    target={'_blank'}
+                  >
                     <span style={{ textDecoration: 'underline' }}>{issuer}</span>
                   </Link>
                 ) : (
@@ -183,13 +183,15 @@ export default function DiplomaOwnedPreview() {
                 )}
               </Typography>
               <Box alignItems="center" display="flex" justifyContent="flex-end">
-                <IconButton
-                  aria-label="Share badge preview"
-                  component="label"
-                  onClick={handleShare}
-                >
-                  <ShareOutlinedIcon />
-                </IconButton>
+                <Tooltip arrow title={t('badge.viewBadge.shareBadge')}>
+                  <IconButton
+                    aria-label="Share badge preview"
+                    component="label"
+                    onClick={() => handleShare()}
+                  >
+                    <ShareOutlinedIcon />
+                  </IconButton>
+                </Tooltip>
                 <Tooltip arrow title={t('badge.viewBadge.importBadge')}>
                   <IconButton
                     aria-label={t('badge.viewBadge.importBadge')}
@@ -214,6 +216,30 @@ export default function DiplomaOwnedPreview() {
                     />
                   </IconButton>
                 </Tooltip>
+                <Tooltip arrow title={t('badge.viewBadge.shareTwitter')}>
+                  <TwitterShareButton
+                    related={['@thebadgexyz']}
+                    url={generateTwitterText(badgeModelName, shortPreviewURl)}
+                  >
+                    <XIcon round size={32} />
+                  </TwitterShareButton>
+                </Tooltip>
+                {badgeOpenseaUrl ? (
+                  <Tooltip arrow title={t('badge.viewBadge.viewOpensea')}>
+                    <IconButton
+                      aria-label={t('badge.viewBadge.viewOpensea')}
+                      component="label"
+                      onClick={() => window.open(badgeOpenseaUrl)}
+                    >
+                      <Image
+                        alt={t('badge.viewBadge.viewOpensea')}
+                        height={theme.customSizes.icon}
+                        src="https://opensea.io/static/images/favicon/favicon.ico"
+                        width={theme.customSizes.icon}
+                      />
+                    </IconButton>
+                  </Tooltip>
+                ) : null}
               </Box>
             </Box>
 
@@ -234,7 +260,7 @@ export default function DiplomaOwnedPreview() {
 
             <Typography variant="body4">
               {t('badge.viewBadge.checkHowElse')}
-              <Link href={generateBadgeExplorer()}>
+              <Link href={generateExplorer()}>
                 <span style={{ textDecoration: 'underline', textTransform: 'uppercase' }}>
                   {t('badge.viewBadge.seeAll')}
                 </span>

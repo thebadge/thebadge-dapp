@@ -1,7 +1,7 @@
 import useSWR from 'swr'
 
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
-import useChainId from '@/src/hooks/theBadge/useChainId'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import { WCAddress } from '@/types/utils'
 
 /**
@@ -33,11 +33,11 @@ export function useBadgeOwnershipData(badgeModelId: string, ownerAddress: WCAddr
  */
 function useBadgesOwnedByModelId(badgeModelId: string, ownerAddress: WCAddress | undefined) {
   const gql = useSubgraph()
-  const chainId = useChainId()
+  const { readOnlyChainId } = useWeb3Connection()
 
   return useSWR(
     badgeModelId.length && ownerAddress?.length
-      ? [`OwnedBadges:${badgeModelId}:${ownerAddress}`, ownerAddress, chainId]
+      ? [`OwnedBadges:${badgeModelId}:${ownerAddress}`, ownerAddress, readOnlyChainId]
       : null,
     async ([,]) => {
       const badgeResponse = await gql.userBadgeByModelId({

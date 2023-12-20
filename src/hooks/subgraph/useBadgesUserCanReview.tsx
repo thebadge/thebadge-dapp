@@ -2,7 +2,7 @@ import useSWR from 'swr'
 
 import { nowInSeconds } from '@/src/constants/helpers'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
-import useChainId from '@/src/hooks/theBadge/useChainId'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import { Badge } from '@/types/generated/subgraph'
 import { WCAddress } from '@/types/utils'
 
@@ -16,10 +16,10 @@ export default function useBadgesUserCanReview({
   date?: number
 }) {
   const gql = useSubgraph()
-  const chainId = useChainId()
+  const { readOnlyChainId } = useWeb3Connection()
 
   return useSWR(
-    address?.length ? [`BadgesUserCanReview:${address}`, address, date, chainId] : null,
+    address?.length ? [`BadgesUserCanReview:${address}`, address, date, readOnlyChainId] : null,
     async ([, _address, _date]) => {
       const response = await gql.badgesUserCanReview({
         userAddress: _address || '',

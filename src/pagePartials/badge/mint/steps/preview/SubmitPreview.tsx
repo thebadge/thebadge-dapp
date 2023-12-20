@@ -9,18 +9,18 @@ import { useTranslation } from 'next-export-i18n'
 import { useFormContext } from 'react-hook-form'
 
 import MintCost from './MintCost'
-import { APP_URL } from '@/src/constants/common'
+import { getBackgroundBadgeUrl } from '@/src/constants/backgrounds'
 import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
 import useBadgeModelTemplate from '@/src/hooks/theBadge/useBadgeModelTemplate'
+import useBadgePreviewUrl from '@/src/hooks/theBadge/useBadgePreviewUrl'
 import useEstimateBadgeId from '@/src/hooks/theBadge/useEstimateBadgeId'
 import useMintValue from '@/src/hooks/theBadge/useMintValue'
+import { useAvailableBackgrounds } from '@/src/hooks/useAvailableBackgrounds'
 import { MintBadgeSchemaType } from '@/src/pagePartials/badge/mint/schema/MintBadgeSchema'
 import { convertPreviewToImage } from '@/src/pagePartials/badge/mint/utils'
+import { getBackgroundType, getTextContrast } from '@/src/utils/badges/metadataHelpers'
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
-import { getBackgroundBadgeUrl } from '@/src/utils/badges/getBackgroundBadgeUrl'
-import { generateBadgePreviewUrl } from '@/src/utils/navigation/generateUrl'
-import { BadgeNFTAttributesType } from '@/types/badges/BadgeMetadata'
 
 export default function SubmitPreview({
   badgePreviewRef,
@@ -28,7 +28,7 @@ export default function SubmitPreview({
   badgePreviewRef: React.MutableRefObject<HTMLDivElement | undefined>
 }) {
   const { t } = useTranslation()
-  const { appChainId } = useWeb3Connection()
+  const { address, appChainId, readOnlyChainId } = useWeb3Connection()
   const { setValue } = useFormContext<MintBadgeSchemaType>() // retrieve all hook methods
 
   const { badgeModelId } = useModelIdParam()
@@ -36,16 +36,13 @@ export default function SubmitPreview({
   const template = useBadgeModelTemplate(badgeModelId)
   const badgeModelMetadata = badgeModelData.data?.badgeModelMetadata
   const { data: estimatedBadgeId } = useEstimateBadgeId()
+  const { modelBackgrounds } = useAvailableBackgrounds(readOnlyChainId, address)
 
   const badgeLogoImage = badgeModelData.data?.badgeModelMetadata?.image
 
-  const backgroundType = badgeModelMetadata?.attributes?.find(
-    (at) => at.trait_type === BadgeNFTAttributesType.Background,
-  )
+  const backgroundType = getBackgroundType(badgeModelMetadata?.attributes)
 
-  const textContrast = badgeModelMetadata?.attributes?.find(
-    (at) => at.trait_type === BadgeNFTAttributesType.TextContrast,
-  )
+  const textContrast = getTextContrast(badgeModelMetadata?.attributes)
 
   // Get kleros deposit value for the badge model
   const { data: mintValue } = useMintValue(badgeModelId)
@@ -73,6 +70,11 @@ export default function SubmitPreview({
   }
 
   const estimatedBadgeIdForPreview = estimatedBadgeId ? estimatedBadgeId.toString() : '0'
+  const { badgePreviewUrl } = useBadgePreviewUrl(
+    estimatedBadgeIdForPreview,
+    badgeModelData.data.badgeModel.contractAddress,
+    appChainId,
+  )
 
   return (
     <Stack alignItems={'center'} gap={3} margin={1}>
@@ -85,14 +87,8 @@ export default function SubmitPreview({
         <BadgePreview
           animationEffects={['wobble', 'grow', 'glare']}
           animationOnHover
-          badgeBackgroundUrl={getBackgroundBadgeUrl(backgroundType?.value)}
-          badgeUrl={
-            APP_URL +
-            generateBadgePreviewUrl(estimatedBadgeIdForPreview, {
-              theBadgeContractAddress: badgeModelData.data.badgeModel.contractAddress,
-              connectedChainId: appChainId,
-            })
-          }
+          badgeBackgroundUrl={getBackgroundBadgeUrl(backgroundType?.value, modelBackgrounds)}
+          badgeUrl={badgePreviewUrl}
           category={badgeModelMetadata?.name}
           description={badgeModelMetadata?.description}
           imageUrl={badgeLogoImage?.s3Url}

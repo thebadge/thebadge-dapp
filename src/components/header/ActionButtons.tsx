@@ -12,9 +12,9 @@ import { useSectionReferences } from '@/src/providers/referencesProvider'
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import {
   generateBadgeCurate,
-  generateBadgeExplorer,
   generateBadgeModelCreate,
   generateCreatorRegisterUrl,
+  generateExplorer,
 } from '@/src/utils/navigation/generateUrl'
 import { BadgeModelControllerType } from '@/types/badges/BadgeModel'
 
@@ -128,7 +128,7 @@ export default function ActionButtons() {
     title: t('header.buttons.mint'),
     color: colors.blue,
     disabled: false,
-    path: generateBadgeExplorer(),
+    path: generateExplorer(),
   })
   const curateButton = menuButton({
     title: t('header.buttons.curate'),

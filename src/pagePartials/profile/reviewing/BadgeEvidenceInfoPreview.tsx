@@ -13,7 +13,7 @@ import ViewEvidenceButton from '@/src/pagePartials/badge/explorer/addons/ViewEvi
 import EvidencesList from '@/src/pagePartials/badge/preview/addons/EvidencesList'
 import DisputeDisplay from '@/src/pagePartials/profile/reviewing/addons/DisputeDisplay'
 import { useCurateProvider } from '@/src/providers/curateProvider'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import { generateBadgePreviewUrl } from '@/src/utils/navigation/generateUrl'
 import { Badge, KlerosBadgeRequest, KlerosRequestType } from '@/types/generated/subgraph'
 
@@ -21,7 +21,7 @@ export default function BadgeReviewingInfoPreview({ badge }: { badge: Badge }) {
   const { t } = useTranslation()
   const router = useRouter()
   const { addMoreEvidence } = useCurateProvider()
-  const { appChainId } = useWeb3Connection()
+  const { readOnlyChainId } = useWeb3Connection()
 
   const badgeKlerosMetadata = useEvidenceBadgeKlerosMetadata(badge?.id)
   const badgeEvidence = badgeKlerosMetadata.data?.requestBadgeEvidence
@@ -77,7 +77,7 @@ export default function BadgeReviewingInfoPreview({ badge }: { badge: Badge }) {
             router.push(
               generateBadgePreviewUrl(badge.id, {
                 theBadgeContractAddress: badge.contractAddress,
-                connectedChainId: appChainId,
+                connectedChainId: readOnlyChainId,
               }),
             )
           }

@@ -5,8 +5,7 @@ import { useTranslation } from 'next-export-i18n'
 
 import TBUserInfoSmallPreview from '@/src/components/common/TBUserInfoSmallPreview'
 import { useUserById } from '@/src/hooks/subgraph/useUserById'
-import useS3Metadata from '@/src/hooks/useS3Metadata'
-import { CreatorMetadata } from '@/types/badges/Creator'
+import useUserMetadata from '@/src/hooks/useUserMetadata'
 import { WCAddress } from '@/types/utils'
 
 export default function BadgeRequesterPreview({
@@ -22,8 +21,7 @@ export default function BadgeRequesterPreview({
   }
 
   const owner = useUserById(ownerAddress)
-  const resMetadata = useS3Metadata<{ content: CreatorMetadata }>(owner.data?.metadataUri || '')
-  const ownerMetadata = resMetadata.data?.content
+  const ownerMetadata = useUserMetadata(undefined, owner.data?.metadataUri || '')
 
   return (
     <TBUserInfoSmallPreview

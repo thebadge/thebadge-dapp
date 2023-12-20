@@ -4,11 +4,13 @@ import { Box, alpha, styled } from '@mui/material'
 import { BadgePreview } from '@thebadge/ui-library'
 import { useFormContext } from 'react-hook-form'
 
-import { CreateCommunityModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateCommunityModelSchema'
+import { BADGE_MODEL_TEXT_CONTRAST, getBackgroundBadgeUrl } from '@/src/constants/backgrounds'
+import { useAvailableBackgrounds } from '@/src/hooks/useAvailableBackgrounds'
 import {
-  BADGE_MODEL_BACKGROUNDS,
-  BADGE_MODEL_TEXT_CONTRAST,
-} from '@/src/pagePartials/badge/model/steps/uiBasics/BadgeModelUIBasics'
+  CreateCommunityModelSchemaType,
+  CustomFieldsConfigurationSchemaType,
+} from '@/src/pagePartials/badge/model/schema/CreateCommunityModelSchema'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
 const BoxShadow = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -17,10 +19,16 @@ const BoxShadow = styled(Box)(({ theme }) => ({
 }))
 
 export default function BadgeClassicCreationPreview() {
-  const { watch } = useFormContext<CreateCommunityModelSchemaType>()
+  const { watch } = useFormContext<
+    CreateCommunityModelSchemaType & CustomFieldsConfigurationSchemaType
+  >()
+  const { address, readOnlyChainId } = useWeb3Connection()
+  const { modelBackgrounds } = useAvailableBackgrounds(readOnlyChainId, address)
 
-  const watchedName = watch('name') || 'Security Certificate'
+  // If custom fields are enabled, we need to show on the Badge Preview the badgeTitle and badgeDescription
+  const watchedName = watch('badgeTitle') || watch('name') || 'Security Certificate'
   const watchedDescription =
+    watch('badgeDescription') ||
     watch('description') ||
     'This badges certifies that the address that has it complies with the regulations about...'
 
@@ -34,7 +42,7 @@ export default function BadgeClassicCreationPreview() {
       <BadgePreview
         animationEffects={['wobble', 'grow', 'glare']}
         animationOnHover
-        badgeBackgroundUrl={BADGE_MODEL_BACKGROUNDS[watchedBackground]}
+        badgeBackgroundUrl={getBackgroundBadgeUrl(watchedBackground, modelBackgrounds)}
         badgeUrl="https://www.thebadge.xyz"
         description={watchedDescription}
         imageUrl={watchedLogoUri?.base64File}

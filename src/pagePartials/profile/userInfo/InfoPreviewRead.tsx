@@ -9,8 +9,7 @@ import TBUserAvatar from '@/src/components/common/TBUserAvatar'
 import { Address } from '@/src/components/helpers/Address'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { useUserById } from '@/src/hooks/subgraph/useUserById'
-import useS3Metadata from '@/src/hooks/useS3Metadata'
-import { CreatorMetadata } from '@/types/badges/Creator'
+import useUserMetadata from '@/src/hooks/useUserMetadata'
 import { WCAddress } from '@/types/utils'
 
 type Props = {
@@ -20,39 +19,38 @@ type Props = {
 export default function InfoPreviewRead({ address }: Props) {
   const userResponse = useUserById(address)
   const user = userResponse.data
-  const resCreatorMetadata = useS3Metadata<{ content: CreatorMetadata }>(user?.metadataUri || '')
-  const creatorMetadata = resCreatorMetadata.data?.content
-  const hasCustomProfileData = !!creatorMetadata
+  const userMetadata = useUserMetadata(address, user?.metadataUri || '')
+  const hasCustomProfileData = !!userMetadata
 
   return (
     <>
-      <SafeSuspense fallback={<Skeleton variant="circular" width={creatorMetadata ? 171 : 90} />}>
-        <TBUserAvatar size={hasCustomProfileData ? 170 : 90} src={creatorMetadata?.logo?.s3Url} />
+      <SafeSuspense fallback={<Skeleton variant="circular" width={userMetadata ? 171 : 90} />}>
+        <TBUserAvatar size={hasCustomProfileData ? 170 : 90} src={userMetadata.logo.s3Url} />
       </SafeSuspense>
       <Stack flex="5" justifyContent="space-between" overflow="auto">
         <Stack gap={1}>
-          <Typography variant="dAppHeadline2">{creatorMetadata?.name}</Typography>
+          <Typography variant="dAppHeadline2">{userMetadata?.name}</Typography>
           <Address address={address || (user?.id as WCAddress) || '0x'} truncate={false} />
         </Stack>
         {hasCustomProfileData && (
           <Box display="flex">
             <Stack flex="1" gap={2} height="100%" justifyContent="space-evenly" overflow="auto">
-              {creatorMetadata?.email && (
+              {userMetadata?.email && (
                 <Typography variant="dAppTitle2">
                   <EmailOutlinedIcon sx={{ mr: 1 }} />
-                  {creatorMetadata?.email}
+                  {userMetadata?.email}
                 </Typography>
               )}
-              {creatorMetadata?.twitter && (
+              {userMetadata?.twitter && (
                 <Typography variant="dAppTitle2">
                   <TwitterIcon sx={{ mr: 1 }} />
-                  {creatorMetadata?.twitter}
+                  {userMetadata?.twitter}
                 </Typography>
               )}
-              {creatorMetadata?.discord && (
+              {userMetadata?.discord && (
                 <Typography variant="dAppTitle2">
                   <IconDiscord sx={{ mr: 1 }} />
-                  {creatorMetadata?.discord}
+                  {userMetadata?.discord}
                 </Typography>
               )}
             </Stack>
@@ -64,7 +62,7 @@ export default function InfoPreviewRead({ address }: Props) {
               overflow="auto"
               p={2}
             >
-              <Typography variant="body4">{creatorMetadata?.description}</Typography>
+              <Typography variant="body4">{userMetadata?.description}</Typography>
             </Stack>
           </Box>
         )}

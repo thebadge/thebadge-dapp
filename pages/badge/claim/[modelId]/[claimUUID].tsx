@@ -12,9 +12,9 @@ import useClaimParams from '@/src/hooks/nextjs/useClaimParams'
 import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
 import useRelayerTransactionEndpoint from '@/src/hooks/useRelayerTransactionEndpoint'
-import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { TransactionStates } from '@/src/hooks/useTransaction'
 import { useTriggerRHF } from '@/src/hooks/useTriggerRHF'
+import useUserMetadata from '@/src/hooks/useUserMetadata'
 import {
   ClaimThirdPartyBadgeSchema,
   ClaimThirdPartyBadgeSchemaType,
@@ -26,7 +26,6 @@ import StepsClaimThirdPartySucceed from '@/src/pagePartials/badge/claim/steps/St
 import { SubmitButton } from '@/src/pagePartials/creator/register/RegistrationWithSteps'
 import { PreventActionIfClaimUUIDInvalid } from '@/src/pagePartials/errors/preventActionIfClaimUUIDInvalid'
 import { sendClaimRequest } from '@/src/utils/relayTx'
-import { Creator } from '@/types/badges/Creator'
 import { NextPageWithLayout } from '@/types/next'
 
 const ClaimBadge: NextPageWithLayout = () => {
@@ -35,16 +34,12 @@ const ClaimBadge: NextPageWithLayout = () => {
   const { resetTxState, sendRequest, state: txState } = useRelayerTransactionEndpoint()
   const badgeModelData = useBadgeModel(badgeModelId, contract)
 
-  const badgeCreatorMetadata = useS3Metadata<{ content: Creator }>(
+  const badgeCreatorMetadata = useUserMetadata(
+    badgeModelData.data?.badgeModel?.creator.id,
     badgeModelData.data?.badgeModel?.creator.metadataUri || '',
   )
 
-  if (
-    !badgeCreatorMetadata ||
-    !badgeCreatorMetadata.data ||
-    !badgeModelData ||
-    !badgeModelData.data
-  ) {
+  if (!badgeCreatorMetadata || !badgeModelData || !badgeModelData.data) {
     throw `There was an error trying to fetch the metadata for the badge model`
   }
 
@@ -75,7 +70,7 @@ const ClaimBadge: NextPageWithLayout = () => {
   }
 
   return (
-    <PreventActionIfClaimUUIDInvalid creatorEmail={badgeCreatorMetadata.data.content.email}>
+    <PreventActionIfClaimUUIDInvalid creatorEmail={badgeCreatorMetadata.email}>
       <>
         {txState !== TransactionStates.none && txState !== TransactionStates.success && (
           <TransactionLoading resetTxState={resetTxState} state={txState} />
@@ -85,7 +80,7 @@ const ClaimBadge: NextPageWithLayout = () => {
             <Stack gap={4}>
               <StepClaimThirdPartyHeader
                 creatorAddress={badgeModelData.data.badgeModel.creator.id}
-                creatorName={badgeCreatorMetadata.data.content.name}
+                creatorName={badgeCreatorMetadata.name}
               />
               <StepClaimThirdPartyPreview />
               <Divider />

@@ -98,6 +98,29 @@
     }
   },
   "explorer": {
+    "badgeModels": {
+      "tabTitle": "Models",
+      "title": "Badge models explorer"
+    },
+    "badges": {
+      "tabTitle": "Badges",
+      "title": "Badges explorer",
+      "preview": {
+        "title": "Badge information",
+        "badge": {
+          "name": "Name",
+          "description": "Description",
+          "mintCost": "Mint cost:",
+          "depositCost": "Deposit cost:",
+          "totalMinted": "Total minted amount:",
+          "view": "View",
+          "applyForIt": "Apply for it"
+        },
+        "minter": {
+          "mintedBy": "Minted By"
+        }
+      }
+    },
     "title": "Badge models explorer",
     "noBadgesFound": "There are no badges that match these filters...",
     "button": "MINT",
@@ -367,6 +390,12 @@
             "additionalConfigsTitle": "Additional configs ",
             "diplomaName": "Course name",
             "diplomaDate": "Date"
+          },
+          "customFields": {
+            "customFieldsEnabled":"Do you want to customize the texts?",
+            "hint": "You can press '{' to use custom variables on your fields",
+            "badgeTitle": "Badge Title",
+            "badgeDescription": "Badge Description"
           }
         },
         "formField": {
@@ -449,7 +478,8 @@
         "thirdParty": {
           "evidence": {
             "title": "Issue a {{badgeModelTemplate}} to your user",
-            "sendMethodText": "Choose the method to send the {{badgeModelTemplate}} to your user"
+            "sendMethodText": "Choose the method to send the {{badgeModelTemplate}} to your user",
+            "additionalData:": "Needed information about your user"
           },
           "helpSteps": [
             "You will have to fill up the required information about the user you want to issue its diploma",
@@ -496,8 +526,14 @@
       "claims": " {{amount}} # badges claimed",
       "checkHowElse": "Check who else claimed it. ",
       "seeAll": "See All",
+      "shareBadge": "Share your badge",
       "importBadge": "Import your badge into metamask",
+      "mintBadge": "Mint this badge",
+      "viewBadge": "View this badge",
       "importLinkedin": "Import your badge into your Linkedin",
+      "shareTwitter": "Share on twitter",
+      "viewOpensea": "Check it in OpenSea",
+      "neverExpires": "Never expires",
       "challengeStatus": {
         "title": "Challenge Status",
         "challenged": "CHALLENGED",
@@ -560,7 +596,8 @@
         "ownBadgeChallenge": "You can't do a challenge to your own badge",
         "notClaimedBadge": "You can't do a challenge to a badge that is not yet claimed",
         "challengeButton": "Challenge",
-        "addMoreEvidence": "Add more evidence"
+        "addMoreEvidence": "Add more evidence",
+        "errorEvidenceDisplay": "There was an error fetching the badge evidence, try again in some minutes."
       },
       "criteriaLink": {
         "readCriteria": "Read the ",

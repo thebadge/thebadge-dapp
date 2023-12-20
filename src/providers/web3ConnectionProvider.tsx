@@ -2,7 +2,7 @@
 
 import React, { ReactNode, useCallback, useEffect, useMemo, useState } from 'react'
 
-import { JsonRpcProvider } from '@ethersproject/providers'
+import { JsonRpcProvider, JsonRpcSigner } from '@ethersproject/providers'
 import { getPublicCompressed } from '@toruslabs/eccrypto'
 import { InjectedConnector } from '@wagmi/connectors/injected'
 import { WalletConnectConnector } from '@wagmi/connectors/walletConnect'
@@ -16,11 +16,11 @@ import { Web3AuthConnector } from '@web3auth/web3auth-wagmi-connector'
 import { walletConnectProvider } from '@web3modal/wagmi'
 import { createWeb3Modal, useWeb3Modal, useWeb3ModalState } from '@web3modal/wagmi/react'
 import useSWR from 'swr'
-import { gnosis, goerli, sepolia } from 'viem/chains'
+import { gnosis, goerli, polygon, polygonMumbai, sepolia } from 'viem/chains'
 import { WagmiConfig, configureChains, createConfig, useAccount, useDisconnect } from 'wagmi'
 import { publicProvider } from 'wagmi/providers/public'
 
-import { Chains, INITIAL_APP_CHAIN_ID, chainsConfig, getNetworkConfig } from '@/src/config/web3'
+import { Chains, INITIAL_APP_CHAIN_ID, chainsConfig } from '@/src/config/web3'
 import {
   APP_URL,
   TERMS_AND_CONDITIONS_URL,
@@ -29,6 +29,8 @@ import {
   WEB3_MODAL_PROJECT_ID,
   appName,
 } from '@/src/constants/common'
+import { useEthersSigner } from '@/src/hooks/etherjs/useEthersSigner'
+import useNetworkQueryParam from '@/src/hooks/nextjs/useNetworkQueryParam'
 import { isTestnet } from '@/src/utils/network'
 import { ChainsValues } from '@/types/chains'
 import { WCAddress } from '@/types/utils'
@@ -48,7 +50,7 @@ const metadata = {
 }
 
 // 2. Chains supported
-const defaultChains = [sepolia, goerli, gnosis]
+const defaultChains = [sepolia, goerli, polygonMumbai, polygon, gnosis]
 
 const { chains, publicClient } = configureChains(defaultChains, [
   walletConnectProvider({ projectId }),
@@ -209,13 +211,42 @@ export type Web3Context = {
 
   // dApp helpers
   appChainId: ChainsValues
-  selectedNetworkId: `${string}:${string}` | undefined
+  selectedNetworkId: ChainsValues | undefined
+  readOnlyChainId: ChainsValues
   getExplorerUrl: (hash: string) => string
   readOnlyAppProvider: JsonRpcProvider
 
   consoleAppConfig: VoidFunction
   web3Auth: Web3Auth | null
   getSocialCompressedPubKey: () => Promise<string | undefined>
+  ethersSigner: JsonRpcProvider | JsonRpcSigner
+}
+
+const useChainIds = (): {
+  appChainId: ChainsValues
+  selectedNetworkId: ChainsValues | undefined
+  readOnlyChainId: ChainsValues
+  isAppChainReadOnly: boolean // true if the user's selectedNetworkId if different than the appId
+} => {
+  const { selectedNetworkId } = useWeb3ModalState()
+  const queryParamsChainId = useNetworkQueryParam()
+
+  const [appChainId, setAppChainId] = useState<ChainsValues>(
+    getValidNetwork(selectedNetworkId) || (Number(INITIAL_APP_CHAIN_ID) as ChainsValues),
+  )
+
+  // No sense logic to cast the type and ensure that appId is a supported network
+  useEffect(() => {
+    const newNetwork = getValidNetwork(selectedNetworkId)
+    if (newNetwork) setAppChainId(newNetwork)
+  }, [selectedNetworkId])
+
+  return {
+    appChainId,
+    selectedNetworkId: getValidNetwork(selectedNetworkId) as ChainsValues,
+    readOnlyChainId: queryParamsChainId ? queryParamsChainId : appChainId,
+    isAppChainReadOnly: queryParamsChainId ? appChainId !== queryParamsChainId : false,
+  }
 }
 
 export function useWeb3Connection(): Web3Context {
@@ -224,21 +255,20 @@ export function useWeb3Connection(): Web3Context {
     isConnected: isWalletConnected,
     isConnecting: connectingWallet,
   } = useAccount()
-  // @TODO (agustin) check if there is a better way to do this
-  const address = checkSummedAddress
-    ? (checkSummedAddress.toLowerCase() as '0x${String}')
-    : undefined
+
+  const address = checkSummedAddress ? checkSummedAddress.toLowerCase() : undefined
   const { disconnect: disconnectWallet } = useDisconnect()
   const { open: connectWallet } = useWeb3Modal()
-  const { selectedNetworkId } = useWeb3ModalState()
-
-  const [appChainId, setAppChainId] = useState<ChainsValues>(
-    getValidNetwork(selectedNetworkId) || (Number(INITIAL_APP_CHAIN_ID) as ChainsValues),
-  )
 
   // Social Login with Web3Auth
   const [web3Auth] = useState<Web3Auth | null>(web3AuthInstance)
   const [isSocialWallet, setIsSocialWallet] = useState<boolean>(false)
+  const { appChainId, isAppChainReadOnly, readOnlyChainId, selectedNetworkId } = useChainIds()
+  const { ethersSigner, readOnlyAppProvider } = useEthersSigner({
+    chainId: readOnlyChainId,
+    address,
+    isAppChainReadOnly,
+  })
 
   useEffect(() => {
     const checkIfItsSocialWallet = async () => {
@@ -264,29 +294,23 @@ export function useWeb3Connection(): Web3Context {
     )
   }, [isSocialWallet, web3Auth])
 
-  // No sense logic to cast the type and ensure that appId is a supported network
-  useEffect(() => {
-    const newNetwork = getValidNetwork(selectedNetworkId)
-    if (newNetwork) setAppChainId(newNetwork)
-  }, [selectedNetworkId])
-
   const isAppConnected = Boolean(isWalletConnected && appChainId)
 
   const getExplorerUrl = useMemo(() => {
-    const url = chainsConfig[appChainId]?.blockExplorerUrls[0]
+    const url = chainsConfig[readOnlyChainId]?.blockExplorerUrls[0]
     return (hash: string) => {
       const type = hash.length > 42 ? 'tx' : 'address'
       return `${url}${type}/${hash}`
     }
-  }, [appChainId])
-
-  const readOnlyAppProvider = useMemo(() => {
-    return new JsonRpcProvider(getNetworkConfig(appChainId)?.rpcUrl, appChainId)
-  }, [appChainId])
+  }, [readOnlyChainId])
 
   const isWalletNetworkSupported = useMemo(() => {
     // Gnosis Chain is not supported on dev mode
-    if (isTestnet && `${selectedNetworkId}` === '100') return false
+    if (
+      (isTestnet && `${selectedNetworkId}` === '100') ||
+      (isTestnet && `${selectedNetworkId}` === '137')
+    )
+      return false
     return chains.some(({ id }) => {
       return `${id}` === `${selectedNetworkId}`
     })
@@ -304,7 +328,7 @@ export function useWeb3Connection(): Web3Context {
   }, [address, appChainId, isWalletConnected, isWalletNetworkSupported])
 
   return {
-    address,
+    address: address as WCAddress,
     isSocialWallet,
 
     // Wallet connection
@@ -317,11 +341,13 @@ export function useWeb3Connection(): Web3Context {
 
     // dApp helpers
     appChainId,
-    selectedNetworkId,
+    selectedNetworkId: selectedNetworkId ? selectedNetworkId : undefined,
+    readOnlyChainId,
     getExplorerUrl,
     readOnlyAppProvider,
     consoleAppConfig,
     web3Auth,
     getSocialCompressedPubKey,
+    ethersSigner,
   }
 }

@@ -24,7 +24,7 @@ export default function PendingList() {
   const gql = useSubgraph()
   const { refreshWatcher } = useProfileProvider()
   const { getBadgeReviewStatus } = useBadgeHelpers()
-  const { address: ownerAddress, appChainId } = useWeb3Connection()
+  const { address: ownerAddress, readOnlyChainId } = useWeb3Connection()
   const handleClaimBadge = useBadgeClaim()
 
   const { mutate, ...badgesInReview } = gql.useUserBadgesInReview({
@@ -51,7 +51,7 @@ export default function PendingList() {
                     router.push(
                       generateBadgePreviewUrl(badge.id, {
                         theBadgeContractAddress: badge.contractAddress,
-                        connectedChainId: appChainId,
+                        connectedChainId: readOnlyChainId,
                       }),
                     )
                   }
@@ -111,7 +111,7 @@ export default function PendingList() {
     t,
     router,
     handleClaimBadge,
-    appChainId,
+    readOnlyChainId,
   ])
 
   return (

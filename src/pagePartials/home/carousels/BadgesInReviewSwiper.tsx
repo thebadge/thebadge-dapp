@@ -17,7 +17,7 @@ import { generateBadgePreviewUrl } from '@/src/utils/navigation/generateUrl'
 const now = nowInSeconds()
 export default function BadgesInReviewSwiper() {
   const router = useRouter()
-  const { address, appChainId } = useWeb3Connection()
+  const { address, readOnlyChainId } = useWeb3Connection()
   const md = useSizeMD()
   const lg = useSizeLG()
 
@@ -32,7 +32,7 @@ export default function BadgesInReviewSwiper() {
             router.push(
               generateBadgePreviewUrl(badgeInReview.id, {
                 theBadgeContractAddress: badgeInReview.contractAddress,
-                connectedChainId: appChainId,
+                connectedChainId: readOnlyChainId,
               }),
             )
           }

@@ -3,10 +3,13 @@ import * as React from 'react'
 import { IconBadge, MiniBadgePreview, colors } from '@thebadge/ui-library'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
+import { getBackgroundBadgeUrl } from '@/src/constants/backgrounds'
+import { useAvailableBackgrounds } from '@/src/hooks/useAvailableBackgrounds'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { useColorMode } from '@/src/providers/themeProvider'
-import { getBackgroundBadgeUrl } from '@/src/utils/badges/getBackgroundBadgeUrl'
-import { BadgeModelMetadata, BadgeNFTAttributesType } from '@/types/badges/BadgeMetadata'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
+import { getBackgroundType, getTextContrast } from '@/src/utils/badges/metadataHelpers'
+import { BadgeModelMetadata } from '@/types/badges/BadgeMetadata'
 import { BackendFileResponse } from '@/types/utils'
 
 type Props = {
@@ -28,20 +31,17 @@ function MiniBadgeModelPreview({
   const { mode } = useColorMode()
   const badgeMetadata = res.data?.content
 
-  const backgroundType = badgeMetadata?.attributes?.find(
-    (at) => at.trait_type === BadgeNFTAttributesType.Background,
-  )
-
-  const textContrast = badgeMetadata?.attributes?.find(
-    (at) => at.trait_type === BadgeNFTAttributesType.TextContrast,
-  )
+  const backgroundType = getBackgroundType(badgeMetadata?.attributes)
+  const textContrast = getTextContrast(badgeMetadata?.attributes)
+  const { address, readOnlyChainId } = useWeb3Connection()
+  const { modelBackgrounds } = useAvailableBackgrounds(readOnlyChainId, address)
 
   return (
     <SafeSuspense>
       <MiniBadgePreview
         animationEffects={!disableAnimations ? ['wobble', 'grow', 'glare'] : []}
         animationOnHover
-        badgeBackgroundUrl={getBackgroundBadgeUrl(backgroundType?.value)}
+        badgeBackgroundUrl={getBackgroundBadgeUrl(backgroundType?.value, modelBackgrounds)}
         buttonTitle={buttonTitle}
         description={badgeMetadata?.description}
         height={'50px'}

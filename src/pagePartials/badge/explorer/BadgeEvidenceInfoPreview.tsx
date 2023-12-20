@@ -16,6 +16,7 @@ import ViewEvidenceButton from '@/src/pagePartials/badge/explorer/addons/ViewEvi
 import { useCurateProvider } from '@/src/providers/curateProvider'
 import { getEvidenceValue } from '@/src/utils/kleros/getEvidenceValue'
 import { Badge, BadgeStatus } from '@/types/generated/subgraph'
+import { MetadataColumn } from '@/types/kleros/types'
 import { WCAddress } from '@/types/utils'
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
@@ -23,14 +24,14 @@ export default function BadgeEvidenceInfoPreview({ badge }: { badge: Badge }) {
   const { t } = useTranslation()
   const { address } = useWeb3Connection()
   const { challenge } = useCurateProvider()
-  const isClaimable = useIsClaimable(badge.id)
+  const { data: isClaimable } = useIsClaimable(badge.id)
 
   const badgeKlerosMetadata = useEvidenceBadgeKlerosMetadata(badge?.id)
   const badgeEvidence = badgeKlerosMetadata.data?.requestBadgeEvidence
   const showTimeLeft = badge.status !== BadgeStatus.Approved
 
   if (!badgeEvidence || !badgeKlerosMetadata.data?.requestBadgeEvidenceRawUrl) {
-    throw 'There was an error fetching the badge evidence, try again in some minutes.'
+    throw t('badge.curate.modal.errorEvidenceDisplay')
   }
 
   const getTooltipText = () => {
@@ -65,7 +66,7 @@ export default function BadgeEvidenceInfoPreview({ badge }: { badge: Badge }) {
         </Box>
 
         {/* Evidence Items */}
-        {badgeEvidence?.columns.map((column) => {
+        {badgeEvidence?.columns.map((column: MetadataColumn) => {
           return (
             <Stack key={column.label + column.description}>
               <SafeSuspense>
