@@ -32,6 +32,8 @@ export default function useUserMetadata(
     twitter: creatorMetadata?.twitter || ensMetadataResult?.twitter,
     discord: creatorMetadata?.discord || ensMetadataResult?.discord,
     linkedin: creatorMetadata?.linkedin || ensMetadataResult?.linkedin,
+    github: creatorMetadata?.github || ensMetadataResult?.github,
+    telegram: creatorMetadata?.telegram || ensMetadataResult?.telegram,
     logo: {
       mimeType: 'image/jpeg',
       s3Url: creatorMetadata?.logo?.s3Url || ensMetadata.data?.avatar,
