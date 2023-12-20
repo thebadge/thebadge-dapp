@@ -1,8 +1,8 @@
+import { useRouter } from 'next/navigation'
 import { useCallback } from 'react'
 
 import useTBContract from '@/src/hooks/theBadge/useTBContract'
 import useTransaction from '@/src/hooks/useTransaction'
-import { useRouter } from 'next/navigation'
 
 type ClaimFunction = (badgeId: string) => Promise<void>
 

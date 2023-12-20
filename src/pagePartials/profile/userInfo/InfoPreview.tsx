@@ -1,3 +1,4 @@
+import { useRouter } from 'next/navigation'
 import React, { useEffect, useRef, useState } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -24,7 +25,6 @@ import InfoSocial from '@/src/pagePartials/profile/userInfo/InfoSocial'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { TheBadgeUsers__factory } from '@/types/generated/typechain'
 import { WCAddress } from '@/types/utils'
-import { useRouter } from 'next/navigation'
 
 type Props = {
   address: WCAddress | string
