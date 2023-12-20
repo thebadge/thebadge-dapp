@@ -31,7 +31,11 @@ export const shortenLinkedinString = (inputString: string, maxLength: number): s
   }
 }
 
-export const extractTwitterUsername = (url: string): string | null => {
+export const extractTwitterUsername = (url?: string): string | null => {
+  if (!url) {
+    return null
+  }
+
   // Match patterns for Twitter URLs
   const twitterPattern = /^(?:https?:\/\/)?(?:www\.)?twitter\.com\/([a-zA-Z0-9_]+)/i
   const xDotComPattern = /^(?:https?:\/\/)?(?:www\.)?x\.com\/([a-zA-Z0-9_]+)/i
@@ -60,7 +64,10 @@ export const getTwitterUrl = (username?: string): string => {
   return `https://twitter.com/${cleanedUsername}`
 }
 
-export const extractGitHubUsername = (url: string): string | null => {
+export const extractGitHubUsername = (url?: string): string | null => {
+  if (!url) {
+    return null
+  }
   // Match pattern for GitHub URLs
   const gitHubPattern = /^(?:https?:\/\/)?(?:www\.)?github\.com\/([a-zA-Z0-9_-]+)(\/|$)/i
 

@@ -5,23 +5,38 @@ export type Creator = {
   description: string
   email: string
   terms: boolean
-  discord?: string
-  twitter?: string
-  website?: string
+  discord?: string | null
+  twitter?: string | null
+  linkedin?: string | null
+  website?: string | null
   logo?: BackendFileResponse
-  preferContactMethod: 'email' | 'website' | 'twitter' | 'discord'
+  preferContactMethod:
+    | 'email'
+    | 'website'
+    | 'twitter'
+    | 'discord'
+    | 'linkedin'
+    | 'github'
+    | 'telegram'
 }
 
 export type CreatorMetadata = {
   name: string
   description: string
   email: string
-  logo?: BackendFileResponse
-  discord?: string
-  twitter?: string
-  linkedin?: string
-  website?: string
-
   terms: boolean
-  preferContactMethod: 'email' | 'website' | 'twitter' | 'discord'
+  discord?: string | null
+  twitter?: string | null
+  linkedin?: string | null
+  website?: string | null
+  logo?: BackendFileResponse
+
+  preferContactMethod:
+    | 'email'
+    | 'website'
+    | 'twitter'
+    | 'discord'
+    | 'linkedin'
+    | 'github'
+    | 'telegram'
 }
