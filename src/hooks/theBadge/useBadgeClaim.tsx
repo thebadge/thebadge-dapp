@@ -19,6 +19,6 @@ export default function useBadgeClaim(): ClaimFunction {
         router.refresh()
       }
     },
-    [sendTx, theBadge],
+    [sendTx, theBadge, router],
   )
 }
