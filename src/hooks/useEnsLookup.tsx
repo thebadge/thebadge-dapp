@@ -1,30 +1,39 @@
-import { useEffect, useState } from 'react'
-
+import useSWR, { SWRResponse } from 'swr'
 import { createPublicClient, http } from 'viem'
-import { Chain, gnosis, goerli, mainnet, polygon, polygonMumbai, sepolia } from 'viem/chains'
+import { GetEnsAvatarReturnType } from 'viem/actions'
+import { Chain, gnosis, goerli, mainnet, polygon, polygonMumbai } from 'viem/chains'
 
 import { Chains } from '@/src/config/web3'
 import { ChainsValues } from '@/types/chains'
 import { WCAddress } from '@/types/utils'
+
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
 type EnsMetadata = {
+  name: string | null
+  description: string | null
+  email: string | null
+  website: string | null
   twitter: string | null
+  discord: string | null
   linkedin: string | null
   github: string | null
   telegram: string | null
-  mail: string | null
-  description: string | null
-  display: string | null
-  url: string | null
 }
 
-type EnsLookupResult = {
-  ensNameOrAddress: WCAddress | string | undefined
-  isEnsName: boolean
-  avatar: string | null
-  metadata: EnsMetadata | null
-}
+type EnsLookupResult =
+  | {
+      ensNameOrAddress: string
+      isEnsName: boolean
+      avatar: null
+      metadata: null
+    }
+  | {
+      ensNameOrAddress: string
+      isEnsName: boolean
+      avatar: GetEnsAvatarReturnType
+      metadata: EnsMetadata
+    }
 
 const getChainByChainId = (chainId: ChainsValues): Chain => {
   switch (chainId) {
@@ -38,7 +47,7 @@ const getChainByChainId = (chainId: ChainsValues): Chain => {
       return polygonMumbai
     }
     case Chains.sepolia: {
-      return sepolia
+      return mainnet
     }
     case Chains.goerli: {
       return goerli
@@ -49,57 +58,60 @@ const getChainByChainId = (chainId: ChainsValues): Chain => {
   }
 }
 
-export const useEnsReverseLookup = function (address: WCAddress | undefined): EnsLookupResult {
+export const useEnsReverseLookup = function (
+  address: WCAddress | string | undefined,
+): SWRResponse<EnsLookupResult, unknown> {
   const { readOnlyChainId } = useWeb3Connection()
-  const [ensName, setEnsName] = useState<string>(address as string)
-  const [isEnsName, setIsEnsName] = useState<boolean>(false)
-  const [ensAvatar, setEnsAvatar] = useState<string | null>(null)
-  const [ensMetadata, setEnsMetadata] = useState<EnsMetadata | null>(null)
 
-  useEffect(() => {
-    const chain = getChainByChainId(readOnlyChainId)
+  const result = useSWR([readOnlyChainId, address], async ([_readOnlyChainId, _address]) => {
+    const chain = getChainByChainId(_readOnlyChainId)
     const client = createPublicClient({
       chain,
       transport: http(),
     })
-    const fetchInfo = async () => {
-      const { getEnsAvatar, getEnsName, getEnsText } = client
-      const ensName = await getEnsName({ address: address || '0x' })
-      if (ensName) {
-        setEnsName(ensName)
-        setIsEnsName(true)
-        const avatar = await getEnsAvatar({ name: ensName })
-        const [twitter, linkedin, github, telegram, mail, description, display, url] =
-          await Promise.all([
-            getEnsText({ name: ensName, key: 'com.twitter' }),
-            getEnsText({ name: ensName, key: 'com.linkedin' }),
-            getEnsText({ name: ensName, key: 'com.github' }),
-            getEnsText({ name: ensName, key: 'com.telegram' }),
-            getEnsText({ name: ensName, key: 'mail' }),
-            getEnsText({ name: ensName, key: 'description' }),
-            getEnsText({ name: ensName, key: 'display' }),
-            getEnsText({ name: ensName, key: 'url' }),
-          ])
-        setEnsAvatar(avatar)
-        setEnsMetadata({
-          twitter,
-          linkedin,
-          github,
-          telegram,
-          mail,
-          description,
-          display,
-          url,
-        })
+
+    const { getEnsAvatar, getEnsName, getEnsText } = client
+    const ensName = await getEnsName({ address: (_address as WCAddress) || '0x' })
+    if (!ensName) {
+      return {
+        ensNameOrAddress: _address as string,
+        avatar: null,
+        isEnsName: false,
+        metadata: null,
       }
     }
-    fetchInfo()
-  }, [address, ensAvatar, readOnlyChainId])
+    const avatar = await getEnsAvatar({ name: ensName })
+    const [twitter, linkedin, github, telegram, discord, email, description, name, url] =
+      await Promise.all([
+        getEnsText({ name: ensName, key: 'com.twitter' }),
+        getEnsText({ name: ensName, key: 'com.linkedin' }),
+        getEnsText({ name: ensName, key: 'com.github' }),
+        getEnsText({ name: ensName, key: 'com.telegram' }),
+        getEnsText({ name: ensName, key: 'com.discord' }),
+        getEnsText({ name: ensName, key: 'email' }),
+        getEnsText({ name: ensName, key: 'description' }),
+        getEnsText({ name: ensName, key: 'name' }),
+        getEnsText({ name: ensName, key: 'url' }),
+      ])
+    const metadata = {
+      twitter,
+      linkedin,
+      github,
+      telegram,
+      discord,
+      email,
+      description,
+      name,
+      website: url,
+    }
 
-  return {
-    ensNameOrAddress: ensName || address,
-    avatar: ensAvatar || null,
-    isEnsName,
-    metadata: ensMetadata,
-  }
+    return {
+      ensNameOrAddress: ensName,
+      avatar,
+      isEnsName: true,
+      metadata,
+    }
+  })
+
+  return result
 }
