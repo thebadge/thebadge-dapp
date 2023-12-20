@@ -1,6 +1,7 @@
 import { useEnsReverseLookup } from '@/src/hooks/useEnsLookup'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+import { extractGitHubUsername, extractTwitterUsername, getTwitterUrl } from '@/src/utils/strings'
 import { CreatorMetadata } from '@/types/badges/Creator'
 import { WCAddress } from '@/types/utils'
 
@@ -29,10 +30,10 @@ export default function useUserMetadata(
     description: creatorMetadata?.description || ensMetadataResult?.description,
     email: creatorMetadata?.email || ensMetadataResult?.email,
     website: creatorMetadata?.website || ensMetadataResult?.website,
-    twitter: creatorMetadata?.twitter || ensMetadataResult?.twitter,
+    twitter: extractTwitterUsername(creatorMetadata?.twitter || ensMetadataResult?.twitter),
     discord: creatorMetadata?.discord || ensMetadataResult?.discord,
     linkedin: creatorMetadata?.linkedin || ensMetadataResult?.linkedin,
-    github: creatorMetadata?.github || ensMetadataResult?.github,
+    github: extractGitHubUsername(creatorMetadata?.github || ensMetadataResult?.github),
     telegram: creatorMetadata?.telegram || ensMetadataResult?.telegram,
     logo: {
       mimeType: 'image/jpeg',

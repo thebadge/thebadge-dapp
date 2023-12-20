@@ -38,12 +38,12 @@ export const CreatorRegisterSchema = z.object({
 
   // Contact method
   email: EmailSchema,
-  website: z.string().optional(),
-  twitter: TwitterSchema.optional(),
-  discord: z.string().optional(),
-  linkedin: z.string().optional(),
-  github: z.string().optional(),
-  telegram: z.string().optional(),
+  website: z.string().optional().nullable(),
+  twitter: TwitterSchema.optional().nullable(),
+  discord: z.string().optional().nullable(),
+  linkedin: z.string().optional().nullable(),
+  github: z.string().optional().nullable(),
+  telegram: z.string().optional().nullable(),
 
   preferContactMethod: z.enum(CONTACT_METHODS),
   terms: AgreementSchema,
@@ -66,12 +66,12 @@ export const EditProfileSchema = z.object({
 
   // Contact method
   email: EmailSchema,
-  website: z.string().optional(),
-  twitter: TwitterSchema.optional(),
-  discord: z.string().optional(),
-  linkedin: z.string().optional(),
-  github: z.string().optional(),
-  telegram: z.string().optional(),
+  website: z.string().optional().nullable(),
+  twitter: TwitterSchema.optional().nullable(),
+  discord: z.string().optional().nullable(),
+  linkedin: z.string().optional().nullable(),
+  github: z.string().optional().nullable(),
+  telegram: z.string().optional().nullable(),
 
   preferContactMethod: z.enum(CONTACT_METHODS),
 })

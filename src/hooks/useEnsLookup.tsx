@@ -1,11 +1,12 @@
 import useSWR, { SWRResponse } from 'swr'
 import { createPublicClient, http } from 'viem'
 import { GetEnsAvatarReturnType } from 'viem/actions'
-import { Chain, goerli, mainnet, sepolia } from 'viem/chains'
+import { Chain, goerli, mainnet } from 'viem/chains'
 
 import { Chains } from '@/src/config/web3'
 import { ChainsValues } from '@/types/chains'
 import { WCAddress } from '@/types/utils'
+import { extractGitHubUsername, extractTwitterUsername } from '@/src/utils/strings'
 
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
@@ -35,7 +36,7 @@ type EnsLookupResult =
       metadata: EnsMetadata
     }
 
-const getChainByChainId = (chainId: ChainsValues): Chain => {
+const getChainForEnsLookup = (chainId: ChainsValues): Chain => {
   switch (chainId) {
     // Returns mainnet because ens is not supported in polygon and gnosis
     case Chains.gnosis:
@@ -44,7 +45,7 @@ const getChainByChainId = (chainId: ChainsValues): Chain => {
       return mainnet
     }
     case Chains.sepolia: {
-      return sepolia
+      return mainnet
     }
     case Chains.goerli: {
       return goerli
@@ -61,7 +62,7 @@ export const useEnsReverseLookup = function (
   const { readOnlyChainId } = useWeb3Connection()
 
   const result = useSWR([readOnlyChainId, address], async ([_readOnlyChainId, _address]) => {
-    const chain = getChainByChainId(_readOnlyChainId)
+    const chain = getChainForEnsLookup(_readOnlyChainId)
     const client = createPublicClient({
       chain,
       transport: http(),
@@ -90,10 +91,12 @@ export const useEnsReverseLookup = function (
         getEnsText({ name: ensName, key: 'name' }),
         getEnsText({ name: ensName, key: 'url' }),
       ])
+    const parsedTwitter = extractTwitterUsername(twitter as string)
+    const parsedGithub = extractGitHubUsername(github as string)
     const metadata = {
-      twitter,
+      twitter: parsedTwitter,
       linkedin,
-      github,
+      github: parsedGithub,
       telegram,
       discord,
       email,

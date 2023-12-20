@@ -13,7 +13,7 @@ import { useUserById } from '@/src/hooks/subgraph/useUserById'
 import useUserMetadata from '@/src/hooks/useUserMetadata'
 import { EditProfileSchemaType } from '@/src/pagePartials/creator/register/schema/CreatorRegisterSchema'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
-import { shortenLinkedinString } from '@/src/utils/strings'
+import { generateGitHubUrl, getTwitterUrl, shortenLinkedinString } from '@/src/utils/strings'
 import { WCAddress } from '@/types/utils'
 
 const TextFieldContainer = styled(Box)(({ theme }) => ({
@@ -57,7 +57,7 @@ export default function InfoSocial({ address, readView }: Props) {
                     variant="dAppTitle2"
                   >
                     {value && readView ? (
-                      <Link href={value} target={'_blank'}>
+                      <Link href={getTwitterUrl(value)} target={'_blank'}>
                         {value}
                       </Link>
                     ) : (
@@ -139,7 +139,7 @@ export default function InfoSocial({ address, readView }: Props) {
                     variant="dAppTitle2"
                   >
                     {value && readView ? (
-                      <Link href={value} target={'_blank'}>
+                      <Link href={generateGitHubUrl(value)} target={'_blank'}>
                         {shortenLinkedinString(value || '', 20)}
                       </Link>
                     ) : (

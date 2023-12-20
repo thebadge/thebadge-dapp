@@ -29,7 +29,7 @@ type TextFieldProps = Omit<MUITextFieldProps, 'error' | 'onChange'> & {
   // Temporal solution to show the real TextField placeholder as a level,
   // it's made on this way to prevent a huge rework around other usages
   ghostLabel?: string
-  value: string | undefined
+  value: string | undefined | null
   allowVariables?: boolean
 }
 
