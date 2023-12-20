@@ -9,7 +9,9 @@ import { z } from 'zod'
 
 import StepPrompt from '@/src/components/form/formWithSteps/StepPrompt'
 import { TransactionLoading } from '@/src/components/loading/TransactionLoading'
+import { useUserById } from '@/src/hooks/subgraph/useUserById'
 import { TransactionStates } from '@/src/hooks/useTransaction'
+import useUserMetadata from '@/src/hooks/useUserMetadata'
 import {
   CreatorRegisterSchema,
   CreatorRegisterSchemaType,
@@ -19,10 +21,7 @@ import AccountDetails from '@/src/pagePartials/creator/register/steps/generalInf
 import ContactInformation from '@/src/pagePartials/creator/register/steps/generalInfo/ContactInformation'
 import TermsAndConditions from '@/src/pagePartials/creator/register/steps/terms/TermsAndConditions'
 import { PreventActionWithoutConnection } from '@/src/pagePartials/errors/preventActionWithoutConnection'
-import useUserMetadata from '@/src/hooks/useUserMetadata'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
-import { useUserById } from '@/src/hooks/subgraph/useUserById'
-import { WCAddress } from '@/types/utils'
 
 type RegistrationStepsProps = {
   onSubmit: SubmitHandler<CreatorRegisterSchemaType>
