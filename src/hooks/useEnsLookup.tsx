@@ -1,7 +1,7 @@
 import useSWR, { SWRResponse } from 'swr'
 import { createPublicClient, http } from 'viem'
 import { GetEnsAvatarReturnType } from 'viem/actions'
-import { Chain, gnosis, goerli, mainnet, polygon, polygonMumbai, sepolia } from 'viem/chains'
+import { Chain, goerli, mainnet } from 'viem/chains'
 
 import { Chains } from '@/src/config/web3'
 import { ChainsValues } from '@/types/chains'
@@ -44,7 +44,7 @@ const getChainByChainId = (chainId: ChainsValues): Chain => {
       return mainnet
     }
     case Chains.sepolia: {
-      return sepolia
+      return mainnet
     }
     case Chains.goerli: {
       return goerli
