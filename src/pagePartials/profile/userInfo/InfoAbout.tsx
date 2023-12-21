@@ -5,6 +5,7 @@ import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined'
 import LanguageOutlinedIcon from '@mui/icons-material/LanguageOutlined'
 import { Box, Stack, Typography, styled } from '@mui/material'
 import { colors } from '@thebadge/ui-library'
+import { useTranslation } from 'next-export-i18n'
 import { Controller, useFormContext } from 'react-hook-form'
 
 import TBEditableTypography from '@/src/components/common/TBEditableTypography'
@@ -27,6 +28,7 @@ const TextFieldContainer = styled(Box)(({ theme }) => ({
 }))
 
 export default function InfoAbout({ address, readView }: Props) {
+  const { t } = useTranslation()
   const { address: connectedWalletAddress } = useWeb3Connection()
   const { data } = useUserById(address)
   const userMetadata = useUserMetadata(address || connectedWalletAddress, data?.metadataUri || '')
@@ -66,7 +68,7 @@ export default function InfoAbout({ address, readView }: Props) {
                     disabled={readView}
                     error={error}
                     onChange={onChange}
-                    placeholder={'Website'}
+                    placeholder={t('creator.register.form.contactData.website')}
                     variant="dAppTitle2"
                   >
                     {value && readView ? (
@@ -92,7 +94,7 @@ export default function InfoAbout({ address, readView }: Props) {
                     disabled={readView}
                     error={error}
                     onChange={onChange}
-                    placeholder={'Email'}
+                    placeholder={t('creator.register.form.contactData.email')}
                     variant="dAppTitle2"
                   >
                     {value && readView ? (

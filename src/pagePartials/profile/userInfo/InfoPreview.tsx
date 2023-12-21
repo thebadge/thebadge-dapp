@@ -114,33 +114,23 @@ export default function InfoPreview({ address }: Props) {
   }
 
   const renderAboutSection = () => {
-    if (userMetadata.hasAboutData) {
+    if (userMetadata.hasAboutData || !readView) {
       return (
         <InfoPreviewAboutContainer>
           <InfoAbout address={address as WCAddress} readView={readView} />
         </InfoPreviewAboutContainer>
       )
     }
-    return !readView ? (
-      <InfoPreviewAboutContainer>
-        <InfoAbout address={address as WCAddress} readView={readView} />
-      </InfoPreviewAboutContainer>
-    ) : null
   }
 
   const renderSocialSection = () => {
-    if (userMetadata.hasSocialData) {
+    if (userMetadata.hasSocialData || !readView) {
       return (
         <InfoPreviewSocialContainer isMobile={isMobile}>
           <InfoSocial address={address as WCAddress} readView={readView} />
         </InfoPreviewSocialContainer>
       )
     }
-    return !readView ? (
-      <InfoPreviewSocialContainer isMobile={isMobile}>
-        <InfoSocial address={address as WCAddress} readView={readView} />
-      </InfoPreviewSocialContainer>
-    ) : null
   }
 
   return (
