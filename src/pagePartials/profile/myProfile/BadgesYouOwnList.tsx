@@ -40,7 +40,7 @@ export default function BadgesYouOwnList({ address }: Props) {
     },
     {
       title: t('badgesList.filters.challenged'),
-      color: 'pink',
+      color: 'error',
       defaultSelected: true,
       key: BadgeStatus.Challenged,
     },
