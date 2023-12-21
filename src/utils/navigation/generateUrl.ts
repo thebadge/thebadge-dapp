@@ -7,8 +7,8 @@ import { BadgeModelControllerType } from '@/types/badges/BadgeModel'
 import { ChainsValues } from '@/types/chains'
 
 export function generateMintUrl(
-  controllerType: string,
-  badgeModelId: string = BadgeModelControllerType.Community,
+  controllerType: string = BadgeModelControllerType.Community,
+  badgeModelId: string,
 ) {
   return `/badgeModel/${controllerType}/${badgeModelId}/mint`
 }
@@ -23,11 +23,11 @@ export function generateModelExplorerUrl(
 export function generateBadgeModelCreate(
   controllerType: string = BadgeModelControllerType.Community,
 ) {
-  return `/badgeModel/create/${controllerType}`
+  return `/badgeModel/${controllerType}/create`
 }
 
-export function generateBadgeExplorer() {
-  return `/badgeModel/explorer`
+export function generateExplorer() {
+  return `/explorer`
 }
 
 export function generateBadgeCurate() {

@@ -8,7 +8,7 @@ import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { SectionBox, SectionTitleBox } from '@/src/pagePartials/home/SectionBoxes'
 import BadgeModelsList from '@/src/pagePartials/home/carousels/BadgeModelsList'
 import { useSectionReferences } from '@/src/providers/referencesProvider'
-import { generateBadgeExplorer } from '@/src/utils/navigation/generateUrl'
+import { generateExplorer } from '@/src/utils/navigation/generateUrl'
 
 export default function ClaimBadges() {
   const { claimBadgesSection } = useSectionReferences()
@@ -31,7 +31,7 @@ export default function ClaimBadges() {
         <ButtonV2
           backgroundColor={theme.palette.button.backgroundBlue.main}
           fontColor={'#0D0D0D'}
-          onClick={() => router.push(generateBadgeExplorer())}
+          onClick={() => router.push(generateExplorer())}
           sx={{
             borderRadius: '10px',
             fontSize: '11px !important',

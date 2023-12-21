@@ -8,11 +8,12 @@ import useTransaction, { TransactionStates } from '@/src/hooks/useTransaction'
 import CreateThirdPartyBadgeModelWithSteps from '@/src/pagePartials/badge/model/CreateThirdPartyBadgeModelWithSteps'
 import { CreateThirdPartyModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateThirdPartyModelSchema'
 import { ProfileType } from '@/src/pagePartials/profile/ProfileSelector'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
+import { getNeededVariables } from '@/src/utils/badges/createBadgeModelHelpers'
 import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 import { BadgeModelControllerName, BadgeModelTemplate } from '@/types/badges/BadgeModel'
 import { TheBadgeModels__factory } from '@/types/generated/typechain'
-import { KLEROS_LIST_TYPES, ThirdPartyMetadataColumn } from '@/types/kleros/types'
+import { ThirdPartyMetadataColumn } from '@/types/kleros/types'
 import { NextPageWithLayout } from '@/types/next'
 
 const CreateThirdPartyBadgeModel: NextPageWithLayout = () => {
@@ -48,19 +49,8 @@ const CreateThirdPartyBadgeModel: NextPageWithLayout = () => {
         // Hardcoded Required metadata for the Diploma use case
         const badgeMetadataColumns: ThirdPartyMetadataColumn[] =
           data.template === BadgeModelTemplate.Diploma
-            ? [
-                // Diploma required fields
-                {
-                  label: 'Student Name',
-                  description: 'You must add your name and surname, to have your diploma',
-                  type: KLEROS_LIST_TYPES.TEXT,
-                  // Key that is going to be used to search and replace the value on
-                  // the diploma, like {{studentName}}
-                  replacementKey: 'studentName',
-                  isIdentifier: false,
-                },
-              ]
-            : [] // Badge required fields
+            ? getNeededVariables({ title: '{{studentName}}' }) // Diploma required fields
+            : getNeededVariables({ title: data.badgeTitle, description: data.badgeDescription }) // Badge required fields
 
         const requirementsIPFSHash = await createAndUploadThirdPartyBadgeModelRequirements(
           badgeMetadataColumns,

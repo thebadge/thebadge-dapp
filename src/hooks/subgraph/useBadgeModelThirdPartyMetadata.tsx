@@ -3,7 +3,7 @@ import useSWR from 'swr'
 import { BadgeModelHooksOptions } from '@/src/hooks/subgraph/types'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import { getFromIPFS } from '@/src/hooks/subgraph/utils'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import { SubgraphName } from '@/src/subgraph/subgraph'
 import { ThirdPartyMetadataColumn } from '@/types/kleros/types'
 

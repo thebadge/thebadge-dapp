@@ -1,9 +1,7 @@
-import axios from 'axios'
 import useSWR from 'swr'
 
-import { BACKEND_URL } from '@/src/constants/common'
+import { getFromIPFS } from '@/src/hooks/subgraph/utils'
 import { cleanHash } from '@/src/utils/fileUtils'
-import { BackendResponse } from '@/types/utils'
 
 /**
  * Hook that use useSWR with disabled revalidation to reduce the API usage. After fetching the hash data one, it won't
@@ -14,7 +12,7 @@ export default function useS3Metadata<T>(hash: string) {
   return useSWR(hash.length ? hash : null, async (_hash) => {
     const cleanedHash = cleanHash(_hash as string)
 
-    const res = await axios.get<BackendResponse<T>>(`${BACKEND_URL}/api/ipfs/${cleanedHash}`)
+    const res = await getFromIPFS<T>(cleanedHash)
     return res.data.result
   })
 }

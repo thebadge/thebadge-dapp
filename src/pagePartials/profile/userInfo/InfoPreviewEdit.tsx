@@ -20,14 +20,13 @@ import { Address } from '@/src/components/helpers/Address'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { useUserById } from '@/src/hooks/subgraph/useUserById'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
-import useS3Metadata from '@/src/hooks/useS3Metadata'
 import useTransaction from '@/src/hooks/useTransaction'
+import useUserMetadata from '@/src/hooks/useUserMetadata'
 import {
   CreatorRegisterSchemaType,
   EditProfileSchema,
   EditProfileSchemaType,
 } from '@/src/pagePartials/creator/register/schema/CreatorRegisterSchema'
-import { CreatorMetadata } from '@/types/badges/Creator'
 import { TheBadgeUsers__factory } from '@/types/generated/typechain'
 import { WCAddress } from '@/types/utils'
 
@@ -56,15 +55,12 @@ export default function InfoPreviewEdit({ address }: Props) {
 
   const { data } = useUserById(address)
 
-  const resCreatorMetadata = useS3Metadata<{ content: CreatorMetadata }>(data?.metadataUri || '')
-  const creatorMetadata = resCreatorMetadata.data?.content
+  const userMetadata = useUserMetadata(address || connectedWalletAddress, data?.metadataUri || '')
 
   const { control, handleSubmit, reset } = useForm<EditProfileSchemaType>({
     resolver: zodResolver(EditProfileSchema),
     defaultValues: {
-      ...creatorMetadata,
-      // As we just have an url, we need to mock the logo object to match the criterias
-      logo: { base64File: creatorMetadata?.logo?.s3Url, mimeType: 'image/jpeg' },
+      ...userMetadata,
     },
     reValidateMode: 'onChange',
     mode: 'onChange',
@@ -80,7 +76,7 @@ export default function InfoPreviewEdit({ address }: Props) {
   }
 
   async function onSubmit(data: EditProfileSchemaType) {
-    if (!address || !creatorMetadata) {
+    if (!address || !userMetadata) {
       throw Error('Web3 address not provided')
     }
 
@@ -97,9 +93,12 @@ export default function InfoPreviewEdit({ address }: Props) {
 
         // Use previous data as default, and override with new values
         const upsertCreatorData = {
-          ...creatorMetadata,
+          logo: userMetadata.logo,
+          website: userMetadata.website,
+          twitter: userMetadata.twitter,
+          discord: userMetadata.discord,
           ...data,
-          ...(!logoHasChange && { logo: creatorMetadata?.logo?.ipfs }),
+          ...(!logoHasChange && { logo: userMetadata?.logo.base64File }),
         } as CreatorRegisterSchemaType
 
         const userMetadataIPFSHash = await createAndUploadCreatorMetadata(
@@ -135,13 +134,11 @@ export default function InfoPreviewEdit({ address }: Props) {
     <>
       {readView && (
         <Stack my={0.5}>
-          <SafeSuspense
-            fallback={<Skeleton variant="circular" width={creatorMetadata ? 171 : 90} />}
-          >
+          <SafeSuspense fallback={<Skeleton variant="circular" width={userMetadata ? 171 : 90} />}>
             <TBUserAvatar
               address={address}
-              size={creatorMetadata ? 171 : 90}
-              src={creatorMetadata?.logo?.s3Url}
+              size={userMetadata ? 171 : 90}
+              src={userMetadata.logo.base64File}
             />
           </SafeSuspense>
         </Stack>
@@ -192,7 +189,7 @@ export default function InfoPreviewEdit({ address }: Props) {
 
         <Box display="flex">
           <Stack flex="1" gap={1} height="100%" justifyContent="space-evenly" overflow="auto">
-            {(creatorMetadata?.email || !readView) && (
+            {(userMetadata?.email || !readView) && (
               <TextFieldContainer>
                 <EmailOutlinedIcon sx={{ mr: 1 }} />
                 <Controller
@@ -218,7 +215,7 @@ export default function InfoPreviewEdit({ address }: Props) {
                 />
               </TextFieldContainer>
             )}
-            {(creatorMetadata?.twitter || !readView) && (
+            {(userMetadata?.twitter || !readView) && (
               <TextFieldContainer>
                 <TwitterIcon sx={{ mr: 1 }} />
                 <Controller
@@ -244,33 +241,35 @@ export default function InfoPreviewEdit({ address }: Props) {
                 />
               </TextFieldContainer>
             )}
-            {(creatorMetadata?.discord || !readView) && (
+            {(userMetadata?.discord || !readView) && (
               <TextFieldContainer>
                 <IconDiscord sx={{ mr: 1 }} />
                 <Controller
                   control={control}
                   name={'discord'}
-                  render={({ field: { onChange, value }, fieldState: { error } }) => (
-                    <TBEditableTypography
-                      disabled={readView}
-                      error={error}
-                      onChange={onChange}
-                      placeholder={'Discord'}
-                      variant="dAppTitle2"
-                    >
-                      {value && readView ? (
-                        <Link href={value} target={'_blank'}>
-                          {value}
-                        </Link>
-                      ) : (
-                        value
-                      )}
-                    </TBEditableTypography>
-                  )}
+                  render={({ field: { onChange, value }, fieldState: { error } }) => {
+                    return (
+                      <TBEditableTypography
+                        disabled={readView}
+                        error={error}
+                        onChange={onChange}
+                        placeholder={'Discord'}
+                        variant="dAppTitle2"
+                      >
+                        {value && readView ? (
+                          <Link href={value} target={'_blank'}>
+                            {value}
+                          </Link>
+                        ) : (
+                          value
+                        )}
+                      </TBEditableTypography>
+                    )
+                  }}
                 />
               </TextFieldContainer>
             )}
-            {(creatorMetadata?.linkedin || !readView) && (
+            {(userMetadata?.linkedin || !readView) && (
               <TextFieldContainer>
                 <LinkedIn sx={{ mr: 1 }} />
                 <Controller

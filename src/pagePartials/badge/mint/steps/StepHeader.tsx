@@ -10,8 +10,7 @@ import { DOCS_URL } from '@/src/constants/common'
 import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
 import useBadgeModelTemplate from '@/src/hooks/theBadge/useBadgeModelTemplate'
-import useS3Metadata from '@/src/hooks/useS3Metadata'
-import { Creator } from '@/types/badges/Creator'
+import useUserMetadata from '@/src/hooks/useUserMetadata'
 
 const steps = ['Help', 'Badge Evidence', 'Badge Preview']
 
@@ -29,11 +28,12 @@ export default function StepHeader({
   const badgeModelData = useBadgeModel(badgeModelId)
   const template = useBadgeModelTemplate(badgeModelId)
 
-  const badgeCreatorMetadata = useS3Metadata<{ content: Creator }>(
+  const userMetadata = useUserMetadata(
+    undefined,
     badgeModelData.data?.badgeModel?.creator.metadataUri || '',
   )
 
-  if (!badgeCreatorMetadata || !badgeModelData) {
+  if (!userMetadata || !badgeModelData) {
     throw `There was an error trying to fetch the metadata for the badge model`
   }
   const badgeModelMetadata = badgeModelData.data?.badgeModelMetadata
@@ -63,8 +63,8 @@ export default function StepHeader({
         showHint={currentStep !== 5}
         subTitle={t(`badge.model.mint.steps.${currentStep}.subTitle`, {
           badgeName: badgeModelMetadata?.name,
-          creatorContact: `mailto:${badgeCreatorMetadata.data?.content?.email}`,
-          badgeCreatorName: badgeCreatorMetadata.data?.content?.name,
+          creatorContact: `mailto:${userMetadata.email}`,
+          badgeCreatorName: userMetadata.name,
           curationDocsUrl: DOCS_URL + '/thebadge-documentation/protocol-mechanics/challenge',
           costDocsUrls: DOCS_URL + '/thebadge-documentation/protocol-mechanics/challenge',
         })}

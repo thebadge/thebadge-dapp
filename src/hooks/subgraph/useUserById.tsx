@@ -1,7 +1,7 @@
 import useSWR from 'swr'
 
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import { SubgraphName } from '@/src/subgraph/subgraph'
 import { User } from '@/types/generated/subgraph'
 import { WCAddress } from '@/types/utils'
