@@ -11,7 +11,7 @@
     },
     "claimBadges": {
       "title": "Apply to get one of these badges",
-      "button": "EXPLORE CERTIFICATES"
+      "button": "EXPLORE"
     },
     "earnByCurating": {
       "title": "Earn by Curating",
@@ -532,7 +532,7 @@
       "claims": " {{amount}} # badges claimed",
       "checkHowElse": "Check who else claimed it. ",
       "seeAll": "See All",
-      "shareBadge": "Share your badge",
+      "shareBadge": "Share badge",
       "importBadge": "Import your badge into metamask",
       "mintBadge": "Mint this badge",
       "viewBadge": "View this badge",

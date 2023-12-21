@@ -37,8 +37,6 @@ export default function InfoSocial({ address, readView }: Props) {
 
   const { control } = useFormContext<EditProfileSchemaType>()
 
-  console.log('asd', userMetadata)
-
   return (
     <Stack flex="5" gap={2} justifyContent="space-between" overflow="auto">
       <Typography color={colors.white} textAlign="left" variant="dAppHeadline2">
