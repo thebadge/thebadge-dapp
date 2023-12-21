@@ -56,7 +56,7 @@ export async function generateMetadata(
   const badgeModelMetadata = metadataRequest[1] ? metadataRequest[1].result?.content : null
 
   // optionally access and extend (rather than replace) parent metadata
-  const previousImages = (await parent).openGraph?.images || []
+  // const previousImages = (await parent).openGraph?.images || []
   const title = `The Badge dApp - ${badgeModelMetadata?.name} Certificate`
   const description = `${badgeModelMetadata?.description} - Powered by TheBadge `
   const badgeImageUrl = badgeMetadata?.image.s3Url || ''
