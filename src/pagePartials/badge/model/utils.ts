@@ -1,8 +1,24 @@
+import { ModelsBackgroundsNames } from '@/src/constants/backgrounds'
 import { APP_URL, MODEL_CREATION_CACHE_EXPIRATION_MS } from '@/src/constants/common'
+import { UserMetadata } from '@/src/hooks/useUserMetadata'
 import { BadgeModelControllerType, BadgeModelTemplate } from '@/types/badges/BadgeModel'
 
-const STEP_0_COMMUNITY = ['howItWorks']
-const STEP_1_COMMUNITY = [
+const STEP_0_COMMUNITY = [
+  'register.name',
+  'register.description',
+  'register.logo',
+  'register.website',
+  'register.email',
+  'register.twitter',
+  'register.discord',
+  'register.linkedin',
+  'register.github',
+  'register.telegram',
+  'register.preferContactMethod',
+  'register.terms',
+]
+const STEP_1_COMMUNITY = ['register.terms']
+const STEP_2_COMMUNITY = [
   'name',
   'description',
   'badgeModelLogoUri',
@@ -10,8 +26,8 @@ const STEP_1_COMMUNITY = [
   'backgroundImage',
   'template',
 ]
-const STEP_2_COMMUNITY = ['rigorousness', 'mintFee', 'validFor']
-const STEP_3_COMMUNITY = ['criteriaFileUri', 'criteria', 'badgeMetadataColumns']
+const STEP_3_COMMUNITY = ['rigorousness', 'mintFee', 'validFor']
+const STEP_4_COMMUNITY = ['criteriaFileUri', 'criteria', 'badgeMetadataColumns']
 
 const STEP_0_TP = [
   'name',
@@ -41,6 +57,7 @@ const communityValidationSteps = [
   STEP_1_COMMUNITY,
   STEP_2_COMMUNITY,
   STEP_3_COMMUNITY,
+  STEP_4_COMMUNITY,
 ]
 const thirdPartyValidationSteps = [STEP_0_TP, STEP_1_TP]
 const thirdPartyDiplomaValidationSteps = [STEP_0_TP_DIPLOMA, STEP_1_TP]
@@ -86,11 +103,46 @@ export function getCreateModelStepsAmount(controllerType: BadgeModelControllerTy
   }
 }
 
+const registerDefaultValues = (): UserMetadata => {
+  return {
+    name: '',
+    logo: {
+      mimeType: 'image/jpeg',
+      s3Url: undefined,
+      base64File: undefined,
+      extension: undefined,
+      ipfsUrl: undefined,
+      ipfs: undefined,
+    },
+    preferContactMethod: undefined,
+    ensNameOrAddress: '',
+    isEnsName: false,
+    terms: false,
+    hasAboutData: false,
+    hasSocialData: false,
+  }
+}
+
+type CreateBadgeModelDefaultValues = {
+  register?: UserMetadata
+  textContrast: string
+  backgroundImage: ModelsBackgroundsNames
+  template: string
+  challengePeriodDuration: number
+  rigorousness: {
+    amountOfJurors: number
+    challengeBounty: string
+  }
+}
+
 /**
  * Retrieve stored values, in case that the user refresh the page or something
  * happens
  */
-export function defaultValues(controllerType?: BadgeModelControllerType) {
+export function defaultValues(
+  controllerType?: BadgeModelControllerType,
+  userMetadata?: UserMetadata,
+): CreateBadgeModelDefaultValues {
   switch (controllerType?.toLowerCase()) {
     case BadgeModelControllerType.ThirdParty.toLowerCase(): {
       return {
@@ -106,20 +158,21 @@ export function defaultValues(controllerType?: BadgeModelControllerType) {
     }
     case BadgeModelControllerType.Community.toLowerCase():
     default: {
-      if (checkIfHasOngoingModelCreation()) {
-        const storedValues = JSON.parse(localStorage.getItem(FORM_STORE_KEY) as string)
-        return storedValues.values
-      } else {
-        return {
-          textContrast: 'Black',
-          backgroundImage: 'White Waves',
-          template: 'Badge',
-          challengePeriodDuration: 2,
-          rigorousness: {
-            amountOfJurors: 1,
-            challengeBounty: '0',
-          },
-        }
+      // if (checkIfHasOngoingModelCreation()) {
+      //   const storedValues = JSON.parse(localStorage.getItem(FORM_STORE_KEY) as string)
+      //   return storedValues.values
+      // }
+
+      return {
+        register: userMetadata ? { ...userMetadata } : registerDefaultValues(),
+        textContrast: 'Black',
+        backgroundImage: 'White Waves',
+        template: 'Badge',
+        challengePeriodDuration: 2,
+        rigorousness: {
+          amountOfJurors: 1,
+          challengeBounty: '0',
+        },
       }
     }
   }

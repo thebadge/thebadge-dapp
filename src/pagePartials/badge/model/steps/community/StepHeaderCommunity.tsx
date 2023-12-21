@@ -9,7 +9,7 @@ import StepHeaderSubtitle from '@/src/components/form/formWithSteps/StepHeaderSu
 import { DOCS_URL } from '@/src/constants/common'
 import { useSizeSM } from '@/src/hooks/useSize'
 
-const steps = ['HELP', 'MODEL BASICS', 'DETAILS', 'EVIDENCE', 'PREVIEW']
+const steps = ['REGISTER', 'HELP', 'MODEL BASICS', 'DETAILS', 'EVIDENCE', 'PREVIEW']
 
 export default function StepHeaderCommunity({
   completedSteps,
