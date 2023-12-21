@@ -1,4 +1,4 @@
-import { Metadata, ResolvingMetadata } from 'next'
+import { Metadata } from 'next'
 
 import { ssrGetContentFromIPFS } from '@/src/hooks/subgraph/utils'
 import { gqlQuery } from '@/src/subgraph/subgraph'
@@ -24,10 +24,7 @@ export default function Page() {
 /**
  * Read more on https://nextjs.org/docs/app/api-reference/functions/generate-metadata#generatemetadata-function
  */
-export async function generateMetadata(
-  { params, searchParams }: Props,
-  parent: ResolvingMetadata,
-): Promise<Metadata> {
+export async function generateMetadata({ params, searchParams }: Props): Promise<Metadata> {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   const devEndpoints = require('@/src/subgraph/subgraph-endpoints-dev.json')
   // eslint-disable-next-line @typescript-eslint/no-var-requires
