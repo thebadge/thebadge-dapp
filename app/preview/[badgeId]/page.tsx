@@ -70,7 +70,7 @@ export async function generateMetadata(
       images: [badgeImageUrl, ...previousImages],
     },
     twitter: {
-      card: 'summary_large_image',
+      card: 'summary',
       title,
       description,
       images: [badgeImageUrl, ...previousImages],

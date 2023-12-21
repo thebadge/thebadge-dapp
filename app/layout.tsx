@@ -25,9 +25,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
  * Read more on https://nextjs.org/docs/app/api-reference/functions/generate-metadata#generatemetadata-function
  */
 export async function generateMetadata(): Promise<Metadata> {
-  const title = 'The Badge dApp - Decentralized certifications tokenized as NFTs'
+  const title = 'The Badge dApp - Decentralized Certifications Platform'
   const description =
-    'The Badge is a decentralized certification platform powered by Ethereum. It provides users with the opportunity to tokenize any piece of information from the real world in the form of badges. These badges are verified and validated by the community, which decides what should be accepted and what should not be.'
+    'TheBadge is a decentralized certification platform that allows companies, institutions, and individuals to bring verified real-world certifications to the blockchain.'
   const twitterHandle = '@thebadgexyz'
 
   return {
@@ -50,7 +50,7 @@ export async function generateMetadata(): Promise<Metadata> {
       ],
     },
     twitter: {
-      card: 'summary_large_image',
+      card: 'summary',
       title,
       description,
       creator: twitterHandle,
