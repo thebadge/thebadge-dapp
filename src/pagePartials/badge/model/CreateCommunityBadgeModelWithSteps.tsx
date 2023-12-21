@@ -42,11 +42,15 @@ export default function CreateCommunityBadgeModelWithSteps({
   resetTxState,
   txState = TransactionStates.none,
 }: CreateModelStepsProps) {
+  const { data: isRegistered } = useIsRegistered()
   const [currentStep, setCurrentStep] = useState(0)
 
   // Naive completed step implementation
-  const [completed, setCompleted] = useState<Record<string, boolean>>({})
-  const { data: isRegistered } = useIsRegistered()
+  const [completed, setCompleted] = useState<Record<string, boolean>>(
+    isRegistered ? { 1: true } : {},
+  )
+  const [hiddenSteps] = useState<Record<string, boolean>>(isRegistered ? { 1: true } : {})
+
   const userMetadata = useUserMetadata()
 
   const methods = useForm<z.infer<typeof CreateCommunityModelSchema>>({
@@ -67,7 +71,12 @@ export default function CreateCommunityBadgeModelWithSteps({
 
   // Navigation helpers to go back on the steps
   async function onBackCallback() {
-    setCurrentStep((prev) => (prev === 0 ? 0 : prev - 1))
+    setCurrentStep((prev) => {
+      if (isRegistered && prev == 2) {
+        return 0
+      }
+      return prev === 0 ? 0 : prev - 1
+    })
   }
 
   // Navigation helpers to go to the next step
@@ -75,7 +84,12 @@ export default function CreateCommunityBadgeModelWithSteps({
     const isValid = await isValidStep()
     if (isValid) {
       setCompleted((prev) => ({ ...prev, [currentStep]: true }))
-      setCurrentStep((prev) => (prev === 4 ? 4 : prev + 1))
+      setCurrentStep((prev) => {
+        if (isRegistered && prev == 0) {
+          return 2
+        }
+        return prev === 5 ? 5 : prev + 1
+      })
     }
   }
 
@@ -110,6 +124,7 @@ export default function CreateCommunityBadgeModelWithSteps({
       <StepHeaderCommunity
         completedSteps={completed}
         currentStep={currentStep}
+        hiddenSteps={hiddenSteps}
         onStepNavigation={onStepNavigation}
       />
       <Container maxWidth="md" sx={{ minHeight: '50vh' }}>
@@ -120,8 +135,8 @@ export default function CreateCommunityBadgeModelWithSteps({
         {txState === TransactionStates.none && (
           <form onSubmit={methods.handleSubmit(onSubmit, notifyFormError)}>
             <StepInnerContainer gap={3}>
-              {currentStep === 0 && <RegisterStep />}
-              {currentStep === 1 && <HowItWorks />}
+              {currentStep === 0 && <HowItWorks />}
+              {currentStep === 1 && <RegisterStep />}
               {currentStep === 2 && <BadgeModelUIBasics />}
               {currentStep === 3 && <BadgeModelStrategy />}
               {currentStep === 4 && <BadgeModelEvidenceFormCreation />}

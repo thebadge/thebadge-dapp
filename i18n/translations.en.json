@@ -281,7 +281,7 @@
     "connectWallet": "Connect your wallet",
     "connectWalletSubtitle": "Please, to continue it is necessary that you connect your wallet",
     "notRegistered": "You are not a registered yet.",
-    "notRegisteredSubtitle": "Please, to continue it is necessary that you register.",
+    "notRegisteredSubtitle": "Please, to continue it is necessary that you register. ",
     "alreadyOwnedBadge": "You already own this badge",
     "pausedAction": "This action has been temporarily paused.",
     "pausedActionSubtitle": "Please, head over to our Discord channel for more information.",
@@ -359,6 +359,10 @@
         ],
         "previewTitle": "This is how your {{badgeModelTemplate}} is going to look when a user obtains it.",
         "steps": [
+          {
+            "subTitle": "You are starting the process of creating a new badge model. Please read the following instructions carefully in order to be able to complete the process correctly.",
+            "hint": "You can read more about this process on the [docs]({{docsUrl}})."
+          },
           {
             "subTitle": "You are starting the process of creating a new badge model. Please read the following instructions carefully in order to be able to complete the process correctly.",
             "hint": "You can read more about this process on the [docs]({{docsUrl}})."

@@ -2,18 +2,16 @@ import { useRouter } from 'next/router'
 import React, { RefObject, useState } from 'react'
 
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
-import { Box, Button, Menu, MenuItem, Tooltip, styled } from '@mui/material'
+import { Box, Button, Menu, MenuItem, styled } from '@mui/material'
 import { colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 
-import { useCurrentUser } from '@/src/hooks/subgraph/useCurrentUser'
 import useIsThirdPartyUser from '@/src/hooks/theBadge/useIsThirdPartyUser'
 import { useSectionReferences } from '@/src/providers/referencesProvider'
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import {
   generateBadgeCurate,
   generateBadgeModelCreate,
-  generateCreatorRegisterUrl,
   generateExplorer,
 } from '@/src/utils/navigation/generateUrl'
 import { BadgeModelControllerType } from '@/types/badges/BadgeModel'
@@ -88,10 +86,8 @@ const ButtonWithMenu = ({ color, disabled, menuItems, title }: ButtonWithMenuPro
 
 export default function ActionButtons() {
   const { t } = useTranslation()
-  const { data: user } = useCurrentUser()
-  const { address: connectedWalletAddress, isWalletConnected } = useWeb3Connection()
+  const { address: connectedWalletAddress } = useWeb3Connection()
   const isThirdPartyUser = useIsThirdPartyUser(connectedWalletAddress)
-  const router = useRouter()
   const { scrollTo } = useSectionReferences()
 
   const menuButton = ({
@@ -139,7 +135,7 @@ export default function ActionButtons() {
   const createButton = menuButton({
     title: t('header.buttons.create'),
     color: colors.pink,
-    disabled: isWalletConnected && !user?.isRegistered,
+    disabled: false,
     path: generateBadgeModelCreate(),
     menuItems: isThirdPartyUser
       ? [
@@ -165,27 +161,7 @@ export default function ActionButtons() {
     >
       {exploreButton}
       {curateButton}
-
-      {isWalletConnected && !user?.isRegistered ? (
-        <Tooltip
-          arrow
-          title={
-            <>
-              {t('header.tooltips.becomeACreator.prefixText')}
-              <Box
-                onClick={() => router.push(generateCreatorRegisterUrl())}
-                style={{ cursor: 'pointer', textDecoration: 'underline' }}
-              >
-                {t('header.tooltips.becomeACreator.link')}
-              </Box>
-            </>
-          }
-        >
-          <span>{createButton}</span>
-        </Tooltip>
-      ) : (
-        createButton
-      )}
+      {createButton}
     </Box>
   )
 }

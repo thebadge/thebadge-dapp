@@ -6,7 +6,6 @@ import { useFormContext } from 'react-hook-form'
 
 import { getCreateModelStepsAmount, saveFormValues } from '../utils'
 import useControllerTypeParam from '@/src/hooks/nextjs/useControllerTypeParam'
-import { PreventActionWithoutConnection } from '@/src/pagePartials/errors/preventActionWithoutConnection'
 import { BadgeModelControllerType } from '@/types/badges/BadgeModel'
 
 export const StepButton = styled(Button)(({ theme }) => ({
@@ -73,16 +72,14 @@ export default function StepFooter({
           </StepButton>
         )}
         {isLastStep && (
-          <PreventActionWithoutConnection onlyCreator={true} sx={{ m: 'auto' }}>
-            <StepButton
-              color={color || 'primary'}
-              sx={{ m: 'auto' }}
-              type="submit"
-              variant="contained"
-            >
-              {t('badge.model.create.submit')}
-            </StepButton>
-          </PreventActionWithoutConnection>
+          <StepButton
+            color={color || 'primary'}
+            sx={{ m: 'auto' }}
+            type="submit"
+            variant="contained"
+          >
+            {t('badge.model.create.submit')}
+          </StepButton>
         )}
       </Box>
     </>

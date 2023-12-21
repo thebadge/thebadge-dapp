@@ -13,3 +13,5 @@ export enum BadgeModelTemplate {
   Badge = 'Badge',
   Diploma = 'Diploma',
 }
+
+export type BadgeModelTemplateType = BadgeModelTemplate.Diploma | BadgeModelTemplate.Badge

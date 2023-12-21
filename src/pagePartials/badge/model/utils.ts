@@ -1,9 +1,14 @@
 import { ModelsBackgroundsNames } from '@/src/constants/backgrounds'
 import { APP_URL, MODEL_CREATION_CACHE_EXPIRATION_MS } from '@/src/constants/common'
 import { UserMetadata } from '@/src/hooks/useUserMetadata'
-import { BadgeModelControllerType, BadgeModelTemplate } from '@/types/badges/BadgeModel'
+import {
+  BadgeModelControllerType,
+  BadgeModelTemplate,
+  BadgeModelTemplateType,
+} from '@/types/badges/BadgeModel'
 
-const STEP_0_COMMUNITY = [
+const STEP_0_COMMUNITY = ['register.terms']
+const STEP_1_COMMUNITY = [
   'register.name',
   'register.description',
   'register.logo',
@@ -17,7 +22,6 @@ const STEP_0_COMMUNITY = [
   'register.preferContactMethod',
   'register.terms',
 ]
-const STEP_1_COMMUNITY = ['register.terms']
 const STEP_2_COMMUNITY = [
   'name',
   'description',
@@ -92,13 +96,13 @@ export const FORM_STORE_KEY = 'badge-model-creation'
 export function getCreateModelStepsAmount(controllerType: BadgeModelControllerType): number {
   switch (controllerType.toLowerCase()) {
     case BadgeModelControllerType.Community.toLowerCase(): {
-      return 5
+      return 6
     }
     case BadgeModelControllerType.ThirdParty.toLowerCase(): {
       return 3
     }
     default: {
-      return 5
+      return 6
     }
   }
 }
@@ -127,7 +131,7 @@ type CreateBadgeModelDefaultValues = {
   register?: UserMetadata
   textContrast: string
   backgroundImage: ModelsBackgroundsNames
-  template: string
+  template: BadgeModelTemplateType
   challengePeriodDuration: number
   rigorousness: {
     amountOfJurors: number
@@ -148,7 +152,7 @@ export function defaultValues(
       return {
         textContrast: 'Black',
         backgroundImage: 'White Waves',
-        template: 'Badge',
+        template: BadgeModelTemplate.Badge,
         challengePeriodDuration: 2,
         rigorousness: {
           amountOfJurors: 1,
@@ -158,16 +162,16 @@ export function defaultValues(
     }
     case BadgeModelControllerType.Community.toLowerCase():
     default: {
-      // if (checkIfHasOngoingModelCreation()) {
-      //   const storedValues = JSON.parse(localStorage.getItem(FORM_STORE_KEY) as string)
-      //   return storedValues.values
-      // }
+      if (checkIfHasOngoingModelCreation()) {
+        const storedValues = JSON.parse(localStorage.getItem(FORM_STORE_KEY) as string)
+        return storedValues.values
+      }
 
       return {
         register: userMetadata ? { ...userMetadata } : registerDefaultValues(),
         textContrast: 'Black',
         backgroundImage: 'White Waves',
-        template: 'Badge',
+        template: BadgeModelTemplate.Badge,
         challengePeriodDuration: 2,
         rigorousness: {
           amountOfJurors: 1,
