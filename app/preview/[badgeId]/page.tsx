@@ -1,5 +1,4 @@
 import { Metadata, ResolvingMetadata } from 'next'
-import { redirect, useParams } from 'next/navigation'
 
 import { ssrGetContentFromIPFS } from '@/src/hooks/subgraph/utils'
 import { gqlQuery } from '@/src/subgraph/subgraph'
@@ -9,17 +8,17 @@ import { BadgeMetadata, BadgeModelMetadata } from '@/types/badges/BadgeMetadata'
 import { BadgeByIdDocument } from '@/types/generated/subgraph'
 import { BackendFileResponse } from '@/types/utils'
 
-export default function Page() {
-  const params = useParams()
-  const badgeId = params?.badgeId as string
-  const contract = params?.contract as string
-
-  redirect(`/badge/${badgeId}?contract=${contract}`)
-}
-
 type Props = {
   params: { badgeId: string }
   searchParams: { [key: string]: string | string[] | undefined }
+}
+
+export default function Page() {
+  // const badgeId = params?.badgeId as string
+  // const contract = searchParams?.contract as string
+  //
+  // redirect(`/badge/${badgeId}?contract=${contract}`)
+  return <p>paaage</p>
 }
 
 /**
