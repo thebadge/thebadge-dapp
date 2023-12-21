@@ -10,8 +10,10 @@ import { defaultValues, getFieldsToValidateOnStep } from './utils'
 import StepPrompt from '@/src/components/form/formWithSteps/StepPrompt'
 import { TransactionLoading } from '@/src/components/loading/TransactionLoading'
 import { notify } from '@/src/components/toast/Toast'
+import { useIsRegistered } from '@/src/hooks/subgraph/useIsRegistered'
 import { TransactionStates } from '@/src/hooks/useTransaction'
 import { useTriggerRHF } from '@/src/hooks/useTriggerRHF'
+import useUserMetadata from '@/src/hooks/useUserMetadata'
 import {
   CreateCommunityModelSchema,
   CreateCommunityModelSchemaType,
@@ -22,6 +24,7 @@ import BadgeModelStrategy from '@/src/pagePartials/badge/model/steps/community/s
 import BadgeModelEvidenceFormCreation from '@/src/pagePartials/badge/model/steps/evidence/BadgeModelEvidenceFormCreation'
 import BadgeModelConfirmation from '@/src/pagePartials/badge/model/steps/preview/BadgeModelConfirmation'
 import BadgeModelCreated from '@/src/pagePartials/badge/model/steps/preview/BadgeModelCreated'
+import RegisterStep from '@/src/pagePartials/badge/model/steps/register/RegisterStep'
 import HowItWorks from '@/src/pagePartials/badge/model/steps/terms/HowItWorks'
 import BadgeModelUIBasics from '@/src/pagePartials/badge/model/steps/uiBasics/BadgeModelUIBasics'
 import { isTestnet } from '@/src/utils/network'
@@ -43,10 +46,15 @@ export default function CreateCommunityBadgeModelWithSteps({
 
   // Naive completed step implementation
   const [completed, setCompleted] = useState<Record<string, boolean>>({})
+  const { data: isRegistered } = useIsRegistered()
+  const userMetadata = useUserMetadata()
 
   const methods = useForm<z.infer<typeof CreateCommunityModelSchema>>({
     resolver: zodResolver(CreateCommunityModelSchema),
-    defaultValues: defaultValues(),
+    defaultValues: defaultValues(BadgeModelControllerType.Community, {
+      ...userMetadata,
+      terms: isRegistered,
+    }),
     reValidateMode: 'onChange',
     mode: 'onChange',
   })
@@ -112,12 +120,12 @@ export default function CreateCommunityBadgeModelWithSteps({
         {txState === TransactionStates.none && (
           <form onSubmit={methods.handleSubmit(onSubmit, notifyFormError)}>
             <StepInnerContainer gap={3}>
-              {currentStep === 0 && <HowItWorks />}
-              {currentStep === 1 && <BadgeModelUIBasics />}
-              {currentStep === 2 && <BadgeModelStrategy />}
-              {currentStep === 3 && <BadgeModelEvidenceFormCreation />}
-              {currentStep === 4 && <BadgeModelConfirmation />}
-
+              {currentStep === 0 && <RegisterStep />}
+              {currentStep === 1 && <HowItWorks />}
+              {currentStep === 2 && <BadgeModelUIBasics />}
+              {currentStep === 3 && <BadgeModelStrategy />}
+              {currentStep === 4 && <BadgeModelEvidenceFormCreation />}
+              {currentStep === 5 && <BadgeModelConfirmation />}
               <StepFooter
                 color="purple"
                 currentStep={currentStep}

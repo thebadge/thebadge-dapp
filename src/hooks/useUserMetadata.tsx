@@ -1,9 +1,29 @@
+import { useUserById } from '@/src/hooks/subgraph/useUserById'
 import { useEnsReverseLookup } from '@/src/hooks/useEnsLookup'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
+import { CONTACT_METHODS_ENUM } from '@/src/pagePartials/creator/register/schema/CreatorRegisterSchema'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { extractGitHubUsername, extractTwitterUsername } from '@/src/utils/strings'
 import { CreatorMetadata } from '@/types/badges/Creator'
 import { WCAddress } from '@/types/utils'
+
+export type UserMetadata = {
+  name?: string
+  logo: {
+    mimeType?: string
+    s3Url?: string
+    base64File?: string
+    extension?: string
+    ipfsUrl?: string
+    ipfs?: string
+  }
+  preferContactMethod?: typeof CONTACT_METHODS_ENUM
+  ensNameOrAddress?: string
+  isEnsName: boolean
+  terms?: boolean
+  hasAboutData: boolean
+  hasSocialData: boolean
+}
 
 /**
  * Hook that use useSWR with disabled revalidation to reduce the API usage. After fetching the hash data one, it won't
@@ -11,12 +31,12 @@ import { WCAddress } from '@/types/utils'
  * @param metadataUri
  * @param address
  */
-export default function useUserMetadata(
-  address: WCAddress | string | undefined,
-  metadataUri?: string,
-) {
+export default function useUserMetadata(address?: WCAddress | string, metadataUri?: string) {
   const { address: connectedWalletAddress } = useWeb3Connection()
-  const resCreatorMetadata = useS3Metadata<{ content: CreatorMetadata }>(metadataUri || '')
+  const owner = useUserById((address as WCAddress) || connectedWalletAddress)
+  const resCreatorMetadata = useS3Metadata<{ content: CreatorMetadata }>(
+    metadataUri || owner.data?.metadataUri || '',
+  )
   const ensMetadata = useEnsReverseLookup(address || connectedWalletAddress)
   const creatorMetadata = resCreatorMetadata.data?.content
   const ensMetadataResult = ensMetadata.data?.metadata
