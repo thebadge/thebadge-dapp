@@ -55,25 +55,25 @@ export async function generateMetadata(
   const badgeMetadata = metadataRequest[0] ? metadataRequest[0].result?.content : null
   const badgeModelMetadata = metadataRequest[1] ? metadataRequest[1].result?.content : null
 
-  const badgeImageUrl = badgeMetadata?.image.s3Url || ''
-
   // optionally access and extend (rather than replace) parent metadata
   const previousImages = (await parent).openGraph?.images || []
   const title = `The Badge dApp - ${badgeModelMetadata?.name} Certificate`
   const description = `${badgeModelMetadata?.description} - Powered by TheBadge `
+  const badgeImageUrl = badgeMetadata?.image.s3Url || ''
+
   return {
     title,
     description,
     openGraph: {
       title,
       description,
-      images: [badgeImageUrl, ...previousImages],
+      images: badgeImageUrl,
     },
     twitter: {
       card: 'summary',
       title,
       description,
-      images: [badgeImageUrl, ...previousImages],
+      images: badgeImageUrl,
     },
   }
 }
