@@ -67,10 +67,14 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
       images: badgeImageUrl,
     },
     twitter: {
-      card: 'summary',
+      card: 'summary_large_image',
       title,
       description,
-      images: badgeImageUrl,
+      images: {
+        url: badgeImageUrl,
+        alt: 'Visual model of the owned badge',
+        secureUrl: badgeImageUrl,
+      },
     },
   }
 }
