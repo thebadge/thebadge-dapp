@@ -401,7 +401,10 @@
             "customFieldsEnabled": "Do you want to customize the texts?",
             "hint": "You can press '{' to use custom variables on your fields",
             "badgeTitle": "Badge Title",
-            "badgeDescription": "Badge Description"
+            "badgeDescription": "Badge Description",
+            "miniLogoTitle": "Mini logo title",
+            "miniLogoSubTitle": "Mini logo subtitle",
+            "miniLogoUrl": "Mini Logo URL"
           }
         },
         "formField": {

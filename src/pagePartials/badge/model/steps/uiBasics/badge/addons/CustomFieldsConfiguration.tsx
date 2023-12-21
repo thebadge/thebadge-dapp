@@ -75,6 +75,44 @@ export default function CustomFieldsConfiguration() {
               />
             </Stack>
           </Stack>
+          <Stack flex="1" gap={4}>
+            <Stack>
+              <Typography variant="bodySmall">
+                {t('badge.model.create.uiBasics.customFields.miniLogoTitle')}
+              </Typography>
+              <Controller
+                control={control}
+                name={'miniLogo.miniLogoTitle'}
+                render={({ field: { onChange, value }, fieldState: { error } }) => (
+                  <TextArea allowVariables error={error} onChange={onChange} value={value} />
+                )}
+              />
+            </Stack>
+            <Stack>
+              <Typography variant="bodySmall">
+                {t('badge.model.create.uiBasics.customFields.miniLogoSubTitle')}
+              </Typography>
+              <Controller
+                control={control}
+                name={'miniLogo.miniLogoSubTitle'}
+                render={({ field: { onChange, value }, fieldState: { error } }) => (
+                  <TextArea allowVariables error={error} onChange={onChange} value={value} />
+                )}
+              />
+            </Stack>
+            <Stack>
+              <Typography variant="bodySmall">
+                {t('badge.model.create.uiBasics.customFields.miniLogoUrl')}
+              </Typography>
+              <Controller
+                control={control}
+                name={'miniLogo.miniLogoUrl'}
+                render={({ field: { onChange, value }, fieldState: { error } }) => (
+                  <TextArea allowVariables error={error} onChange={onChange} value={value} />
+                )}
+              />
+            </Stack>
+          </Stack>
         </SectionContainer>
       )}
     </>
