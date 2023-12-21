@@ -63,7 +63,7 @@ export default function ContactInformation() {
                 error={error}
                 label={t('creator.register.form.contactData.website')}
                 onChange={onChange}
-                placeholder={'Website'}
+                placeholder={t('creator.register.form.contactData.website')}
                 value={value}
               />
             )}

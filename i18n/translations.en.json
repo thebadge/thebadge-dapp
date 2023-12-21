@@ -313,6 +313,9 @@
           "twitter": "Twitter",
           "discord": "Discord",
           "website": "Website",
+          "github": "Github",
+          "companyUrl": "Company Url",
+          "telegram": "Telegram",
           "preferContactMethod": "Choose your favorite means of contact:"
         },
         "termsConditions": {

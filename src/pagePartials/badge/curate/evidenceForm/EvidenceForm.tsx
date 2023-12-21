@@ -67,7 +67,7 @@ export default function EvidenceForm({ onSubmit, showCostComponent, type }: Evid
                 error={error}
                 label={t(`badge.${type}.evidenceForm.description`)}
                 onChange={onChange}
-                placeholder={'Description'}
+                placeholder={t(`badge.${type}.evidenceForm.description`)}
                 value={value}
               />
             )}
