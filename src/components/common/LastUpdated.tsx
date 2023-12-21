@@ -4,6 +4,7 @@ import SyncIcon from '@mui/icons-material/Sync'
 import { Stack, Typography, alpha, styled } from '@mui/material'
 
 import TimeAgo from '@/src/components/helpers/TimeAgo'
+import { useSizeSM } from '@/src/hooks/useSize'
 
 const LastUpdateTypography = styled(Typography)(({ theme }) => ({
   display: 'inline-flex',
@@ -31,13 +32,20 @@ type LastUpdatedProps = {
 }
 
 export default function LastUpdated({ label, lastSearchTimestamp, onClick }: LastUpdatedProps) {
+  const isMobile = useSizeSM()
   return (
     <Stack my={1}>
-      <LastUpdateTypography ml="auto" onClick={onClick}>
-        <SyncIcon sx={{ width: 16, height: 16, mr: 0.5 }} />
-        {label}
-        <TimeAgo timestamp={lastSearchTimestamp} />
-      </LastUpdateTypography>
+      {isMobile ? (
+        <LastUpdateTypography ml="auto" onClick={onClick}>
+          <SyncIcon sx={{ width: 16, height: 16 }} />
+        </LastUpdateTypography>
+      ) : (
+        <LastUpdateTypography ml="auto" onClick={onClick}>
+          <SyncIcon sx={{ width: 16, height: 16, mr: 0.5 }} />
+          {label}
+          <TimeAgo timestamp={lastSearchTimestamp} />
+        </LastUpdateTypography>
+      )}
     </Stack>
   )
 }
