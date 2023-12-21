@@ -1,7 +1,9 @@
+import { isAddress } from 'ethers/lib/utils'
 import useSWR, { SWRResponse } from 'swr'
 import { createPublicClient, http } from 'viem'
 import { GetEnsAvatarReturnType } from 'viem/actions'
 import { Chain, goerli, mainnet, sepolia } from 'viem/chains'
+import { normalize } from 'viem/ens'
 
 import { Chains } from '@/src/config/web3'
 import { extractGitHubUsername, extractTwitterUsername } from '@/src/utils/strings'
@@ -114,4 +116,26 @@ export const useEnsReverseLookup = function (
   })
 
   return result
+}
+
+export const useEnsLookup = function (ensName: WCAddress | string | undefined) {
+  const { readOnlyChainId } = useWeb3Connection()
+
+  return useSWR([readOnlyChainId, ensName], async ([_readOnlyChainId, _ensName]) => {
+    const isEnsAddress = isAddress(_ensName || '')
+
+    if (isEnsAddress) {
+      return _ensName
+    }
+
+    const chain = getChainForEnsLookup(_readOnlyChainId)
+    const client = createPublicClient({
+      chain,
+      transport: http(),
+    })
+
+    return await client.getEnsAddress({
+      name: normalize(_ensName || ''),
+    })
+  })
 }
