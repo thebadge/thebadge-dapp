@@ -59,11 +59,20 @@ export async function generateMetadata(
 
   // optionally access and extend (rather than replace) parent metadata
   const previousImages = (await parent).openGraph?.images || []
-
+  const title = `The Badge dApp - ${badgeModelMetadata?.name} Certificate`
+  const description = `${badgeModelMetadata?.description} - Powered by TheBadge `
   return {
-    title: `The Badge dApp - ${badgeModelMetadata?.name} Certificate`,
-    description: `${badgeModelMetadata?.description} - Powered by TheBadge `,
+    title,
+    description,
     openGraph: {
+      title,
+      description,
+      images: [badgeImageUrl, ...previousImages],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
       images: [badgeImageUrl, ...previousImages],
     },
   }
