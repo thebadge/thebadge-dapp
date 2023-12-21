@@ -17,7 +17,7 @@ export default function StepHeaderStepper({
   currentStep: number
   onStepNavigation: (n: number) => void
   completedSteps: Record<string, boolean>
-  hiddenSteps: Record<string, boolean>
+  hiddenSteps?: Record<string, boolean>
   steps: string[]
   color?: string
 }) {
@@ -33,7 +33,7 @@ export default function StepHeaderStepper({
         }}
       >
         {steps.map((label, index) => {
-          if (hiddenSteps[index]) {
+          if (hiddenSteps && hiddenSteps[index]) {
             return null
           }
           return (
