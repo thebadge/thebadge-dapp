@@ -1,6 +1,7 @@
 import { Metadata } from 'next'
 
 import { ssrGetContentFromIPFS } from '@/src/hooks/subgraph/utils'
+import RedirectToViewPage from '@/src/pagePartials/badge/preview/RedirectToViewPage'
 import { gqlQuery } from '@/src/subgraph/subgraph'
 import { isTestnet } from '@/src/utils/network'
 import { parsePrefixedAddress } from '@/src/utils/prefixedAddress'
@@ -14,11 +15,7 @@ type Props = {
 }
 
 export default function Page() {
-  // const badgeId = params?.badgeId as string
-  // const contract = searchParams?.contract as string
-  //
-  // redirect(`/badge/${badgeId}?contract=${contract}`)
-  return <p>paaage</p>
+  return <RedirectToViewPage />
 }
 
 /**
