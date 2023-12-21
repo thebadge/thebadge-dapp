@@ -11,7 +11,15 @@ import {
 const MIN_DISPLAY_NAME_CHARACTERS = 2
 const MAX_DISPLAY_NAME_CHARACTERS = 30
 
-export const CONTACT_METHODS = ['email', 'website', 'twitter', 'discord'] as const
+export const CONTACT_METHODS = [
+  'email',
+  'website',
+  'twitter',
+  'discord',
+  'linkedin',
+  'github',
+  'telegram',
+] as const
 
 export const CreatorRegisterSchema = z.object({
   // General Info
@@ -30,12 +38,14 @@ export const CreatorRegisterSchema = z.object({
 
   // Contact method
   email: EmailSchema,
-  website: z.string().optional(),
-  twitter: TwitterSchema.optional(),
-  discord: z.string().optional(),
+  website: z.string().optional().nullable(),
+  twitter: TwitterSchema.optional().nullable(),
+  discord: z.string().optional().nullable(),
+  linkedin: z.string().optional().nullable(),
+  github: z.string().optional().nullable(),
+  telegram: z.string().optional().nullable(),
 
   preferContactMethod: z.enum(CONTACT_METHODS),
-
   terms: AgreementSchema,
 })
 
@@ -56,10 +66,12 @@ export const EditProfileSchema = z.object({
 
   // Contact method
   email: EmailSchema,
-  website: z.string().optional(),
-  twitter: TwitterSchema.optional(),
-  discord: z.string().optional(),
-  linkedin: z.string().optional(),
+  website: z.string().optional().nullable(),
+  twitter: TwitterSchema.optional().nullable(),
+  discord: z.string().optional().nullable(),
+  linkedin: z.string().optional().nullable(),
+  github: z.string().optional().nullable(),
+  telegram: z.string().optional().nullable(),
 
   preferContactMethod: z.enum(CONTACT_METHODS),
 })

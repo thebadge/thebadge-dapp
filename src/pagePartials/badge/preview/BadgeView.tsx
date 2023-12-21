@@ -32,7 +32,7 @@ export const BadgeView = ({ additionalData, badgeUrl, modelId }: BadgePreviewGen
     content: ClassicBadgeFieldsConfig
   }>((fieldsConfigs?.value as string) || '')
 
-  const customFieldsEnable = fieldsConfigData.content.customFieldsEnabled
+  const customFieldsEnable = !!fieldsConfigData?.content?.customFieldsEnabled
 
   return (
     <BadgePreview

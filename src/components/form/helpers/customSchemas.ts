@@ -73,7 +73,7 @@ export const LongTextSchema = createUniqueFieldSchema(
       required_error: 'Is required',
       invalid_type_error: 'Must be an string',
     })
-    .min(25, { message: 'Text field most have at least 25 characters.' }),
+    .optional(),
   'LongTextSchema',
 )
 export const DescriptionTextSchema = createUniqueFieldSchema(

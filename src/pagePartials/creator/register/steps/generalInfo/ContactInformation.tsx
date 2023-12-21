@@ -12,81 +12,141 @@ export default function ContactInformation() {
   const { t } = useTranslation()
   const { control } = useFormContext<CreatorRegisterSchemaType>()
 
+  const renderContactInformationForm = () => {
+    return (
+      <>
+        <Typography variant="dAppTitle1">{t('creator.register.form.aboutData.title')}</Typography>
+        <Box display="flex" flexDirection="row" gap={5} justifyContent="space-between">
+          <Stack flex="1" gap={2}>
+            <Controller
+              control={control}
+              name={'website'}
+              render={({ field: { onChange, value }, fieldState: { error } }) => (
+                <TextField
+                  error={error}
+                  label={t('creator.register.form.aboutData.website')}
+                  onChange={onChange}
+                  value={value}
+                />
+              )}
+            />
+          </Stack>
+          <Stack flex="1" gap={2}>
+            <Controller
+              control={control}
+              name={'email'}
+              render={({ field: { onChange, value }, fieldState: { error } }) => (
+                <TextField
+                  error={error}
+                  label={t('creator.register.form.aboutData.email')}
+                  onChange={onChange}
+                  value={value}
+                />
+              )}
+            />
+          </Stack>
+        </Box>
+      </>
+    )
+  }
+
+  const renderSocialInformationForm = () => {
+    return (
+      <>
+        <Typography variant="dAppTitle1">{t('creator.register.form.socialData.title')}</Typography>
+        <Box display="flex" flexDirection="row" gap={5} justifyContent="space-between">
+          <Stack flex="1" gap={2}>
+            <Controller
+              control={control}
+              name={'twitter'}
+              render={({ field: { onChange, value }, fieldState: { error } }) => (
+                <TextField
+                  error={error}
+                  label={t('creator.register.form.socialData.twitter')}
+                  onChange={onChange}
+                  value={value}
+                />
+              )}
+            />
+            <Controller
+              control={control}
+              name={'discord'}
+              render={({ field: { onChange, value }, fieldState: { error } }) => (
+                <TextField
+                  error={error}
+                  label={t('creator.register.form.socialData.discord')}
+                  onChange={onChange}
+                  value={value}
+                />
+              )}
+            />
+            <Controller
+              control={control}
+              name={'linkedin'}
+              render={({ field: { onChange, value }, fieldState: { error } }) => (
+                <TextField
+                  error={error}
+                  label={t('creator.register.form.socialData.linkedin')}
+                  onChange={onChange}
+                  value={value}
+                />
+              )}
+            />
+          </Stack>
+          <Stack flex="1" gap={2}>
+            <Controller
+              control={control}
+              name={'github'}
+              render={({ field: { onChange, value }, fieldState: { error } }) => (
+                <TextField
+                  error={error}
+                  label={t('creator.register.form.socialData.github')}
+                  onChange={onChange}
+                  value={value}
+                />
+              )}
+            />
+            <Controller
+              control={control}
+              name={'telegram'}
+              render={({ field: { onChange, value }, fieldState: { error } }) => (
+                <TextField
+                  error={error}
+                  label={t('creator.register.form.socialData.telegram')}
+                  onChange={onChange}
+                  value={value}
+                />
+              )}
+            />
+          </Stack>
+        </Box>
+        <Controller
+          control={control}
+          name={'preferContactMethod'}
+          render={({ field: { onChange, value }, fieldState: { error } }) => (
+            <Box alignItems="center" display="flex" gap={1} justifyContent="center">
+              <Typography>
+                {t('creator.register.form.termsConditions.preferContactMethod')}
+              </Typography>
+              <DropdownSelect
+                error={error}
+                label={''}
+                onChange={onChange}
+                options={[...CONTACT_METHODS]}
+                sx={{ width: 'fit-content' }}
+                value={value || 'email'}
+              />
+            </Box>
+          )}
+        />
+      </>
+    )
+  }
+
   return (
     <Stack gap={2}>
-      <Typography variant="dAppTitle1">{t('creator.register.form.contactData.title')}</Typography>
-      <Box display="flex" flexDirection="row" gap={5} justifyContent="space-between">
-        <Stack flex="1" gap={2}>
-          <Controller
-            control={control}
-            name={'email'}
-            render={({ field: { onChange, value }, fieldState: { error } }) => (
-              <TextField
-                error={error}
-                label={t('creator.register.form.contactData.email')}
-                onChange={onChange}
-                value={value}
-              />
-            )}
-          />
-          <Controller
-            control={control}
-            name={'twitter'}
-            render={({ field: { onChange, value }, fieldState: { error } }) => (
-              <TextField
-                error={error}
-                label={t('creator.register.form.contactData.twitter')}
-                onChange={onChange}
-                value={value}
-              />
-            )}
-          />
-        </Stack>
-        <Stack flex="1" gap={2}>
-          <Controller
-            control={control}
-            name={'discord'}
-            render={({ field: { onChange, value }, fieldState: { error } }) => (
-              <TextField
-                error={error}
-                label={t('creator.register.form.contactData.discord')}
-                onChange={onChange}
-                value={value}
-              />
-            )}
-          />
-          <Controller
-            control={control}
-            name={'website'}
-            render={({ field: { onChange, value }, fieldState: { error } }) => (
-              <TextField
-                error={error}
-                label={t('creator.register.form.contactData.website')}
-                onChange={onChange}
-                value={value}
-              />
-            )}
-          />
-        </Stack>
-      </Box>
-      <Controller
-        control={control}
-        name={'preferContactMethod'}
-        render={({ field: { onChange, value }, fieldState: { error } }) => (
-          <Box alignItems="center" display="flex" gap={1} justifyContent="center">
-            <Typography>{t('creator.register.form.contactData.preferContactMethod')}</Typography>
-
-            <DropdownSelect
-              error={error}
-              label={''}
-              onChange={onChange}
-              options={[...CONTACT_METHODS]}
-              sx={{ width: 'fit-content' }}
-              value={value || 'email'}
-            />
-          </Box>
-        )}
-      />
+      <Box>{renderContactInformationForm()}</Box>
+      <Box>{renderSocialInformationForm()}</Box>
     </Stack>
   )
 }

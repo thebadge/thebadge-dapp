@@ -7,7 +7,6 @@ import Blockies from 'react-18-blockies'
 
 import VerifiedCreator from '@/src/components/icons/VerifiedCreator'
 import useIsUserVerified from '@/src/hooks/theBadge/useIsUserVerified'
-import { useEnsReverseLookup } from '@/src/hooks/useEnsLookup'
 import { WCAddress } from '@/types/utils'
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
@@ -40,10 +39,6 @@ export default function TBUserAvatar({
     return address || connectedAddress || 'default'
   }, [address, connectedAddress])
 
-  const { avatar } = useEnsReverseLookup(address || connectedAddress)
-
-  const avatarImgSrc = avatar ?? src
-
   return (
     <Badge
       badgeContent={
@@ -56,7 +51,7 @@ export default function TBUserAvatar({
       invisible={!isVerified}
       overlap="circular"
     >
-      <Avatar src={avatarImgSrc} sx={{ width: size, height: size, ...sx }}>
+      <Avatar src={src} sx={{ width: size, height: size, ...sx }}>
         <Blockies className="blockies-avatar" scale={size / 10} seed={seed} size={size / 10} />
       </Avatar>
     </Badge>
