@@ -1,5 +1,5 @@
 'use client'
-import { redirect, useParams } from 'next/navigation'
+import { redirect, useParams, useSearchParams } from 'next/navigation'
 import { useEffect } from 'react'
 
 /**
@@ -8,15 +8,13 @@ import { useEffect } from 'react'
  */
 export default function RedirectToViewPage() {
   const params = useParams()
-  // const badgeId = params?.badgeId as string
-  // const contract = searchParams?.contract as string
-  //
+  const searchParams = useSearchParams()
 
   useEffect(() => {
     const badgeId = params?.badgeId as string
-    const contract = params?.contract as string
+    const contract = searchParams?.get('contract') as string
 
     redirect(`/badge/${badgeId}?contract=${contract}`)
-  }, [params?.badgeId, params?.contract])
+  }, [params?.badgeId, searchParams])
   return <></>
 }
