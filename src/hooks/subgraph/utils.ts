@@ -52,3 +52,18 @@ export async function getFromIPFS<T, X = NonNullable<unknown>>(hash?: string): P
     throw error
   }
 }
+
+/**
+ * Helpers functions that allows us to fetch items from ipfs on SSR
+ * @param ipfsHash
+ */
+// eslint-disable-next-line @typescript-eslint/ban-types
+export async function ssrGetContentFromIPFS<T, X = {}>(ipfsHash: string) {
+  const hash = ipfsHash.replace(/^ipfs?:\/\//, '').replace(/^ipfs\//, '')
+  return fetch(`${BACKEND_URL}/api/ipfs/${hash}`).then(async (response) => {
+    if (!response.ok) {
+      throw new Error('Network response was not OK')
+    }
+    return response.json().then() as unknown as BackendResponse<{ content: T } & X>
+  })
+}
