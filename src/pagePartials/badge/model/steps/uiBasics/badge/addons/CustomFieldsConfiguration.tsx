@@ -84,7 +84,7 @@ export default function CustomFieldsConfiguration() {
                 control={control}
                 name={'miniLogo.miniLogoTitle'}
                 render={({ field: { onChange, value }, fieldState: { error } }) => (
-                  <TextArea allowVariables error={error} onChange={onChange} value={value} />
+                  <TextField allowVariables error={error} onChange={onChange} value={value} />
                 )}
               />
             </Stack>
@@ -96,7 +96,7 @@ export default function CustomFieldsConfiguration() {
                 control={control}
                 name={'miniLogo.miniLogoSubTitle'}
                 render={({ field: { onChange, value }, fieldState: { error } }) => (
-                  <TextArea allowVariables error={error} onChange={onChange} value={value} />
+                  <TextField allowVariables error={error} onChange={onChange} value={value} />
                 )}
               />
             </Stack>
@@ -108,7 +108,7 @@ export default function CustomFieldsConfiguration() {
                 control={control}
                 name={'miniLogo.miniLogoUrl'}
                 render={({ field: { onChange, value }, fieldState: { error } }) => (
-                  <TextArea allowVariables error={error} onChange={onChange} value={value} />
+                  <TextField allowVariables error={error} onChange={onChange} value={value} />
                 )}
               />
             </Stack>
