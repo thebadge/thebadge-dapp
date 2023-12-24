@@ -34,7 +34,7 @@ export default function StepsClaimThirdPartySucceed({
   const { data } = useBadgeModel(modelId)
 
   const requiredBadgeDataMetadata = useBadgeThirdPartyRequiredData(`${badgeId}` || '')
-  const { badgePreviewUrl, shortPreviewURl } = useBadgePreviewUrl(badgeId, contract)
+  const { shortPreviewShareableUrl, shortPreviewURl } = useBadgePreviewUrl(badgeId, contract)
 
   const values = reCreateThirdPartyValuesObject(
     requiredBadgeDataMetadata.data?.requirementsDataValues || {},
@@ -62,7 +62,7 @@ export default function StepsClaimThirdPartySucceed({
       </Typography>
       <ThirdPartyPreview
         additionalData={{ ...values }}
-        badgeUrl={badgePreviewUrl}
+        badgeUrl={shortPreviewURl}
         modelId={modelId}
       />
       <Divider />
@@ -79,7 +79,7 @@ export default function StepsClaimThirdPartySucceed({
       <Stack>
         <TwitterShareButton
           related={['@thebadgexyz']}
-          url={generateTwitterText(badgeModelName, shortPreviewURl)}
+          url={generateTwitterText(badgeModelName, shortPreviewShareableUrl)}
         >
           <XIcon round size={32} />
         </TwitterShareButton>
