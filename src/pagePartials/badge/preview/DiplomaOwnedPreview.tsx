@@ -184,7 +184,7 @@ export default function DiplomaOwnedPreview() {
                   <IconButton
                     aria-label="Share badge preview"
                     component="label"
-                    onClick={() => handleShare()}
+                    onClick={() => handleShare(shortPreviewShareableUrl)}
                   >
                     <ShareOutlinedIcon />
                   </IconButton>

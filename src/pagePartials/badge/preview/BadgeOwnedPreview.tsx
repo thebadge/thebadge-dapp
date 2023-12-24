@@ -190,7 +190,7 @@ export default function BadgeOwnedPreview() {
                 <IconButton
                   aria-label="Share badge preview"
                   component="label"
-                  onClick={() => handleShare()}
+                  onClick={() => handleShare(shortPreviewShareableUrl)}
                 >
                   <ShareOutlinedIcon />
                 </IconButton>
