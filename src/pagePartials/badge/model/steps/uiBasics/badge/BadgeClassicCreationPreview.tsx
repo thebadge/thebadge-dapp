@@ -26,9 +26,8 @@ export default function BadgeClassicCreationPreview() {
   const { modelBackgrounds } = useAvailableBackgrounds(readOnlyChainId, address)
 
   // If custom fields are enabled, we need to show on the Badge Preview the badgeTitle and badgeDescription
-  const watchedName = watch('badgeTitle') || watch('name') || 'Security Certificate'
+  const watchedName = watch('name') || 'Security Certificate'
   const watchedDescription =
-    watch('badgeDescription') ||
     watch('description') ||
     'This badges certifies that the address that has it complies with the regulations about...'
 

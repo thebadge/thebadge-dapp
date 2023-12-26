@@ -50,7 +50,7 @@ const CreateThirdPartyBadgeModel: NextPageWithLayout = () => {
         const badgeMetadataColumns: ThirdPartyMetadataColumn[] =
           data.template === BadgeModelTemplate.Diploma
             ? getNeededVariables({ title: '{{studentName}}' }) // Diploma required fields
-            : getNeededVariables({ title: data.badgeTitle, description: data.badgeDescription }) // Badge required fields
+            : getNeededVariables({ title: data.name, description: data.description }) // Badge required fields
 
         const requirementsIPFSHash = await createAndUploadThirdPartyBadgeModelRequirements(
           badgeMetadataColumns,

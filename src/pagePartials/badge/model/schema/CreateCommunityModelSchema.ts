@@ -49,8 +49,6 @@ const MiniLogoCustomFieldsConfigurationSchema = z
 export const CustomFieldsConfigurationSchema = z.object({
   // ------ BADGE BASICS FIELD ------
   customFieldsEnabled: z.boolean().optional(),
-  badgeTitle: z.string().optional(),
-  badgeDescription: z.string().optional(),
   miniLogo: MiniLogoCustomFieldsConfigurationSchema,
 })
 export type CustomFieldsConfigurationSchemaType = z.infer<typeof CustomFieldsConfigurationSchema>

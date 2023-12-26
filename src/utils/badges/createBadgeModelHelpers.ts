@@ -77,8 +77,8 @@ export async function createAndUploadClassicBadgeModelMetadata(
   const fieldsConfigs = await ipfsUpload<ClassicBadgeFieldsConfig>({
     attributes: {
       customFieldsEnabled: !!rest?.customFieldsEnabled,
-      badgeTitle: rest?.badgeTitle ? rest?.badgeTitle : '',
-      badgeDescription: rest?.badgeDescription ? rest?.badgeDescription : '',
+      badgeTitle: rest?.name ? rest?.name : '',
+      badgeDescription: rest?.description ? rest?.description : '',
     },
     filePaths: [],
   })
