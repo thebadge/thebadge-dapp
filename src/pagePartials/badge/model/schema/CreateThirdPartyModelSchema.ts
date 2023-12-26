@@ -97,10 +97,10 @@ function refineClassic(data: any, ctx: RefinementCtx) {
     })
   }
   if (data.customFieldsEnabled) {
-    if (!data.badgeTitle || !data.badgeDescription) {
+    if (!data.name || !data.description) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        path: ['badgeTitle', 'badgeDescription'],
+        path: ['name', 'description'],
         message: 'Required',
       })
     }
