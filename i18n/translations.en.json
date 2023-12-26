@@ -398,7 +398,9 @@
             "diplomaDate": "Date"
           },
           "customFields": {
-            "customFieldsEnabled": "Do you want to customize the texts?",
+            "customFieldsEnabled": "Enable custom fields",
+            "miniLogoConfigTextEnabled": "Use custom text",
+            "miniLogoConfigImageEnabled": "Use custom image",
             "hint": "You can press '{' to use custom variables on your fields",
             "badgeTitle": "Badge Title",
             "badgeDescription": "Badge Description",
