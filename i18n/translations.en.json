@@ -494,7 +494,11 @@
           "evidence": {
             "title": "Issue a {{badgeModelTemplate}} to your user",
             "sendMethodText": "Choose the method to send the {{badgeModelTemplate}} to your user",
-            "additionalData": "Required information about your user"
+            "additionalData": "Required information about your user",
+            "emailNotification": {
+              "title": "Notify the user via email? (optional)",
+              "inputLabel": "Users email"
+            }
           },
           "helpSteps": [
             "You will have to fill up the required information about the user you want to issue its diploma",
