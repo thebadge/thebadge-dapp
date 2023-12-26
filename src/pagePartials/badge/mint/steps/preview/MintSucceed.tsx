@@ -34,7 +34,7 @@ export default function MintSucceed() {
   // TODO Fetch the new badgeId minted from the graph and use this to generate the badgeUrl
   const estimatedBadgeIdForPreview = estimatedBadgeId ? estimatedBadgeId.sub(1).toString() : '0'
 
-  const { badgePreviewUrl } = useBadgePreviewUrl(
+  const { shortPreviewURl } = useBadgePreviewUrl(
     estimatedBadgeIdForPreview,
     badgeModelData.data.badgeModel.contractAddress,
     appChainId,
@@ -46,7 +46,7 @@ export default function MintSucceed() {
         animationEffects={['wobble', 'grow', 'glare']}
         animationOnHover
         badgeBackgroundUrl={getBackgroundBadgeUrl(backgroundType?.value, modelBackgrounds)}
-        badgeUrl={badgePreviewUrl}
+        badgeUrl={shortPreviewURl}
         category={badgeModelMetadata?.name}
         description={badgeModelMetadata?.description}
         imageUrl={badgeLogoImage?.s3Url}

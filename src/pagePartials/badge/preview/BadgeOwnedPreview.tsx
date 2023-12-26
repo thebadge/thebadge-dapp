@@ -80,10 +80,8 @@ export default function BadgeOwnedPreview() {
   const creatorAddress = badgeModel?.creator.id || '0x'
   const creatorResponse = useUserById(creatorAddress as WCAddress, contract)
   const creator = creatorResponse.data
-  const { badgeOpenseaUrl, badgePreviewUrl, shortPreviewURl } = useBadgePreviewUrl(
-    badgeId,
-    badge?.contractAddress,
-  )
+  const { badgeOpenseaUrl, badgePreviewUrl, shortPreviewShareableUrl, shortPreviewURl } =
+    useBadgePreviewUrl(badgeId, badge?.contractAddress)
   const requiredBadgeDataMetadata = useBadgeThirdPartyRequiredData(
     `${badgeId}` || '',
     badge?.contractAddress,
@@ -158,7 +156,7 @@ export default function BadgeOwnedPreview() {
       <Stack alignItems="center">
         <BadgeView
           additionalData={{ ...values }}
-          badgeUrl={badgePreviewUrl}
+          badgeUrl={shortPreviewURl}
           modelId={badgeModel.id}
         />
       </Stack>
@@ -192,7 +190,7 @@ export default function BadgeOwnedPreview() {
                 <IconButton
                   aria-label="Share badge preview"
                   component="label"
-                  onClick={() => handleShare()}
+                  onClick={() => handleShare(shortPreviewShareableUrl)}
                 >
                   <ShareOutlinedIcon />
                 </IconButton>
@@ -224,7 +222,7 @@ export default function BadgeOwnedPreview() {
               <Tooltip arrow title={t('badge.viewBadge.shareTwitter')}>
                 <TwitterShareButton
                   related={['@thebadgexyz']}
-                  url={generateTwitterText(badgeModelName, shortPreviewURl)}
+                  url={generateTwitterText(badgeModelName, shortPreviewShareableUrl)}
                 >
                   <XIcon round size={32} />
                 </TwitterShareButton>

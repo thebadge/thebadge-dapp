@@ -70,7 +70,7 @@ export default function SubmitPreview({
   }
 
   const estimatedBadgeIdForPreview = estimatedBadgeId ? estimatedBadgeId.toString() : '0'
-  const { badgePreviewUrl } = useBadgePreviewUrl(
+  const { shortPreviewURl } = useBadgePreviewUrl(
     estimatedBadgeIdForPreview,
     badgeModelData.data.badgeModel.contractAddress,
     appChainId,
@@ -88,7 +88,7 @@ export default function SubmitPreview({
           animationEffects={['wobble', 'grow', 'glare']}
           animationOnHover
           badgeBackgroundUrl={getBackgroundBadgeUrl(backgroundType?.value, modelBackgrounds)}
-          badgeUrl={badgePreviewUrl}
+          badgeUrl={shortPreviewURl}
           category={badgeModelMetadata?.name}
           description={badgeModelMetadata?.description}
           imageUrl={badgeLogoImage?.s3Url}

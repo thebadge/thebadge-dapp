@@ -18,7 +18,7 @@ export const StepClaimThirdPartyPreview = () => {
   const { setValue } = useFormContext<ClaimThirdPartyBadgeSchemaType>()
   const { badgeId, contract, modelId } = useClaimParams()
   const { address, chainId } = parsePrefixedAddress(contract)
-  const { badgePreviewUrl } = useBadgePreviewUrl(badgeId, address, chainId)
+  const { shortPreviewURl } = useBadgePreviewUrl(badgeId, address, chainId)
   const requiredBadgeDataMetadata = useBadgeThirdPartyRequiredData(`${badgeId}` || '')
 
   const values = reCreateThirdPartyValuesObject(
@@ -31,7 +31,7 @@ export const StepClaimThirdPartyPreview = () => {
       <SafeSuspense>
         <BadgeThirdPartyPreviewGenerator
           additionalData={{ ...values }}
-          badgeUrl={badgePreviewUrl}
+          badgeUrl={shortPreviewURl}
           modelId={modelId}
           setValue={setValue}
           title={t('badge.model.claim.thirdParty.preview.title')}
