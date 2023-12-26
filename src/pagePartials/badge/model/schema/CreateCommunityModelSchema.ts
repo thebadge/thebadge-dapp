@@ -1,7 +1,6 @@
 import { z } from 'zod'
 
 import {
-  AgreementSchema,
   ChallengePeriodTypeSchema,
   DeltaPDFSchema,
   ExpirationTypeSchema,
@@ -13,6 +12,7 @@ import {
   TokenInputSchema,
 } from '@/src/components/form/helpers/customSchemas'
 import { ModelsBackgroundsNames } from '@/src/constants/backgrounds'
+import { CreatorRegisterSchema } from '@/src/pagePartials/creator/register/schema/CreatorRegisterSchema'
 
 /**
  * Auxiliary schema to support the PDF upload or the PDF creation on the same form
@@ -55,7 +55,6 @@ export type CustomFieldsConfigurationSchemaType = z.infer<typeof CustomFieldsCon
 
 export const CreateCommunityModelSchema = z
   .object({
-    howItWorks: AgreementSchema,
     // ------ UI BASICS FIELD ------
     name: z.string().max(28),
     description: LongTextSchema,
@@ -73,6 +72,8 @@ export const CreateCommunityModelSchema = z
     badgeMetadataColumns: KlerosDynamicFields,
   })
   .merge(CustomFieldsConfigurationSchema)
+  // ------ User register ------
+  .merge(CreatorRegisterSchema)
 
 export type BadgeModelCommunityCriteriaType = z.infer<typeof CommunityBadgeModelCriteriaSchema>
 export type CreateCommunityModelSchemaType = z.infer<typeof CreateCommunityModelSchema>

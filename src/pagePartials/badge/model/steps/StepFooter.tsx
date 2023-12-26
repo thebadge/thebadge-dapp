@@ -73,7 +73,7 @@ export default function StepFooter({
           </StepButton>
         )}
         {isLastStep && (
-          <PreventActionWithoutConnection onlyCreator={true} sx={{ m: 'auto' }}>
+          <PreventActionWithoutConnection sx={{ m: 'auto' }}>
             <StepButton
               color={color || 'primary'}
               sx={{ m: 'auto' }}

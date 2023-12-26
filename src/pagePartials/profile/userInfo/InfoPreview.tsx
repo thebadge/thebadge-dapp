@@ -12,7 +12,6 @@ import { useSizeSM } from '@/src/hooks/useSize'
 import useTransaction from '@/src/hooks/useTransaction'
 import useUserMetadata from '@/src/hooks/useUserMetadata'
 import {
-  CreatorRegisterSchemaType,
   EditProfileSchema,
   EditProfileSchemaType,
 } from '@/src/pagePartials/creator/register/schema/CreatorRegisterSchema'
@@ -84,10 +83,10 @@ export default function InfoPreview({ address }: Props) {
           discord: userMetadata.discord,
           ...data,
           ...(!logoHasChange && { logo: userMetadata?.logo.base64File }),
-        } as CreatorRegisterSchemaType
+        } as EditProfileSchemaType
 
         const userMetadataIPFSHash = await createAndUploadCreatorMetadata(
-          upsertCreatorData,
+          { register: { ...upsertCreatorData, terms: true } },
           logoHasChange,
         )
 
@@ -114,23 +113,33 @@ export default function InfoPreview({ address }: Props) {
   }
 
   const renderAboutSection = () => {
-    if (userMetadata.hasAboutData || !readView) {
+    if (userMetadata.hasAboutData) {
       return (
         <InfoPreviewAboutContainer>
           <InfoAbout address={address as WCAddress} readView={readView} />
         </InfoPreviewAboutContainer>
       )
     }
+    return !readView ? (
+      <InfoPreviewAboutContainer>
+        <InfoAbout address={address as WCAddress} readView={readView} />
+      </InfoPreviewAboutContainer>
+    ) : null
   }
 
   const renderSocialSection = () => {
-    if (userMetadata.hasSocialData || !readView) {
+    if (userMetadata.hasSocialData) {
       return (
         <InfoPreviewSocialContainer isMobile={isMobile}>
           <InfoSocial address={address as WCAddress} readView={readView} />
         </InfoPreviewSocialContainer>
       )
     }
+    return !readView ? (
+      <InfoPreviewSocialContainer isMobile={isMobile}>
+        <InfoSocial address={address as WCAddress} readView={readView} />
+      </InfoPreviewSocialContainer>
+    ) : null
   }
 
   return (
