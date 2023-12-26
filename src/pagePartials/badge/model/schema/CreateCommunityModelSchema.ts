@@ -38,11 +38,18 @@ const CommunityBadgeModelCriteriaSchema = z
     }
   })
 
+const MiniLogoCustomFieldsConfigurationSchema = z
+  .object({
+    miniLogoTitle: z.string().optional(),
+    miniLogoSubTitle: z.string().optional(),
+    miniLogoUrl: z.string().optional(),
+  })
+  .optional()
+
 export const CustomFieldsConfigurationSchema = z.object({
   // ------ BADGE BASICS FIELD ------
   customFieldsEnabled: z.boolean().optional(),
-  badgeTitle: z.string().optional(),
-  badgeDescription: z.string().optional(),
+  miniLogo: MiniLogoCustomFieldsConfigurationSchema,
 })
 export type CustomFieldsConfigurationSchemaType = z.infer<typeof CustomFieldsConfigurationSchema>
 

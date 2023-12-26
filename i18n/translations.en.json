@@ -398,10 +398,15 @@
             "diplomaDate": "Date"
           },
           "customFields": {
-            "customFieldsEnabled": "Do you want to customize the texts?",
+            "customFieldsEnabled": "Enable custom fields",
+            "miniLogoConfigTextEnabled": "Use custom text",
+            "miniLogoConfigImageEnabled": "Use custom image",
             "hint": "You can press '{' to use custom variables on your fields",
             "badgeTitle": "Badge Title",
-            "badgeDescription": "Badge Description"
+            "badgeDescription": "Badge Description",
+            "miniLogoTitle": "Mini logo title",
+            "miniLogoSubTitle": "Mini logo subtitle",
+            "miniLogoUrl": "Mini Logo URL"
           }
         },
         "formField": {
@@ -485,7 +490,7 @@
           "evidence": {
             "title": "Issue a {{badgeModelTemplate}} to your user",
             "sendMethodText": "Choose the method to send the {{badgeModelTemplate}} to your user",
-            "additionalData:": "Needed information about your user"
+            "additionalData": "Required information about your user"
           },
           "helpSteps": [
             "You will have to fill up the required information about the user you want to issue its diploma",

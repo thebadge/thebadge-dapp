@@ -121,21 +121,23 @@ export const useEnsReverseLookup = function (
 export const useEnsLookup = function (ensName: WCAddress | string | undefined) {
   const { readOnlyChainId } = useWeb3Connection()
 
-  return useSWR([readOnlyChainId, ensName], async ([_readOnlyChainId, _ensName]) => {
-    const isEnsAddress = isAddress(_ensName || '')
+  const isEthereumAddress = ensName ? isAddress(ensName) : false
+  return useSWR(
+    [readOnlyChainId, ensName, isEthereumAddress],
+    async ([_readOnlyChainId, _ensName, _isEthereumAddress]) => {
+      if (_isEthereumAddress) {
+        return _ensName
+      }
 
-    if (isEnsAddress) {
-      return _ensName
-    }
+      const chain = getChainForEnsLookup(_readOnlyChainId)
+      const client = createPublicClient({
+        chain,
+        transport: http(),
+      })
 
-    const chain = getChainForEnsLookup(_readOnlyChainId)
-    const client = createPublicClient({
-      chain,
-      transport: http(),
-    })
-
-    return await client.getEnsAddress({
-      name: normalize(_ensName || ''),
-    })
-  })
+      return await client.getEnsAddress({
+        name: normalize(_ensName || ''),
+      })
+    },
+  )
 }

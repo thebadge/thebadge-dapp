@@ -77,8 +77,8 @@ export async function createAndUploadClassicBadgeModelMetadata(
   const fieldsConfigs = await ipfsUpload<ClassicBadgeFieldsConfig>({
     attributes: {
       customFieldsEnabled: !!rest?.customFieldsEnabled,
-      badgeTitle: rest?.badgeTitle ? rest?.badgeTitle : '',
-      badgeDescription: rest?.badgeDescription ? rest?.badgeDescription : '',
+      badgeTitle: rest?.name ? rest?.name : '',
+      badgeDescription: rest?.description ? rest?.description : '',
     },
     filePaths: [],
   })
@@ -452,7 +452,7 @@ export function getNeededVariables({
       // Key that is going to be used to search and replace the value on
       // the diploma, like {{address}}
       replacementKey: ReplacementKeys.address,
-      isAutoFillable: false,
+      isAutoFillable: true,
       isIdentifier: false,
     })
   }

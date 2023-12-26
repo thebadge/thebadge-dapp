@@ -21,6 +21,7 @@ type BasicCustomFormProps = {
   backButton?: CustomFormButtonType
   containerSx?: SxProps<Theme>
   buttonsSx?: SxProps<Theme>
+  displayFormInputs?: boolean
 }
 
 export type CustomFormProps =
