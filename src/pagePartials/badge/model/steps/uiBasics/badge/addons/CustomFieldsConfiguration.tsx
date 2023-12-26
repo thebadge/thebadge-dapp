@@ -12,7 +12,7 @@ import SectionContainer from '@/src/pagePartials/badge/model/steps/uiBasics/addo
 
 export default function CustomFieldsConfiguration() {
   const { t } = useTranslation()
-  const { control, watch } = useFormContext<CustomFieldsConfigurationSchemaType>()
+  const { control, resetField, watch } = useFormContext<CustomFieldsConfigurationSchemaType>()
   const [customTextEnabled, setCustomTextEnabled] = useState<number>(0)
   const enabledFields = watch('customFieldsEnabled')
 
@@ -24,9 +24,13 @@ export default function CustomFieldsConfiguration() {
             <RadioGroup
               aria-labelledby="demo-row-radio-buttons-group-label"
               name="row-radio-buttons-group"
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                // If the custom text is enabled
+                resetField('miniLogo.miniLogoUrl')
+                resetField('miniLogo.miniLogoTitle')
+                resetField('miniLogo.miniLogoSubTitle')
                 setCustomTextEnabled(event.target.value as unknown as number)
-              }
+              }}
               row
               sx={{ justifyContent: 'space-around' }}
               value={customTextEnabled}
