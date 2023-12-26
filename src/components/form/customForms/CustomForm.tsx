@@ -73,13 +73,13 @@ function MyCustomFormComponentWithoutSubmit({
   children,
   color,
   containerSx,
+  displayFormInputs = true,
   draggable,
   gridStructure,
   layout = 'flex',
   onBack,
   onSubmit,
   rowHeight,
-  displayFormInputs = true,
   submitButton = { disabled: false, label: 'Submit', ref: undefined },
 }: CustomFormProps) {
   if (layout !== 'gridResponsive' && gridStructure) {
