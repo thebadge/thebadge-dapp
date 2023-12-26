@@ -79,6 +79,7 @@ function MyCustomFormComponentWithoutSubmit({
   onBack,
   onSubmit,
   rowHeight,
+  displayFormInputs = true,
   submitButton = { disabled: false, label: 'Submit', ref: undefined },
 }: CustomFormProps) {
   if (layout !== 'gridResponsive' && gridStructure) {
@@ -89,9 +90,11 @@ function MyCustomFormComponentWithoutSubmit({
     <Container maxWidth="md" sx={{ display: 'flex', width: '100%', ...containerSx }}>
       <Box style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
         {/* children are you form field components */}
-        <Layout draggable={draggable} gridStructure={gridStructure} rowHeight={rowHeight}>
-          {children}
-        </Layout>
+        {displayFormInputs ? (
+          <Layout draggable={draggable} gridStructure={gridStructure} rowHeight={rowHeight}>
+            {children}
+          </Layout>
+        ) : null}
         <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2, ...buttonsSx }}>
           {onBack && (
             <FormButton

@@ -16,6 +16,27 @@ import { MintThirdPartySchemaType } from '@/src/pagePartials/badge/mint/schema/M
 import { generateAutofilledValues } from '@/src/utils/badges/mintHelpers'
 import { ReplacementKeys } from '@/src/utils/enrichTextWithValues'
 
+const useDisplayRequiredDataInput = (badgeModelId: string): boolean => {
+  const requiredBadgeDataMetadata = useBadgeModelThirdPartyMetadata(badgeModelId)
+
+  const hasRequiredData = !!requiredBadgeDataMetadata.data?.requirementsData?.requirementsColumns
+
+  if (!hasRequiredData) return false
+
+  const iterableRequirementsColumns =
+    requiredBadgeDataMetadata.data?.requirementsData.requirementsColumns || []
+
+  let requiredInput = false
+  for (const iterator of iterableRequirementsColumns) {
+    if (!iterator.isAutoFillable) {
+      requiredInput = true
+      break
+    }
+  }
+
+  return requiredInput
+}
+
 export default function DynamicRequiredData({
   onBackCallback,
   onNextCallback,
@@ -29,10 +50,11 @@ export default function DynamicRequiredData({
   const { badgeModelId, contract } = useModelIdParam()
   const { data: badgeModelData } = useBadgeModel(badgeModelId, contract)
   const expirationTime = badgeModelData?.badgeModel.validFor
+  const destination = watch('destination')
 
   const requiredBadgeDataMetadata = useBadgeModelThirdPartyMetadata(badgeModelId)
 
-  const hasRequiredData = !!requiredBadgeDataMetadata.data?.requirementsData?.requirementsColumns
+  const hasRequiredData = useDisplayRequiredDataInput(badgeModelId)
 
   const RequiredDataSchema = z.object(
     klerosSchemaFactory(
@@ -43,6 +65,7 @@ export default function DynamicRequiredData({
   const handleSubmitNext = (data: z.infer<typeof RequiredDataSchema>) => {
     const autoFilledData = generateAutofilledValues(
       {
+        [ReplacementKeys.address]: destination,
         [ReplacementKeys.issueDate]: dayjs().format('DD/MM/YYYY'),
         [ReplacementKeys.expirationDate]: expirationTime
           ? dayjs().add(expirationTime, 'seconds').format('DD/MM/YYYY')
@@ -87,6 +110,7 @@ export default function DynamicRequiredData({
           },
           onBack: onBackCallback,
           color: 'blue',
+          displayFormInputs: hasRequiredData,
         }}
         onSubmit={handleSubmitNext}
         schema={RequiredDataSchema}

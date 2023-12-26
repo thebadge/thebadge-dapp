@@ -452,7 +452,7 @@ export function getNeededVariables({
       // Key that is going to be used to search and replace the value on
       // the diploma, like {{address}}
       replacementKey: ReplacementKeys.address,
-      isAutoFillable: false,
+      isAutoFillable: true,
       isIdentifier: false,
     })
   }
