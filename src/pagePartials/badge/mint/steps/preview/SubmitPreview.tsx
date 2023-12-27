@@ -36,7 +36,8 @@ export default function SubmitPreview({
   const template = useBadgeModelTemplate(badgeModelId)
   const badgeModelMetadata = badgeModelData.data?.badgeModelMetadata
   const { data: estimatedBadgeId } = useEstimateBadgeId()
-  const { modelBackgrounds } = useAvailableBackgrounds(readOnlyChainId, address)
+  const availableBackgroundsData = useAvailableBackgrounds(readOnlyChainId, address)
+  const modelBackgrounds = availableBackgroundsData.data?.modelBackgrounds
 
   const badgeLogoImage = badgeModelData.data?.badgeModelMetadata?.image
 
@@ -50,6 +51,18 @@ export default function SubmitPreview({
     throw `There was not possible to get the value to mint a badge for the badge model: ${badgeModelId}`
   }
   const creatorFee = BigNumber.from(badgeModelData.data?.badgeModel.creatorFee || 0)
+
+  if (badgeModelData.error || !badgeModelData.data) {
+    throw `There was an error trying to fetch the metadata for the badge model`
+  }
+
+  const estimatedBadgeIdForPreview = estimatedBadgeId ? estimatedBadgeId.toString() : '0'
+  const urlsData = useBadgePreviewUrl(
+    estimatedBadgeIdForPreview,
+    badgeModelData.data.badgeModel.contractAddress,
+    appChainId,
+  )
+  const previewUrls = urlsData.data
 
   const generatePreviewImage = useCallback(
     async (badgePreviewRef: React.MutableRefObject<HTMLDivElement | undefined>) => {
@@ -65,17 +78,6 @@ export default function SubmitPreview({
     }
   }, [badgePreviewRef, generatePreviewImage])
 
-  if (badgeModelData.error || !badgeModelData.data) {
-    throw `There was an error trying to fetch the metadata for the badge model`
-  }
-
-  const estimatedBadgeIdForPreview = estimatedBadgeId ? estimatedBadgeId.toString() : '0'
-  const { shortPreviewURl } = useBadgePreviewUrl(
-    estimatedBadgeIdForPreview,
-    badgeModelData.data.badgeModel.contractAddress,
-    appChainId,
-  )
-
   return (
     <Stack alignItems={'center'} gap={3} margin={1}>
       <Typography>
@@ -88,7 +90,7 @@ export default function SubmitPreview({
           animationEffects={['wobble', 'grow', 'glare']}
           animationOnHover
           badgeBackgroundUrl={getBackgroundBadgeUrl(backgroundType?.value, modelBackgrounds)}
-          badgeUrl={shortPreviewURl}
+          badgeUrl={previewUrls?.shortPreviewUrl}
           category={badgeModelMetadata?.name}
           description={badgeModelMetadata?.description}
           imageUrl={badgeLogoImage?.s3Url}

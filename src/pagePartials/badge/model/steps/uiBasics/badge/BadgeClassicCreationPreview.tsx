@@ -23,7 +23,8 @@ export default function BadgeClassicCreationPreview() {
     CreateCommunityModelSchemaType & CustomFieldsConfigurationSchemaType
   >()
   const { address, readOnlyChainId } = useWeb3Connection()
-  const { modelBackgrounds } = useAvailableBackgrounds(readOnlyChainId, address)
+  const availableBackgroundsData = useAvailableBackgrounds(readOnlyChainId, address)
+  const modelBackgrounds = availableBackgroundsData.data?.modelBackgrounds
 
   // If custom fields are enabled, we need to show on the Badge Preview the badgeTitle and badgeDescription
   const watchedName = watch('name') || 'Security Certificate'

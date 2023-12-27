@@ -27,7 +27,8 @@ function BadgeModelPreview({ badgeUrl, clickable, effects, metadata, size = 'med
   const backgroundType = getBackgroundType(badgeMetadata?.attributes)
   const textContrast = getTextContrast(badgeMetadata?.attributes)
   const { address, readOnlyChainId } = useWeb3Connection()
-  const { modelBackgrounds } = useAvailableBackgrounds(readOnlyChainId, address)
+  const availableBackgroundsData = useAvailableBackgrounds(readOnlyChainId, address)
+  const modelBackgrounds = availableBackgroundsData.data?.modelBackgrounds
 
   return (
     <SafeSuspense>

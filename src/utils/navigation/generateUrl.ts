@@ -161,7 +161,7 @@ export function generateLinkedinOrganization(linkedinUrl: string): string {
   return match ? match[1] : linkedinUrl
 }
 
-export function generateTwitterText(badgeModelName: string, badgePreviewUrl: string): string {
+export function generateTwitterText(badgeModelName: string, badgePreviewUrl?: string): string {
   return `Hey World!
 
 I just got my #Web3 Certificate: ${badgeModelName} from @TheBadgexyz 🤩 

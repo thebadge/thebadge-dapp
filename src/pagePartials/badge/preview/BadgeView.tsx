@@ -22,7 +22,8 @@ export const BadgeView = ({ additionalData, badgeUrl, modelId }: BadgePreviewGen
   const badgeModelMetadata = badgeModelData.data?.badgeModelMetadata
   const badgeLogoImage = badgeModelData.data?.badgeModelMetadata?.image
   const { address, readOnlyChainId } = useWeb3Connection()
-  const { modelBackgrounds } = useAvailableBackgrounds(readOnlyChainId, address)
+  const availableBackgroundsData = useAvailableBackgrounds(readOnlyChainId, address)
+  const modelBackgrounds = availableBackgroundsData.data?.modelBackgrounds
 
   const { backgroundType, fieldsConfigs, textContrast } = getClassicConfigs(
     badgeModelMetadata?.attributes,
