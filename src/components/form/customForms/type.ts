@@ -22,6 +22,7 @@ type BasicCustomFormProps = {
   containerSx?: SxProps<Theme>
   buttonsSx?: SxProps<Theme>
   displayFormInputs?: boolean
+  alternativeChildren?: ReactNode
 }
 
 export type CustomFormProps =

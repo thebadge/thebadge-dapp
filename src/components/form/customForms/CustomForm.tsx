@@ -68,6 +68,7 @@ function MyCustomFormComponent({
  * want to avoid the use of type=submit and also the user of another Form Tag
  */
 function MyCustomFormComponentWithoutSubmit({
+  alternativeChildren,
   backButton = { disabled: false, label: 'Back', ref: undefined },
   buttonsSx,
   children,
@@ -93,6 +94,11 @@ function MyCustomFormComponentWithoutSubmit({
         {displayFormInputs ? (
           <Layout draggable={draggable} gridStructure={gridStructure} rowHeight={rowHeight}>
             {children}
+          </Layout>
+        ) : null}
+        {alternativeChildren ? (
+          <Layout draggable={draggable} gridStructure={gridStructure} rowHeight={rowHeight}>
+            {alternativeChildren}
           </Layout>
         ) : null}
         <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2, ...buttonsSx }}>

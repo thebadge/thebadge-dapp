@@ -19,6 +19,7 @@ export const MintThirdPartySchema = z
     previewImage: z.string(),
     // Required data to complete some information on the image
     requiredData: z.record(z.string(), z.any()).optional(),
+    notificationEmail: EmailSchema,
   })
   .superRefine(({ destination, preferMintMethod }, ctx) => {
     // Here we add the extra check to assert the field type when

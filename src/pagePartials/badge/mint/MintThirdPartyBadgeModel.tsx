@@ -11,6 +11,7 @@ import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
 import { useBadgeModelThirdPartyMetadata } from '@/src/hooks/subgraph/useBadgeModelThirdPartyMetadata'
 import useMintValue from '@/src/hooks/theBadge/useMintValue'
 import useSendClaimEmail from '@/src/hooks/theBadge/useSendClaimEmail'
+import useSendMintNotificationEmail from '@/src/hooks/theBadge/useSendMintNotificationEmail'
 import useTBContract from '@/src/hooks/theBadge/useTBContract'
 import useTBStore from '@/src/hooks/theBadge/useTBStore'
 import useTransaction, { TransactionStates } from '@/src/hooks/useTransaction'
@@ -37,6 +38,7 @@ const MintThirdPartyBadgeModel: NextPageWithLayout = () => {
   const router = useRouter()
   const { badgeModelId, contract } = useModelIdParam()
   const submitSendClaimEmail = useSendClaimEmail()
+  const submitSendMintNotificationEmail = useSendMintNotificationEmail()
 
   if (!badgeModelId) {
     throw `No modelId provided us URL query param`
@@ -62,7 +64,7 @@ const MintThirdPartyBadgeModel: NextPageWithLayout = () => {
   }
 
   async function onSubmit(data: MintThirdPartySchemaType) {
-    const { destination, preferMintMethod, previewImage, requiredData } = data
+    const { destination, notificationEmail, preferMintMethod, previewImage, requiredData } = data
 
     try {
       // Start transaction to show the loading state when we create the files
@@ -138,6 +140,14 @@ const MintThirdPartyBadgeModel: NextPageWithLayout = () => {
             mintTxHash: transactionHash,
             badgeModelId: Number(badgeModelId),
             emailClaimer: destination,
+          })
+        }
+        if (preferMintMethod === 'address' && notificationEmail) {
+          await submitSendMintNotificationEmail({
+            networkId: appChainId.toString(),
+            mintTxHash: transactionHash,
+            badgeModelId: Number(badgeModelId),
+            emailRecipient: notificationEmail,
           })
         }
         return transactionReceipt

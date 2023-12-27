@@ -1,13 +1,14 @@
 import { useRef } from 'react'
 import * as React from 'react'
 
-import { Stack, Typography } from '@mui/material'
+import { Box, Stack, Typography } from '@mui/material'
 import dayjs from 'dayjs'
 import { useTranslation } from 'next-export-i18n'
-import { useFormContext } from 'react-hook-form'
+import { Controller, useFormContext } from 'react-hook-form'
 import { z } from 'zod'
 
 import { CustomFormFromSchemaWithoutSubmit } from '@/src/components/form/customForms/CustomForm'
+import { TextField } from '@/src/components/form/formFields/TextField'
 import klerosSchemaFactory from '@/src/components/form/helpers/validators'
 import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
@@ -46,11 +47,12 @@ export default function DynamicRequiredData({
 }) {
   const { t } = useTranslation()
   const formButtonRef = useRef<HTMLButtonElement>()
-  const { setValue, watch } = useFormContext<MintThirdPartySchemaType>()
+  const { control, setValue, watch } = useFormContext<MintThirdPartySchemaType>()
   const { badgeModelId, contract } = useModelIdParam()
   const { data: badgeModelData } = useBadgeModel(badgeModelId, contract)
   const expirationTime = badgeModelData?.badgeModel.validFor
   const destination = watch('destination')
+  const watchedPreferMintMethod = watch('preferMintMethod')
 
   const requiredBadgeDataMetadata = useBadgeModelThirdPartyMetadata(badgeModelId)
 
@@ -82,6 +84,34 @@ export default function DynamicRequiredData({
     onNextCallback()
   }
 
+  const renderEmailInputNotification = () => {
+    if (watchedPreferMintMethod === 'email') {
+      return null
+    }
+
+    return (
+      <Stack gap={2}>
+        <Typography align={'center'} variant="dAppTitle1">
+          {t('badge.model.mint.thirdParty.evidence.emailNotification.title')}
+        </Typography>
+        <Box display="flex" flexDirection="row" gap={5} justifyContent="left">
+          <Controller
+            control={control}
+            name={'notificationEmail'}
+            render={({ field: { onChange, value }, fieldState: { error } }) => (
+              <TextField
+                error={error}
+                label={t('badge.model.mint.thirdParty.evidence.emailNotification.inputLabel')}
+                onChange={onChange}
+                value={value}
+              />
+            )}
+          />
+        </Box>
+      </Stack>
+    )
+  }
+
   // We watch the main form that handle all the data and also fetch the stored data, so each time that
   // the dynamic form need to be re-rendered, it will have the user data bc the main form store it on LocalStorage
   const requiredDataStored = watch('requiredData')
@@ -111,6 +141,7 @@ export default function DynamicRequiredData({
           onBack: onBackCallback,
           color: 'blue',
           displayFormInputs: hasRequiredData,
+          alternativeChildren: renderEmailInputNotification(),
         }}
         onSubmit={handleSubmitNext}
         schema={RequiredDataSchema}
