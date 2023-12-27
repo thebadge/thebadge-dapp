@@ -40,8 +40,8 @@ const CommunityBadgeModelCriteriaSchema = z
 
 const MiniLogoCustomFieldsConfigurationSchema = z
   .object({
-    miniLogoTitle: z.string().optional(),
-    miniLogoSubTitle: z.string().optional(),
+    miniLogoTitle: z.string().max(4).optional(),
+    miniLogoSubTitle: z.string().max(10).optional(),
     miniLogoUrl: z.string().optional(),
   })
   .optional()

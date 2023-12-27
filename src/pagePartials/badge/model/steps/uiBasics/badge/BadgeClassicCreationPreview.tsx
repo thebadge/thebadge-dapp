@@ -35,6 +35,9 @@ export default function BadgeClassicCreationPreview() {
   const watchedLogoUri = watch('badgeModelLogoUri')
   const watchedTextContrast = watch('textContrast')
   const watchedBackground = watch('backgroundImage')
+  const watchedMiniLogoTitle = watch('miniLogo.miniLogoTitle')
+  const watchedMiniLogoSubtitle = watch('miniLogo.miniLogoSubTitle')
+  const watchedMiniLogoUrl = watch('miniLogo.miniLogoUrl')
 
   return (
     <BoxShadow>
@@ -45,6 +48,9 @@ export default function BadgeClassicCreationPreview() {
         badgeUrl="https://www.thebadge.xyz"
         description={watchedDescription}
         imageUrl={watchedLogoUri?.base64File}
+        miniLogoSubTitle={watchedMiniLogoSubtitle}
+        miniLogoTitle={watchedMiniLogoTitle}
+        miniLogoUrl={watchedMiniLogoUrl}
         size="medium"
         textContrast={BADGE_MODEL_TEXT_CONTRAST[watchedTextContrast]}
         title={watchedName}

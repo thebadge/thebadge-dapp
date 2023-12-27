@@ -6,8 +6,10 @@ import { getBackgroundBadgeUrl } from '@/src/constants/backgrounds'
 import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
 import { useAvailableBackgrounds } from '@/src/hooks/useAvailableBackgrounds'
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
+import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { getClassicConfigs } from '@/src/utils/badges/metadataHelpers'
 import enrichTextWithValues, { EnrichTextValues } from '@/src/utils/enrichTextWithValues'
+import { ClassicBadgeFieldsConfig } from '@/types/badges/BadgeMetadata'
 
 type BadgePreviewGeneratorProps = {
   modelId: string
@@ -22,12 +24,13 @@ export const BadgeView = ({ additionalData, badgeUrl, modelId }: BadgePreviewGen
   const { address, readOnlyChainId } = useWeb3Connection()
   const { modelBackgrounds } = useAvailableBackgrounds(readOnlyChainId, address)
 
-  const { backgroundType, textContrast } = getClassicConfigs(badgeModelMetadata?.attributes)
+  const { backgroundType, fieldsConfigs, textContrast } = getClassicConfigs(
+    badgeModelMetadata?.attributes,
+  )
 
-  // TODO ENABLE AGAIN WHEN WE ADD THE MINI LOGOS DATA
-  // const { data: fieldsConfigData } = useS3Metadata<{
-  //   content: ClassicBadgeFieldsConfig
-  // }>((fieldsConfigs?.value as string) || '')
+  const { data: fieldsConfigData } = useS3Metadata<{
+    content: ClassicBadgeFieldsConfig
+  }>((fieldsConfigs?.value as string) || '')
 
   return (
     <BadgePreview
@@ -41,6 +44,9 @@ export const BadgeView = ({ additionalData, badgeUrl, modelId }: BadgePreviewGen
         additionalData as EnrichTextValues,
       )}
       imageUrl={badgeLogoImage?.s3Url}
+      miniLogoSubTitle={fieldsConfigData?.content.miniLogoSubTitle}
+      miniLogoTitle={fieldsConfigData?.content.miniLogoTitle}
+      miniLogoUrl={fieldsConfigData?.content.miniLogoUrl}
       size="medium"
       textContrast={textContrast?.value || 'light-withTextBackground'}
     />
