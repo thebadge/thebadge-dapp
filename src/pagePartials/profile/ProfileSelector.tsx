@@ -6,8 +6,7 @@ import { Box, Stack, Typography } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
-import useIsThirdPartyUser from '@/src/hooks/theBadge/useIsThirdPartyUser'
-import ThirdPartyProfile from '@/src/pagePartials/profile/ThirdPartyProfile'
+import ManagementProfile from '@/src/pagePartials/profile/ManagementProfile'
 import UserProfile from '@/src/pagePartials/profile/UserProfile'
 import InfoPreview from '@/src/pagePartials/profile/userInfo/InfoPreview'
 import { InfoPreviewSkeleton } from '@/src/pagePartials/profile/userInfo/InfoPreview.skeleton'
@@ -17,7 +16,7 @@ import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 
 export enum ProfileType {
   USER_PROFILE = 'userProfile',
-  THIRD_PARTY_PROFILE = 'thirdPartyProfile',
+  MANAGEMENT_PROFILE = 'managementProfile',
 }
 
 const ProfileSelector = () => {
@@ -27,7 +26,6 @@ const ProfileSelector = () => {
   const selectedProfile = params?.get('profileType')
 
   const { address: connectedWalletAddress, readOnlyChainId } = useWeb3Connection()
-  const isThirdPartyUser = useIsThirdPartyUser(connectedWalletAddress)
 
   const mainProfileTab = (
     <Typography
@@ -42,15 +40,14 @@ const ProfileSelector = () => {
     </Typography>
   )
 
-  const thirdPartyProfileTab = (
+  const managementProfileTab = (
     <Typography
-      color={selectedProfile === ProfileType.THIRD_PARTY_PROFILE ? 'text.primary' : 'text.disabled'}
+      color={selectedProfile === ProfileType.MANAGEMENT_PROFILE ? 'text.primary' : 'text.disabled'}
       textTransform="uppercase"
     >
       {t('profile.thirdParty.title')}
     </Typography>
   )
-  console.log('profile', selectedProfile)
 
   const displayFullProfile = () => {
     return (
@@ -75,12 +72,12 @@ const ProfileSelector = () => {
               </Link>
               <Link
                 href={generateProfileUrl({
-                  profileType: ProfileType.THIRD_PARTY_PROFILE,
+                  profileType: ProfileType.MANAGEMENT_PROFILE,
                   address: connectedWalletAddress ? connectedWalletAddress : '',
                   connectedChainId: readOnlyChainId,
                 })}
               >
-                {thirdPartyProfileTab}
+                {managementProfileTab}
               </Link>
             </Box>
           </Stack>
@@ -90,27 +87,13 @@ const ProfileSelector = () => {
           {/* Profile Content */}
           {!selectedProfile && <UserProfile />}
           {selectedProfile === ProfileType.USER_PROFILE && <UserProfile />}
-          {selectedProfile === ProfileType.THIRD_PARTY_PROFILE && <ThirdPartyProfile />}
+          {selectedProfile === ProfileType.MANAGEMENT_PROFILE && <ManagementProfile />}
         </SafeSuspense>
       </ProfileContextProvider>
     )
   }
 
-  const displayNonThirdPartyProfile = () => {
-    return (
-      <ProfileContextProvider>
-        <SafeSuspense>
-          <SafeSuspense fallback={<InfoPreviewSkeleton />}>
-            <InfoPreview address={connectedWalletAddress || ''} />
-          </SafeSuspense>
-          {/* Profile Content */}
-          <UserProfile />
-        </SafeSuspense>
-      </ProfileContextProvider>
-    )
-  }
-
-  return isThirdPartyUser ? displayFullProfile() : displayNonThirdPartyProfile()
+  return displayFullProfile()
 }
 
 export default ProfileSelector

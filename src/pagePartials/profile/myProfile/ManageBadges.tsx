@@ -20,6 +20,7 @@ import useListItemNavigation from '@/src/hooks/useListItemNavigation'
 import { useSizeSM } from '@/src/hooks/useSize'
 import useUserMetadata from '@/src/hooks/useUserMetadata'
 import MiniBadgeModelPreview from '@/src/pagePartials/badge/MiniBadgeModelPreview'
+import BadgeModelInfoPreview from '@/src/pagePartials/badge/explorer/BadgeModelInfoPreview'
 import ThirdPartyBadgeModelInfoPreview from '@/src/pagePartials/badge/explorer/ThirdPartyBadgeModelInfoPreview'
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import { generateBadgeModelCreate } from '@/src/utils/navigation/generateUrl'
@@ -62,7 +63,7 @@ export default function ManageBadges() {
 
     if (!address) return null
 
-    const badgeModels = await gql.thirdPartyBadgeModelByCreatorId({ creatorId: address })
+    const badgeModels = await gql.badgeModelByCreatorId({ creatorId: address })
     const badges = (badgeModels.badgeModels as BadgeModel[]) || []
 
     setTimeout(() => {
@@ -82,7 +83,11 @@ export default function ManageBadges() {
         onSelectPrevious={selectPrevious}
         title={t('explorer.preview.title')}
       >
-        <ThirdPartyBadgeModelInfoPreview badgeModel={selectedBadgeModel} />
+        {selectedBadgeModel.controllerType === BadgeModelControllerType.Community ? (
+          <BadgeModelInfoPreview badgeModel={selectedBadgeModel} />
+        ) : (
+          <ThirdPartyBadgeModelInfoPreview badgeModel={selectedBadgeModel} />
+        )}
       </SelectedItemPreviewWrapper>
     )
   }
@@ -108,7 +113,7 @@ export default function ManageBadges() {
             selected={isSelected}
           >
             <MiniBadgeModelPreview
-              buttonTitle={t('explorer.button')}
+              buttonTitle={t('explorer.buttonManage')}
               disableAnimations
               highlightColor={colors.blue}
               metadata={bt.uri}
