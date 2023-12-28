@@ -1,20 +1,24 @@
 import { useRouter } from 'next/navigation'
-import React from 'react'
+import React, { useState } from 'react'
 
 import { Box, Divider, Skeleton, Stack, Typography } from '@mui/material'
 import { ButtonV2, colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
-import useIsBadgeOwner from '@/src/hooks/subgraph/useIsBadgeOwner'
+import { useIsBadgeModelOwner } from '@/src/hooks/subgraph/useIsBadgeOwner'
+import useTBStore from '@/src/hooks/theBadge/useTBStore'
+import { useContractInstance } from '@/src/hooks/useContractInstance'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { useSizeSM } from '@/src/hooks/useSize'
+import useTransaction from '@/src/hooks/useTransaction'
 import BadgeMintCost from '@/src/pagePartials/badge/explorer/addons/BadgeMintCost'
 import CreatorInfoSmallPreview from '@/src/pagePartials/badge/explorer/addons/CreatorInfoSmallPreview'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 import { generateMintUrl, generateModelExplorerUrl } from '@/src/utils/navigation/generateUrl'
 import { BadgeModelMetadata } from '@/types/badges/BadgeMetadata'
 import { BadgeModel } from '@/types/generated/subgraph'
+import { TheBadgeModels__factory } from '@/types/generated/typechain'
 
 export default function BadgeModelInfoPreview({ badgeModel }: { badgeModel: BadgeModel }) {
   const { t } = useTranslation()
@@ -23,21 +27,39 @@ export default function BadgeModelInfoPreview({ badgeModel }: { badgeModel: Badg
   const { address } = useWeb3Connection()
   const resBadgeModelMetadata = useS3Metadata<{ content: BadgeModelMetadata }>(badgeModel.uri || '')
   const badgeMetadata = resBadgeModelMetadata.data?.content
-  const isBadgeOwner = useIsBadgeOwner(badgeModel.id, address)
+  const isBadgeOwner = useIsBadgeModelOwner(badgeModel.id, address)
+  const theBadgeModels = useContractInstance(TheBadgeModels__factory, 'TheBadgeModels')
+  const theBadgeStore = useTBStore()
+  const { sendTx } = useTransaction()
+  const [disabledButtons, setDisabledButtons] = useState(false)
 
   const renderManagementOptions = () => {
     if (!isBadgeOwner) {
       return null
     }
-    const onPauseBadgeModel = () => {
-      console.log('pause badge model')
+    const onPauseBadgeModel = async (pause: boolean) => {
+      try {
+        const currentBadgeModel = await theBadgeStore.getBadgeModel(badgeModel.id)
+        const transaction = await sendTx(async () => {
+          setDisabledButtons(true)
+          return theBadgeModels.updateBadgeModel(
+            badgeModel.id,
+            currentBadgeModel.mintCreatorFee,
+            pause,
+          )
+        })
+
+        if (transaction) {
+          await transaction.wait()
+          router.refresh()
+        }
+      } catch (error) {
+        console.warn('Error pausing badge model...', error)
+        setDisabledButtons(false)
+      }
     }
 
-    const onUnpauseBadgeModel = () => {
-      console.log('unpause badge model')
-    }
-
-    const onEditBadgeModel = () => {
+    const onEditBadgeModel = async () => {
       console.log('Edit badge model')
     }
 
@@ -47,8 +69,9 @@ export default function BadgeModelInfoPreview({ badgeModel }: { badgeModel: Badg
         <Box display="flex" flex="1" justifyContent="space-evenly" mt={2}>
           {badgeModel.paused ? (
             <ButtonV2
-              backgroundColor={colors.greenLogo}
-              onClick={() => onUnpauseBadgeModel()}
+              backgroundColor={colors.darkGreen}
+              disabled={disabledButtons}
+              onClick={() => onPauseBadgeModel(false)}
               variant="contained"
             >
               {t('explorer.preview.badge.unpause')}
@@ -56,7 +79,8 @@ export default function BadgeModelInfoPreview({ badgeModel }: { badgeModel: Badg
           ) : (
             <ButtonV2
               backgroundColor={colors.redError}
-              onClick={() => onPauseBadgeModel()}
+              disabled={disabledButtons}
+              onClick={() => onPauseBadgeModel(true)}
               variant="contained"
             >
               {t('explorer.preview.badge.pause')}
@@ -64,6 +88,7 @@ export default function BadgeModelInfoPreview({ badgeModel }: { badgeModel: Badg
           )}
           <ButtonV2
             backgroundColor={colors.blue}
+            disabled={disabledButtons}
             onClick={() => onEditBadgeModel()}
             variant="contained"
           >
@@ -104,6 +129,7 @@ export default function BadgeModelInfoPreview({ badgeModel }: { badgeModel: Badg
       <Box display="flex" flex="1" justifyContent="space-between">
         <ButtonV2
           backgroundColor={colors.transparent}
+          disabled={disabledButtons}
           onClick={() =>
             router.push(generateModelExplorerUrl(badgeModel.id, badgeModel.controllerType))
           }
@@ -114,6 +140,7 @@ export default function BadgeModelInfoPreview({ badgeModel }: { badgeModel: Badg
 
         <ButtonV2
           backgroundColor={colors.blue}
+          disabled={disabledButtons}
           onClick={() => router.push(generateMintUrl(badgeModel.controllerType, badgeModel.id))}
           sx={{ ml: 'auto' }}
           variant="contained"

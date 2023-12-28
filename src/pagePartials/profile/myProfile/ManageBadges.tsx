@@ -63,7 +63,7 @@ export default function ManageBadges() {
 
     if (!address) return null
 
-    const badgeModels = await gql.badgeModelByCreatorId({ creatorId: address })
+    const badgeModels = await gql.badgeModelsByCreatorId({ creatorId: address })
     const badges = (badgeModels.badgeModels as BadgeModel[]) || []
 
     setTimeout(() => {
