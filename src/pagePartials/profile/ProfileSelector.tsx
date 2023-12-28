@@ -50,6 +50,7 @@ const ProfileSelector = () => {
       {t('profile.thirdParty.title')}
     </Typography>
   )
+  console.log('profile', selectedProfile)
 
   const displayFullProfile = () => {
     return (
