@@ -12,7 +12,7 @@ import ProfileContextProvider from '@/src/providers/ProfileProvider'
 import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 
 export enum ManagementProfileFilter {
-  MANAGE_ACCOUNT = 'manageAccount',
+  MANAGE_SUBSCRIPTIONS = 'manageSubscriptions',
   MANAGE_BADGES = 'manageBadges',
 }
 
@@ -37,7 +37,9 @@ const ManagementProfile = () => {
   const manageAccountTab = (
     <Typography
       color={
-        selectedFilter === ManagementProfileFilter.MANAGE_ACCOUNT ? 'text.primary' : 'text.disabled'
+        selectedFilter === ManagementProfileFilter.MANAGE_SUBSCRIPTIONS
+          ? 'text.primary'
+          : 'text.disabled'
       }
       textTransform="uppercase"
     >
@@ -66,14 +68,16 @@ const ManagementProfile = () => {
               {manageBadgesTab}
             </Link>
 
-            {/* manage account */}
+            {/* manage subscriptions */}
             <div aria-disabled={true}>{manageAccountTab}</div>
           </Box>
         </Stack>
         {/* Profile Content */}
         {!selectedFilter && <ManageBadges />}
         {selectedFilter === ManagementProfileFilter.MANAGE_BADGES && <ManageBadges />}
-        {selectedFilter === ManagementProfileFilter.MANAGE_ACCOUNT && <div>MANAGE ACCOUNT WIP</div>}
+        {selectedFilter === ManagementProfileFilter.MANAGE_SUBSCRIPTIONS && (
+          <div>MANAGE SUBSCRIPTIONS WIP</div>
+        )}
       </SafeSuspense>
     </ProfileContextProvider>
   )
