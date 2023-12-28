@@ -17,19 +17,15 @@ export const useAvailableBackgrounds = (chainId: ChainsValues, userAddress?: str
       const availableBackgroundsPromises = Object.entries(availableBackgrounds).map(
         async ([, backgroundConfig]) => {
           if (backgroundConfig.badgesRequired.length) {
-            if (!userAddress) {
-              backgroundConfig.disabled = true
-            } else {
+            backgroundConfig.disabled = true
+            if (userAddress) {
               const networkBadge = backgroundConfig.badgesRequired.find(
                 (badgeRequired) => badgeRequired.networkId === chainId,
               )
               // If the badge is available on that network we check the balance otherwise is 0
-              const hasBalance = networkBadge
-                ? await hasUserBalance(networkBadge, userAddress)
-                : false
+              const hasBalance = networkBadge && (await hasUserBalance(networkBadge, userAddress))
               backgroundConfig.disabled = !hasBalance
             }
-            backgroundConfig.disabled = true
           }
         },
       )
