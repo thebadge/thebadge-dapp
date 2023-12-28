@@ -51,7 +51,7 @@ export default function BadgeClassicCreationPreview() {
         imageUrl={watchedLogoUri?.base64File}
         miniLogoSubTitle={watchedMiniLogoSubtitle}
         miniLogoTitle={watchedMiniLogoTitle}
-        miniLogoUrl={watchedMiniLogoUrl}
+        miniLogoUrl={watchedMiniLogoUrl?.base64File}
         size="medium"
         textContrast={BADGE_MODEL_TEXT_CONTRAST[watchedTextContrast]}
         title={watchedName}

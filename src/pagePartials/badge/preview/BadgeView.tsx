@@ -47,7 +47,7 @@ export const BadgeView = ({ additionalData, badgeUrl, modelId }: BadgePreviewGen
       imageUrl={badgeLogoImage?.s3Url}
       miniLogoSubTitle={fieldsConfigData?.content.miniLogoSubTitle}
       miniLogoTitle={fieldsConfigData?.content.miniLogoTitle}
-      miniLogoUrl={fieldsConfigData?.content.miniLogoUrl}
+      miniLogoUrl={fieldsConfigData?.content.miniLogoUrl.base64File}
       size="medium"
       textContrast={textContrast?.value || 'light-withTextBackground'}
     />

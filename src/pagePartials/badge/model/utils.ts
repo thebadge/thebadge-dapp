@@ -313,3 +313,19 @@ export function getCriteriaTemplate() {
 </ul>
   `
 }
+
+export const validateImageDimensions = async (base64File: string, maxSize: number) => {
+  return new Promise((resolve, reject) => {
+    if (!base64File) {
+      return
+    }
+    const img = new Image()
+    img.src = base64File
+    img.onload = () => {
+      resolve(img.width <= maxSize && img.height <= maxSize)
+    }
+    img.onerror = (error) => {
+      reject('Error loading image.')
+    }
+  })
+}

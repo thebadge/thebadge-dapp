@@ -12,6 +12,7 @@ import {
   TokenInputSchema,
 } from '@/src/components/form/helpers/customSchemas'
 import { ModelsBackgroundsNames } from '@/src/constants/backgrounds'
+import { validateImageDimensions } from '@/src/pagePartials/badge/model/utils'
 import { CreatorRegisterSchema } from '@/src/pagePartials/creator/register/schema/CreatorRegisterSchema'
 
 /**
@@ -42,7 +43,15 @@ const MiniLogoCustomFieldsConfigurationSchema = z
   .object({
     miniLogoTitle: z.string().max(4).optional(),
     miniLogoSubTitle: z.string().max(10).optional(),
-    miniLogoUrl: z.string().optional(),
+    miniLogoUrl: ImageSchema.refine(async (value) => {
+      try {
+        // Asynchronously validate image dimensions (max 32x32)
+        return await validateImageDimensions(value?.base64File, 32)
+      } catch (error) {
+        console.error('Error validating image dimensions:', error)
+        return false
+      }
+    }, 'Max image dimensions are 32x32.'),
   })
   .optional()
 
