@@ -53,8 +53,9 @@ export type EvidenceMetadata = {
 
 export type ClassicBadgeFieldsConfig = {
   customFieldsEnabled: boolean
-  badgeTitle?: string
-  badgeDescription?: string
+  miniLogoSubTitle?: string
+  miniLogoTitle?: string
+  miniLogoUrl?: string
 }
 
 export type DiplomaSignatureConfig<T = IPFSHash | BackendFileResponse | BackendFileUpload> = {

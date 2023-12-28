@@ -38,11 +38,12 @@ export default function SubmitPreviewThirdParty() {
   }
 
   const estimatedBadgeIdForPreview = estimatedBadgeId ? estimatedBadgeId.toString() : '0'
-  const { shortPreviewURl } = useBadgePreviewUrl(
+  const urlsData = useBadgePreviewUrl(
     estimatedBadgeIdForPreview,
     badgeModelData.data.badgeModel.contractAddress,
     appChainId,
   )
+  const previewUrls = urlsData.data
 
   return (
     <Stack alignItems={'center'} gap={3} margin={1}>
@@ -52,7 +53,7 @@ export default function SubmitPreviewThirdParty() {
             additionalData={{
               ...values,
             }}
-            badgeUrl={shortPreviewURl}
+            badgeUrl={previewUrls?.shortPreviewUrl}
             modelId={badgeModelId}
             setValue={setValue}
             title={t('badge.model.mint.previewTitle', {

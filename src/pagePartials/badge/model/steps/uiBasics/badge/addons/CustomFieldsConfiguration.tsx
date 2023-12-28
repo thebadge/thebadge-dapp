@@ -4,8 +4,10 @@ import { FormControl, FormControlLabel, RadioGroup, Stack, Typography } from '@m
 import Radio from '@mui/material/Radio'
 import { useTranslation } from 'next-export-i18n'
 import { Controller, useFormContext } from 'react-hook-form'
+import { ImageType } from 'react-images-uploading'
 
 import { CheckBox } from '@/src/components/form/formFields/CheckBox'
+import { ImageInput } from '@/src/components/form/formFields/ImageInput'
 import { TextField } from '@/src/components/form/formFields/TextField'
 import { CustomFieldsConfigurationSchemaType } from '@/src/pagePartials/badge/model/schema/CreateCommunityModelSchema'
 import SectionContainer from '@/src/pagePartials/badge/model/steps/uiBasics/addons/SectionContainer'
@@ -85,7 +87,21 @@ export default function CustomFieldsConfiguration() {
                 control={control}
                 name={'miniLogo.miniLogoUrl'}
                 render={({ field: { onChange, value }, fieldState: { error } }) => (
-                  <TextField error={error} onChange={onChange} value={value} />
+                  <ImageInput
+                    error={error}
+                    onChange={(value: ImageType | null) => {
+                      if (value) {
+                        // We change the structure a little bit to have it ready to push to the backend
+                        onChange({
+                          mimeType: value.file?.type,
+                          base64File: value.base64File,
+                        })
+                        return
+                      }
+                      onChange(null)
+                    }}
+                    value={value}
+                  />
                 )}
               />
             </Stack>

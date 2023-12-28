@@ -25,7 +25,8 @@ export default function MintSucceed() {
 
   const backgroundType = getBackgroundType(badgeModelMetadata?.attributes)
   const textContrast = getTextContrast(badgeModelMetadata?.attributes)
-  const { modelBackgrounds } = useAvailableBackgrounds(readOnlyChainId, address)
+  const availableBackgroundsData = useAvailableBackgrounds(readOnlyChainId, address)
+  const modelBackgrounds = availableBackgroundsData.data?.modelBackgrounds
 
   if (badgeModelData.error || !badgeModelData.data) {
     throw `There was an error trying to fetch the metadata for the badge model`
@@ -34,11 +35,12 @@ export default function MintSucceed() {
   // TODO Fetch the new badgeId minted from the graph and use this to generate the badgeUrl
   const estimatedBadgeIdForPreview = estimatedBadgeId ? estimatedBadgeId.sub(1).toString() : '0'
 
-  const { shortPreviewURl } = useBadgePreviewUrl(
+  const urlsData = useBadgePreviewUrl(
     estimatedBadgeIdForPreview,
     badgeModelData.data.badgeModel.contractAddress,
     appChainId,
   )
+  const previewUrls = urlsData.data
 
   return (
     <Stack alignItems="center">
@@ -46,7 +48,7 @@ export default function MintSucceed() {
         animationEffects={['wobble', 'grow', 'glare']}
         animationOnHover
         badgeBackgroundUrl={getBackgroundBadgeUrl(backgroundType?.value, modelBackgrounds)}
-        badgeUrl={shortPreviewURl}
+        badgeUrl={previewUrls?.shortPreviewUrl}
         category={badgeModelMetadata?.name}
         description={badgeModelMetadata?.description}
         imageUrl={badgeLogoImage?.s3Url}
