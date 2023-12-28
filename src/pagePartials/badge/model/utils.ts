@@ -324,7 +324,7 @@ export const validateImageDimensions = async (base64File: string, maxSize: numbe
     img.onload = () => {
       resolve(img.width <= maxSize && img.height <= maxSize)
     }
-    img.onerror = (error) => {
+    img.onerror = () => {
       reject('Error loading image.')
     }
   })
