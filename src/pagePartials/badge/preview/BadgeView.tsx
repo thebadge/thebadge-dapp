@@ -15,9 +15,15 @@ type BadgePreviewGeneratorProps = {
   modelId: string
   badgeUrl?: string
   additionalData?: Record<string, any>
+  size?: 'small' | 'medium' | 'large'
 }
 
-export const BadgeView = ({ additionalData, badgeUrl, modelId }: BadgePreviewGeneratorProps) => {
+export const BadgeView = ({
+  additionalData,
+  badgeUrl,
+  modelId,
+  size = 'medium',
+}: BadgePreviewGeneratorProps) => {
   const badgeModelData = useBadgeModel(modelId)
   const badgeModelMetadata = badgeModelData.data?.badgeModelMetadata
   const badgeLogoImage = badgeModelData.data?.badgeModelMetadata?.image
@@ -48,7 +54,7 @@ export const BadgeView = ({ additionalData, badgeUrl, modelId }: BadgePreviewGen
       miniLogoSubTitle={fieldsConfigData?.content.miniLogoSubTitle}
       miniLogoTitle={fieldsConfigData?.content.miniLogoTitle}
       miniLogoUrl={fieldsConfigData?.content.miniLogoUrl.base64File}
-      size="medium"
+      size={size}
       textContrast={textContrast?.value || 'light-withTextBackground'}
     />
   )

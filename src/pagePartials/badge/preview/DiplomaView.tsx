@@ -84,7 +84,7 @@ export default function DiplomaView({ additionalData, badgeUrl, modelId }: Props
       sx={
         isMobile
           ? { scale: '0.5', transform: 'translate(-50%, -50%)', margin: '10px' }
-          : { margin: '10px' }
+          : { margin: '10px', maxWidth: '-webkit-fill-available' }
       }
       textContrastRight="dark"
       {...signatureProps}
