@@ -47,6 +47,7 @@ type FilteredListProps = PropsWithChildren & {
   loadingColor?: SpinnerColors
   disableEdit?: boolean
   preview?: ReactNode | undefined
+  alignItems?: string
   searchInputLabel?: string
   showTextSearch?: boolean
   items: React.ReactNode[]
@@ -202,6 +203,7 @@ export default function FilteredList({
       )}
       {!isMobile && (
         <FilteredListDesktopView
+          alignItems={props.alignItems}
           loading={props.loading}
           loadingColor={props.loadingColor}
           preview={props.preview}
