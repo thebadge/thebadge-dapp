@@ -8,6 +8,16 @@ export const BADGE_MODELS_BY_CREATOR_ID = gql`
   }
 `
 
+export const BADGE_MODELS_WITH_FILTERS = gql`
+  query badgeModelsWithFilters($creatorId: String!, $where: BadgeModel_filter) {
+    user(id: $creatorId) {
+      createdBadgeModels(where: $where) {
+        ...BadgeModel
+      }
+    }
+  }
+`
+
 export const THIRD_PARTY_BADGE_MODELS_BY_CREATOR_ID = gql`
   query thirdPartyBadgeModelByCreatorId($creatorId: String!) {
     badgeModels(

@@ -654,6 +654,13 @@
       "inReview": "In Review"
     }
   },
+  "badgeModelsList": {
+    "filters": {
+      "paused": "Archived",
+      "thirdParty": "Third Party",
+      "community": "Community"
+    }
+  },
   "footer": {
     "about": {
       "title": "ABOUT",
