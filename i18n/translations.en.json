@@ -124,7 +124,6 @@
     "title": "Badge models explorer",
     "noBadgesFound": "There are no badges that match these filters...",
     "button": "View",
-    "buttonManage": "Manage",
     "preview": {
       "title": "Model information",
       "badge": {

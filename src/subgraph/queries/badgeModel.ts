@@ -9,7 +9,7 @@ export const BADGE_MODELS_BY_CREATOR_ID = gql`
 `
 
 export const BADGE_MODELS_WITH_FILTERS = gql`
-  query badgeModelsWithFilters($creatorId: String!, $where: BadgeModel_filter) {
+  query badgeModelsWithFilters($creatorId: ID!, $where: BadgeModel_filter) {
     user(id: $creatorId) {
       createdBadgeModels(where: $where) {
         ...BadgeModel

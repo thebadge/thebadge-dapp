@@ -114,7 +114,8 @@ export default function ManageBadges() {
       creatorId: address,
       where,
     })
-    const selectedBadgeModels = (badgeModels.badgeModels as BadgeModel[]) || []
+
+    const selectedBadgeModels = (badgeModels.user?.createdBadgeModels as BadgeModel[]) || []
 
     setTimeout(() => {
       setLoading(false)
@@ -163,7 +164,6 @@ export default function ManageBadges() {
             selected={isSelected}
           >
             <MiniBadgeModelPreview
-              buttonTitle={t('explorer.buttonManage')}
               disableAnimations
               highlightColor={colors.blue}
               metadata={bt.uri}
