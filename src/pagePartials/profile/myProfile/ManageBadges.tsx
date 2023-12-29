@@ -164,6 +164,7 @@ export default function ManageBadges() {
             selected={isSelected}
           >
             <MiniBadgeModelPreview
+              controllerType={bt.controllerType}
               disableAnimations
               highlightColor={colors.blue}
               metadata={bt.uri}
