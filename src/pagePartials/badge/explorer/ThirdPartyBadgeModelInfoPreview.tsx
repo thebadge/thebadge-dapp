@@ -1,7 +1,7 @@
 import { useRouter } from 'next/navigation'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
-import { Box, Divider, Stack, Typography } from '@mui/material'
+import { Box, Divider, Stack, Tooltip, Typography } from '@mui/material'
 import { ButtonV2, colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 
@@ -35,6 +35,13 @@ export default function ThirdPartyBadgeModelInfoPreview({
   const theBadgeStore = useTBStore()
   const { sendTx } = useTransaction()
   const [disabledButtons, setDisabledButtons] = useState(false)
+  const [disableMint, setDisabledMint] = useState(false)
+
+  useEffect(() => {
+    if (badgeModel.paused) {
+      setDisabledMint(true)
+    }
+  }, [badgeModel.paused, setDisabledMint])
 
   const renderManagementOptions = () => {
     if (!isBadgeOwner) {
@@ -45,6 +52,7 @@ export default function ThirdPartyBadgeModelInfoPreview({
         const currentBadgeModel = await theBadgeStore.getBadgeModel(badgeModel.id)
         const transaction = await sendTx(async () => {
           setDisabledButtons(true)
+          setDisabledMint(true)
           return theBadgeModels.updateBadgeModel(
             badgeModel.id,
             currentBadgeModel.mintCreatorFee,
@@ -59,6 +67,7 @@ export default function ThirdPartyBadgeModelInfoPreview({
       } catch (error) {
         console.warn('Error pausing badge model...', error)
         setDisabledButtons(false)
+        setDisabledMint(false)
       }
     }
 
@@ -67,25 +76,33 @@ export default function ThirdPartyBadgeModelInfoPreview({
         <Divider color={colors.white} />
         <Box display="flex" flex="1" justifyContent="space-evenly" mt={2}>
           {badgeModel.paused ? (
-            <ButtonV2
-              backgroundColor={colors.darkGreen}
-              disabled={disabledButtons}
-              onClick={() => onPauseBadgeModel(false)}
-              sx={{ textTransform: 'uppercase' }}
-              variant="contained"
-            >
-              {t('explorer.preview.badge.unpause')}
-            </ButtonV2>
+            <Tooltip arrow title={t('explorer.preview.badge.unArchiveTooltip')}>
+              <Box>
+                <ButtonV2
+                  backgroundColor={colors.darkGreen}
+                  disabled={disabledButtons}
+                  onClick={() => onPauseBadgeModel(false)}
+                  sx={{ textTransform: 'uppercase' }}
+                  variant="contained"
+                >
+                  {t('explorer.preview.badge.unpause')}
+                </ButtonV2>
+              </Box>
+            </Tooltip>
           ) : (
-            <ButtonV2
-              backgroundColor={colors.redError}
-              disabled={disabledButtons}
-              onClick={() => onPauseBadgeModel(true)}
-              sx={{ textTransform: 'uppercase' }}
-              variant="contained"
-            >
-              {t('explorer.preview.badge.pause')}
-            </ButtonV2>
+            <Tooltip arrow title={t('explorer.preview.badge.archiveTooltip')}>
+              <Box>
+                <ButtonV2
+                  backgroundColor={colors.redError}
+                  disabled={disabledButtons}
+                  onClick={() => onPauseBadgeModel(true)}
+                  sx={{ textTransform: 'uppercase' }}
+                  variant="contained"
+                >
+                  {t('explorer.preview.badge.pause')}
+                </ButtonV2>
+              </Box>
+            </Tooltip>
           )}
         </Box>
       </Stack>
@@ -132,14 +149,18 @@ export default function ThirdPartyBadgeModelInfoPreview({
           {t('explorer.preview.badge.thirdParty.showOthers')}
         </ButtonV2>
 
-        <ButtonV2
-          backgroundColor={colors.blue}
-          onClick={() => router.push(generateMintUrl(badgeModel.controllerType, badgeModel.id))}
-          sx={{ ml: 'auto', textTransform: 'uppercase' }}
-          variant="contained"
-        >
-          {t('explorer.preview.badge.mint')}
-        </ButtonV2>
+        <Tooltip arrow title={disableMint ? t('explorer.preview.badge.mintPausedTooltip') : ''}>
+          <Box>
+            <ButtonV2
+              backgroundColor={colors.blue}
+              onClick={() => router.push(generateMintUrl(badgeModel.controllerType, badgeModel.id))}
+              sx={{ ml: 'auto', textTransform: 'uppercase' }}
+              variant="contained"
+            >
+              {t('explorer.preview.badge.mint')}
+            </ButtonV2>
+          </Box>
+        </Tooltip>
       </Box>
 
       {renderManagementOptions()}

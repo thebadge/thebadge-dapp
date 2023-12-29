@@ -138,6 +138,10 @@
         "unpause": "Unarchive",
         "edit": "Edit",
         "showOthers": "See minted badges",
+        "mintPausedTooltip": "This model is currently paused and cannot be minted.",
+        "archiveTooltip": "By archiving this model, it will become unavailable for minting.",
+        "unArchiveTooltip": "By unarchiving this model, it will become available again for minting.",
+        "buttonWip": "Function currently unavailable.",
         "thirdParty": {
           "showOthers": "See minted"
         }
