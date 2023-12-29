@@ -25,7 +25,7 @@ import ThirdPartyBadgeModelInfoPreview from '@/src/pagePartials/badge/explorer/T
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import { generateBadgeModelCreate } from '@/src/utils/navigation/generateUrl'
 import { BadgeModelControllerType } from '@/types/badges/BadgeModel'
-import { BadgeModel } from '@/types/generated/subgraph'
+import { BadgeModel, BadgeModel_Filter, BadgeModel_OrderBy } from '@/types/generated/subgraph'
 
 export default function ManageBadges() {
   const { t } = useTranslation()
@@ -40,6 +40,25 @@ export default function ManageBadges() {
   const creatorMetadata = useUserMetadata(address, data?.metadataUri || '')
   const router = useRouter()
 
+  const filters: Array<ListFilter<string | boolean>> = [
+    {
+      title: t('badgeModelsList.filters.paused'),
+      color: 'blue',
+      defaultSelected: false,
+      key: BadgeModel_OrderBy.Paused,
+    },
+    {
+      title: t('badgeModelsList.filters.thirdParty'),
+      color: 'error',
+      key: 'thirdParty',
+    },
+    {
+      title: t('badgeModelsList.filters.community'),
+      color: 'green',
+      key: 'kleros',
+    },
+  ]
+
   const badgeModelsElementRefs: RefObject<HTMLLIElement>[] = badgeModels.map(() =>
     createRef<HTMLLIElement>(),
   )
@@ -49,26 +68,56 @@ export default function ManageBadges() {
     badgeModelsElementRefs,
     selectedBadgeModelIndex,
     badgeModels.length,
+    false,
   )
 
   const search = async (
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     selectedFilters: Array<ListFilter>,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     selectedCategory: string,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     textSearch?: string,
   ) => {
+    if (!address) return null
     setLoading(true)
 
-    if (!address) return null
+    let where: BadgeModel_Filter = {}
+    if (!selectedFilters.length) {
+      where = {
+        paused: false,
+      }
+    }
+    if (selectedFilters.length > 0) {
+      const controllerTypes = selectedFilters
+        .filter((filter) => filter.key !== BadgeModel_OrderBy.Paused)
+        .map((filter) => filter.key)
 
-    const badgeModels = await gql.badgeModelsByCreatorId({ creatorId: address })
-    const badges = (badgeModels.badgeModels as BadgeModel[]) || []
+      const pausedFilter = !!selectedFilters.find(
+        (filter) => filter.key === BadgeModel_OrderBy.Paused,
+      )
+
+      if (pausedFilter) {
+        where = {
+          paused: pausedFilter,
+        }
+      }
+      if (controllerTypes.length) {
+        where = {
+          ...where,
+          controllerType_in: controllerTypes as Array<BadgeModel_OrderBy>,
+        }
+      }
+    }
+
+    const badgeModels = await gql.badgeModelsWithFilters({
+      creatorId: address,
+      where,
+    })
+    const selectedBadgeModels = (badgeModels.badgeModels as BadgeModel[]) || []
 
     setTimeout(() => {
       setLoading(false)
-      setBadgeModels(badges)
+      setBadgeModels(selectedBadgeModels)
       setSelectedBadgeModelIndex(0)
     }, 2000)
   }
@@ -146,6 +195,7 @@ export default function ManageBadges() {
   return (
     <>
       <FilteredList
+        filters={filters}
         items={generateListItems()}
         loading={loading}
         loadingColor={'blue'}
