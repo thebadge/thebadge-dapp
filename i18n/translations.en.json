@@ -123,7 +123,6 @@
     },
     "title": "Badge models explorer",
     "noBadgesFound": "There are no badges that match these filters...",
-    "button": "View",
     "preview": {
       "title": "Model information",
       "badge": {
