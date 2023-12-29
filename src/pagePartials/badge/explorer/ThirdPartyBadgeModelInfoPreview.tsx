@@ -153,6 +153,7 @@ export default function ThirdPartyBadgeModelInfoPreview({
           <Box>
             <ButtonV2
               backgroundColor={colors.blue}
+              disabled={disableMint}
               onClick={() => router.push(generateMintUrl(badgeModel.controllerType, badgeModel.id))}
               sx={{ ml: 'auto', textTransform: 'uppercase' }}
               variant="contained"
