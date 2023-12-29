@@ -71,6 +71,7 @@ export default function ThirdPartyBadgeModelInfoPreview({
               backgroundColor={colors.darkGreen}
               disabled={disabledButtons}
               onClick={() => onPauseBadgeModel(false)}
+              sx={{ textTransform: 'uppercase' }}
               variant="contained"
             >
               {t('explorer.preview.badge.unpause')}
@@ -80,6 +81,7 @@ export default function ThirdPartyBadgeModelInfoPreview({
               backgroundColor={colors.redError}
               disabled={disabledButtons}
               onClick={() => onPauseBadgeModel(true)}
+              sx={{ textTransform: 'uppercase' }}
               variant="contained"
             >
               {t('explorer.preview.badge.pause')}

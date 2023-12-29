@@ -72,6 +72,7 @@ export default function BadgeModelInfoPreview({ badgeModel }: { badgeModel: Badg
               backgroundColor={colors.darkGreen}
               disabled={disabledButtons}
               onClick={() => onPauseBadgeModel(false)}
+              sx={{ textTransform: 'uppercase' }}
               variant="contained"
             >
               {t('explorer.preview.badge.unpause')}
@@ -81,6 +82,7 @@ export default function BadgeModelInfoPreview({ badgeModel }: { badgeModel: Badg
               backgroundColor={colors.redError}
               disabled={disabledButtons}
               onClick={() => onPauseBadgeModel(true)}
+              sx={{ textTransform: 'uppercase' }}
               variant="contained"
             >
               {t('explorer.preview.badge.pause')}
@@ -90,6 +92,7 @@ export default function BadgeModelInfoPreview({ badgeModel }: { badgeModel: Badg
             backgroundColor={colors.blue}
             disabled={disabledButtons}
             onClick={() => onEditBadgeModel()}
+            sx={{ textTransform: 'uppercase' }}
             variant="contained"
           >
             {t('explorer.preview.badge.edit')}
@@ -133,6 +136,7 @@ export default function BadgeModelInfoPreview({ badgeModel }: { badgeModel: Badg
           onClick={() =>
             router.push(generateModelExplorerUrl(badgeModel.id, badgeModel.controllerType))
           }
+          sx={{ textTransform: 'uppercase' }}
           variant="outlined"
         >
           {t('explorer.preview.badge.showOthers')}
@@ -142,7 +146,7 @@ export default function BadgeModelInfoPreview({ badgeModel }: { badgeModel: Badg
           backgroundColor={colors.blue}
           disabled={disabledButtons}
           onClick={() => router.push(generateMintUrl(badgeModel.controllerType, badgeModel.id))}
-          sx={{ ml: 'auto' }}
+          sx={{ ml: 'auto', textTransform: 'uppercase' }}
           variant="contained"
         >
           {t('explorer.preview.badge.mint')}
