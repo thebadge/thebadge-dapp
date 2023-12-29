@@ -46,6 +46,7 @@ export default function ManageBadges() {
       color: 'blue',
       defaultSelected: false,
       key: BadgeModel_OrderBy.Paused,
+      filterType: 'Switch',
     },
     {
       title: t('badgeModelsList.filters.thirdParty'),

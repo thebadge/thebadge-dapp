@@ -134,8 +134,8 @@
         "depositCost": "Deposit cost:",
         "totalMinted": "Total minted amount:",
         "mint": "Mint",
-        "pause": "Pause",
-        "unpause": "Unpause",
+        "pause": "Archive",
+        "unpause": "Unarchive",
         "edit": "Edit",
         "showOthers": "See minted badges",
         "thirdParty": {
