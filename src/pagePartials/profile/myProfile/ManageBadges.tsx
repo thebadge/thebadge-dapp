@@ -50,12 +50,12 @@ export default function ManageBadges() {
     },
     {
       title: t('badgeModelsList.filters.thirdParty'),
-      color: 'error',
+      color: 'green',
       key: 'thirdParty',
     },
     {
       title: t('badgeModelsList.filters.community'),
-      color: 'green',
+      color: 'pink',
       key: 'kleros',
     },
   ]
@@ -152,6 +152,13 @@ export default function ManageBadges() {
     )
   }
 
+  const selectBadgeModel = (modelId: string) => {
+    router.replace({
+      pathname: router.pathname,
+      query: { ...router.query, modelId },
+    })
+  }
+
   function renderBadgeModelItem(bt: BadgeModel, index: number) {
     const isSelected = bt.id === badgeModels[selectedBadgeModelIndex]?.id
     return (
@@ -161,10 +168,7 @@ export default function ManageBadges() {
         minWidth={180}
         onViewPortEnter={() => {
           if (isMobile) {
-            router.replace({
-              pathname: router.pathname,
-              query: { ...router.query, modelId: bt.id },
-            })
+            selectBadgeModel(bt.id)
           }
         }}
       >
@@ -172,10 +176,7 @@ export default function ManageBadges() {
           <MiniBadgePreviewContainer
             highlightColor={colors.blue}
             onClick={() => {
-              router.replace({
-                pathname: router.pathname,
-                query: { ...router.query, modelId: bt.id },
-              })
+              selectBadgeModel(bt.id)
             }}
             ref={badgeModelsElementRefs[index]}
             selected={isSelected}
