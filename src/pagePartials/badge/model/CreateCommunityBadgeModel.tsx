@@ -19,6 +19,7 @@ import useTransaction, { TransactionStates } from '@/src/hooks/useTransaction'
 import CreateCommunityBadgeModelWithSteps from '@/src/pagePartials/badge/model/CreateCommunityBadgeModelWithSteps'
 import { CreateCommunityModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateCommunityModelSchema'
 import { ProfileType } from '@/src/pagePartials/profile/ProfileSelector'
+import { NormalProfileFilter } from '@/src/pagePartials/profile/UserProfile'
 import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 import { BadgeModelControllerName, BadgeModelTemplate } from '@/types/badges/BadgeModel'
 import { TheBadgeModels__factory, TheBadgeUsers__factory } from '@/types/generated/typechain'
@@ -44,7 +45,7 @@ const CreateCommunityBadgeModel: NextPageWithLayout = () => {
         generateProfileUrl({
           address,
           profileType: ProfileType.USER_PROFILE,
-          filter: 'createdBadges',
+          filter: NormalProfileFilter.CREATED_BADGES,
         }),
       )
     }

@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import React, { RefObject, createRef, useState } from 'react'
+import React, { RefObject, createRef, useEffect, useState } from 'react'
 
 import { Stack, Typography } from '@mui/material'
 import { ButtonV2, colors } from '@thebadge/ui-library'
@@ -59,6 +59,15 @@ export default function ManageBadges() {
       key: 'kleros',
     },
   ]
+
+  useEffect(() => {
+    // Automatic selects a badgeModel based on query params
+    if (router.query.modelId) {
+      const selectedModel = router.query.modelId
+      const modelIndex = badgeModels.findIndex((model) => model.id === selectedModel)
+      setSelectedBadgeModelIndex(modelIndex ? modelIndex : 0)
+    }
+  }, [badgeModels, router.query.modelId])
 
   const badgeModelsElementRefs: RefObject<HTMLLIElement>[] = badgeModels.map(() =>
     createRef<HTMLLIElement>(),
@@ -152,14 +161,22 @@ export default function ManageBadges() {
         minWidth={180}
         onViewPortEnter={() => {
           if (isMobile) {
-            setSelectedBadgeModelIndex(index)
+            router.replace({
+              pathname: router.pathname,
+              query: { ...router.query, modelId: bt.id },
+            })
           }
         }}
       >
         <SafeSuspense fallback={<MiniBadgePreviewLoading />}>
           <MiniBadgePreviewContainer
             highlightColor={colors.blue}
-            onClick={() => setSelectedBadgeModelIndex(index)}
+            onClick={() => {
+              router.replace({
+                pathname: router.pathname,
+                query: { ...router.query, modelId: bt.id },
+              })
+            }}
             ref={badgeModelsElementRefs[index]}
             selected={isSelected}
           >
