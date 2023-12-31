@@ -1,4 +1,4 @@
-import useSWR, { useSWRConfig } from 'swr'
+import useSWR from 'swr'
 
 import useBadgeIdParam from '@/src/hooks/nextjs/useBadgeIdParam'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
@@ -14,10 +14,6 @@ import { BackendFileResponse } from '@/types/utils'
  * @param targetContract
  */
 export default function useBadgeModel(id: string, targetContract?: string) {
-  const { cache } = useSWRConfig()
-  if (!targetContract) console.trace()
-  console.log('useBadgeModel - cache', cache)
-
   // Safeguard to use the contract in the url
   // If this hooks run under a page that has the "contract" query params it must use it
   const { contract } = useBadgeIdParam()
