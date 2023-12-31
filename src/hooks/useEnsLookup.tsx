@@ -1,5 +1,5 @@
 import { isAddress } from 'ethers/lib/utils'
-import useSWR, { SWRResponse } from 'swr'
+import useSWR from 'swr'
 import { createPublicClient, http } from 'viem'
 import { GetEnsAvatarReturnType } from 'viem/actions'
 import { Chain, goerli, mainnet, sepolia } from 'viem/chains'
@@ -58,12 +58,10 @@ const getChainForEnsLookup = (chainId: ChainsValues): Chain => {
   }
 }
 
-export const useEnsReverseLookup = function (
-  address: WCAddress | string | undefined,
-): SWRResponse<EnsLookupResult, unknown> {
+export const useEnsReverseLookup = function (address: WCAddress | string | undefined) {
   const { readOnlyChainId } = useWeb3Connection()
 
-  const result = useSWR([readOnlyChainId, address], async ([_readOnlyChainId, _address]) => {
+  return useSWR([readOnlyChainId, address], async ([_readOnlyChainId, _address]) => {
     const chain = getChainForEnsLookup(_readOnlyChainId)
     const client = createPublicClient({
       chain,
@@ -114,8 +112,6 @@ export const useEnsReverseLookup = function (
       metadata,
     }
   })
-
-  return result
 }
 
 export const useEnsLookup = function (ensName: WCAddress | string | undefined) {

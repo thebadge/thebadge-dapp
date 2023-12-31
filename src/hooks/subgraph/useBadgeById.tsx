@@ -1,6 +1,7 @@
 import useSWR from 'swr'
 
 import useBadgeIdParam from '@/src/hooks/nextjs/useBadgeIdParam'
+import useSWRCacheUtils from '@/src/hooks/subgraph/useSWRCacheUtilts'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import { getFromIPFS } from '@/src/hooks/subgraph/utils'
 import { SubgraphName } from '@/src/subgraph/subgraph'
@@ -14,6 +15,8 @@ import { BackendFileResponse } from '@/types/utils'
  * @param targetContract
  */
 export default function useBadgeById(badgeId: string, targetContract?: string) {
+  const { saveOnCacheIfMissing } = useSWRCacheUtils()
+
   // Safeguard to use the contract in the url
   // If this hooks run under a page that has the "contract" query params it must use it
   const { contract } = useBadgeIdParam()
@@ -37,10 +40,15 @@ export default function useBadgeById(badgeId: string, targetContract?: string) {
     const badgeMetadata = res[0] ? res[0].data.result?.content : null
     const badgeModelMetadata = res[1] ? res[1].data.result?.content : null
 
+    saveOnCacheIfMissing([`BadgeModel:${badgeModel.id}`, badgeModel.id, targetContract], {
+      badgeModel,
+      badgeModelMetadata,
+    })
+
     return {
       ...badge,
       badgeModel: {
-        ...badge.badgeModel,
+        ...badgeModel,
         badgeModelMetadata,
       },
       badgeMetadata,

@@ -74,6 +74,7 @@ export const Address: React.FC<Props> = ({
 }) => {
   const router = useRouter()
   const { getExplorerUrl } = useWeb3Connection()
+
   const [toastId, setToastId] = useState('')
   const { ensNameOrAddress, isEnsName } = useUserMetadata(address)
 

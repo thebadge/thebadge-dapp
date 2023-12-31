@@ -29,6 +29,7 @@ gql`
       }
       creator {
         id
+        metadataUri
       }
     }
     badgeKlerosMetaData {

@@ -1,4 +1,5 @@
 import axios, { AxiosError } from 'axios'
+import { stableHash } from 'swr/_internal'
 
 import { BACKEND_URL } from '@/src/constants/common'
 import { getCacheResponse, saveResponseOnCache } from '@/src/utils/cache'
@@ -66,4 +67,16 @@ export async function ssrGetContentFromIPFS<T, X = {}>(ipfsHash: string) {
     }
     return response.json().then() as unknown as BackendResponse<{ content: T } & X>
   })
+}
+
+export function stringifyKey(key: Array<string | undefined>): string {
+  // A stable hash implementation that supports:
+  // - Fast and ensures unique hash properties
+  // - Handles unserializable values
+  // - Handles object key ordering
+  // - Generates short results
+  //
+  // This is not a serialization function, and the result is not guaranteed to be
+  // parsable.
+  return stableHash(key)
 }

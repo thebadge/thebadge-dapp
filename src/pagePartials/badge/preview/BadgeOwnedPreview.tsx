@@ -90,7 +90,7 @@ export default function BadgeOwnedPreview() {
   const badgeModelName = badgeModel?.badgeModelMetadata?.name || ''
   const { readOnlyChainId } = useWeb3Connection()
 
-  const creatorMetadata = useUserMetadata(creator?.id, creator?.metadataUri || '')
+  const creatorMetadata = useUserMetadata(creator?.id, creator?.metadataUri || '', contract)
 
   if (!badge || !badgeModel) {
     return null
