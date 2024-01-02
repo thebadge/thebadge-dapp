@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import React, { RefObject, createRef, useState } from 'react'
+import React, { RefObject, createRef, useEffect, useState } from 'react'
 
 import { Stack, Typography } from '@mui/material'
 import { ButtonV2, colors } from '@thebadge/ui-library'
@@ -50,15 +50,24 @@ export default function ManageBadges() {
     },
     {
       title: t('badgeModelsList.filters.thirdParty'),
-      color: 'error',
+      color: 'green',
       key: 'thirdParty',
     },
     {
       title: t('badgeModelsList.filters.community'),
-      color: 'green',
+      color: 'pink',
       key: 'kleros',
     },
   ]
+
+  useEffect(() => {
+    // Automatic selects a badgeModel based on query params
+    if (router.query.modelId) {
+      const selectedModel = router.query.modelId
+      const modelIndex = badgeModels.findIndex((model) => model.id === selectedModel)
+      setSelectedBadgeModelIndex(modelIndex ? modelIndex : 0)
+    }
+  }, [badgeModels, router.query.modelId])
 
   const badgeModelsElementRefs: RefObject<HTMLLIElement>[] = badgeModels.map(() =>
     createRef<HTMLLIElement>(),
@@ -143,6 +152,13 @@ export default function ManageBadges() {
     )
   }
 
+  const selectBadgeModel = (modelId: string) => {
+    router.replace({
+      pathname: router.pathname,
+      query: { ...router.query, modelId },
+    })
+  }
+
   function renderBadgeModelItem(bt: BadgeModel, index: number) {
     const isSelected = bt.id === badgeModels[selectedBadgeModelIndex]?.id
     return (
@@ -152,14 +168,16 @@ export default function ManageBadges() {
         minWidth={180}
         onViewPortEnter={() => {
           if (isMobile) {
-            setSelectedBadgeModelIndex(index)
+            selectBadgeModel(bt.id)
           }
         }}
       >
         <SafeSuspense fallback={<MiniBadgePreviewLoading />}>
           <MiniBadgePreviewContainer
             highlightColor={colors.blue}
-            onClick={() => setSelectedBadgeModelIndex(index)}
+            onClick={() => {
+              selectBadgeModel(bt.id)
+            }}
             ref={badgeModelsElementRefs[index]}
             selected={isSelected}
           >

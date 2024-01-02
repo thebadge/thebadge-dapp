@@ -12,6 +12,7 @@ import { useContractInstance } from '@/src/hooks/useContractInstance'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { useSizeSM } from '@/src/hooks/useSize'
 import useTransaction from '@/src/hooks/useTransaction'
+import BadgeIdDisplay from '@/src/pagePartials/badge/explorer/addons/BadgeIdDisplay'
 import BadgeMintCost from '@/src/pagePartials/badge/explorer/addons/BadgeMintCost'
 import CreatorInfoSmallPreview from '@/src/pagePartials/badge/explorer/addons/CreatorInfoSmallPreview'
 import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
@@ -126,6 +127,11 @@ export default function BadgeModelInfoPreview({ badgeModel }: { badgeModel: Badg
   return (
     <Stack gap={4} mt={4}>
       {/* Badge Model info */}
+      <BadgeIdDisplay
+        id={badgeModel?.id}
+        isBadgeModel={true}
+        mintTxHash={badgeModel?.createdTxHash}
+      />
       <Stack gap={2}>
         <Typography variant="titleLarge">{badgeMetadata?.name}</Typography>
 
