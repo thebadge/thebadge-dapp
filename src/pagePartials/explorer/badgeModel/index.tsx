@@ -97,7 +97,7 @@ const ExploreBadgeModels: NextPageWithLayout = () => {
             selected={isSelected}
           >
             <MiniBadgeModelPreview
-              buttonTitle={t('explorer.button')}
+              controllerType={bt?.controllerType}
               disableAnimations
               highlightColor={colors.blue}
               metadata={bt.uri}

@@ -68,7 +68,7 @@ export default function InfoAbout({ address, readView }: Props) {
                     disabled={readView}
                     error={error}
                     onChange={onChange}
-                    placeholder={t('creator.register.form.contactData.website')}
+                    placeholder={t('creator.register.form.aboutData.website')}
                     variant="dAppTitle2"
                   >
                     {value && readView ? (
@@ -94,7 +94,7 @@ export default function InfoAbout({ address, readView }: Props) {
                     disabled={readView}
                     error={error}
                     onChange={onChange}
-                    placeholder={t('creator.register.form.contactData.email')}
+                    placeholder={t('creator.register.form.aboutData.email')}
                     variant="dAppTitle2"
                   >
                     {value && readView ? (

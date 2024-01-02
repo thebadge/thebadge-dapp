@@ -123,9 +123,10 @@ const CurateBadges: NextPageWithLayout = () => {
             )}
             <MiniBadgeModelPreview
               buttonTitle={t('curateExplorer.button')}
+              controllerType={badge?.badgeModel?.controllerType}
               disableAnimations
               highlightColor={getHighlightColorByStatus(badge.status)}
-              metadata={badge.badgeModel.uri}
+              metadata={badge?.badgeModel?.uri}
               onClick={() => setSelectedBadgeIndex(index)}
             />
           </MiniBadgePreviewContainer>

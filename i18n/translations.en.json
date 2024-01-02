@@ -123,7 +123,6 @@
     },
     "title": "Badge models explorer",
     "noBadgesFound": "There are no badges that match these filters...",
-    "button": "MINT",
     "preview": {
       "title": "Model information",
       "badge": {
@@ -133,7 +132,14 @@
         "depositCost": "Deposit cost:",
         "totalMinted": "Total minted amount:",
         "mint": "Mint",
+        "pause": "Archive",
+        "unpause": "Unarchive",
+        "edit": "Edit",
         "showOthers": "See minted badges",
+        "mintPausedTooltip": "This model is currently paused and cannot be minted.",
+        "archiveTooltip": "By archiving this model, it will become unavailable for minting.",
+        "unArchiveTooltip": "By unarchiving this model, it will become available again for minting.",
+        "buttonWip": "Function currently unavailable.",
         "thirdParty": {
           "showOthers": "See minted"
         }
@@ -216,7 +222,7 @@
     "thirdParty": {
       "title": "Management",
       "subtitle": "{{thirdPartyName}} Models Management",
-      "tab1": "Manage account",
+      "tab1": "Manage subscriptions",
       "tab2": "Manage badges",
       "manageBadges": {
         "title": "Manage third party badges"
@@ -648,6 +654,13 @@
       "minted": "Minted",
       "challenged": "Challenged",
       "inReview": "In Review"
+    }
+  },
+  "badgeModelsList": {
+    "filters": {
+      "paused": "Archived",
+      "thirdParty": "Third Party",
+      "community": "Community"
     }
   },
   "footer": {

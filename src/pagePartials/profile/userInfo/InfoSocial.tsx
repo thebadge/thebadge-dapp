@@ -15,7 +15,12 @@ import { useSizeSM } from '@/src/hooks/useSize'
 import useUserMetadata from '@/src/hooks/useUserMetadata'
 import { EditProfileSchemaType } from '@/src/pagePartials/creator/register/schema/CreatorRegisterSchema'
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
-import { generateGitHubUrl, getTwitterUrl, shortenLinkedinString } from '@/src/utils/strings'
+import {
+  extractGitHubUsername,
+  generateGitHubUrl,
+  getTwitterUrl,
+  shortenLinkedinString,
+} from '@/src/utils/strings'
 import { WCAddress } from '@/types/utils'
 
 const TextFieldContainer = styled(Box)(({ theme }) => ({
@@ -63,7 +68,7 @@ export default function InfoSocial({ address, readView }: Props) {
                     disabled={readView}
                     error={error}
                     onChange={onChange}
-                    placeholder={t('creator.register.form.contactData.twitter')}
+                    placeholder={t('creator.register.form.socialData.twitter')}
                     variant="dAppTitle2"
                   >
                     {value && readView ? (
@@ -90,7 +95,7 @@ export default function InfoSocial({ address, readView }: Props) {
                       disabled={readView}
                       error={error}
                       onChange={onChange}
-                      placeholder={t('creator.register.form.contactData.discord')}
+                      placeholder={t('creator.register.form.socialData.discord')}
                       variant="dAppTitle2"
                     >
                       {value && readView ? (
@@ -117,7 +122,7 @@ export default function InfoSocial({ address, readView }: Props) {
                     disabled={readView}
                     error={error}
                     onChange={onChange}
-                    placeholder={t('creator.register.form.contactData.companyUrl')}
+                    placeholder={t('creator.register.form.socialData.linkedin')}
                     variant="dAppTitle2"
                   >
                     {value && readView ? (
@@ -145,12 +150,12 @@ export default function InfoSocial({ address, readView }: Props) {
                     disabled={readView}
                     error={error}
                     onChange={onChange}
-                    placeholder={t('creator.register.form.contactData.github')}
+                    placeholder={t('creator.register.form.socialData.github')}
                     variant="dAppTitle2"
                   >
                     {value && readView ? (
                       <Link href={generateGitHubUrl(value)} target={'_blank'}>
-                        {shortenLinkedinString(value || '', 20)}
+                        {extractGitHubUsername(value || '')}
                       </Link>
                     ) : (
                       value
@@ -171,12 +176,12 @@ export default function InfoSocial({ address, readView }: Props) {
                     disabled={readView}
                     error={error}
                     onChange={onChange}
-                    placeholder={t('creator.register.form.contactData.telegram')}
+                    placeholder={t('creator.register.form.socialData.telegram')}
                     variant="dAppTitle2"
                   >
                     {value && readView ? (
                       <Link href={value} target={'_blank'}>
-                        {shortenLinkedinString(value || '', 20)}
+                        {value}
                       </Link>
                     ) : (
                       value

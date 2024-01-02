@@ -27,7 +27,7 @@ const CreateThirdPartyBadgeModel: NextPageWithLayout = () => {
   useEffect(() => {
     // Redirect to the profile
     if (transactionState === TransactionStates.success) {
-      router.push(generateProfileUrl({ address, profileType: ProfileType.THIRD_PARTY_PROFILE }))
+      router.push(generateProfileUrl({ address, profileType: ProfileType.MANAGEMENT_PROFILE }))
     }
   }, [router, transactionState, address])
 

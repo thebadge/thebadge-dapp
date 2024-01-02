@@ -90,9 +90,10 @@ const ExploreBadges = () => {
             selected={isSelected}
           >
             <MiniBadgeModelPreview
+              controllerType={bt?.badgeModel?.controllerType}
               disableAnimations
               highlightColor={colors.green}
-              metadata={bt.uri}
+              metadata={bt?.uri}
               onClick={() => router.push(viewUrl)}
             />
             <Box display="flex" flex="1" justifyContent="space-between">

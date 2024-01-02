@@ -65,6 +65,7 @@ export default function BadgesCreatedSection() {
     return (
       <StyledBadgeContainer highlightColor={colors.pink} key={badgeModel.id}>
         <MiniBadgeModelPreview
+          controllerType={badgeModel?.controllerType}
           disableAnimations
           highlightColor={colors.pink}
           metadata={badgeModel?.uri}
