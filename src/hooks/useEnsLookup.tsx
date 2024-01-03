@@ -1,7 +1,6 @@
 import { isAddress } from 'ethers/lib/utils'
 import useSWR from 'swr'
 import { createPublicClient, http } from 'viem'
-import { GetEnsAvatarReturnType } from 'viem/actions'
 import { Chain, goerli, mainnet, sepolia } from 'viem/chains'
 import { normalize } from 'viem/ens'
 
@@ -23,20 +22,6 @@ type EnsMetadata = {
   github: string | null
   telegram: string | null
 }
-
-type EnsLookupResult =
-  | {
-      ensNameOrAddress: string
-      isEnsName: boolean
-      avatar: null
-      metadata: null
-    }
-  | {
-      ensNameOrAddress: string
-      isEnsName: boolean
-      avatar: GetEnsAvatarReturnType
-      metadata: EnsMetadata
-    }
 
 const getChainForEnsLookup = (chainId: ChainsValues): Chain => {
   switch (chainId) {
