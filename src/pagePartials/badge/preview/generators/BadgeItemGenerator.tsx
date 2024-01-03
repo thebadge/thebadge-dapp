@@ -4,25 +4,33 @@ import { Skeleton, Stack } from '@mui/material'
 
 import { BadgePreviewLoading } from '@/src/components/common/BadgePreviewContainer'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
+import useBadgeIdParam from '@/src/hooks/nextjs/useBadgeIdParam'
+import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
 import { useBadgeThirdPartyRequiredData } from '@/src/hooks/subgraph/useBadgeModelThirdPartyMetadata'
 import useBadgeModelTemplate from '@/src/hooks/theBadge/useBadgeModelTemplate'
-import useBadgePreviewUrl from '@/src/hooks/theBadge/useBadgePreviewUrl'
 import { BadgeView } from '@/src/pagePartials/badge/preview/BadgeView'
 import DiplomaView from '@/src/pagePartials/badge/preview/DiplomaView'
 import { reCreateThirdPartyValuesObject } from '@/src/utils/badges/mintHelpers'
 import { BadgeModelTemplate } from '@/types/badges/BadgeModel'
-import { Badge } from '@/types/generated/subgraph'
 
 type BadgeItemProps = {
-  badge: Badge
+  badgeId: string
   onClick: VoidFunction
 }
-export default function BadgeItemGenerator({ badge, onClick }: BadgeItemProps) {
-  const badgeModel = badge?.badgeModel
-  const modelId = badgeModel?.id
-  const template = useBadgeModelTemplate(modelId)
-  const urlsData = useBadgePreviewUrl(badge.id, badge?.contractAddress)
-  const badgeUrl = urlsData.data?.shortPreviewUrl
+export default function BadgeItemGenerator({ badgeId, onClick }: BadgeItemProps) {
+  // Safeguard to use the contract in the url
+  // If this hooks run under a page that has the "contract" query params it must use it
+  const { contract } = useBadgeIdParam()
+  const badgeById = useBadgeById(badgeId, contract)
+
+  const badge = badgeById.data
+  if (!badge) {
+    throw 'There was an error fetching the badge, try again in some minutes.'
+  }
+  const modelId = badge.badgeModel.id
+
+  const template = useBadgeModelTemplate(modelId, contract)
+  const badgeUrl = badge.badgeMetadata.external_link
   const requiredBadgeDataMetadata = useBadgeThirdPartyRequiredData(
     `${badge.id}` || '',
     badge?.contractAddress,
@@ -35,9 +43,14 @@ export default function BadgeItemGenerator({ badge, onClick }: BadgeItemProps) {
   if (template === BadgeModelTemplate.Diploma) {
     return (
       <Stack
-        alignItems={'center'}
         onClick={onClick}
-        sx={{ cursor: 'pointer', width: '100%', maxWidth: 'calc(50% - 18px)' }}
+        sx={{
+          cursor: 'pointer',
+          flex: 2,
+          justifyContent: 'center',
+          display: 'flex',
+          alignSelf: 'center',
+        }}
       >
         <SafeSuspense
           fallback={
@@ -60,7 +73,13 @@ export default function BadgeItemGenerator({ badge, onClick }: BadgeItemProps) {
     <Stack
       alignItems={'center'}
       onClick={onClick}
-      sx={{ cursor: 'pointer', maxWidth: 'calc(25% - 18px)', width: '100%' }}
+      sx={{
+        cursor: 'pointer',
+        flex: 1,
+        justifyContent: 'center',
+        display: 'flex',
+        alignSelf: 'center',
+      }}
     >
       <SafeSuspense fallback={<BadgePreviewLoading />}>
         <BadgeView

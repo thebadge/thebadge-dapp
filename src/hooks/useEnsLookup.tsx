@@ -11,18 +11,6 @@ import { WCAddress } from '@/types/utils'
 
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
-type EnsMetadata = {
-  name: string | null
-  description: string | null
-  email: string | null
-  website: string | null
-  twitter: string | null
-  discord: string | null
-  linkedin: string | null
-  github: string | null
-  telegram: string | null
-}
-
 const getChainForEnsLookup = (chainId: ChainsValues): Chain => {
   switch (chainId) {
     // Returns mainnet because ens is not supported in polygon and gnosis

@@ -24,6 +24,10 @@ export async function getFromIPFS<T, X = NonNullable<unknown>>(hash?: string): P
   const etagCacheKey = `etag-${cleanedHash}`
   const url = `${BACKEND_URL}/api/ipfs/${cleanedHash}`
 
+  const cachedItem = getCacheResponse(itemCacheKey)
+  if (cachedItem) {
+    return cachedItem
+  }
   try {
     const etag = getCacheResponse(etagCacheKey)
     const headers = etag ? { 'If-None-Match': etag } : {}
@@ -40,12 +44,10 @@ export async function getFromIPFS<T, X = NonNullable<unknown>>(hash?: string): P
     // Handle 304 Not Modified response
     if ((error as AxiosError)?.response?.status === 304) {
       // Handle the case where the resource has not been modified
-      const cachedItem = getCacheResponse(itemCacheKey)
+      const cachedItem = getCacheResponse(itemCacheKey, true)
       if (cachedItem) {
         return cachedItem
       }
-      sessionStorage.removeItem(etagCacheKey)
-      sessionStorage.removeItem(itemCacheKey)
     }
 
     // Handle other errors

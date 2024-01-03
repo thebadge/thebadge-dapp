@@ -17,6 +17,7 @@ const Wrapper = styled('div')`
 type Props = {
   children: ReactElement
   fallback?: ReactElement
+  suspenseFallback?: ReactElement
   minHeight?: number
 }
 
@@ -24,9 +25,10 @@ const CheckStatus: React.FC<Props> = ({
   children,
   fallback = (
     <Stack justifyContent="center">
-      <Skeleton height={28} variant="rounded" width={100} />
+      <Skeleton height={28} variant="rounded" width={300} />
     </Stack>
   ),
+  suspenseFallback,
 }) => {
   const { data, error, isLoading } = useSubGraphStatus()
 
@@ -35,7 +37,7 @@ const CheckStatus: React.FC<Props> = ({
     return fallback
   }
 
-  return <SafeSuspense>{children}</SafeSuspense>
+  return <SafeSuspense fallback={suspenseFallback}>{children}</SafeSuspense>
 }
 
 export const PreventPageIfOutOfService: React.FC<Props> = ({ children }) => {
@@ -57,15 +59,14 @@ export const PreventPageIfOutOfService: React.FC<Props> = ({ children }) => {
 }
 
 export const PreventActionIfOutOfService: React.FC<Props> = ({ children }) => {
+  const fallback = (
+    <Stack justifyContent="center">
+      <Skeleton height={28} variant="rounded" width={300} />
+    </Stack>
+  )
   return (
-    <SafeSuspense
-      fallback={
-        <Stack justifyContent="center">
-          <Skeleton height={28} variant="rounded" width={100} />
-        </Stack>
-      }
-    >
-      <CheckStatus>{children}</CheckStatus>
+    <SafeSuspense fallback={fallback}>
+      <CheckStatus suspenseFallback={fallback}>{children}</CheckStatus>
     </SafeSuspense>
   )
 }
