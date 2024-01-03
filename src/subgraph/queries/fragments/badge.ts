@@ -2,38 +2,31 @@ import gql from 'graphql-tag'
 
 gql`
   fragment FullBadgeDetails on Badge {
+    claimedAt
+    claimedTxHash
+    contractAddress
+    createdAt
+    createdTxHash
     id
+    networkName
     status
     uri
     validUntil
-    createdTxHash
-    claimedTxHash
-    createdAt
-    claimedAt
-    contractAddress
     account {
       id
     }
     badgeModel {
-      id
-      uri
-      controllerType
-      creatorFee
-      validFor
-      badgesMintedAmount
-      contractAddress
-      createdTxHash
+      ...BadgeModel
       badgeModelKleros {
-        tcrList
-        challengePeriodDuration
-      }
-      creator {
-        id
-        metadataUri
+        ...BadgeModelKlerosMetadata
       }
     }
     badgeKlerosMetaData {
+      id
+      itemID
+      numberOfRequests
       reviewDueDate
+      tcrStatus
     }
   }
 `

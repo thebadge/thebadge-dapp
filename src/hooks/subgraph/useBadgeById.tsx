@@ -7,6 +7,7 @@ import { getFromIPFS } from '@/src/hooks/subgraph/utils'
 import { SubgraphName } from '@/src/subgraph/subgraph'
 import { BadgeMetadata, BadgeModelMetadata } from '@/types/badges/BadgeMetadata'
 import { BackendFileResponse } from '@/types/utils'
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
 /**
  * Hooks to wrap the getBadgeById graphql query, to take advantage of the SWR cache
@@ -16,6 +17,7 @@ import { BackendFileResponse } from '@/types/utils'
  */
 export default function useBadgeById(badgeId: string, targetContract?: string) {
   const { saveOnCacheIfMissing } = useSWRCacheUtils()
+  const { readOnlyChainId } = useWeb3Connection()
 
   // Safeguard to use the contract in the url
   // If this hooks run under a page that has the "contract" query params it must use it
@@ -40,10 +42,25 @@ export default function useBadgeById(badgeId: string, targetContract?: string) {
     const badgeMetadata = res[0] ? res[0].data.result?.content : null
     const badgeModelMetadata = res[1] ? res[1].data.result?.content : null
 
+    // Save Badge Model
     saveOnCacheIfMissing([`BadgeModel:${badgeModel.id}`, badgeModel.id, targetContract], {
       badgeModel,
       badgeModelMetadata,
     })
+    // Save Owner Account as user
+    saveOnCacheIfMissing(
+      [`user:${badge.account.id}`, badge.account.id, readOnlyChainId, targetContract],
+      {
+        ...badge.account,
+      },
+    )
+    // Creator Account as user
+    saveOnCacheIfMissing(
+      [`user:${badgeModel.creator.id}`, badgeModel.creator.id, readOnlyChainId, targetContract],
+      {
+        ...badgeModel.creator,
+      },
+    )
 
     return {
       ...badge,

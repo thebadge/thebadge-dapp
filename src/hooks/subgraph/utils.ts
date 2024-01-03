@@ -69,7 +69,7 @@ export async function ssrGetContentFromIPFS<T, X = {}>(ipfsHash: string) {
   })
 }
 
-export function stringifyKey(key: Array<string | undefined>): string {
+export function stringifyKey(key: Array<string | undefined | number>): string {
   // A stable hash implementation that supports:
   // - Fast and ensures unique hash properties
   // - Handles unserializable values
