@@ -9,7 +9,7 @@ import { AxiosResponse } from 'axios'
 export function getCacheResponse<T>(key: string, ignoreExpiration = false) {
   if (checkIfExistOnCache(key) || ignoreExpiration) {
     const item = JSON.parse(sessionStorage.getItem(key) as string)
-    if ('response' in item) return item.response as AxiosResponse<T>
+    if (item && 'response' in item) return item.response as AxiosResponse<T>
     else return null
   }
   return null

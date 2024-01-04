@@ -38,11 +38,13 @@ export default function useUserMetadata(
   targetContract?: string,
 ) {
   const { address: connectedWalletAddress } = useWeb3Connection()
+
   const owner = useUserById((address as WCAddress) || connectedWalletAddress, targetContract)
   const resCreatorMetadata = useS3Metadata<{ content: CreatorMetadata }>(
     metadataUri || owner.data?.metadataUri || '',
   )
   const ensMetadata = useEnsReverseLookup(address || connectedWalletAddress)
+
   const creatorMetadata = resCreatorMetadata.data?.content
   const ensMetadataResult = ensMetadata.data?.metadata
 

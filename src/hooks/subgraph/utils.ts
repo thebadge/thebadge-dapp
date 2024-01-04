@@ -24,12 +24,13 @@ export async function getFromIPFS<T, X = NonNullable<unknown>>(hash?: string): P
   const etagCacheKey = `etag-${cleanedHash}`
   const url = `${BACKEND_URL}/api/ipfs/${cleanedHash}`
 
+  // Get cached item as long as 15min
   const cachedItem = getCacheResponse(itemCacheKey)
   if (cachedItem) {
     return cachedItem
   }
   try {
-    const etag = getCacheResponse(etagCacheKey)
+    const etag = getCacheResponse(etagCacheKey, true)
     const headers = etag ? { 'If-None-Match': etag } : {}
     const backendResponse = await axios.get<BackendResponse<{ content: T } & X>>(url, {
       headers: headers as Record<string, string>,
@@ -45,6 +46,8 @@ export async function getFromIPFS<T, X = NonNullable<unknown>>(hash?: string): P
     if ((error as AxiosError)?.response?.status === 304) {
       // Handle the case where the resource has not been modified
       const cachedItem = getCacheResponse(itemCacheKey, true)
+      // Refresh expiration item on cache
+      saveResponseOnCache(itemCacheKey, cachedItem)
       if (cachedItem) {
         return cachedItem
       }
