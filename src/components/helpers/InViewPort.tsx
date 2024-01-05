@@ -34,10 +34,13 @@ export default function InViewPort({
   // If it has been rendered, the query was made, so we can safely render it
   // since the network call was already made
   const shouldDisplay = enterCount > 0 || inViewport
-  if (!minHeight && !minWidth) return <Box ref={elemRef}>{shouldDisplay ? children : fallback}</Box>
+  if (shouldDisplay) return children
+  if (!minHeight && !minWidth) {
+    return <Box ref={elemRef}>{fallback}</Box>
+  }
   return (
     <Stack minHeight={minHeight} minWidth={minWidth} position="relative" ref={elemRef}>
-      {shouldDisplay ? children : fallback}
+      {fallback}
     </Stack>
   )
 }

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Skeleton, Stack } from '@mui/material'
+import { Skeleton, Stack, styled } from '@mui/material'
 
 import { BadgePreviewLoading } from '@/src/components/common/BadgePreviewContainer'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
@@ -13,10 +13,31 @@ import DiplomaView from '@/src/pagePartials/badge/preview/DiplomaView'
 import { reCreateThirdPartyValuesObject } from '@/src/utils/badges/mintHelpers'
 import { BadgeModelTemplate } from '@/types/badges/BadgeModel'
 
+const DiplomaContainer = styled(Stack)(({ theme }) => ({
+  cursor: 'pointer',
+  flex: 2,
+  justifyContent: 'center',
+  display: 'flex',
+  alignSelf: 'center',
+  [theme.breakpoints.down(1040)]: {
+    alignItems: 'center',
+  },
+}))
+
+const BadgeContainer = styled(Stack)(() => ({
+  cursor: 'pointer',
+  flex: 1,
+  justifyContent: 'center',
+  display: 'flex',
+  alignSelf: 'center',
+  alignItems: 'center',
+}))
+
 type BadgeItemProps = {
   badgeId: string
   onClick: VoidFunction
 }
+
 export default function BadgeItemGenerator({ badgeId, onClick }: BadgeItemProps) {
   // Safeguard to use the contract in the url
   // If this hooks run under a page that has the "contract" query params it must use it
@@ -42,16 +63,7 @@ export default function BadgeItemGenerator({ badgeId, onClick }: BadgeItemProps)
 
   if (template === BadgeModelTemplate.Diploma) {
     return (
-      <Stack
-        onClick={onClick}
-        sx={{
-          cursor: 'pointer',
-          flex: 2,
-          justifyContent: 'center',
-          display: 'flex',
-          alignSelf: 'center',
-        }}
-      >
+      <DiplomaContainer onClick={onClick}>
         <SafeSuspense
           fallback={
             <Skeleton
@@ -65,22 +77,12 @@ export default function BadgeItemGenerator({ badgeId, onClick }: BadgeItemProps)
         >
           <DiplomaView additionalData={additionalData} badgeUrl={badgeUrl} modelId={modelId} />
         </SafeSuspense>
-      </Stack>
+      </DiplomaContainer>
     )
   }
 
   return (
-    <Stack
-      alignItems={'center'}
-      onClick={onClick}
-      sx={{
-        cursor: 'pointer',
-        flex: 1,
-        justifyContent: 'center',
-        display: 'flex',
-        alignSelf: 'center',
-      }}
-    >
+    <BadgeContainer onClick={onClick}>
       <SafeSuspense fallback={<BadgePreviewLoading />}>
         <BadgeView
           additionalData={additionalData}
@@ -89,6 +91,6 @@ export default function BadgeItemGenerator({ badgeId, onClick }: BadgeItemProps)
           size={'small'}
         />
       </SafeSuspense>
-    </Stack>
+    </BadgeContainer>
   )
 }
