@@ -19,8 +19,8 @@ import { useUserById } from '@/src/hooks/subgraph/useUserById'
 import useListItemNavigation from '@/src/hooks/useListItemNavigation'
 import { useSizeSM } from '@/src/hooks/useSize'
 import useUserMetadata from '@/src/hooks/useUserMetadata'
-import MiniBadgeModelPreview from '@/src/pagePartials/badge/MiniBadgeModelPreview'
 import ThirdPartyBadgeModelInfoPreview from '@/src/pagePartials/badge/explorer/ThirdPartyBadgeModelInfoPreview'
+import BadgeModelMiniPreview from '@/src/pagePartials/badge/miniPreview/BadgeModelMiniPreview'
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import { generateBadgeModelCreate } from '@/src/utils/navigation/generateUrl'
 import { BadgeModelControllerType } from '@/types/badges/BadgeModel'
@@ -107,7 +107,7 @@ export default function ManageBadges() {
             ref={badgeModelsElementRefs[index]}
             selected={isSelected}
           >
-            <MiniBadgeModelPreview
+            <BadgeModelMiniPreview
               buttonTitle={t('explorer.button')}
               disableAnimations
               highlightColor={colors.blue}

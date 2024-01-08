@@ -71,5 +71,12 @@ export function useBadgeThirdPartyRequiredData(
         requirementsDataColumns: requiredBadgeDataValues?.data.result?.content.columns,
       }
     },
+    {
+      // Fallback data, used in case of network error or loading time
+      fallbackData: {
+        requirementsDataValues: [],
+        requirementsDataColumns: [],
+      },
+    },
   )
 }

@@ -5,7 +5,7 @@ import { IconBadge, MiniBadgePreview, colors } from '@thebadge/ui-library'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { getBackgroundBadgeUrl } from '@/src/constants/backgrounds'
 import { useAvailableBackgrounds } from '@/src/hooks/useAvailableBackgrounds'
-import useS3Metadata from '@/src/hooks/useS3Metadata'
+import useS3Metadata, { DEFAULT_FALLBACK_CONTENT_METADATA } from '@/src/hooks/useS3Metadata'
 import { useColorMode } from '@/src/providers/themeProvider'
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import { getBackgroundType, getTextContrast } from '@/src/utils/badges/metadataHelpers'
@@ -20,16 +20,21 @@ type Props = {
   buttonTitle?: string
 }
 
-function MiniBadgeModelPreview({
+function BadgeModelMiniPreview({
   buttonTitle,
   disableAnimations,
   highlightColor,
   metadata,
   onClick,
 }: Props) {
-  const res = useS3Metadata<{ content: BadgeModelMetadata<BackendFileResponse> }>(metadata || '')
   const { mode } = useColorMode()
-  const badgeMetadata = res.data?.content
+  const { data } = useS3Metadata<{ content: BadgeModelMetadata<BackendFileResponse> }>(
+    metadata || '',
+    {
+      content: DEFAULT_FALLBACK_CONTENT_METADATA,
+    },
+  )
+  const badgeMetadata = data?.content
 
   const backgroundType = getBackgroundType(badgeMetadata?.attributes)
   const textContrast = getTextContrast(badgeMetadata?.attributes)
@@ -58,4 +63,4 @@ function MiniBadgeModelPreview({
   )
 }
 
-export default MiniBadgeModelPreview
+export default BadgeModelMiniPreview

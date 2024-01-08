@@ -6,7 +6,7 @@ import { ButtonV2, colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
-import useS3Metadata from '@/src/hooks/useS3Metadata'
+import useS3Metadata, { DEFAULT_FALLBACK_CONTENT_METADATA } from '@/src/hooks/useS3Metadata'
 import BadgeIdDisplay from '@/src/pagePartials/badge/explorer/addons/BadgeIdDisplay'
 import CreatorInfoSmallPreview from '@/src/pagePartials/badge/explorer/addons/CreatorInfoSmallPreview'
 import { generateMintUrl, generateModelExplorerUrl } from '@/src/utils/navigation/generateUrl'
@@ -21,7 +21,12 @@ export default function ThirdPartyBadgeModelInfoPreview({
   const { t } = useTranslation()
   const router = useRouter()
 
-  const resBadgeModelMetadata = useS3Metadata<{ content: BadgeModelMetadata }>(badgeModel.uri || '')
+  const resBadgeModelMetadata = useS3Metadata<{ content: BadgeModelMetadata }>(
+    badgeModel.uri || '',
+    {
+      content: DEFAULT_FALLBACK_CONTENT_METADATA,
+    },
+  )
   const badgeMetadata = resBadgeModelMetadata.data?.content
 
   return (

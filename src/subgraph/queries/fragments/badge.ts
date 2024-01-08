@@ -71,27 +71,11 @@ gql`
   fragment BadgeWithJustIds on Badge {
     id
     status
-    uri
-    createdTxHash
-    claimedTxHash
-    createdAt
-    claimedAt
     contractAddress
-    account {
-      id
-    }
     badgeModel {
       id
-      uri
       contractAddress
       controllerType
-      badgeModelKleros {
-        tcrList
-        registrationUri
-      }
-    }
-    badgeKlerosMetaData {
-      reviewDueDate
     }
   }
 `
