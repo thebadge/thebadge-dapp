@@ -99,19 +99,6 @@ gql`
 gql`
   fragment UserBadges on Badge {
     id
-    uri
-    status
     contractAddress
-    createdTxHash
-    claimedTxHash
-    createdAt
-    claimedAt
-    badgeModel {
-      id
-      contractAddress
-    }
-    badgeKlerosMetaData {
-      reviewDueDate
-    }
   }
 `

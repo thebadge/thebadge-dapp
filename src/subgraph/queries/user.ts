@@ -21,6 +21,7 @@ export const MY_BADGES = gql`
     user(id: $ownerAddress) {
       badges(where: $where) {
         id
+        contractAddress
       }
     }
   }
