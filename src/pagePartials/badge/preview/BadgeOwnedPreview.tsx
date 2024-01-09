@@ -83,10 +83,7 @@ export default function BadgeOwnedPreview() {
   const urlsData = useBadgePreviewUrl(badgeId, badge?.contractAddress)
   const previewUrls = urlsData.data
 
-  const requiredBadgeDataMetadata = useBadgeThirdPartyRequiredData(
-    `${badgeId}` || '',
-    badge?.contractAddress,
-  )
+  const requiredBadgeDataMetadata = useBadgeThirdPartyRequiredData(`${badgeId}` || '', contract)
   const badgeModelName = badgeModel?.badgeModelMetadata?.name || ''
   const { readOnlyChainId } = useWeb3Connection()
 

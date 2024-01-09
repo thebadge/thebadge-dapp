@@ -55,11 +55,9 @@ export default function BadgeItemGenerator({ badgeId, onClick }: BadgeItemProps)
 
   const template = useBadgeModelTemplate(modelId, contract)
   const badgeUrl = badge.badgeMetadata.external_link
-  const requiredBadgeDataMetadata = useBadgeThirdPartyRequiredData(
-    `${badge.id}` || '',
-    badge?.contractAddress,
-    { skip: !isThirdParty },
-  )
+  const requiredBadgeDataMetadata = useBadgeThirdPartyRequiredData(`${badge.id}` || '', contract, {
+    skip: !isThirdParty,
+  })
 
   const additionalData = reCreateThirdPartyValuesObject(
     requiredBadgeDataMetadata.data?.requirementsDataValues || {},

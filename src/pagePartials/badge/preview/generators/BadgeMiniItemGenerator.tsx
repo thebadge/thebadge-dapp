@@ -44,11 +44,9 @@ export default function BadgeMiniItemGenerator({ badgeId, onClick }: BadgeItemPr
 
   const template = useBadgeModelTemplate(modelId, contract)
 
-  const requiredBadgeDataMetadata = useBadgeThirdPartyRequiredData(
-    `${badge.id}` || '',
-    badge?.contractAddress,
-    { skip: !isThirdParty },
-  )
+  const requiredBadgeDataMetadata = useBadgeThirdPartyRequiredData(`${badge.id}` || '', contract, {
+    skip: !isThirdParty,
+  })
   const additionalData = reCreateThirdPartyValuesObject(
     requiredBadgeDataMetadata.data?.requirementsDataValues || {},
     requiredBadgeDataMetadata.data?.requirementsDataColumns,
