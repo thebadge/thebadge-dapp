@@ -23,7 +23,7 @@ type Props = {
   onClick?: () => void
   buttonTitle?: string
   additionalData?: Record<string, any>
-  controllerType?: BadgeModelControllerType
+  controllerType?: string
 }
 
 function BadgeMiniPreview({
