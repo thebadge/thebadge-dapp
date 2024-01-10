@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import React, { RefObject, createRef, useState } from 'react'
+import React, { RefObject, createRef, useEffect, useState } from 'react'
 
 import { Stack, Typography } from '@mui/material'
 import { ButtonV2, colors } from '@thebadge/ui-library'
@@ -19,12 +19,13 @@ import { useUserById } from '@/src/hooks/subgraph/useUserById'
 import useListItemNavigation from '@/src/hooks/useListItemNavigation'
 import { useSizeSM } from '@/src/hooks/useSize'
 import useUserMetadata from '@/src/hooks/useUserMetadata'
+import BadgeModelInfoPreview from '@/src/pagePartials/badge/explorer/BadgeModelInfoPreview'
 import ThirdPartyBadgeModelInfoPreview from '@/src/pagePartials/badge/explorer/ThirdPartyBadgeModelInfoPreview'
 import BadgeModelMiniPreview from '@/src/pagePartials/badge/miniPreview/BadgeModelMiniPreview'
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import { generateBadgeModelCreate } from '@/src/utils/navigation/generateUrl'
 import { BadgeModelControllerType } from '@/types/badges/BadgeModel'
-import { BadgeModel } from '@/types/generated/subgraph'
+import { BadgeModel, BadgeModel_Filter, BadgeModel_OrderBy } from '@/types/generated/subgraph'
 
 export default function ManageBadges() {
   const { t } = useTranslation()
@@ -39,6 +40,35 @@ export default function ManageBadges() {
   const creatorMetadata = useUserMetadata(address, data?.metadataUri || '')
   const router = useRouter()
 
+  const filters: Array<ListFilter<string | boolean>> = [
+    {
+      title: t('badgeModelsList.filters.paused'),
+      color: 'blue',
+      defaultSelected: false,
+      key: BadgeModel_OrderBy.Paused,
+      filterType: 'Switch',
+    },
+    {
+      title: t('badgeModelsList.filters.thirdParty'),
+      color: 'green',
+      key: 'thirdParty',
+    },
+    {
+      title: t('badgeModelsList.filters.community'),
+      color: 'pink',
+      key: 'kleros',
+    },
+  ]
+
+  useEffect(() => {
+    // Automatic selects a badgeModel based on query params
+    if (router.query.modelId) {
+      const selectedModel = router.query.modelId
+      const modelIndex = badgeModels.findIndex((model) => model.id === selectedModel)
+      setSelectedBadgeModelIndex(modelIndex ? modelIndex : 0)
+    }
+  }, [badgeModels, router.query.modelId])
+
   const badgeModelsElementRefs: RefObject<HTMLLIElement>[] = badgeModels.map(() =>
     createRef<HTMLLIElement>(),
   )
@@ -48,28 +78,57 @@ export default function ManageBadges() {
     badgeModelsElementRefs,
     selectedBadgeModelIndex,
     badgeModels.length,
+    false,
   )
 
   const search = async (
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     selectedFilters: Array<ListFilter>,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     selectedCategory: string,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     textSearch?: string,
   ) => {
+    if (!address) return null
     setLoading(true)
 
-    if (!address) return null
+    let where: BadgeModel_Filter = {}
+    if (!selectedFilters.length) {
+      where = {
+        paused: false,
+      }
+    }
+    if (selectedFilters.length > 0) {
+      const controllerTypes = selectedFilters
+        .filter((filter) => filter.key !== BadgeModel_OrderBy.Paused)
+        .map((filter) => filter.key)
 
-    const badgeModels = await gql.thirdPartyBadgeModelByCreatorId({ creatorId: address })
-    const badges = (badgeModels.badgeModels as BadgeModel[]) || []
+      const pausedFilter = !!selectedFilters.find(
+        (filter) => filter.key === BadgeModel_OrderBy.Paused,
+      )
 
-    setTimeout(() => {
-      setLoading(false)
-      setBadgeModels(badges)
-      setSelectedBadgeModelIndex(0)
-    }, 2000)
+      if (pausedFilter) {
+        where = {
+          paused: pausedFilter,
+        }
+      }
+      if (controllerTypes.length) {
+        where = {
+          ...where,
+          controllerType_in: controllerTypes as Array<BadgeModel_OrderBy>,
+        }
+      }
+    }
+
+    const badgeModels = await gql.badgeModelsWithFilters({
+      creatorId: address,
+      where,
+    })
+
+    const selectedBadgeModels = (badgeModels.user?.createdBadgeModels as BadgeModel[]) || []
+
+    setLoading(false)
+    setBadgeModels(selectedBadgeModels)
+    setSelectedBadgeModelIndex(0)
   }
 
   function renderSelectedBadgePreview() {
@@ -82,9 +141,20 @@ export default function ManageBadges() {
         onSelectPrevious={selectPrevious}
         title={t('explorer.preview.title')}
       >
-        <ThirdPartyBadgeModelInfoPreview badgeModel={selectedBadgeModel} />
+        {selectedBadgeModel.controllerType === BadgeModelControllerType.Community ? (
+          <BadgeModelInfoPreview badgeModel={selectedBadgeModel} />
+        ) : (
+          <ThirdPartyBadgeModelInfoPreview badgeModel={selectedBadgeModel} />
+        )}
       </SelectedItemPreviewWrapper>
     )
+  }
+
+  const selectBadgeModel = (modelId: string) => {
+    router.replace({
+      pathname: router.pathname,
+      query: { ...router.query, modelId },
+    })
   }
 
   function renderBadgeModelItem(bt: BadgeModel, index: number) {
@@ -96,19 +166,21 @@ export default function ManageBadges() {
         minWidth={180}
         onViewPortEnter={() => {
           if (isMobile) {
-            setSelectedBadgeModelIndex(index)
+            selectBadgeModel(bt.id)
           }
         }}
       >
         <SafeSuspense fallback={<MiniBadgePreviewLoading />}>
           <MiniBadgePreviewContainer
             highlightColor={colors.blue}
-            onClick={() => setSelectedBadgeModelIndex(index)}
+            onClick={() => {
+              selectBadgeModel(bt.id)
+            }}
             ref={badgeModelsElementRefs[index]}
             selected={isSelected}
           >
             <BadgeModelMiniPreview
-              buttonTitle={t('explorer.button')}
+              controllerType={bt.controllerType}
               disableAnimations
               highlightColor={colors.blue}
               metadata={bt.uri}
@@ -141,6 +213,7 @@ export default function ManageBadges() {
   return (
     <>
       <FilteredList
+        filters={filters}
         items={generateListItems()}
         loading={loading}
         loadingColor={'blue'}

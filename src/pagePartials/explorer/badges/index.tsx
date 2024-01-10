@@ -20,7 +20,6 @@ import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { shuffleBadges } from '@/src/components/utils/sortBadgeList'
 import { APP_URL } from '@/src/constants/common'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
-import { useSizeSM } from '@/src/hooks/useSize'
 import BadgeMiniItemGenerator from '@/src/pagePartials/badge/preview/generators/BadgeMiniItemGenerator'
 import { handleShare } from '@/src/utils/badges/viewUtils'
 import { generateBadgePreviewUrl, generateMintUrl } from '@/src/utils/navigation/generateUrl'
@@ -33,12 +32,10 @@ const ExploreBadges = () => {
   const { t } = useTranslation()
   const gql = useSubgraph()
   const router = useRouter()
-  const isMobile = useSizeSM()
 
   const { readOnlyChainId } = useWeb3Connection()
   const [badges, setBadges] = useState<Badge[]>([])
   const [loading, setLoading] = useState<boolean>(false)
-  const [selectedBadge, setSelectedBadge] = useState<number>(0)
 
   const badgeElementRefs: RefObject<HTMLLIElement>[] = badges.map(() => createRef<HTMLLIElement>())
 
@@ -66,7 +63,6 @@ const ExploreBadges = () => {
   )
 
   function renderBadgeItem(badge: Badge, index: number) {
-    const isSelected = badge.id === badges[selectedBadge]?.id
     const mintUrl = generateMintUrl(badge.badgeModel.controllerType, badge.badgeModel.id)
     const viewUrl = generateBadgePreviewUrl(badge.id, {
       theBadgeContractAddress: badge.contractAddress,
@@ -74,25 +70,11 @@ const ExploreBadges = () => {
     })
     const isThirdParty = badge.badgeModel.controllerType === BadgeModelControllerType.ThirdParty
     return (
-      <InViewPort
-        key={badge.id}
-        minHeight={300}
-        minWidth={180}
-        onViewPortEnter={() => {
-          if (isMobile) {
-            setSelectedBadge(index)
-          }
-        }}
-      >
-        <MiniBadgePreviewContainer
-          highlightColor={colors.green}
-          onClick={() => setSelectedBadge(index)}
-          ref={badgeElementRefs[index]}
-          selected={isSelected}
-        >
+      <InViewPort key={badge.id} minHeight={300} minWidth={180}>
+        <MiniBadgePreviewContainer highlightColor={colors.green} ref={badgeElementRefs[index]}>
           <SafeSuspense
-            fallback={<MiniBadgePreviewLoading />}
-            onErrorFallback={() => <MiniBadgePreviewLoading />}
+            fallback={<MiniBadgePreviewLoading height={275} />}
+            onErrorFallback={() => <MiniBadgePreviewLoading height={275} />}
           >
             <BadgeMiniItemGenerator badgeId={badge.id} onClick={() => router.push(viewUrl)} />
           </SafeSuspense>

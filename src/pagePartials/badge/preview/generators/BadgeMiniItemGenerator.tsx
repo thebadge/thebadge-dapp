@@ -62,6 +62,7 @@ export default function BadgeMiniItemGenerator({ badgeId, onClick }: BadgeItemPr
         <BadgeMiniPreview
           additionalData={additionalData}
           badgeModelMetadata={badge.badgeModel.uri}
+          controllerType={badge.badgeModel.controllerType}
           disableAnimations
           highlightColor={colors.green}
           onClick={onClick}

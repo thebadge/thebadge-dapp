@@ -121,6 +121,7 @@ export default function BadgesIAmReviewingSection() {
             selected={isSelected}
           >
             <BadgeModelMiniPreview
+              controllerType={badge?.badgeModel?.controllerType}
               disableAnimations
               highlightColor={colors.purple}
               metadata={badge.badgeModel?.uri}

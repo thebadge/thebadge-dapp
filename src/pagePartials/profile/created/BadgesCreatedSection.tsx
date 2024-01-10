@@ -14,6 +14,8 @@ import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import BadgeModelMiniPreview from '@/src/pagePartials/badge/miniPreview/BadgeModelMiniPreview'
 import { RegistrationRequired } from '@/src/pagePartials/errors/requiresCreatorAccess'
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
+import { ManagementProfileFilter } from '@/src/pagePartials/profile/ManagementProfile'
+import { ProfileType } from '@/src/pagePartials/profile/ProfileSelector'
 import { generateBadgeModelCreate } from '@/src/utils/navigation/generateUrl'
 import { BadgeModel } from '@/types/generated/subgraph'
 
@@ -65,9 +67,25 @@ export default function BadgesCreatedSection() {
     return (
       <StyledBadgeContainer highlightColor={colors.pink} key={badgeModel.id}>
         <BadgeModelMiniPreview
+          controllerType={badgeModel?.controllerType}
           disableAnimations
           highlightColor={colors.pink}
           metadata={badgeModel?.uri}
+          onClick={() => {
+            const creator = badgeModel.creator.id
+            // Redirects to management tab only if the current user is the creator of that model
+            if (creator.toLowerCase() === address?.toLowerCase()) {
+              router.push({
+                pathname: router.pathname,
+                query: {
+                  ...router.query,
+                  profileType: ProfileType.MANAGEMENT_PROFILE,
+                  filter: ManagementProfileFilter.MANAGE_BADGES,
+                  modelId: badgeModel.id,
+                },
+              })
+            }
+          }}
         />
         <Box id="badge-info">
           <Typography variant="body4">
