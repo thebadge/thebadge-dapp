@@ -57,7 +57,6 @@ const ExploreBadges = () => {
 
       setLoading(false)
       setBadges(shuffledBadges)
-      setSelectedBadge(0)
     },
     [gql],
   )
