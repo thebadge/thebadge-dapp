@@ -3,6 +3,7 @@ import * as React from 'react'
 import { BadgePreview } from '@thebadge/ui-library'
 
 import { getBackgroundBadgeUrl } from '@/src/constants/backgrounds'
+import useBadgeIdParam from '@/src/hooks/nextjs/useBadgeIdParam'
 import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
 import { useAvailableBackgrounds } from '@/src/hooks/useAvailableBackgrounds'
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
@@ -24,7 +25,9 @@ export const BadgeView = ({
   modelId,
   size = 'medium',
 }: BadgePreviewGeneratorProps) => {
-  const badgeModelData = useBadgeModel(modelId)
+  const { contract } = useBadgeIdParam()
+
+  const badgeModelData = useBadgeModel(modelId, contract)
   const badgeModelMetadata = badgeModelData.data?.badgeModelMetadata
   const badgeLogoImage = badgeModelData.data?.badgeModelMetadata?.image
   const { address, readOnlyChainId } = useWeb3Connection()

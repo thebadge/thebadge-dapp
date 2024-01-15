@@ -7,6 +7,7 @@ import { useTranslation } from 'next-export-i18n'
 
 import { NoResultsAnimated } from '@/src/components/assets/animated/NoResults'
 import FilteredList, { ListFilter } from '@/src/components/helpers/FilteredList'
+import InViewPort from '@/src/components/helpers/InViewPort'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import BadgeItemGenerator from '@/src/pagePartials/badge/preview/generators/BadgeItemGenerator'
@@ -85,7 +86,9 @@ export default function BadgesYouOwnList({ address }: Props) {
   function generateListItems() {
     if (ownBadges.length > 0) {
       return ownBadges.map((badge) => (
-        <BadgeItemGenerator badge={badge} key={badge.id} onClick={onBadgeClick(badge)} />
+        <InViewPort key={badge.id}>
+          <BadgeItemGenerator badgeId={badge.id} key={badge.id} onClick={onBadgeClick(badge)} />
+        </InViewPort>
       ))
     }
     return [

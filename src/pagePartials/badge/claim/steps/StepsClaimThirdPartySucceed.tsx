@@ -33,7 +33,7 @@ export default function StepsClaimThirdPartySucceed({
 
   const { data } = useBadgeModel(modelId)
 
-  const requiredBadgeDataMetadata = useBadgeThirdPartyRequiredData(`${badgeId}` || '')
+  const requiredBadgeDataMetadata = useBadgeThirdPartyRequiredData(`${badgeId}` || '', contract)
   const urlsData = useBadgePreviewUrl(badgeId, contract)
   const previewUrls = urlsData.data
   const values = reCreateThirdPartyValuesObject(

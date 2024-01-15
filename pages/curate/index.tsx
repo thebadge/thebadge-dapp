@@ -16,9 +16,9 @@ import SafeSuspense, { withPageGenericSuspense } from '@/src/components/helpers/
 import { ADDRESS_PREFIX, nowInSeconds } from '@/src/constants/helpers'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import useListItemNavigation from '@/src/hooks/useListItemNavigation'
-import MiniBadgeModelPreview from '@/src/pagePartials/badge/MiniBadgeModelPreview'
 import BadgeEvidenceInfoPreview from '@/src/pagePartials/badge/explorer/BadgeEvidenceInfoPreview'
 import TimeLeftDisplay from '@/src/pagePartials/badge/explorer/addons/TimeLeftDisplay'
+import BadgeModelMiniPreview from '@/src/pagePartials/badge/miniPreview/BadgeModelMiniPreview'
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import getHighlightColorByStatus from '@/src/utils/badges/getHighlightColorByStatus'
 import { Badge, BadgeStatus } from '@/types/generated/subgraph'
@@ -121,7 +121,7 @@ const CurateBadges: NextPageWithLayout = () => {
                 />
               </TimeLeftContainer>
             )}
-            <MiniBadgeModelPreview
+            <BadgeModelMiniPreview
               buttonTitle={t('curateExplorer.button')}
               controllerType={badge?.badgeModel?.controllerType}
               disableAnimations

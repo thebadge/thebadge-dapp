@@ -9,7 +9,7 @@ import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { useIsBadgeModelOwner } from '@/src/hooks/subgraph/useIsBadgeOwner'
 import useTBStore from '@/src/hooks/theBadge/useTBStore'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
-import useS3Metadata from '@/src/hooks/useS3Metadata'
+import useS3Metadata, { DEFAULT_FALLBACK_CONTENT_METADATA } from '@/src/hooks/useS3Metadata'
 import { useSizeSM } from '@/src/hooks/useSize'
 import useTransaction from '@/src/hooks/useTransaction'
 import BadgeIdDisplay from '@/src/pagePartials/badge/explorer/addons/BadgeIdDisplay'
@@ -26,14 +26,21 @@ export default function BadgeModelInfoPreview({ badgeModel }: { badgeModel: Badg
   const router = useRouter()
   const isMobile = useSizeSM()
   const { address } = useWeb3Connection()
-  const resBadgeModelMetadata = useS3Metadata<{ content: BadgeModelMetadata }>(badgeModel.uri || '')
-  const badgeMetadata = resBadgeModelMetadata.data?.content
-  const isBadgeOwner = useIsBadgeModelOwner(badgeModel.id, address)
-  const theBadgeModels = useContractInstance(TheBadgeModels__factory, 'TheBadgeModels')
   const theBadgeStore = useTBStore()
   const { sendTx } = useTransaction()
+
   const [disabledButtons, setDisabledButtons] = useState(false)
   const [disableMint, setDisabledMint] = useState(false)
+
+  const isBadgeOwner = useIsBadgeModelOwner(badgeModel.id, address)
+  const theBadgeModels = useContractInstance(TheBadgeModels__factory, 'TheBadgeModels')
+  const resBadgeModelMetadata = useS3Metadata<{ content: BadgeModelMetadata }>(
+    badgeModel.uri || '',
+    {
+      content: DEFAULT_FALLBACK_CONTENT_METADATA,
+    },
+  )
+  const badgeMetadata = resBadgeModelMetadata.data?.content
 
   useEffect(() => {
     if (badgeModel.paused) {

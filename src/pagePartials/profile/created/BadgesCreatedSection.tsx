@@ -11,7 +11,7 @@ import { NoResultsAnimated } from '@/src/components/assets/animated/NoResults'
 import { MiniBadgePreviewContainer } from '@/src/components/common/MiniBadgePreviewContainer'
 import FilteredList, { ListFilter } from '@/src/components/helpers/FilteredList'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
-import MiniBadgeModelPreview from '@/src/pagePartials/badge/MiniBadgeModelPreview'
+import BadgeModelMiniPreview from '@/src/pagePartials/badge/miniPreview/BadgeModelMiniPreview'
 import { RegistrationRequired } from '@/src/pagePartials/errors/requiresCreatorAccess'
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import { ManagementProfileFilter } from '@/src/pagePartials/profile/ManagementProfile'
@@ -66,7 +66,7 @@ export default function BadgesCreatedSection() {
   function renderCreatedBadgeItem(badgeModel: BadgeModel) {
     return (
       <StyledBadgeContainer highlightColor={colors.pink} key={badgeModel.id}>
-        <MiniBadgeModelPreview
+        <BadgeModelMiniPreview
           controllerType={badgeModel?.controllerType}
           disableAnimations
           highlightColor={colors.pink}

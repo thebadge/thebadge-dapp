@@ -135,22 +135,7 @@ export const BADGE_BY_DISPUTE_ID = gql`
     klerosBadgeRequests(where: { disputeID: $disputeId }) {
       badgeKlerosMetaData {
         badge {
-          id
-          uri
-          validUntil
-          createdTxHash
-          createdAt
-          claimedAt
-          contractAddress
-          badgeModel {
-            id
-            uri
-            contractAddress
-            badgeModelKleros {
-              removalUri
-              registrationUri
-            }
-          }
+          ...FullBadgeDetails
         }
       }
       requester

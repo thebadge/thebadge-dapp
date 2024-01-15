@@ -19,9 +19,9 @@ import { useUserById } from '@/src/hooks/subgraph/useUserById'
 import useListItemNavigation from '@/src/hooks/useListItemNavigation'
 import { useSizeSM } from '@/src/hooks/useSize'
 import useUserMetadata from '@/src/hooks/useUserMetadata'
-import MiniBadgeModelPreview from '@/src/pagePartials/badge/MiniBadgeModelPreview'
 import BadgeModelInfoPreview from '@/src/pagePartials/badge/explorer/BadgeModelInfoPreview'
 import ThirdPartyBadgeModelInfoPreview from '@/src/pagePartials/badge/explorer/ThirdPartyBadgeModelInfoPreview'
+import BadgeModelMiniPreview from '@/src/pagePartials/badge/miniPreview/BadgeModelMiniPreview'
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import { generateBadgeModelCreate } from '@/src/utils/navigation/generateUrl'
 import { BadgeModelControllerType } from '@/types/badges/BadgeModel'
@@ -126,11 +126,9 @@ export default function ManageBadges() {
 
     const selectedBadgeModels = (badgeModels.user?.createdBadgeModels as BadgeModel[]) || []
 
-    setTimeout(() => {
-      setLoading(false)
-      setBadgeModels(selectedBadgeModels)
-      setSelectedBadgeModelIndex(0)
-    }, 2000)
+    setLoading(false)
+    setBadgeModels(selectedBadgeModels)
+    setSelectedBadgeModelIndex(0)
   }
 
   function renderSelectedBadgePreview() {
@@ -181,7 +179,7 @@ export default function ManageBadges() {
             ref={badgeModelsElementRefs[index]}
             selected={isSelected}
           >
-            <MiniBadgeModelPreview
+            <BadgeModelMiniPreview
               controllerType={bt.controllerType}
               disableAnimations
               highlightColor={colors.blue}

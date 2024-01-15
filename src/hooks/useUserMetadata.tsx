@@ -30,14 +30,21 @@ export type UserMetadata = {
  * re-fetched twice after the user close the app, this should be fine, si it's a IFS File.
  * @param metadataUri
  * @param address
+ * @param targetContract
  */
-export default function useUserMetadata(address?: WCAddress | string, metadataUri?: string) {
+export default function useUserMetadata(
+  address?: WCAddress | string,
+  metadataUri?: string,
+  targetContract?: string,
+) {
   const { address: connectedWalletAddress } = useWeb3Connection()
-  const owner = useUserById((address as WCAddress) || connectedWalletAddress)
+
+  const owner = useUserById((address as WCAddress) || connectedWalletAddress, targetContract)
   const resCreatorMetadata = useS3Metadata<{ content: CreatorMetadata }>(
     metadataUri || owner.data?.metadataUri || '',
   )
   const ensMetadata = useEnsReverseLookup(address || connectedWalletAddress)
+
   const creatorMetadata = resCreatorMetadata.data?.content
   const ensMetadataResult = ensMetadata.data?.metadata
 

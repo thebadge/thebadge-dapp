@@ -99,8 +99,8 @@ export default function FilteredList({
 
   useEffect(() => {
     if (!initialLoadDone) {
-      onSearch()
       setInitialLoadDone(true)
+      onSearch()
     }
   }, [initialLoadDone, onSearch])
 
@@ -111,7 +111,9 @@ export default function FilteredList({
 
   useEffect(() => {
     // Not the best, but it's working... Feel free to recommend something better
-    refresh()
+    if (initialLoadDone) {
+      refresh()
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [appChainId])
 

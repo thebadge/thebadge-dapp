@@ -20,7 +20,7 @@ export const StepClaimThirdPartyPreview = () => {
   const { address, chainId } = parsePrefixedAddress(contract)
   const urlsData = useBadgePreviewUrl(badgeId, address, chainId)
   const previewUrls = urlsData.data
-  const requiredBadgeDataMetadata = useBadgeThirdPartyRequiredData(`${badgeId}` || '')
+  const requiredBadgeDataMetadata = useBadgeThirdPartyRequiredData(`${badgeId}` || '', contract)
 
   const values = reCreateThirdPartyValuesObject(
     requiredBadgeDataMetadata.data?.requirementsDataValues || {},
