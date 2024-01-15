@@ -1,10 +1,28 @@
 import axios, { AxiosError } from 'axios'
+import DataLoader, { BatchLoadFn } from 'dataloader'
 import { stableHash } from 'swr/_internal'
 
 import { BACKEND_URL } from '@/src/constants/common'
 import { getCacheResponse, saveResponseOnCache } from '@/src/utils/cache'
 import { cleanHash } from '@/src/utils/fileUtils'
 import { BackendResponse } from '@/types/utils'
+
+/**
+ * This function takes an array of collapsed requests makes a batch call and return an array of responses
+ * @param keys
+ */
+const fetcher: BatchLoadFn<string, BackendResponse<{ content: any } & any>> = async (ipsHashes) => {
+  const url = `${BACKEND_URL}/api/ipfs/retrieveBatchFromIpfs`
+  const backendResponse = await axios.post<[BackendResponse<{ content: any } & any>]>(url, {
+    ipsHashes,
+  })
+  return backendResponse.data
+}
+
+const IPFSLoader = new DataLoader(fetcher, {
+  maxBatchSize: 10,
+  batchScheduleFn: (callback) => setTimeout(callback, 50),
+})
 
 /**
  * Retrieves data from the (IPFS) based on the given hash, using our own backend.
@@ -21,8 +39,7 @@ export async function getFromIPFS<T, X = NonNullable<unknown>>(hash?: string): P
     return
   }
   const itemCacheKey = cleanedHash
-  const etagCacheKey = `etag-${cleanedHash}`
-  const url = `${BACKEND_URL}/api/ipfs/${cleanedHash}`
+  // const etagCacheKey = `etag-${cleanedHash}`
 
   // Get cached item as long as 15min
   const cachedItem = getCacheResponse(itemCacheKey)
@@ -30,16 +47,19 @@ export async function getFromIPFS<T, X = NonNullable<unknown>>(hash?: string): P
     return cachedItem
   }
   try {
-    const etag = getCacheResponse(etagCacheKey, true)
-    const headers = etag ? { 'If-None-Match': etag } : {}
-    const backendResponse = await axios.get<BackendResponse<{ content: T } & X>>(url, {
-      headers: headers as Record<string, string>,
-    })
-    if (!backendResponse.data) return backendResponse
+    // const etag = getCacheResponse(etagCacheKey, true)
+    // const headers = etag ? { 'If-None-Match': etag } : {}
+    const backendResponse: BackendResponse<{ content: T } & X> = await IPFSLoader.load(cleanedHash)
+    // Check if it's a valid response or an error
+    if (!backendResponse) {
+      /* determine if the error should not be cached */
+      IPFSLoader.clear(cleanedHash)
+      return backendResponse
+    }
 
     // If the response has something on it, we store it on cache
     saveResponseOnCache(itemCacheKey, backendResponse)
-    saveResponseOnCache(etagCacheKey, backendResponse.headers.etag)
+    // saveResponseOnCache(etagCacheKey, backendResponse.headers.etag)
     return backendResponse
   } catch (error) {
     // Handle 304 Not Modified response

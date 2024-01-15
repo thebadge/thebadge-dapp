@@ -39,8 +39,8 @@ export default function useBadgeById(badgeId: string, targetContract?: string) {
       getFromIPFS<BadgeModelMetadata<BackendFileResponse>>(badgeModel?.uri),
     ])
 
-    const badgeMetadata = res[0] ? res[0].data.result?.content : null
-    const badgeModelMetadata = res[1] ? res[1].data.result?.content : null
+    const badgeMetadata = res[0] ? res[0].result?.content : null
+    const badgeModelMetadata = res[1] ? res[1].result?.content : null
 
     // Save Badge Model
     saveOnCacheIfMissing([`BadgeModel:${badgeModel.id}`, badgeModel.id, targetContract], {

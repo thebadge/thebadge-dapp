@@ -37,7 +37,7 @@ export default function useBadgeModel(id: string, targetContract?: string) {
 
       const res = await getFromIPFS<BadgeModelMetadata<BackendFileResponse>>(badgeModel?.uri)
 
-      const badgeModelMetadata = res ? res.data.result?.content : null
+      const badgeModelMetadata = res ? res.result?.content : null
 
       // Creator Account as user
       saveOnCacheIfMissing(

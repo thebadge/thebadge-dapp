@@ -36,7 +36,7 @@ export function useBadgeModelThirdPartyMetadata(
 
       return {
         ...data,
-        requirementsData: requiredBadgeDataMetadata?.data.result?.content,
+        requirementsData: requiredBadgeDataMetadata?.result?.content,
       }
     },
   )
@@ -67,8 +67,8 @@ export function useBadgeThirdPartyRequiredData(
 
       return {
         ...data,
-        requirementsDataValues: requiredBadgeDataValues?.data.result?.content.values,
-        requirementsDataColumns: requiredBadgeDataValues?.data.result?.content.columns,
+        requirementsDataValues: requiredBadgeDataValues?.result?.content.values,
+        requirementsDataColumns: requiredBadgeDataValues?.result?.content.columns,
       }
     },
     {

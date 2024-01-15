@@ -16,7 +16,7 @@ export default function useS3Metadata<T>(hash: string, fallbackData?: any) {
       const cleanedHash = cleanHash(_hash as string)
 
       const res = await getFromIPFS<T>(cleanedHash)
-      return res.data.result
+      return res.result
     },
     { fallbackData },
   )
