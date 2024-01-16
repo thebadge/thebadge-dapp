@@ -24,6 +24,7 @@ import {
   BadgeNFTAttributesType,
   ClassicBadgeFieldsConfig,
   DiplomaFooterConfig,
+  DiplomaHeaderConfig,
   DiplomaIssuerConfig,
   DiplomaNFTAttributesType,
   DiplomaSignatureConfig,
@@ -170,7 +171,18 @@ async function createAndUploadDiplomaBadgeModelMetadata(
     }),
   )
 
-  const [signatureConfig, issuerConfig, footerConfig] = await Promise.all(configsToUpload)
+  configsToUpload.push(
+    await ipfsUpload<DiplomaHeaderConfig>({
+      attributes: {
+        headerLogo: rest.headerLogo || '',
+      },
+      filePaths: rest.headerLogo ? ['signatureImage'] : [],
+    }),
+  )
+
+  const [signatureConfig, issuerConfig, footerConfig, headerConfig] = await Promise.all(
+    configsToUpload,
+  )
 
   const badgeModelMetadataIPFSUploaded = await ipfsUpload<BadgeModelMetadata<BackendFileUpload>>({
     attributes: {
@@ -206,6 +218,10 @@ async function createAndUploadDiplomaBadgeModelMetadata(
         {
           trait_type: DiplomaNFTAttributesType.IssuerConfigs,
           value: issuerConfig.result?.ipfsHash || '', // IPFS Hash to config file
+        },
+        {
+          trait_type: DiplomaNFTAttributesType.HeaderConfigs,
+          value: headerConfig.result?.ipfsHash || '', // IPFS Hash to config file
         },
       ],
     },

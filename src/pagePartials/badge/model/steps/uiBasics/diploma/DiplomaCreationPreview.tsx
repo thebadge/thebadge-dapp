@@ -51,6 +51,9 @@ export default function DiplomaCreationPreview() {
   const issuerTitle = watch('issuerTitle')
   const issuerDescription = watch('issuerDescription')
 
+  // Header
+  const headerLogo = watch('headerLogo')?.base64File
+
   const signatureProps = signatureEnabled
     ? {
         signatureImageUrl,
@@ -71,6 +74,7 @@ export default function DiplomaCreationPreview() {
         date={achievementDate}
         description={achievementDescription}
         footerText={footerEnabled && footerText}
+        headerLogoUrl={headerLogo}
         issuedByLabel={issuedByLabel}
         issuerAvatarUrl={issuerAvatar}
         issuerDescription={issuerDescription}

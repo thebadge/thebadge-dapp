@@ -39,6 +39,7 @@ export enum DiplomaNFTAttributesType {
   FooterConfigs = 'FooterConfigs',
   SignerConfigs = 'SignerConfigs',
   IssuerConfigs = 'IssuerConfigs',
+  HeaderConfigs = 'HeaderConfigs',
 }
 
 export type EvidenceMetadata = {
@@ -71,6 +72,10 @@ export type DiplomaIssuerConfig<T = IPFSHash | BackendFileResponse | BackendFile
   issuedByLabel?: string
   issuerTitle?: string
   issuerDescription?: string
+}
+
+export type DiplomaHeaderConfig = {
+  headerLogo?: string
 }
 
 export type DiplomaFooterConfig = {

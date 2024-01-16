@@ -1,4 +1,4 @@
-import { Stack, Typography, styled } from '@mui/material'
+import { Stack, Typography, keyframes, styled } from '@mui/material'
 import { BoxBorderGradient, colors, gradients } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 
@@ -44,6 +44,15 @@ const ProcessTutorial = styled('a')(({ theme }) => ({
   },
 }))
 
+const growEffect = keyframes`
+  0% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1.1);
+  }
+`
+
 export default function WelcomeDecoration() {
   const { t } = useTranslation()
   const isMobile = useSizeSM()
@@ -82,7 +91,13 @@ export default function WelcomeDecoration() {
           target={'_blank'}
         >
           {t('home.certificationProcess.title')}
-          <Typography color={colors.green} ml={1}>
+          <Typography
+            color={colors.green}
+            sx={{
+              ml: 1,
+              animation: `${growEffect} 1s infinite alternate`,
+            }}
+          >
             {' > '}
           </Typography>
         </ProcessTutorial>

@@ -29,10 +29,17 @@ export const SignatureConfigurationSchema = z.object({
 })
 export type SignatureConfigurationSchemaType = z.infer<typeof SignatureConfigurationSchema>
 
+export const HeaderConfigurationSchema = z.object({
+  // ------ DIPLOMA BASICS FIELD ------
+  headerLogo: ImageSchema.optional(),
+})
+export type HeaderConfigurationSchemaType = z.infer<typeof HeaderConfigurationSchema>
+
 export const FooterConfigurationSchema = z.object({
   // ------ DIPLOMA BASICS FIELD ------
   footerEnabled: z.boolean().optional(),
   footerText: z.string().optional(),
+  showDecoration: z.boolean().optional(), // Display "CERTIFICATE" word on the bottom
 })
 export type FooterConfigurationSchemaType = z.infer<typeof FooterConfigurationSchema>
 
@@ -66,6 +73,7 @@ export const CreateThirdPartyModelSchema = z
   .merge(IssuerConfigurationSchema)
   .merge(SignatureConfigurationSchema)
   .merge(FooterConfigurationSchema)
+  .merge(HeaderConfigurationSchema)
   .merge(CustomFieldsConfigurationSchema)
   .superRefine(refineDiploma)
   .superRefine(refineClassic)
