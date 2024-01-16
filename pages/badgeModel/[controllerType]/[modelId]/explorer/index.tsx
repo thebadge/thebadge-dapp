@@ -83,9 +83,9 @@ const ExploreBadgeModels: NextPageWithLayout = () => {
         title={t('explorer.curate.title')}
       >
         {badgeModel.data?.badgeModel.controllerType == BadgeModelControllerType.Community ? (
-          <BadgeEvidenceInfoPreview badge={selectedBadge} />
+          <BadgeEvidenceInfoPreview badgeId={selectedBadge.id} />
         ) : (
-          <ThirdPartyBadgeEvidenceInfoPreview badge={selectedBadge} />
+          <ThirdPartyBadgeEvidenceInfoPreview badgeId={selectedBadge.id} />
         )}
       </SelectedItemPreviewWrapper>
     )

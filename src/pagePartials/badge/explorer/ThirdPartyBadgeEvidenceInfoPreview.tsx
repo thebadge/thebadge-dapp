@@ -6,18 +6,24 @@ import { ButtonV2, colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 
 import { notify } from '@/src/components/toast/Toast'
+import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
 import useIsClaimable from '@/src/hooks/subgraph/useIsClaimable'
 import useDecryptEmail from '@/src/hooks/theBadge/useDecryptEmail'
 import useSendClaimEmail from '@/src/hooks/theBadge/useSendClaimEmail'
 import BadgeIdDisplay from '@/src/pagePartials/badge/explorer/addons/BadgeIdDisplay'
 import BadgeRequesterPreview from '@/src/pagePartials/badge/explorer/addons/BadgeRequesterPreview'
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
-import { Badge } from '@/types/generated/subgraph'
 import { ToastStates } from '@/types/toast'
 import { WCAddress } from '@/types/utils'
 
-export default function ThirdPartyBadgeEvidenceInfoPreview({ badge }: { badge: Badge }) {
+export default function ThirdPartyBadgeEvidenceInfoPreview({ badgeId }: { badgeId: string }) {
   const { t } = useTranslation()
+  const badgeById = useBadgeById(badgeId)
+  const badge = badgeById.data
+  if (!badge) {
+    throw 'There was not possible to get the needed data. Try again in some minutes.'
+  }
+
   const { data: isClaimable } = useIsClaimable(badge.id)
   const { appChainId, isAppConnected } = useWeb3Connection()
   const submitSendClaimEmail = useSendClaimEmail()
