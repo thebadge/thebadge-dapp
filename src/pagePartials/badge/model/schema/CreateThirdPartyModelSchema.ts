@@ -1,3 +1,4 @@
+import dayjs from 'dayjs'
 import { z } from 'zod'
 import { RefinementCtx } from 'zod/lib/types'
 
@@ -16,7 +17,7 @@ export const BodyDataConfigurationSchema = z.object({
   // ------ DIPLOMA BASICS FIELD ------
   courseName: z.string(),
   achievementDescription: z.string().default('has successfully completed the course'),
-  achievementDate: z.string(),
+  achievementDate: z.string().default(dayjs().format('MMMM D, YYYY')),
 })
 export type BodyDataConfigurationSchemaType = z.infer<typeof BodyDataConfigurationSchema>
 
@@ -57,7 +58,7 @@ export type IssuerConfigurationSchemaType = z.infer<typeof IssuerConfigurationSc
 export const CreateThirdPartyModelSchema = z
   .object({
     // ------ UI BASICS FIELD ------
-    name: z.string().max(28),
+    name: z.string().max(28).min(1),
     description: LongTextSchema,
     badgeModelLogoUri: ImageSchema.optional(),
     textContrast: z.string().optional(),

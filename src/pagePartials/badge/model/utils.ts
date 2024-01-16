@@ -149,6 +149,12 @@ export function defaultValues(
 ): CreateBadgeModelDefaultValues {
   switch (controllerType?.toLowerCase()) {
     case BadgeModelControllerType.ThirdParty.toLowerCase(): {
+      if (checkIfHasOngoingModelCreation(BadgeModelControllerType.ThirdParty)) {
+        const storedValues = JSON.parse(
+          localStorage.getItem(FORM_STORE_KEY + BadgeModelControllerType.ThirdParty) as string,
+        )
+        return storedValues.values
+      }
       return {
         textContrast: 'Black',
         backgroundImage: 'White Waves',
@@ -162,8 +168,10 @@ export function defaultValues(
     }
     case BadgeModelControllerType.Community.toLowerCase():
     default: {
-      if (checkIfHasOngoingModelCreation()) {
-        const storedValues = JSON.parse(localStorage.getItem(FORM_STORE_KEY) as string)
+      if (checkIfHasOngoingModelCreation(BadgeModelControllerType.Community)) {
+        const storedValues = JSON.parse(
+          localStorage.getItem(FORM_STORE_KEY + BadgeModelControllerType.Community) as string,
+        )
         return storedValues.values
       }
 
@@ -182,19 +190,22 @@ export function defaultValues(
   }
 }
 
-export function checkIfHasOngoingModelCreation() {
-  const item = localStorage.getItem(FORM_STORE_KEY)
+export function checkIfHasOngoingModelCreation(controllerType: BadgeModelControllerType) {
+  const item = localStorage.getItem(FORM_STORE_KEY + controllerType)
   return !!item && Date.now() < JSON.parse(item).expirationTime
 }
 
-export function saveFormValues(values: Record<string, any>) {
+export function saveFormValues(
+  values: Record<string, any>,
+  controllerType: BadgeModelControllerType,
+) {
   const ONE_DAY = 24 * 60 * 60 * 1000 /* ms */
   const expiration = MODEL_CREATION_CACHE_EXPIRATION_MS
     ? +MODEL_CREATION_CACHE_EXPIRATION_MS
     : ONE_DAY
 
   localStorage.setItem(
-    FORM_STORE_KEY,
+    FORM_STORE_KEY + controllerType,
     JSON.stringify({ expirationTime: Date.now() + expiration, values }),
   )
 }

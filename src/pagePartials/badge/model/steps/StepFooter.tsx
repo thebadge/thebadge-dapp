@@ -40,12 +40,12 @@ export default function StepFooter({
     currentStep === getCreateModelStepsAmount(controllerType as BadgeModelControllerType) - 1
 
   function onBack() {
-    saveFormValues(getValues())
+    saveFormValues(getValues(), controllerType as BadgeModelControllerType)
     if (onBackCallback) onBackCallback()
   }
 
   function onNext() {
-    saveFormValues(getValues())
+    saveFormValues(getValues(), controllerType as BadgeModelControllerType)
     if (onNextCallback) onNextCallback()
   }
 
