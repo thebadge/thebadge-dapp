@@ -176,7 +176,7 @@ async function createAndUploadDiplomaBadgeModelMetadata(
       attributes: {
         headerLogo: rest.headerLogo || '',
       },
-      filePaths: rest.headerLogo ? ['signatureImage'] : [],
+      filePaths: rest.headerLogo ? ['headerLogo'] : [],
     }),
   )
 
