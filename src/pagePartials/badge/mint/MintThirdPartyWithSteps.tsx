@@ -46,7 +46,7 @@ export default function MintThirdPartyWithSteps({
   txState = TransactionStates.none,
 }: MintStepsProps) {
   const [currentStep, setCurrentStep] = useState(0)
-  const { badgeModelId, controllerType } = useModelIdParam()
+  const { badgeModelId } = useModelIdParam()
   const router = useRouter()
 
   // Naive completed step implementation

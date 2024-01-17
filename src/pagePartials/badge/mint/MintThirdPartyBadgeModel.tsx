@@ -9,6 +9,7 @@ import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
 import { useBadgeModelThirdPartyMetadata } from '@/src/hooks/subgraph/useBadgeModelThirdPartyMetadata'
 import useMintValue from '@/src/hooks/theBadge/useMintValue'
 import useSendClaimNotificationEmail from '@/src/hooks/theBadge/useSendClaimNotificationEmail'
+import useSendMintNotificationEmail from '@/src/hooks/theBadge/useSendMintNotificationEmail'
 import useTBContract from '@/src/hooks/theBadge/useTBContract'
 import useTBStore from '@/src/hooks/theBadge/useTBStore'
 import useTransaction from '@/src/hooks/useTransaction'
@@ -34,7 +35,8 @@ const MintThirdPartyBadgeModel: NextPageWithLayout = () => {
   const { badgeModelId, contract } = useModelIdParam()
   const { prepareClaimNotificationEmailWithSignature, sendClaimNotificationEmail } =
     useSendClaimNotificationEmail()
-  //const submitSendMintNotificationEmail = useSendMintNotificationEmail()
+  const { prepareMintNotificationEmailWithSignature, sendMintNotificationEmail } =
+    useSendMintNotificationEmail()
 
   if (!badgeModelId) {
     throw `No modelId provided us URL query param`
@@ -53,7 +55,7 @@ const MintThirdPartyBadgeModel: NextPageWithLayout = () => {
   }
 
   async function onSubmit(data: MintThirdPartySchemaType) {
-    const { destination, /*notificationEmail*/ preferMintMethod, previewImage, requiredData } = data
+    const { destination, notificationEmail, preferMintMethod, previewImage, requiredData } = data
     let emailMessageSignature = ''
 
     try {
@@ -114,7 +116,11 @@ const MintThirdPartyBadgeModel: NextPageWithLayout = () => {
         }
 
         // Sign message to the send the email
-        emailMessageSignature = await prepareClaimNotificationEmailWithSignature()
+        if (preferMintMethod === 'address' && notificationEmail) {
+          emailMessageSignature = await prepareMintNotificationEmailWithSignature()
+        } else {
+          emailMessageSignature = await prepareClaimNotificationEmailWithSignature()
+        }
 
         // If user is not social logged, just send the tx
         const transactionReceipt = await theBadge.mint(
@@ -126,15 +132,6 @@ const MintThirdPartyBadgeModel: NextPageWithLayout = () => {
             value: mintValue,
           },
         )
-        // const { transactionHash } = await transactionReceipt.wait()
-        // if (preferMintMethod === 'address' && notificationEmail) {
-        //   await submitSendMintNotificationEmail({
-        //     networkId: appChainId.toString(),
-        //     mintTxHash: transactionHash,
-        //     badgeModelId: Number(badgeModelId),
-        //     emailRecipient: notificationEmail,
-        //   })
-        // }
         return transactionReceipt
       })
 
@@ -146,6 +143,14 @@ const MintThirdPartyBadgeModel: NextPageWithLayout = () => {
             networkId: appChainId.toString(),
             badgeModelId: Number(badgeModelId),
             emailClaimer: destination,
+            emailMessageSignature,
+          })
+        }
+        if (preferMintMethod === 'address' && notificationEmail) {
+          await sendMintNotificationEmail(transactionHash, {
+            networkId: appChainId.toString(),
+            badgeModelId: Number(badgeModelId),
+            emailRecipient: notificationEmail,
             emailMessageSignature,
           })
         }

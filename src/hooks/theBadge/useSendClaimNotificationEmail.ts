@@ -3,10 +3,19 @@ import { useCallback, useState } from 'react'
 import { useSignMessage } from 'wagmi'
 
 import { notify } from '@/src/components/toast/Toast'
-const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import { sendEmailClaim } from '@/src/utils/relayTx'
 import { EmailClaimTx } from '@/types/relayedTx'
 import { ToastStates } from '@/types/toast'
+import { BackendResponse } from '@/types/utils'
+
+const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
+
+type PrepareSignatureFnType = () => Promise<`0x${string}`>
+type PrepareConfigsFnType = (p: Omit<EmailClaimTx, 'mintTxHash'>) => void
+type SendFnType = (
+  mintTxHash: string,
+  options?: Omit<EmailClaimTx, 'mintTxHash'> & { emailMessageSignature?: string },
+) => Promise<BackendResponse<{ txHash: string | null }> | undefined>
 
 const SIGNED_MESSAGE = (address: `0x${string}` | undefined) =>
   `I accept the terms & conditions and I verify to be the owner of the address: ${address}`
@@ -20,26 +29,21 @@ export default function useSendClaimNotificationEmail() {
     undefined,
   )
 
-  const prepareClaimNotificationEmailWithSignature = useCallback(async () => {
-    const signature = await signMessageAsync({
-      message: SIGNED_MESSAGE(address),
-    })
-    setPreSignature(signature)
-    return signature
-  }, [address, signMessageAsync])
+  const prepareClaimNotificationEmailWithSignature =
+    useCallback<PrepareSignatureFnType>(async () => {
+      const signature = await signMessageAsync({
+        message: SIGNED_MESSAGE(address),
+      })
+      setPreSignature(signature)
+      return signature
+    }, [address, signMessageAsync])
 
-  const prepareClaimNotificationEmailConfigs = useCallback(
-    (props: Omit<EmailClaimTx, 'mintTxHash'>) => {
-      setEmailParams(props)
-    },
-    [],
-  )
+  const prepareClaimNotificationEmailConfigs = useCallback<PrepareConfigsFnType>((props) => {
+    setEmailParams(props)
+  }, [])
 
-  const sendClaimNotificationEmail = useCallback(
-    async (
-      mintTxHash: string,
-      options?: Omit<EmailClaimTx, 'mintTxHash'> & { emailMessageSignature?: string },
-    ) => {
+  const sendClaimNotificationEmail = useCallback<SendFnType>(
+    async (mintTxHash, options) => {
       let signature = ''
       if (!preSignature && !options?.emailMessageSignature) {
         signature = await prepareClaimNotificationEmailWithSignature()
