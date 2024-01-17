@@ -9,6 +9,7 @@ export default function useModelIdParam() {
 
   return {
     badgeModelId: router.query.modelId as string,
+    controllerType: router.query.controllerType as string,
     contract: router.query.contract as string,
   }
 }

@@ -24,11 +24,18 @@ export const sendTxToRelayer = async (
 export const sendEmailClaim = async (
   param: EmailClaimTxSigned,
 ): Promise<BackendResponse<{ txHash: string | null }>> => {
-  const res = await axios.post<BackendResponse<{ txHash: string | null }>>(
-    `${BACKEND_URL}/api/thirdPartyController/sendMintMail`,
-    param,
-  )
-  return res.data
+  // const res = await axios.post<BackendResponse<{ txHash: string | null }>>(
+  //   `${BACKEND_URL}/api/thirdPartyController/sendMintMail`,
+  //   param,
+  // )
+  return fetch(`${BACKEND_URL}/api/thirdPartyController/sendMintMail`, {
+    method: 'POST',
+    cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(param), // body data type must match "Content-Type" header
+  }).then((r) => r.json())
 }
 
 export const sendMintNotificationEmail = async (

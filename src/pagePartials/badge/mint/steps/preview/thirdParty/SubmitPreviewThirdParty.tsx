@@ -17,7 +17,7 @@ import { BadgeThirdPartyPreviewGenerator } from '@/src/pagePartials/badge/previe
 import { createThirdPartyValuesObject } from '@/src/utils/badges/mintHelpers'
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
-export default function SubmitPreviewThirdParty() {
+export default function SubmitPreviewThirdParty({ hideCost }: { hideCost?: boolean }) {
   const { t } = useTranslation()
   const { appChainId } = useWeb3Connection()
   const { setValue, watch } = useFormContext<MintThirdPartySchemaType>() // retrieve all hook methods
@@ -62,9 +62,11 @@ export default function SubmitPreviewThirdParty() {
           />
         </SafeSuspense>
       </Box>
-      <SafeSuspense>
-        <MintCostThirdParty />
-      </SafeSuspense>
+      {!hideCost && (
+        <SafeSuspense>
+          <MintCostThirdParty />
+        </SafeSuspense>
+      )}
     </Stack>
   )
 }
