@@ -72,10 +72,12 @@ gql`
     id
     status
     contractAddress
+    createdTxHash
     badgeModel {
       id
       contractAddress
       controllerType
+      uri
     }
   }
 `

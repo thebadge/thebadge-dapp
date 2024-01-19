@@ -6,6 +6,7 @@ import { useTranslation } from 'next-export-i18n'
 
 import DisplayEvidenceField from '@/src/components/displayEvidence/DisplayEvidenceField'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
+import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
 import { useEvidenceBadgeKlerosMetadata } from '@/src/hooks/subgraph/useBadgeKlerosMetadata'
 import useIsClaimable from '@/src/hooks/subgraph/useIsClaimable'
 import BadgeIdDisplay from '@/src/pagePartials/badge/explorer/addons/BadgeIdDisplay'
@@ -15,15 +16,21 @@ import TimeLeftDisplay from '@/src/pagePartials/badge/explorer/addons/TimeLeftDi
 import ViewEvidenceButton from '@/src/pagePartials/badge/explorer/addons/ViewEvidenceButton'
 import { useCurateProvider } from '@/src/providers/curateProvider'
 import { getEvidenceValue } from '@/src/utils/kleros/getEvidenceValue'
-import { Badge, BadgeStatus } from '@/types/generated/subgraph'
+import { BadgeStatus } from '@/types/generated/subgraph'
 import { MetadataColumn } from '@/types/kleros/types'
 import { WCAddress } from '@/types/utils'
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
-export default function BadgeEvidenceInfoPreview({ badge }: { badge: Badge }) {
+export default function BadgeEvidenceInfoPreview({ badgeId }: { badgeId: string }) {
   const { t } = useTranslation()
   const { address } = useWeb3Connection()
   const { challenge } = useCurateProvider()
+  const badgeById = useBadgeById(badgeId)
+  const badge = badgeById.data
+  if (!badge) {
+    throw 'There was not possible to get the needed data. Try again in some minutes.'
+  }
+
   const { data: isClaimable } = useIsClaimable(badge.id)
 
   const badgeKlerosMetadata = useEvidenceBadgeKlerosMetadata(badge?.id)

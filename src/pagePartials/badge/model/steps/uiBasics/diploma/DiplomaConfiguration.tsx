@@ -12,6 +12,7 @@ import { CreateCommunityModelSchemaType } from '@/src/pagePartials/badge/model/s
 import BadgeModelCreationPreview from '@/src/pagePartials/badge/model/steps/uiBasics/BadgeModelCreationPreview'
 import BodyDataConfiguration from '@/src/pagePartials/badge/model/steps/uiBasics/diploma/addons/BodyDataConfiguration'
 import FooterConfiguration from '@/src/pagePartials/badge/model/steps/uiBasics/diploma/addons/FooterConfiguration'
+import HeaderConfiguration from '@/src/pagePartials/badge/model/steps/uiBasics/diploma/addons/HeaderConfiguration'
 import IssuerConfiguration from '@/src/pagePartials/badge/model/steps/uiBasics/diploma/addons/IssuerConfiguration'
 import SignatureConfiguration from '@/src/pagePartials/badge/model/steps/uiBasics/diploma/addons/SignatureConfiguration'
 
@@ -68,6 +69,8 @@ export default function DiplomaConfiguration() {
       </Stack>
 
       <BodyDataConfiguration />
+
+      <HeaderConfiguration />
 
       <SafeSuspense>
         <FooterConfiguration />

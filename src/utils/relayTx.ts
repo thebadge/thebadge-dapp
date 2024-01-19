@@ -31,7 +31,7 @@ export const sendEmailClaim = async (
   return res.data
 }
 
-export const sendMintNotificationEmail = async (
+export const sendMintEmail = async (
   param: EmailMintNotificationTxSigned,
 ): Promise<BackendResponse<{ txHash: string | null }>> => {
   const res = await axios.post<BackendResponse<{ txHash: string | null }>>(

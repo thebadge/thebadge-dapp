@@ -2,6 +2,7 @@ import React from 'react'
 
 import { Box, alpha, styled } from '@mui/material'
 import { DiplomaPreview } from '@thebadge/ui-library'
+import dayjs from 'dayjs'
 import { useFormContext } from 'react-hook-form'
 
 import { APP_URL } from '@/src/constants/common'
@@ -31,7 +32,7 @@ export default function DiplomaCreationPreview() {
   const courseName = watch('courseName') || 'Name of the course'
   const achievementDescription =
     watch('achievementDescription') || 'has successfully completed the course'
-  const achievementDate = watch('achievementDate') || 'November 9, 2023'
+  const achievementDate = watch('achievementDate') || dayjs().format('MMMM D, YYYY')
 
   // Footer
   const footerEnabled = watch('footerEnabled')
@@ -50,6 +51,9 @@ export default function DiplomaCreationPreview() {
   const issuerAvatar = watch('issuerAvatar')?.base64File
   const issuerTitle = watch('issuerTitle')
   const issuerDescription = watch('issuerDescription')
+
+  // Header
+  const headerLogo = watch('headerLogo')?.base64File
 
   const signatureProps = signatureEnabled
     ? {
@@ -71,6 +75,7 @@ export default function DiplomaCreationPreview() {
         date={achievementDate}
         description={achievementDescription}
         footerText={footerEnabled && footerText}
+        headerLogoUrl={headerLogo}
         issuedByLabel={issuedByLabel}
         issuerAvatarUrl={issuerAvatar}
         issuerDescription={issuerDescription}

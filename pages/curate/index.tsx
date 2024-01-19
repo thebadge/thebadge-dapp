@@ -96,7 +96,7 @@ const CurateBadges: NextPageWithLayout = () => {
         onSelectPrevious={selectPrevious}
         title={t('explorer.curate.title')}
       >
-        <BadgeEvidenceInfoPreview badge={badges[selectedBadgeIndex]} />
+        <BadgeEvidenceInfoPreview badgeId={badges[selectedBadgeIndex].id} />
       </SelectedItemPreviewWrapper>
     )
   }
