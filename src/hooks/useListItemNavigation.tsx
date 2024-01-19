@@ -7,11 +7,15 @@ export default function useListItemNavigation(
   elementRefs: RefObject<HTMLLIElement>[],
   selectedElement: number,
   amountOfListElements: number,
+  allowAutoScroll = true,
 ) {
   const leftPress = useKeyPress('ArrowLeft')
   const rightPress = useKeyPress('ArrowRight')
 
   useEffect(() => {
+    if (!allowAutoScroll) {
+      return
+    }
     // Each time that a new item is selected, we scroll to it
     if (elementRefs[selectedElement]?.current) {
       window.scrollTo({
@@ -21,7 +25,7 @@ export default function useListItemNavigation(
         behavior: 'smooth',
       })
     }
-  }, [elementRefs, selectedElement])
+  }, [elementRefs, selectedElement, allowAutoScroll])
 
   const selectPrevious = useCallback(() => {
     if (!amountOfListElements) return

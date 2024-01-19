@@ -58,7 +58,7 @@ export function DropdownSelect<T>({
       disabled={disabled}
       error={!!error}
       fullWidth
-      helperText={error ? error.message : ' '}
+      helperText={error ? error.message : ''}
       label={
         label && (
           <Typography id="select-helper-label">

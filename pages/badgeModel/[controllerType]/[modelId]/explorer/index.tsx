@@ -60,11 +60,9 @@ const ExploreBadgeModels: NextPageWithLayout = () => {
     const badgesByModel = await gql.badgeByModelId({ id: badgeModelId })
     const badges = (badgesByModel.badges as Badge[]) || []
 
-    setTimeout(() => {
-      setLoading(false)
-      setBadge(badges)
-      setSelectedBadgeModelIndex(0)
-    }, 2000)
+    setLoading(false)
+    setBadge(badges)
+    setSelectedBadgeModelIndex(0)
   }
 
   if (!badgeModel.data) {
@@ -83,9 +81,9 @@ const ExploreBadgeModels: NextPageWithLayout = () => {
         title={t('explorer.curate.title')}
       >
         {badgeModel.data?.badgeModel.controllerType == BadgeModelControllerType.Community ? (
-          <BadgeEvidenceInfoPreview badge={selectedBadge} />
+          <BadgeEvidenceInfoPreview badgeId={selectedBadge.id} />
         ) : (
-          <ThirdPartyBadgeEvidenceInfoPreview badge={selectedBadge} />
+          <ThirdPartyBadgeEvidenceInfoPreview badgeId={selectedBadge.id} />
         )}
       </SelectedItemPreviewWrapper>
     )

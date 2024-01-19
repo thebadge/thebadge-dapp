@@ -1,6 +1,4 @@
-import { useRouter } from 'next/router'
 import * as React from 'react'
-import { useEffect } from 'react'
 
 import { ContractTransaction } from '@ethersproject/contracts'
 
@@ -10,10 +8,11 @@ import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
 import { useBadgeModelThirdPartyMetadata } from '@/src/hooks/subgraph/useBadgeModelThirdPartyMetadata'
 import useMintValue from '@/src/hooks/theBadge/useMintValue'
-import useSendClaimEmail from '@/src/hooks/theBadge/useSendClaimEmail'
+import useSendClaimNotificationEmail from '@/src/hooks/theBadge/useSendClaimNotificationEmail'
+import useSendMintNotificationEmail from '@/src/hooks/theBadge/useSendMintNotificationEmail'
 import useTBContract from '@/src/hooks/theBadge/useTBContract'
 import useTBStore from '@/src/hooks/theBadge/useTBStore'
-import useTransaction, { TransactionStates } from '@/src/hooks/useTransaction'
+import useTransaction from '@/src/hooks/useTransaction'
 import MintThirdPartyWithSteps from '@/src/pagePartials/badge/mint/MintThirdPartyWithSteps'
 import { MintThirdPartySchemaType } from '@/src/pagePartials/badge/mint/schema/MintThirdPartySchema'
 import { cleanMintFormValues } from '@/src/pagePartials/badge/mint/utils'
@@ -24,7 +23,6 @@ import {
   createThirdPartyValuesObject,
 } from '@/src/utils/badges/mintHelpers'
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
-import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 import { getEncryptedValues } from '@/src/utils/relayTx'
 import { BadgeModelMetadata } from '@/types/badges/BadgeMetadata'
 import { NextPageWithLayout } from '@/types/next'
@@ -34,20 +32,15 @@ const MintThirdPartyBadgeModel: NextPageWithLayout = () => {
   const theBadge = useTBContract()
   const theBadgeStore = useTBStore()
   const { resetTxState, sendTx, state } = useTransaction()
-  const router = useRouter()
   const { badgeModelId, contract } = useModelIdParam()
-  const submitSendClaimEmail = useSendClaimEmail()
+  const { prepareClaimNotificationEmailWithSignature, sendClaimNotificationEmail } =
+    useSendClaimNotificationEmail()
+  const { prepareMintNotificationEmailWithSignature, sendMintNotificationEmail } =
+    useSendMintNotificationEmail()
 
   if (!badgeModelId) {
     throw `No modelId provided us URL query param`
   }
-
-  useEffect(() => {
-    // Redirect to the profile
-    if (state === TransactionStates.success) {
-      router.push(generateProfileUrl())
-    }
-  }, [router, state])
 
   const badgeModel = useBadgeModel(badgeModelId, contract)
   const requiredBadgeDataMetadata = useBadgeModelThirdPartyMetadata(badgeModelId)
@@ -62,12 +55,13 @@ const MintThirdPartyBadgeModel: NextPageWithLayout = () => {
   }
 
   async function onSubmit(data: MintThirdPartySchemaType) {
-    const { destination, preferMintMethod, previewImage, requiredData } = data
+    const { destination, notificationEmail, preferMintMethod, previewImage, requiredData } = data
+    let emailMessageSignature = ''
 
     try {
       // Start transaction to show the loading state when we create the files
       // and configs
-      await sendTx(async (): Promise<ContractTransaction> => {
+      const contractTransaction = await sendTx(async (): Promise<ContractTransaction> => {
         // Use NextJs dynamic import to reduce the bundle size
         const { createAndUploadThirdPartyBadgeMetadata } = await import(
           '@/src/utils/badges/mintHelpers'
@@ -121,6 +115,13 @@ const MintThirdPartyBadgeModel: NextPageWithLayout = () => {
           // TODO Implement social login (or maybe create a hook that encapsulates this logic)
         }
 
+        // Sign message to the send the email
+        if (preferMintMethod === 'address' && notificationEmail) {
+          emailMessageSignature = await prepareMintNotificationEmailWithSignature()
+        } else {
+          emailMessageSignature = await prepareClaimNotificationEmailWithSignature()
+        }
+
         // If user is not social logged, just send the tx
         const transactionReceipt = await theBadge.mint(
           badgeModelId,
@@ -131,19 +132,30 @@ const MintThirdPartyBadgeModel: NextPageWithLayout = () => {
             value: mintValue,
           },
         )
-        const { transactionHash } = await transactionReceipt.wait()
-        if (preferMintMethod === 'email') {
-          await submitSendClaimEmail({
-            networkId: appChainId.toString(),
-            mintTxHash: transactionHash,
-            badgeModelId: Number(badgeModelId),
-            emailClaimer: destination,
-          })
-        }
         return transactionReceipt
       })
 
-      cleanMintFormValues(badgeModelId)
+      if (contractTransaction) {
+        const { transactionHash } = await contractTransaction.wait()
+
+        if (preferMintMethod === 'email') {
+          await sendClaimNotificationEmail(transactionHash, {
+            networkId: appChainId.toString(),
+            badgeModelId: Number(badgeModelId),
+            emailClaimer: destination,
+            emailMessageSignature,
+          })
+        }
+        if (preferMintMethod === 'address' && notificationEmail) {
+          await sendMintNotificationEmail(transactionHash, {
+            networkId: appChainId.toString(),
+            badgeModelId: Number(badgeModelId),
+            emailRecipient: notificationEmail,
+            emailMessageSignature,
+          })
+        }
+        cleanMintFormValues(badgeModelId)
+      }
     } catch (e) {
       console.error(e)
       // Do nothing

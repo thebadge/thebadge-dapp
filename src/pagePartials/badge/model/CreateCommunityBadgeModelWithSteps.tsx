@@ -10,8 +10,10 @@ import { defaultValues, getFieldsToValidateOnStep } from './utils'
 import StepPrompt from '@/src/components/form/formWithSteps/StepPrompt'
 import { TransactionLoading } from '@/src/components/loading/TransactionLoading'
 import { notify } from '@/src/components/toast/Toast'
+import { useIsRegistered } from '@/src/hooks/subgraph/useIsRegistered'
 import { TransactionStates } from '@/src/hooks/useTransaction'
 import { useTriggerRHF } from '@/src/hooks/useTriggerRHF'
+import useUserMetadata from '@/src/hooks/useUserMetadata'
 import {
   CreateCommunityModelSchema,
   CreateCommunityModelSchemaType,
@@ -22,6 +24,7 @@ import BadgeModelStrategy from '@/src/pagePartials/badge/model/steps/community/s
 import BadgeModelEvidenceFormCreation from '@/src/pagePartials/badge/model/steps/evidence/BadgeModelEvidenceFormCreation'
 import BadgeModelConfirmation from '@/src/pagePartials/badge/model/steps/preview/BadgeModelConfirmation'
 import BadgeModelCreated from '@/src/pagePartials/badge/model/steps/preview/BadgeModelCreated'
+import RegisterStep from '@/src/pagePartials/badge/model/steps/register/RegisterStep'
 import HowItWorks from '@/src/pagePartials/badge/model/steps/terms/HowItWorks'
 import BadgeModelUIBasics from '@/src/pagePartials/badge/model/steps/uiBasics/BadgeModelUIBasics'
 import { isTestnet } from '@/src/utils/network'
@@ -39,14 +42,23 @@ export default function CreateCommunityBadgeModelWithSteps({
   resetTxState,
   txState = TransactionStates.none,
 }: CreateModelStepsProps) {
+  const { data: isRegistered } = useIsRegistered()
   const [currentStep, setCurrentStep] = useState(0)
 
   // Naive completed step implementation
-  const [completed, setCompleted] = useState<Record<string, boolean>>({})
+  const [completed, setCompleted] = useState<Record<string, boolean>>(
+    isRegistered ? { 1: true } : {},
+  )
+  const [hiddenSteps] = useState<Record<string, boolean>>(isRegistered ? { 1: true } : {})
+
+  const userMetadata = useUserMetadata()
 
   const methods = useForm<z.infer<typeof CreateCommunityModelSchema>>({
     resolver: zodResolver(CreateCommunityModelSchema),
-    defaultValues: defaultValues(),
+    defaultValues: defaultValues(BadgeModelControllerType.Community, {
+      ...userMetadata,
+      terms: isRegistered,
+    }),
     reValidateMode: 'onChange',
     mode: 'onChange',
   })
@@ -59,7 +71,12 @@ export default function CreateCommunityBadgeModelWithSteps({
 
   // Navigation helpers to go back on the steps
   async function onBackCallback() {
-    setCurrentStep((prev) => (prev === 0 ? 0 : prev - 1))
+    setCurrentStep((prev) => {
+      if (isRegistered && prev == 2) {
+        return 0
+      }
+      return prev === 0 ? 0 : prev - 1
+    })
   }
 
   // Navigation helpers to go to the next step
@@ -67,7 +84,12 @@ export default function CreateCommunityBadgeModelWithSteps({
     const isValid = await isValidStep()
     if (isValid) {
       setCompleted((prev) => ({ ...prev, [currentStep]: true }))
-      setCurrentStep((prev) => (prev === 4 ? 4 : prev + 1))
+      setCurrentStep((prev) => {
+        if (isRegistered && prev == 0) {
+          return 2
+        }
+        return prev === 5 ? 5 : prev + 1
+      })
     }
   }
 
@@ -102,6 +124,7 @@ export default function CreateCommunityBadgeModelWithSteps({
       <StepHeaderCommunity
         completedSteps={completed}
         currentStep={currentStep}
+        hiddenSteps={hiddenSteps}
         onStepNavigation={onStepNavigation}
       />
       <Container maxWidth="md" sx={{ minHeight: '50vh' }}>
@@ -113,11 +136,11 @@ export default function CreateCommunityBadgeModelWithSteps({
           <form onSubmit={methods.handleSubmit(onSubmit, notifyFormError)}>
             <StepInnerContainer gap={3}>
               {currentStep === 0 && <HowItWorks />}
-              {currentStep === 1 && <BadgeModelUIBasics />}
-              {currentStep === 2 && <BadgeModelStrategy />}
-              {currentStep === 3 && <BadgeModelEvidenceFormCreation />}
-              {currentStep === 4 && <BadgeModelConfirmation />}
-
+              {currentStep === 1 && <RegisterStep />}
+              {currentStep === 2 && <BadgeModelUIBasics />}
+              {currentStep === 3 && <BadgeModelStrategy />}
+              {currentStep === 4 && <BadgeModelEvidenceFormCreation />}
+              {currentStep === 5 && <BadgeModelConfirmation />}
               <StepFooter
                 color="purple"
                 currentStep={currentStep}

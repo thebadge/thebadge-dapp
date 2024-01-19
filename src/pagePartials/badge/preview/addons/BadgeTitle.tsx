@@ -13,14 +13,14 @@ const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvid
 export default function BadgeTitle() {
   const { t } = useTranslation()
 
-  const { badgeId } = useBadgeIdParam()
+  const { badgeId, contract } = useBadgeIdParam()
   const isMobile = useSizeSM()
 
   if (!badgeId) {
     throw `No badgeId provided us URL query param`
   }
 
-  const badgeById = useBadgeById(badgeId)
+  const badgeById = useBadgeById(badgeId, contract)
 
   const badge = badgeById.data
   const badgeModel = badge?.badgeModel

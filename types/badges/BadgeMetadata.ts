@@ -39,6 +39,7 @@ export enum DiplomaNFTAttributesType {
   FooterConfigs = 'FooterConfigs',
   SignerConfigs = 'SignerConfigs',
   IssuerConfigs = 'IssuerConfigs',
+  HeaderConfigs = 'HeaderConfigs',
 }
 
 export type EvidenceMetadata = {
@@ -53,8 +54,9 @@ export type EvidenceMetadata = {
 
 export type ClassicBadgeFieldsConfig = {
   customFieldsEnabled: boolean
-  badgeTitle?: string
-  badgeDescription?: string
+  miniLogoSubTitle?: string
+  miniLogoTitle?: string
+  miniLogoUrl?: string
 }
 
 export type DiplomaSignatureConfig<T = IPFSHash | BackendFileResponse | BackendFileUpload> = {
@@ -70,6 +72,10 @@ export type DiplomaIssuerConfig<T = IPFSHash | BackendFileResponse | BackendFile
   issuedByLabel?: string
   issuerTitle?: string
   issuerDescription?: string
+}
+
+export type DiplomaHeaderConfig = {
+  headerLogo?: string
 }
 
 export type DiplomaFooterConfig = {

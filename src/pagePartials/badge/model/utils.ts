@@ -1,8 +1,28 @@
+import { ModelsBackgroundsNames } from '@/src/constants/backgrounds'
 import { APP_URL, MODEL_CREATION_CACHE_EXPIRATION_MS } from '@/src/constants/common'
-import { BadgeModelControllerType, BadgeModelTemplate } from '@/types/badges/BadgeModel'
+import { UserMetadata } from '@/src/hooks/useUserMetadata'
+import {
+  BadgeModelControllerType,
+  BadgeModelTemplate,
+  BadgeModelTemplateType,
+} from '@/types/badges/BadgeModel'
 
-const STEP_0_COMMUNITY = ['howItWorks']
+const STEP_0_COMMUNITY = ['register.terms']
 const STEP_1_COMMUNITY = [
+  'register.name',
+  'register.description',
+  'register.logo',
+  'register.website',
+  'register.email',
+  'register.twitter',
+  'register.discord',
+  'register.linkedin',
+  'register.github',
+  'register.telegram',
+  'register.preferContactMethod',
+  'register.terms',
+]
+const STEP_2_COMMUNITY = [
   'name',
   'description',
   'badgeModelLogoUri',
@@ -10,8 +30,8 @@ const STEP_1_COMMUNITY = [
   'backgroundImage',
   'template',
 ]
-const STEP_2_COMMUNITY = ['rigorousness', 'mintFee', 'validFor']
-const STEP_3_COMMUNITY = ['criteriaFileUri', 'criteria', 'badgeMetadataColumns']
+const STEP_3_COMMUNITY = ['rigorousness', 'mintFee', 'validFor']
+const STEP_4_COMMUNITY = ['criteriaFileUri', 'criteria', 'badgeMetadataColumns']
 
 const STEP_0_TP = [
   'name',
@@ -41,6 +61,7 @@ const communityValidationSteps = [
   STEP_1_COMMUNITY,
   STEP_2_COMMUNITY,
   STEP_3_COMMUNITY,
+  STEP_4_COMMUNITY,
 ]
 const thirdPartyValidationSteps = [STEP_0_TP, STEP_1_TP]
 const thirdPartyDiplomaValidationSteps = [STEP_0_TP_DIPLOMA, STEP_1_TP]
@@ -75,14 +96,46 @@ export const FORM_STORE_KEY = 'badge-model-creation'
 export function getCreateModelStepsAmount(controllerType: BadgeModelControllerType): number {
   switch (controllerType.toLowerCase()) {
     case BadgeModelControllerType.Community.toLowerCase(): {
-      return 5
+      return 6
     }
     case BadgeModelControllerType.ThirdParty.toLowerCase(): {
       return 3
     }
     default: {
-      return 5
+      return 6
     }
+  }
+}
+
+const registerDefaultValues = (): UserMetadata => {
+  return {
+    name: '',
+    logo: {
+      mimeType: 'image/jpeg',
+      s3Url: undefined,
+      base64File: undefined,
+      extension: undefined,
+      ipfsUrl: undefined,
+      ipfs: undefined,
+    },
+    preferContactMethod: undefined,
+    ensNameOrAddress: '',
+    isEnsName: false,
+    terms: false,
+    hasAboutData: false,
+    hasSocialData: false,
+  }
+}
+
+type CreateBadgeModelDefaultValues = {
+  register?: UserMetadata
+  textContrast: string
+  backgroundImage: ModelsBackgroundsNames
+  template: BadgeModelTemplateType
+  challengePeriodDuration: number
+  rigorousness: {
+    amountOfJurors: number
+    challengeBounty: string
   }
 }
 
@@ -90,13 +143,22 @@ export function getCreateModelStepsAmount(controllerType: BadgeModelControllerTy
  * Retrieve stored values, in case that the user refresh the page or something
  * happens
  */
-export function defaultValues(controllerType?: BadgeModelControllerType) {
+export function defaultValues(
+  controllerType?: BadgeModelControllerType,
+  userMetadata?: UserMetadata,
+): CreateBadgeModelDefaultValues {
   switch (controllerType?.toLowerCase()) {
     case BadgeModelControllerType.ThirdParty.toLowerCase(): {
+      if (checkIfHasOngoingModelCreation(BadgeModelControllerType.ThirdParty)) {
+        const storedValues = JSON.parse(
+          localStorage.getItem(FORM_STORE_KEY + BadgeModelControllerType.ThirdParty) as string,
+        )
+        return storedValues.values
+      }
       return {
         textContrast: 'Black',
         backgroundImage: 'White Waves',
-        template: 'Badge',
+        template: BadgeModelTemplate.Badge,
         challengePeriodDuration: 2,
         rigorousness: {
           amountOfJurors: 1,
@@ -106,38 +168,44 @@ export function defaultValues(controllerType?: BadgeModelControllerType) {
     }
     case BadgeModelControllerType.Community.toLowerCase():
     default: {
-      if (checkIfHasOngoingModelCreation()) {
-        const storedValues = JSON.parse(localStorage.getItem(FORM_STORE_KEY) as string)
+      if (checkIfHasOngoingModelCreation(BadgeModelControllerType.Community)) {
+        const storedValues = JSON.parse(
+          localStorage.getItem(FORM_STORE_KEY + BadgeModelControllerType.Community) as string,
+        )
         return storedValues.values
-      } else {
-        return {
-          textContrast: 'Black',
-          backgroundImage: 'White Waves',
-          template: 'Badge',
-          challengePeriodDuration: 2,
-          rigorousness: {
-            amountOfJurors: 1,
-            challengeBounty: '0',
-          },
-        }
+      }
+
+      return {
+        register: userMetadata ? { ...userMetadata } : registerDefaultValues(),
+        textContrast: 'Black',
+        backgroundImage: 'White Waves',
+        template: BadgeModelTemplate.Badge,
+        challengePeriodDuration: 2,
+        rigorousness: {
+          amountOfJurors: 1,
+          challengeBounty: '0',
+        },
       }
     }
   }
 }
 
-export function checkIfHasOngoingModelCreation() {
-  const item = localStorage.getItem(FORM_STORE_KEY)
+export function checkIfHasOngoingModelCreation(controllerType: BadgeModelControllerType) {
+  const item = localStorage.getItem(FORM_STORE_KEY + controllerType)
   return !!item && Date.now() < JSON.parse(item).expirationTime
 }
 
-export function saveFormValues(values: Record<string, any>) {
+export function saveFormValues(
+  values: Record<string, any>,
+  controllerType: BadgeModelControllerType,
+) {
   const ONE_DAY = 24 * 60 * 60 * 1000 /* ms */
   const expiration = MODEL_CREATION_CACHE_EXPIRATION_MS
     ? +MODEL_CREATION_CACHE_EXPIRATION_MS
     : ONE_DAY
 
   localStorage.setItem(
-    FORM_STORE_KEY,
+    FORM_STORE_KEY + controllerType,
     JSON.stringify({ expirationTime: Date.now() + expiration, values }),
   )
 }
@@ -255,4 +323,20 @@ export function getCriteriaTemplate() {
   </li>
 </ul>
   `
+}
+
+export const validateImageDimensions = async (base64File: string, maxSize: number) => {
+  return new Promise((resolve, reject) => {
+    if (!base64File) {
+      return
+    }
+    const img = new Image()
+    img.src = base64File
+    img.onload = () => {
+      resolve(img.width <= maxSize && img.height <= maxSize)
+    }
+    img.onerror = () => {
+      reject('Error loading image.')
+    }
+  })
 }

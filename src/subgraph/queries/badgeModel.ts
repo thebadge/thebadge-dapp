@@ -1,5 +1,23 @@
 import gql from 'graphql-tag'
 
+export const BADGE_MODELS_BY_CREATOR_ID = gql`
+  query badgeModelsByCreatorId($creatorId: String!) {
+    badgeModels(orderBy: createdAt, orderDirection: desc, where: { creator: $creatorId }) {
+      ...BadgeModel
+    }
+  }
+`
+
+export const BADGE_MODELS_WITH_FILTERS = gql`
+  query badgeModelsWithFilters($creatorId: ID!, $where: BadgeModel_filter) {
+    user(id: $creatorId) {
+      createdBadgeModels(where: $where) {
+        ...BadgeModel
+      }
+    }
+  }
+`
+
 export const THIRD_PARTY_BADGE_MODELS_BY_CREATOR_ID = gql`
   query thirdPartyBadgeModelByCreatorId($creatorId: String!) {
     badgeModels(
