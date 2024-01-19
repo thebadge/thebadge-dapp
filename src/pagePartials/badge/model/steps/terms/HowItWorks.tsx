@@ -41,7 +41,7 @@ export default function HowItWorks() {
       </Stack>
       <Controller
         control={control}
-        name={'register.terms'}
+        name={'howItWorks'}
         render={({ field: { onChange, value }, fieldState: { error } }) => (
           <AgreementCheckbox error={error} onChange={onChange} value={value} />
         )}

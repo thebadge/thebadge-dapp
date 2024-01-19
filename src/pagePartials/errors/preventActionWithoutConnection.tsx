@@ -5,7 +5,7 @@ import { Theme } from '@mui/material/styles'
 import { SxProps } from '@mui/system'
 
 import { DisableOverlay, DisableWrapper } from '@/src/components/helpers/DisableElements'
-import { useIsRegistered } from '@/src/hooks/subgraph/useIsRegistered'
+import useIsRegistered from '@/src/hooks/subgraph/useIsRegistered'
 import ConnectWalletActionError from '@/src/pagePartials/errors/displays/ConnectWalletActionError'
 import { RegistrationRequired } from '@/src/pagePartials/errors/requiresCreatorAccess'
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')

@@ -83,12 +83,11 @@ export default function DiplomaOwnedPreview() {
   const creator = creatorResponse.data
   const creatorMetadata = useUserMetadata(creator?.id, creator?.metadataUri || '')
   const requiredBadgeDataMetadata = useBadgeThirdPartyRequiredData(`${badgeId}` || '', contract)
-  const urlsData = useBadgePreviewUrl(
+  const { badgeOpenseaUrl, badgePreviewUrl, shortPreviewURl } = useBadgePreviewUrl(
     badge?.id || '',
     badge?.contractAddress || '',
     readOnlyChainId,
   )
-  const previewUrls = urlsData.data
   const badgeModelName = badgeModel?.badgeModelMetadata?.name || ''
 
   if (!badge || !badgeModel) {
@@ -107,7 +106,7 @@ export default function DiplomaOwnedPreview() {
 
   async function handleImportLinkedin() {
     try {
-      if (!badge || !badge.badgeMetadata || !badgeModel || !previewUrls?.badgePreviewUrl) {
+      if (!badge || !badge.badgeMetadata || !badgeModel) {
         throw new Error('The badge does not exists or there is an issue with the badgeModel!')
       }
       const { expirationMonth, expirationYear } = getExpirationYearAndMonth(badge.validUntil)
@@ -129,7 +128,7 @@ export default function DiplomaOwnedPreview() {
         issueMonth: String(issueMonth),
         expirationYear: String(expirationYear),
         expirationMonth: String(expirationMonth),
-        certUrl: previewUrls.badgePreviewUrl,
+        certUrl: badgePreviewUrl,
         certId: badgeId,
       })
 
@@ -157,7 +156,7 @@ export default function DiplomaOwnedPreview() {
         <Stack style={isMobile ? { display: 'block', maxHeight: '220px' } : { flex: 2, gap: 3 }}>
           <DiplomaView
             additionalData={{ ...values }}
-            badgeUrl={previewUrls?.shortPreviewUrl}
+            badgeUrl={badgePreviewUrl}
             modelId={badgeModel.id}
           />
         </Stack>
@@ -188,7 +187,7 @@ export default function DiplomaOwnedPreview() {
                   <IconButton
                     aria-label="Share badge preview"
                     component="label"
-                    onClick={() => handleShare(previewUrls?.shortPreviewShareableUrl)}
+                    onClick={() => handleShare()}
                   >
                     <ShareOutlinedIcon />
                   </IconButton>
@@ -220,19 +219,17 @@ export default function DiplomaOwnedPreview() {
                 <Tooltip arrow title={t('badge.viewBadge.shareTwitter')}>
                   <TwitterShareButton
                     related={['@thebadgexyz']}
-                    url={generateTwitterText(badgeModelName, previewUrls?.shortPreviewShareableUrl)}
+                    url={generateTwitterText(badgeModelName, shortPreviewURl)}
                   >
                     <XIcon round size={32} />
                   </TwitterShareButton>
                 </Tooltip>
-                {previewUrls?.badgeOpenseaUrl ? (
+                {badgeOpenseaUrl ? (
                   <Tooltip arrow title={t('badge.viewBadge.viewOpensea')}>
                     <IconButton
                       aria-label={t('badge.viewBadge.viewOpensea')}
                       component="label"
-                      onClick={() =>
-                        previewUrls?.badgeOpenseaUrl && window.open(previewUrls.badgeOpenseaUrl)
-                      }
+                      onClick={() => window.open(badgeOpenseaUrl)}
                     >
                       <Image
                         alt={t('badge.viewBadge.viewOpensea')}

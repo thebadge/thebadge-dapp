@@ -4,9 +4,7 @@ gql`
   fragment BadgeKlerosMetadata on BadgeKlerosMetaData {
     id
     itemID
-    numberOfRequests
     reviewDueDate
-    tcrStatus
     requests {
       ...Request
     }
@@ -15,7 +13,13 @@ gql`
 
 gql`
   fragment BadgeKlerosMetadataWithBadge on BadgeKlerosMetaData {
-    ...BadgeKlerosMetadata
+    id
+    itemID
+    reviewDueDate
+    requests {
+      type
+      challenger
+    }
     badge {
       id
       validUntil

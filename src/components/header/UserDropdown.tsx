@@ -13,7 +13,6 @@ import {
   ListSubheader,
   Menu,
   MenuItem,
-  Skeleton,
   Tooltip,
   styled,
 } from '@mui/material'
@@ -161,11 +160,9 @@ export const UserDropdown: React.FC = () => {
         variant="menu"
       >
         <ListSubheader sx={{ lineHeight: '20px', pb: '6px' }}>{networkConfig.name}</ListSubheader>
-        <SafeSuspense fallback={<Skeleton sx={{ ml: 2 }} variant="text" width={150} />}>
-          <ListSubheader sx={{ lineHeight: '20px' }}>
-            Connected <Address address={address || AddressZero} showExternalLink={false} />
-          </ListSubheader>
-        </SafeSuspense>
+        <ListSubheader sx={{ lineHeight: '20px' }}>
+          Connected <Address address={address || AddressZero} showExternalLink={false} />
+        </ListSubheader>
         <Divider sx={{ my: 1 }} />
         <MenuItem onClick={handleProfileNavigation}>
           <Avatar>{blockiesIcon}</Avatar>

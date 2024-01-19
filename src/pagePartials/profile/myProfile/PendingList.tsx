@@ -55,7 +55,7 @@ export default function PendingList() {
                       }),
                     )
                   }
-                  sx={{ cursor: 'pointer', position: 'relative' }}
+                  sx={{ cursor: 'pointer' }}
                 >
                   <PendingBadgeOverlay
                     badge={<BadgeModelPreview metadata={badge.badgeModel?.uri} size="small" />}

@@ -1,7 +1,7 @@
-import React, { FC, PropsWithChildren, Suspense, useCallback } from 'react'
+import React, { FC, PropsWithChildren, Suspense } from 'react'
 
 import { Box } from '@mui/material'
-import { ErrorBoundary, FallbackProps } from 'react-error-boundary'
+import { ErrorBoundary } from 'react-error-boundary'
 
 import { GeneralError, GeneralPageError } from '@/src/components/helpers/GeneralError'
 import { Loading } from '@/src/components/loading/Loading'
@@ -13,7 +13,6 @@ import { IntrinsicElements } from '@/types/utils'
 type Props = {
   children: React.ReactNode
   fallback?: JSX.Element
-  onErrorFallback?: (props: FallbackProps) => React.ReactElement
 }
 
 const DefaultFallback: React.FC<SpinnerProps> = ({ color }: SpinnerProps) => {
@@ -32,18 +31,12 @@ export default function SafeSuspense({
   children,
   color,
   fallback = <DefaultFallback color={color} />,
-  onErrorFallback,
 }: PropsWithChildren<Props & SpinnerProps>): JSX.Element {
-  const defaultErrorRendered = useCallback(
-    ({ error, resetErrorBoundary }: FallbackProps) => (
-      <GeneralError error={error} resetErrorBoundary={resetErrorBoundary} />
-    ),
-    [],
-  )
-
   return (
     <ErrorBoundary
-      fallbackRender={onErrorFallback || defaultErrorRendered}
+      fallbackRender={({ error, resetErrorBoundary }) => (
+        <GeneralError error={error} resetErrorBoundary={resetErrorBoundary} />
+      )}
       onError={(error, info) => IS_DEVELOP && console.error(error, info)}
       resetKeys={[children]}
     >

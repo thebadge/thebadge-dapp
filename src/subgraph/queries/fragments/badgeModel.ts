@@ -5,29 +5,27 @@ gql`
     id
     uri
     controllerType
-    creatorFee
     validFor
+    creatorFee
     paused
     badgesMintedAmount
     contractAddress
     createdTxHash
     creator {
-      ...User
+      id
+      metadataUri
     }
   }
 `
 
 gql`
   fragment BadgeModelKlerosMetadata on BadgeModelKlerosMetaData {
-    admin
-    arbitrator
-    governor
-    challengePeriodDuration
     id
     registrationUri
     removalUri
-    submissionBaseDeposit
     tcrList
+    submissionBaseDeposit
+    challengePeriodDuration
   }
 `
 

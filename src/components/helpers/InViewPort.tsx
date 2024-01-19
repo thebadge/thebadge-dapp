@@ -1,6 +1,6 @@
 import React, { PropsWithChildren, useEffect, useRef } from 'react'
 
-import { Box, Stack } from '@mui/material'
+import { Stack } from '@mui/material'
 import { useInViewport } from 'react-in-viewport'
 
 import { Loading } from '@/src/components/loading/Loading'
@@ -34,13 +34,9 @@ export default function InViewPort({
   // If it has been rendered, the query was made, so we can safely render it
   // since the network call was already made
   const shouldDisplay = enterCount > 0 || inViewport
-  if (shouldDisplay) return children
-  if (!minHeight && !minWidth) {
-    return <Box ref={elemRef}>{fallback}</Box>
-  }
   return (
     <Stack minHeight={minHeight} minWidth={minWidth} position="relative" ref={elemRef}>
-      {fallback}
+      {shouldDisplay ? children : fallback}
     </Stack>
   )
 }

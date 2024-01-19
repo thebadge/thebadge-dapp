@@ -24,7 +24,6 @@ import {
   BadgeNFTAttributesType,
   ClassicBadgeFieldsConfig,
   DiplomaFooterConfig,
-  DiplomaHeaderConfig,
   DiplomaIssuerConfig,
   DiplomaNFTAttributesType,
   DiplomaSignatureConfig,
@@ -78,9 +77,8 @@ export async function createAndUploadClassicBadgeModelMetadata(
   const fieldsConfigs = await ipfsUpload<ClassicBadgeFieldsConfig>({
     attributes: {
       customFieldsEnabled: !!rest?.customFieldsEnabled,
-      miniLogoSubTitle: rest?.miniLogo?.miniLogoSubTitle || '',
-      miniLogoTitle: rest?.miniLogo?.miniLogoTitle || '',
-      miniLogoUrl: rest?.miniLogo?.miniLogoUrl || '',
+      badgeTitle: rest?.badgeTitle ? rest?.badgeTitle : '',
+      badgeDescription: rest?.badgeDescription ? rest?.badgeDescription : '',
     },
     filePaths: [],
   })
@@ -171,18 +169,7 @@ async function createAndUploadDiplomaBadgeModelMetadata(
     }),
   )
 
-  configsToUpload.push(
-    await ipfsUpload<DiplomaHeaderConfig>({
-      attributes: {
-        headerLogo: rest.headerLogo || '',
-      },
-      filePaths: rest.headerLogo ? ['headerLogo'] : [],
-    }),
-  )
-
-  const [signatureConfig, issuerConfig, footerConfig, headerConfig] = await Promise.all(
-    configsToUpload,
-  )
+  const [signatureConfig, issuerConfig, footerConfig] = await Promise.all(configsToUpload)
 
   const badgeModelMetadataIPFSUploaded = await ipfsUpload<BadgeModelMetadata<BackendFileUpload>>({
     attributes: {
@@ -218,10 +205,6 @@ async function createAndUploadDiplomaBadgeModelMetadata(
         {
           trait_type: DiplomaNFTAttributesType.IssuerConfigs,
           value: issuerConfig.result?.ipfsHash || '', // IPFS Hash to config file
-        },
-        {
-          trait_type: DiplomaNFTAttributesType.HeaderConfigs,
-          value: headerConfig.result?.ipfsHash || '', // IPFS Hash to config file
         },
       ],
     },
@@ -469,7 +452,7 @@ export function getNeededVariables({
       // Key that is going to be used to search and replace the value on
       // the diploma, like {{address}}
       replacementKey: ReplacementKeys.address,
-      isAutoFillable: true,
+      isAutoFillable: false,
       isIdentifier: false,
     })
   }

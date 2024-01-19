@@ -47,10 +47,8 @@ export default function RegistrationWithSteps({
   const methods = useForm<z.infer<typeof CreatorRegisterSchema>>({
     resolver: zodResolver(CreatorRegisterSchema),
     defaultValues: {
-      register: {
-        ...userMetadata,
-        preferContactMethod: 'email',
-      },
+      ...userMetadata,
+      preferContactMethod: 'email',
     },
     reValidateMode: 'onChange',
     mode: 'onChange',
@@ -67,8 +65,8 @@ export default function RegistrationWithSteps({
         {txState === TransactionStates.none && (
           <form onSubmit={methods.handleSubmit(onSubmit)}>
             <Stack gap={5}>
-              <AccountDetails formControl={methods.control} />
-              <ContactInformation formControl={methods.control} />
+              <AccountDetails />
+              <ContactInformation />
 
               <TermsAndConditions />
 

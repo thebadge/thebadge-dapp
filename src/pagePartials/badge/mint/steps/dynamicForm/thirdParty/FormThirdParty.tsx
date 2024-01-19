@@ -8,17 +8,18 @@ import { DropdownSelect } from '@/src/components/form/formFields/DropdownSelect'
 import { TextField } from '@/src/components/form/formFields/TextField'
 import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import useBadgeModelTemplate from '@/src/hooks/theBadge/useBadgeModelTemplate'
-import useTpBadgeModelMintMethods from '@/src/hooks/theBadge/useTpBadgeModelMintMethods'
-import { MintThirdPartySchemaType } from '@/src/pagePartials/badge/mint/schema/MintThirdPartySchema'
+import {
+  MINT_THIRD_PARTY_METHODS,
+  MintThirdPartySchemaType,
+} from '@/src/pagePartials/badge/mint/schema/MintThirdPartySchema'
 
 export default function FormThirdParty() {
   const { control, watch } = useFormContext<MintThirdPartySchemaType>()
   const { t } = useTranslation()
   const { badgeModelId } = useModelIdParam()
   const template = useBadgeModelTemplate(badgeModelId)
-  const mintMethods = useTpBadgeModelMintMethods(badgeModelId)
-  const defaultMintMethod = mintMethods[0]
-  const watchedPreferMintMethod = watch('preferMintMethod') || defaultMintMethod
+
+  const watchedPreferMintMethod = watch('preferMintMethod')
 
   return (
     <>
@@ -30,7 +31,6 @@ export default function FormThirdParty() {
         </Typography>
         <Controller
           control={control}
-          defaultValue={defaultMintMethod}
           name={'preferMintMethod'}
           render={({ field: { onChange, value }, fieldState: { error } }) => (
             <Box alignItems="center" display="flex" gap={1} justifyContent="left">
@@ -42,8 +42,8 @@ export default function FormThirdParty() {
               <DropdownSelect
                 error={error}
                 onChange={onChange}
-                options={[...mintMethods]}
-                value={value || defaultMintMethod}
+                options={[...MINT_THIRD_PARTY_METHODS]}
+                value={value || 'email'}
               />
             </Box>
           )}

@@ -1,7 +1,7 @@
 import React from 'react'
 
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
-import { Alert, Stack, Tooltip, Typography } from '@mui/material'
+import { Stack, Tooltip, Typography } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
 import { Controller, useFormContext } from 'react-hook-form'
 import { ImageType } from 'react-images-uploading'
@@ -24,11 +24,6 @@ export default function BadgeConfiguration() {
     <>
       <SectionContainer>
         <Stack flex="1" gap={4}>
-          <Alert severity="info">
-            <Typography variant="labelMedium">
-              {t('badge.model.create.uiBasics.customFields.hint')}
-            </Typography>
-          </Alert>
           <Stack>
             <Typography variant="bodySmall">
               {t('badge.model.create.uiBasics.templateConfig.title')}
@@ -38,7 +33,6 @@ export default function BadgeConfiguration() {
               name={'name'}
               render={({ field: { onChange, value }, fieldState: { error } }) => (
                 <TextField
-                  allowVariables
                   error={error}
                   ghostLabel={t('badge.model.create.uiBasics.name')}
                   onChange={onChange}
@@ -57,7 +51,6 @@ export default function BadgeConfiguration() {
               name={'description'}
               render={({ field: { onChange, value }, fieldState: { error } }) => (
                 <TextArea
-                  allowVariables
                   error={error}
                   onChange={onChange}
                   placeholder={t('badge.model.create.uiBasics.description')}

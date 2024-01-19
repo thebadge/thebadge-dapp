@@ -1,4 +1,3 @@
-import { DocumentNode } from 'graphql/language'
 import { GraphQLClient } from 'graphql-request'
 import nullthrows from 'nullthrows'
 
@@ -23,34 +22,4 @@ export function getSubgraphSdkByNetwork(
     : endpoints[chainId][subgraphName]
   const networkConfig = getSdkWithHooks(new GraphQLClient(subGraph))
   return nullthrows(networkConfig, `No sdk for chain id: ${chainId}`)
-}
-
-/**
- * Helpers that allows us to call the TheGraph to fetch needed data on SSR
- * @param gqlUrl
- * @param query
- * @param variables
- */
-export async function gqlQuery(
-  gqlUrl: string,
-  { query, variables }: { variables?: Record<string, unknown>; query: DocumentNode },
-) {
-  function getGqlString(doc: DocumentNode) {
-    return doc.loc && doc.loc.source.body
-  }
-
-  return fetch(gqlUrl, {
-    headers: {
-      Accept: '*/*',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      query: getGqlString(query),
-      variables: variables,
-    }),
-    method: 'POST',
-    mode: 'cors',
-  })
-    .then((r) => r.json())
-    .then((json) => json.data)
 }

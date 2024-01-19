@@ -4,7 +4,7 @@ import { styled } from '@mui/material'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
-import useIsBadgeOwnerByModelId from '@/src/hooks/subgraph/useIsBadgeOwner'
+import useIsBadgeOwner from '@/src/hooks/subgraph/useIsBadgeOwner'
 import AlreadyOwnThisBadgeError from '@/src/pagePartials/errors/displays/AlreadyOwnThisBadgeError'
 import { ChainsValues } from '@/types/chains'
 import { WCAddress } from '@/types/utils'
@@ -32,7 +32,7 @@ export const RequiredNotHaveBadge: React.FC<RequiredConnectionProps> = ({
 }) => {
   const [wantToContinue, setWantToContinue] = useState(false)
   const { badgeModelId } = useModelIdParam()
-  const isBadgeOwner = useIsBadgeOwnerByModelId(badgeModelId, ownerAddress)
+  const isBadgeOwner = useIsBadgeOwner(badgeModelId, ownerAddress)
 
   if (!wantToContinue && isBadgeOwner) {
     return (

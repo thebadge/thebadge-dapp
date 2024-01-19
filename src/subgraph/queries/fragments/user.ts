@@ -3,23 +3,26 @@ import gql from 'graphql-tag'
 gql`
   fragment User on User {
     id
-    isCompany
-    isCreator
-    isCurator
-    isRegistered
-    metadataUri
-    suspended
     statistics {
       mintedBadgesAmount
     }
+    isCreator
+    isRegistered
+    metadataUri
   }
 `
 
 gql`
   fragment UserWithBadges on User {
-    ...User
+    id
+    isCreator
+    isRegistered
+    metadataUri
     badges {
       ...UserBadges
+    }
+    statistics {
+      mintedBadgesAmount
     }
   }
 `

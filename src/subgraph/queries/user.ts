@@ -20,8 +20,7 @@ export const MY_BADGES = gql`
   query userBadges($ownerAddress: ID!, $where: Badge_filter) {
     user(id: $ownerAddress) {
       badges(where: $where) {
-        id
-        contractAddress
+        ...FullBadgeDetails
       }
     }
   }
@@ -39,9 +38,6 @@ export const MY_CREATED_BADGE_TYPES = gql`
         badgesMintedAmount
         creatorFee
         protocolFeeInBps
-        creator {
-          id
-        }
       }
       statistics {
         creatorStatistic {

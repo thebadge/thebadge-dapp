@@ -1,42 +1,32 @@
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 
-import { useSignMessage } from 'wagmi'
-
 import { isMetadataColumnArray } from '@/src/components/form/helpers/validators'
 import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import { BADGE_MODEL_TEXT_CONTRAST } from '@/src/constants/backgrounds'
-import {
-  DEFAULT_COURT_ID,
-  PRIVACY_POLICY_URL,
-  TERMS_AND_CONDITIONS_URL,
-} from '@/src/constants/common'
+import { DEFAULT_COURT_ID } from '@/src/constants/common'
 import { contracts } from '@/src/contracts/contracts'
-import { useIsRegistered } from '@/src/hooks/subgraph/useIsRegistered'
 import useCreateModelFeeValue from '@/src/hooks/theBadge/useCreateModelFeeValue'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
 import useTransaction, { TransactionStates } from '@/src/hooks/useTransaction'
 import CreateCommunityBadgeModelWithSteps from '@/src/pagePartials/badge/model/CreateCommunityBadgeModelWithSteps'
 import { CreateCommunityModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateCommunityModelSchema'
 import { ProfileType } from '@/src/pagePartials/profile/ProfileSelector'
-import { NormalProfileFilter } from '@/src/pagePartials/profile/UserProfile'
 import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 import { BadgeModelControllerName, BadgeModelTemplate } from '@/types/badges/BadgeModel'
-import { TheBadgeModels__factory, TheBadgeUsers__factory } from '@/types/generated/typechain'
+import { TheBadgeModels__factory } from '@/types/generated/typechain'
 import { NextPageWithLayout } from '@/types/next'
 
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
 const CreateCommunityBadgeModel: NextPageWithLayout = () => {
-  const { resetTxState, sendTx, state } = useTransaction()
+  const { resetTxState, sendTx, state: transactionState } = useTransaction()
   const { data: createModelProtocolFee } = useCreateModelFeeValue()
   const router = useRouter()
+  const { state } = useTransaction()
 
   const { address, appChainId, readOnlyAppProvider } = useWeb3Connection()
   const theBadgeModels = useContractInstance(TheBadgeModels__factory, 'TheBadgeModels')
-  const { data: isRegistered } = useIsRegistered()
-  const theBadgeUsers = useContractInstance(TheBadgeUsers__factory, 'TheBadgeUsers')
-  const { signMessageAsync } = useSignMessage()
 
   useEffect(() => {
     // Redirect to the profile
@@ -45,13 +35,13 @@ const CreateCommunityBadgeModel: NextPageWithLayout = () => {
         generateProfileUrl({
           address,
           profileType: ProfileType.USER_PROFILE,
-          filter: NormalProfileFilter.CREATED_BADGES,
+          filter: 'createdBadges',
         }),
       )
     }
   }, [router, state, address])
 
-  const createBadgeModelSubmit = async (data: CreateCommunityModelSchemaType) => {
+  const onSubmit = async (data: CreateCommunityModelSchemaType) => {
     const {
       backgroundImage,
       badgeMetadataColumns,
@@ -134,46 +124,12 @@ const CreateCommunityBadgeModel: NextPageWithLayout = () => {
       // Do nothing
     }
   }
-  const createRegisterUserSubmit = async (data: CreateCommunityModelSchemaType) => {
-    if (!address) {
-      throw Error('Web3 address not provided')
-    }
-
-    // Message asking the user to accept the terms and privacy policy
-    const message = `By signing this message, you confirm your acceptance of our [Terms and Conditions](${TERMS_AND_CONDITIONS_URL}) and [Privacy Policy](${PRIVACY_POLICY_URL}).`
-
-    const signature = await signMessageAsync({ message })
-    if (!signature) {
-      throw new Error('User rejected the signing of the message.')
-    }
-    // TODO store the signature on the relayer
-    localStorage.setItem('terms-and-conditions-accepted', JSON.stringify({ signature }))
-    const transaction = await sendTx(async () => {
-      // Use NextJs dynamic import to reduce the bundle size
-      const { createAndUploadCreatorMetadata } = await import('@/src/utils/creator/registerHelpers')
-      const creatorMetadataIPFSHash = await createAndUploadCreatorMetadata(data)
-      return theBadgeUsers.registerUser(creatorMetadataIPFSHash, false)
-    })
-
-    if (transaction) {
-      await transaction.wait()
-    }
-  }
-
-  const onSubmit = async (data: CreateCommunityModelSchemaType) => {
-    if (!isRegistered) {
-      await createRegisterUserSubmit(data)
-      await createBadgeModelSubmit(data)
-      return
-    }
-    await createBadgeModelSubmit(data)
-  }
 
   return (
     <CreateCommunityBadgeModelWithSteps
       onSubmit={onSubmit}
       resetTxState={resetTxState}
-      txState={state}
+      txState={transactionState}
     />
   )
 }

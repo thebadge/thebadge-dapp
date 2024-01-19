@@ -4,12 +4,11 @@ import { AxiosResponse } from 'axios'
  * Helper function to retrieve cache response from the local store, before call
  * it you should check if the cacheExist
  * @param key
- * @param ignoreExpiration useful when we have e-tags
  */
-export function getCacheResponse<T>(key: string, ignoreExpiration = false) {
-  if (checkIfExistOnCache(key) || ignoreExpiration) {
+export function getCacheResponse<T>(key: string) {
+  if (checkIfExistOnCache(key)) {
     const item = JSON.parse(sessionStorage.getItem(key) as string)
-    if (item && 'response' in item) return item.response as AxiosResponse<T>
+    if ('response' in item) return item.response as AxiosResponse<T>
     else return null
   }
   return null

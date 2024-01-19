@@ -34,25 +34,7 @@ export interface EmailClaimTx {
   emailClaimer?: string
 }
 
-export interface EmailMintNotificationTx {
-  networkId: string
-
-  mintTxHash: string
-
-  badgeModelId: number
-
-  emailRecipient: string
-}
-
 export type EmailClaimTxSigned = EmailClaimTx & {
-  signature: string
-
-  signedMessage: string
-
-  ownerAddress: string
-}
-
-export type EmailMintNotificationTxSigned = EmailMintNotificationTx & {
   signature: string
 
   signedMessage: string

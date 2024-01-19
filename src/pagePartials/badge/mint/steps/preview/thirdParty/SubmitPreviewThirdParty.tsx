@@ -17,7 +17,7 @@ import { BadgeThirdPartyPreviewGenerator } from '@/src/pagePartials/badge/previe
 import { createThirdPartyValuesObject } from '@/src/utils/badges/mintHelpers'
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
-export default function SubmitPreviewThirdParty({ hideCost }: { hideCost?: boolean }) {
+export default function SubmitPreviewThirdParty() {
   const { t } = useTranslation()
   const { appChainId } = useWeb3Connection()
   const { setValue, watch } = useFormContext<MintThirdPartySchemaType>() // retrieve all hook methods
@@ -38,12 +38,11 @@ export default function SubmitPreviewThirdParty({ hideCost }: { hideCost?: boole
   }
 
   const estimatedBadgeIdForPreview = estimatedBadgeId ? estimatedBadgeId.toString() : '0'
-  const urlsData = useBadgePreviewUrl(
+  const { badgePreviewUrl } = useBadgePreviewUrl(
     estimatedBadgeIdForPreview,
     badgeModelData.data.badgeModel.contractAddress,
     appChainId,
   )
-  const previewUrls = urlsData.data
 
   return (
     <Stack alignItems={'center'} gap={3} margin={1}>
@@ -53,7 +52,7 @@ export default function SubmitPreviewThirdParty({ hideCost }: { hideCost?: boole
             additionalData={{
               ...values,
             }}
-            badgeUrl={previewUrls?.shortPreviewUrl}
+            badgeUrl={badgePreviewUrl}
             modelId={badgeModelId}
             setValue={setValue}
             title={t('badge.model.mint.previewTitle', {
@@ -62,11 +61,9 @@ export default function SubmitPreviewThirdParty({ hideCost }: { hideCost?: boole
           />
         </SafeSuspense>
       </Box>
-      {!hideCost && (
-        <SafeSuspense>
-          <MintCostThirdParty />
-        </SafeSuspense>
-      )}
+      <SafeSuspense>
+        <MintCostThirdParty />
+      </SafeSuspense>
     </Stack>
   )
 }

@@ -3,7 +3,7 @@ import React, { ReactElement } from 'react'
 import { styled } from '@mui/material'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
-import { useIsRegistered } from '@/src/hooks/subgraph/useIsRegistered'
+import useIsRegistered from '@/src/hooks/subgraph/useIsRegistered'
 import NotRegisteredError from '@/src/pagePartials/errors/displays/NotRegisteredError'
 import { ChainsValues } from '@/types/chains'
 

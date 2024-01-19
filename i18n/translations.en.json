@@ -123,6 +123,7 @@
     },
     "title": "Badge models explorer",
     "noBadgesFound": "There are no badges that match these filters...",
+    "button": "MINT",
     "preview": {
       "title": "Model information",
       "badge": {
@@ -132,14 +133,7 @@
         "depositCost": "Deposit cost:",
         "totalMinted": "Total minted amount:",
         "mint": "Mint",
-        "pause": "Archive",
-        "unpause": "Unarchive",
-        "edit": "Edit",
         "showOthers": "See minted badges",
-        "mintPausedTooltip": "This model is currently paused and cannot be minted.",
-        "archiveTooltip": "By archiving this model, it will become unavailable for minting.",
-        "unArchiveTooltip": "By unarchiving this model, it will become available again for minting.",
-        "buttonWip": "Function currently unavailable.",
         "thirdParty": {
           "showOthers": "See minted"
         }
@@ -222,7 +216,7 @@
     "thirdParty": {
       "title": "Management",
       "subtitle": "{{thirdPartyName}} Models Management",
-      "tab1": "Manage subscriptions",
+      "tab1": "Manage account",
       "tab2": "Manage badges",
       "manageBadges": {
         "title": "Manage third party badges"
@@ -287,7 +281,7 @@
     "connectWallet": "Connect your wallet",
     "connectWalletSubtitle": "Please, to continue it is necessary that you connect your wallet",
     "notRegistered": "You are not a registered yet.",
-    "notRegisteredSubtitle": "Please, to continue it is necessary that you register. ",
+    "notRegisteredSubtitle": "Please, to continue it is necessary that you register.",
     "alreadyOwnedBadge": "You already own this badge",
     "pausedAction": "This action has been temporarily paused.",
     "pausedActionSubtitle": "Please, head over to our Discord channel for more information.",
@@ -370,10 +364,6 @@
             "hint": "You can read more about this process on the [docs]({{docsUrl}})."
           },
           {
-            "subTitle": "You are starting the process of creating a new badge model. Please read the following instructions carefully in order to be able to complete the process correctly.",
-            "hint": "You can read more about this process on the [docs]({{docsUrl}})."
-          },
-          {
             "subTitle": "Let's start with the look and feel of your badge, so please complete the following form until you are happy with how your badge is going to looks like.",
             "hint": "If you happen to step away in the middle of creating, no worries! Your data will be safely backed up for a day."
           },
@@ -408,15 +398,10 @@
             "diplomaDate": "Date"
           },
           "customFields": {
-            "customFieldsEnabled": "Enable custom fields",
-            "miniLogoConfigTextEnabled": "Use custom text",
-            "miniLogoConfigImageEnabled": "Use custom image",
+            "customFieldsEnabled": "Do you want to customize the texts?",
             "hint": "You can press '{' to use custom variables on your fields",
             "badgeTitle": "Badge Title",
-            "badgeDescription": "Badge Description",
-            "miniLogoTitle": "Mini logo title",
-            "miniLogoSubTitle": "Mini logo subtitle",
-            "miniLogoUrl": "Mini Logo URL"
+            "badgeDescription": "Badge Description"
           }
         },
         "formField": {
@@ -500,11 +485,7 @@
           "evidence": {
             "title": "Issue a {{badgeModelTemplate}} to your user",
             "sendMethodText": "Choose the method to send the {{badgeModelTemplate}} to your user",
-            "additionalData": "Required information about your user",
-            "emailNotification": {
-              "title": "Notify the user via email? (optional)",
-              "inputLabel": "Users email"
-            }
+            "additionalData:": "Needed information about your user"
           },
           "helpSteps": [
             "You will have to fill up the required information about the user you want to issue its diploma",
@@ -654,13 +635,6 @@
       "minted": "Minted",
       "challenged": "Challenged",
       "inReview": "In Review"
-    }
-  },
-  "badgeModelsList": {
-    "filters": {
-      "paused": "Archived",
-      "thirdParty": "Third Party",
-      "community": "Community"
     }
   },
   "footer": {
