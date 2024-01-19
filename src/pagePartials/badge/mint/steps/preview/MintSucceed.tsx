@@ -11,7 +11,7 @@ import useEstimateBadgeId from '@/src/hooks/theBadge/useEstimateBadgeId'
 import { useAvailableBackgrounds } from '@/src/hooks/useAvailableBackgrounds'
 import { getBackgroundType, getTextContrast } from '@/src/utils/badges/metadataHelpers'
 
-const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
+const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 
 export default function MintSucceed() {
   const { address, appChainId, readOnlyChainId } = useWeb3Connection()

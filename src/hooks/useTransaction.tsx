@@ -7,7 +7,7 @@ import { useTransactionNotification } from '@/src/providers/TransactionNotificat
 import { TransactionError } from '@/src/utils/TransactionError'
 import { sendTxToRelayer } from '@/src/utils/relayTx'
 import { RelayedTx } from '@/types/relayedTx'
-const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
+const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 
 export enum TransactionStates {
   none = 'NONE',

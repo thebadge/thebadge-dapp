@@ -26,7 +26,7 @@ import { generateBadgePreviewUrl, generateMintUrl } from '@/src/utils/navigation
 import { BadgeModelControllerType } from '@/types/badges/BadgeModel'
 import { Badge } from '@/types/generated/subgraph'
 
-const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
+const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 
 const ExploreBadges = () => {
   const { t } = useTranslation()

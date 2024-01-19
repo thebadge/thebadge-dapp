@@ -8,7 +8,7 @@ import { useTranslation } from 'next-export-i18n'
 import useBadgeIdParam from '@/src/hooks/nextjs/useBadgeIdParam'
 import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
 import { useSizeSM } from '@/src/hooks/useSize'
-const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
+const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 
 export default function BadgeTitle() {
   const { t } = useTranslation()

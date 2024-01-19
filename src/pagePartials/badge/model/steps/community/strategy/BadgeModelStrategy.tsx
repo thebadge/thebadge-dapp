@@ -11,7 +11,7 @@ import { TokenInput } from '@/src/components/form/formFields/TokenInput'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { getNetworkConfig } from '@/src/config/web3'
 import { CreateCommunityModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateCommunityModelSchema'
-const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
+const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 
 const SliderContainer = styled(Box)(({ theme }) => ({
   display: 'flex',

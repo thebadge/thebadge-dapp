@@ -10,7 +10,7 @@ import {
   CreateCommunityModelSchemaType,
   CustomFieldsConfigurationSchemaType,
 } from '@/src/pagePartials/badge/model/schema/CreateCommunityModelSchema'
-const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
+const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 
 const BoxShadow = styled(Box)(({ theme }) => ({
   display: 'flex',

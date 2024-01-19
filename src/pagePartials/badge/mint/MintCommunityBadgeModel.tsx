@@ -16,7 +16,7 @@ import { MintBadgeSchemaType } from '@/src/pagePartials/badge/mint/schema/MintBa
 import { cleanMintFormValues } from '@/src/pagePartials/badge/mint/utils'
 import { PreventActionIfBadgeModelPaused } from '@/src/pagePartials/errors/preventActionIfPaused'
 import { RequiredNotHaveBadge } from '@/src/pagePartials/errors/requiredNotHaveBadge'
-const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
+const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 import { encodeIpfsEvidence } from '@/src/utils/badges/createBadgeModelHelpers'
 import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 import { BadgeModelMetadata } from '@/types/badges/BadgeMetadata'
