@@ -27,6 +27,6 @@ export const MiniBadgePreviewContainer = styled(Box, {
   },
 }))
 
-export const MiniBadgePreviewLoading = () => (
-  <Skeleton animation="wave" height={300} variant="rounded" width={180} />
+export const MiniBadgePreviewLoading = ({ height, width }: { height?: number; width?: number }) => (
+  <Skeleton animation="wave" height={height || 300} variant="rounded" width={width || 180} />
 )

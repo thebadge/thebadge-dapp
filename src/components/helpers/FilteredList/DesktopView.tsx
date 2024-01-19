@@ -27,14 +27,19 @@ export default function FilteredListDesktopView(props: {
   loadingColor?: SpinnerColors
   preview: React.ReactNode
   children: React.ReactNode
+  alignItems?: string
 }) {
+  let itemsAlignment = props.alignItems ? props.alignItems : 'center'
+  if (props.preview) {
+    itemsAlignment = 'left'
+  }
   return (
     <Box display="flex" id="preview" mt={4}>
       <ContentBox>
         {props.loading ? (
           <Loading color={props.loadingColor} />
         ) : (
-          <ItemsGridBox sx={{ justifyContent: props.preview ? 'left' : 'center' }}>
+          <ItemsGridBox sx={{ justifyContent: itemsAlignment }}>
             <SafeSuspense>{props.children}</SafeSuspense>
           </ItemsGridBox>
         )}

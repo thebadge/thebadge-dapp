@@ -68,8 +68,8 @@ export function useEvidenceBadgeKlerosMetadata(badgeId: string, options?: BadgeM
         registrationEvidence?.uri,
       )
 
-      const requestBadgeEvidence = res ? res.data.result?.content : null
-      const requestBadgeEvidenceRawUrl = res ? res.data.result?.s3Url : null
+      const requestBadgeEvidence = res ? res.result?.content : null
+      const requestBadgeEvidenceRawUrl = res ? res.result?.s3Url : null
 
       return {
         ...badgeKlerosMetadata.data,

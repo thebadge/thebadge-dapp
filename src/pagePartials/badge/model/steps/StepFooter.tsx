@@ -40,12 +40,12 @@ export default function StepFooter({
     currentStep === getCreateModelStepsAmount(controllerType as BadgeModelControllerType) - 1
 
   function onBack() {
-    saveFormValues(getValues())
+    saveFormValues(getValues(), controllerType as BadgeModelControllerType)
     if (onBackCallback) onBackCallback()
   }
 
   function onNext() {
-    saveFormValues(getValues())
+    saveFormValues(getValues(), controllerType as BadgeModelControllerType)
     if (onNextCallback) onNextCallback()
   }
 
@@ -73,7 +73,7 @@ export default function StepFooter({
           </StepButton>
         )}
         {isLastStep && (
-          <PreventActionWithoutConnection onlyCreator={true} sx={{ m: 'auto' }}>
+          <PreventActionWithoutConnection sx={{ m: 'auto' }}>
             <StepButton
               color={color || 'primary'}
               sx={{ m: 'auto' }}

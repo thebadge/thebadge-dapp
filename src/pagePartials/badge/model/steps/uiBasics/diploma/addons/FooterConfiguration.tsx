@@ -5,17 +5,16 @@ import { Controller, useFormContext } from 'react-hook-form'
 
 import { CheckBox } from '@/src/components/form/formFields/CheckBox'
 import { useCurrentUser } from '@/src/hooks/subgraph/useCurrentUser'
-import useS3Metadata from '@/src/hooks/useS3Metadata'
+import useUserMetadata from '@/src/hooks/useUserMetadata'
 import { FooterConfigurationSchemaType } from '@/src/pagePartials/badge/model/schema/CreateThirdPartyModelSchema'
 import SectionContainer from '@/src/pagePartials/badge/model/steps/uiBasics/addons/SectionContainer'
-import { CreatorMetadata } from '@/types/badges/Creator'
 
 export default function FooterConfiguration() {
   const { control, setValue, watch } = useFormContext<FooterConfigurationSchemaType>()
 
   const { data } = useCurrentUser()
-  const resCreatorMetadata = useS3Metadata<{ content: CreatorMetadata }>(data?.metadataUri || '')
-  const creatorMetadata = resCreatorMetadata.data?.content
+
+  const creatorMetadata = useUserMetadata(undefined, data?.metadataUri || '')
 
   const footerEnabled = watch('footerEnabled')
 

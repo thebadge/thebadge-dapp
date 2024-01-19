@@ -9,7 +9,9 @@ import { z } from 'zod'
 
 import StepPrompt from '@/src/components/form/formWithSteps/StepPrompt'
 import { TransactionLoading } from '@/src/components/loading/TransactionLoading'
+import { useUserById } from '@/src/hooks/subgraph/useUserById'
 import { TransactionStates } from '@/src/hooks/useTransaction'
+import useUserMetadata from '@/src/hooks/useUserMetadata'
 import {
   CreatorRegisterSchema,
   CreatorRegisterSchemaType,
@@ -19,6 +21,7 @@ import AccountDetails from '@/src/pagePartials/creator/register/steps/generalInf
 import ContactInformation from '@/src/pagePartials/creator/register/steps/generalInfo/ContactInformation'
 import TermsAndConditions from '@/src/pagePartials/creator/register/steps/terms/TermsAndConditions'
 import { PreventActionWithoutConnection } from '@/src/pagePartials/errors/preventActionWithoutConnection'
+import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
 
 type RegistrationStepsProps = {
   onSubmit: SubmitHandler<CreatorRegisterSchemaType>
@@ -38,11 +41,16 @@ export default function RegistrationWithSteps({
   txState = TransactionStates.none,
 }: RegistrationStepsProps) {
   const { t } = useTranslation()
-
+  const { address: connectedWalletAddress } = useWeb3Connection()
+  const { data } = useUserById(connectedWalletAddress)
+  const userMetadata = useUserMetadata(connectedWalletAddress, data?.metadataUri || '')
   const methods = useForm<z.infer<typeof CreatorRegisterSchema>>({
     resolver: zodResolver(CreatorRegisterSchema),
     defaultValues: {
-      preferContactMethod: 'email',
+      register: {
+        ...userMetadata,
+        preferContactMethod: 'email',
+      },
     },
     reValidateMode: 'onChange',
     mode: 'onChange',
@@ -59,8 +67,8 @@ export default function RegistrationWithSteps({
         {txState === TransactionStates.none && (
           <form onSubmit={methods.handleSubmit(onSubmit)}>
             <Stack gap={5}>
-              <AccountDetails />
-              <ContactInformation />
+              <AccountDetails formControl={methods.control} />
+              <ContactInformation formControl={methods.control} />
 
               <TermsAndConditions />
 

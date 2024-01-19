@@ -1,7 +1,7 @@
 import { useRouter } from 'next/navigation'
 import React, { useCallback, useState } from 'react'
 
-import { Box, Stack, Typography } from '@mui/material'
+import { Stack, Typography } from '@mui/material'
 import { ButtonV2, colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 
@@ -9,16 +9,14 @@ import { NoResultsAnimated } from '@/src/components/assets/animated/NoResults'
 import FilteredList, { ListFilter } from '@/src/components/helpers/FilteredList'
 import InViewPort from '@/src/components/helpers/InViewPort'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
-import MiniBadgeModelPreview from '@/src/pagePartials/badge/MiniBadgeModelPreview'
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
-import getHighlightColorByStatus from '@/src/utils/badges/getHighlightColorByStatus'
+import BadgeItemGenerator from '@/src/pagePartials/badge/preview/generators/BadgeItemGenerator'
 import { generateBadgePreviewUrl, generateExplorer } from '@/src/utils/navigation/generateUrl'
 import { Badge, BadgeStatus, Badge_Filter } from '@/types/generated/subgraph'
 
 type Props = {
   address: string
 }
-
 export default function BadgesYouOwnList({ address }: Props) {
   const { t } = useTranslation()
   const router = useRouter()
@@ -40,7 +38,7 @@ export default function BadgesYouOwnList({ address }: Props) {
     },
     {
       title: t('badgesList.filters.challenged'),
-      color: 'pink',
+      color: 'error',
       defaultSelected: true,
       key: BadgeStatus.Challenged,
     },
@@ -87,7 +85,11 @@ export default function BadgesYouOwnList({ address }: Props) {
 
   function generateListItems() {
     if (ownBadges.length > 0) {
-      return ownBadges.map((badge) => renderOwnBadgeItem(badge, onBadgeClick(badge)))
+      return ownBadges.map((badge) => (
+        <InViewPort key={badge.id}>
+          <BadgeItemGenerator badgeId={badge.id} key={badge.id} onClick={onBadgeClick(badge)} />
+        </InViewPort>
+      ))
     }
     return [
       <Stack key="no-results">
@@ -108,6 +110,7 @@ export default function BadgesYouOwnList({ address }: Props) {
 
   return (
     <FilteredList
+      alignItems={'left'}
       filters={filters}
       items={generateListItems()}
       listId={isLoggedInUser ? 'owned-badges-explorer-list' : 'preview-badges-explorer-list'}
@@ -120,18 +123,5 @@ export default function BadgesYouOwnList({ address }: Props) {
       }
       titleColor={colors.blue}
     />
-  )
-}
-
-function renderOwnBadgeItem(badge: Badge, onClick: VoidFunction) {
-  return (
-    <InViewPort key={badge.id} minHeight={300} minWidth={180}>
-      <Box onClick={onClick}>
-        <MiniBadgeModelPreview
-          highlightColor={getHighlightColorByStatus(badge.status)}
-          metadata={badge.badgeModel?.uri}
-        />
-      </Box>
-    </InViewPort>
   )
 }

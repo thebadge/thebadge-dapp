@@ -11,12 +11,12 @@ import ManageBadges from '@/src/pagePartials/profile/myProfile/ManageBadges'
 import ProfileContextProvider from '@/src/providers/ProfileProvider'
 import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 
-export enum ThirdPartyProfileFilter {
-  MANAGE_ACCOUNT = 'manageAccount',
+export enum ManagementProfileFilter {
+  MANAGE_SUBSCRIPTIONS = 'manageSubscriptions',
   MANAGE_BADGES = 'manageBadges',
 }
 
-const ThirdPartyProfile = () => {
+const ManagementProfile = () => {
   const { t } = useTranslation()
   const params = useSearchParams()
   const selectedFilter = params?.get('filter')
@@ -24,7 +24,7 @@ const ThirdPartyProfile = () => {
   const manageBadgesTab = (
     <Typography
       color={
-        !selectedFilter || selectedFilter === ThirdPartyProfileFilter.MANAGE_BADGES
+        !selectedFilter || selectedFilter === ManagementProfileFilter.MANAGE_BADGES
           ? 'text.primary'
           : 'text.disabled'
       }
@@ -37,7 +37,9 @@ const ThirdPartyProfile = () => {
   const manageAccountTab = (
     <Typography
       color={
-        selectedFilter === ThirdPartyProfileFilter.MANAGE_ACCOUNT ? 'text.primary' : 'text.disabled'
+        selectedFilter === ManagementProfileFilter.MANAGE_SUBSCRIPTIONS
+          ? 'text.primary'
+          : 'text.disabled'
       }
       textTransform="uppercase"
     >
@@ -59,32 +61,26 @@ const ThirdPartyProfile = () => {
             {/* manage badges */}
             <Link
               href={generateProfileUrl({
-                profileType: ProfileType.THIRD_PARTY_PROFILE,
-                filter: ThirdPartyProfileFilter.MANAGE_BADGES,
+                profileType: ProfileType.MANAGEMENT_PROFILE,
+                filter: ManagementProfileFilter.MANAGE_BADGES,
               })}
             >
               {manageBadgesTab}
             </Link>
 
-            {/* manage account */}
-            <div
-              aria-disabled={true}
-              // href={generateProfileUrl({
-              //   profileType: ProfileType.THIRD_PARTY_PROFILE,
-              //   filter: ThirdPartyProfileFilter.MANAGE_ACCOUNT,
-              // })}
-            >
-              {manageAccountTab}
-            </div>
+            {/* manage subscriptions */}
+            <div aria-disabled={true}>{manageAccountTab}</div>
           </Box>
         </Stack>
         {/* Profile Content */}
         {!selectedFilter && <ManageBadges />}
-        {selectedFilter === ThirdPartyProfileFilter.MANAGE_BADGES && <ManageBadges />}
-        {selectedFilter === ThirdPartyProfileFilter.MANAGE_ACCOUNT && <div>MANAGE ACCOUNT WIP</div>}
+        {selectedFilter === ManagementProfileFilter.MANAGE_BADGES && <ManageBadges />}
+        {selectedFilter === ManagementProfileFilter.MANAGE_SUBSCRIPTIONS && (
+          <div>MANAGE SUBSCRIPTIONS WIP</div>
+        )}
       </SafeSuspense>
     </ProfileContextProvider>
   )
 }
 
-export default ThirdPartyProfile
+export default ManagementProfile

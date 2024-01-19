@@ -5,16 +5,14 @@ import { colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 
 import TBUserInfoExpandablePreview from '@/src/components/common/TBUserInfoExpandablePreview'
-import useS3Metadata from '@/src/hooks/useS3Metadata'
-import { CreatorMetadata } from '@/types/badges/Creator'
+import useUserMetadata from '@/src/hooks/useUserMetadata'
 import { User } from '@/types/generated/subgraph'
 import { WCAddress } from '@/types/utils'
 
 export default function CreatorInfoSmallPreview({ creator }: { creator: User }) {
   const { t } = useTranslation()
 
-  const resCreatorMetadata = useS3Metadata<{ content: CreatorMetadata }>(creator.metadataUri || '')
-  const creatorMetadata = resCreatorMetadata.data?.content
+  const userMetadata = useUserMetadata(creator.id, creator.metadataUri || '')
 
   /* Creator info */
   return (
@@ -25,7 +23,7 @@ export default function CreatorInfoSmallPreview({ creator }: { creator: User }) 
 
       <TBUserInfoExpandablePreview
         color={colors.purple}
-        metadata={creatorMetadata}
+        metadata={userMetadata}
         userAddress={creator.id as WCAddress}
       />
     </Stack>

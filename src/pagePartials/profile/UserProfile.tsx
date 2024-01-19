@@ -8,6 +8,7 @@ import { useTranslation } from 'next-export-i18n'
 import LinkWithTranslation from '@/src/components/helpers/LinkWithTranslation'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { useCurrentUser } from '@/src/hooks/subgraph/useCurrentUser'
+import { useSizeSM } from '@/src/hooks/useSize'
 import BadgesCreatedSection from '@/src/pagePartials/profile/created/BadgesCreatedSection'
 import MyProfileSection from '@/src/pagePartials/profile/myProfile/MyProfileSection'
 import BadgesIAmReviewingSection from '@/src/pagePartials/profile/reviewing/BadgesIAmReviewingSection'
@@ -30,6 +31,7 @@ const UserProfile = () => {
 
   const { data: user } = useCurrentUser()
   const router = useRouter()
+  const isMobile = useSizeSM()
 
   const mainProfileTab = (
     <Typography
@@ -64,6 +66,40 @@ const UserProfile = () => {
     </Typography>
   )
 
+  const renderCreatedBadgesHeader = () => {
+    if (isMobile) {
+      return null
+    }
+
+    return !user?.isRegistered ? (
+      <Tooltip
+        arrow
+        title={
+          <>
+            {t('header.tooltips.becomeACreator.prefixText')}
+            <Box
+              onClick={() => router.push(generateCreatorRegisterUrl())}
+              style={{ cursor: 'pointer', textDecoration: 'underline' }}
+            >
+              {t('header.tooltips.becomeACreator.link')}
+            </Box>
+          </>
+        }
+      >
+        <span>{createdBadgesTab}</span>
+      </Tooltip>
+    ) : (
+      <LinkWithTranslation
+        pathname={generateProfileUrl()}
+        queryParams={{
+          filter: user?.isRegistered ? NormalProfileFilter.CREATED_BADGES : '',
+        }}
+      >
+        {createdBadgesTab}
+      </LinkWithTranslation>
+    )
+  }
+
   return (
     <ProfileContextProvider>
       <SafeSuspense>
@@ -89,33 +125,7 @@ const UserProfile = () => {
             </LinkWithTranslation>
 
             {/* created badges */}
-            {!user?.isRegistered ? (
-              <Tooltip
-                arrow
-                title={
-                  <>
-                    {t('header.tooltips.becomeACreator.prefixText')}
-                    <Box
-                      onClick={() => router.push(generateCreatorRegisterUrl())}
-                      style={{ cursor: 'pointer', textDecoration: 'underline' }}
-                    >
-                      {t('header.tooltips.becomeACreator.link')}
-                    </Box>
-                  </>
-                }
-              >
-                <span>{createdBadgesTab}</span>
-              </Tooltip>
-            ) : (
-              <LinkWithTranslation
-                pathname={generateProfileUrl()}
-                queryParams={{
-                  filter: user?.isRegistered ? NormalProfileFilter.CREATED_BADGES : '',
-                }}
-              >
-                {createdBadgesTab}
-              </LinkWithTranslation>
-            )}
+            {renderCreatedBadgesHeader()}
           </Box>
         </Stack>
 
@@ -129,7 +139,9 @@ const UserProfile = () => {
         {selectedFilter === NormalProfileFilter.BADGES_I_AM_REVIEWING && (
           <BadgesIAmReviewingSection />
         )}
-        {selectedFilter === NormalProfileFilter.CREATED_BADGES && <BadgesCreatedSection />}
+        {selectedFilter === NormalProfileFilter.CREATED_BADGES && user?.isRegistered && (
+          <BadgesCreatedSection />
+        )}
       </SafeSuspense>
     </ProfileContextProvider>
   )

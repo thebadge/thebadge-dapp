@@ -27,8 +27,8 @@ import useIsThirdPartyBadge from '@/src/hooks/subgraph/useIsThirdPartyBadge'
 import { useUserById } from '@/src/hooks/subgraph/useUserById'
 import useAddTokenIntoWallet from '@/src/hooks/theBadge/useAddTokenIntoWallet'
 import useBadgePreviewUrl from '@/src/hooks/theBadge/useBadgePreviewUrl'
-import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { useSizeSM } from '@/src/hooks/useSize'
+import useUserMetadata from '@/src/hooks/useUserMetadata'
 import { BadgeView } from '@/src/pagePartials/badge/preview/BadgeView'
 import BadgeTitle from '@/src/pagePartials/badge/preview/addons/BadgeTitle'
 import { reCreateThirdPartyValuesObject } from '@/src/utils/badges/mintHelpers'
@@ -42,7 +42,6 @@ import {
   generateTwitterText,
 } from '@/src/utils/navigation/generateUrl'
 import { BadgeModelControllerType } from '@/types/badges/BadgeModel'
-import { CreatorMetadata } from '@/types/badges/Creator'
 import { ToastStates } from '@/types/toast'
 import { WCAddress } from '@/types/utils'
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
@@ -81,24 +80,20 @@ export default function BadgeOwnedPreview() {
   const creatorAddress = badgeModel?.creator.id || '0x'
   const creatorResponse = useUserById(creatorAddress as WCAddress, contract)
   const creator = creatorResponse.data
-  const resCreatorMetadata = useS3Metadata<{ content: CreatorMetadata }>(creator?.metadataUri || '')
-  const { badgeOpenseaUrl, badgePreviewUrl, shortPreviewURl } = useBadgePreviewUrl(
-    badgeId,
-    badge?.contractAddress,
-  )
-  const requiredBadgeDataMetadata = useBadgeThirdPartyRequiredData(
-    `${badgeId}` || '',
-    badge?.contractAddress,
-  )
+  const urlsData = useBadgePreviewUrl(badgeId, badge?.contractAddress)
+  const previewUrls = urlsData.data
+
+  const requiredBadgeDataMetadata = useBadgeThirdPartyRequiredData(`${badgeId}` || '', contract)
   const badgeModelName = badgeModel?.badgeModelMetadata?.name || ''
   const { readOnlyChainId } = useWeb3Connection()
+
+  const creatorMetadata = useUserMetadata(creator?.id, creator?.metadataUri || '', contract)
 
   if (!badge || !badgeModel) {
     return null
   }
 
   const badgeModelMetadata = badgeModel?.badgeModelMetadata
-  const creatorMetadata = resCreatorMetadata.data?.content
   let issuer = 'TheBadge'
   if (creatorMetadata && creatorMetadata.name) {
     issuer = creatorMetadata.name
@@ -110,7 +105,7 @@ export default function BadgeOwnedPreview() {
 
   async function handleImportLinkedin() {
     try {
-      if (!badge || !badge.badgeMetadata || !badgeModel) {
+      if (!badge || !badge.badgeMetadata || !badgeModel || !previewUrls?.badgePreviewUrl) {
         throw new Error('The badge does not exists or there is an issue with the badgeModel!')
       }
       const { expirationMonth, expirationYear } = getExpirationYearAndMonth(badge.validUntil)
@@ -132,7 +127,7 @@ export default function BadgeOwnedPreview() {
         issueMonth: String(issueMonth),
         expirationYear: String(expirationYear),
         expirationMonth: String(expirationMonth),
-        certUrl: badgePreviewUrl,
+        certUrl: previewUrls.badgePreviewUrl,
         certId: badgeId,
       })
 
@@ -159,7 +154,7 @@ export default function BadgeOwnedPreview() {
       <Stack alignItems="center">
         <BadgeView
           additionalData={{ ...values }}
-          badgeUrl={badgePreviewUrl}
+          badgeUrl={previewUrls?.shortPreviewUrl}
           modelId={badgeModel.id}
         />
       </Stack>
@@ -193,7 +188,7 @@ export default function BadgeOwnedPreview() {
                 <IconButton
                   aria-label="Share badge preview"
                   component="label"
-                  onClick={() => handleShare()}
+                  onClick={() => handleShare(previewUrls?.shortPreviewShareableUrl)}
                 >
                   <ShareOutlinedIcon />
                 </IconButton>
@@ -225,17 +220,19 @@ export default function BadgeOwnedPreview() {
               <Tooltip arrow title={t('badge.viewBadge.shareTwitter')}>
                 <TwitterShareButton
                   related={['@thebadgexyz']}
-                  url={generateTwitterText(badgeModelName, shortPreviewURl)}
+                  url={generateTwitterText(badgeModelName, previewUrls?.shortPreviewShareableUrl)}
                 >
                   <XIcon round size={32} />
                 </TwitterShareButton>
               </Tooltip>
-              {badgeOpenseaUrl ? (
+              {previewUrls?.badgeOpenseaUrl ? (
                 <Tooltip arrow title={t('badge.viewBadge.viewOpensea')}>
                   <IconButton
                     aria-label={t('badge.viewBadge.viewOpensea')}
                     component="label"
-                    onClick={() => window.open(badgeOpenseaUrl)}
+                    onClick={() =>
+                      previewUrls?.badgeOpenseaUrl && window.open(previewUrls.badgeOpenseaUrl)
+                    }
                   >
                     <Image
                       alt={t('badge.viewBadge.viewOpensea')}

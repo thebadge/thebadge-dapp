@@ -12,12 +12,11 @@ import { DOCUMENTATION_URL } from '@/src/constants/common'
 import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
 import { useRegistrationBadgeModelKlerosMetadata } from '@/src/hooks/subgraph/useBadgeModelKlerosMetadata'
-import useS3Metadata from '@/src/hooks/useS3Metadata'
+import useUserMetadata from '@/src/hooks/useUserMetadata'
 import { MintBadgeSchemaType } from '@/src/pagePartials/badge/mint/schema/MintBadgeSchema'
 import { secondsToDays, secondsToMinutes } from '@/src/utils/dateUtils'
 import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 import { isTestnet } from '@/src/utils/network'
-import { Creator } from '@/types/badges/Creator'
 
 const CriteriaLink = styled(Link)(() => ({
   color: colors.green,
@@ -43,7 +42,8 @@ export default function HowItWorks() {
 
   const badgeModelKlerosMetadata = klerosBadgeModel.data?.badgeModelKlerosRegistrationMetadata
   const badgeCriteria = klerosBadgeModel.data?.badgeRegistrationCriteria
-  const badgeCreatorMetadata = useS3Metadata<{ content: Creator }>(
+  const badgeCreatorMetadata = useUserMetadata(
+    undefined,
     badgeModelData.data?.badgeModel?.creator.metadataUri || '',
   )
 
@@ -68,7 +68,7 @@ export default function HowItWorks() {
         <HowItWorksStep
           index={1}
           text={t(`badge.model.mint.helpSteps.${0}`, {
-            badgeCreatorName: badgeCreatorMetadata.data?.content?.name,
+            badgeCreatorName: badgeCreatorMetadata.name,
             badgeCreatorProfileLink: generateProfileUrl({
               address: badgeModelData.data?.badgeModel?.creator.id,
             }),
