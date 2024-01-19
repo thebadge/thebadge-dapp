@@ -2,18 +2,15 @@ import React from 'react'
 
 import { Box, Stack, Typography } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
-import { Control, Controller } from 'react-hook-form'
+import { Controller, useFormContext } from 'react-hook-form'
 
-import { CONTACT_METHODS } from '../../schema/CreatorRegisterSchema'
+import { CONTACT_METHODS, CreatorRegisterSchemaType } from '../../schema/CreatorRegisterSchema'
 import { DropdownSelect } from '@/src/components/form/formFields/DropdownSelect'
 import { TextField } from '@/src/components/form/formFields/TextField'
 
-type Props = {
-  formControl: Control<any>
-}
-
-export default function ContactInformation({ formControl }: Props) {
+export default function ContactInformation() {
   const { t } = useTranslation()
+  const { control } = useFormContext<CreatorRegisterSchemaType>()
 
   const renderContactInformationForm = () => {
     return (
@@ -22,8 +19,8 @@ export default function ContactInformation({ formControl }: Props) {
         <Box display="flex" flexDirection="row" gap={5} justifyContent="space-between">
           <Stack flex="1" gap={2}>
             <Controller
-              control={formControl}
-              name={'register.website'}
+              control={control}
+              name={'website'}
               render={({ field: { onChange, value }, fieldState: { error } }) => (
                 <TextField
                   error={error}
@@ -36,8 +33,8 @@ export default function ContactInformation({ formControl }: Props) {
           </Stack>
           <Stack flex="1" gap={2}>
             <Controller
-              control={formControl}
-              name={'register.email'}
+              control={control}
+              name={'email'}
               render={({ field: { onChange, value }, fieldState: { error } }) => (
                 <TextField
                   error={error}
@@ -60,8 +57,8 @@ export default function ContactInformation({ formControl }: Props) {
         <Box display="flex" flexDirection="row" gap={5} justifyContent="space-between">
           <Stack flex="1" gap={2}>
             <Controller
-              control={formControl}
-              name={'register.twitter'}
+              control={control}
+              name={'twitter'}
               render={({ field: { onChange, value }, fieldState: { error } }) => (
                 <TextField
                   error={error}
@@ -72,8 +69,8 @@ export default function ContactInformation({ formControl }: Props) {
               )}
             />
             <Controller
-              control={formControl}
-              name={'register.discord'}
+              control={control}
+              name={'discord'}
               render={({ field: { onChange, value }, fieldState: { error } }) => (
                 <TextField
                   error={error}
@@ -84,8 +81,8 @@ export default function ContactInformation({ formControl }: Props) {
               )}
             />
             <Controller
-              control={formControl}
-              name={'register.linkedin'}
+              control={control}
+              name={'linkedin'}
               render={({ field: { onChange, value }, fieldState: { error } }) => (
                 <TextField
                   error={error}
@@ -98,8 +95,8 @@ export default function ContactInformation({ formControl }: Props) {
           </Stack>
           <Stack flex="1" gap={2}>
             <Controller
-              control={formControl}
-              name={'register.github'}
+              control={control}
+              name={'github'}
               render={({ field: { onChange, value }, fieldState: { error } }) => (
                 <TextField
                   error={error}
@@ -110,8 +107,8 @@ export default function ContactInformation({ formControl }: Props) {
               )}
             />
             <Controller
-              control={formControl}
-              name={'register.telegram'}
+              control={control}
+              name={'telegram'}
               render={({ field: { onChange, value }, fieldState: { error } }) => (
                 <TextField
                   error={error}
@@ -124,8 +121,8 @@ export default function ContactInformation({ formControl }: Props) {
           </Stack>
         </Box>
         <Controller
-          control={formControl}
-          name={'register.preferContactMethod'}
+          control={control}
+          name={'preferContactMethod'}
           render={({ field: { onChange, value }, fieldState: { error } }) => (
             <Box alignItems="center" display="flex" gap={1} justifyContent="center">
               <Typography>

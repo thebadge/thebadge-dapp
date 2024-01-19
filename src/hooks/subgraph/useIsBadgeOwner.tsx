@@ -10,19 +10,10 @@ import { WCAddress } from '@/types/utils'
  * @param badgeModelId
  * @param ownerAddress
  */
-export default function useIsBadgeOwnerByModelId(
-  badgeModelId: string,
-  ownerAddress: WCAddress | undefined,
-) {
+export default function useIsBadgeOwner(badgeModelId: string, ownerAddress: WCAddress | undefined) {
   const userWithOwnerBadges = useBadgesOwnedByModelId(badgeModelId, ownerAddress)
   if (!ownerAddress) return false
   return !!userWithOwnerBadges.data?.user?.badges?.length
-}
-
-export function useIsBadgeModelOwner(modelId: string, ownerAddress: WCAddress | undefined) {
-  const ownedModels = useBadgeModelOwnedByModelId(modelId, ownerAddress)
-  if (!ownerAddress) return false
-  return !!ownedModels.data
 }
 
 /**
@@ -45,40 +36,15 @@ function useBadgesOwnedByModelId(badgeModelId: string, ownerAddress: WCAddress |
   const { readOnlyChainId } = useWeb3Connection()
 
   return useSWR(
-    [`OwnedBadges:${badgeModelId}:${ownerAddress}`, ownerAddress, readOnlyChainId],
-    async ([_badgeModelId, _ownerAddress]) => {
-      if (!_badgeModelId.length || !_ownerAddress?.length) {
-        return {}
-      }
+    badgeModelId.length && ownerAddress?.length
+      ? [`OwnedBadges:${badgeModelId}:${ownerAddress}`, ownerAddress, readOnlyChainId]
+      : null,
+    async ([,]) => {
       const badgeResponse = await gql.userBadgeByModelId({
-        userId: _ownerAddress as string,
-        modelId: _badgeModelId,
+        userId: ownerAddress as string,
+        modelId: badgeModelId,
       })
       return badgeResponse ? badgeResponse : {}
     },
   )
-}
-
-/**
- * Private hook to simplify the logic and also use just one call to the SG
- * @param modelId
- * @param ownerAddress
- */
-function useBadgeModelOwnedByModelId(modelId: string, ownerAddress: WCAddress | undefined) {
-  const gql = useSubgraph()
-
-  return useSWR([modelId, ownerAddress], async ([_modelId, _ownerAddress]) => {
-    if (!_ownerAddress?.length) {
-      return {}
-    }
-
-    const badgeModel = await gql.badgeModelById({
-      id: _modelId,
-    })
-
-    return (
-      badgeModel?.badgeModel &&
-      badgeModel.badgeModel?.creator?.id.toLowerCase() === _ownerAddress.toLowerCase()
-    )
-  })
 }

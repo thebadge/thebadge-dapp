@@ -2,12 +2,7 @@ import axios from 'axios'
 
 import { ZERO_ADDRESS } from '@/src/constants/bigNumber'
 import { BACKEND_URL } from '@/src/constants/common'
-import {
-  EmailClaimTxSigned,
-  EmailMintNotificationTxSigned,
-  RelayedTx,
-  RelayedTxResult,
-} from '@/types/relayedTx'
+import { EmailClaimTxSigned, RelayedTx, RelayedTxResult } from '@/types/relayedTx'
 import { BackendResponse } from '@/types/utils'
 
 export const sendTxToRelayer = async (
@@ -26,16 +21,6 @@ export const sendEmailClaim = async (
 ): Promise<BackendResponse<{ txHash: string | null }>> => {
   const res = await axios.post<BackendResponse<{ txHash: string | null }>>(
     `${BACKEND_URL}/api/thirdPartyController/sendMintMail`,
-    param,
-  )
-  return res.data
-}
-
-export const sendMintEmail = async (
-  param: EmailMintNotificationTxSigned,
-): Promise<BackendResponse<{ txHash: string | null }>> => {
-  const res = await axios.post<BackendResponse<{ txHash: string | null }>>(
-    `${BACKEND_URL}/api/thirdPartyController/sendMintNotificationMail`,
     param,
   )
   return res.data

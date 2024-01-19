@@ -16,15 +16,15 @@ export default function BadgeModelUIBasics() {
   const controllerType = useControllerTypeParam()
   const isThirdParty = controllerType === BadgeModelControllerType.ThirdParty
 
-  const { control, resetField, setValue, watch } = useFormContext<CreateThirdPartyModelSchemaType>()
+  const { control, setValue, watch } = useFormContext<CreateThirdPartyModelSchemaType>()
   const watchedTemplate = watch('template')
 
   useEffect(() => {
     if (watchedTemplate === BadgeModelTemplate.Badge && isThirdParty) {
-      // These fields are not used on this Model Template
       setValue('courseName', '')
+      setValue('achievementDate', '')
     }
-  }, [setValue, watchedTemplate, isThirdParty, resetField])
+  }, [setValue, watchedTemplate, isThirdParty])
 
   return (
     <>

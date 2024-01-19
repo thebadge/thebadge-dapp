@@ -9,7 +9,6 @@ import { getDiplomaConfigs } from '@/src/utils/badges/metadataHelpers'
 import enrichTextWithValues, { EnrichTextValues } from '@/src/utils/enrichTextWithValues'
 import {
   DiplomaFooterConfig,
-  DiplomaHeaderConfig,
   DiplomaIssuerConfig,
   DiplomaSignatureConfig,
 } from '@/types/badges/BadgeMetadata'
@@ -31,7 +30,6 @@ export default function DiplomaView({ additionalData, badgeUrl, modelId }: Props
     achievementDescription,
     courseName,
     footerConfigs,
-    headerConfigs,
     issuerConfigs,
     signerConfigs,
   } = getDiplomaConfigs(badgeModelMetadata?.attributes)
@@ -42,9 +40,6 @@ export default function DiplomaView({ additionalData, badgeUrl, modelId }: Props
 
   const footerConfigsMetadata = useS3Metadata<{ content: DiplomaFooterConfig }>(
     (footerConfigs?.value as string) || '',
-  )
-  const headerConfigsMetadata = useS3Metadata<{ content: DiplomaHeaderConfig }>(
-    (headerConfigs?.value as string) || '',
   )
   const issuerConfigsMetadata = useS3Metadata<{
     content: DiplomaIssuerConfig<BackendFileResponse>
@@ -67,8 +62,6 @@ export default function DiplomaView({ additionalData, badgeUrl, modelId }: Props
   const footerEnabled = footerConfigsMetadata.data?.content.footerEnabled
   const footerText = footerConfigsMetadata.data?.content.footerText
 
-  const headerLogoUrl = headerConfigsMetadata.data?.content.headerLogo?.s3Url
-
   return (
     <DiplomaPreview
       animationEffects={isMobile ? [] : ['wobble', 'grow', 'glare']}
@@ -82,7 +75,6 @@ export default function DiplomaView({ additionalData, badgeUrl, modelId }: Props
       footerText={
         footerEnabled ? enrichTextWithValues(footerText, additionalData as EnrichTextValues) : ''
       }
-      headerLogoUrl={headerLogoUrl}
       issuedByLabel={issuerLabel || 'Issued by'}
       issuerAvatarUrl={issuerAvatarUrl}
       issuerDescription={issuerDescription}
@@ -92,7 +84,7 @@ export default function DiplomaView({ additionalData, badgeUrl, modelId }: Props
       sx={
         isMobile
           ? { scale: '0.5', transform: 'translate(-50%, -50%)', margin: '10px' }
-          : { margin: '10px', maxWidth: '-webkit-fill-available' }
+          : { margin: '10px' }
       }
       textContrastRight="dark"
       {...signatureProps}

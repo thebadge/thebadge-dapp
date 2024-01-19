@@ -23,12 +23,12 @@ export default function BadgeClassicCreationPreview() {
     CreateCommunityModelSchemaType & CustomFieldsConfigurationSchemaType
   >()
   const { address, readOnlyChainId } = useWeb3Connection()
-  const availableBackgroundsData = useAvailableBackgrounds(readOnlyChainId, address)
-  const modelBackgrounds = availableBackgroundsData.data?.modelBackgrounds
+  const { modelBackgrounds } = useAvailableBackgrounds(readOnlyChainId, address)
 
   // If custom fields are enabled, we need to show on the Badge Preview the badgeTitle and badgeDescription
-  const watchedName = watch('name') || 'Security Certificate'
+  const watchedName = watch('badgeTitle') || watch('name') || 'Security Certificate'
   const watchedDescription =
+    watch('badgeDescription') ||
     watch('description') ||
     'This badges certifies that the address that has it complies with the regulations about...'
 
@@ -36,9 +36,6 @@ export default function BadgeClassicCreationPreview() {
   const watchedLogoUri = watch('badgeModelLogoUri')
   const watchedTextContrast = watch('textContrast')
   const watchedBackground = watch('backgroundImage')
-  const watchedMiniLogoTitle = watch('miniLogo.miniLogoTitle')
-  const watchedMiniLogoSubtitle = watch('miniLogo.miniLogoSubTitle')
-  const watchedMiniLogoUrl = watch('miniLogo.miniLogoUrl')
 
   return (
     <BoxShadow>
@@ -49,9 +46,6 @@ export default function BadgeClassicCreationPreview() {
         badgeUrl="https://www.thebadge.xyz"
         description={watchedDescription}
         imageUrl={watchedLogoUri?.base64File}
-        miniLogoSubTitle={watchedMiniLogoSubtitle}
-        miniLogoTitle={watchedMiniLogoTitle}
-        miniLogoUrl={watchedMiniLogoUrl?.base64File}
         size="medium"
         textContrast={BADGE_MODEL_TEXT_CONTRAST[watchedTextContrast]}
         title={watchedName}

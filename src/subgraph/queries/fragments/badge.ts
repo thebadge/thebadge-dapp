@@ -2,31 +2,37 @@ import gql from 'graphql-tag'
 
 gql`
   fragment FullBadgeDetails on Badge {
-    claimedAt
-    claimedTxHash
-    contractAddress
-    createdAt
-    createdTxHash
     id
-    networkName
     status
     uri
     validUntil
+    createdTxHash
+    claimedTxHash
+    createdAt
+    claimedAt
+    contractAddress
     account {
       id
     }
     badgeModel {
-      ...BadgeModel
+      id
+      uri
+      controllerType
+      creatorFee
+      validFor
+      badgesMintedAmount
+      contractAddress
+      createdTxHash
       badgeModelKleros {
-        ...BadgeModelKlerosMetadata
+        tcrList
+        challengePeriodDuration
+      }
+      creator {
+        id
       }
     }
     badgeKlerosMetaData {
-      id
-      itemID
-      numberOfRequests
       reviewDueDate
-      tcrStatus
     }
   }
 `
@@ -71,13 +77,27 @@ gql`
   fragment BadgeWithJustIds on Badge {
     id
     status
-    contractAddress
+    uri
     createdTxHash
+    claimedTxHash
+    createdAt
+    claimedAt
+    contractAddress
+    account {
+      id
+    }
     badgeModel {
       id
+      uri
       contractAddress
       controllerType
-      uri
+      badgeModelKleros {
+        tcrList
+        registrationUri
+      }
+    }
+    badgeKlerosMetaData {
+      reviewDueDate
     }
   }
 `
@@ -85,6 +105,19 @@ gql`
 gql`
   fragment UserBadges on Badge {
     id
+    uri
+    status
     contractAddress
+    createdTxHash
+    claimedTxHash
+    createdAt
+    claimedAt
+    badgeModel {
+      id
+      contractAddress
+    }
+    badgeKlerosMetaData {
+      reviewDueDate
+    }
   }
 `

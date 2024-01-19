@@ -22,7 +22,7 @@ export default function BadgeOwnerPreview({
   }
 
   const owner = useUserById(ownerAddress as WCAddress, contract)
-  const ownerMetadata = useUserMetadata(owner.data?.id, owner.data?.metadataUri || '', contract)
+  const ownerMetadata = useUserMetadata(owner.data?.id, owner.data?.metadataUri || '')
 
   return (
     <TBUserInfoExpandablePreview

@@ -2,19 +2,17 @@ import React from 'react'
 
 import { Box, Stack, Typography } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
-import { Control, Controller } from 'react-hook-form'
+import { Controller, useFormContext } from 'react-hook-form'
 import { ImageType } from 'react-images-uploading'
 
+import { CreatorRegisterSchemaType } from '../../schema/CreatorRegisterSchema'
 import { AvatarInput } from '@/src/components/form/formFields/AvatarInput'
 import { TextArea } from '@/src/components/form/formFields/TextArea'
 import { TextField } from '@/src/components/form/formFields/TextField'
 
-type Props = {
-  formControl: Control<any>
-}
-
-export default function AccountDetails({ formControl }: Props) {
+export default function AccountDetails() {
   const { t } = useTranslation()
+  const { control } = useFormContext<CreatorRegisterSchemaType>()
   return (
     <Stack gap={2}>
       <Typography variant="dAppTitle1">
@@ -23,8 +21,8 @@ export default function AccountDetails({ formControl }: Props) {
       <Box display="flex" flexDirection="row" gap={5} justifyContent="space-between">
         <Stack flex="2" gap={2} justifyContent="space-between">
           <Controller
-            control={formControl}
-            name={'register.name'}
+            control={control}
+            name={'name'}
             render={({ field: { onChange, value }, fieldState: { error } }) => (
               <TextField
                 error={error}
@@ -35,8 +33,8 @@ export default function AccountDetails({ formControl }: Props) {
             )}
           />
           <Controller
-            control={formControl}
-            name={'register.description'}
+            control={control}
+            name={'description'}
             render={({ field: { onChange, value }, fieldState: { error } }) => (
               <TextArea
                 error={error}
@@ -49,8 +47,8 @@ export default function AccountDetails({ formControl }: Props) {
         </Stack>
         <Stack flex="1" gap={2}>
           <Controller
-            control={formControl}
-            name={'register.logo'}
+            control={control}
+            name={'logo'}
             render={({ field: { onChange, value }, fieldState: { error } }) => (
               <AvatarInput
                 error={error}

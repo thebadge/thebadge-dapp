@@ -97,9 +97,7 @@ export default function TBUserInfoExpandablePreview({
       <Wrapper ref={wrapperRef}>
         <Box alignItems="center" display="flex" gap={1}>
           {label && <Typography variant="dAppTitle5">{label}</Typography>}
-          <SafeSuspense fallback={<Skeleton sx={{ ml: 2 }} variant="text" width={100} />}>
-            <Address address={userAddress} showCopyButton={false} showExternalLink={false} />
-          </SafeSuspense>
+          <Address address={userAddress} showCopyButton={false} showExternalLink={false} />
         </Box>
 
         <IconButton onClick={handleClick} size="small">
@@ -114,7 +112,7 @@ export default function TBUserInfoExpandablePreview({
         width={wrapperRef.current?.getBoundingClientRect().width}
       >
         <Box display="flex" flex="1" gap={2}>
-          <SafeSuspense fallback={<Skeleton height={100} variant="circular" width={100} />}>
+          <SafeSuspense fallback={<Skeleton variant="circular" width={100} />}>
             <TBUserAvatar
               address={userAddress}
               src={metadata?.logo?.s3Url}

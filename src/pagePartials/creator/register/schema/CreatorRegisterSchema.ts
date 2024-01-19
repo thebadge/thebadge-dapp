@@ -11,15 +11,6 @@ import {
 const MIN_DISPLAY_NAME_CHARACTERS = 2
 const MAX_DISPLAY_NAME_CHARACTERS = 30
 
-export const CONTACT_METHODS_ENUM:
-  | 'email'
-  | 'website'
-  | 'twitter'
-  | 'discord'
-  | 'linkedin'
-  | 'github'
-  | 'telegram' = 'email'
-
 export const CONTACT_METHODS = [
   'email',
   'website',
@@ -30,7 +21,7 @@ export const CONTACT_METHODS = [
   'telegram',
 ] as const
 
-const RegisterSchema = z.object({
+export const CreatorRegisterSchema = z.object({
   // General Info
   name: z
     .string()
@@ -41,8 +32,7 @@ const RegisterSchema = z.object({
     .max(
       MAX_DISPLAY_NAME_CHARACTERS,
       `The display name should be short than ${MAX_DISPLAY_NAME_CHARACTERS} characters.`,
-    )
-    .nonempty(),
+    ),
   description: LongTextSchema,
   logo: AvatarSchema, // Image Schema MUST BE the created one
 
@@ -57,10 +47,6 @@ const RegisterSchema = z.object({
 
   preferContactMethod: z.enum(CONTACT_METHODS),
   terms: AgreementSchema,
-})
-
-export const CreatorRegisterSchema = z.object({
-  register: RegisterSchema,
 })
 
 export const EditProfileSchema = z.object({

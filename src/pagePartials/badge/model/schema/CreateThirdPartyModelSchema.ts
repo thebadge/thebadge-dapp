@@ -1,4 +1,3 @@
-import dayjs from 'dayjs'
 import { z } from 'zod'
 import { RefinementCtx } from 'zod/lib/types'
 
@@ -17,7 +16,7 @@ export const BodyDataConfigurationSchema = z.object({
   // ------ DIPLOMA BASICS FIELD ------
   courseName: z.string(),
   achievementDescription: z.string().default('has successfully completed the course'),
-  achievementDate: z.string().default(dayjs().format('MMMM D, YYYY')),
+  achievementDate: z.string(),
 })
 export type BodyDataConfigurationSchemaType = z.infer<typeof BodyDataConfigurationSchema>
 
@@ -30,17 +29,10 @@ export const SignatureConfigurationSchema = z.object({
 })
 export type SignatureConfigurationSchemaType = z.infer<typeof SignatureConfigurationSchema>
 
-export const HeaderConfigurationSchema = z.object({
-  // ------ DIPLOMA BASICS FIELD ------
-  headerLogo: ImageSchema.optional(),
-})
-export type HeaderConfigurationSchemaType = z.infer<typeof HeaderConfigurationSchema>
-
 export const FooterConfigurationSchema = z.object({
   // ------ DIPLOMA BASICS FIELD ------
   footerEnabled: z.boolean().optional(),
   footerText: z.string().optional(),
-  showDecoration: z.boolean().optional(), // Display "CERTIFICATE" word on the bottom
 })
 export type FooterConfigurationSchemaType = z.infer<typeof FooterConfigurationSchema>
 
@@ -58,7 +50,7 @@ export type IssuerConfigurationSchemaType = z.infer<typeof IssuerConfigurationSc
 export const CreateThirdPartyModelSchema = z
   .object({
     // ------ UI BASICS FIELD ------
-    name: z.string().max(28).min(1),
+    name: z.string().max(28),
     description: LongTextSchema,
     badgeModelLogoUri: ImageSchema.optional(),
     textContrast: z.string().optional(),
@@ -74,7 +66,6 @@ export const CreateThirdPartyModelSchema = z
   .merge(IssuerConfigurationSchema)
   .merge(SignatureConfigurationSchema)
   .merge(FooterConfigurationSchema)
-  .merge(HeaderConfigurationSchema)
   .merge(CustomFieldsConfigurationSchema)
   .superRefine(refineDiploma)
   .superRefine(refineClassic)
@@ -106,10 +97,10 @@ function refineClassic(data: any, ctx: RefinementCtx) {
     })
   }
   if (data.customFieldsEnabled) {
-    if (!data.name || !data.description) {
+    if (!data.badgeTitle || !data.badgeDescription) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        path: ['name', 'description'],
+        path: ['badgeTitle', 'badgeDescription'],
         message: 'Required',
       })
     }

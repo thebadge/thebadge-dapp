@@ -80,14 +80,18 @@ export default function BadgeOwnedPreview() {
   const creatorAddress = badgeModel?.creator.id || '0x'
   const creatorResponse = useUserById(creatorAddress as WCAddress, contract)
   const creator = creatorResponse.data
-  const urlsData = useBadgePreviewUrl(badgeId, badge?.contractAddress)
-  const previewUrls = urlsData.data
-
-  const requiredBadgeDataMetadata = useBadgeThirdPartyRequiredData(`${badgeId}` || '', contract)
+  const { badgeOpenseaUrl, badgePreviewUrl, shortPreviewURl } = useBadgePreviewUrl(
+    badgeId,
+    badge?.contractAddress,
+  )
+  const requiredBadgeDataMetadata = useBadgeThirdPartyRequiredData(
+    `${badgeId}` || '',
+    badge?.contractAddress,
+  )
   const badgeModelName = badgeModel?.badgeModelMetadata?.name || ''
   const { readOnlyChainId } = useWeb3Connection()
 
-  const creatorMetadata = useUserMetadata(creator?.id, creator?.metadataUri || '', contract)
+  const creatorMetadata = useUserMetadata(creator?.id, creator?.metadataUri || '')
 
   if (!badge || !badgeModel) {
     return null
@@ -105,7 +109,7 @@ export default function BadgeOwnedPreview() {
 
   async function handleImportLinkedin() {
     try {
-      if (!badge || !badge.badgeMetadata || !badgeModel || !previewUrls?.badgePreviewUrl) {
+      if (!badge || !badge.badgeMetadata || !badgeModel) {
         throw new Error('The badge does not exists or there is an issue with the badgeModel!')
       }
       const { expirationMonth, expirationYear } = getExpirationYearAndMonth(badge.validUntil)
@@ -127,7 +131,7 @@ export default function BadgeOwnedPreview() {
         issueMonth: String(issueMonth),
         expirationYear: String(expirationYear),
         expirationMonth: String(expirationMonth),
-        certUrl: previewUrls.badgePreviewUrl,
+        certUrl: badgePreviewUrl,
         certId: badgeId,
       })
 
@@ -154,7 +158,7 @@ export default function BadgeOwnedPreview() {
       <Stack alignItems="center">
         <BadgeView
           additionalData={{ ...values }}
-          badgeUrl={previewUrls?.shortPreviewUrl}
+          badgeUrl={badgePreviewUrl}
           modelId={badgeModel.id}
         />
       </Stack>
@@ -188,7 +192,7 @@ export default function BadgeOwnedPreview() {
                 <IconButton
                   aria-label="Share badge preview"
                   component="label"
-                  onClick={() => handleShare(previewUrls?.shortPreviewShareableUrl)}
+                  onClick={() => handleShare()}
                 >
                   <ShareOutlinedIcon />
                 </IconButton>
@@ -220,19 +224,17 @@ export default function BadgeOwnedPreview() {
               <Tooltip arrow title={t('badge.viewBadge.shareTwitter')}>
                 <TwitterShareButton
                   related={['@thebadgexyz']}
-                  url={generateTwitterText(badgeModelName, previewUrls?.shortPreviewShareableUrl)}
+                  url={generateTwitterText(badgeModelName, shortPreviewURl)}
                 >
                   <XIcon round size={32} />
                 </TwitterShareButton>
               </Tooltip>
-              {previewUrls?.badgeOpenseaUrl ? (
+              {badgeOpenseaUrl ? (
                 <Tooltip arrow title={t('badge.viewBadge.viewOpensea')}>
                   <IconButton
                     aria-label={t('badge.viewBadge.viewOpensea')}
                     component="label"
-                    onClick={() =>
-                      previewUrls?.badgeOpenseaUrl && window.open(previewUrls.badgeOpenseaUrl)
-                    }
+                    onClick={() => window.open(badgeOpenseaUrl)}
                   >
                     <Image
                       alt={t('badge.viewBadge.viewOpensea')}

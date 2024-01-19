@@ -9,18 +9,16 @@ import StepHeaderSubtitle from '@/src/components/form/formWithSteps/StepHeaderSu
 import { DOCS_URL } from '@/src/constants/common'
 import { useSizeSM } from '@/src/hooks/useSize'
 
-const steps = ['HELP', 'REGISTER', 'MODEL BASICS', 'DETAILS', 'EVIDENCE', 'PREVIEW']
+const steps = ['HELP', 'MODEL BASICS', 'DETAILS', 'EVIDENCE', 'PREVIEW']
 
 export default function StepHeaderCommunity({
   completedSteps,
   currentStep,
-  hiddenSteps,
   onStepNavigation,
 }: {
   currentStep: number
   onStepNavigation: (n: number) => void
   completedSteps: Record<string, boolean>
-  hiddenSteps: Record<string, boolean>
 }) {
   const { t } = useTranslation()
   const isMobile = useSizeSM()
@@ -43,7 +41,6 @@ export default function StepHeaderCommunity({
         color={colors.purple}
         completedSteps={completedSteps}
         currentStep={currentStep}
-        hiddenSteps={hiddenSteps}
         onStepNavigation={onStepNavigation}
         steps={steps}
       />
@@ -54,7 +51,7 @@ export default function StepHeaderCommunity({
           createBadgeModelDocs:
             DOCS_URL + '/thebadge-documentation/protocol-mechanics/how-it-works',
         })}
-        showHint={currentStep !== 6}
+        showHint={currentStep !== 5}
         stepNumber={currentStep + 1}
         subTitle={t(`badge.model.create.steps.${currentStep}.subTitle`, {
           docsUrl: DOCS_URL + '/thebadge-documentation/protocol-mechanics/how-it-works',

@@ -1,4 +1,3 @@
-import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -6,7 +5,7 @@ import { Container, Stack } from '@mui/material'
 import { FieldErrors, FormProvider, SubmitHandler, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-import StepFooter, { StepButton } from './steps/StepFooter'
+import StepFooter from './steps/StepFooter'
 import { defaultValues } from './utils'
 import StepPrompt from '@/src/components/form/formWithSteps/StepPrompt'
 import { TransactionLoading } from '@/src/components/loading/TransactionLoading'
@@ -23,7 +22,6 @@ import DynamicRequiredData from '@/src/pagePartials/badge/mint/steps/dynamicForm
 import FormThirdParty from '@/src/pagePartials/badge/mint/steps/dynamicForm/thirdParty/FormThirdParty'
 import SubmitPreviewThirdParty from '@/src/pagePartials/badge/mint/steps/preview/thirdParty/SubmitPreviewThirdParty'
 import HowItWorksThirdParty from '@/src/pagePartials/badge/mint/steps/terms/HowItWorksThirdParty'
-import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 import { isTestnet } from '@/src/utils/network'
 import { ToastStates } from '@/types/toast'
 
@@ -35,7 +33,7 @@ type MintStepsProps = {
 
 const STEP_0 = ['terms']
 // Use undefined to trigger a full schema validation, that makes the .superRefine logic to be executed
-const STEP_1 = ['destination', 'preferMintMethod']
+const STEP_1 = ['destination', 'preferMintMethod'] //TODO disabled as seems not working fine
 const STEP_2 = ['previewImage']
 
 const FIELDS_TO_VALIDATE_ON_STEP = [STEP_0, STEP_1, STEP_2]
@@ -47,7 +45,6 @@ export default function MintThirdPartyWithSteps({
 }: MintStepsProps) {
   const [currentStep, setCurrentStep] = useState(0)
   const { badgeModelId } = useModelIdParam()
-  const router = useRouter()
 
   // Naive completed step implementation
   const [completed, setCompleted] = useState<Record<string, boolean>>({})
@@ -118,29 +115,7 @@ export default function MintThirdPartyWithSteps({
         {txState !== TransactionStates.none && txState !== TransactionStates.success && (
           <TransactionLoading resetTxState={resetTxState} state={txState} />
         )}
-        {txState === TransactionStates.success && (
-          <>
-            <SubmitPreviewThirdParty hideCost />
-            <Stack sx={{ display: 'flex', gap: 2, mt: 6 }}>
-              <StepButton
-                color={'secondary'}
-                onClick={() => router.reload()}
-                sx={{ m: 'auto' }}
-                variant="text"
-              >
-                Mint another one
-              </StepButton>
-              <StepButton
-                color={'primary'}
-                onClick={() => router.push(generateProfileUrl())}
-                sx={{ m: 'auto' }}
-                variant="contained"
-              >
-                Go to profile
-              </StepButton>
-            </Stack>
-          </>
-        )}
+        {txState === TransactionStates.success && <SubmitPreviewThirdParty />}
         {txState === TransactionStates.none && (
           <form onSubmit={methods.handleSubmit(onSubmit, notifyFormError)}>
             <Stack gap={3}>

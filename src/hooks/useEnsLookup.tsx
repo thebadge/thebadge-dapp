@@ -1,6 +1,7 @@
 import { isAddress } from 'ethers/lib/utils'
-import useSWR from 'swr'
+import useSWR, { SWRResponse } from 'swr'
 import { createPublicClient, http } from 'viem'
+import { GetEnsAvatarReturnType } from 'viem/actions'
 import { Chain, goerli, mainnet, sepolia } from 'viem/chains'
 import { normalize } from 'viem/ens'
 
@@ -10,6 +11,32 @@ import { ChainsValues } from '@/types/chains'
 import { WCAddress } from '@/types/utils'
 
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
+
+type EnsMetadata = {
+  name: string | null
+  description: string | null
+  email: string | null
+  website: string | null
+  twitter: string | null
+  discord: string | null
+  linkedin: string | null
+  github: string | null
+  telegram: string | null
+}
+
+type EnsLookupResult =
+  | {
+      ensNameOrAddress: string
+      isEnsName: boolean
+      avatar: null
+      metadata: null
+    }
+  | {
+      ensNameOrAddress: string
+      isEnsName: boolean
+      avatar: GetEnsAvatarReturnType
+      metadata: EnsMetadata
+    }
 
 const getChainForEnsLookup = (chainId: ChainsValues): Chain => {
   switch (chainId) {
@@ -31,10 +58,12 @@ const getChainForEnsLookup = (chainId: ChainsValues): Chain => {
   }
 }
 
-export const useEnsReverseLookup = function (address: WCAddress | string | undefined) {
+export const useEnsReverseLookup = function (
+  address: WCAddress | string | undefined,
+): SWRResponse<EnsLookupResult, unknown> {
   const { readOnlyChainId } = useWeb3Connection()
 
-  return useSWR([readOnlyChainId, address], async ([_readOnlyChainId, _address]) => {
+  const result = useSWR([readOnlyChainId, address], async ([_readOnlyChainId, _address]) => {
     const chain = getChainForEnsLookup(_readOnlyChainId)
     const client = createPublicClient({
       chain,
@@ -85,28 +114,28 @@ export const useEnsReverseLookup = function (address: WCAddress | string | undef
       metadata,
     }
   })
+
+  return result
 }
 
 export const useEnsLookup = function (ensName: WCAddress | string | undefined) {
   const { readOnlyChainId } = useWeb3Connection()
 
-  const isEthereumAddress = ensName ? isAddress(ensName) : false
-  return useSWR(
-    [readOnlyChainId, ensName, isEthereumAddress],
-    async ([_readOnlyChainId, _ensName, _isEthereumAddress]) => {
-      if (_isEthereumAddress) {
-        return _ensName
-      }
+  return useSWR([readOnlyChainId, ensName], async ([_readOnlyChainId, _ensName]) => {
+    const isEnsAddress = isAddress(_ensName || '')
 
-      const chain = getChainForEnsLookup(_readOnlyChainId)
-      const client = createPublicClient({
-        chain,
-        transport: http(),
-      })
+    if (isEnsAddress) {
+      return _ensName
+    }
 
-      return await client.getEnsAddress({
-        name: normalize(_ensName || ''),
-      })
-    },
-  )
+    const chain = getChainForEnsLookup(_readOnlyChainId)
+    const client = createPublicClient({
+      chain,
+      transport: http(),
+    })
+
+    return await client.getEnsAddress({
+      name: normalize(_ensName || ''),
+    })
+  })
 }

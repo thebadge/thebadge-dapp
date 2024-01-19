@@ -3,11 +3,6 @@ import { parsePrefixedAddress } from '@/src/utils/prefixedAddress'
 
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 
-/**
- *
- * @param subgraphName
- * @param targetContract "chainId:contractAddress"
- */
 export default function useSubgraph(
   subgraphName: SubgraphName = SubgraphName.TheBadge,
   targetContract?: string,
@@ -23,7 +18,6 @@ export default function useSubgraph(
   } catch (error) {
     console.error(
       'There was an error parsing the subgraph with the query parameters, returning default values...',
-      error,
     )
     return getSubgraphSdkByNetwork(readOnlyChainId, subgraphName)
   }
