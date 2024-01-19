@@ -20,7 +20,7 @@ export default function TermsAndConditions() {
     <Stack>
       <Controller
         control={control}
-        name={'terms'}
+        name={'register.terms'}
         render={({ field: { onChange, value }, fieldState: { error } }) => (
           <FormField
             alignItems="center"

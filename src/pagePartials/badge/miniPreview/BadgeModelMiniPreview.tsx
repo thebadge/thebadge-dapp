@@ -1,15 +1,17 @@
 import * as React from 'react'
 
+import ApartmentOutlinedIcon from '@mui/icons-material/ApartmentOutlined'
 import { IconBadge, MiniBadgePreview, colors } from '@thebadge/ui-library'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { getBackgroundBadgeUrl } from '@/src/constants/backgrounds'
 import { useAvailableBackgrounds } from '@/src/hooks/useAvailableBackgrounds'
-import useS3Metadata from '@/src/hooks/useS3Metadata'
+import useS3Metadata, { DEFAULT_FALLBACK_CONTENT_METADATA } from '@/src/hooks/useS3Metadata'
 import { useColorMode } from '@/src/providers/themeProvider'
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import { getBackgroundType, getTextContrast } from '@/src/utils/badges/metadataHelpers'
 import { BadgeModelMetadata } from '@/types/badges/BadgeMetadata'
+import { BadgeModelControllerType } from '@/types/badges/BadgeModel'
 import { BackendFileResponse } from '@/types/utils'
 
 type Props = {
@@ -18,23 +20,31 @@ type Props = {
   disableAnimations?: boolean
   onClick?: () => void
   buttonTitle?: string
+  controllerType?: BadgeModelControllerType | string
 }
 
-function MiniBadgeModelPreview({
+function BadgeModelMiniPreview({
   buttonTitle,
+  controllerType = BadgeModelControllerType.Community,
   disableAnimations,
   highlightColor,
   metadata,
   onClick,
 }: Props) {
-  const res = useS3Metadata<{ content: BadgeModelMetadata<BackendFileResponse> }>(metadata || '')
   const { mode } = useColorMode()
-  const badgeMetadata = res.data?.content
+  const { data } = useS3Metadata<{ content: BadgeModelMetadata<BackendFileResponse> }>(
+    metadata || '',
+    {
+      content: DEFAULT_FALLBACK_CONTENT_METADATA,
+    },
+  )
+  const badgeMetadata = data?.content
 
   const backgroundType = getBackgroundType(badgeMetadata?.attributes)
   const textContrast = getTextContrast(badgeMetadata?.attributes)
   const { address, readOnlyChainId } = useWeb3Connection()
-  const { modelBackgrounds } = useAvailableBackgrounds(readOnlyChainId, address)
+  const availableBackgroundsData = useAvailableBackgrounds(readOnlyChainId, address)
+  const modelBackgrounds = availableBackgroundsData.data?.modelBackgrounds
 
   return (
     <SafeSuspense>
@@ -47,7 +57,13 @@ function MiniBadgeModelPreview({
         height={'50px'}
         highlightColor={highlightColor || (mode === 'light' ? colors.blackText : colors.white)}
         imageUrl={badgeMetadata?.image.s3Url}
-        miniIcon={<IconBadge color={colors.white} height={25} width={25} />}
+        miniIcon={
+          controllerType === BadgeModelControllerType.Community ? (
+            <IconBadge color={colors.white} height={25} width={25} />
+          ) : (
+            <ApartmentOutlinedIcon sx={{ height: 25, width: 25, color: colors.white }} />
+          )
+        }
         onClick={onClick}
         textContrast={textContrast?.value || 'light-withTextBackground'}
         textContrastOutside={mode}
@@ -57,4 +73,4 @@ function MiniBadgeModelPreview({
   )
 }
 
-export default MiniBadgeModelPreview
+export default BadgeModelMiniPreview

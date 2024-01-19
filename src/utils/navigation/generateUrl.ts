@@ -57,6 +57,24 @@ export function generateBadgePreviewUrl(
   }
 }
 
+/**
+ *  Helper function that generates a shareable url, using the new route that has metadata
+ * @param badgeId
+ * @param extraParams - Use contractValue if you already have the queryParam
+ * value, if not you can provided chain and contract address individually
+ */
+export function generateBadgePreviewShareableUrl(
+  badgeId: string,
+  extraParams: ChainAgnosticParams | { contractValue: string },
+) {
+  if ('contractValue' in extraParams) {
+    return `/preview/${badgeId}?contract=${extraParams.contractValue}`
+  } else {
+    const { connectedChainId, theBadgeContractAddress } = extraParams
+    return `/preview/${badgeId}?contract=${connectedChainId}:${theBadgeContractAddress}`
+  }
+}
+
 export function generateProfileUrl(args?: {
   address?: string
   filter?: string
@@ -143,7 +161,7 @@ export function generateLinkedinOrganization(linkedinUrl: string): string {
   return match ? match[1] : linkedinUrl
 }
 
-export function generateTwitterText(badgeModelName: string, badgePreviewUrl: string): string {
+export function generateTwitterText(badgeModelName: string, badgePreviewUrl?: string): string {
   return `Hey World!
 
 I just got my #Web3 Certificate: ${badgeModelName} from @TheBadgexyz 🤩 

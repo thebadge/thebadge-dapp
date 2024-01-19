@@ -16,7 +16,7 @@ import InViewPort from '@/src/components/helpers/InViewPort'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import useListItemNavigation from '@/src/hooks/useListItemNavigation'
-import MiniBadgeModelPreview from '@/src/pagePartials/badge/MiniBadgeModelPreview'
+import BadgeModelMiniPreview from '@/src/pagePartials/badge/miniPreview/BadgeModelMiniPreview'
 import BadgeReviewingInfoPreview from '@/src/pagePartials/profile/reviewing/BadgeEvidenceInfoPreview'
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
 import {
@@ -120,7 +120,8 @@ export default function BadgesIAmReviewingSection() {
             ref={badgesElementRefs[index]}
             selected={isSelected}
           >
-            <MiniBadgeModelPreview
+            <BadgeModelMiniPreview
+              controllerType={badge?.badgeModel?.controllerType}
               disableAnimations
               highlightColor={colors.purple}
               metadata={badge.badgeModel?.uri}

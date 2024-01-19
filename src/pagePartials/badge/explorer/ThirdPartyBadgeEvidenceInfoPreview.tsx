@@ -6,21 +6,27 @@ import { ButtonV2, colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 
 import { notify } from '@/src/components/toast/Toast'
+import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
 import useIsClaimable from '@/src/hooks/subgraph/useIsClaimable'
 import useDecryptEmail from '@/src/hooks/theBadge/useDecryptEmail'
-import useSendClaimEmail from '@/src/hooks/theBadge/useSendClaimEmail'
+import useSendClaimNotificationEmail from '@/src/hooks/theBadge/useSendClaimNotificationEmail'
 import BadgeIdDisplay from '@/src/pagePartials/badge/explorer/addons/BadgeIdDisplay'
 import BadgeRequesterPreview from '@/src/pagePartials/badge/explorer/addons/BadgeRequesterPreview'
 const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
-import { Badge } from '@/types/generated/subgraph'
 import { ToastStates } from '@/types/toast'
 import { WCAddress } from '@/types/utils'
 
-export default function ThirdPartyBadgeEvidenceInfoPreview({ badge }: { badge: Badge }) {
+export default function ThirdPartyBadgeEvidenceInfoPreview({ badgeId }: { badgeId: string }) {
   const { t } = useTranslation()
+  const badgeById = useBadgeById(badgeId)
+  const badge = badgeById.data
+  if (!badge) {
+    throw 'There was not possible to get the needed data. Try again in some minutes.'
+  }
+
   const { data: isClaimable } = useIsClaimable(badge.id)
   const { appChainId, isAppConnected } = useWeb3Connection()
-  const submitSendClaimEmail = useSendClaimEmail()
+  const { sendClaimNotificationEmail } = useSendClaimNotificationEmail()
   const submitDecryptEmail = useDecryptEmail()
   const [disableButtons, setDisableButtons] = useState(false)
   const [emailDecrypted, setEmailDecrypted] = useState<string | null>(null)
@@ -32,20 +38,19 @@ export default function ThirdPartyBadgeEvidenceInfoPreview({ badge }: { badge: B
   const sendClaimEmail = async () => {
     try {
       setDisableButtons(true)
-      const { error, message } = await submitSendClaimEmail({
+      const response = await sendClaimNotificationEmail(badge.createdTxHash, {
         networkId: appChainId.toString(),
-        mintTxHash: badge.createdTxHash,
         badgeModelId: Number(badge.badgeModel.id),
       })
 
-      if (error) {
-        throw new Error(message)
+      if (!response || response?.error) {
+        throw new Error(response?.message)
       }
 
       notify({
         id: badge.createdTxHash,
         type: ToastStates.info,
-        message: message,
+        message: response?.message,
         position: 'top-right',
       })
     } catch (error) {

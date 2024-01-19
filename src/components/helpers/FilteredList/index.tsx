@@ -1,6 +1,15 @@
 import React, { PropsWithChildren, ReactNode, useCallback, useEffect, useState } from 'react'
 
-import { Box, Chip, Divider, Typography, styled } from '@mui/material'
+import {
+  Box,
+  Chip,
+  Divider,
+  FormControlLabel,
+  FormGroup,
+  Switch,
+  Typography,
+  styled,
+} from '@mui/material'
 import { ChipPropsColorOverrides } from '@mui/material/Chip/Chip'
 import { OverridableStringUnion } from '@mui/types'
 import { colors } from '@thebadge/ui-library'
@@ -27,6 +36,7 @@ export type ListFilter<K = unknown> = {
   defaultSelected?: boolean // default is false
   fixed?: boolean // if true, cannot be deselected, default is false
   key?: K // the key to be used in the search function
+  filterType?: 'Chip' | 'Switch'
 }
 
 // TODO: It would be nice to add K to ListFilter here, but it exceeds my TS know
@@ -47,6 +57,7 @@ type FilteredListProps = PropsWithChildren & {
   loadingColor?: SpinnerColors
   disableEdit?: boolean
   preview?: ReactNode | undefined
+  alignItems?: string
   searchInputLabel?: string
   showTextSearch?: boolean
   items: React.ReactNode[]
@@ -88,8 +99,8 @@ export default function FilteredList({
 
   useEffect(() => {
     if (!initialLoadDone) {
-      onSearch()
       setInitialLoadDone(true)
+      onSearch()
     }
   }, [initialLoadDone, onSearch])
 
@@ -100,7 +111,9 @@ export default function FilteredList({
 
   useEffect(() => {
     // Not the best, but it's working... Feel free to recommend something better
-    refresh()
+    if (initialLoadDone) {
+      refresh()
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [appChainId])
 
@@ -146,6 +159,29 @@ export default function FilteredList({
           <Box alignItems={'center'} display={'flex'} flexWrap={'wrap'} gap={1}>
             {/* filters */}
             {filters.map((filter, index) => {
+              if (filter.filterType === 'Switch') {
+                return (
+                  <FormGroup key={'filter-' + index}>
+                    <FormControlLabel
+                      control={
+                        <Switch
+                          color={filter.color}
+                          disabled={props.disableEdit && !isFilterSelected(filter)}
+                          onChange={() => {
+                            if (!isFilterSelected(filter)) {
+                              handleSelectFilter(filter)
+                              return
+                            }
+                            handleRemoveFilter(filter)
+                          }}
+                        />
+                      }
+                      label={filter.title}
+                      labelPlacement="start"
+                    />
+                  </FormGroup>
+                )
+              }
               return (
                 <Chip
                   color={filter.color}
@@ -202,6 +238,7 @@ export default function FilteredList({
       )}
       {!isMobile && (
         <FilteredListDesktopView
+          alignItems={props.alignItems}
           loading={props.loading}
           loadingColor={props.loadingColor}
           preview={props.preview}

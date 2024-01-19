@@ -60,7 +60,7 @@ export default function NearToExpireList() {
                       }),
                     )
                   }
-                  sx={{ cursor: 'pointer' }}
+                  sx={{ cursor: 'pointer', position: 'relative' }}
                 >
                   <TimeToExpireBadgeOverlay
                     badge={<BadgeModelPreview metadata={badge.badgeModel?.uri} size="small" />}

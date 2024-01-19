@@ -58,7 +58,7 @@ export function useRegistrationBadgeModelKlerosMetadata(
       const badgeModelKlerosData = badgeModelKlerosMetadata.data
       const res = await getFromIPFS<KlerosListStructure>(badgeModelKlerosData?.registrationUri)
 
-      const badgeModelKlerosRegistrationMetadata = res ? res.data.result?.content : null
+      const badgeModelKlerosRegistrationMetadata = res ? res.result?.content : null
 
       const badgeRegistrationCriteria = getCriteriaFileFromMetaEvidence(
         badgeModelKlerosRegistrationMetadata,
@@ -107,7 +107,7 @@ export function useRemovalBadgeModelKlerosMetadata(
 
       const res = await getFromIPFS<KlerosListStructure>(removalHash)
 
-      const badgeModelKlerosRemovalMetadata = res ? res.data.result?.content : null
+      const badgeModelKlerosRemovalMetadata = res ? res.result?.content : null
 
       const badgeRemovalCriteria = getCriteriaFileFromMetaEvidence(badgeModelKlerosRemovalMetadata)
 

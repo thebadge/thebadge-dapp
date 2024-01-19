@@ -8,7 +8,7 @@ export async function createAndUploadCreatorMetadata(
 ) {
   const creatorMetadataIPFSUploaded = await ipfsUpload<Creator>({
     attributes: {
-      ...data,
+      ...data.register,
     },
     filePaths: withLogo ? ['logo'] : undefined,
   })

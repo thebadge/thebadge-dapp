@@ -49,6 +49,9 @@ export const getDiplomaConfigs = (attributes: NFTAttribute[] | undefined) => {
   const signerConfigs = attributes?.find(
     (at) => at.trait_type === DiplomaNFTAttributesType.SignerConfigs,
   )
+  const headerConfigs = attributes?.find(
+    (at) => at.trait_type === DiplomaNFTAttributesType.HeaderConfigs,
+  )
 
   return {
     courseName,
@@ -57,5 +60,6 @@ export const getDiplomaConfigs = (attributes: NFTAttribute[] | undefined) => {
     issuerConfigs,
     footerConfigs,
     signerConfigs,
+    headerConfigs,
   }
 }

@@ -1,4 +1,4 @@
-import React, { RefObject, createRef, useState } from 'react'
+import React, { RefObject, createRef, useCallback, useState } from 'react'
 
 import { Stack } from '@mui/material'
 import { colors } from '@thebadge/ui-library'
@@ -16,8 +16,8 @@ import SafeSuspense, { withPageGenericSuspense } from '@/src/components/helpers/
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import useListItemNavigation from '@/src/hooks/useListItemNavigation'
 import { useSizeSM } from '@/src/hooks/useSize'
-import MiniBadgeModelPreview from '@/src/pagePartials/badge/MiniBadgeModelPreview'
 import BadgeModelInfoPreview from '@/src/pagePartials/badge/explorer/BadgeModelInfoPreview'
+import BadgeModelMiniPreview from '@/src/pagePartials/badge/miniPreview/BadgeModelMiniPreview'
 import { BadgeModel } from '@/types/generated/subgraph'
 import { NextPageWithLayout } from '@/types/next'
 
@@ -41,26 +41,27 @@ const ExploreBadgeModels: NextPageWithLayout = () => {
     badgeModels.length,
   )
 
-  const search = async (
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    selectedFilters: Array<ListFilter>,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    selectedCategory: string,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    textSearch?: string,
-  ) => {
-    setLoading(true)
+  const search = useCallback(
+    async (
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      selectedFilters: Array<ListFilter>,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      selectedCategory: string,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      textSearch?: string,
+    ) => {
+      setLoading(true)
 
-    // TODO filter badges using filters, category, text
-    const badgeModels = await gql.communityBadgeModels()
-    const badges = (badgeModels.badgeModels as BadgeModel[]) || []
+      // TODO filter badges using filters, category, text
+      const badgeModels = await gql.communityBadgeModels()
+      const badges = (badgeModels.badgeModels as BadgeModel[]) || []
 
-    setTimeout(() => {
       setLoading(false)
       setBadgeModels(badges)
       setSelectedBadgeModel(0)
-    }, 2000)
-  }
+    },
+    [gql],
+  )
 
   function renderSelectedBadgePreview() {
     if (!badgeModels[selectedBadgeModel]) return null
@@ -96,8 +97,8 @@ const ExploreBadgeModels: NextPageWithLayout = () => {
             ref={badgeModelsElementRefs[index]}
             selected={isSelected}
           >
-            <MiniBadgeModelPreview
-              buttonTitle={t('explorer.button')}
+            <BadgeModelMiniPreview
+              controllerType={bt?.controllerType}
               disableAnimations
               highlightColor={colors.blue}
               metadata={bt.uri}
@@ -120,17 +121,15 @@ const ExploreBadgeModels: NextPageWithLayout = () => {
   }
 
   return (
-    <>
-      <FilteredList
-        items={generateListItems()}
-        loading={loading}
-        loadingColor={'blue'}
-        preview={renderSelectedBadgePreview()}
-        search={search}
-        title={t('explorer.title')}
-        titleColor={colors.blue}
-      />
-    </>
+    <FilteredList
+      items={generateListItems()}
+      loading={loading}
+      loadingColor={'blue'}
+      preview={renderSelectedBadgePreview()}
+      search={search}
+      title={t('explorer.title')}
+      titleColor={colors.blue}
+    />
   )
 }
 
