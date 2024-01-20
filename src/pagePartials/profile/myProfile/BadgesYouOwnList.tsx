@@ -9,7 +9,7 @@ import { NoResultsAnimated } from '@/src/components/assets/animated/NoResults'
 import FilteredList, { ListFilter } from '@/src/components/helpers/FilteredList'
 import InViewPort from '@/src/components/helpers/InViewPort'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
-const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
+const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 import BadgeItemGenerator from '@/src/pagePartials/badge/preview/generators/BadgeItemGenerator'
 import { generateBadgePreviewUrl, generateExplorer } from '@/src/utils/navigation/generateUrl'
 import { Badge, BadgeStatus, Badge_Filter } from '@/types/generated/subgraph'

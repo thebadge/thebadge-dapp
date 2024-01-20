@@ -14,7 +14,7 @@ import { useUserById } from '@/src/hooks/subgraph/useUserById'
 import { useSizeSM } from '@/src/hooks/useSize'
 import useUserMetadata from '@/src/hooks/useUserMetadata'
 import { EditProfileSchemaType } from '@/src/pagePartials/creator/register/schema/CreatorRegisterSchema'
-const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
+const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 import {
   extractGitHubUsername,
   generateGitHubUrl,

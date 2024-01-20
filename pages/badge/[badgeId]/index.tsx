@@ -25,7 +25,7 @@ import { BadgeModelTemplate } from '@/types/badges/BadgeModel'
 import { BadgeStatus } from '@/types/generated/subgraph'
 import { NextPageWithLayout } from '@/types/next'
 import { WCAddress } from '@/types/utils'
-const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
+const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 
 const ViewBadge: NextPageWithLayout = () => {
   const { t } = useTranslation()

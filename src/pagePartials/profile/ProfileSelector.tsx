@@ -11,7 +11,7 @@ import UserProfile from '@/src/pagePartials/profile/UserProfile'
 import InfoPreview from '@/src/pagePartials/profile/userInfo/InfoPreview'
 import { InfoPreviewSkeleton } from '@/src/pagePartials/profile/userInfo/InfoPreview.skeleton'
 import ProfileContextProvider from '@/src/providers/ProfileProvider'
-const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
+const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 
 export enum ProfileType {

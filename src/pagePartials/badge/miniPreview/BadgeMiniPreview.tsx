@@ -14,7 +14,7 @@ import { BadgeModelMetadata } from '@/types/badges/BadgeMetadata'
 import { BadgeModelControllerType } from '@/types/badges/BadgeModel'
 import { BackendFileResponse } from '@/types/utils'
 
-const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
+const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 
 type Props = {
   badgeModelMetadata?: string

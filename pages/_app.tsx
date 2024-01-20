@@ -35,7 +35,7 @@ const TransactionNotificationProvider = dynamic(
 const DefaultLayout = dynamic(() => import('@/src/components/layout/DefaultLayout'), {
   ssr: false,
 })
-const Web3Modal = dynamic(() => import('@/src/providers/web3ConnectionProvider'), {
+const Web3Modal = dynamic(() => import('@/src/providers/web3/web3ModalProvider'), {
   ssr: false,
 })
 

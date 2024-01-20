@@ -25,7 +25,7 @@ import { BadgeModelControllerName, BadgeModelTemplate } from '@/types/badges/Bad
 import { TheBadgeModels__factory, TheBadgeUsers__factory } from '@/types/generated/typechain'
 import { NextPageWithLayout } from '@/types/next'
 
-const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
+const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 
 const CreateCommunityBadgeModel: NextPageWithLayout = () => {
   const { resetTxState, sendTx, state } = useTransaction()

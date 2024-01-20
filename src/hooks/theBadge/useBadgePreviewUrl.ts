@@ -8,7 +8,7 @@ import {
   generateOpenseaUrl,
 } from '@/src/utils/navigation/generateUrl'
 import { ChainsValues } from '@/types/chains'
-const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
+const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 
 export default function useBadgePreviewUrl(
   badgeId: string,

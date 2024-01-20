@@ -12,7 +12,7 @@ import RegistrationWithSteps from '@/src/pagePartials/creator/register/Registrat
 import { CreatorRegisterSchemaType } from '@/src/pagePartials/creator/register/schema/CreatorRegisterSchema'
 import { PreventActionIfRegisterPaused } from '@/src/pagePartials/errors/preventActionIfPaused'
 import { NormalProfileFilter } from '@/src/pagePartials/profile/UserProfile'
-const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
+const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 import { TheBadgeUsers__factory } from '@/types/generated/typechain'
 import { NextPageWithLayout } from '@/types/next'

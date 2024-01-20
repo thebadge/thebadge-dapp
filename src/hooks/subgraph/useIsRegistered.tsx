@@ -1,7 +1,7 @@
 import useSWR, { SWRResponse } from 'swr'
 
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
-const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
+const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 
 export const useIsRegistered = (address?: string): SWRResponse<boolean> => {
   const gql = useSubgraph()

@@ -1,5 +1,5 @@
 import { ContractsKeys, contracts } from '@/src/contracts/contracts'
-const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
+const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 import * as typechainImports from '@/types/generated/typechain'
 import { ObjectValues } from '@/types/utils'
 

@@ -10,7 +10,7 @@ import { getNetworkConfig } from '@/src/config/web3'
 import { DOCS_URL } from '@/src/constants/common'
 import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import { useRegistrationBadgeModelKlerosMetadata } from '@/src/hooks/subgraph/useBadgeModelKlerosMetadata'
-const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
+const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 import { secondsToDays, secondsToMinutes } from '@/src/utils/dateUtils'
 import { isTestnet } from '@/src/utils/network'
 

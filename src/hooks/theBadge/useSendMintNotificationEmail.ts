@@ -8,7 +8,7 @@ import { EmailClaimTx, EmailMintNotificationTx } from '@/types/relayedTx'
 import { ToastStates } from '@/types/toast'
 import { BackendResponse } from '@/types/utils'
 
-const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
+const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 
 type PrepareSignatureFnType = () => Promise<`0x${string}`>
 type PrepareConfigsFnType = (p: Omit<EmailMintNotificationTx, 'mintTxHash'>) => void

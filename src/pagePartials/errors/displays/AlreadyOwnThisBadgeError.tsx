@@ -11,7 +11,7 @@ import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
 import { useBadgeOwnershipData } from '@/src/hooks/subgraph/useIsBadgeOwner'
 import { useColorMode } from '@/src/providers/themeProvider'
-const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
+const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 import { generateBadgePreviewUrl } from '@/src/utils/navigation/generateUrl'
 
 const ModalBody = styled(Box)(({ theme }) => ({

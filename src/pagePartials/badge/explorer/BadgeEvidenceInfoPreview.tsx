@@ -19,7 +19,7 @@ import { getEvidenceValue } from '@/src/utils/kleros/getEvidenceValue'
 import { BadgeStatus } from '@/types/generated/subgraph'
 import { MetadataColumn } from '@/types/kleros/types'
 import { WCAddress } from '@/types/utils'
-const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
+const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 
 export default function BadgeEvidenceInfoPreview({ badgeId }: { badgeId: string }) {
   const { t } = useTranslation()

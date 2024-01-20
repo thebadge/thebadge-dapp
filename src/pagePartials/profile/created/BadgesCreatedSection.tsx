@@ -13,7 +13,7 @@ import FilteredList, { ListFilter } from '@/src/components/helpers/FilteredList'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import BadgeModelMiniPreview from '@/src/pagePartials/badge/miniPreview/BadgeModelMiniPreview'
 import { RegistrationRequired } from '@/src/pagePartials/errors/requiresCreatorAccess'
-const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
+const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 import { ManagementProfileFilter } from '@/src/pagePartials/profile/ManagementProfile'
 import { ProfileType } from '@/src/pagePartials/profile/ProfileSelector'
 import { generateBadgeModelCreate } from '@/src/utils/navigation/generateUrl'

@@ -6,7 +6,7 @@ import { type HttpTransport } from 'viem'
 import { PublicClient, WalletClient, usePublicClient } from 'wagmi'
 
 import { useWalletClientHandcraft } from '@/src/hooks/etherjs/useEthersSigner'
-const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
+const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 
 export function publicClientToProvider(publicClient: PublicClient | WalletClient) {
   const { chain, transport } = publicClient
