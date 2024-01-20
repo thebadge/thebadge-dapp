@@ -6,7 +6,7 @@ import { getBackgroundBadgeUrl } from '@/src/constants/backgrounds'
 import useBadgeIdParam from '@/src/hooks/nextjs/useBadgeIdParam'
 import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
 import { useAvailableBackgrounds } from '@/src/hooks/useAvailableBackgrounds'
-const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
+const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { getClassicConfigs } from '@/src/utils/badges/metadataHelpers'
 import enrichTextWithValues, { EnrichTextValues } from '@/src/utils/enrichTextWithValues'

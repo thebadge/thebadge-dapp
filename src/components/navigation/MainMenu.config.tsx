@@ -7,7 +7,7 @@ import { Profile as ProfileIcon } from '@/src/components/assets/Profile'
 import { MenuItem } from '@/src/components/navigation/MainMenu.types'
 import { DOCS_URL } from '@/src/constants/common'
 import { useColorMode } from '@/src/providers/themeProvider'
-const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
+const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 import { ThemeType } from '@/src/theme/types'
 import {
   generateBaseUrl,

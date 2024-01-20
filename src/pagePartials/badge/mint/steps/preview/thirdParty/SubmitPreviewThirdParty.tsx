@@ -15,7 +15,7 @@ import { MintThirdPartySchemaType } from '@/src/pagePartials/badge/mint/schema/M
 import MintCostThirdParty from '@/src/pagePartials/badge/mint/steps/preview/thirdParty/MintCostThirdParty'
 import { BadgeThirdPartyPreviewGenerator } from '@/src/pagePartials/badge/preview/generators/BadgeThirdPartyPreviewGenerator'
 import { createThirdPartyValuesObject } from '@/src/utils/badges/mintHelpers'
-const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
+const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 
 export default function SubmitPreviewThirdParty({ hideCost }: { hideCost?: boolean }) {
   const { t } = useTranslation()

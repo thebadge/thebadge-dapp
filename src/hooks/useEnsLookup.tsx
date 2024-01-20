@@ -9,7 +9,7 @@ import { extractGitHubUsername, extractTwitterUsername } from '@/src/utils/strin
 import { ChainsValues } from '@/types/chains'
 import { WCAddress } from '@/types/utils'
 
-const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
+const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 
 const getChainForEnsLookup = (chainId: ChainsValues): Chain => {
   switch (chainId) {

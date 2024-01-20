@@ -20,7 +20,7 @@ import { useAvailableBackgrounds } from '@/src/hooks/useAvailableBackgrounds'
 import { MintBadgeSchemaType } from '@/src/pagePartials/badge/mint/schema/MintBadgeSchema'
 import { convertPreviewToImage } from '@/src/pagePartials/badge/mint/utils'
 import { getBackgroundType, getTextContrast } from '@/src/utils/badges/metadataHelpers'
-const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
+const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 
 export default function SubmitPreview({
   badgePreviewRef,

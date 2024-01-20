@@ -13,7 +13,7 @@ import ViewEvidenceButton from '@/src/pagePartials/badge/explorer/addons/ViewEvi
 import EvidencesList from '@/src/pagePartials/badge/preview/addons/EvidencesList'
 import DisputeDisplay from '@/src/pagePartials/profile/reviewing/addons/DisputeDisplay'
 import { useCurateProvider } from '@/src/providers/curateProvider'
-const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
+const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 import { generateBadgePreviewUrl } from '@/src/utils/navigation/generateUrl'
 import { Badge, KlerosBadgeRequest, KlerosRequestType } from '@/types/generated/subgraph'
 

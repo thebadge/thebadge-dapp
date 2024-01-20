@@ -44,7 +44,7 @@ import {
 import { BadgeModelControllerType } from '@/types/badges/BadgeModel'
 import { ToastStates } from '@/types/toast'
 import { WCAddress } from '@/types/utils'
-const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
+const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 
 const Wrapper = styled(Stack)(({ theme }) => ({
   gap: theme.spacing(4),

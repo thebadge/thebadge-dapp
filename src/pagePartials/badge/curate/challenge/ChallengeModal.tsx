@@ -6,7 +6,7 @@ import { Box, Skeleton, Stack, Typography } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
 import { z } from 'zod'
 
-const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
+const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 import TBModal from '@/src/components/common/TBModal'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { useChallengeCost } from '@/src/hooks/kleros/useChallengeCost'
