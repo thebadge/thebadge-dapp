@@ -21,7 +21,8 @@ const useChainIds = (): {
   appChainId: ChainsValues
   selectedNetworkId: ChainsValues | undefined
   readOnlyChainId: ChainsValues
-  isAppChainReadOnly: boolean // true if the user's selectedNetworkId if different than the appId
+  // true if the user's selectedNetworkId if different than the appId
+  isAppChainReadOnly: boolean
 } => {
   const { selectedNetworkId } = useWeb3ModalState()
   const queryParamsChainId = useNetworkQueryParam()
