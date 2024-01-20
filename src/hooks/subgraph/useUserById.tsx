@@ -4,7 +4,7 @@ import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import { SubgraphName } from '@/src/subgraph/subgraph'
 import { User } from '@/types/generated/subgraph'
 import { WCAddress } from '@/types/utils'
-const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
+const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 
 export const useUserById = (address: WCAddress | undefined, targetContract?: string) => {
   const gql = useSubgraph(SubgraphName.TheBadge, targetContract)

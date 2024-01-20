@@ -31,7 +31,7 @@ import { useSizeSM } from '@/src/hooks/useSize'
 import useUserMetadata from '@/src/hooks/useUserMetadata'
 import DiplomaView from '@/src/pagePartials/badge/preview/DiplomaView'
 import BadgeTitle from '@/src/pagePartials/badge/preview/addons/BadgeTitle'
-const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
+const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 import { reCreateThirdPartyValuesObject } from '@/src/utils/badges/mintHelpers'
 import { handleShare } from '@/src/utils/badges/viewUtils'
 import { getExpirationYearAndMonth, getIssueYearAndMonth } from '@/src/utils/dateUtils'

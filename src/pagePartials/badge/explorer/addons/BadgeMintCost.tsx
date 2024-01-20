@@ -8,7 +8,7 @@ import { useTranslation } from 'next-export-i18n'
 import { getNetworkConfig } from '@/src/config/web3'
 import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
 import useMintValue from '@/src/hooks/theBadge/useMintValue'
-const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
+const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 
 const StackContainer = styled(Stack)(({ theme }) => ({
   display: 'flex',

@@ -21,7 +21,7 @@ import { InfoPreviewAboutContainer } from '@/src/pagePartials/profile/userInfo/I
 import { InfoPreviewContainer } from '@/src/pagePartials/profile/userInfo/InfoPreviewContainer'
 import { InfoPreviewSocialContainer } from '@/src/pagePartials/profile/userInfo/InfoPreviewSocialContainer'
 import InfoSocial from '@/src/pagePartials/profile/userInfo/InfoSocial'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+import { useWeb3Connection } from '@/src/providers/web3/web3ConnectionProvider'
 import { TheBadgeUsers__factory } from '@/types/generated/typechain'
 import { WCAddress } from '@/types/utils'
 

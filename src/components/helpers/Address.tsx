@@ -11,7 +11,7 @@ import useUserMetadata from '@/src/hooks/useUserMetadata'
 import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 import { truncateStringInTheMiddle } from '@/src/utils/strings'
 import { WCAddress } from '@/types/utils'
-const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
+const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 
 const Wrapper = styled('span')`
   align-items: center;

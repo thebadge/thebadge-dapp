@@ -9,7 +9,7 @@ import { useTranslation } from 'next-export-i18n'
 
 import { WalletAnimated } from '@/src/components/assets/animated/WalletAnimated'
 import ConnectWalletButton from '@/src/components/header/ConnectWalletButton'
-const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
+const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 import { generateBaseUrl } from '@/src/utils/navigation/generateUrl'
 
 const ModalBody = styled(Box)(({ theme }) => ({

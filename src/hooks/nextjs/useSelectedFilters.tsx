@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useState } from 'react'
 
 import { ListFilter } from '@/src/components/helpers/FilteredList'
-const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
+const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 
 export default function useSelectedFilters({
   filters,

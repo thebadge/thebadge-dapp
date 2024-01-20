@@ -8,7 +8,7 @@ import { getBackgroundBadgeUrl } from '@/src/constants/backgrounds'
 import { useAvailableBackgrounds } from '@/src/hooks/useAvailableBackgrounds'
 import useS3Metadata, { DEFAULT_FALLBACK_CONTENT_METADATA } from '@/src/hooks/useS3Metadata'
 import { useColorMode } from '@/src/providers/themeProvider'
-const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
+const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 import { getBackgroundType, getTextContrast } from '@/src/utils/badges/metadataHelpers'
 import { BadgeModelMetadata } from '@/types/badges/BadgeMetadata'
 import { BadgeModelControllerType } from '@/types/badges/BadgeModel'

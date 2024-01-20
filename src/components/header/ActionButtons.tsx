@@ -8,7 +8,7 @@ import { useTranslation } from 'next-export-i18n'
 
 import useIsThirdPartyUser from '@/src/hooks/theBadge/useIsThirdPartyUser'
 import { useSectionReferences } from '@/src/providers/referencesProvider'
-const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
+const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 import {
   generateBadgeCurate,
   generateBadgeModelCreate,

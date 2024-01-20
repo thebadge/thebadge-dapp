@@ -27,7 +27,7 @@ import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { getNetworkConfig } from '@/src/config/web3'
 import { useSizeSM } from '@/src/hooks/useSize'
 import { PreventActionIfOutOfService } from '@/src/pagePartials/errors/preventActionIfOutOfService'
-const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
+const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 import { generateBaseUrl, generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 
 const StyledBadge = styled(Badge)<{ state?: 'ok' | 'error' }>(({ state, theme }) => ({

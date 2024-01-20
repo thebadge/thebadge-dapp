@@ -21,7 +21,7 @@ import AccountDetails from '@/src/pagePartials/creator/register/steps/generalInf
 import ContactInformation from '@/src/pagePartials/creator/register/steps/generalInfo/ContactInformation'
 import TermsAndConditions from '@/src/pagePartials/creator/register/steps/terms/TermsAndConditions'
 import { PreventActionWithoutConnection } from '@/src/pagePartials/errors/preventActionWithoutConnection'
-import { useWeb3Connection } from '@/src/providers/web3ConnectionProvider'
+import { useWeb3Connection } from '@/src/providers/web3/web3ConnectionProvider'
 
 type RegistrationStepsProps = {
   onSubmit: SubmitHandler<CreatorRegisterSchemaType>

@@ -8,7 +8,7 @@ import Blockies from 'react-18-blockies'
 import VerifiedCreator from '@/src/components/icons/VerifiedCreator'
 import useIsUserVerified from '@/src/hooks/theBadge/useIsUserVerified'
 import { WCAddress } from '@/types/utils'
-const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
+const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 
 /**
  * Avatar implementation that fallbacks on Blocajes generated with the address, if the given src is not valid

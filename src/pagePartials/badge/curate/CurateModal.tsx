@@ -15,7 +15,7 @@ import BadgeEvidenceDisplay from '@/src/pagePartials/badge/curate/viewEvidence/B
 import { useCurateProvider } from '@/src/providers/curateProvider'
 import { BadgeStatus } from '@/types/generated/subgraph'
 import { WCAddress } from '@/types/utils'
-const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
+const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 
 type CurateModalProps = {
   open: boolean

@@ -8,7 +8,7 @@ import { useTranslation } from 'next-export-i18n'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import useS3Metadata, { DEFAULT_FALLBACK_CONTENT_METADATA } from '@/src/hooks/useS3Metadata'
 import BadgeRequesterPreview from '@/src/pagePartials/badge/explorer/addons/BadgeRequesterPreview'
-const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
+const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 import { generateBadgePreviewUrl, generateMintUrl } from '@/src/utils/navigation/generateUrl'
 import { BadgeModelMetadata } from '@/types/badges/BadgeMetadata'
 import { BadgeModelControllerType } from '@/types/badges/BadgeModel'

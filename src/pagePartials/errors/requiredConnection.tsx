@@ -3,7 +3,7 @@ import React, { ReactElement, ReactNode } from 'react'
 import { styled } from '@mui/material'
 
 import ConnectWalletError from '@/src/pagePartials/errors/displays/ConnectWalletError'
-const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
+const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 
 const Wrapper = styled('div')`
   display: flex;

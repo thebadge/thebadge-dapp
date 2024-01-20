@@ -11,7 +11,7 @@ import { nowInSeconds } from '@/src/constants/helpers'
 import useBadgesUserCanReview from '@/src/hooks/subgraph/useBadgesUserCanReview'
 import { useSizeLG, useSizeMD } from '@/src/hooks/useSize'
 import BadgeModelPreview from '@/src/pagePartials/badge/BadgeModelPreview'
-const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
+const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 import { generateBadgePreviewUrl } from '@/src/utils/navigation/generateUrl'
 
 const now = nowInSeconds()

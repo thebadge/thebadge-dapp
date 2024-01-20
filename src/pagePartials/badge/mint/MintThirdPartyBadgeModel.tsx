@@ -22,7 +22,7 @@ import {
   createAndUploadThirdPartyRequiredData,
   createThirdPartyValuesObject,
 } from '@/src/utils/badges/mintHelpers'
-const { useWeb3Connection } = await import('@/src/providers/web3ConnectionProvider')
+const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 import { getEncryptedValues } from '@/src/utils/relayTx'
 import { BadgeModelMetadata } from '@/types/badges/BadgeMetadata'
 import { NextPageWithLayout } from '@/types/next'
