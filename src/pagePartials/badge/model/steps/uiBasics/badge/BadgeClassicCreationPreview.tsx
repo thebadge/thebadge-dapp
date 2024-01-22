@@ -6,10 +6,8 @@ import { useFormContext } from 'react-hook-form'
 
 import { BADGE_MODEL_TEXT_CONTRAST, getBackgroundBadgeUrl } from '@/src/constants/backgrounds'
 import { useAvailableBackgrounds } from '@/src/hooks/useAvailableBackgrounds'
-import {
-  CreateCommunityModelSchemaType,
-  CustomFieldsConfigurationSchemaType,
-} from '@/src/pagePartials/badge/model/schema/CreateCommunityModelSchema'
+import { CustomFieldsConfigurationSchemaType } from '@/src/pagePartials/badge/model/schema/CommonSchemas'
+import { CreateCommunityModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateCommunityModelSchema'
 const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 
 const BoxShadow = styled(Box)(({ theme }) => ({
