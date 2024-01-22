@@ -10,7 +10,7 @@ import {
   LongTextSchema,
   TokenInputSchema,
 } from '@/src/components/form/helpers/customSchemas'
-import { CustomFieldsConfigurationSchema } from '@/src/pagePartials/badge/model/schema/CreateCommunityModelSchema'
+import { CustomFieldsConfigurationSchema } from '@/src/pagePartials/badge/model/schema/CommonSchemas'
 import { BadgeModelTemplate } from '@/types/badges/BadgeModel'
 
 export const BodyDataConfigurationSchema = z.object({
@@ -60,7 +60,7 @@ export const CreateThirdPartyModelSchema = z
     // ------ UI BASICS FIELD ------
     name: z.string().max(28).min(1),
     description: LongTextSchema,
-    badgeModelLogoUri: ImageSchema.optional(),
+    badgeModelLogoUri: ImageSchema,
     textContrast: z.string().optional(),
     backgroundImage: z.string().optional(),
     template: z.nativeEnum(BadgeModelTemplate),
@@ -106,10 +106,10 @@ function refineClassic(data: any, ctx: RefinementCtx) {
     })
   }
   if (data.customFieldsEnabled) {
-    if (!data.name || !data.description) {
+    if (!data.miniLogoTitle || !data.miniLogoSubTitle) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        path: ['name', 'description'],
+        path: ['miniLogoTitle', 'miniLogoSubTitle'],
         message: 'Required',
       })
     }

@@ -10,16 +10,16 @@ import SectionContainer from '../addons/SectionContainer'
 import { ImageInput } from '@/src/components/form/formFields/ImageInput'
 import { TextArea } from '@/src/components/form/formFields/TextArea'
 import { TextField } from '@/src/components/form/formFields/TextField'
-import { CreateCommunityModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateCommunityModelSchema'
+import { CreateThirdPartyModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateThirdPartyModelSchema'
 import BadgeModelCreationPreview from '@/src/pagePartials/badge/model/steps/uiBasics/BadgeModelCreationPreview'
 import AdditionConfiguration from '@/src/pagePartials/badge/model/steps/uiBasics/badge/addons/AdditionalConfiguration'
 import CustomFieldsConfiguration from '@/src/pagePartials/badge/model/steps/uiBasics/badge/addons/CustomFieldsConfiguration'
 import { BadgeModelControllerType } from '@/types/badges/BadgeModel'
 
-export default function BadgeConfiguration() {
+export default function TpBadgeModelConfiguration() {
   const { t } = useTranslation()
 
-  const { control } = useFormContext<CreateCommunityModelSchemaType>()
+  const { control } = useFormContext<CreateThirdPartyModelSchemaType>()
 
   return (
     <>
@@ -104,7 +104,7 @@ export default function BadgeConfiguration() {
 
       <AdditionConfiguration />
 
-      <CustomFieldsConfiguration controllerType={BadgeModelControllerType.Community} />
+      <CustomFieldsConfiguration controllerType={BadgeModelControllerType.ThirdParty} />
     </>
   )
 }

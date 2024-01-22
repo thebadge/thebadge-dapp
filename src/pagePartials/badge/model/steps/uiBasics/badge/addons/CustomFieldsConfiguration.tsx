@@ -9,12 +9,19 @@ import { ImageType } from 'react-images-uploading'
 import { CheckBox } from '@/src/components/form/formFields/CheckBox'
 import { ImageInput } from '@/src/components/form/formFields/ImageInput'
 import { TextField } from '@/src/components/form/formFields/TextField'
-import { CustomFieldsConfigurationSchemaType } from '@/src/pagePartials/badge/model/schema/CreateCommunityModelSchema'
+import { CustomFieldsConfigurationSchemaType } from '@/src/pagePartials/badge/model/schema/CommonSchemas'
 import SectionContainer from '@/src/pagePartials/badge/model/steps/uiBasics/addons/SectionContainer'
+import { saveFormValues } from '@/src/pagePartials/badge/model/utils'
+import { BadgeModelControllerType } from '@/types/badges/BadgeModel'
 
-export default function CustomFieldsConfiguration() {
+export default function CustomFieldsConfiguration({
+  controllerType,
+}: {
+  controllerType: BadgeModelControllerType
+}) {
   const { t } = useTranslation()
-  const { control, resetField, watch } = useFormContext<CustomFieldsConfigurationSchemaType>()
+  const { control, getValues, resetField, watch } =
+    useFormContext<CustomFieldsConfigurationSchemaType>()
   const [customTextEnabled, setCustomTextEnabled] = useState<number>(0)
   const enabledFields = watch('customFieldsEnabled')
 
@@ -31,6 +38,17 @@ export default function CustomFieldsConfiguration() {
                 resetField('miniLogo.miniLogoUrl')
                 resetField('miniLogo.miniLogoTitle')
                 resetField('miniLogo.miniLogoSubTitle')
+
+                const cleanValues = {
+                  ...getValues(),
+                  miniLogo: {
+                    miniLogoTitle: undefined,
+                    miniLogoSubTitle: undefined,
+                    miniLogoUrl: undefined,
+                  },
+                }
+
+                saveFormValues(cleanValues, controllerType)
                 setCustomTextEnabled(event.target.value as unknown as number)
               }}
               row

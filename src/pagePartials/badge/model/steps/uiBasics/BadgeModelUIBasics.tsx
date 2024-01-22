@@ -8,6 +8,7 @@ import { DropdownSelect } from '@/src/components/form/formFields/DropdownSelect'
 import useControllerTypeParam from '@/src/hooks/nextjs/useControllerTypeParam'
 import { CreateThirdPartyModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateThirdPartyModelSchema'
 import BadgeConfiguration from '@/src/pagePartials/badge/model/steps/uiBasics/badge/BadgeConfiguration'
+import TpBadgeModelConfiguration from '@/src/pagePartials/badge/model/steps/uiBasics/badge/TpBadgeModelConfiguration'
 import DiplomaConfiguration from '@/src/pagePartials/badge/model/steps/uiBasics/diploma/DiplomaConfiguration'
 import { BadgeModelControllerType, BadgeModelTemplate } from '@/types/badges/BadgeModel'
 
@@ -25,6 +26,21 @@ export default function BadgeModelUIBasics() {
       setValue('courseName', '')
     }
   }, [setValue, watchedTemplate, isThirdParty, resetField])
+
+  const renderModelConfigurations = () => {
+    switch (watchedTemplate) {
+      case BadgeModelTemplate.Badge: {
+        if (isThirdParty) {
+          return <TpBadgeModelConfiguration />
+        }
+        return <BadgeConfiguration />
+      }
+      case BadgeModelTemplate.Diploma: {
+        return <DiplomaConfiguration />
+      }
+    }
+    return null
+  }
 
   return (
     <>
@@ -52,8 +68,7 @@ export default function BadgeModelUIBasics() {
         </Stack>
       )}
 
-      {watchedTemplate === BadgeModelTemplate.Badge && <BadgeConfiguration />}
-      {watchedTemplate === BadgeModelTemplate.Diploma && <DiplomaConfiguration />}
+      {renderModelConfigurations()}
 
       <Divider />
     </>
