@@ -60,7 +60,7 @@ export const CreateThirdPartyModelSchema = z
     // ------ UI BASICS FIELD ------
     name: z.string().max(28).min(1),
     description: LongTextSchema,
-    badgeModelLogoUri: ImageSchema,
+    badgeModelLogoUri: ImageSchema.optional(),
     textContrast: z.string().optional(),
     backgroundImage: z.string().optional(),
     template: z.nativeEnum(BadgeModelTemplate),

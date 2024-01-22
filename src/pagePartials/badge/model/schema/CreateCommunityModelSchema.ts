@@ -44,7 +44,7 @@ export const CreateCommunityModelSchema = z
     // ------ UI BASICS FIELD ------
     name: z.string().max(28),
     description: LongTextSchema,
-    badgeModelLogoUri: ImageSchema,
+    badgeModelLogoUri: ImageSchema.optional(),
     textContrast: z.string(),
     backgroundImage: z.custom<ModelsBackgroundsNames>(),
     template: z.string(),
