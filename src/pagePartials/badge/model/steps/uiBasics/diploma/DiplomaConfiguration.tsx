@@ -27,7 +27,7 @@ export default function DiplomaConfiguration() {
         <Stack flex="1" gap={4}>
           <Stack>
             <Typography variant="bodySmall">
-              {t('badge.model.create.uiBasics.templateConfig.title')}
+              {t('badge.model.create.uiBasics.templateConfig.title') + ' *'}
             </Typography>
             <Controller
               control={control}
@@ -45,7 +45,7 @@ export default function DiplomaConfiguration() {
 
           <Stack>
             <Typography variant="bodySmall">
-              {t('badge.model.create.uiBasics.templateConfig.description')}
+              {t('badge.model.create.uiBasics.templateConfig.description') + ' *'}
             </Typography>
             <Controller
               control={control}

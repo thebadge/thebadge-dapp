@@ -45,8 +45,8 @@ export default function CreateThirdPartyBadgeModelWithSteps({
   const methods = useForm<z.infer<typeof CreateThirdPartyModelSchema>>({
     resolver: zodResolver(CreateThirdPartyModelSchema),
     defaultValues: defaultValues(BadgeModelControllerType.ThirdParty),
-    reValidateMode: 'onChange',
     mode: 'onChange',
+    criteriaMode: 'all',
   })
 
   // Watched template to trigger different validations

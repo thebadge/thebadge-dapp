@@ -88,7 +88,7 @@ function refineClassic(data: any, ctx: RefinementCtx) {
     ctx.addIssue({
       code: z.ZodIssueCode.custom,
       path: ['badgeModelLogoUri'],
-      message: 'Required',
+      message: 'An Image or a Logo is required',
     })
   }
   if (!data.textContrast) {
@@ -106,11 +106,18 @@ function refineClassic(data: any, ctx: RefinementCtx) {
     })
   }
   if (data.customFieldsEnabled) {
-    if (!data.name || !data.description) {
+    if (!data.name) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        path: ['name', 'description'],
-        message: 'Required',
+        path: ['name'],
+        message: 'Model Name is Required',
+      })
+    }
+    if (!data.description) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ['description'],
+        message: 'Model Description is Required',
       })
     }
   }

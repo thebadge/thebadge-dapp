@@ -31,7 +31,7 @@ export default function BadgeConfiguration() {
           </Alert>
           <Stack>
             <Typography variant="bodySmall">
-              {t('badge.model.create.uiBasics.templateConfig.title')}
+              {t('badge.model.create.uiBasics.templateConfig.title') + ' *'}
             </Typography>
             <Controller
               control={control}
@@ -50,7 +50,7 @@ export default function BadgeConfiguration() {
 
           <Stack>
             <Typography variant="bodySmall">
-              {t('badge.model.create.uiBasics.templateConfig.description')}
+              {t('badge.model.create.uiBasics.templateConfig.description') + ' *'}
             </Typography>
             <Controller
               control={control}
@@ -69,7 +69,7 @@ export default function BadgeConfiguration() {
 
           <Stack sx={{ position: 'relative' }}>
             <Typography variant="bodySmall">
-              {t('badge.model.create.uiBasics.templateConfig.logoDescription')}
+              {t('badge.model.create.uiBasics.templateConfig.logoDescription') + ' *'}
             </Typography>
             <Controller
               control={control}

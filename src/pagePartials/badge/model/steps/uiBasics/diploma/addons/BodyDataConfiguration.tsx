@@ -17,7 +17,7 @@ export default function BodyDataConfiguration() {
       <Stack flex="1" gap={4}>
         <Stack>
           <Typography variant="bodySmall">
-            {t('badge.model.create.uiBasics.templateConfig.diplomaName')}
+            {t('badge.model.create.uiBasics.templateConfig.diplomaName') + ' *'}
           </Typography>
           <Controller
             control={control}
@@ -55,7 +55,7 @@ export default function BodyDataConfiguration() {
       <Stack flex="1" gap={4}>
         <Stack>
           <Typography variant="bodySmall">
-            {t('badge.model.create.uiBasics.templateConfig.diplomaDate')}
+            {t('badge.model.create.uiBasics.templateConfig.diplomaDate') + ' *'}
           </Typography>
           <Controller
             control={control}

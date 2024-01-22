@@ -100,6 +100,9 @@ export default function CustomFieldsConfiguration() {
                       }
                       onChange(null)
                     }}
+                    resolutionHeight={32}
+                    resolutionType={'less'}
+                    resolutionWidth={32}
                     value={value}
                   />
                 )}
