@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Container, Divider, Stack, Typography } from '@mui/material'
@@ -52,10 +52,14 @@ export default function CreateThirdPartyBadgeModelWithSteps({
     CreateThirdPartyBadgeModelSchemaType | CreateThirdPartyDiplomaModelSchemaType
   >({
     resolver: zodResolver(getZodSchema(BadgeModelControllerType.ThirdParty, template)),
-    defaultValues: { ...defaultValues(BadgeModelControllerType.ThirdParty), template },
     mode: 'onChange',
     criteriaMode: 'all',
   })
+
+  useEffect(() => {
+    methods.reset({ ...defaultValues(BadgeModelControllerType.ThirdParty, { template }) })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [template])
 
   console.log('defaultValues', methods.formState.defaultValues)
   console.log('getValues', methods.getValues())
@@ -140,7 +144,6 @@ export default function CreateThirdPartyBadgeModelWithSteps({
                       <DropdownSelect
                         error={error}
                         onChange={(e) => {
-                          console.log(e)
                           setTemplate(e)
                           onChange(e)
                         }}

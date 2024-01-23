@@ -145,38 +145,46 @@ type CreateBadgeModelDefaultValues = {
  */
 export function defaultValues(
   controllerType?: BadgeModelControllerType,
-  userMetadata?: UserMetadata,
-): CreateBadgeModelDefaultValues {
+  options?: { userMetadata?: UserMetadata; template?: BadgeModelTemplate },
+): CreateBadgeModelDefaultValues | any {
   switch (controllerType?.toLowerCase()) {
     case BadgeModelControllerType.ThirdParty.toLowerCase(): {
-      if (checkIfHasOngoingModelCreation(BadgeModelControllerType.ThirdParty)) {
+      if (checkIfHasOngoingModelCreation(BadgeModelControllerType.ThirdParty, options?.template)) {
         const storedValues = JSON.parse(
-          localStorage.getItem(FORM_STORE_KEY + BadgeModelControllerType.ThirdParty) as string,
+          localStorage.getItem(
+            FORM_STORE_KEY + '-' + BadgeModelControllerType.ThirdParty + '-' + options?.template,
+          ) as string,
         )
         return storedValues.values
       }
-      return {
-        textContrast: 'Black',
-        backgroundImage: 'White Waves',
-        template: BadgeModelTemplate.Badge,
-        challengePeriodDuration: 2,
-        rigorousness: {
-          amountOfJurors: 1,
-          challengeBounty: '0',
-        },
+
+      switch (options?.template) {
+        case BadgeModelTemplate.Diploma:
+          return {
+            template: options?.template,
+            challengePeriodDuration: 2,
+          }
+        case BadgeModelTemplate.Badge:
+        default:
+          return {
+            textContrast: 'Black',
+            backgroundImage: 'White Waves',
+            template: options?.template || BadgeModelTemplate.Badge,
+            challengePeriodDuration: 2,
+          }
       }
     }
     case BadgeModelControllerType.Community.toLowerCase():
     default: {
       if (checkIfHasOngoingModelCreation(BadgeModelControllerType.Community)) {
         const storedValues = JSON.parse(
-          localStorage.getItem(FORM_STORE_KEY + BadgeModelControllerType.Community) as string,
+          localStorage.getItem(FORM_STORE_KEY + '-' + BadgeModelControllerType.Community) as string,
         )
         return storedValues.values
       }
 
       return {
-        register: userMetadata ? { ...userMetadata } : registerDefaultValues(),
+        register: options?.userMetadata ? { ...options.userMetadata } : registerDefaultValues(),
         textContrast: 'Black',
         backgroundImage: 'White Waves',
         template: BadgeModelTemplate.Badge,
@@ -190,28 +198,36 @@ export function defaultValues(
   }
 }
 
-export function checkIfHasOngoingModelCreation(controllerType: BadgeModelControllerType) {
-  const item = localStorage.getItem(FORM_STORE_KEY + controllerType)
+export function checkIfHasOngoingModelCreation(
+  controllerType: BadgeModelControllerType,
+  template?: BadgeModelTemplate,
+) {
+  const item = localStorage.getItem(FORM_STORE_KEY + '-' + controllerType + '-' + template)
   return !!item && Date.now() < JSON.parse(item).expirationTime
 }
 
 export function saveFormValues(
   values: Record<string, any>,
   controllerType: BadgeModelControllerType,
+  template?: BadgeModelTemplate,
 ) {
   const ONE_DAY = 24 * 60 * 60 * 1000 /* ms */
   const expiration = MODEL_CREATION_CACHE_EXPIRATION_MS
     ? +MODEL_CREATION_CACHE_EXPIRATION_MS
     : ONE_DAY
 
+  console.log('saveFormValues', { controllerType, template })
   localStorage.setItem(
-    FORM_STORE_KEY + controllerType,
+    FORM_STORE_KEY + '-' + controllerType + '-' + template,
     JSON.stringify({ expirationTime: Date.now() + expiration, values }),
   )
 }
 
-export function cleanCreateModelFormValues() {
-  localStorage.removeItem(FORM_STORE_KEY)
+export function cleanCreateModelFormValues(
+  controllerType: BadgeModelControllerType,
+  template?: BadgeModelTemplate,
+) {
+  localStorage.removeItem(FORM_STORE_KEY + '-' + controllerType + '-' + template)
 }
 
 /**
