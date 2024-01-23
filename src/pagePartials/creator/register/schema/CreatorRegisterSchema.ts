@@ -49,7 +49,14 @@ const RegisterSchema = z.object({
   // Contact method
   email: EmailSchema,
   website: z.string().optional().nullable(),
-  twitter: TwitterSchema.optional().nullable(),
+  twitter: z
+    .string({
+      required_error: 'Is required',
+      invalid_type_error: 'Must be a twitter user',
+    })
+    .startsWith('@')
+    .optional()
+    .nullable(),
   discord: z.string().optional().nullable(),
   linkedin: z.string().optional().nullable(),
   github: z.string().optional().nullable(),

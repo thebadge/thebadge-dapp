@@ -46,6 +46,13 @@ const MiniLogoCustomFieldsConfigurationSchema = z
   })
   .optional()
 
+/**
+ * CustomFields on Badge Model used on Community and ThirdParty
+ *
+ * customFieldsEnabled: Boolean
+ *
+ * miniLogo: MiniLogoCustomFieldsConfigurationSchema
+ */
 export const CustomFieldsConfigurationSchema = z.object({
   // ------ BADGE BASICS FIELD ------
   customFieldsEnabled: z.boolean().optional(),
@@ -53,24 +60,76 @@ export const CustomFieldsConfigurationSchema = z.object({
 })
 export type CustomFieldsConfigurationSchemaType = z.infer<typeof CustomFieldsConfigurationSchema>
 
+/**
+ * Default Community model configuration shared across all the templates
+ *
+ * name: String - Max 28 - Min 1
+ *
+ * description: LongTextSchema
+ *
+ * template - String (Not Implemented Yet)
+ */
+export const CommunityDefaultModelConfigurationSchema = z.object({
+  name: z.string().max(28),
+  description: LongTextSchema,
+  template: z.string(),
+})
+
+export type CommunityDefaultModelConfigurationSchemaType = z.infer<
+  typeof CommunityDefaultModelConfigurationSchema
+>
+
+/**
+ * Default Community strategy configuration shared across all the templates
+ *
+ * criteria - CommunityBadgeModelCriteriaSchema
+ *
+ * challengePeriodDuration - ChallengePeriodTypeSchema
+ *
+ * rigorousness - SeverityTypeSchema
+ *
+ * mintFee - TokenInputSchema
+ *
+ * validFor - ExpirationTypeSchema
+ */
+export const CommunityStrategyModelConfigurationSchema = z.object({
+  criteria: CommunityBadgeModelCriteriaSchema,
+  challengePeriodDuration: ChallengePeriodTypeSchema,
+  rigorousness: SeverityTypeSchema,
+  mintFee: TokenInputSchema,
+  validFor: ExpirationTypeSchema,
+})
+export type CommunityStrategyModelConfigurationSchemaType = z.infer<
+  typeof CommunityStrategyModelConfigurationSchema
+>
+
+/**
+ * UI Related for Badge Model on Community
+ *
+ * badgeModelLogoUri - ImageSchema
+ *
+ * textContrast - String
+ *
+ * backgroundImage - ModelsBackgroundsNames
+ */
+export const CommunityBadgeUIConfigurationSchema = z.object({
+  // ------ UI BASICS FIELD ------
+  badgeModelLogoUri: ImageSchema,
+  textContrast: z.string(),
+  backgroundImage: z.custom<ModelsBackgroundsNames>(),
+})
+export type CommunityBadgeUIConfigurationSchemaType = z.infer<
+  typeof CommunityBadgeUIConfigurationSchema
+>
+
 export const CreateCommunityModelSchema = z
   .object({
-    // ------ UI BASICS FIELD ------
-    name: z.string().max(28),
-    description: LongTextSchema,
-    badgeModelLogoUri: ImageSchema,
-    textContrast: z.string(),
-    backgroundImage: z.custom<ModelsBackgroundsNames>(),
-    template: z.string(),
-    // ------ STRATEGY FIELD ------
-    criteria: CommunityBadgeModelCriteriaSchema,
-    challengePeriodDuration: ChallengePeriodTypeSchema,
-    rigorousness: SeverityTypeSchema,
-    mintFee: TokenInputSchema,
-    validFor: ExpirationTypeSchema,
     // ------ EVIDENCE FORM FIELD ------
     badgeMetadataColumns: KlerosDynamicFields,
   })
+  .merge(CommunityDefaultModelConfigurationSchema)
+  .merge(CommunityStrategyModelConfigurationSchema)
+  .merge(CommunityBadgeUIConfigurationSchema)
   .merge(CustomFieldsConfigurationSchema)
   // ------ User register ------
   .merge(CreatorRegisterSchema)

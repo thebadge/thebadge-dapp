@@ -1,12 +1,15 @@
 import React from 'react'
 
 import { Stack, Typography } from '@mui/material'
+import dayjs from 'dayjs'
 import { useTranslation } from 'next-export-i18n'
 import { Controller, useFormContext } from 'react-hook-form'
 
 import { TextField } from '@/src/components/form/formFields/TextField'
 import { BodyDataConfigurationSchemaType } from '@/src/pagePartials/badge/model/schema/CreateThirdPartyModelSchema'
 import SectionContainer from '@/src/pagePartials/badge/model/steps/uiBasics/addons/SectionContainer'
+
+const PLACEHOLDER_DATE = dayjs().format('MMMM D, YYYY')
 
 export default function BodyDataConfiguration() {
   const { control } = useFormContext<BodyDataConfigurationSchemaType>()
@@ -35,7 +38,7 @@ export default function BodyDataConfiguration() {
 
         <Stack>
           <Typography variant="bodySmall">
-            {t('badge.model.create.uiBasics.templateConfig.description')}
+            {t('badge.model.create.uiBasics.templateConfig.achievementDescription')}
           </Typography>
           <Controller
             control={control}
@@ -63,7 +66,7 @@ export default function BodyDataConfiguration() {
             render={({ field: { onChange, value }, fieldState: { error } }) => (
               <TextField
                 error={error}
-                ghostLabel={'November 9, 2023'}
+                ghostLabel={PLACEHOLDER_DATE}
                 onChange={onChange}
                 value={value}
               />

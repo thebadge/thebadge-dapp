@@ -8,7 +8,7 @@ import { useFormContext } from 'react-hook-form'
 import { APP_URL } from '@/src/constants/common'
 import useIsUserVerified from '@/src/hooks/theBadge/useIsUserVerified'
 import { useSizeSM } from '@/src/hooks/useSize'
-import { CreateThirdPartyModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateThirdPartyModelSchema'
+import { CreateThirdPartyDiplomaModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateThirdPartyModelSchema'
 const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 
 const BoxShadow = styled(Box)(({ theme }) => ({
@@ -19,7 +19,7 @@ const BoxShadow = styled(Box)(({ theme }) => ({
 
 export default function DiplomaCreationPreview() {
   const { address } = useWeb3Connection()
-  const { watch } = useFormContext<CreateThirdPartyModelSchemaType>()
+  const { watch } = useFormContext<CreateThirdPartyDiplomaModelSchemaType>()
 
   if (!address) {
     // TODO: Temporal error, I will remove it
