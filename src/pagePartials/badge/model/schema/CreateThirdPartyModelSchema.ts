@@ -199,18 +199,11 @@ function refineClassic(data: any, ctx: RefinementCtx) {
     })
   }
   if (data.customFieldsEnabled) {
-    if (!data.name) {
+    if (!data.miniLogoTitle || !data.miniLogoSubTitle) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        path: ['name'],
-        message: 'Model Name is Required',
-      })
-    }
-    if (!data.description) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        path: ['description'],
-        message: 'Model Description is Required',
+        path: ['miniLogoTitle', 'miniLogoSubTitle'],
+        message: 'Mini Logo configuration is required',
       })
     }
   }
