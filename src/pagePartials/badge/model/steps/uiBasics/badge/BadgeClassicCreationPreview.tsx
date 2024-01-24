@@ -4,12 +4,13 @@ import { Box, alpha, styled } from '@mui/material'
 import { BadgePreview } from '@thebadge/ui-library'
 import { useFormContext } from 'react-hook-form'
 
-import { BADGE_MODEL_TEXT_CONTRAST, getBackgroundBadgeUrl } from '@/src/constants/backgrounds'
-import { useAvailableBackgrounds } from '@/src/hooks/useAvailableBackgrounds'
 import {
-  CreateCommunityModelSchemaType,
-  CustomFieldsConfigurationSchemaType,
-} from '@/src/pagePartials/badge/model/schema/CreateCommunityModelSchema'
+  BADGE_MODEL_TEXT_CONTRAST,
+  ModelsBackgroundsNames,
+  getBackgroundBadgeUrl,
+} from '@/src/constants/backgrounds'
+import { useAvailableBackgrounds } from '@/src/hooks/useAvailableBackgrounds'
+import { CreateThirdPartyBadgeModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateThirdPartyModelSchema'
 const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 
 const BoxShadow = styled(Box)(({ theme }) => ({
@@ -19,9 +20,7 @@ const BoxShadow = styled(Box)(({ theme }) => ({
 }))
 
 export default function BadgeClassicCreationPreview() {
-  const { watch } = useFormContext<
-    CreateCommunityModelSchemaType & CustomFieldsConfigurationSchemaType
-  >()
+  const { watch } = useFormContext<CreateThirdPartyBadgeModelSchemaType>()
   const { address, readOnlyChainId } = useWeb3Connection()
   const availableBackgroundsData = useAvailableBackgrounds(readOnlyChainId, address)
   const modelBackgrounds = availableBackgroundsData.data?.modelBackgrounds
@@ -35,7 +34,7 @@ export default function BadgeClassicCreationPreview() {
   // Classic Badge Configs
   const watchedLogoUri = watch('badgeModelLogoUri')
   const watchedTextContrast = watch('textContrast')
-  const watchedBackground = watch('backgroundImage')
+  const watchedBackground = watch('backgroundImage') as ModelsBackgroundsNames
   const watchedMiniLogoTitle = watch('miniLogo.miniLogoTitle')
   const watchedMiniLogoSubtitle = watch('miniLogo.miniLogoSubTitle')
   const watchedMiniLogoUrl = watch('miniLogo.miniLogoUrl')

@@ -6,11 +6,11 @@ import { Controller, useFormContext } from 'react-hook-form'
 
 import { ExpirationField } from '@/src/components/form/formFields/ExpirationField'
 import { TextField } from '@/src/components/form/formFields/TextField'
-import { CreateThirdPartyModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateThirdPartyModelSchema'
+import { ThirdPartyStrategyModelConfigurationSchemaType } from '@/src/pagePartials/badge/model/schema/CreateThirdPartyModelSchema'
 
 export default function BadgeModelStrategy() {
   const { t } = useTranslation()
-  const { control } = useFormContext<CreateThirdPartyModelSchemaType>()
+  const { control } = useFormContext<ThirdPartyStrategyModelConfigurationSchemaType>()
 
   // TODO: Add and input for array adding "administrators", make administrators visible again
   return (

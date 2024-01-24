@@ -16,7 +16,7 @@ import {
 } from '@mui/material'
 import { colors } from '@thebadge/ui-library'
 import { FieldError } from 'react-hook-form'
-import ImageUploading, { ImageListType, ImageType } from 'react-images-uploading'
+import ImageUploading, { ImageListType, ImageType, ResolutionType } from 'react-images-uploading'
 
 import UploadIllustration from '../../assets/UploadIllustration'
 import { TextFieldStatus } from '@/src/components/form/formFields/TextField'
@@ -72,9 +72,21 @@ type ImageInputProps = {
   onChange: (image: ImageType | null) => void
   placeholder?: string
   value: ImageType | undefined
+  // Configs to allow images with X sizes
+  // https://github.com/vutoan266/react-images-uploading?tab=readme-ov-file#note
+  resolutionType?: ResolutionType
+  resolutionWidth?: number
+  resolutionHeight?: number
 }
 
-export function ImageInput({ error, label, onChange, placeholder, value }: ImageInputProps) {
+export function ImageInput({
+  error,
+  label,
+  onChange,
+  placeholder,
+  value,
+  ...resolution
+}: ImageInputProps) {
   const [images, setImages] = useState<ImageListType>(value ? [value] : [])
   const maxNumber = 1
 
@@ -98,6 +110,7 @@ export function ImageInput({ error, label, onChange, placeholder, value }: Image
               maxNumber={maxNumber}
               onChange={handleChange}
               value={images}
+              {...resolution}
             >
               {({
                 dragProps,
@@ -171,14 +184,25 @@ export function ImageInput({ error, label, onChange, placeholder, value }: Image
                     </Box>
                   ))}
                   {errors && (
-                    <div>
+                    <Typography
+                      color="error"
+                      sx={{ mt: 1 }}
+                      textAlign="center"
+                      variant="labelMedium"
+                    >
                       {errors.maxNumber && <span>Number of selected images exceed maxNumber</span>}
                       {errors.acceptType && <span>Your selected file type is not allow</span>}
                       {errors.maxFileSize && <span>Selected file size exceed maxFileSize</span>}
                       {errors.resolution && (
-                        <span>Selected file is not match your desired resolution</span>
+                        <>
+                          <span>Selected file is not match your desired resolution.</span>
+                          <br />
+                          <span>
+                            {`Must be ${resolution.resolutionType} than ${resolution.resolutionHeight}x${resolution.resolutionWidth}`}
+                          </span>
+                        </>
                       )}
-                    </div>
+                    </Typography>
                   )}
                 </Box>
               )}

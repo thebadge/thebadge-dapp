@@ -56,8 +56,10 @@ export default function CreateCommunityBadgeModelWithSteps({
   const methods = useForm<z.infer<typeof CreateCommunityModelSchema>>({
     resolver: zodResolver(CreateCommunityModelSchema),
     defaultValues: defaultValues(BadgeModelControllerType.Community, {
-      ...userMetadata,
-      terms: isRegistered,
+      userMetadata: {
+        ...userMetadata,
+        terms: isRegistered,
+      },
     }),
     reValidateMode: 'onChange',
     mode: 'onChange',

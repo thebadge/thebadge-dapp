@@ -4,7 +4,9 @@ import React, { useEffect } from 'react'
 import { Divider, Stack, Typography } from '@mui/material'
 import { colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
+import { useFormContext } from 'react-hook-form'
 
+import useControllerTypeParam from '@/src/hooks/nextjs/useControllerTypeParam'
 import { StepButton } from '@/src/pagePartials/badge/model/steps/StepFooter'
 import BadgeModelCreationPreview from '@/src/pagePartials/badge/model/steps/uiBasics/BadgeModelCreationPreview'
 import { cleanCreateModelFormValues } from '@/src/pagePartials/badge/model/utils'
@@ -14,10 +16,13 @@ import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 export default function BadgeModelCreated() {
   const { t } = useTranslation()
   const router = useRouter()
+  const { getValues } = useFormContext()
+
+  const controllerType = useControllerTypeParam()
 
   useEffect(() => {
-    return () => cleanCreateModelFormValues()
-  }, [])
+    return () => cleanCreateModelFormValues(controllerType, getValues('template'))
+  }, [controllerType, getValues])
 
   return (
     <Stack alignItems="center" gap={3} justifyContent="center">

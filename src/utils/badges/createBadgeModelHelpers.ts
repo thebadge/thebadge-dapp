@@ -10,7 +10,10 @@ import {
   BadgeModelCommunityCriteriaType,
   CreateCommunityModelSchemaType,
 } from '@/src/pagePartials/badge/model/schema/CreateCommunityModelSchema'
-import { CreateThirdPartyModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateThirdPartyModelSchema'
+import {
+  CreateThirdPartyBadgeModelSchemaType,
+  CreateThirdPartyDiplomaModelSchemaType,
+} from '@/src/pagePartials/badge/model/schema/CreateThirdPartyModelSchema'
 import { ReplacementKeys, TemplateVariables } from '@/src/utils/enrichTextWithValues'
 import { convertHashToValidIPFSKlerosHash, isIPFSUrl } from '@/src/utils/fileUtils'
 import ipfsUpload from '@/src/utils/ipfsUpload'
@@ -34,13 +37,28 @@ import { Kleros__factory } from '@/types/generated/typechain'
 import { KLEROS_LIST_TYPES, MetadataColumn, ThirdPartyMetadataColumn } from '@/types/kleros/types'
 import { BackendFileUpload } from '@/types/utils'
 
-export async function createAndUploadBadgeModelMetadata(data: CreateThirdPartyModelSchemaType) {
-  const { template } = data
-  if (template === BadgeModelTemplate.Diploma) {
-    const { description, name, ...rest } = data
-    return createAndUploadDiplomaBadgeModelMetadata(name, description, rest)
+function isDiploma(object: any): object is CreateThirdPartyDiplomaModelSchemaType {
+  if (object !== null && typeof object === 'object') {
+    return object.template === BadgeModelTemplate.Diploma
   }
-  if (template === BadgeModelTemplate.Badge) {
+  return false
+}
+
+function isBadge(object: any): object is CreateThirdPartyBadgeModelSchemaType {
+  if (object !== null && typeof object === 'object') {
+    return object.template === BadgeModelTemplate.Badge
+  }
+  return false
+}
+
+export async function createAndUploadBadgeModelMetadata(
+  data: CreateThirdPartyBadgeModelSchemaType | CreateThirdPartyDiplomaModelSchemaType,
+) {
+  if (isDiploma(data)) {
+    const { description, name } = data
+    return createAndUploadDiplomaBadgeModelMetadata(name, description, data)
+  }
+  if (isBadge(data)) {
     const {
       backgroundImage,
       badgeModelLogoUri,
@@ -125,7 +143,7 @@ async function createAndUploadDiplomaBadgeModelMetadata(
     courseName,
     template,
     ...rest
-  }: Partial<CreateThirdPartyModelSchemaType>,
+  }: CreateThirdPartyDiplomaModelSchemaType,
 ) {
   if (!courseName || !achievementDescription || !achievementDate || !template) {
     // This is a safe validation, the form already validates that the data is here
