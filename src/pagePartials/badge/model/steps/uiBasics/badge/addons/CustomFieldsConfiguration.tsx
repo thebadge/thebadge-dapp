@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { FormControl, FormControlLabel, RadioGroup, Stack, Typography } from '@mui/material'
 import Radio from '@mui/material/Radio'
@@ -12,11 +12,27 @@ import { TextField } from '@/src/components/form/formFields/TextField'
 import { CustomFieldsConfigurationSchemaType } from '@/src/pagePartials/badge/model/schema/CreateCommunityModelSchema'
 import SectionContainer from '@/src/pagePartials/badge/model/steps/uiBasics/addons/SectionContainer'
 
+enum CustomFields {
+  TEXT,
+  IMAGE,
+}
+
 export default function CustomFieldsConfiguration() {
   const { t } = useTranslation()
-  const { control, resetField, watch } = useFormContext<CustomFieldsConfigurationSchemaType>()
-  const [customTextEnabled, setCustomTextEnabled] = useState<number>(0)
+  const { control, resetField, trigger, watch } =
+    useFormContext<CustomFieldsConfigurationSchemaType>()
+  const [customTextEnabled, setCustomTextEnabled] = useState<number>(CustomFields.TEXT)
   const enabledFields = watch('customFieldsEnabled')
+
+  useEffect(() => {
+    if (enabledFields) {
+      if (customTextEnabled === CustomFields.TEXT) {
+        void trigger(['miniLogo.miniLogoSubTitle', 'miniLogo.miniLogoTitle'])
+      } else {
+        void trigger(['miniLogo.miniLogoUrl'])
+      }
+    }
+  }, [enabledFields, trigger, customTextEnabled])
 
   const renderEnabledFields = () => (
     <SectionContainer>
@@ -28,9 +44,12 @@ export default function CustomFieldsConfiguration() {
               name="row-radio-buttons-group"
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 // If the custom text is enabled
-                resetField('miniLogo.miniLogoUrl')
-                resetField('miniLogo.miniLogoTitle')
-                resetField('miniLogo.miniLogoSubTitle')
+                resetField('miniLogo.miniLogoUrl', { defaultValue: undefined, keepError: false })
+                resetField('miniLogo.miniLogoTitle', { defaultValue: undefined, keepError: false })
+                resetField('miniLogo.miniLogoSubTitle', {
+                  defaultValue: undefined,
+                  keepError: false,
+                })
                 setCustomTextEnabled(event.target.value as unknown as number)
               }}
               row
@@ -40,21 +59,21 @@ export default function CustomFieldsConfiguration() {
               <FormControlLabel
                 control={<Radio />}
                 label={t('badge.model.create.uiBasics.customFields.miniLogoConfigTextEnabled')}
-                value={0}
+                value={CustomFields.TEXT}
               />
               <FormControlLabel
                 control={<Radio />}
                 label={t('badge.model.create.uiBasics.customFields.miniLogoConfigImageEnabled')}
-                value={1}
+                value={CustomFields.IMAGE}
               />
             </RadioGroup>
           </FormControl>
         </Stack>
-        {customTextEnabled == 0 ? (
-          <Stack flex="1">
+        {customTextEnabled == CustomFields.TEXT ? (
+          <Stack flex="1" gap={2}>
             <Stack flex="1">
               <Typography variant="bodySmall">
-                {t('badge.model.create.uiBasics.customFields.miniLogoTitle')}
+                {t('badge.model.create.uiBasics.customFields.miniLogoTitle') + ' *'}
               </Typography>
               <Controller
                 control={control}
@@ -81,7 +100,7 @@ export default function CustomFieldsConfiguration() {
           <Stack flex="1" flexDirection="column">
             <Stack flex="1">
               <Typography variant="bodySmall">
-                {t('badge.model.create.uiBasics.customFields.miniLogoUrl')}
+                {t('badge.model.create.uiBasics.customFields.miniLogoUrl') + ' *'}
               </Typography>
               <Controller
                 control={control}
@@ -100,6 +119,9 @@ export default function CustomFieldsConfiguration() {
                       }
                       onChange(null)
                     }}
+                    resolutionHeight={32}
+                    resolutionType={'less'}
+                    resolutionWidth={32}
                     value={value}
                   />
                 )}

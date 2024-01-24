@@ -5,7 +5,7 @@ import {
   AvatarSchema,
   EmailSchema,
   LongTextSchema,
-  TwitterSchema,
+  SimpleTwitterSchema,
 } from '@/src/components/form/helpers/customSchemas'
 
 const MIN_DISPLAY_NAME_CHARACTERS = 2
@@ -49,7 +49,7 @@ const RegisterSchema = z.object({
   // Contact method
   email: EmailSchema,
   website: z.string().optional().nullable(),
-  twitter: TwitterSchema.optional().nullable(),
+  twitter: SimpleTwitterSchema.optional().nullable(),
   discord: z.string().optional().nullable(),
   linkedin: z.string().optional().nullable(),
   github: z.string().optional().nullable(),
@@ -81,7 +81,7 @@ export const EditProfileSchema = z.object({
   // Contact method
   email: EmailSchema,
   website: z.string().optional().nullable(),
-  twitter: TwitterSchema.optional().nullable(),
+  twitter: SimpleTwitterSchema.optional().nullable(),
   discord: z.string().optional().nullable(),
   linkedin: z.string().optional().nullable(),
   github: z.string().optional().nullable(),
