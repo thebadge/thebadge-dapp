@@ -73,7 +73,7 @@ export default function CustomFieldsConfiguration() {
           <Stack flex="1" gap={2}>
             <Stack flex="1">
               <Typography variant="bodySmall">
-                {t('badge.model.create.uiBasics.customFields.miniLogoTitle')}
+                {t('badge.model.create.uiBasics.customFields.miniLogoTitle') + ' *'}
               </Typography>
               <Controller
                 control={control}
@@ -100,7 +100,7 @@ export default function CustomFieldsConfiguration() {
           <Stack flex="1" flexDirection="column">
             <Stack flex="1">
               <Typography variant="bodySmall">
-                {t('badge.model.create.uiBasics.customFields.miniLogoUrl')}
+                {t('badge.model.create.uiBasics.customFields.miniLogoUrl') + ' *'}
               </Typography>
               <Controller
                 control={control}
