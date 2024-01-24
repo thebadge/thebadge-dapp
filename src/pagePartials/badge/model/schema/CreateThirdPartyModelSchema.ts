@@ -199,11 +199,16 @@ function refineClassic(data: any, ctx: RefinementCtx) {
     })
   }
   if (data.customFieldsEnabled) {
-    if (!data.miniLogo.miniLogoTitle) {
+    if (!data.miniLogo.miniLogoTitle && !data.miniLogo.miniLogoUrl) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         path: ['miniLogo.miniLogoTitle'],
         message: 'Mini Logo title is required',
+      })
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ['miniLogo.miniLogoUrl'],
+        message: 'Mini Logo image is required',
       })
     }
   }

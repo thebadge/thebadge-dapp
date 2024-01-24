@@ -27,9 +27,9 @@ export default function CustomFieldsConfiguration() {
   useEffect(() => {
     if (enabledFields) {
       if (customTextEnabled === CustomFields.TEXT) {
-        void trigger(['miniLogo.miniLogoUrl', 'miniLogo.miniLogoTitle'])
+        void trigger(['miniLogo.miniLogoSubTitle', 'miniLogo.miniLogoTitle'])
       } else {
-        void trigger(['miniLogo.miniLogoSubTitle'])
+        void trigger(['miniLogo.miniLogoUrl'])
       }
     }
   }, [enabledFields, trigger, customTextEnabled])
@@ -79,13 +79,7 @@ export default function CustomFieldsConfiguration() {
                 control={control}
                 name={'miniLogo.miniLogoTitle'}
                 render={({ field: { onChange, value }, fieldState: { error } }) => (
-                  <TextField
-                    allowVariables
-                    error={error}
-                    onChange={onChange}
-                    required={enabledFields}
-                    value={value}
-                  />
+                  <TextField allowVariables error={error} onChange={onChange} value={value} />
                 )}
               />
             </Stack>
@@ -97,13 +91,7 @@ export default function CustomFieldsConfiguration() {
                 control={control}
                 name={'miniLogo.miniLogoSubTitle'}
                 render={({ field: { onChange, value }, fieldState: { error } }) => (
-                  <TextField
-                    allowVariables
-                    error={error}
-                    onChange={onChange}
-                    required={enabledFields}
-                    value={value}
-                  />
+                  <TextField allowVariables error={error} onChange={onChange} value={value} />
                 )}
               />
             </Stack>
