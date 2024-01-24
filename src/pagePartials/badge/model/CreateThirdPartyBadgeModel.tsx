@@ -1,12 +1,15 @@
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
+import React, { useEffect } from 'react'
 
 import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import useCreateModelFeeValue from '@/src/hooks/theBadge/useCreateModelFeeValue'
 import { useContractInstance } from '@/src/hooks/useContractInstance'
 import useTransaction, { TransactionStates } from '@/src/hooks/useTransaction'
 import CreateThirdPartyBadgeModelWithSteps from '@/src/pagePartials/badge/model/CreateThirdPartyBadgeModelWithSteps'
-import { CreateThirdPartyModelSchemaType } from '@/src/pagePartials/badge/model/schema/CreateThirdPartyModelSchema'
+import {
+  CreateThirdPartyBadgeModelSchemaType,
+  CreateThirdPartyDiplomaModelSchemaType,
+} from '@/src/pagePartials/badge/model/schema/CreateThirdPartyModelSchema'
 import { ProfileType } from '@/src/pagePartials/profile/ProfileSelector'
 const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 import { getNeededVariables } from '@/src/utils/badges/createBadgeModelHelpers'
@@ -17,12 +20,12 @@ import { ThirdPartyMetadataColumn } from '@/types/kleros/types'
 import { NextPageWithLayout } from '@/types/next'
 
 const CreateThirdPartyBadgeModel: NextPageWithLayout = () => {
+  const router = useRouter()
+  const { address } = useWeb3Connection()
   const { resetTxState, sendTx, state: transactionState } = useTransaction()
   const { data: createModelProtocolFee } = useCreateModelFeeValue()
-  const router = useRouter()
 
   const theBadgeModels = useContractInstance(TheBadgeModels__factory, 'TheBadgeModels')
-  const { address } = useWeb3Connection()
 
   useEffect(() => {
     // Redirect to the profile
@@ -31,7 +34,9 @@ const CreateThirdPartyBadgeModel: NextPageWithLayout = () => {
     }
   }, [router, transactionState, address])
 
-  const onSubmit = async (data: CreateThirdPartyModelSchemaType) => {
+  const onSubmit = async (
+    data: CreateThirdPartyBadgeModelSchemaType | CreateThirdPartyDiplomaModelSchemaType,
+  ) => {
     const administrators = address as string // TODO Replace once is well done
     //const { administrators } = data
 

@@ -405,7 +405,8 @@
             "badgeTypeSelectorTitle": "Choose what type of badge you want: ",
             "additionalConfigsTitle": "Additional configs ",
             "diplomaName": "Course name",
-            "diplomaDate": "Date"
+            "diplomaDate": "Date",
+            "achievementDescription": "Diploma achievement description"
           },
           "customFields": {
             "customFieldsEnabled": "Enable custom fields",

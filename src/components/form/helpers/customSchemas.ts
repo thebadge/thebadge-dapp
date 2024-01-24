@@ -43,15 +43,14 @@ export const AddressSchema = createUniqueFieldSchema(
   'AddressSchema',
 )
 
-export const TwitterSchema = createUniqueFieldSchema(
-  z
-    .string({
-      required_error: 'Is required',
-      invalid_type_error: 'Must be a twitter user',
-    })
-    .startsWith('@'),
-  'TwitterSchema',
-)
+export const SimpleTwitterSchema = z
+  .string({
+    required_error: 'Is required',
+    invalid_type_error: 'Must be a twitter user',
+  })
+  .startsWith('@')
+
+export const TwitterSchema = createUniqueFieldSchema(SimpleTwitterSchema, 'TwitterSchema')
 
 export const EmailSchema = z.string({ required_error: 'Is required' }).refine(isEmail, {
   message: 'Must be a valid email addresses.',
