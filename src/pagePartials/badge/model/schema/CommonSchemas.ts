@@ -18,13 +18,13 @@ const MiniLogoCustomFieldsConfigurationSchema = z
         console.error('Error validating image dimensions:', error)
         return false
       }
-    }, 'Max image dimensions are 32x32.'),
+    }, 'Max image dimensions are 32x32.').optional(),
   })
   .optional()
 
 export const CustomFieldsConfigurationSchema = z.object({
   // ------ BADGE BASICS FIELD ------
-  customFieldsEnabled: z.boolean(),
+  customFieldsEnabled: z.boolean().optional(),
   miniLogo: MiniLogoCustomFieldsConfigurationSchema,
 })
 export type CustomFieldsConfigurationSchemaType = z.infer<typeof CustomFieldsConfigurationSchema>
