@@ -28,9 +28,12 @@ export default function CustomFieldsConfiguration() {
               name="row-radio-buttons-group"
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 // If the custom text is enabled
-                resetField('miniLogo.miniLogoUrl')
-                resetField('miniLogo.miniLogoTitle')
-                resetField('miniLogo.miniLogoSubTitle')
+                resetField('miniLogo.miniLogoUrl', { defaultValue: undefined, keepError: false })
+                resetField('miniLogo.miniLogoTitle', { defaultValue: undefined, keepError: false })
+                resetField('miniLogo.miniLogoSubTitle', {
+                  defaultValue: undefined,
+                  keepError: false,
+                })
                 setCustomTextEnabled(event.target.value as unknown as number)
               }}
               row
@@ -51,7 +54,7 @@ export default function CustomFieldsConfiguration() {
           </FormControl>
         </Stack>
         {customTextEnabled == 0 ? (
-          <Stack flex="1">
+          <Stack flex="1" gap={2}>
             <Stack flex="1">
               <Typography variant="bodySmall">
                 {t('badge.model.create.uiBasics.customFields.miniLogoTitle')}

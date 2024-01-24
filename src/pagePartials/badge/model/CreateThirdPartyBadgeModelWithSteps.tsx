@@ -61,9 +61,6 @@ export default function CreateThirdPartyBadgeModelWithSteps({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [template])
 
-  console.log('defaultValues', methods.formState.defaultValues)
-  console.log('getValues', methods.getValues())
-
   // Watched template to trigger different validations
   const watchedTemplate = methods.watch('template')
 

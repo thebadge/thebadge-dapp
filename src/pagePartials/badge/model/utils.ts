@@ -40,6 +40,9 @@ const STEP_0_TP = [
   'textContrast',
   'backgroundImage',
   'template',
+  'miniLogoTitle',
+  'miniLogoSubTitle',
+  'miniLogoUrl',
 ]
 
 const STEP_0_TP_DIPLOMA = [
@@ -216,7 +219,6 @@ export function saveFormValues(
     ? +MODEL_CREATION_CACHE_EXPIRATION_MS
     : ONE_DAY
 
-  console.log('saveFormValues', { controllerType, template })
   localStorage.setItem(
     FORM_STORE_KEY + '-' + controllerType + '-' + template,
     JSON.stringify({ expirationTime: Date.now() + expiration, values }),

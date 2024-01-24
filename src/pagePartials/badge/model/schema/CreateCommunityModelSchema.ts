@@ -42,7 +42,7 @@ const MiniLogoCustomFieldsConfigurationSchema = z
   .object({
     miniLogoTitle: z.string().max(4).optional(),
     miniLogoSubTitle: z.string().max(10).optional(),
-    miniLogoUrl: ImageSchema,
+    miniLogoUrl: ImageSchema.optional(),
   })
   .optional()
 
