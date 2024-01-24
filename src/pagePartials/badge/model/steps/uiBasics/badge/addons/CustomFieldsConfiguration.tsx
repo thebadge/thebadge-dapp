@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { FormControl, FormControlLabel, RadioGroup, Stack, Typography } from '@mui/material'
 import Radio from '@mui/material/Radio'
@@ -12,11 +12,27 @@ import { TextField } from '@/src/components/form/formFields/TextField'
 import { CustomFieldsConfigurationSchemaType } from '@/src/pagePartials/badge/model/schema/CreateCommunityModelSchema'
 import SectionContainer from '@/src/pagePartials/badge/model/steps/uiBasics/addons/SectionContainer'
 
+enum CustomFields {
+  TEXT,
+  IMAGE,
+}
+
 export default function CustomFieldsConfiguration() {
   const { t } = useTranslation()
-  const { control, resetField, watch } = useFormContext<CustomFieldsConfigurationSchemaType>()
-  const [customTextEnabled, setCustomTextEnabled] = useState<number>(0)
+  const { control, resetField, trigger, watch } =
+    useFormContext<CustomFieldsConfigurationSchemaType>()
+  const [customTextEnabled, setCustomTextEnabled] = useState<number>(CustomFields.TEXT)
   const enabledFields = watch('customFieldsEnabled')
+
+  useEffect(() => {
+    if (enabledFields) {
+      if (customTextEnabled === CustomFields.TEXT) {
+        void trigger(['miniLogo.miniLogoUrl', 'miniLogo.miniLogoTitle'])
+      } else {
+        void trigger(['miniLogo.miniLogoSubTitle'])
+      }
+    }
+  }, [enabledFields, trigger, customTextEnabled])
 
   const renderEnabledFields = () => (
     <SectionContainer>
@@ -43,17 +59,17 @@ export default function CustomFieldsConfiguration() {
               <FormControlLabel
                 control={<Radio />}
                 label={t('badge.model.create.uiBasics.customFields.miniLogoConfigTextEnabled')}
-                value={0}
+                value={CustomFields.TEXT}
               />
               <FormControlLabel
                 control={<Radio />}
                 label={t('badge.model.create.uiBasics.customFields.miniLogoConfigImageEnabled')}
-                value={1}
+                value={CustomFields.IMAGE}
               />
             </RadioGroup>
           </FormControl>
         </Stack>
-        {customTextEnabled == 0 ? (
+        {customTextEnabled == CustomFields.TEXT ? (
           <Stack flex="1" gap={2}>
             <Stack flex="1">
               <Typography variant="bodySmall">
@@ -63,7 +79,13 @@ export default function CustomFieldsConfiguration() {
                 control={control}
                 name={'miniLogo.miniLogoTitle'}
                 render={({ field: { onChange, value }, fieldState: { error } }) => (
-                  <TextField allowVariables error={error} onChange={onChange} value={value} />
+                  <TextField
+                    allowVariables
+                    error={error}
+                    onChange={onChange}
+                    required={enabledFields}
+                    value={value}
+                  />
                 )}
               />
             </Stack>
@@ -75,7 +97,13 @@ export default function CustomFieldsConfiguration() {
                 control={control}
                 name={'miniLogo.miniLogoSubTitle'}
                 render={({ field: { onChange, value }, fieldState: { error } }) => (
-                  <TextField allowVariables error={error} onChange={onChange} value={value} />
+                  <TextField
+                    allowVariables
+                    error={error}
+                    onChange={onChange}
+                    required={enabledFields}
+                    value={value}
+                  />
                 )}
               />
             </Stack>
