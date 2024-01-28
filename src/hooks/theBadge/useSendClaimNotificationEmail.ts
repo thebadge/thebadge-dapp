@@ -14,7 +14,7 @@ type PrepareSignatureFnType = () => Promise<`0x${string}`>
 type PrepareConfigsFnType = (p: Omit<EmailClaimTx, 'mintTxHash'>) => void
 type SendFnType = (
   mintTxHash: string,
-  options?: Omit<EmailClaimTx, 'mintTxHash'> & { emailMessageSignature?: string },
+  options?: Omit<EmailClaimTx, 'mintTxHash'> & { signature?: string },
 ) => Promise<BackendResponse<{ txHash: string | null }> | undefined>
 
 const SIGNED_MESSAGE = (address: `0x${string}` | undefined) =>
@@ -45,11 +45,11 @@ export default function useSendClaimNotificationEmail() {
   const sendClaimNotificationEmail = useCallback<SendFnType>(
     async (mintTxHash, options) => {
       let signature = ''
-      if (!preSignature && !options?.emailMessageSignature) {
+      if (!preSignature && !options?.signature) {
         signature = await prepareClaimNotificationEmailWithSignature()
       } else {
         // It will have one or the other
-        signature = (preSignature || options?.emailMessageSignature) as string
+        signature = (preSignature || options?.signature) as string
       }
 
       if (emailParams || options) {

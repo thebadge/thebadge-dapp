@@ -56,7 +56,7 @@ function BadgeModelMiniPreview({
         description={badgeMetadata?.description}
         height={'50px'}
         highlightColor={highlightColor || (mode === 'light' ? colors.blackText : colors.white)}
-        imageUrl={badgeMetadata?.image.s3Url}
+        imageUrl={badgeMetadata?.image?.s3Url}
         miniIcon={
           controllerType === BadgeModelControllerType.Community ? (
             <IconBadge color={colors.white} height={25} width={25} />

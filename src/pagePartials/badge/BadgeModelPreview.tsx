@@ -42,7 +42,7 @@ function BadgeModelPreview({ badgeUrl, clickable, effects, metadata, size = 'med
           badgeUrl={badgeUrl ? badgeUrl : 'https://www.thebadge.xyz'}
           category={badgeMetadata?.name}
           description={badgeMetadata?.description}
-          imageUrl={badgeMetadata?.image.s3Url}
+          imageUrl={badgeMetadata?.image?.s3Url}
           size={size}
           textContrast={textContrast?.value || 'light-withTextBackground'}
         />

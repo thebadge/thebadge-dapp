@@ -143,7 +143,7 @@ const MintThirdPartyBadgeModel: NextPageWithLayout = () => {
             networkId: appChainId.toString(),
             badgeModelId: Number(badgeModelId),
             emailClaimer: destination,
-            emailMessageSignature,
+            signature: emailMessageSignature,
           })
         }
         if (preferMintMethod === 'address' && notificationEmail) {
@@ -151,7 +151,7 @@ const MintThirdPartyBadgeModel: NextPageWithLayout = () => {
             networkId: appChainId.toString(),
             badgeModelId: Number(badgeModelId),
             emailRecipient: notificationEmail,
-            emailMessageSignature,
+            signature: emailMessageSignature,
           })
         }
         cleanMintFormValues(badgeModelId)
