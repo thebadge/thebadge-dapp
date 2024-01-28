@@ -37,11 +37,18 @@ const useChainIds = (): {
     if (newNetwork) setAppChainId(newNetwork)
   }, [selectedNetworkId])
 
+  const isValidSelectedNetwork = !!getValidNetwork(selectedNetworkId)
+  const isAppChainReadOnly = !isValidSelectedNetwork
+    ? true
+    : queryParamsChainId
+    ? appChainId !== queryParamsChainId
+    : false
+
   return {
     appChainId,
-    selectedNetworkId: getValidNetwork(selectedNetworkId) as ChainsValues,
+    selectedNetworkId: selectedNetworkId as unknown as ChainsValues,
     readOnlyChainId: queryParamsChainId ? queryParamsChainId : appChainId,
-    isAppChainReadOnly: queryParamsChainId ? appChainId !== queryParamsChainId : false,
+    isAppChainReadOnly,
   }
 }
 
