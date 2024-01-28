@@ -46,7 +46,7 @@ const useChainIds = (): {
 
   return {
     appChainId,
-    selectedNetworkId: selectedNetworkId as ChainsValues,
+    selectedNetworkId: selectedNetworkId as unknown as ChainsValues,
     readOnlyChainId: queryParamsChainId ? queryParamsChainId : appChainId,
     isAppChainReadOnly,
   }
