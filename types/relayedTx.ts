@@ -41,7 +41,7 @@ export interface EmailMintNotificationTx {
 
   badgeModelId: number
 
-  emailClaimer?: string
+  emailRecipient: string
 }
 
 export type EmailClaimTxSigned = EmailClaimTx & {
