@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 import { ZERO_ADDRESS } from '@/src/constants/bigNumber'
-import { BACKEND_URL } from '@/src/constants/common'
+import {BACKEND_URL, STAGING_BACKEND_URL} from '@/src/constants/common'
 import {
   EmailClaimTxSigned,
   EmailMintNotificationTxSigned,
@@ -25,7 +25,7 @@ export const sendEmailClaim = async (
   param: EmailClaimTxSigned,
 ): Promise<BackendResponse<{ txHash: string | null }>> => {
   const res = await axios.post<BackendResponse<{ txHash: string | null }>>(
-    `${BACKEND_URL}/api/thirdPartyController/sendMintMail`,
+    `${STAGING_BACKEND_URL}/api/thirdPartyController/sendMintMail`,
     param,
   )
   return res.data
@@ -35,7 +35,7 @@ export const sendMintEmail = async (
   param: EmailMintNotificationTxSigned,
 ): Promise<BackendResponse<{ txHash: string | null }>> => {
   const res = await axios.post<BackendResponse<{ txHash: string | null }>>(
-    `${BACKEND_URL}/api/thirdPartyController/sendMintNotificationMail`,
+    `${STAGING_BACKEND_URL}/api/thirdPartyController/sendMintNotificationMail`,
     param,
   )
   return res.data
@@ -45,7 +45,7 @@ export const sendDecryptEmailRequest = async (
   param: EmailClaimTxSigned,
 ): Promise<BackendResponse<{ email: string | null }>> => {
   const res = await axios.post<BackendResponse<{ email: string | null }>>(
-    `${BACKEND_URL}/api/thirdPartyController/decryptMintEmail`,
+    `${STAGING_BACKEND_URL}/api/thirdPartyController/decryptMintEmail`,
     param,
   )
   return res.data
