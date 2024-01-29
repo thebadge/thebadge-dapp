@@ -4,7 +4,7 @@ import { useSignMessage } from 'wagmi'
 
 import { notify } from '@/src/components/toast/Toast'
 import { sendMintEmail } from '@/src/utils/relayTx'
-import { EmailClaimTx, EmailMintNotificationTx } from '@/types/relayedTx'
+import { EmailMintNotificationTx } from '@/types/relayedTx'
 import { ToastStates } from '@/types/toast'
 import { BackendResponse } from '@/types/utils'
 
@@ -25,9 +25,9 @@ export default function useSendMintNotificationEmail() {
   const { address } = useWeb3Connection()
 
   const [preSignature, setPreSignature] = useState<string | undefined>(undefined)
-  const [emailParams, setEmailParams] = useState<Omit<EmailClaimTx, 'mintTxHash'> | undefined>(
-    undefined,
-  )
+  const [emailParams, setEmailParams] = useState<
+    Omit<EmailMintNotificationTx, 'mintTxHash'> | undefined
+  >(undefined)
 
   const prepareMintNotificationEmailWithSignature =
     useCallback<PrepareSignatureFnType>(async () => {
