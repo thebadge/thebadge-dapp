@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 import { ZERO_ADDRESS } from '@/src/constants/bigNumber'
-import {BACKEND_URL, STAGING_BACKEND_URL} from '@/src/constants/common'
+import { BACKEND_URL, STAGING_BACKEND_URL } from '@/src/constants/common'
 import {
   EmailClaimTxSigned,
   EmailMintNotificationTxSigned,
