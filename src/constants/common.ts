@@ -19,7 +19,8 @@ export const DOCUMENTATION_URL = DOCS_URL + '/thebadge-documentation'
 
 export const APP_URL = process.env.NEXT_PUBLIC_FRONTEND_URL || 'http://localhost:3000'
 export const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5001'
-export const STAGING_BACKEND_URL = process.env.NEXT_PUBLIC_STAGING_BACKEND_URL || 'https://staging-api.thebadge.xyz/relayer'
+export const STAGING_BACKEND_URL =
+  process.env.NEXT_PUBLIC_STAGING_BACKEND_URL || 'https://staging-api.thebadge.xyz/relayer'
 export const SHORT_APP_URL = process.env.NEXT_PUBLIC_SHORT_APP_URL || 'https://link.thebadge.xyz'
 export const APP_DEFAULT_CHAIN_ID = process.env.NEXT_PUBLIC_DEFAULT_CHAIN_ID || 11155111
 export const KLEROS_COURT_URL = process.env.KLEROS_COURT_URL || 'https://court.kleros.io'
