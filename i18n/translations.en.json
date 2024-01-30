@@ -754,7 +754,7 @@
   "transactionLoading": {
     "signature": "Waiting signature",
     "execution": "Waiting for execution",
-    "bePatientExecution": "Our relayer is processing the request, be patient...",
+    "bePatientExecution": "The request is being processed, be patient...",
     "bePatientSignature": "You wallet is processing the request, be patient...",
     "confirmation": "Waiting confirmation",
     "bePatientConfirmation": "Validating transaction on the blockchain. This may take a moment...",
