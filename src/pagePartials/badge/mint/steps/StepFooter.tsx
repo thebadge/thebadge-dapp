@@ -1,4 +1,5 @@
-import { Box, Button, styled } from '@mui/material'
+import LoadingButton from '@mui/lab/LoadingButton'
+import { Box, styled } from '@mui/material'
 import { ButtonPropsColorOverrides } from '@mui/material/Button/Button'
 import { OverridableStringUnion } from '@mui/types'
 import { useTranslation } from 'next-export-i18n'
@@ -9,7 +10,7 @@ import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import { MintBadgeSchemaType } from '@/src/pagePartials/badge/mint/schema/MintBadgeSchema'
 import { PreventActionWithoutConnection } from '@/src/pagePartials/errors/preventActionWithoutConnection'
 
-export const StepButton = styled(Button)(({ theme }) => ({
+export const StepButton = styled(LoadingButton)(({ theme }) => ({
   borderRadius: theme.spacing(1.25),
   fontSize: '14px !important',
   minHeight: '30px',
@@ -77,7 +78,7 @@ export default function StepFooter({
           <PreventActionWithoutConnection sx={{ m: 'auto' }}>
             <StepButton
               color={color || 'primary'}
-              disabled={!imageHasBeenGenerated}
+              loading={!imageHasBeenGenerated}
               sx={{ m: 'auto' }}
               type="submit"
               variant="contained"

@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import * as React from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -11,6 +12,7 @@ import useBadgeIDFromULID from '@/src/hooks/nextjs/useBadgeIDFromULID'
 import useClaimParams from '@/src/hooks/nextjs/useClaimParams'
 import useModelIdParam from '@/src/hooks/nextjs/useModelIdParam'
 import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
+import useIsClaimable from '@/src/hooks/subgraph/useIsClaimable'
 import useRelayerTransactionEndpoint from '@/src/hooks/useRelayerTransactionEndpoint'
 import { TransactionStates } from '@/src/hooks/useTransaction'
 import { useTriggerRHF } from '@/src/hooks/useTriggerRHF'
@@ -31,7 +33,12 @@ import { NextPageWithLayout } from '@/types/next'
 const ClaimBadge: NextPageWithLayout = () => {
   const { t } = useTranslation()
   const { badgeModelId, contract } = useModelIdParam()
-  const { resetTxState, sendRequest, state: txState } = useRelayerTransactionEndpoint()
+  const {
+    resetTxState,
+    sendRequest,
+    setTransactionState,
+    state: txState,
+  } = useRelayerTransactionEndpoint()
   const badgeModelData = useBadgeModel(badgeModelId, contract)
 
   const badgeCreatorMetadata = useUserMetadata(
@@ -56,10 +63,12 @@ const ClaimBadge: NextPageWithLayout = () => {
   }
 
   const { claimUUID } = useClaimParams()
-  const badgeId = useBadgeIDFromULID()
+  const { data: badgeId } = useBadgeIDFromULID()
   if (!claimUUID || !badgeId) {
     throw `No claimUUID provided us URL query param`
   }
+
+  const { data: isClaimable } = useIsClaimable(badgeId)
 
   const onSubmit = async () => {
     const inputValid = await isValidStep()
@@ -69,19 +78,28 @@ const ClaimBadge: NextPageWithLayout = () => {
     }
   }
 
+  /**
+   * Temporal fix to avoid possible backend errors on claim
+   */
+  useEffect(() => {
+    if (badgeId && !isClaimable) {
+      setTransactionState(TransactionStates.success)
+    }
+  }, [badgeId, isClaimable, setTransactionState])
+
   return (
     <PreventActionIfClaimUUIDInvalid creatorEmail={badgeCreatorMetadata.email}>
-      <>
-        {txState !== TransactionStates.none && txState !== TransactionStates.success && (
-          <TransactionLoading resetTxState={resetTxState} state={txState} />
-        )}
-        {txState === TransactionStates.none && (
-          <FormProvider {...methods}>
-            <Stack gap={4}>
-              <StepClaimThirdPartyHeader
-                creatorAddress={badgeModelData.data.badgeModel.creator.id}
-                creatorName={badgeCreatorMetadata.name}
-              />
+      <FormProvider {...methods}>
+        <Stack gap={4}>
+          <StepClaimThirdPartyHeader
+            creatorAddress={badgeModelData.data.badgeModel.creator.id}
+            creatorName={badgeCreatorMetadata.name}
+          />
+          {txState !== TransactionStates.none && txState !== TransactionStates.success && (
+            <TransactionLoading resetTxState={resetTxState} state={txState} />
+          )}
+          {txState === TransactionStates.none && (
+            <>
               <StepClaimThirdPartyPreview />
               <Divider />
               <Container maxWidth="md">
@@ -101,13 +119,13 @@ const ClaimBadge: NextPageWithLayout = () => {
                   </Stack>
                 </form>
               </Container>
-            </Stack>
-          </FormProvider>
-        )}
-        {txState === TransactionStates.success && (
-          <StepsClaimThirdPartySucceed claimAddress={claimAddress} />
-        )}
-      </>
+            </>
+          )}
+          {txState === TransactionStates.success && (
+            <StepsClaimThirdPartySucceed claimAddress={claimAddress} />
+          )}
+        </Stack>
+      </FormProvider>
     </PreventActionIfClaimUUIDInvalid>
   )
 }

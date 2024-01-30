@@ -14,6 +14,7 @@ export enum TransactionStates {
   failed = 'FAILED',
   success = 'SUCCESS',
   waitingSignature = 'WAITING-SIGNATURE',
+  waitingExecution = 'WAITING-EXECUTION',
   waitingMined = 'WAITING-MINED',
 }
 
