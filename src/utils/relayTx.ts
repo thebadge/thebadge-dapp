@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 
 import { ZERO_ADDRESS } from '@/src/constants/bigNumber'
 import { BACKEND_URL, STAGING_BACKEND_URL } from '@/src/constants/common'
@@ -69,21 +69,34 @@ export const sendClaimRequest = async (
   claimUUID: string,
   claimAddress: string,
 ): Promise<RelayedTxResult> => {
-  const res = await axios.post<BackendResponse<{ txHash: string }>>(
-    `${BACKEND_URL}/api/thirdPartyController/claim`,
-    { claimUUID, claimAddress },
-  )
-  if (res.data && res.data.result) {
-    return {
-      txHash: res.data.result.txHash,
-      valid: true,
-      errorMessage: res.data.message || '',
+  try {
+    const res = await axios.post<BackendResponse<{ txHash: string }>>(
+      `${BACKEND_URL}/api/thirdPartyController/claim`,
+      { claimUUID, claimAddress },
+    )
+    if (res.data && res.data.result) {
+      return {
+        txHash: res.data.result.txHash,
+        valid: true,
+        errorMessage: res.data.message || '',
+      }
+    }
+  } catch (e) {
+    // Handle 500 response
+    const errorCode = (e as AxiosError).response?.status
+    // In case that the backend fails with a 500, we check if its claimed or not on the UI
+    if (errorCode && errorCode > 500) {
+      return {
+        txHash: ZERO_ADDRESS,
+        valid: true,
+        errorMessage: (e as AxiosError).message,
+      }
     }
   }
   return {
     txHash: ZERO_ADDRESS,
     valid: false,
-    errorMessage: res.data.message || '',
+    errorMessage: '',
   }
 }
 
