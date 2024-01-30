@@ -85,7 +85,7 @@ const ClaimBadge: NextPageWithLayout = () => {
     if (badgeId && !isClaimable) {
       setTransactionState(TransactionStates.success)
     }
-  }, [badgeId, isClaimable, isValidStep, setTransactionState])
+  }, [badgeId, isClaimable, setTransactionState])
 
   return (
     <PreventActionIfClaimUUIDInvalid creatorEmail={badgeCreatorMetadata.email}>
