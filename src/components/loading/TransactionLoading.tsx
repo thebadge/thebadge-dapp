@@ -42,6 +42,16 @@ export const TransactionLoading: React.FC<Props> = ({ resetTxState, state, ...re
             <LoadingArrow />
           </>
         )
+      case TransactionStates.waitingExecution:
+        return (
+          <>
+            <Typography variant="dAppTitle1">{t('transactionLoading.execution')}</Typography>
+            <Typography variant="labelMedium">
+              {t('transactionLoading.bePatientExecution')}
+            </Typography>
+            <LoadingArrow />
+          </>
+        )
       case TransactionStates.waitingMined:
         return (
           <>
