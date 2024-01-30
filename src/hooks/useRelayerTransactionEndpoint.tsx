@@ -1,27 +1,15 @@
 import { useCallback, useState } from 'react'
 
+import { TransactionStates } from './useTransaction'
 import { useTransactionNotification } from '@/src/providers/TransactionNotificationProvider'
-const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 import { TransactionError } from '@/src/utils/TransactionError'
 import { RelayMethod } from '@/types/relayedTx'
-
-enum TransactionStates {
-  none = 'NONE',
-  failed = 'FAILED',
-  success = 'SUCCESS',
-  waitingSignature = 'WAITING-SIGNATURE',
-  waitingMined = 'WAITING-MINED',
-}
+const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 
 export default function useRelayerTransactionEndpoint() {
   const { readOnlyAppProvider } = useWeb3Connection()
   const [state, setTransactionState] = useState(TransactionStates.none)
-  const {
-    notifyRejectSignature,
-    notifyTxMined,
-    notifyWaitingForSignature,
-    notifyWaitingForTxMined,
-  } = useTransactionNotification()
+  const { notifyTxMined, notifyWaitingForTxMined } = useTransactionNotification()
 
   const resetTxState = useCallback(() => {
     setTransactionState(TransactionStates.none)
@@ -54,8 +42,7 @@ export default function useRelayerTransactionEndpoint() {
   const sendRequest = useCallback(
     async (requestedMethod: RelayMethod) => {
       try {
-        notifyWaitingForSignature()
-        setTransactionState(TransactionStates.waitingSignature)
+        setTransactionState(TransactionStates.waitingExecution)
         const { errorMessage, txHash, valid } = await requestedMethod()
         if (!valid || !txHash) {
           throw new Error(errorMessage)
@@ -70,11 +57,10 @@ export default function useRelayerTransactionEndpoint() {
         )
         console.error(error)
         setTransactionState(TransactionStates.failed)
-        notifyRejectSignature(error.code === 4001 ? 'User denied signature' : error.message)
       }
     },
-    [notifyWaitingForSignature, waitForAsyncTxExecution, notifyRejectSignature],
+    [waitForAsyncTxExecution],
   )
 
-  return { state, resetTxState, sendRequest }
+  return { state, resetTxState, sendRequest, setTransactionState }
 }
