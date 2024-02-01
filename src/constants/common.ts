@@ -5,6 +5,8 @@ export const cookiesWarningEnabled =
   process.env.NEXT_PUBLIC_COOKIES_WARNING_ENABLED === 'true' || ''
 export const gaMeasurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || ''
 
+/**** Social Configs ****/
+
 export const PAPER_URL =
   process.env.NEXT_PAPER_URL || 'https://thebadge.xyz/The_Badge_WhitePaper.pdf'
 export const TWITTER_URL = process.env.NEXT_PUBLIC_TWITTER_URL || 'https://twitter.com/thebadgexyz'
@@ -17,17 +19,22 @@ export const THE_BADGE_LINKEDIN_ID = process.env.NEXT_PUBLIC_THE_BADGE_LINKEDIN_
 export const DOCS_URL = process.env.NEXT_PUBLIC_DOCS_URL || 'https://docs.thebadge.xyz'
 export const DOCUMENTATION_URL = DOCS_URL + '/thebadge-documentation'
 
+/**** Backend and dApp Urls ****/
+
 export const APP_URL = process.env.NEXT_PUBLIC_FRONTEND_URL || 'http://localhost:3000'
 export const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5001'
+export const IPFS_URL = process.env.NEXT_PUBLIC_IPFS_URL || 'https://staging-ipfs.thebadge.xyz'
+
 export const STAGING_BACKEND_URL =
   process.env.NEXT_PUBLIC_STAGING_BACKEND_URL || 'https://staging-api.thebadge.xyz/relayer'
 export const SHORT_APP_URL = process.env.NEXT_PUBLIC_SHORT_APP_URL || 'https://link.thebadge.xyz'
+
 export const APP_DEFAULT_CHAIN_ID = process.env.NEXT_PUBLIC_DEFAULT_CHAIN_ID || 11155111
-export const KLEROS_COURT_URL = process.env.KLEROS_COURT_URL || 'https://court.kleros.io'
 export const PRIVACY_POLICY_URL = APP_URL + '/legal/privacy-policy'
 export const TERMS_AND_CONDITIONS_URL = APP_URL + '/legal/terms'
-
 export const IS_DEVELOP = process.env.NEXT_PUBLIC_DEV_MODE || false
+
+/**** Web3 Modal Configs  ****/
 
 export const WEB3_MODAL_PROJECT_ID = process.env.NEXT_PUBLIC_WEB3_MODAL_PROJECT_ID || ''
 export const WEB3_AUTH_CLIENT_ID_TESTNET = process.env.NEXT_PUBLIC_WEB3AUTH_CLIENT_ID_TESTNET || ''
@@ -43,7 +50,7 @@ export const CRITERIA_TEMPLATE_URL =
 export const MODEL_CREATION_CACHE_EXPIRATION_MS = process.env.MODEL_CREATION_CACHE_EXPIRATION_MS
 
 /**** Kleros *****/
-
+export const KLEROS_COURT_URL = process.env.KLEROS_COURT_URL || 'https://court.kleros.io'
 export const DEFAULT_COURT_ID = process.env.NEXT_PUBLIC_KLEROS_DEFAULT_COURT || '1'
 
 // Kleros Court Case display config

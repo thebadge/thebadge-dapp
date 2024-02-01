@@ -2,7 +2,7 @@ import axios, { AxiosError } from 'axios'
 import DataLoader, { BatchLoadFn } from 'dataloader'
 import { stableHash } from 'swr/_internal'
 
-import { BACKEND_URL } from '@/src/constants/common'
+import { IPFS_URL } from '@/src/constants/common'
 import { getCacheResponse, saveResponseOnCache } from '@/src/utils/cache'
 import { cleanHash } from '@/src/utils/fileUtils'
 import { BackendResponse } from '@/types/utils'
@@ -12,7 +12,7 @@ import { BackendResponse } from '@/types/utils'
  * @param keys
  */
 const fetcher: BatchLoadFn<string, BackendResponse<{ content: any } & any>> = async (ipsHashes) => {
-  const url = `${BACKEND_URL}/api/ipfs/retrieveBatchFromIpfs`
+  const url = `${IPFS_URL}/api/ipfs/retrieveBatchFromIpfs`
   const backendResponse = await axios.post<[BackendResponse<{ content: any } & any>]>(url, {
     ipsHashes,
   })
@@ -86,7 +86,7 @@ export async function getFromIPFS<T, X = NonNullable<unknown>>(hash?: string): P
 // eslint-disable-next-line @typescript-eslint/ban-types
 export async function ssrGetContentFromIPFS<T, X = {}>(ipfsHash: string) {
   const hash = ipfsHash.replace(/^ipfs?:\/\//, '').replace(/^ipfs\//, '')
-  return fetch(`${BACKEND_URL}/api/ipfs/${hash}`).then(async (response) => {
+  return fetch(`${IPFS_URL}/api/ipfs/${hash}`).then(async (response) => {
     if (!response.ok) {
       throw new Error('Network response was not OK')
     }
