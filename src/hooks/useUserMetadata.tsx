@@ -77,6 +77,7 @@ export default function useUserMetadata(
       base64File: creatorMetadata?.logo?.s3Url || ensMetadata.data?.avatar,
       extension: creatorMetadata?.logo?.extension,
       ipfsUrl: creatorMetadata?.logo?.ipfsUrl,
+      ipfs: creatorMetadata?.logo?.ipfsUrl,
     },
     preferContactMethod: creatorMetadata?.preferContactMethod,
     ensNameOrAddress,
