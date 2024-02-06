@@ -35,6 +35,14 @@ export const ChainName = {
   [Chains.mumbai]: 'mumbai',
 }
 
+export const ChainNameToIds = {
+  [ChainName[Chains.goerli]]: Chains.goerli,
+  [ChainName[Chains.sepolia]]: Chains.sepolia,
+  [ChainName[Chains.gnosis]]: Chains.gnosis,
+  [ChainName[Chains.polygon]]: Chains.polygon,
+  [ChainName[Chains.mumbai]]: Chains.mumbai,
+}
+
 export const providerChains: ProviderChains = {
   [RPCProviders.infura]: {
     [Chains.goerli]: 'goerli',
@@ -53,6 +61,7 @@ export const providerChains: ProviderChains = {
 }
 
 export const getChainName = (chainId: ChainsValues) => ChainName[chainId]
+export const getChainIdByName = (chainName: string) => ChainNameToIds[chainName]
 
 const getInfuraRPCUrl = (chainId: ChainsValues) =>
   `https://${providerChains[RPCProviders.infura][chainId]}.infura.io/v3/${
