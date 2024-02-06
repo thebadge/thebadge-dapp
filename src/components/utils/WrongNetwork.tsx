@@ -42,18 +42,18 @@ const Underline = styled('button')`
 `
 
 export const WrongNetwork: React.FC = ({ ...restProps }) => {
-  const { isWalletConnected, isWalletNetworkSupported } = useWeb3Connection()
+  const { connectWallet, isWalletConnected, isWalletNetworkSupported } = useWeb3Connection()
   const isMobileOrTablet = useSizeMD()
   const anchorMenuElRef: RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null)
-
   return isWalletConnected && !isWalletNetworkSupported ? (
     <Wrapper {...restProps}>
       <ErrorSVG />
       <TextWrapper ref={anchorMenuElRef}>
-        <Underline>Switch to a valid network</Underline>
+        <Underline onClick={() => connectWallet({ view: 'Networks' })}>
+          Switch to a valid network
+        </Underline>
         {!isMobileOrTablet ? <span> to use the app!</span> : null}
       </TextWrapper>
-      <w3m-network-button />
     </Wrapper>
   ) : null
 }

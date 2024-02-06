@@ -6,6 +6,7 @@ import RadarIcon from '@mui/icons-material/Radar'
 import {
   Avatar,
   Badge,
+  Box,
   Divider,
   IconButton,
   ListItemIcon,
@@ -15,8 +16,10 @@ import {
   MenuItem,
   Skeleton,
   Tooltip,
+  alpha,
   styled,
 } from '@mui/material'
+import { colors } from '@thebadge/ui-library'
 import { useWeb3Modal } from '@web3modal/wagmi/react'
 import Blockies from 'react-18-blockies'
 
@@ -104,6 +107,17 @@ export const UserDropdown: React.FC = () => {
           <ActionButtons />
         </PreventActionIfOutOfService>
       )}
+      <Box
+        borderRadius={20}
+        height="fit-content"
+        ml={2}
+        sx={{
+          backgroundColor: isWalletNetworkSupported ? 'transparent' : alpha(colors.redError, 0.2),
+        }}
+      >
+        <w3m-network-button />
+      </Box>
+
       <Tooltip arrow ref={anchorMenuElRef} title="Account settings">
         <IconButton
           aria-controls={open ? 'account-menu' : undefined}
@@ -111,7 +125,7 @@ export const UserDropdown: React.FC = () => {
           aria-haspopup="true"
           onClick={handleClick}
           size="small"
-          sx={{ ml: 2 }}
+          sx={{ ml: 1 }}
         >
           <StyledBadge
             anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}

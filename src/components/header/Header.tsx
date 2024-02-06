@@ -1,3 +1,5 @@
+import React from 'react'
+
 import { Box, styled } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
 
@@ -54,7 +56,7 @@ const Header = () => {
                 <ActionButtons />
               </PreventActionIfOutOfService>
             )}
-            <ConnectWalletButton onClick={connectWallet}>
+            <ConnectWalletButton onClick={() => connectWallet()}>
               {t('header.wallet.connect')}
             </ConnectWalletButton>
           </Box>
