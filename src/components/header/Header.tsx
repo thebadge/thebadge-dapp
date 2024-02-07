@@ -57,7 +57,7 @@ const Header = () => {
                 <ActionButtons />
               </PreventActionIfOutOfService>
             )}
-            <NetworkButton sx={{ ml: 1 }} />
+            <NetworkButton sx={{ ml: 0 }} />
             <ConnectWalletButton onClick={() => connectWallet()}>
               {t('header.wallet.connect')}
             </ConnectWalletButton>
