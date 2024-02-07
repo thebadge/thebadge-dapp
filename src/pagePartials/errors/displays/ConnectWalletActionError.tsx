@@ -21,7 +21,7 @@ export default function ConnectWalletActionError() {
           </Typography>
         </Box>
         <Typography
-          onClick={connectWallet}
+          onClick={() => connectWallet()}
           sx={{ textDecoration: 'underline', cursor: 'pointer' }}
           variant="body4"
         >

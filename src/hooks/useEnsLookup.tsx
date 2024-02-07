@@ -32,10 +32,10 @@ const getChainForEnsLookup = (chainId: ChainsValues): Chain => {
 }
 
 export const useEnsReverseLookup = function (address: WCAddress | string | undefined) {
-  const { readOnlyChainId } = useWeb3Connection()
+  const { appChainId } = useWeb3Connection()
 
-  return useSWR([readOnlyChainId, address], async ([_readOnlyChainId, _address]) => {
-    const chain = getChainForEnsLookup(_readOnlyChainId)
+  return useSWR([appChainId, address], async ([_appChainId, _address]) => {
+    const chain = getChainForEnsLookup(_appChainId)
     const client = createPublicClient({
       chain,
       transport: http(),
@@ -93,12 +93,12 @@ export const useEnsLookup = function (ensName: WCAddress | string | undefined) {
   const isEthereumAddress = ensName ? isAddress(ensName) : false
   return useSWR(
     [readOnlyChainId, ensName, isEthereumAddress],
-    async ([_readOnlyChainId, _ensName, _isEthereumAddress]) => {
+    async ([_appChainId, _ensName, _isEthereumAddress]) => {
       if (_isEthereumAddress) {
         return _ensName
       }
 
-      const chain = getChainForEnsLookup(_readOnlyChainId)
+      const chain = getChainForEnsLookup(_appChainId)
       const client = createPublicClient({
         chain,
         transport: http(),
