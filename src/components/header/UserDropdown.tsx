@@ -6,7 +6,6 @@ import RadarIcon from '@mui/icons-material/Radar'
 import {
   Avatar,
   Badge,
-  Box,
   Divider,
   IconButton,
   ListItemIcon,
@@ -16,22 +15,22 @@ import {
   MenuItem,
   Skeleton,
   Tooltip,
-  alpha,
   styled,
 } from '@mui/material'
-import { colors } from '@thebadge/ui-library'
 import { useWeb3Modal } from '@web3modal/wagmi/react'
 import Blockies from 'react-18-blockies'
 
 import { Logout } from '@/src/components/assets/Logout'
 import ActionButtons from '@/src/components/header/ActionButtons'
+import NetworkButton from '@/src/components/header/NetworkButton'
 import { Address } from '@/src/components/helpers/Address'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { getNetworkConfig } from '@/src/config/web3'
 import { useSizeSM } from '@/src/hooks/useSize'
 import { PreventActionIfOutOfService } from '@/src/pagePartials/errors/preventActionIfOutOfService'
-const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 import { generateBaseUrl, generateProfileUrl } from '@/src/utils/navigation/generateUrl'
+
+const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 
 const StyledBadge = styled(Badge)<{ state?: 'ok' | 'error' }>(({ state, theme }) => ({
   '& .MuiBadge-badge': {
@@ -107,16 +106,7 @@ export const UserDropdown: React.FC = () => {
           <ActionButtons />
         </PreventActionIfOutOfService>
       )}
-      <Box
-        borderRadius={20}
-        height="fit-content"
-        ml={2}
-        sx={{
-          backgroundColor: isWalletNetworkSupported ? 'transparent' : alpha(colors.redError, 0.2),
-        }}
-      >
-        <w3m-network-button />
-      </Box>
+      <NetworkButton />
 
       <Tooltip arrow ref={anchorMenuElRef} title="Account settings">
         <IconButton

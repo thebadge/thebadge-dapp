@@ -6,6 +6,7 @@ import { useTranslation } from 'next-export-i18n'
 import { LogoWithText } from '@/src/components/common/Logo'
 import ActionButtons from '@/src/components/header/ActionButtons'
 import ConnectWalletButton from '@/src/components/header/ConnectWalletButton'
+import NetworkButton from '@/src/components/header/NetworkButton'
 import { UserDropdown } from '@/src/components/header/UserDropdown'
 import WrongNetwork from '@/src/components/utils/WrongNetwork'
 import { useSizeSM } from '@/src/hooks/useSize'
@@ -56,6 +57,7 @@ const Header = () => {
                 <ActionButtons />
               </PreventActionIfOutOfService>
             )}
+            <NetworkButton sx={{ ml: 1 }} />
             <ConnectWalletButton onClick={() => connectWallet()}>
               {t('header.wallet.connect')}
             </ConnectWalletButton>
