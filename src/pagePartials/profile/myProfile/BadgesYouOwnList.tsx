@@ -33,7 +33,7 @@ export default function BadgesYouOwnList({ address }: Props) {
 
   const multiSubgraph = useMultiSubgraph(
     SubgraphName.TheBadge,
-    isTestnet ? [readOnlyChainId] : [Chains.gnosis, Chains.polygon],
+    isTestnet ? [readOnlyChainId, Chains.goerli, Chains.sepolia] : [Chains.gnosis, Chains.polygon],
   )
 
   const filters: Array<ListFilter<BadgeStatus>> = [

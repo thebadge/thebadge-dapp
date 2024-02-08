@@ -2,6 +2,7 @@ import * as React from 'react'
 
 import { BadgePreview } from '@thebadge/ui-library'
 
+import { getChainIdByName } from '@/src/config/web3'
 import { getBackgroundBadgeUrl } from '@/src/constants/backgrounds'
 import useBadgeIdParam from '@/src/hooks/nextjs/useBadgeIdParam'
 import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
@@ -17,21 +18,34 @@ type BadgePreviewGeneratorProps = {
   badgeUrl?: string
   additionalData?: Record<string, any>
   size?: 'small' | 'medium' | 'large'
+
+  badgeContractAddress?: string
+  badgeNetworkName?: string
 }
 
 export const BadgeView = ({
   additionalData,
+  badgeContractAddress,
+  badgeNetworkName,
   badgeUrl,
   modelId,
   size = 'medium',
 }: BadgePreviewGeneratorProps) => {
   const { contract } = useBadgeIdParam()
 
-  const badgeModelData = useBadgeModel(modelId, contract)
+  // If there is a networkName provided, we fetch the badge from there using the contractAddress
+  // This information is available on the own subGraph
+  const badgeContract = badgeNetworkName
+    ? `${getChainIdByName(badgeNetworkName)}:${badgeContractAddress}`
+    : undefined
+
+  const badgeModelData = useBadgeModel(modelId, badgeContract || contract)
   const badgeModelMetadata = badgeModelData.data?.badgeModelMetadata
   const badgeLogoImage = badgeModelData.data?.badgeModelMetadata?.image
+
   const { address, readOnlyChainId } = useWeb3Connection()
   const availableBackgroundsData = useAvailableBackgrounds(readOnlyChainId, address)
+
   const modelBackgrounds = availableBackgroundsData.data?.modelBackgrounds
 
   const { backgroundType, fieldsConfigs, textContrast } = getClassicConfigs(
