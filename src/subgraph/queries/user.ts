@@ -22,7 +22,6 @@ export const MY_BADGES = gql`
       badges(where: $where) {
         id
         contractAddress
-        networkName
       }
     }
   }

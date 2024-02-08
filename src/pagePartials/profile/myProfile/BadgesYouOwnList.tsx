@@ -8,15 +8,11 @@ import { useTranslation } from 'next-export-i18n'
 import { NoResultsAnimated } from '@/src/components/assets/animated/NoResults'
 import FilteredList, { ListFilter } from '@/src/components/helpers/FilteredList'
 import InViewPort from '@/src/components/helpers/InViewPort'
-import { Chains } from '@/src/config/web3'
-import useMultiSubgraph from '@/src/hooks/subgraph/useMultiSubgraph'
-import BadgeItemGenerator from '@/src/pagePartials/badge/preview/generators/BadgeItemGenerator'
-import { SubgraphName } from '@/src/subgraph/subgraph'
-import { generateBadgePreviewUrl, generateExplorer } from '@/src/utils/navigation/generateUrl'
-import { isTestnet } from '@/src/utils/network'
-import { Badge, BadgeStatus, Badge_Filter } from '@/types/generated/subgraph'
-
+import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
+import BadgeItemGenerator from '@/src/pagePartials/badge/preview/generators/BadgeItemGenerator'
+import { generateBadgePreviewUrl, generateExplorer } from '@/src/utils/navigation/generateUrl'
+import { Badge, BadgeStatus, Badge_Filter } from '@/types/generated/subgraph'
 
 type Props = {
   address: string
@@ -31,10 +27,7 @@ export default function BadgesYouOwnList({ address }: Props) {
   const [ownBadges, setBadges] = useState<Badge[]>([])
   const [loading, setLoading] = useState<boolean>(false)
 
-  const multiSubgraph = useMultiSubgraph(
-    SubgraphName.TheBadge,
-    isTestnet ? [readOnlyChainId, Chains.goerli, Chains.sepolia] : [Chains.gnosis, Chains.polygon],
-  )
+  const gql = useSubgraph()
 
   const filters: Array<ListFilter<BadgeStatus>> = [
     {
@@ -80,20 +73,11 @@ export default function BadgesYouOwnList({ address }: Props) {
       status_in: (selectedFilters.map((filter) => filter.key) as Array<BadgeStatus>) || [],
     }
 
-    const userWithBadgesManyNetworks = await Promise.all(
-      multiSubgraph.map((gql) =>
-        gql.userBadges({
-          ownerAddress: address,
-          where,
-        }),
-      ),
-    )
-    let badges: Badge[] = []
-
-    // For each network we put all the badges into a simple array
-    userWithBadgesManyNetworks.forEach((userWithBadges) => {
-      badges = [...badges, ...((userWithBadges?.user?.badges as Badge[]) || [])]
+    const userWithBadges = await gql.userBadges({
+      ownerAddress: address,
+      where,
     })
+    const badges = (userWithBadges?.user?.badges as Badge[]) || []
 
     setBadges(badges)
     setLoading(false)
@@ -103,13 +87,7 @@ export default function BadgesYouOwnList({ address }: Props) {
     if (ownBadges.length > 0) {
       return ownBadges.map((badge) => (
         <InViewPort key={badge.id}>
-          <BadgeItemGenerator
-            badgeContractAddress={badge.contractAddress}
-            badgeId={badge.id}
-            badgeNetworkName={badge.networkName}
-            key={badge.id}
-            onClick={onBadgeClick(badge)}
-          />
+          <BadgeItemGenerator badgeId={badge.id} key={badge.id} onClick={onBadgeClick(badge)} />
         </InViewPort>
       ))
     }
