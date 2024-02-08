@@ -36,8 +36,8 @@ export const contracts = {
   },
   TheBadgeStore: {
     address: {
-      [Chains.goerli]: '0x49F7e71dbad648faB6A273F15e363161744a1191',
-      [Chains.sepolia]: '0x8de751B764334240E54B4177300Fa8De4301deBC',
+      [Chains.goerli]: '0x158A8379071d280e811dC7b670c22a0b46dC582D',
+      [Chains.sepolia]: '0x158A8379071d280e811dC7b670c22a0b46dC582D',
       [Chains.gnosis]: '0xaDe4Dcc3613dc0b77593adb3D694F2F6f71E4125',
       [Chains.polygon]: '0x870cDfe4c9b4FFe0687b7f871f6e96793440B214',
       [Chains.mumbai]: '0xfA31e6E50d2Aa260434A056e7CaA3FD582B1FfE8',
