@@ -99,7 +99,7 @@ export default function BadgeItemGenerator({
               height={400}
               sx={{ m: 'auto' }}
               variant="rounded"
-              width={625}
+              width={655}
             />
           }
         >
@@ -128,16 +128,14 @@ export default function BadgeItemGenerator({
             Network: <strong>{capitalizeFirstLetter(badgeNetworkName)}</strong>
           </Typography>
         )}
-        <Stack m="10px">
-          <BadgeView
-            additionalData={additionalData}
-            badgeContractAddress={badgeContractAddress}
-            badgeNetworkName={badgeNetworkName}
-            badgeUrl={badgeUrl}
-            modelId={modelId}
-            size={'small'}
-          />
-        </Stack>
+        <BadgeView
+          additionalData={additionalData}
+          badgeContractAddress={badgeContractAddress}
+          badgeNetworkName={badgeNetworkName}
+          badgeUrl={badgeUrl}
+          modelId={modelId}
+          size={'small'}
+        />
       </SafeSuspense>
     </BadgeContainer>
   )
