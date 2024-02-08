@@ -102,7 +102,7 @@ export default function BadgesYouOwnList({ address }: Props) {
   function generateListItems() {
     if (ownBadges.length > 0) {
       return ownBadges.map((badge) => (
-        <InViewPort key={badge.id}>
+        <InViewPort key={`${badge.id}:${badge.networkName}:${badge.contractAddress}`}>
           <BadgeItemGenerator
             badgeContractAddress={badge.contractAddress}
             badgeId={badge.id}
