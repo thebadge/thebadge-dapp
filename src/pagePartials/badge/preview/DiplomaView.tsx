@@ -2,8 +2,6 @@ import React from 'react'
 
 import { DiplomaPreview } from '@thebadge/ui-library'
 
-import { getChainIdByName } from '@/src/config/web3'
-import useBadgeIdParam from '@/src/hooks/nextjs/useBadgeIdParam'
 import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
 import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { useSizeSM } from '@/src/hooks/useSize'
@@ -21,28 +19,11 @@ type Props = {
   modelId: string
   badgeUrl?: string
   additionalData?: Record<string, any>
-
-  badgeContractAddress?: string
-  badgeNetworkName?: string
 }
 
-export default function DiplomaView({
-  additionalData,
-  badgeContractAddress,
-  badgeNetworkName,
-  badgeUrl,
-  modelId,
-}: Props) {
+export default function DiplomaView({ additionalData, badgeUrl, modelId }: Props) {
   const isMobile = useSizeSM()
-  const { contract } = useBadgeIdParam()
-
-  // If there is a networkName provided, we fetch the badge from there using the contractAddress
-  // This information is available on the own subGraph
-  const badgeContract = badgeNetworkName
-    ? `${getChainIdByName(badgeNetworkName)}:${badgeContractAddress}`
-    : undefined
-
-  const badgeModelData = useBadgeModel(modelId, badgeContract || contract)
+  const badgeModelData = useBadgeModel(modelId)
   const badgeModelMetadata = badgeModelData.data?.badgeModelMetadata
 
   const {
