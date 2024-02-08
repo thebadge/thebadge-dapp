@@ -13,9 +13,9 @@ export const Chains = {
   //mainnet: 1,
   goerli: 5,
   sepolia: 11155111,
-  gnosis: 100,
-  polygon: 137,
   mumbai: 80001,
+  polygon: 137,
+  gnosis: 100,
 } as const
 
 export const ChainShortName = {

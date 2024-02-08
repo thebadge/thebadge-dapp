@@ -14,6 +14,7 @@ import BadgeItemGenerator from '@/src/pagePartials/badge/preview/generators/Badg
 import { SubgraphName } from '@/src/subgraph/subgraph'
 import { generateBadgePreviewUrl, generateExplorer } from '@/src/utils/navigation/generateUrl'
 import { isTestnet } from '@/src/utils/network'
+import { ChainsValues } from '@/types/chains'
 import { Badge, BadgeStatus, Badge_Filter } from '@/types/generated/subgraph'
 
 const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
@@ -25,16 +26,16 @@ export default function BadgesYouOwnList({ address }: Props) {
   const { t } = useTranslation()
   const router = useRouter()
   const { address: connectedWalletAddress, readOnlyChainId } = useWeb3Connection()
+  const [chainIds, setChainIds] = useState<ChainsValues[]>(
+    isTestnet ? [readOnlyChainId, Chains.goerli, Chains.sepolia] : [readOnlyChainId],
+  )
 
   const isLoggedInUser = connectedWalletAddress === address
 
   const [ownBadges, setBadges] = useState<Badge[]>([])
   const [loading, setLoading] = useState<boolean>(false)
 
-  const multiSubgraph = useMultiSubgraph(
-    SubgraphName.TheBadge,
-    isTestnet ? [readOnlyChainId, Chains.goerli, Chains.sepolia] : [Chains.gnosis, Chains.polygon],
-  )
+  const multiSubgraph = useMultiSubgraph(SubgraphName.TheBadge, chainIds)
 
   const filters: Array<ListFilter<BadgeStatus>> = [
     {
@@ -131,19 +132,24 @@ export default function BadgesYouOwnList({ address }: Props) {
   }
 
   return (
-    <FilteredList
-      alignItems={'left'}
-      filters={filters}
-      items={generateListItems()}
-      listId={isLoggedInUser ? 'owned-badges-explorer-list' : 'preview-badges-explorer-list'}
-      loading={loading}
-      loadingColor={'blue'}
-      search={search}
-      showTextSearch={false}
-      title={
-        isLoggedInUser ? t('profile.badgesYouOwn.title') : t('profile.badgesYouOwn.shared_title')
-      }
-      titleColor={colors.blue}
-    />
+    <>
+      <FilteredList
+        alignItems={'left'}
+        chainsIds={chainIds}
+        filters={filters}
+        items={generateListItems()}
+        listId={isLoggedInUser ? 'owned-badges-explorer-list' : 'preview-badges-explorer-list'}
+        loading={loading}
+        loadingColor={'blue'}
+        onChainsChange={(v) => setChainIds(v)}
+        search={search}
+        showNetworksFilter
+        showTextSearch={false}
+        title={
+          isLoggedInUser ? t('profile.badgesYouOwn.title') : t('profile.badgesYouOwn.shared_title')
+        }
+        titleColor={colors.blue}
+      />
+    </>
   )
 }
