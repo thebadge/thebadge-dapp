@@ -23,6 +23,7 @@ export type Web3Context = {
   readOnlyChainId: ChainsValues
   getExplorerUrl: (hash: string) => string
   readOnlyAppProvider: JsonRpcProvider
+  isAppChainReadOnly: boolean
 
   consoleAppConfig: VoidFunction
   web3Auth: Web3Auth | null

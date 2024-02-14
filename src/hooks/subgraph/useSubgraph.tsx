@@ -13,18 +13,17 @@ export default function useSubgraph(
   targetContract?: string,
 ) {
   const { readOnlyChainId } = useWeb3Connection()
-  if (!targetContract) {
-    return getSubgraphSdkByNetwork(readOnlyChainId, subgraphName)
-  }
-  try {
-    const { chainId, subgraphName } = parsePrefixedAddress(targetContract)
 
-    return getSubgraphSdkByNetwork(chainId, subgraphName)
-  } catch (error) {
-    console.error(
-      'There was an error parsing the subgraph with the query parameters, returning default values...',
-      error,
-    )
-    return getSubgraphSdkByNetwork(readOnlyChainId, subgraphName)
+  if (targetContract) {
+    try {
+      const { chainId, subgraphName } = parsePrefixedAddress(targetContract)
+      return getSubgraphSdkByNetwork(chainId, subgraphName)
+    } catch (error) {
+      console.error(
+        'There was an error parsing the subgraph with the query parameters, returning default values...',
+        error,
+      )
+    }
   }
+  return getSubgraphSdkByNetwork(readOnlyChainId, subgraphName)
 }
