@@ -86,5 +86,6 @@ gql`
   fragment UserBadges on Badge {
     id
     contractAddress
+    networkName
   }
 `
