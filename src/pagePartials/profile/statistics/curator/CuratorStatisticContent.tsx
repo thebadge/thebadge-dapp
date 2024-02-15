@@ -7,16 +7,17 @@ import CurrencyExchangeOutlinedIcon from '@mui/icons-material/CurrencyExchangeOu
 import EmojiEventsOutlinedIcon from '@mui/icons-material/EmojiEventsOutlined'
 import MilitaryTechOutlinedIcon from '@mui/icons-material/MilitaryTechOutlined'
 import StarBorderPurple500RoundedIcon from '@mui/icons-material/StarBorderPurple500Rounded'
-import { Box, Stack, Table, TableBody, Typography } from '@mui/material'
+import { Box, Table, TableBody } from '@mui/material'
 import { colors } from '@thebadge/ui-library'
 import { formatUnits } from 'ethers/lib/utils'
 import { useTranslation } from 'next-export-i18n'
 
-import { StatisticSquare, StatisticsContainer } from '../addons/styled'
+import { StatisticsContainer } from '../addons/styled'
 import { getNetworkConfig } from '@/src/config/web3'
 import { ZERO_BN } from '@/src/constants/bigNumber'
 import { StatisticVisibility } from '@/src/hooks/nextjs/useStatisticsVisibility'
 import useCuratorStatistics from '@/src/hooks/subgraph/useCuratorStatistics'
+import StatisticCard from '@/src/pagePartials/profile/statistics/addons/StatisticCard'
 import StatisticRow from '@/src/pagePartials/profile/statistics/addons/StatisticRow'
 import { CuratorStatistic } from '@/src/pagePartials/profile/statistics/curator/CuratorStatistics'
 import { useProfileProvider } from '@/src/providers/ProfileProvider'
@@ -77,95 +78,73 @@ export default function CuratorStatisticContent({
 
       <Box display="flex" flex="4" gap={2} justifyContent="center">
         {statisticVisibility[CuratorStatistic.amountWon] && (
-          <Stack flex="1" minWidth="160px">
-            <StatisticSquare color={colors.green}>
+          <StatisticCard
+            icon={
               <EmojiEventsOutlinedIcon
-                sx={{ color: colors.green, position: 'absolute', top: 8, left: 8 }}
+                sx={{ color: colors.purple, position: 'absolute', top: 8, left: 8 }}
               />
-              <Typography sx={{ fontSize: '48px !important', fontWeight: 900 }}>
-                {curatorStatistic?.challengesMadeWonAmount || 0}
-              </Typography>
-              <Typography sx={{ textAlign: 'center', color: 'text.primary' }}>
-                {t('profile.statistics.curator.amountChallengesWon')}
-              </Typography>
-            </StatisticSquare>
-          </Stack>
+            }
+            label={t('profile.statistics.curator.amountChallengesWon')}
+            value={curatorStatistic?.challengesMadeWonAmount || 0}
+          />
         )}
 
         {statisticVisibility[CuratorStatistic.amountMade] && (
-          <Stack flex="1" minWidth="160px">
-            <StatisticSquare color={colors.green}>
+          <StatisticCard
+            icon={
               <BalanceOutlinedIcon
-                sx={{ color: colors.green, position: 'absolute', top: 8, left: 8 }}
+                sx={{ color: colors.purple, position: 'absolute', top: 8, left: 8 }}
               />
-              <Typography sx={{ fontSize: '48px !important', fontWeight: 900 }}>
-                {curatorStatistic?.challengesMadeAmount || 0}
-              </Typography>
-              <Typography sx={{ textAlign: 'center', color: 'text.primary' }}>
-                {t('profile.statistics.curator.amountChallengesMade')}
-              </Typography>
-            </StatisticSquare>
-          </Stack>
+            }
+            label={t('profile.statistics.curator.amountChallengesMade')}
+            value={curatorStatistic?.challengesMadeAmount || 0}
+          />
         )}
 
         {/* TODO Create this value on SG -> AVG of fees earned by challenges */}
         {statisticVisibility[CuratorStatistic.averageFee] && (
-          <Stack flex="1" minWidth="160px">
-            <StatisticSquare color={colors.green}>
+          <StatisticCard
+            icon={
               <CurrencyExchangeOutlinedIcon
-                sx={{ color: colors.green, position: 'absolute', top: 8, left: 8 }}
+                sx={{ color: colors.purple, position: 'absolute', top: 8, left: 8 }}
               />
-              <Typography sx={{ fontSize: '48px !important', fontWeight: 900 }}>
-                {curatorStatistic?.challengesMadeWonAmount || 0}
-              </Typography>
-              <Typography sx={{ textAlign: 'center', color: 'text.primary' }}>
-                {t('profile.statistics.curator.avgFeeWon')}
-              </Typography>
-            </StatisticSquare>
-          </Stack>
+            }
+            label={t('profile.statistics.curator.avgFeeWon')}
+            value={curatorStatistic?.challengesMadeWonAmount || 0}
+          />
         )}
 
         {statisticVisibility[CuratorStatistic.amountLost] && (
-          <Stack flex="1" minWidth="160px">
-            <StatisticSquare color={colors.green}>
-              <Typography sx={{ fontSize: '48px !important', fontWeight: 900 }}>
-                {curatorStatistic?.challengesMadeLostAmount}
-              </Typography>
-              <Typography sx={{ textAlign: 'center', color: 'text.primary' }}>
-                {t('profile.statistics.curator.amountChallengesLost')}
-              </Typography>
-            </StatisticSquare>
-          </Stack>
+          <StatisticCard
+            label={t('profile.statistics.curator.amountChallengesLost')}
+            value={curatorStatistic?.challengesMadeLostAmount || 0}
+          />
         )}
 
         {statisticVisibility[CuratorStatistic.percentageWon] && (
-          <Stack flex="1" minWidth="160px">
-            <StatisticSquare color={colors.green}>
+          <StatisticCard
+            icon={
               <EmojiEventsOutlinedIcon
-                sx={{ color: colors.green, position: 'absolute', top: 8, left: 8 }}
+                sx={{ color: colors.purple, position: 'absolute', top: 8, left: 8 }}
               />
-              <Typography sx={{ fontSize: '48px !important', fontWeight: 900 }}>
-                {`${percentage(
-                  curatorStatistic?.challengesMadeWonAmount,
-                  curatorStatistic?.challengesMadeAmount,
-                )}%`}
-              </Typography>
-              <Typography sx={{ textAlign: 'center', color: 'text.primary' }}>
-                {t('profile.statistics.curator.percentageWon')}
-              </Typography>
-            </StatisticSquare>
-          </Stack>
+            }
+            label={t('profile.statistics.curator.percentageWon')}
+            value={`${percentage(
+              curatorStatistic?.challengesMadeWonAmount,
+              curatorStatistic?.challengesMadeAmount,
+            )}%`}
+          />
         )}
 
         {statisticVisibility[CuratorStatistic.ranking] && (
-          <Stack flex="1" minWidth="160px">
-            <StatisticSquare color={colors.green}>
-              <MilitaryTechOutlinedIcon sx={{ color: colors.green, fontSize: '4rem' }} />
-              <Typography sx={{ textAlign: 'center', color: 'text.primary' }}>
-                {t('profile.statistics.curator.ranking', { position: 7 })}
-              </Typography>
-            </StatisticSquare>
-          </Stack>
+          <StatisticCard
+            icon={
+              <MilitaryTechOutlinedIcon
+                sx={{ color: colors.purple, position: 'absolute', top: 8, left: 8 }}
+              />
+            }
+            label={t('profile.statistics.curator.ranking', { position: 7 })}
+          />
         )}
       </Box>
     </StatisticsContainer>
