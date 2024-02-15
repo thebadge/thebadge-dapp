@@ -8,11 +8,16 @@ import { useTranslation } from 'next-export-i18n'
 import { NoResultsAnimated } from '@/src/components/assets/animated/NoResults'
 import FilteredList, { ListFilter } from '@/src/components/helpers/FilteredList'
 import InViewPort from '@/src/components/helpers/InViewPort'
-import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
-const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
+import { Chains } from '@/src/config/web3'
+import useMultiSubgraph from '@/src/hooks/subgraph/useMultiSubgraph'
 import BadgeItemGenerator from '@/src/pagePartials/badge/preview/generators/BadgeItemGenerator'
+import { SubgraphName } from '@/src/subgraph/subgraph'
 import { generateBadgePreviewUrl, generateExplorer } from '@/src/utils/navigation/generateUrl'
+import { isTestnet } from '@/src/utils/network'
+import { ChainsValues } from '@/types/chains'
 import { Badge, BadgeStatus, Badge_Filter } from '@/types/generated/subgraph'
+
+const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 
 type Props = {
   address: string
@@ -21,13 +26,16 @@ export default function BadgesYouOwnList({ address }: Props) {
   const { t } = useTranslation()
   const router = useRouter()
   const { address: connectedWalletAddress, readOnlyChainId } = useWeb3Connection()
+  const [chainIds, setChainIds] = useState<ChainsValues[]>(
+    isTestnet ? [readOnlyChainId, Chains.goerli, Chains.sepolia] : [readOnlyChainId],
+  )
 
   const isLoggedInUser = connectedWalletAddress === address
 
   const [ownBadges, setBadges] = useState<Badge[]>([])
   const [loading, setLoading] = useState<boolean>(false)
 
-  const gql = useSubgraph()
+  const multiSubgraph = useMultiSubgraph(SubgraphName.TheBadge, chainIds)
 
   const filters: Array<ListFilter<BadgeStatus>> = [
     {
@@ -73,11 +81,20 @@ export default function BadgesYouOwnList({ address }: Props) {
       status_in: (selectedFilters.map((filter) => filter.key) as Array<BadgeStatus>) || [],
     }
 
-    const userWithBadges = await gql.userBadges({
-      ownerAddress: address,
-      where,
+    const userWithBadgesManyNetworks = await Promise.all(
+      multiSubgraph.map((gql) =>
+        gql.userBadges({
+          ownerAddress: address,
+          where,
+        }),
+      ),
+    )
+    let badges: Badge[] = []
+
+    // For each network we put all the badges into a simple array
+    userWithBadgesManyNetworks.forEach((userWithBadges) => {
+      badges = [...badges, ...((userWithBadges?.user?.badges as Badge[]) || [])]
     })
-    const badges = (userWithBadges?.user?.badges as Badge[]) || []
 
     setBadges(badges)
     setLoading(false)
@@ -86,8 +103,14 @@ export default function BadgesYouOwnList({ address }: Props) {
   function generateListItems() {
     if (ownBadges.length > 0) {
       return ownBadges.map((badge) => (
-        <InViewPort key={badge.id}>
-          <BadgeItemGenerator badgeId={badge.id} key={badge.id} onClick={onBadgeClick(badge)} />
+        <InViewPort key={`${badge.id}:${badge.networkName}:${badge.contractAddress}`}>
+          <BadgeItemGenerator
+            badgeContractAddress={badge.contractAddress}
+            badgeId={badge.id}
+            badgeNetworkName={badge.networkName}
+            key={badge.id}
+            onClick={onBadgeClick(badge)}
+          />
         </InViewPort>
       ))
     }
@@ -109,19 +132,24 @@ export default function BadgesYouOwnList({ address }: Props) {
   }
 
   return (
-    <FilteredList
-      alignItems={'left'}
-      filters={filters}
-      items={generateListItems()}
-      listId={isLoggedInUser ? 'owned-badges-explorer-list' : 'preview-badges-explorer-list'}
-      loading={loading}
-      loadingColor={'blue'}
-      search={search}
-      showTextSearch={false}
-      title={
-        isLoggedInUser ? t('profile.badgesYouOwn.title') : t('profile.badgesYouOwn.shared_title')
-      }
-      titleColor={colors.blue}
-    />
+    <>
+      <FilteredList
+        alignItems={'left'}
+        chainsIds={chainIds}
+        filters={filters}
+        items={generateListItems()}
+        listId={isLoggedInUser ? 'owned-badges-explorer-list' : 'preview-badges-explorer-list'}
+        loading={loading}
+        loadingColor={'blue'}
+        onChainsChange={(v) => setChainIds(v)}
+        search={search}
+        showNetworksFilter
+        showTextSearch={false}
+        title={
+          isLoggedInUser ? t('profile.badgesYouOwn.title') : t('profile.badgesYouOwn.shared_title')
+        }
+        titleColor={colors.blue}
+      />
+    </>
   )
 }

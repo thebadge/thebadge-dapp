@@ -13,7 +13,9 @@ export default function NetworkButton({ sx }: { sx?: SxProps }) {
   const { isWalletNetworkSupported } = useWeb3Connection()
 
   return (
-    <Tooltip title={t('errors.switchNetwork') + t('errors.toUseTheApp')}>
+    <Tooltip
+      title={isWalletNetworkSupported ? '' : t('errors.switchNetwork') + t('errors.toUseTheApp')}
+    >
       <Box
         borderRadius={20}
         height="fit-content"
