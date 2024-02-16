@@ -1,3 +1,4 @@
+import shuffle from 'lodash/shuffle'
 import useSWR from 'swr'
 
 import { MainnetChains, TestnetChains } from '@/src/config/web3'
@@ -6,6 +7,10 @@ import { SubgraphName } from '@/src/subgraph/subgraph'
 import { isTestnet } from '@/src/utils/network'
 import { BadgeModel } from '@/types/generated/subgraph'
 
+/**
+ * Fetch the first X from every chain
+ * @param first
+ */
 export default function useBadgeModelMaxAmount(first = 10) {
   const chainIds = isTestnet ? TestnetChains : MainnetChains
   const multiSubgraph = useMultiSubgraph(SubgraphName.TheBadge, chainIds)
@@ -22,6 +27,6 @@ export default function useBadgeModelMaxAmount(first = 10) {
       badgeModels = [...badgeModels, ...((r.badgeModels as BadgeModel[]) || [])]
     })
 
-    return badgeModels
+    return shuffle(badgeModels)
   })
 }
