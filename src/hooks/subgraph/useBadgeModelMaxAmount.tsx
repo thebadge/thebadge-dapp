@@ -1,17 +1,27 @@
 import useSWR from 'swr'
 
-import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
+import { MainnetChains, TestnetChains } from '@/src/config/web3'
+import useMultiSubgraph from '@/src/hooks/subgraph/useMultiSubgraph'
+import { SubgraphName } from '@/src/subgraph/subgraph'
+import { isTestnet } from '@/src/utils/network'
 import { BadgeModel } from '@/types/generated/subgraph'
 
-const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
-
 export default function useBadgeModelMaxAmount(first = 10) {
-  const gql = useSubgraph()
-  const { readOnlyChainId } = useWeb3Connection()
+  const chainIds = isTestnet ? TestnetChains : MainnetChains
+  const multiSubgraph = useMultiSubgraph(SubgraphName.TheBadge, chainIds)
 
-  return useSWR([`BadgeModelsMaxAmount:${first}`, first, readOnlyChainId], async ([, _first]) => {
-    const response = await gql.communityBadgeModelsMaxAmount({ first: _first })
+  return useSWR([`BadgeModelsMaxAmount:${first}`, first], async ([, _first]) => {
+    const response = await Promise.all(
+      multiSubgraph.map((gql) => gql.communityBadgeModelsMaxAmount({ first: _first })),
+    )
 
-    return response.badgeModels as BadgeModel[]
+    let badgeModels: BadgeModel[] = []
+
+    // For each network we put all the badges into a simple array
+    response.forEach((r) => {
+      badgeModels = [...badgeModels, ...((r.badgeModels as BadgeModel[]) || [])]
+    })
+
+    return badgeModels
   })
 }
