@@ -4,7 +4,7 @@ export const StatisticSquare = styled(Stack)<{ color?: string }>(({ color, theme
   position: 'relative',
   display: 'flex',
   alignItems: 'center',
-  justifyContent: 'center',
+  justifyContent: 'space-evenly',
   padding: theme.spacing(2, 4),
   margin: 'auto',
   height: '100%',

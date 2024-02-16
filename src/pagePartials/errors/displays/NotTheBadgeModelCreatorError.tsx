@@ -57,7 +57,7 @@ export default function NotTheBadgeModelCreatorError() {
         <Typography mb={4} variant="body4">
           {t('errors.noTheBadgeModelCreatorSubtitle')}
         </Typography>
-        <ConnectWalletButton onClick={connectWallet}>
+        <ConnectWalletButton onClick={() => connectWallet()}>
           {t('header.wallet.connect')}
         </ConnectWalletButton>
       </Stack>

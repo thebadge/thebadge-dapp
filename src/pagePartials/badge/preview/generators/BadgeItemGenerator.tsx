@@ -1,9 +1,10 @@
 import React from 'react'
 
-import { Skeleton, Stack, styled } from '@mui/material'
+import { Skeleton, Stack, Typography, styled } from '@mui/material'
 
 import { BadgePreviewLoading } from '@/src/components/common/BadgePreviewContainer'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
+import { getChainIdByName } from '@/src/config/web3'
 import useBadgeIdParam from '@/src/hooks/nextjs/useBadgeIdParam'
 import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
 import { useBadgeThirdPartyRequiredData } from '@/src/hooks/subgraph/useBadgeModelThirdPartyMetadata'
@@ -11,14 +12,20 @@ import useBadgeModelTemplate from '@/src/hooks/theBadge/useBadgeModelTemplate'
 import { BadgeView } from '@/src/pagePartials/badge/preview/BadgeView'
 import DiplomaView from '@/src/pagePartials/badge/preview/DiplomaView'
 import { reCreateThirdPartyValuesObject } from '@/src/utils/badges/mintHelpers'
+import { capitalizeFirstLetter } from '@/src/utils/strings'
 import { BadgeModelControllerType, BadgeModelTemplate } from '@/types/badges/BadgeModel'
 
 const DiplomaContainer = styled(Stack)(({ theme }) => ({
   cursor: 'pointer',
-  flex: 2,
   justifyContent: 'center',
   display: 'flex',
   alignSelf: 'center',
+  flexBasis: '45%',
+  flexGrow: 1,
+  boxSizing: 'border-box',
+  [theme.breakpoints.up(1140)]: {
+    maxWidth: '48%',
+  },
   [theme.breakpoints.down(1040)]: {
     alignItems: 'center',
   },
@@ -36,13 +43,27 @@ const BadgeContainer = styled(Stack)(() => ({
 type BadgeItemProps = {
   badgeId: string
   onClick: VoidFunction
+
+  badgeContractAddress?: string
+  badgeNetworkName?: string
 }
 
-export default function BadgeItemGenerator({ badgeId, onClick }: BadgeItemProps) {
+export default function BadgeItemGenerator({
+  badgeContractAddress,
+  badgeId,
+  badgeNetworkName,
+  onClick,
+}: BadgeItemProps) {
   // Safeguard to use the contract in the url
   // If this hooks run under a page that has the "contract" query params it must use it
   const { contract } = useBadgeIdParam()
-  const badgeById = useBadgeById(badgeId, contract)
+  // If there is a networkName provided, we fetch the badge from there using the contractAddress
+  // This information is available on the own subGraph
+  const badgeContract = badgeNetworkName
+    ? `${getChainIdByName(badgeNetworkName)}:${badgeContractAddress}`
+    : undefined
+
+  const badgeById = useBadgeById(badgeId, badgeContract || contract)
 
   const badge = badgeById.data
   if (!badge) {
@@ -53,11 +74,15 @@ export default function BadgeItemGenerator({ badgeId, onClick }: BadgeItemProps)
     badge.badgeModel.controllerType.toLowerCase() ===
     BadgeModelControllerType.ThirdParty.toLowerCase()
 
-  const template = useBadgeModelTemplate(modelId, contract)
+  const template = useBadgeModelTemplate(modelId, badgeContract || contract)
   const badgeUrl = badge.badgeMetadata.external_link
-  const requiredBadgeDataMetadata = useBadgeThirdPartyRequiredData(`${badge.id}` || '', contract, {
-    skip: !isThirdParty,
-  })
+  const requiredBadgeDataMetadata = useBadgeThirdPartyRequiredData(
+    `${badge.id}` || '',
+    badgeContract || contract,
+    {
+      skip: !isThirdParty,
+    },
+  )
 
   const additionalData = reCreateThirdPartyValuesObject(
     requiredBadgeDataMetadata.data?.requirementsDataValues || {},
@@ -74,11 +99,22 @@ export default function BadgeItemGenerator({ badgeId, onClick }: BadgeItemProps)
               height={400}
               sx={{ m: 'auto' }}
               variant="rounded"
-              width={655}
+              width={625}
             />
           }
         >
-          <DiplomaView additionalData={additionalData} badgeUrl={badgeUrl} modelId={modelId} />
+          {badgeNetworkName && (
+            <Typography ml={2} textAlign="left" variant="labelLarge">
+              Network: <strong>{capitalizeFirstLetter(badgeNetworkName)}</strong>
+            </Typography>
+          )}
+          <DiplomaView
+            additionalData={additionalData}
+            badgeContractAddress={badgeContractAddress}
+            badgeNetworkName={badgeNetworkName}
+            badgeUrl={badgeUrl}
+            modelId={modelId}
+          />
         </SafeSuspense>
       </DiplomaContainer>
     )
@@ -87,12 +123,21 @@ export default function BadgeItemGenerator({ badgeId, onClick }: BadgeItemProps)
   return (
     <BadgeContainer onClick={onClick}>
       <SafeSuspense fallback={<BadgePreviewLoading />}>
-        <BadgeView
-          additionalData={additionalData}
-          badgeUrl={badgeUrl}
-          modelId={modelId}
-          size={'small'}
-        />
+        {badgeNetworkName && (
+          <Typography textAlign="left" variant="labelLarge">
+            Network: <strong>{capitalizeFirstLetter(badgeNetworkName)}</strong>
+          </Typography>
+        )}
+        <Stack m="10px">
+          <BadgeView
+            additionalData={additionalData}
+            badgeContractAddress={badgeContractAddress}
+            badgeNetworkName={badgeNetworkName}
+            badgeUrl={badgeUrl}
+            modelId={modelId}
+            size={'small'}
+          />
+        </Stack>
       </SafeSuspense>
     </BadgeContainer>
   )

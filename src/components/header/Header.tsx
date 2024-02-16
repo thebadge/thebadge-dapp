@@ -1,9 +1,12 @@
+import React from 'react'
+
 import { Box, styled } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
 
 import { LogoWithText } from '@/src/components/common/Logo'
 import ActionButtons from '@/src/components/header/ActionButtons'
 import ConnectWalletButton from '@/src/components/header/ConnectWalletButton'
+import NetworkButton from '@/src/components/header/NetworkButton'
 import { UserDropdown } from '@/src/components/header/UserDropdown'
 import WrongNetwork from '@/src/components/utils/WrongNetwork'
 import { useSizeSM } from '@/src/hooks/useSize'
@@ -54,7 +57,8 @@ const Header = () => {
                 <ActionButtons />
               </PreventActionIfOutOfService>
             )}
-            <ConnectWalletButton onClick={connectWallet}>
+            <NetworkButton sx={{ ml: 0 }} />
+            <ConnectWalletButton onClick={() => connectWallet()}>
               {t('header.wallet.connect')}
             </ConnectWalletButton>
           </Box>

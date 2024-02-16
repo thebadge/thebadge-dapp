@@ -6,6 +6,7 @@ import { ButtonV2, colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 
 import { notify } from '@/src/components/toast/Toast'
+import { getChainIdByName } from '@/src/config/web3'
 import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
 import useIsClaimable from '@/src/hooks/subgraph/useIsClaimable'
 import useDecryptEmail from '@/src/hooks/theBadge/useDecryptEmail'
@@ -39,7 +40,7 @@ export default function ThirdPartyBadgeEvidenceInfoPreview({ badgeId }: { badgeI
     try {
       setDisableButtons(true)
       const response = await sendClaimNotificationEmail(badge.createdTxHash, {
-        networkId: appChainId.toString(),
+        networkId: getChainIdByName(badge.networkName).toString() || appChainId.toString(),
         badgeModelId: Number(badge.badgeModel.id),
       })
 
