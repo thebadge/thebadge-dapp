@@ -1,4 +1,5 @@
 import { APP_URL } from '@/src/constants/common'
+import { ReplacementKeys } from '@/src/utils/enrichTextWithValues'
 import { convertHashToValidIPFSKlerosHash } from '@/src/utils/fileUtils'
 import ipfsUpload from '@/src/utils/ipfsUpload'
 import { KlerosListStructure } from '@/src/utils/kleros/generateKlerosListMetaEvidence'
@@ -166,7 +167,7 @@ export function createThirdPartyValuesObject(
 export function reCreateThirdPartyValuesObject(
   data: Record<string, unknown>,
   columns?: ThirdPartyMetadataColumn[],
-): Record<string, unknown> {
+): Record<ReplacementKeys | 'encryptedPayload', unknown> {
   const values: Record<string, unknown> = { ...data }
   if (!columns) return values
   // If we change this "shape" key values, we need to update the klerosSchemaFactory on src/components/form/helpers/validators.ts
