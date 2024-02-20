@@ -73,6 +73,7 @@ gql`
     status
     contractAddress
     createdTxHash
+    networkName
     badgeModel {
       id
       contractAddress

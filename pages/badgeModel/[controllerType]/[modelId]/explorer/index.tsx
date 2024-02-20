@@ -44,6 +44,7 @@ const ExploreBadgeModels: NextPageWithLayout = () => {
     badgeModelsElementRefs,
     selectedBadgeModelIndex,
     badges.length,
+    false,
   )
 
   const search = async (
@@ -109,6 +110,13 @@ const ExploreBadgeModels: NextPageWithLayout = () => {
             ref={badgeModelsElementRefs[index]}
             selected={isSelected}
           >
+            {/*<BadgeItemGenerator
+              badgeId={badge.id}
+              disableAnimation
+              key={badge.id}
+              onClick={() => setSelectedBadgeModelIndex(index)}
+              showSmallView
+            />*/}
             <BadgeModelPreview metadata={badge.badgeModel.uri} size="small" />
           </BadgePreviewContainer>
         </SafeSuspense>

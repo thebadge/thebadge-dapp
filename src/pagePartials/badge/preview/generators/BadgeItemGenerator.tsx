@@ -11,6 +11,7 @@ import { useBadgeThirdPartyRequiredData } from '@/src/hooks/subgraph/useBadgeMod
 import useBadgeModelTemplate from '@/src/hooks/theBadge/useBadgeModelTemplate'
 import { BadgeView } from '@/src/pagePartials/badge/preview/BadgeView'
 import DiplomaView from '@/src/pagePartials/badge/preview/DiplomaView'
+import FlapAdornment from '@/src/pagePartials/badge/preview/addons/Flap'
 import { reCreateThirdPartyValuesObject } from '@/src/utils/badges/mintHelpers'
 import { capitalizeFirstLetter } from '@/src/utils/strings'
 import { BadgeModelControllerType, BadgeModelTemplate } from '@/types/badges/BadgeModel'
@@ -46,6 +47,13 @@ type BadgeItemProps = {
 
   badgeContractAddress?: string
   badgeNetworkName?: string
+
+  // Display configs
+  showSmallView?: boolean
+  disableAnimation?: boolean
+  showNetwork?: boolean
+  flapLabel?: string | React.ReactNode
+  flapColor?: string
 }
 
 export default function BadgeItemGenerator({
@@ -53,6 +61,7 @@ export default function BadgeItemGenerator({
   badgeId,
   badgeNetworkName,
   onClick,
+  ...displayConfigs
 }: BadgeItemProps) {
   // Safeguard to use the contract in the url
   // If this hooks run under a page that has the "contract" query params it must use it
@@ -89,7 +98,9 @@ export default function BadgeItemGenerator({
     requiredBadgeDataMetadata.data?.requirementsDataColumns,
   )
 
-  if (template === BadgeModelTemplate.Diploma) {
+  const disabledAnimation = displayConfigs.disableAnimation || !!displayConfigs.flapLabel
+
+  if (template === BadgeModelTemplate.Diploma && !displayConfigs.showSmallView) {
     return (
       <DiplomaContainer onClick={onClick}>
         <SafeSuspense
@@ -103,18 +114,24 @@ export default function BadgeItemGenerator({
             />
           }
         >
-          {badgeNetworkName && (
-            <Typography ml={2} textAlign="left" variant="labelLarge">
+          {displayConfigs.showNetwork && (
+            <Typography textAlign="left" variant="labelLarge">
               Network: <strong>{capitalizeFirstLetter(badgeNetworkName)}</strong>
             </Typography>
           )}
-          <DiplomaView
-            additionalData={additionalData}
-            badgeContractAddress={badgeContractAddress}
-            badgeNetworkName={badgeNetworkName}
-            badgeUrl={badgeUrl}
-            modelId={modelId}
-          />
+          <Stack position="relative">
+            <DiplomaView
+              additionalData={additionalData}
+              badgeContractAddress={badgeContractAddress}
+              badgeNetworkName={badgeNetworkName}
+              badgeUrl={badgeUrl}
+              disableAnimation={disabledAnimation}
+              modelId={modelId}
+            />
+            {displayConfigs.flapLabel && (
+              <FlapAdornment color={displayConfigs.flapColor} label={displayConfigs.flapLabel} />
+            )}
+          </Stack>
         </SafeSuspense>
       </DiplomaContainer>
     )
@@ -123,20 +140,24 @@ export default function BadgeItemGenerator({
   return (
     <BadgeContainer onClick={onClick}>
       <SafeSuspense fallback={<BadgePreviewLoading />}>
-        {badgeNetworkName && (
+        {displayConfigs.showNetwork && (
           <Typography textAlign="left" variant="labelLarge">
             Network: <strong>{capitalizeFirstLetter(badgeNetworkName)}</strong>
           </Typography>
         )}
-        <Stack m="10px">
+        <Stack m={disabledAnimation ? undefined : '10px'} position="relative">
           <BadgeView
             additionalData={additionalData}
             badgeContractAddress={badgeContractAddress}
             badgeNetworkName={badgeNetworkName}
             badgeUrl={badgeUrl}
+            disableAnimation={disabledAnimation}
             modelId={modelId}
             size={'small'}
           />
+          {displayConfigs.flapLabel && (
+            <FlapAdornment color={displayConfigs.flapColor} label={displayConfigs.flapLabel} />
+          )}
         </Stack>
       </SafeSuspense>
     </BadgeContainer>
