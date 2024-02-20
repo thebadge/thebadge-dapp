@@ -110,6 +110,7 @@ export default function BadgesYouOwnList({ address }: Props) {
             badgeNetworkName={badge.networkName}
             key={badge.id}
             onClick={onBadgeClick(badge)}
+            showNetwork
           />
         </InViewPort>
       ))

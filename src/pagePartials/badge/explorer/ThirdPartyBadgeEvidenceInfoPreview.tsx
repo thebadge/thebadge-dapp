@@ -104,7 +104,6 @@ export default function ThirdPartyBadgeEvidenceInfoPreview({ badgeId }: { badgeI
     await handleAction(actionFunction, 'Decrypting email failed!')
   }
 
-  console.log(values)
   return (
     <Stack gap={5} p={1}>
       <Box alignContent="center" display="flex" justifyContent="space-between">
