@@ -111,13 +111,6 @@ const ExploreBadgeModels: NextPageWithLayout = () => {
             ref={badgeModelsElementRefs[index]}
             selected={isSelected}
           >
-            {/*<BadgeItemGenerator
-              badgeId={badge.id}
-              disableAnimation
-              key={badge.id}
-              onClick={() => setSelectedBadgeModelIndex(index)}
-              showSmallView
-            />*/}
             <Stack position="relative">
               <BadgeModelPreview metadata={badge.badgeModel.uri} size="small" />
 
