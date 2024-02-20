@@ -63,8 +63,8 @@ export const providerChains: ProviderChains = {
 export const getChainName = (chainId: ChainsValues) => ChainName[chainId]
 export const getChainIdByName = (chainName: string) => ChainNameToIds[chainName]
 
-export const TestnetChains = [Chains.goerli, Chains.sepolia, Chains.mumbai]
-export const MainnetChains = [Chains.gnosis, Chains.polygon]
+export const TestnetChains: ChainsValues[] = [Chains.goerli, Chains.sepolia, Chains.mumbai]
+export const MainnetChains: ChainsValues[] = [Chains.gnosis, Chains.polygon]
 
 const getInfuraRPCUrl = (chainId: ChainsValues) =>
   `https://${providerChains[RPCProviders.infura][chainId]}.infura.io/v3/${

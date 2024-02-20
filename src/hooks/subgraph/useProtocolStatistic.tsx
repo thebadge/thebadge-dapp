@@ -3,15 +3,18 @@ import useSWR from 'swr'
 import { MainnetChains, TestnetChains } from '@/src/config/web3'
 import useMultiSubgraph from '@/src/hooks/subgraph/useMultiSubgraph'
 import { SubgraphName } from '@/src/subgraph/subgraph'
-import { isTestnet } from '@/src/utils/network'
 import { ProtocolStatistic } from '@/types/generated/subgraph'
 
+const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
+
 export const useProtocolStatistic = () => {
-  const chainIds = isTestnet ? TestnetChains : MainnetChains
+  const { readOnlyChainId } = useWeb3Connection()
+  const testnetStatistics = TestnetChains.includes(readOnlyChainId)
+  const chainIds = testnetStatistics ? TestnetChains : MainnetChains
   const multiSubgraph = useMultiSubgraph(SubgraphName.TheBadge, chainIds)
 
   return useSWR(
-    [`protocolStatistic`],
+    [`protocolStatistic:`, testnetStatistics ? 'TestnetChains' : 'MainnetChains'],
     async () => {
       const protocolStatisticsResponses = await Promise.all(
         multiSubgraph.map((gql) => gql.protocolStatistics()),
