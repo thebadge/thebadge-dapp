@@ -21,6 +21,7 @@ import { useSizeSM } from '@/src/hooks/useSize'
 import BadgeModelPreview from '@/src/pagePartials/badge/BadgeModelPreview'
 import BadgeEvidenceInfoPreview from '@/src/pagePartials/badge/explorer/BadgeEvidenceInfoPreview'
 import ThirdPartyBadgeEvidenceInfoPreview from '@/src/pagePartials/badge/explorer/ThirdPartyBadgeEvidenceInfoPreview'
+import ClaimableDisplay from '@/src/pagePartials/badge/explorer/addons/ClaimableDisplay'
 import { BadgeModelControllerType } from '@/types/badges/BadgeModel'
 import { Badge } from '@/types/generated/subgraph'
 import { NextPageWithLayout } from '@/types/next'
@@ -117,7 +118,13 @@ const ExploreBadgeModels: NextPageWithLayout = () => {
               onClick={() => setSelectedBadgeModelIndex(index)}
               showSmallView
             />*/}
-            <BadgeModelPreview metadata={badge.badgeModel.uri} size="small" />
+            <Stack position="relative">
+              <BadgeModelPreview metadata={badge.badgeModel.uri} size="small" />
+
+              <SafeSuspense fallback={<></>}>
+                <ClaimableDisplay badgeId={badge.id} />
+              </SafeSuspense>
+            </Stack>
           </BadgePreviewContainer>
         </SafeSuspense>
       </InViewPort>
