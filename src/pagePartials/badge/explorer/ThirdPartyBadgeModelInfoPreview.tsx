@@ -1,10 +1,14 @@
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 
+import TipsAndUpdatesOutlinedIcon from '@mui/icons-material/TipsAndUpdatesOutlined'
+import WarningAmberOutlinedIcon from '@mui/icons-material/WarningAmberOutlined'
 import { Box, Divider, Stack, Tooltip, Typography } from '@mui/material'
 import { ButtonV2, colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 
+import MarkdownTypography from '@/src/components/common/MarkdownTypography'
+import { HintContainer } from '@/src/components/form/formWithSteps/StepHeaderSubtitle'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { useIsBadgeModelOwner } from '@/src/hooks/subgraph/useIsBadgeOwner'
 import useTBStore from '@/src/hooks/theBadge/useTBStore'
@@ -83,33 +87,42 @@ export default function ThirdPartyBadgeModelInfoPreview({
         <Divider color={colors.white} />
         <Box display="flex" flex="1" justifyContent="space-evenly" mt={2}>
           {badgeModel.paused ? (
-            <Tooltip arrow title={t('explorer.preview.badge.unArchiveTooltip')}>
-              <Box>
-                <ButtonV2
-                  backgroundColor={colors.darkGreen}
-                  disabled={disabledButtons}
-                  onClick={() => onPauseBadgeModel(false)}
-                  sx={{ textTransform: 'uppercase' }}
-                  variant="contained"
-                >
-                  {t('explorer.preview.badge.unpause')}
-                </ButtonV2>
-              </Box>
-            </Tooltip>
+            <Stack gap={3} mt={6}>
+              <HintContainer>
+                <TipsAndUpdatesOutlinedIcon color="info" />
+                <MarkdownTypography variant="caption">
+                  {t('explorer.preview.badge.unArchiveTooltip')}
+                </MarkdownTypography>
+              </HintContainer>
+
+              <ButtonV2
+                backgroundColor={colors.darkGreen}
+                disabled={disabledButtons}
+                onClick={() => onPauseBadgeModel(false)}
+                sx={{ textTransform: 'uppercase' }}
+                variant="contained"
+              >
+                {t('explorer.preview.badge.unpause')}
+              </ButtonV2>
+            </Stack>
           ) : (
-            <Tooltip arrow title={t('explorer.preview.badge.archiveTooltip')}>
-              <Box>
-                <ButtonV2
-                  backgroundColor={colors.redError}
-                  disabled={disabledButtons}
-                  onClick={() => onPauseBadgeModel(true)}
-                  sx={{ textTransform: 'uppercase' }}
-                  variant="contained"
-                >
-                  {t('explorer.preview.badge.pause')}
-                </ButtonV2>
-              </Box>
-            </Tooltip>
+            <Stack gap={3} mt={6}>
+              <HintContainer>
+                <WarningAmberOutlinedIcon color="warning" />
+                <MarkdownTypography variant="caption">
+                  {t('explorer.preview.badge.archiveTooltip')}
+                </MarkdownTypography>
+              </HintContainer>
+              <ButtonV2
+                backgroundColor={colors.redError}
+                disabled={disabledButtons}
+                onClick={() => onPauseBadgeModel(true)}
+                sx={{ textTransform: 'uppercase', margin: 'auto' }}
+                variant="contained"
+              >
+                {t('explorer.preview.badge.pause')}
+              </ButtonV2>
+            </Stack>
           )}
         </Box>
       </Stack>
@@ -174,9 +187,11 @@ export default function ThirdPartyBadgeModelInfoPreview({
       {renderManagementOptions()}
 
       {/* Creator info */}
-      <SafeSuspense>
-        <CreatorInfoSmallPreview creator={badgeModel.creator} />
-      </SafeSuspense>
+      {!isBadgeOwner && (
+        <SafeSuspense>
+          <CreatorInfoSmallPreview creator={badgeModel.creator} />
+        </SafeSuspense>
+      )}
     </Stack>
   )
 }

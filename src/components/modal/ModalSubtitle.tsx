@@ -4,6 +4,7 @@ import TipsAndUpdatesOutlinedIcon from '@mui/icons-material/TipsAndUpdatesOutlin
 import { Box, styled } from '@mui/material'
 
 import MarkdownTypography from '@/src/components/common/MarkdownTypography'
+import { HintContainer } from '@/src/components/form/formWithSteps/StepHeaderSubtitle'
 
 const SubtitleContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -15,17 +16,6 @@ const SubtitleContainer = styled(Box)(({ theme }) => ({
     gap: theme.spacing(2),
     flexDirection: 'column',
   },
-}))
-
-const HintContainer = styled(Box)(({ theme }) => ({
-  alignItems: 'center',
-  display: 'flex',
-  flex: '1',
-  gap: theme.spacing(2),
-  border: '1px solid grey',
-  padding: theme.spacing(1.5),
-  borderRadius: theme.spacing(1),
-  margin: 'auto',
 }))
 
 const SubtitleTypography = styled(MarkdownTypography)(({ theme }) => ({
