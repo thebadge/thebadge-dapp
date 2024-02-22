@@ -34,7 +34,7 @@ export default function ThirdPartyBadgeModelInfoPreview({
   const theBadgeStore = useTBStore()
   const { sendTx } = useTransaction()
 
-  const isBadgeOwner = useIsBadgeModelOwner(badgeModel.id, address)
+  const isBadgeModelOwner = useIsBadgeModelOwner(badgeModel.id, address)
   const theBadgeModels = useContractInstance(TheBadgeModels__factory, 'TheBadgeModels')
 
   const [disabledButtons, setDisabledButtons] = useState(false)
@@ -55,7 +55,7 @@ export default function ThirdPartyBadgeModelInfoPreview({
   }, [badgeModel.paused, setDisabledMint])
 
   const renderManagementOptions = () => {
-    if (!isBadgeOwner) {
+    if (!isBadgeModelOwner) {
       return null
     }
     const onPauseBadgeModel = async (pause: boolean) => {
@@ -187,7 +187,7 @@ export default function ThirdPartyBadgeModelInfoPreview({
       {renderManagementOptions()}
 
       {/* Creator info */}
-      {!isBadgeOwner && (
+      {!isBadgeModelOwner && (
         <SafeSuspense>
           <CreatorInfoSmallPreview creator={badgeModel.creator} />
         </SafeSuspense>
