@@ -9,17 +9,18 @@ import PeopleOutlineOutlinedIcon from '@mui/icons-material/PeopleOutlineOutlined
 import StarBorderPurple500RoundedIcon from '@mui/icons-material/StarBorderPurple500Rounded'
 import StickyNote2OutlinedIcon from '@mui/icons-material/StickyNote2Outlined'
 import TroubleshootOutlinedIcon from '@mui/icons-material/TroubleshootOutlined'
-import { Box, Stack, Table, TableBody, Typography } from '@mui/material'
+import { Box, Table, TableBody } from '@mui/material'
 import { colors } from '@thebadge/ui-library'
 import { BigNumber } from 'ethers'
 import { formatUnits } from 'ethers/lib/utils'
 import { useTranslation } from 'next-export-i18n'
 
-import { StatisticSquare, StatisticsContainer } from '../addons/styled'
+import { StatisticsContainer } from '../addons/styled'
 import { getNetworkConfig } from '@/src/config/web3'
 import { ZERO_BN } from '@/src/constants/bigNumber'
 import { StatisticVisibility } from '@/src/hooks/nextjs/useStatisticsVisibility'
 import useCreatorStatistics from '@/src/hooks/subgraph/useCreatorStatistics'
+import StatisticCard from '@/src/pagePartials/profile/statistics/addons/StatisticCard'
 import StatisticRow from '@/src/pagePartials/profile/statistics/addons/StatisticRow'
 import { CreatorStatistic } from '@/src/pagePartials/profile/statistics/creator/CreatorStatistics'
 import { useProfileProvider } from '@/src/providers/ProfileProvider'
@@ -77,97 +78,75 @@ export default function CreatorStatisticContent({
 
       <Box display="flex" flex="4" gap={2} justifyContent="center">
         {statisticVisibility[CreatorStatistic.fee] && (
-          <Stack flex="1" minWidth="160px">
-            <StatisticSquare color={colors.purple}>
+          <StatisticCard
+            icon={
               <TroubleshootOutlinedIcon
                 sx={{ color: colors.purple, position: 'absolute', top: 8, left: 8 }}
               />
-              <Typography sx={{ fontSize: '48px !important', fontWeight: 900 }}>
-                {formatUnits(
-                  BigNumber.from(creatorStatistic?.totalFeesEarned || ZERO_BN).div(
-                    creatorStatistic?.createdBadgeModelsMintedAmount > 0
-                      ? creatorStatistic?.createdBadgeModelsMintedAmount
-                      : 1,
-                  ),
-                )}
-              </Typography>
-              <Typography sx={{ textAlign: 'center', color: 'text.primary' }}>
-                {t('profile.statistics.creator.earnedPerModel')}
-              </Typography>
-            </StatisticSquare>
-          </Stack>
+            }
+            label={t('profile.statistics.creator.earnedPerModel')}
+            value={formatUnits(
+              BigNumber.from(creatorStatistic?.totalFeesEarned || ZERO_BN).div(
+                creatorStatistic?.createdBadgeModelsMintedAmount > 0
+                  ? creatorStatistic?.createdBadgeModelsMintedAmount
+                  : 1,
+              ),
+            )}
+          />
         )}
 
         {statisticVisibility[CreatorStatistic.amount] && (
-          <Stack flex="1" minWidth="160px">
-            <StatisticSquare color={colors.purple}>
+          <StatisticCard
+            icon={
               <StickyNote2OutlinedIcon
                 sx={{ color: colors.purple, position: 'absolute', top: 8, left: 8 }}
               />
-              <Typography sx={{ fontSize: '48px !important', fontWeight: 900 }}>
-                {creatorStatistic?.createdBadgeModelsAmount || 0}
-              </Typography>
-              <Typography sx={{ textAlign: 'center', color: 'text.primary' }}>
-                {t('profile.statistics.creator.amountModelsCreated')}
-              </Typography>
-            </StatisticSquare>
-          </Stack>
+            }
+            label={t('profile.statistics.creator.amountModelsCreated')}
+            value={creatorStatistic?.createdBadgeModelsAmount || 0}
+          />
         )}
 
         {statisticVisibility[CreatorStatistic.minters] && (
-          <Stack flex="1" minWidth="160px">
-            <StatisticSquare color={colors.purple}>
+          <StatisticCard
+            icon={
               <PeopleOutlineOutlinedIcon
                 sx={{ color: colors.purple, position: 'absolute', top: 8, left: 8 }}
               />
-              <Typography sx={{ fontSize: '48px !important', fontWeight: 900 }}>
-                {creatorStatistic?.mostPopularCreatedBadge}
-              </Typography>
-              <Typography sx={{ textAlign: 'center', color: 'text.primary' }}>
-                {t('profile.statistics.creator.amountOfMinters')}
-              </Typography>
-            </StatisticSquare>
-          </Stack>
+            }
+            label={t('profile.statistics.creator.amountOfMinters')}
+            value={creatorStatistic?.mostPopularCreatedBadge}
+          />
         )}
 
         {statisticVisibility[CreatorStatistic.minted] && (
-          <Stack flex="1" minWidth="160px">
-            <StatisticSquare color={colors.purple}>
-              <Typography sx={{ fontSize: '48px !important', fontWeight: 900 }}>
-                {creatorStatistic?.createdBadgeModelsMintedAmount}
-              </Typography>
-              <Typography sx={{ textAlign: 'center', color: 'text.primary' }}>
-                {t('profile.statistics.creator.totalMinted')}
-              </Typography>
-            </StatisticSquare>
-          </Stack>
+          <StatisticCard
+            label={t('profile.statistics.creator.totalMinted')}
+            value={creatorStatistic?.createdBadgeModelsMintedAmount}
+          />
         )}
 
         {statisticVisibility[CreatorStatistic.mostMinted] && (
-          <Stack flex="1" minWidth="160px">
-            <StatisticSquare color={colors.purple}>
+          <StatisticCard
+            icon={
               <LocalFireDepartmentOutlinedIcon
                 sx={{ color: colors.purple, position: 'absolute', top: 8, left: 8 }}
               />
-              <Typography sx={{ fontSize: '48px !important', fontWeight: 900 }}>
-                {creatorStatistic?.mostPopularCreatedBadge}
-              </Typography>
-              <Typography sx={{ textAlign: 'center', color: 'text.primary' }}>
-                {t('profile.statistics.creator.mostMinted')}
-              </Typography>
-            </StatisticSquare>
-          </Stack>
+            }
+            label={t('profile.statistics.creator.mostMinted')}
+            value={creatorStatistic?.mostPopularCreatedBadge}
+          />
         )}
 
         {statisticVisibility[CreatorStatistic.ranking] && (
-          <Stack flex="1" minWidth="160px">
-            <StatisticSquare color={colors.purple}>
-              <MilitaryTechOutlinedIcon sx={{ color: colors.purple, fontSize: '4rem' }} />
-              <Typography sx={{ textAlign: 'center', color: 'text.primary' }}>
-                {t('profile.statistics.creator.ranking', { position: 7 })}
-              </Typography>
-            </StatisticSquare>
-          </Stack>
+          <StatisticCard
+            icon={
+              <MilitaryTechOutlinedIcon
+                sx={{ color: colors.purple, position: 'absolute', top: 8, left: 8 }}
+              />
+            }
+            label={t('profile.statistics.creator.ranking', { position: 7 })}
+          />
         )}
       </Box>
     </StatisticsContainer>

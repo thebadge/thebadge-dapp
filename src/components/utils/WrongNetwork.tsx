@@ -1,6 +1,7 @@
 import React, { RefObject, useRef } from 'react'
 
 import { styled } from '@mui/material'
+import { useTranslation } from 'next-export-i18n'
 
 import { useSizeMD } from '@/src/hooks/useSize'
 const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
@@ -42,18 +43,20 @@ const Underline = styled('button')`
 `
 
 export const WrongNetwork: React.FC = ({ ...restProps }) => {
-  const { isWalletConnected, isWalletNetworkSupported } = useWeb3Connection()
+  const { t } = useTranslation()
+
+  const { connectWallet, isWalletConnected, isWalletNetworkSupported } = useWeb3Connection()
   const isMobileOrTablet = useSizeMD()
   const anchorMenuElRef: RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null)
-
   return isWalletConnected && !isWalletNetworkSupported ? (
     <Wrapper {...restProps}>
       <ErrorSVG />
       <TextWrapper ref={anchorMenuElRef}>
-        <Underline>Switch to a valid network</Underline>
-        {!isMobileOrTablet ? <span> to use the app!</span> : null}
+        <Underline onClick={() => connectWallet({ view: 'Networks' })}>
+          {t('errors.switchNetwork')}
+        </Underline>
+        {!isMobileOrTablet ? <span>{t('errors.toUseTheApp')}</span> : null}
       </TextWrapper>
-      <w3m-network-button />
     </Wrapper>
   ) : null
 }

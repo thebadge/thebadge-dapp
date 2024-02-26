@@ -8,6 +8,7 @@ import { useTranslation } from 'next-export-i18n'
 import useBadgeIdParam from '@/src/hooks/nextjs/useBadgeIdParam'
 import useBadgeById from '@/src/hooks/subgraph/useBadgeById'
 import { useSizeSM } from '@/src/hooks/useSize'
+import BadgeNetwork from '@/src/pagePartials/badge/preview/addons/BadgeNetwork'
 const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 
 export default function BadgeTitle() {
@@ -31,7 +32,7 @@ export default function BadgeTitle() {
     ? getExplorerUrl(badge?.claimedTxHash)
     : getExplorerUrl(badge?.createdTxHash)
   return (
-    <Stack gap={isMobile ? 1 : 3}>
+    <Stack gap={isMobile ? 2 : 3}>
       <Typography
         sx={{
           color: colors.green,
@@ -42,16 +43,19 @@ export default function BadgeTitle() {
       >
         {badgeModelMetadata?.name}
       </Typography>
-      <Typography
-        sx={{ color: colors.green, fontWeight: 'bold' }}
-        textAlign={isMobile ? 'center' : 'left'}
-        variant="caption"
-      >
-        {t('badge.viewBadge.id')}
-        <Link href={badgeLinkUrl} target={'_blank'}>
-          <strong style={{ textDecoration: 'underline' }}>#{badgeId}</strong>
-        </Link>
-      </Typography>
+      <Stack flexDirection="row" justifyContent="space-between" px={isMobile ? 5 : 0}>
+        <Typography
+          sx={{ color: colors.green, fontWeight: 'bold' }}
+          textAlign={isMobile ? 'center' : 'left'}
+          variant="caption"
+        >
+          {t('badge.viewBadge.id')}
+          <Link href={badgeLinkUrl} target={'_blank'}>
+            <strong style={{ textDecoration: 'underline' }}>#{badgeId}</strong>
+          </Link>
+        </Typography>
+        <BadgeNetwork />
+      </Stack>
     </Stack>
   )
 }

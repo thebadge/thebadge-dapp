@@ -167,7 +167,7 @@ async function createAndUploadDiplomaBadgeModelMetadata(
     await ipfsUpload<DiplomaIssuerConfig>({
       attributes: {
         customIssuerEnabled: !!rest.customIssuerEnabled,
-        // If it's an IPFS Url we are re-using the creator avatar, so we dont need to re-upload the file
+        // If it's an IPFS Url we are re-using the creator avatar, so we don't need to re-upload the file
         issuerAvatar: isIPFSUrl(rest.issuerAvatar?.ipfsUrl)
           ? rest.issuerAvatar?.ipfsUrl
           : rest.issuerAvatar,

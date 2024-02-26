@@ -17,6 +17,7 @@ import dayjs from 'dayjs'
 import { useTranslation } from 'next-export-i18n'
 
 import LastUpdated from '@/src/components/common/LastUpdated'
+import NetworkMultiSelect from '@/src/components/common/NetworkMultiSelect'
 import FilteredListDesktopView from '@/src/components/helpers/FilteredList/DesktopView'
 import FilteredListMobileView from '@/src/components/helpers/FilteredList/MobileView'
 import { SpinnerColors } from '@/src/components/loading/Spinner'
@@ -25,6 +26,8 @@ import TBadgeSelect from '@/src/components/select/Select'
 import useSelectedFilters from '@/src/hooks/nextjs/useSelectedFilters'
 import { useSizeSM } from '@/src/hooks/useSize'
 import { useColorMode } from '@/src/providers/themeProvider'
+import { ChainsValues } from '@/types/chains'
+import { CallbackFunction } from '@/types/utils'
 const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 
 export type ListFilter<K = unknown> = {
@@ -59,6 +62,11 @@ type FilteredListProps = PropsWithChildren & {
   preview?: ReactNode | undefined
   alignItems?: string
   searchInputLabel?: string
+
+  showNetworksFilter?: boolean
+  onChainsChange?: CallbackFunction<ChainsValues[]>
+  chainsIds?: ChainsValues[]
+
   showTextSearch?: boolean
   items: React.ReactNode[]
 }
@@ -75,6 +83,7 @@ const FilteredListHeaderBox = styled(Box)(({ theme }) => ({
 export default function FilteredList({
   filters = [],
   listId,
+  showNetworksFilter,
   showTextSearch = true,
   ...props
 }: FilteredListProps) {
@@ -216,6 +225,10 @@ export default function FilteredList({
                 label={props.searchInputLabel || t('filteredList.textSearch')}
                 onSearch={(searchValue) => onStringSearch(searchValue)}
               />
+            )}
+
+            {showNetworksFilter && props.onChainsChange && props.chainsIds && (
+              <NetworkMultiSelect initialValue={props.chainsIds} onChange={props.onChainsChange} />
             )}
           </Box>
         )}

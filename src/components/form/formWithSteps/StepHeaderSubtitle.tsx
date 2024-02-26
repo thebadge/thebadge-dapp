@@ -19,7 +19,7 @@ const SubtitleContainer = styled(Box)(({ theme }) => ({
   },
 }))
 
-const HintContainer = styled(Box)(({ theme }) => ({
+export const HintContainer = styled(Box)(({ theme }) => ({
   alignItems: 'center',
   display: 'flex',
   flex: '1',

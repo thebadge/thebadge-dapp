@@ -73,6 +73,7 @@ gql`
     status
     contractAddress
     createdTxHash
+    networkName
     badgeModel {
       id
       contractAddress
@@ -86,5 +87,6 @@ gql`
   fragment UserBadges on Badge {
     id
     contractAddress
+    networkName
   }
 `

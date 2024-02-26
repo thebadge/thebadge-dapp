@@ -22,13 +22,15 @@ import Blockies from 'react-18-blockies'
 
 import { Logout } from '@/src/components/assets/Logout'
 import ActionButtons from '@/src/components/header/ActionButtons'
+import NetworkButton from '@/src/components/header/NetworkButton'
 import { Address } from '@/src/components/helpers/Address'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { getNetworkConfig } from '@/src/config/web3'
 import { useSizeSM } from '@/src/hooks/useSize'
 import { PreventActionIfOutOfService } from '@/src/pagePartials/errors/preventActionIfOutOfService'
-const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 import { generateBaseUrl, generateProfileUrl } from '@/src/utils/navigation/generateUrl'
+
+const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 
 const StyledBadge = styled(Badge)<{ state?: 'ok' | 'error' }>(({ state, theme }) => ({
   '& .MuiBadge-badge': {
@@ -104,6 +106,8 @@ export const UserDropdown: React.FC = () => {
           <ActionButtons />
         </PreventActionIfOutOfService>
       )}
+      <NetworkButton />
+
       <Tooltip arrow ref={anchorMenuElRef} title="Account settings">
         <IconButton
           aria-controls={open ? 'account-menu' : undefined}
@@ -111,7 +115,7 @@ export const UserDropdown: React.FC = () => {
           aria-haspopup="true"
           onClick={handleClick}
           size="small"
-          sx={{ ml: 2 }}
+          sx={{ ml: 1 }}
         >
           <StyledBadge
             anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}

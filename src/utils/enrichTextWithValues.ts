@@ -63,3 +63,13 @@ export default function enrichTextWithValues(
   })
   return textToEnrich
 }
+
+const mapReplacementKeyToLabel = {
+  [ReplacementKeys.address]: 'Address',
+  [ReplacementKeys.expirationDate]: 'Expiration Date',
+  [ReplacementKeys.issueDate]: 'Issue Date',
+  [ReplacementKeys.studentName]: 'Student Name',
+  [ReplacementKeys.displayName]: 'Display Name',
+}
+
+export const labelForReplacementKey = (key: ReplacementKeys) => mapReplacementKeyToLabel[key]

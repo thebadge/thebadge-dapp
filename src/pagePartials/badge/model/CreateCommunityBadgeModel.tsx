@@ -152,7 +152,7 @@ const CreateCommunityBadgeModel: NextPageWithLayout = () => {
       // Use NextJs dynamic import to reduce the bundle size
       const { createAndUploadCreatorMetadata } = await import('@/src/utils/creator/registerHelpers')
       const creatorMetadataIPFSHash = await createAndUploadCreatorMetadata(data)
-      return theBadgeUsers.registerUser(creatorMetadataIPFSHash, false)
+      return theBadgeUsers['registerUser(string,bool)'](creatorMetadataIPFSHash, false)
     })
 
     if (transaction) {

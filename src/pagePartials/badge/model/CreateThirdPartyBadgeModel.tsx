@@ -11,13 +11,14 @@ import {
   CreateThirdPartyDiplomaModelSchemaType,
 } from '@/src/pagePartials/badge/model/schema/CreateThirdPartyModelSchema'
 import { ProfileType } from '@/src/pagePartials/profile/ProfileSelector'
-const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 import { getNeededVariables } from '@/src/utils/badges/createBadgeModelHelpers'
 import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 import { BadgeModelControllerName, BadgeModelTemplate } from '@/types/badges/BadgeModel'
 import { TheBadgeModels__factory } from '@/types/generated/typechain'
 import { ThirdPartyMetadataColumn } from '@/types/kleros/types'
 import { NextPageWithLayout } from '@/types/next'
+
+const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 
 const CreateThirdPartyBadgeModel: NextPageWithLayout = () => {
   const router = useRouter()
