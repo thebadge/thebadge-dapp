@@ -8,12 +8,11 @@ import { useTranslation } from 'next-export-i18n'
 import { NoResultsAnimated } from '@/src/components/assets/animated/NoResults'
 import FilteredList, { ListFilter } from '@/src/components/helpers/FilteredList'
 import InViewPort from '@/src/components/helpers/InViewPort'
-import { Chains } from '@/src/config/web3'
+import useGetMultiChainsConfig from '@/src/hooks/subgraph/useGetMultiChainsConfig'
 import useMultiSubgraph from '@/src/hooks/subgraph/useMultiSubgraph'
 import BadgeItemGenerator from '@/src/pagePartials/badge/preview/generators/BadgeItemGenerator'
 import { SubgraphName } from '@/src/subgraph/subgraph'
 import { generateBadgePreviewUrl, generateExplorer } from '@/src/utils/navigation/generateUrl'
-import { isTestnet } from '@/src/utils/network'
 import { ChainsValues } from '@/types/chains'
 import { Badge, BadgeStatus, Badge_Filter } from '@/types/generated/subgraph'
 
@@ -25,17 +24,16 @@ type Props = {
 export default function BadgesYouOwnList({ address }: Props) {
   const { t } = useTranslation()
   const router = useRouter()
+
   const { address: connectedWalletAddress, readOnlyChainId } = useWeb3Connection()
-  const [chainIds, setChainIds] = useState<ChainsValues[]>(
-    isTestnet ? [readOnlyChainId, Chains.goerli, Chains.sepolia] : [readOnlyChainId],
-  )
+  const { chainIds: defaultChains } = useGetMultiChainsConfig()
 
-  const isLoggedInUser = connectedWalletAddress === address
-
-  const [ownBadges, setBadges] = useState<Badge[]>([])
   const [loading, setLoading] = useState<boolean>(false)
+  const [chainIds, setChainIds] = useState<ChainsValues[]>(defaultChains)
+  const [ownBadges, setBadges] = useState<Badge[]>([])
 
   const multiSubgraph = useMultiSubgraph(SubgraphName.TheBadge, chainIds)
+  const isLoggedInUser = connectedWalletAddress === address
 
   const filters: Array<ListFilter<BadgeStatus>> = [
     {
@@ -110,6 +108,7 @@ export default function BadgesYouOwnList({ address }: Props) {
             badgeNetworkName={badge.networkName}
             key={badge.id}
             onClick={onBadgeClick(badge)}
+            showNetwork
           />
         </InViewPort>
       ))

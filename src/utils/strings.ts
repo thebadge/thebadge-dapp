@@ -15,7 +15,8 @@ export const truncateStringInTheMiddle = (
 
 export const hexToNumber = (hex?: string) => (hex ? parseInt(hex || '0', 16) : null)
 
-export function capitalizeFirstLetter(string: string) {
+export function capitalizeFirstLetter(string?: string) {
+  if (!string) return ''
   return string.charAt(0).toUpperCase() + string.slice(1)
 }
 

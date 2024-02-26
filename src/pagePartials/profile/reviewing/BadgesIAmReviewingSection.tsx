@@ -59,6 +59,7 @@ export default function BadgesIAmReviewingSection() {
     badgesElementRefs,
     selectedBadge,
     badgesIamReviewing.length,
+    false,
   )
 
   const search = async (

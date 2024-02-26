@@ -19,6 +19,7 @@ type BadgePreviewGeneratorProps = {
   additionalData?: Record<string, any>
   size?: 'small' | 'medium' | 'large'
 
+  disableAnimation?: boolean
   badgeContractAddress?: string
   badgeNetworkName?: string
 }
@@ -28,6 +29,7 @@ export const BadgeView = ({
   badgeContractAddress,
   badgeNetworkName,
   badgeUrl,
+  disableAnimation,
   modelId,
   size = 'medium',
 }: BadgePreviewGeneratorProps) => {
@@ -58,7 +60,7 @@ export const BadgeView = ({
 
   return (
     <BadgePreview
-      animationEffects={['wobble', 'grow', 'glare']}
+      animationEffects={disableAnimation ? [] : ['wobble', 'grow', 'glare']}
       animationOnHover
       badgeBackgroundUrl={getBackgroundBadgeUrl(backgroundType?.value, modelBackgrounds)}
       badgeUrl={badgeUrl}
