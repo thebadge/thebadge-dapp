@@ -56,7 +56,7 @@ export const DEFAULT_COURT_ID = process.env.NEXT_PUBLIC_KLEROS_DEFAULT_COURT || 
 // Kleros Court Case display config, where we point the kleros-kit script
 export const DYNAMIC_SCRIPT_IPFS_HASH =
   process.env.NEXT_PUBLIC_DYNAMIC_SCRIPT_IPFS_HASH ||
-  'QmSUTuUYZhNiGsaHmAfwoh7B8S575BnyPnvBeQss2PHmrn'
+  'QmVmXuzGMapNGkpS2zyT8PCKd1qMFCSGUoEUQgfzpxJhZc'
 
 // Kleros Court evidence display config
 export const EVIDENCE_DISPLAY_INTERFACE_IPFS_HASH =
