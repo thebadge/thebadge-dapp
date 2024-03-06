@@ -42,6 +42,7 @@ export default async function Page({
   searchParams: { [key: string]: string | string[] | undefined }
 }) {
   const search = Object.keys(searchParams)[0]
+  if (search === undefined) return
   const message = JSON.parse(search)
   const { arbitrableChainID, disputeID }: InjectedParams = message
 
