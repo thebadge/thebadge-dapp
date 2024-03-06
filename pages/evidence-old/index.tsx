@@ -84,9 +84,6 @@ export const getServerSideProps = async (context: NextPageContext) => {
   const klerosBadgeRequest = request.klerosBadgeRequests[0]
 
   const badge = (klerosBadgeRequest.badgeKlerosMetaData as BadgeKlerosMetaData).badge
-  // const requester = klerosBadgeRequest.requester
-  // const challenger = klerosBadgeRequest.challenger
-  // const badgeModel = badge.badgeModel
 
   return {
     props: {

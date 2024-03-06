@@ -1,11 +1,10 @@
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 
-import { styled } from '@mui/material'
+import { Link, styled } from '@mui/material'
 import { Toast, toast } from 'react-hot-toast'
 
 import { Copy } from '@/src/components/assets/Copy'
-import { Link } from '@/src/components/assets/Link'
 import { ToastComponent } from '@/src/components/toast/ToastComponent'
 import useUserMetadata from '@/src/hooks/useUserMetadata'
 import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
@@ -19,27 +18,21 @@ const Wrapper = styled('span')`
   display: flex;
 `
 
-const ExternalLink = styled('a')`
-  color: ${({ theme: { palette } }) => palette.text.primary};
-  font-weight: 400;
-  line-height: 133%;
-  font-size: 14px;
-  text-decoration: underline;
+const ExternalLink = styled(Link)(({ theme }) => ({
+  color: theme.palette.text.primary,
+  fontWeight: 400,
+  lineHeight: '133%',
+  fontSize: '14px',
+  textDecoration: 'underline',
 
-  &:hover {
-    text-decoration: none;
-  }
+  '&:hover': {
+    textDecoration: 'none',
+  },
 
-  &:active {
-    opacity: 0.7;
-  }
-`
-
-ExternalLink.defaultProps = {
-  className: 'externalLink',
-  rel: 'noopener noreferrer',
-  target: '_blank',
-}
+  '&:active': {
+    opacity: 0.7,
+  },
+}))
 
 const CopyButton = styled('button')`
   background: none;
@@ -101,7 +94,10 @@ export const Address: React.FC<Props> = ({
   const userIdentifier = isEnsName ? ensNameOrAddress : displayAddress
   return (
     <Wrapper {...restProps}>
-      <ExternalLink href={isUserAddress ? getProfileUrl() : getExplorerUrl(address)}>
+      <ExternalLink
+        href={isUserAddress ? getProfileUrl() : getExplorerUrl(address)}
+        target="_blank"
+      >
         {userIdentifier}
       </ExternalLink>
       {showCopyButton && (
@@ -110,7 +106,7 @@ export const Address: React.FC<Props> = ({
         </CopyButton>
       )}
       {showExternalLink && (
-        <ExternalLink href={getExplorerUrl(address)}>
+        <ExternalLink href={getExplorerUrl(address)} target="_blank">
           <Link />
         </ExternalLink>
       )}
