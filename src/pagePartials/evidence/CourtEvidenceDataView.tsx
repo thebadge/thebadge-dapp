@@ -6,11 +6,11 @@ import { colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
-import useBadgeByDisputeId from '@/src/hooks/subgraph/useBadgeByDisputeId'
 import CurationCriteriaLink from '@/src/pagePartials/badge/curate/CurationCriteriaLink'
 import BadgeEvidenceDisplay from '@/src/pagePartials/badge/curate/viewEvidence/BadgeEvidenceDisplay'
 import { generateBadgePreviewUrl } from '@/src/utils/navigation/generateUrl'
 import { ChainsValues } from '@/types/chains'
+import { Badge } from '@/types/generated/subgraph'
 
 const Container = styled(Stack)(({ theme }) => ({
   gap: theme.spacing(2),
@@ -19,21 +19,14 @@ const Container = styled(Stack)(({ theme }) => ({
 
 export default function CourtEvidenceDataView({
   arbitrableChainID,
-  disputeID,
+  badge,
 }: {
+  badge: Badge
   arbitrableChainID?: ChainsValues
   disputeID?: string
 }) {
-  const { t } = useTranslation()
-
   const router = useRouter()
-  const graphQueryResult = useBadgeByDisputeId(arbitrableChainID, disputeID)
-
-  if (!graphQueryResult.data || !graphQueryResult.data.badge || !graphQueryResult.data.badgeModel) {
-    return null
-  }
-
-  const badge = graphQueryResult.data.badge
+  const { t } = useTranslation()
 
   function handleViewBadgeClick() {
     if (!arbitrableChainID) {
@@ -56,19 +49,12 @@ export default function CourtEvidenceDataView({
           <SafeSuspense
             fallback={<Skeleton sx={{ margin: 'auto' }} variant={'text'} width={500} />}
           >
-            {graphQueryResult.data?.badgeModel?.id && (
-              <CurationCriteriaLink
-                badgeModelId={graphQueryResult.data?.badgeModel?.id}
-                type="curate"
-              />
+            {badge?.badgeModel?.id && (
+              <CurationCriteriaLink badgeModelId={badge?.badgeModel?.id} type="curate" />
             )}
           </SafeSuspense>
         </Typography>
-        <SafeSuspense>
-          {graphQueryResult.data?.badge?.id && (
-            <BadgeEvidenceDisplay badgeId={graphQueryResult.data?.badge?.id} />
-          )}
-        </SafeSuspense>
+        <SafeSuspense>{badge?.id && <BadgeEvidenceDisplay badgeId={badge?.id} />}</SafeSuspense>
       </Container>
       <Container
         sx={{

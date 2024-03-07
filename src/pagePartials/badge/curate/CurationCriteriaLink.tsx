@@ -7,20 +7,25 @@ import {
   useRegistrationBadgeModelKlerosMetadata,
   useRemovalBadgeModelKlerosMetadata,
 } from '@/src/hooks/subgraph/useBadgeModelKlerosMetadata'
+import { ChainsValues } from '@/types/chains'
 
 export default function CurationCriteriaLink({
   badgeModelId,
+  chainId,
   isRemoval,
   type,
 }: {
+  chainId?: ChainsValues
   badgeModelId: string
   type: 'challenge' | 'addEvidence' | 'curate'
   isRemoval?: boolean
 }) {
   const { t } = useTranslation()
 
-  const badgeModelRegistrationKlerosData = useRegistrationBadgeModelKlerosMetadata(badgeModelId)
-  const badgeModelRemovalKlerosData = useRemovalBadgeModelKlerosMetadata(badgeModelId)
+  const badgeModelRegistrationKlerosData = useRegistrationBadgeModelKlerosMetadata(badgeModelId, {
+    chainId,
+  })
+  const badgeModelRemovalKlerosData = useRemovalBadgeModelKlerosMetadata(badgeModelId, { chainId })
 
   if (!badgeModelRemovalKlerosData.data && !badgeModelRegistrationKlerosData.data) {
     throw `There was an error trying to fetch the metadata for the badge model`

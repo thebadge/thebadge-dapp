@@ -53,10 +53,10 @@ export const MODEL_CREATION_CACHE_EXPIRATION_MS = process.env.MODEL_CREATION_CAC
 export const KLEROS_COURT_URL = process.env.KLEROS_COURT_URL || 'https://court.kleros.io'
 export const DEFAULT_COURT_ID = process.env.NEXT_PUBLIC_KLEROS_DEFAULT_COURT || '1'
 
-// Kleros Court Case display config
+// Kleros Court Case display config, where we point the kleros-kit script
 export const DYNAMIC_SCRIPT_IPFS_HASH =
   process.env.NEXT_PUBLIC_DYNAMIC_SCRIPT_IPFS_HASH ||
-  'QmZ8gHDHenMHZ6WWCHTF3tn2NEhiP15Q5JK7kSCq1SM8x6'
+  'QmVmXuzGMapNGkpS2zyT8PCKd1qMFCSGUoEUQgfzpxJhZc'
 
 // Kleros Court evidence display config
 export const EVIDENCE_DISPLAY_INTERFACE_IPFS_HASH =
