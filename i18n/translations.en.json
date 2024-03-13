@@ -79,7 +79,8 @@
   "header": {
     "home": "HOME",
     "wallet": {
-      "connect": "Connect wallet"
+      "connect": "Connect wallet",
+      "connectMobile": "Wallet"
     },
     "buttons": {
       "mint": "MINT",

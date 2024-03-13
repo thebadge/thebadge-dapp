@@ -59,7 +59,7 @@ const Header = () => {
             )}
             <NetworkButton sx={{ ml: 0 }} />
             <ConnectWalletButton onClick={() => connectWallet()}>
-              {t('header.wallet.connect')}
+              {isMobile ? t('header.wallet.connectMobile') : t('header.wallet.connect')}
             </ConnectWalletButton>
           </Box>
         )}
