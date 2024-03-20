@@ -21,13 +21,10 @@ import { useWeb3Modal } from '@web3modal/wagmi/react'
 import Blockies from 'react-18-blockies'
 
 import { Logout } from '@/src/components/assets/Logout'
-import ActionButtons from '@/src/components/header/ActionButtons'
-import NetworkButton from '@/src/components/header/NetworkButton'
 import { Address } from '@/src/components/helpers/Address'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { getNetworkConfig } from '@/src/config/web3'
 import { useSizeSM } from '@/src/hooks/useSize'
-import { PreventActionIfOutOfService } from '@/src/pagePartials/errors/preventActionIfOutOfService'
 import { generateBaseUrl, generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 
 const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
@@ -101,13 +98,6 @@ export const UserDropdown: React.FC = () => {
 
   return (
     <>
-      {!isMobile && (
-        <PreventActionIfOutOfService>
-          <ActionButtons />
-        </PreventActionIfOutOfService>
-      )}
-      <NetworkButton />
-
       <Tooltip arrow ref={anchorMenuElRef} title="Account settings">
         <IconButton
           aria-controls={open ? 'account-menu' : undefined}

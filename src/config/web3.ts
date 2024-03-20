@@ -43,6 +43,18 @@ export const ChainNameToIds = {
   [ChainName[Chains.mumbai]]: Chains.mumbai,
 }
 
+const ChainLogos = {
+  [Chains.goerli]: '/networks/gor.svg',
+  [Chains.sepolia]: '/networks/sep.png',
+  [Chains.gnosis]: '/networks/gno.png',
+  [Chains.polygon]: '/networks/polygon.svg',
+  [Chains.mumbai]: '/networks/polygon.svg',
+}
+
+export const getChainLogo = (chainId: ChainsValues) => {
+  return ChainLogos[chainId]
+}
+
 export const providerChains: ProviderChains = {
   [RPCProviders.infura]: {
     [Chains.goerli]: 'goerli',
