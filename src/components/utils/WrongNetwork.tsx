@@ -48,6 +48,7 @@ export const WrongNetwork: React.FC = ({ ...restProps }) => {
   const { connectWallet, isWalletConnected, isWalletNetworkSupported } = useWeb3Connection()
   const isMobileOrTablet = useSizeMD()
   const anchorMenuElRef: RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null)
+  if (isMobileOrTablet) return null
   return isWalletConnected && !isWalletNetworkSupported ? (
     <Wrapper {...restProps}>
       <ErrorSVG />
@@ -55,7 +56,7 @@ export const WrongNetwork: React.FC = ({ ...restProps }) => {
         <Underline onClick={() => connectWallet({ view: 'Networks' })}>
           {t('errors.switchNetwork')}
         </Underline>
-        {!isMobileOrTablet ? <span>{t('errors.toUseTheApp')}</span> : null}
+        <span>{t('errors.toUseTheApp')}</span>
       </TextWrapper>
     </Wrapper>
   ) : null
