@@ -24,7 +24,6 @@ import { Logout } from '@/src/components/assets/Logout'
 import { Address } from '@/src/components/helpers/Address'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { getNetworkConfig } from '@/src/config/web3'
-import { useSizeSM } from '@/src/hooks/useSize'
 import { generateBaseUrl, generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 
 const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
@@ -63,7 +62,6 @@ export const UserDropdown: React.FC = () => {
   const { address, appChainId, disconnectWallet, isWalletNetworkSupported } = useWeb3Connection()
   const networkConfig = getNetworkConfig(appChainId)
   const { open: openWeb3Modal } = useWeb3Modal()
-  const isMobile = useSizeSM()
 
   const [open, setOpen] = useState(false)
   const anchorMenuElRef: RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null)
