@@ -43,6 +43,18 @@ export const ChainNameToIds = {
   [ChainName[Chains.mumbai]]: Chains.mumbai,
 }
 
+const ChainLogos = {
+  [Chains.goerli]: '/networks/gor.svg',
+  [Chains.sepolia]: '/networks/sep.png',
+  [Chains.gnosis]: '/networks/gno.png',
+  [Chains.polygon]: '/networks/polygon.svg',
+  [Chains.mumbai]: '/networks/polygon.svg',
+}
+
+export const getChainLogo = (chainId: ChainsValues) => {
+  return ChainLogos[chainId]
+}
+
 export const providerChains: ProviderChains = {
   [RPCProviders.infura]: {
     [Chains.goerli]: 'goerli',
@@ -63,8 +75,8 @@ export const providerChains: ProviderChains = {
 export const getChainName = (chainId: ChainsValues) => ChainName[chainId]
 export const getChainIdByName = (chainName: string) => ChainNameToIds[chainName]
 
-export const TestnetChains = [Chains.goerli, Chains.sepolia, Chains.mumbai]
-export const MainnetChains = [Chains.gnosis, Chains.polygon]
+export const TestnetChains: ChainsValues[] = [Chains.goerli, Chains.sepolia, Chains.mumbai]
+export const MainnetChains: ChainsValues[] = [Chains.gnosis, Chains.polygon]
 
 const getInfuraRPCUrl = (chainId: ChainsValues) =>
   `https://${providerChains[RPCProviders.infura][chainId]}.infura.io/v3/${

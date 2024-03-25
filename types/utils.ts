@@ -18,6 +18,7 @@ export type MySWRResponse<T> = [
 ]
 export type Writeable<T> = { -readonly [P in keyof T]: T[P] }
 export type CallbackFunction<T> = (item: T) => void
+export type AsyncFunction<Z = void> = () => Promise<Z>
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type UnwrapReturnType<T> = T extends (...args: any) => any ? Awaited<ReturnType<T>> : never

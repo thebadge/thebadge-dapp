@@ -50,6 +50,7 @@ export async function gqlQuery(
     }),
     method: 'POST',
     mode: 'cors',
+    cache: 'no-store',
   })
     .then((r) => r.json())
     .then((json) => json.data)

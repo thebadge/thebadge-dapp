@@ -13,10 +13,7 @@ const mulishFont = Mulish({
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={mulishFont.className}>
-        {/*<RootAppLayout>{}</RootAppLayout>*/}
-        {children}
-      </body>
+      <body className={mulishFont.className}>{children}</body>
     </html>
   )
 }

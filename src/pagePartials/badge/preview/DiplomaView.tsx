@@ -22,6 +22,7 @@ type Props = {
   badgeUrl?: string
   additionalData?: Record<string, any>
 
+  disableAnimation?: boolean
   badgeContractAddress?: string
   badgeNetworkName?: string
 }
@@ -31,6 +32,7 @@ export default function DiplomaView({
   badgeContractAddress,
   badgeNetworkName,
   badgeUrl,
+  disableAnimation,
   modelId,
 }: Props) {
   const isMobile = useSizeSM()
@@ -90,7 +92,7 @@ export default function DiplomaView({
 
   return (
     <DiplomaPreview
-      animationEffects={isMobile ? [] : ['wobble', 'grow', 'glare']}
+      animationEffects={isMobile || disableAnimation ? [] : ['wobble', 'grow', 'glare']}
       animationOnHover
       backgroundUrl={'https://dev-app.thebadge.xyz/shareable/diploma-background.png'}
       badgeUrl={badgeUrl}
@@ -111,7 +113,7 @@ export default function DiplomaView({
       sx={
         isMobile
           ? { scale: '0.5', transform: 'translate(-50%, -50%)', margin: '10px' }
-          : { margin: '10px', maxWidth: '-webkit-fill-available' }
+          : { maxWidth: '-webkit-fill-available' }
       }
       textContrastRight="dark"
       {...signatureProps}
