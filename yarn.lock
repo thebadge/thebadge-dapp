@@ -3115,10 +3115,10 @@
     quilljs-parser "^1.0.14"
     ts-node-dev "^2.0.0"
 
-"@thebadge/ui-library@^1.9.16":
-  version "1.9.16"
-  resolved "https://registry.yarnpkg.com/@thebadge/ui-library/-/ui-library-1.9.16.tgz#180cb2fd8b3acdeb4b55eb3179cac26562cfc5c0"
-  integrity sha512-ksD9yP+H+Rbm3t+fLwKWmDrwSwqys+6ExusC1SiAx6gAgH6KE/LVQ6VFXWXYfc94KvbBsDYcJescJXUgzObxCQ==
+"@thebadge/ui-library@^1.9.17":
+  version "1.9.17"
+  resolved "https://registry.yarnpkg.com/@thebadge/ui-library/-/ui-library-1.9.17.tgz#754f98bf91521f0e2ce1c3eaf727ddd646a086ad"
+  integrity sha512-rdE2+GxaiBX3sBRA3m59wXrzzxsJ7rhK0y6S7r3gn5MoPfk87F3GO8YNuj2By4nqMCmSK921e/w+Mv6kK8Dhdg==
   dependencies:
     "@emotion/react" "^11.10.5"
     "@emotion/server" "^11.10.0"
