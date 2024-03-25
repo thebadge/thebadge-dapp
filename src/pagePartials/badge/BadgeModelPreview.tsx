@@ -1,5 +1,3 @@
-import { ChainsValues } from '@/types/chains'
-
 import * as React from 'react'
 
 import { Box } from '@mui/material'
@@ -10,10 +8,12 @@ import { getChainLogo } from '@/src/config/web3'
 import { getBackgroundBadgeUrl } from '@/src/constants/backgrounds'
 import { useAvailableBackgrounds } from '@/src/hooks/useAvailableBackgrounds'
 import useS3Metadata, { DEFAULT_FALLBACK_CONTENT_METADATA } from '@/src/hooks/useS3Metadata'
-const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 import { getBackgroundType, getTextContrast } from '@/src/utils/badges/metadataHelpers'
 import { BadgeModelMetadata } from '@/types/badges/BadgeMetadata'
+import { ChainsValues } from '@/types/chains'
 import { BackendFileResponse } from '@/types/utils'
+
+const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 
 type Props = {
   metadata?: string
