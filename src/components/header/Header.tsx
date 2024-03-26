@@ -49,7 +49,7 @@ const Header = () => {
       </Box>
       <Box alignItems="center" display="flex" gap={2}>
         <WrongNetwork />
-        {!isWalletConnected && !isMobile && (
+        {!isMobile && (
           <PreventActionIfOutOfService>
             <ActionButtons />
           </PreventActionIfOutOfService>
