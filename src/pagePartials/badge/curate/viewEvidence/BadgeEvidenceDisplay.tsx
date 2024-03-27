@@ -1,15 +1,12 @@
 import React from 'react'
 
-import { Box } from '@mui/material'
-
-import DisplayEvidenceField from '@/src/components/displayEvidence/DisplayEvidenceField'
-import SafeSuspense from '@/src/components/helpers/SafeSuspense'
-import TBSwiper from '@/src/components/helpers/TBSwiper'
 import { useEvidenceBadgeKlerosMetadata } from '@/src/hooks/subgraph/useBadgeKlerosMetadata'
-import { getEvidenceValue } from '@/src/utils/kleros/getEvidenceValue'
-import { MetadataColumn } from '@/types/kleros/types'
+import BadgeEvidenceSwiper from '@/src/pagePartials/badge/curate/viewEvidence/BadgeEvidenceSwiper'
+
+const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 
 export default function BadgeEvidenceDisplay({ badgeId }: { badgeId: string }) {
+  const { readOnlyChainId } = useWeb3Connection()
   const badgeKlerosMetadata = useEvidenceBadgeKlerosMetadata(badgeId)
   const badgeEvidence = badgeKlerosMetadata.data?.requestBadgeEvidence
 
@@ -17,41 +14,5 @@ export default function BadgeEvidenceDisplay({ badgeId }: { badgeId: string }) {
     throw 'There was an error fetching the badge evidence, try again in some minutes.'
   }
 
-  return (
-    <TBSwiper
-      items={
-        badgeEvidence?.columns.map((column: MetadataColumn, index: string) => (
-          <Box
-            key={'evidence-' + index}
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              flexDirection: 'column',
-              marginTop: 4,
-              marginBottom: 4,
-              width: '100%',
-              '> *': {
-                width: '90%',
-                display: 'flex',
-              },
-            }}
-          >
-            <SafeSuspense>
-              <DisplayEvidenceField
-                columnItem={column}
-                value={getEvidenceValue(
-                  badgeEvidence?.values,
-                  badgeEvidence?.columns,
-                  column.label,
-                  column.type,
-                )}
-              />
-            </SafeSuspense>
-          </Box>
-        )) || []
-      }
-      maxSlidesPerView={1}
-      spaceBetween={8}
-    />
-  )
+  return <BadgeEvidenceSwiper badgeEvidence={badgeEvidence} networkId={readOnlyChainId} />
 }

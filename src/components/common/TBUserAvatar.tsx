@@ -52,7 +52,7 @@ export default function TBUserAvatar({
       overlap="circular"
     >
       <Avatar src={src} sx={{ width: size, height: size, ...sx }}>
-        <Blockies className="blockies-avatar" scale={size / 10} seed={seed} size={size / 10} />
+        <Blockies className="blockies-avatar" seed={seed} size={size} />
       </Avatar>
     </Badge>
   )

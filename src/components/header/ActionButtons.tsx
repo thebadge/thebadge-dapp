@@ -120,6 +120,7 @@ export default function ActionButtons() {
     }
     return <ButtonWithMenu color={color} disabled={disabled} menuItems={menuItems} title={title} />
   }
+
   const exploreButton = menuButton({
     title: t('header.buttons.mint'),
     color: colors.blue,
@@ -132,6 +133,7 @@ export default function ActionButtons() {
     disabled: false,
     path: generateBadgeCurate(),
   })
+
   const createButton = menuButton({
     title: t('header.buttons.create'),
     color: colors.pink,

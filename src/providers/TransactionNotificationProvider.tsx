@@ -116,6 +116,7 @@ const TransactionNotificationProvider: React.FC<PropsWithChildren> = ({ children
 
       // check txHashes status
       const hashes = (await Promise.all(txsStatus)).map((status) => {
+        if (!status) return null
         const { blockNumber } = status
         if (blockNumber) {
           removeTxFromStorage(status.hash)

@@ -84,14 +84,17 @@ export async function getFromIPFS<T, X = NonNullable<unknown>>(hash?: string): P
  * @param ipfsHash
  */
 // eslint-disable-next-line @typescript-eslint/ban-types
-export async function ssrGetContentFromIPFS<T, X = {}>(ipfsHash: string) {
+export async function ssrGetContentFromIPFS<T, X = {}>(ipfsHash?: string) {
+  if (!ipfsHash) return
   const hash = ipfsHash.replace(/^ipfs?:\/\//, '').replace(/^ipfs\//, '')
-  return fetch(`${IPFS_URL}/api/ipfs/${hash}`).then(async (response) => {
-    if (!response.ok) {
-      throw new Error('Network response was not OK')
-    }
-    return response.json().then() as unknown as BackendResponse<{ content: T } & X>
-  })
+  return fetch(`${IPFS_URL}/api/ipfs/${hash}`, { next: { revalidate: 60 } }).then(
+    async (response) => {
+      if (!response.ok) {
+        throw new Error('Network response was not OK')
+      }
+      return response.json().then() as unknown as BackendResponse<{ content: T } & X>
+    },
+  )
 }
 
 export function stringifyKey(key: Array<string | undefined | number>): string {

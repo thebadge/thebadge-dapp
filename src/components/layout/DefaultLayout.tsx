@@ -3,6 +3,7 @@ import { PaletteColorOptions } from '@mui/material/styles/createPalette'
 import { BackgroundGradient } from '@thebadge/ui-library'
 import Headroom from 'react-headroom'
 
+import MobileMenu from '../navigation/MobileMenu'
 import Header from '@/src/components/header/Header'
 import { Footer } from '@/src/components/layout/Footer'
 import MainMenu from '@/src/components/navigation/MainMenu'
@@ -108,6 +109,7 @@ export default function DefaultLayout({ children }: DefaultLayoutProps) {
         </Content>
       </CurateContextProvider>
       <Footer />
+      {isMobile && <MobileMenu />}
     </>
   )
 }

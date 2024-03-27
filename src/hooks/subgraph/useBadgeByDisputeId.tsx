@@ -1,16 +1,15 @@
 import useSWR from 'swr'
 
-import useSWRCacheUtils from '@/src/hooks/subgraph/useSWRCacheUtilts'
-import { getFromIPFS } from '@/src/hooks/subgraph/utils'
 import { SubgraphName, getSubgraphSdkByNetwork } from '@/src/subgraph/subgraph'
-import { BadgeMetadata, BadgeModelMetadata } from '@/types/badges/BadgeMetadata'
 import { ChainsValues } from '@/types/chains'
 import { Badge, BadgeKlerosMetaData, BadgeModel } from '@/types/generated/subgraph'
-import { BackendFileResponse } from '@/types/utils'
 
+/**
+ * Hook that is used on CourtEvidenceDataView, to be injected on Kleros site, don't use it for anything else
+ * @param appChainId
+ * @param disputeId
+ */
 export default function useBadgeByDisputeId(appChainId?: number, disputeId?: string) {
-  const { saveOnCacheIfMissing } = useSWRCacheUtils()
-
   const gql = appChainId
     ? getSubgraphSdkByNetwork(appChainId as ChainsValues, SubgraphName.TheBadge)
     : null
@@ -30,28 +29,6 @@ export default function useBadgeByDisputeId(appChainId?: number, disputeId?: str
       const requester = klerosBadgeRequest.requester
       const challenger = klerosBadgeRequest.challenger
       const badgeModel = badge.badgeModel
-
-      const res = await Promise.all([
-        getFromIPFS<BadgeMetadata<BackendFileResponse>>(badge?.uri),
-        getFromIPFS<BadgeModelMetadata<BackendFileResponse>>(badgeModel?.uri),
-      ])
-
-      const badgeMetadata = res[0] ? res[0].result?.content : null
-      const badgeModelMetadata = res[1] ? res[1].result?.content : null
-
-      saveOnCacheIfMissing([`BadgeModel:${badgeModel.id}`, badgeModel.id, undefined], {
-        badgeModel,
-        badgeModelMetadata,
-      })
-
-      saveOnCacheIfMissing([`Badge:${badge.id}`, badge.id, undefined], {
-        ...badge,
-        badgeModel: {
-          ...badgeModel,
-          badgeModelMetadata,
-        },
-        badgeMetadata,
-      })
 
       return {
         badge: badge as Badge,

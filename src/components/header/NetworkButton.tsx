@@ -18,9 +18,9 @@ export default function NetworkButton({ sx }: { sx?: SxProps }) {
     >
       <Box
         borderRadius={20}
-        height="fit-content"
         ml={2}
         sx={{
+          '& > *': { transform: 'scale(0.8)' },
           backgroundColor: isWalletNetworkSupported ? 'transparent' : alpha(colors.redError, 0.2),
           ...sx,
         }}

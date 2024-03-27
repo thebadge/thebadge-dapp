@@ -9,7 +9,7 @@ export default function StatisticCard({
   color = colors.purple,
   icon,
   label,
-  maxLenghtDisplayed = 6,
+  maxLengthDisplayed = 9,
   minWidth = '160px',
   value,
 }: {
@@ -17,11 +17,11 @@ export default function StatisticCard({
   color?: string
   label: string
   value?: string | number
-  maxLenghtDisplayed?: number
+  maxLengthDisplayed?: number
   minWidth?: string
 }) {
   // 0.0000 as max displayed
-  const truncatedValue = value?.toString().slice(0, maxLenghtDisplayed)
+  const truncatedValue = value?.toString().slice(0, maxLengthDisplayed)
   return (
     <Stack flex="1" minWidth={minWidth}>
       <StatisticSquare color={color}>
@@ -37,18 +37,17 @@ export default function StatisticCard({
   )
 }
 
-function getFrontSize(lenght: number) {
-  console.log('getFontSize', lenght)
+function getFrontSize(length: number) {
   let fontSize = 48
-  if (lenght >= 5 && lenght <= 7) {
+  if (length >= 5 && length <= 7) {
     fontSize = 38
-  } else if (lenght > 8 && lenght <= 12) {
+  } else if (length > 8 && length <= 12) {
     fontSize = 32
-  } else if (lenght > 12 && lenght <= 15) {
+  } else if (length > 12 && length <= 15) {
     fontSize = 26
-  } else if (lenght > 15 && lenght <= 19) {
+  } else if (length > 15 && length <= 19) {
     fontSize = 22
-  } else if (lenght >= 20) {
+  } else if (length >= 20) {
     fontSize = 18
   }
   return `${fontSize}px !important`

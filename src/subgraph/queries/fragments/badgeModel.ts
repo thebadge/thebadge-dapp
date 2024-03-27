@@ -11,6 +11,7 @@ gql`
     badgesMintedAmount
     contractAddress
     createdTxHash
+    networkName
     creator {
       ...User
     }

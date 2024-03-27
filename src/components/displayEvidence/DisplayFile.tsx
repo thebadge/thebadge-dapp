@@ -1,3 +1,5 @@
+'use client'
+
 import * as React from 'react'
 
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'

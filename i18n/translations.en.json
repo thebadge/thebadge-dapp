@@ -79,7 +79,8 @@
   "header": {
     "home": "HOME",
     "wallet": {
-      "connect": "Connect wallet"
+      "connect": "Connect wallet",
+      "connectMobile": "Wallet"
     },
     "buttons": {
       "mint": "MINT",
@@ -258,7 +259,7 @@
         "amountChallengesWon": "Challenges won",
         "amountChallengesReceived": "Challenges received",
         "minted": "Badges minted",
-        "withoutLost": "without received challenges",
+        "withoutLost": "without receiving challenges",
         "neverChallenged": "You've never received a challenge",
         "rankingPosition": "Position in curators ranking"
       },

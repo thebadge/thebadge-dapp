@@ -9,6 +9,7 @@ import InViewPort from '@/src/components/helpers/InViewPort'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import TBSwiper from '@/src/components/helpers/TBSwiper'
 import { fillListWithPlaceholders } from '@/src/components/utils/emptyBadges'
+import { getChainIdByName } from '@/src/config/web3'
 import useBadgeModelMaxAmount from '@/src/hooks/subgraph/useBadgeModelMaxAmount'
 import BadgeModelPreview from '@/src/pagePartials/badge/BadgeModelPreview'
 import { generateMintUrl } from '@/src/utils/navigation/generateUrl'
@@ -29,12 +30,24 @@ export default function BadgeModelsList() {
       return (
         <Box
           key={badgeModel.id}
-          onClick={() => router.push(generateMintUrl(badgeModel.controllerType, badgeModel.id))}
+          onClick={() =>
+            router.push(
+              generateMintUrl(badgeModel.controllerType, badgeModel.id, {
+                chainName: badgeModel.networkName,
+              }),
+            )
+          }
           sx={{ height: '100%', display: 'flex' }}
         >
           <InViewPort minHeight={300} minWidth={180}>
             <SafeSuspense>
-              <BadgeModelPreview clickable={true} effects metadata={badgeModel?.uri} size="small" />
+              <BadgeModelPreview
+                chainId={getChainIdByName(badgeModel.networkName)}
+                clickable={true}
+                effects
+                metadata={badgeModel?.uri}
+                size="small"
+              />
             </SafeSuspense>
           </InViewPort>
         </Box>

@@ -100,6 +100,8 @@ export default function BadgeItemGenerator({
 
   const disabledAnimation = displayConfigs.disableAnimation || !!displayConfigs.flapLabel
 
+  const displayNetworkLogo = displayConfigs.showNetwork && badgeNetworkName
+
   if (template === BadgeModelTemplate.Diploma && !displayConfigs.showSmallView) {
     return (
       <DiplomaContainer onClick={onClick}>
@@ -140,17 +142,13 @@ export default function BadgeItemGenerator({
   return (
     <BadgeContainer onClick={onClick}>
       <SafeSuspense fallback={<BadgePreviewLoading />}>
-        {displayConfigs.showNetwork && (
-          <Typography textAlign="left" variant="labelLarge">
-            Network: <strong>{capitalizeFirstLetter(badgeNetworkName)}</strong>
-          </Typography>
-        )}
         <Stack m={disabledAnimation ? undefined : '10px'} position="relative">
           <BadgeView
             additionalData={additionalData}
             badgeContractAddress={badgeContractAddress}
             badgeNetworkName={badgeNetworkName}
-            badgeUrl={badgeUrl}
+            badgeUrl={displayNetworkLogo ? undefined : badgeUrl}
+            chainId={displayNetworkLogo ? getChainIdByName(badgeNetworkName) : undefined}
             disableAnimation={disabledAnimation}
             modelId={modelId}
             size={'small'}

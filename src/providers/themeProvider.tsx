@@ -1,3 +1,4 @@
+'use client'
 import { PropsWithChildren, createContext, useContext, useMemo, useState } from 'react'
 
 import {

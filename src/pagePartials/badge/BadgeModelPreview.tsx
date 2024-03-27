@@ -4,13 +4,16 @@ import { Box } from '@mui/material'
 import { BadgePreview, BadgePreviewProps } from '@thebadge/ui-library'
 
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
+import { getChainLogo } from '@/src/config/web3'
 import { getBackgroundBadgeUrl } from '@/src/constants/backgrounds'
 import { useAvailableBackgrounds } from '@/src/hooks/useAvailableBackgrounds'
 import useS3Metadata, { DEFAULT_FALLBACK_CONTENT_METADATA } from '@/src/hooks/useS3Metadata'
-const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 import { getBackgroundType, getTextContrast } from '@/src/utils/badges/metadataHelpers'
 import { BadgeModelMetadata } from '@/types/badges/BadgeMetadata'
+import { ChainsValues } from '@/types/chains'
 import { BackendFileResponse } from '@/types/utils'
+
+const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 
 type Props = {
   metadata?: string
@@ -18,9 +21,17 @@ type Props = {
   effects?: boolean
   size?: BadgePreviewProps['size']
   clickable?: boolean
+  chainId?: ChainsValues
 }
 
-function BadgeModelPreview({ badgeUrl, clickable, effects, metadata, size = 'medium' }: Props) {
+function BadgeModelPreview({
+  badgeUrl,
+  chainId,
+  clickable,
+  effects,
+  metadata,
+  size = 'medium',
+}: Props) {
   const res = useS3Metadata<{ content: BadgeModelMetadata<BackendFileResponse> }>(metadata || '', {
     content: DEFAULT_FALLBACK_CONTENT_METADATA,
   })
@@ -39,7 +50,8 @@ function BadgeModelPreview({ badgeUrl, clickable, effects, metadata, size = 'med
           animationEffects={effects ? ['wobble', 'grow', 'glare'] : []}
           animationOnHover
           badgeBackgroundUrl={getBackgroundBadgeUrl(backgroundType?.value, modelBackgrounds)}
-          badgeUrl={badgeUrl ? badgeUrl : 'https://www.thebadge.xyz'}
+          badgeNetworkUrl={chainId && getChainLogo(chainId)}
+          badgeUrl={badgeUrl}
           category={badgeMetadata?.name}
           description={badgeMetadata?.description}
           imageUrl={badgeMetadata?.image?.s3Url}

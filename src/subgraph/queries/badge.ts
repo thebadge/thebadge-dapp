@@ -134,6 +134,14 @@ export const BADGE_BY_DISPUTE_ID = gql`
   query badgeByDisputeId($disputeId: BigInt!) {
     klerosBadgeRequests(where: { disputeID: $disputeId }) {
       badgeKlerosMetaData {
+        id
+        itemID
+        numberOfRequests
+        reviewDueDate
+        tcrStatus
+        requests {
+          ...Request
+        }
         badge {
           ...FullBadgeDetails
         }

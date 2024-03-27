@@ -309,13 +309,13 @@ export async function createAndUploadClearingAndRegistrationFilesForKleros(
   const registrationIPFSUploadedPromise = ipfsUpload<KlerosListStructure>({
     attributes: registration,
     filePaths: ['fileURI', 'metadata.logoURI'],
-    needKlerosPath: true,
+    // needKlerosPath: true, Seems to be not needed any more 🤞🏼
   })
 
   const clearingIPFSUploadedPromise = ipfsUpload<KlerosListStructure>({
     attributes: clearing,
     filePaths: ['fileURI', 'metadata.logoURI'],
-    needKlerosPath: true,
+    // needKlerosPath: true,  Seems to be not needed any more 🤞🏼
   })
 
   const [registrationIPFSUploaded, clearingIPFSUploaded] = await Promise.all([

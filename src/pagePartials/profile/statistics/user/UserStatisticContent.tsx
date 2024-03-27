@@ -35,7 +35,7 @@ export default function UserStatisticContent({
     mutate()
   }, [mutate, refreshWatcher])
 
-  const hasReciveAnyChallenge =
+  const hasReceivedAnyChallenges =
     userStatistic?.timeOfLastChallengeReceived && userStatistic?.timeOfLastChallengeReceived !== '0'
 
   return (
@@ -92,12 +92,12 @@ export default function UserStatisticContent({
               />
             }
             label={
-              hasReciveAnyChallenge
+              hasReceivedAnyChallenges
                 ? t('profile.statistics.user.withoutLost')
                 : t('profile.statistics.user.neverChallenged')
             }
             value={
-              hasReciveAnyChallenge
+              hasReceivedAnyChallenges
                 ? timeAgoFrom(userStatistic?.timeOfLastChallengeReceived || 0)
                 : undefined
             }
