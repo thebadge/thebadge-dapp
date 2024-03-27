@@ -42,6 +42,7 @@ const MintBadgeModel: NextPageWithLayout = () => {
   }, [router, state])
 
   useEffect(() => {
+    if (!contract) return
     const { chainId } = parsePrefixedAddress(contract)
 
     if (appChainId !== chainId && isWalletConnected) {
