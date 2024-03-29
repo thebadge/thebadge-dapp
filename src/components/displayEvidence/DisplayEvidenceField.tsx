@@ -7,15 +7,18 @@ import { DisplayImage } from '@/src/components/displayEvidence/DisplayImage'
 import { DisplayLink } from '@/src/components/displayEvidence/DisplayLink'
 import { DisplayLongText } from '@/src/components/displayEvidence/DisplayLongText'
 import { DisplayText } from '@/src/components/displayEvidence/DisplayText'
+import { ChainsValues } from '@/types/chains'
 import { KLEROS_LIST_TYPES, MetadataColumn } from '@/types/kleros/types'
 import { WCAddress } from '@/types/utils'
 
 export default function DisplayEvidenceField({
   columnItem,
+  networkId,
   value,
 }: {
   columnItem: MetadataColumn
   value: any
+  networkId: ChainsValues
 }) {
   switch (columnItem.type) {
     case KLEROS_LIST_TYPES.GTCR_ADDRESS:
@@ -24,6 +27,7 @@ export default function DisplayEvidenceField({
       return (
         <DisplayAddress
           label={columnItem.label}
+          networkId={networkId}
           placeholder={columnItem.description}
           value={value as WCAddress}
         />

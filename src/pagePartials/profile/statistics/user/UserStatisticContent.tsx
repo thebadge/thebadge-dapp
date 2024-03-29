@@ -6,12 +6,14 @@ import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange'
 import EmojiEventsOutlinedIcon from '@mui/icons-material/EmojiEventsOutlined'
 import MilitaryTechOutlinedIcon from '@mui/icons-material/MilitaryTechOutlined'
 import StarBorderPurple500RoundedIcon from '@mui/icons-material/StarBorderPurple500Rounded'
-import { Box, Stack, Table, TableBody, Typography, useTheme } from '@mui/material'
+import { Box, Table, TableBody, useTheme } from '@mui/material'
+import { colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 
-import { StatisticSquare, StatisticsContainer } from '../addons/styled'
+import { StatisticsContainer } from '../addons/styled'
 import { StatisticVisibility } from '@/src/hooks/nextjs/useStatisticsVisibility'
 import useUserStatistics from '@/src/hooks/subgraph/useUserStatistics'
+import StatisticCard from '@/src/pagePartials/profile/statistics/addons/StatisticCard'
 import StatisticRow from '@/src/pagePartials/profile/statistics/addons/StatisticRow'
 import { UserStatistic } from '@/src/pagePartials/profile/statistics/user/UserStatistics'
 import { useProfileProvider } from '@/src/providers/ProfileProvider'
@@ -32,6 +34,9 @@ export default function UserStatisticContent({
   useEffect(() => {
     mutate()
   }, [mutate, refreshWatcher])
+
+  const hasReceivedAnyChallenges =
+    userStatistic?.timeOfLastChallengeReceived && userStatistic?.timeOfLastChallengeReceived !== '0'
 
   return (
     <StatisticsContainer>
@@ -68,59 +73,47 @@ export default function UserStatisticContent({
         {/* TODO Define what we wanto to show, maybe all of the posible statistics */}
 
         {statisticVisibility[UserStatistic.amountMinted] && (
-          <Stack flex="1" minWidth="160px">
-            <StatisticSquare color={theme.palette.text.primary}>
+          <StatisticCard
+            icon={
               <EmojiEventsOutlinedIcon
-                sx={{ color: theme.palette.text.primary, position: 'absolute', top: 8, left: 8 }}
+                sx={{ color: colors.purple, position: 'absolute', top: 8, left: 8 }}
               />
-              <Typography sx={{ fontSize: '48px !important', fontWeight: 900 }}>
-                {userStatistic?.mintedBadgesAmount || 0}
-              </Typography>
-              <Typography sx={{ textAlign: 'center', color: 'text.primary' }}>
-                {t('profile.statistics.user.minted')}
-              </Typography>
-            </StatisticSquare>
-          </Stack>
+            }
+            label={t('profile.statistics.user.minted')}
+            value={userStatistic?.mintedBadgesAmount || 0}
+          />
         )}
 
         {statisticVisibility[UserStatistic.amountWithoutChallenge] && (
-          <Stack flex="1" minWidth="160px">
-            <StatisticSquare color={theme.palette.text.primary}>
+          <StatisticCard
+            icon={
               <BalanceOutlinedIcon
-                sx={{ color: theme.palette.text.primary, position: 'absolute', top: 8, left: 8 }}
+                sx={{ color: colors.purple, position: 'absolute', top: 8, left: 8 }}
               />
-              {userStatistic?.timeOfLastChallengeReceived &&
-              userStatistic?.timeOfLastChallengeReceived !== '0' ? (
-                <>
-                  {timeAgoFrom(userStatistic?.timeOfLastChallengeReceived || 0)}
-                  <Typography sx={{ fontSize: '48px !important', fontWeight: 900 }}></Typography>
-                  <Typography sx={{ textAlign: 'center', color: 'text.primary' }}>
-                    {t('profile.statistics.user.withoutLost')}
-                  </Typography>
-                </>
-              ) : (
-                <Typography sx={{ textAlign: 'center', color: 'text.primary' }}>
-                  {t('profile.statistics.user.neverChallenged')}
-                </Typography>
-              )}
-            </StatisticSquare>
-          </Stack>
+            }
+            label={
+              hasReceivedAnyChallenges
+                ? t('profile.statistics.user.withoutLost')
+                : t('profile.statistics.user.neverChallenged')
+            }
+            value={
+              hasReceivedAnyChallenges
+                ? timeAgoFrom(userStatistic?.timeOfLastChallengeReceived || 0)
+                : undefined
+            }
+          />
         )}
 
         {statisticVisibility[UserStatistic.challengesReceivedAmount] && (
-          <Stack flex="1" minWidth="160px">
-            <StatisticSquare color={theme.palette.text.primary}>
+          <StatisticCard
+            icon={
               <BalanceOutlinedIcon
-                sx={{ color: theme.palette.text.primary, position: 'absolute', top: 8, left: 8 }}
+                sx={{ color: colors.purple, position: 'absolute', top: 8, left: 8 }}
               />
-              <Typography sx={{ fontSize: '48px !important', fontWeight: 900 }}>
-                {userStatistic?.challengesReceivedAmount || 0}
-              </Typography>
-              <Typography sx={{ textAlign: 'center', color: 'text.primary' }}>
-                {t('profile.statistics.user.amountChallengesReceived')}
-              </Typography>
-            </StatisticSquare>
-          </Stack>
+            }
+            label={t('profile.statistics.user.amountChallengesReceived')}
+            value={userStatistic?.challengesReceivedAmount || 0}
+          />
         )}
       </Box>
     </StatisticsContainer>

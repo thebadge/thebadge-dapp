@@ -1,7 +1,8 @@
 import _ from 'lodash'
 
-import { Chains, getChainName } from '@/src/config/web3'
+import { Chains, getChainIdByName, getChainName } from '@/src/config/web3'
 import { LINKEDIN_URL } from '@/src/constants/common'
+import { contracts } from '@/src/contracts/contracts'
 import { ProfileType } from '@/src/pagePartials/profile/ProfileSelector'
 import { BadgeModelControllerType } from '@/types/badges/BadgeModel'
 import { ChainsValues } from '@/types/chains'
@@ -9,8 +10,20 @@ import { ChainsValues } from '@/types/chains'
 export function generateMintUrl(
   controllerType: string = BadgeModelControllerType.Community,
   badgeModelId: string,
+  opts?: { chainName: string; contractAddress?: string },
 ) {
-  return `/badgeModel/${controllerType}/${badgeModelId}/mint`
+  let contract = ``
+  if (opts) {
+    const chainId = getChainIdByName(opts.chainName)
+    contract = `?contract=${chainId}:`
+    if (opts.contractAddress) {
+      contract = contract + opts.contractAddress
+    } else {
+      contract = contract + contracts.TheBadge.address[chainId].toLowerCase()
+    }
+  }
+
+  return `/badgeModel/${controllerType}/${badgeModelId}/mint` + contract
 }
 
 export function generateModelExplorerUrl(

@@ -1,7 +1,7 @@
 import { isAddress } from 'ethers/lib/utils'
 import useSWR from 'swr'
 import { createPublicClient, http } from 'viem'
-import { Chain, goerli, mainnet, sepolia } from 'viem/chains'
+import { Chain, mainnet, sepolia } from 'viem/chains'
 import { normalize } from 'viem/ens'
 
 import { Chains } from '@/src/config/web3'
@@ -13,17 +13,15 @@ const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionP
 
 const getChainForEnsLookup = (chainId: ChainsValues): Chain => {
   switch (chainId) {
-    // Returns mainnet because ens is not supported in polygon and gnosis
+    // Returns mainnet because ens is not supported on these chains
     case Chains.gnosis:
     case Chains.polygon:
-    case Chains.mumbai: {
+    case Chains.mumbai:
+    case Chains.goerli: {
       return mainnet
     }
     case Chains.sepolia: {
       return sepolia
-    }
-    case Chains.goerli: {
-      return goerli
     }
     default: {
       return mainnet
@@ -32,10 +30,10 @@ const getChainForEnsLookup = (chainId: ChainsValues): Chain => {
 }
 
 export const useEnsReverseLookup = function (address: WCAddress | string | undefined) {
-  const { readOnlyChainId } = useWeb3Connection()
+  const { appChainId } = useWeb3Connection()
 
-  return useSWR([readOnlyChainId, address], async ([_readOnlyChainId, _address]) => {
-    const chain = getChainForEnsLookup(_readOnlyChainId)
+  return useSWR([appChainId, address], async ([_appChainId, _address]) => {
+    const chain = getChainForEnsLookup(_appChainId)
     const client = createPublicClient({
       chain,
       transport: http(),
@@ -93,12 +91,12 @@ export const useEnsLookup = function (ensName: WCAddress | string | undefined) {
   const isEthereumAddress = ensName ? isAddress(ensName) : false
   return useSWR(
     [readOnlyChainId, ensName, isEthereumAddress],
-    async ([_readOnlyChainId, _ensName, _isEthereumAddress]) => {
+    async ([_appChainId, _ensName, _isEthereumAddress]) => {
       if (_isEthereumAddress) {
         return _ensName
       }
 
-      const chain = getChainForEnsLookup(_readOnlyChainId)
+      const chain = getChainForEnsLookup(_appChainId)
       const client = createPublicClient({
         chain,
         transport: http(),

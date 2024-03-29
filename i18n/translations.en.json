@@ -79,7 +79,8 @@
   "header": {
     "home": "HOME",
     "wallet": {
-      "connect": "Connect wallet"
+      "connect": "Connect wallet",
+      "connectMobile": "Wallet"
     },
     "buttons": {
       "mint": "MINT",
@@ -258,7 +259,7 @@
         "amountChallengesWon": "Challenges won",
         "amountChallengesReceived": "Challenges received",
         "minted": "Badges minted",
-        "withoutLost": "without received challenges",
+        "withoutLost": "without receiving challenges",
         "neverChallenged": "You've never received a challenge",
         "rankingPosition": "Position in curators ranking"
       },
@@ -299,7 +300,9 @@
     "noTheBadgeModelCreator": "Oops, something went wrong!",
     "noTheBadgeModelCreatorSubtitle": "Seems like you dont have access to this badge model. Please get in touch with the creator.",
     "claimUUIDInvalid": "Claim link expired!",
-    "claimUUIDInvalidSubtitle": "The link is invalid or the badge has been already claimed"
+    "claimUUIDInvalidSubtitle": "The link is invalid or the badge has been already claimed",
+    "switchNetwork": "Switch to a valid network",
+    "toUseTheApp" : " to use the app!"
   },
   "creator": {
     "register": {

@@ -64,7 +64,7 @@ export default function ConnectWalletError({ noCloseButton }: { noCloseButton?: 
           </Typography>
           <Typography variant="body4">{t('errors.connectWalletSubtitle')}</Typography>
         </Stack>
-        <ConnectWalletButton onClick={connectWallet}>
+        <ConnectWalletButton onClick={() => connectWallet()}>
           {t('header.wallet.connect')}
         </ConnectWalletButton>
       </Stack>

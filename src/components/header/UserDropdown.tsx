@@ -21,14 +21,12 @@ import { useWeb3Modal } from '@web3modal/wagmi/react'
 import Blockies from 'react-18-blockies'
 
 import { Logout } from '@/src/components/assets/Logout'
-import ActionButtons from '@/src/components/header/ActionButtons'
 import { Address } from '@/src/components/helpers/Address'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { getNetworkConfig } from '@/src/config/web3'
-import { useSizeSM } from '@/src/hooks/useSize'
-import { PreventActionIfOutOfService } from '@/src/pagePartials/errors/preventActionIfOutOfService'
-const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 import { generateBaseUrl, generateProfileUrl } from '@/src/utils/navigation/generateUrl'
+
+const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 
 const StyledBadge = styled(Badge)<{ state?: 'ok' | 'error' }>(({ state, theme }) => ({
   '& .MuiBadge-badge': {
@@ -64,7 +62,6 @@ export const UserDropdown: React.FC = () => {
   const { address, appChainId, disconnectWallet, isWalletNetworkSupported } = useWeb3Connection()
   const networkConfig = getNetworkConfig(appChainId)
   const { open: openWeb3Modal } = useWeb3Modal()
-  const isMobile = useSizeSM()
 
   const [open, setOpen] = useState(false)
   const anchorMenuElRef: RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null)
@@ -99,11 +96,6 @@ export const UserDropdown: React.FC = () => {
 
   return (
     <>
-      {!isMobile && (
-        <PreventActionIfOutOfService>
-          <ActionButtons />
-        </PreventActionIfOutOfService>
-      )}
       <Tooltip arrow ref={anchorMenuElRef} title="Account settings">
         <IconButton
           aria-controls={open ? 'account-menu' : undefined}
@@ -111,7 +103,7 @@ export const UserDropdown: React.FC = () => {
           aria-haspopup="true"
           onClick={handleClick}
           size="small"
-          sx={{ ml: 2 }}
+          sx={{ ml: 1 }}
         >
           <StyledBadge
             anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}

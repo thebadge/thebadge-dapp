@@ -22,23 +22,25 @@ import useUserMetadata from '@/src/hooks/useUserMetadata'
 import BadgeModelInfoPreview from '@/src/pagePartials/badge/explorer/BadgeModelInfoPreview'
 import ThirdPartyBadgeModelInfoPreview from '@/src/pagePartials/badge/explorer/ThirdPartyBadgeModelInfoPreview'
 import BadgeModelMiniPreview from '@/src/pagePartials/badge/miniPreview/BadgeModelMiniPreview'
-const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 import { generateBadgeModelCreate } from '@/src/utils/navigation/generateUrl'
 import { BadgeModelControllerType } from '@/types/badges/BadgeModel'
 import { BadgeModel, BadgeModel_Filter, BadgeModel_OrderBy } from '@/types/generated/subgraph'
 
+const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
+
 export default function ManageBadges() {
+  const router = useRouter()
   const { t } = useTranslation()
   const { address } = useWeb3Connection()
 
   const gql = useSubgraph()
   const isMobile = useSizeSM()
-  const [badgeModels, setBadgeModels] = useState<BadgeModel[]>([])
-  const [loading, setLoading] = useState<boolean>(false)
-  const [selectedBadgeModelIndex, setSelectedBadgeModelIndex] = useState<number>(0)
   const { data } = useUserById(address)
   const creatorMetadata = useUserMetadata(address, data?.metadataUri || '')
-  const router = useRouter()
+
+  const [badgeModels, setBadgeModels] = useState<BadgeModel[]>([])
+  const [selectedBadgeModelIndex, setSelectedBadgeModelIndex] = useState<number>(0)
+  const [loading, setLoading] = useState<boolean>(false)
 
   const filters: Array<ListFilter<string | boolean>> = [
     {
@@ -78,7 +80,6 @@ export default function ManageBadges() {
     badgeModelsElementRefs,
     selectedBadgeModelIndex,
     badgeModels.length,
-    false,
   )
 
   const search = async (
@@ -150,11 +151,8 @@ export default function ManageBadges() {
     )
   }
 
-  const selectBadgeModel = (modelId: string) => {
-    router.replace({
-      pathname: router.pathname,
-      query: { ...router.query, modelId },
-    })
+  const selectBadgeModel = (index: number) => {
+    setSelectedBadgeModelIndex(index)
   }
 
   function renderBadgeModelItem(bt: BadgeModel, index: number) {
@@ -166,7 +164,7 @@ export default function ManageBadges() {
         minWidth={180}
         onViewPortEnter={() => {
           if (isMobile) {
-            selectBadgeModel(bt.id)
+            selectBadgeModel(index)
           }
         }}
       >
@@ -174,7 +172,7 @@ export default function ManageBadges() {
           <MiniBadgePreviewContainer
             highlightColor={colors.blue}
             onClick={() => {
-              selectBadgeModel(bt.id)
+              selectBadgeModel(index)
             }}
             ref={badgeModelsElementRefs[index]}
             selected={isSelected}

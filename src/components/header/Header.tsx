@@ -1,9 +1,12 @@
+import React from 'react'
+
 import { Box, styled } from '@mui/material'
 import { useTranslation } from 'next-export-i18n'
 
-import { LogoWithText } from '@/src/components/common/Logo'
+import { Logo, LogoWithText } from '@/src/components/common/Logo'
 import ActionButtons from '@/src/components/header/ActionButtons'
 import ConnectWalletButton from '@/src/components/header/ConnectWalletButton'
+import NetworkButton from '@/src/components/header/NetworkButton'
 import { UserDropdown } from '@/src/components/header/UserDropdown'
 import WrongNetwork from '@/src/components/utils/WrongNetwork'
 import { useSizeSM } from '@/src/hooks/useSize'
@@ -42,22 +45,21 @@ const Header = () => {
           flex: 1,
         }}
       >
-        <LogoWithText />
+        {isMobile ? <Logo size={31} /> : <LogoWithText />}
       </Box>
-      <Box display="flex">
+      <Box alignItems="center" display="flex" gap={2}>
         <WrongNetwork />
+        {!isMobile && (
+          <PreventActionIfOutOfService>
+            <ActionButtons />
+          </PreventActionIfOutOfService>
+        )}
+        <NetworkButton sx={{ ml: 0 }} />
         {isWalletConnected && <UserDropdown />}
         {!isWalletConnected && (
-          <Box display="flex" gap={2}>
-            {!isMobile && (
-              <PreventActionIfOutOfService>
-                <ActionButtons />
-              </PreventActionIfOutOfService>
-            )}
-            <ConnectWalletButton onClick={connectWallet}>
-              {t('header.wallet.connect')}
-            </ConnectWalletButton>
-          </Box>
+          <ConnectWalletButton onClick={() => connectWallet()}>
+            {isMobile ? t('header.wallet.connectMobile') : t('header.wallet.connect')}
+          </ConnectWalletButton>
         )}
       </Box>
     </HeaderContainer>

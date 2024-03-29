@@ -4,8 +4,8 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { getPublicCompressed } from '@toruslabs/eccrypto'
 import { Web3Auth } from '@web3auth/modal'
-import { useWeb3Modal, useWeb3ModalState } from '@web3modal/wagmi/react'
-import { useAccount, useDisconnect } from 'wagmi'
+import { useWeb3Modal } from '@web3modal/wagmi/react'
+import { useAccount, useChainId, useDisconnect } from 'wagmi'
 
 import { DEFAULT_CHAINS, getValidNetwork } from './utils'
 import { INITIAL_APP_CHAIN_ID, chainsConfig } from '@/src/config/web3'
@@ -18,13 +18,16 @@ import { ChainsValues } from '@/types/chains'
 import { WCAddress } from '@/types/utils'
 
 const useChainIds = (): {
+  // Chain where the app is running, if the connected wallet has a wrong network we fall back to a default one
   appChainId: ChainsValues
+  // Chain were the connected wallet is, could be a not supported one
   selectedNetworkId: ChainsValues | undefined
+  // Chain where the data should be read, if a query param is on the URL we need to use that chainId instead of the appChainId
   readOnlyChainId: ChainsValues
-  // true if the user's selectedNetworkId if different than the appId
+  // If the connected wallet has a not supported network, or we have a query param on the url that force to read from another network
   isAppChainReadOnly: boolean
 } => {
-  const { selectedNetworkId } = useWeb3ModalState()
+  const selectedNetworkId = useChainId()
   const queryParamsChainId = useNetworkQueryParam()
 
   const [appChainId, setAppChainId] = useState<ChainsValues>(
@@ -38,16 +41,18 @@ const useChainIds = (): {
   }, [selectedNetworkId])
 
   const isValidSelectedNetwork = !!getValidNetwork(selectedNetworkId)
-  const isAppChainReadOnly = !isValidSelectedNetwork
-    ? true
-    : queryParamsChainId
-    ? appChainId !== queryParamsChainId
-    : false
+
+  // !!queryParamsChainId -> Checks if a chainId was provided in the query parameters
+  // Checks if the chainId provided in the query parameters is different from the application's chainId
+  const isQueryParamChainIdDifferent = !!queryParamsChainId && appChainId !== queryParamsChainId
+
+  //!isValidSelectedNetwork -> Check if a valid network has not been selected
+  const isAppChainReadOnly = !isValidSelectedNetwork || isQueryParamChainIdDifferent
 
   return {
     appChainId,
     selectedNetworkId: selectedNetworkId as unknown as ChainsValues,
-    readOnlyChainId: queryParamsChainId ? queryParamsChainId : appChainId,
+    readOnlyChainId: isQueryParamChainIdDifferent ? queryParamsChainId : appChainId,
     isAppChainReadOnly,
   }
 }
@@ -144,7 +149,8 @@ export function useWeb3Connection(): Web3Context {
 
     // dApp helpers
     appChainId,
-    selectedNetworkId: selectedNetworkId ? selectedNetworkId : undefined,
+    selectedNetworkId,
+    isAppChainReadOnly,
     readOnlyChainId,
     getExplorerUrl,
     readOnlyAppProvider,

@@ -3,8 +3,10 @@ import useSWR from 'swr'
 import { BadgeModelHooksOptions } from '@/src/hooks/subgraph/types'
 import useSubgraph from '@/src/hooks/subgraph/useSubgraph'
 import { getFromIPFS } from '@/src/hooks/subgraph/utils'
-const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
+import { SubgraphName } from '@/src/subgraph/subgraph'
 import { KlerosListStructure } from '@/src/utils/kleros/generateKlerosListMetaEvidence'
+
+const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 
 /**
  * The BadgeModelKlerosMetadata provides additional information about a BadgeModel within the Kleros system.
@@ -18,7 +20,7 @@ export function useBadgeModelKlerosMetadata(
 ) {
   // It's going to do the fetch if it has ID and skip option on false
   const fetchIt = !options?.skip && badgeModelId.length
-  const gql = useSubgraph()
+  const gql = useSubgraph(SubgraphName.TheBadge, options?.chainId)
   const { readOnlyChainId } = useWeb3Connection()
 
   return useSWR(
