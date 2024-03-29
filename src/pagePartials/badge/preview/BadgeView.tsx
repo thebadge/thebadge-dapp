@@ -2,23 +2,25 @@ import * as React from 'react'
 
 import { BadgePreview } from '@thebadge/ui-library'
 
-import { getChainIdByName } from '@/src/config/web3'
+import { getChainIdByName, getChainLogo } from '@/src/config/web3'
 import { getBackgroundBadgeUrl } from '@/src/constants/backgrounds'
 import useBadgeIdParam from '@/src/hooks/nextjs/useBadgeIdParam'
 import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
 import { useAvailableBackgrounds } from '@/src/hooks/useAvailableBackgrounds'
-const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 import useS3Metadata from '@/src/hooks/useS3Metadata'
 import { getClassicConfigs } from '@/src/utils/badges/metadataHelpers'
 import enrichTextWithValues, { EnrichTextValues } from '@/src/utils/enrichTextWithValues'
 import { ClassicBadgeFieldsConfig } from '@/types/badges/BadgeMetadata'
+import { ChainsValues } from '@/types/chains'
+
+const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 
 type BadgePreviewGeneratorProps = {
   modelId: string
   badgeUrl?: string
   additionalData?: Record<string, any>
   size?: 'small' | 'medium' | 'large'
-
+  chainId?: ChainsValues
   disableAnimation?: boolean
   badgeContractAddress?: string
   badgeNetworkName?: string
@@ -29,6 +31,7 @@ export const BadgeView = ({
   badgeContractAddress,
   badgeNetworkName,
   badgeUrl,
+  chainId,
   disableAnimation,
   modelId,
   size = 'medium',
@@ -63,6 +66,7 @@ export const BadgeView = ({
       animationEffects={disableAnimation ? [] : ['wobble', 'grow', 'glare']}
       animationOnHover
       badgeBackgroundUrl={getBackgroundBadgeUrl(backgroundType?.value, modelBackgrounds)}
+      badgeNetworkUrl={chainId && getChainLogo(chainId)}
       badgeUrl={badgeUrl}
       category={enrichTextWithValues(badgeModelMetadata?.name, additionalData as EnrichTextValues)}
       description={enrichTextWithValues(

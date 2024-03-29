@@ -23,7 +23,7 @@ const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionP
 
 export default function BadgeEvidenceInfoPreview({ badgeId }: { badgeId: string }) {
   const { t } = useTranslation()
-  const { address } = useWeb3Connection()
+  const { address, readOnlyChainId } = useWeb3Connection()
   const { challenge } = useCurateProvider()
   const badgeById = useBadgeById(badgeId)
   const badge = badgeById.data
@@ -79,6 +79,7 @@ export default function BadgeEvidenceInfoPreview({ badgeId }: { badgeId: string 
               <SafeSuspense>
                 <DisplayEvidenceField
                   columnItem={column}
+                  networkId={readOnlyChainId}
                   value={getEvidenceValue(
                     badgeEvidence?.values,
                     badgeEvidence?.columns,

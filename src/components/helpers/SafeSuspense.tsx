@@ -1,3 +1,5 @@
+'use client'
+
 import React, { FC, PropsWithChildren, Suspense, useCallback } from 'react'
 
 import { Box } from '@mui/material'

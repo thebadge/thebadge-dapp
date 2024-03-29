@@ -1,7 +1,7 @@
 import { isAddress } from 'ethers/lib/utils'
 import useSWR from 'swr'
 import { createPublicClient, http } from 'viem'
-import { Chain, goerli, mainnet, sepolia } from 'viem/chains'
+import { Chain, mainnet, sepolia } from 'viem/chains'
 import { normalize } from 'viem/ens'
 
 import { Chains } from '@/src/config/web3'
@@ -13,17 +13,15 @@ const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionP
 
 const getChainForEnsLookup = (chainId: ChainsValues): Chain => {
   switch (chainId) {
-    // Returns mainnet because ens is not supported in polygon and gnosis
+    // Returns mainnet because ens is not supported on these chains
     case Chains.gnosis:
     case Chains.polygon:
-    case Chains.mumbai: {
+    case Chains.mumbai:
+    case Chains.goerli: {
       return mainnet
     }
     case Chains.sepolia: {
       return sepolia
-    }
-    case Chains.goerli: {
-      return goerli
     }
     default: {
       return mainnet
