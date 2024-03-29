@@ -28,8 +28,8 @@ export default function StepHeaderThirdParty({
 
   const steps = [
     t('badge.model.mint.steps.0.header'),
-    t('badge.model.mint.steps.1.evidence'),
-    t('badge.model.mint.steps.2.preview'),
+    t('badge.model.mint.steps.1.header'),
+    t('badge.model.mint.steps.2.header'),
   ]
 
   const badgeCreatorMetadata = useUserMetadata(
