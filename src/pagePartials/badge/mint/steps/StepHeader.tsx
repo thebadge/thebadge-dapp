@@ -12,8 +12,6 @@ import useBadgeModel from '@/src/hooks/subgraph/useBadgeModel'
 import useBadgeModelTemplate from '@/src/hooks/theBadge/useBadgeModelTemplate'
 import useUserMetadata from '@/src/hooks/useUserMetadata'
 
-const steps = ['Help', 'Badge Evidence', 'Badge Preview']
-
 export default function StepHeader({
   completedSteps,
   currentStep,
@@ -27,6 +25,12 @@ export default function StepHeader({
   const { badgeModelId } = useModelIdParam()
   const badgeModelData = useBadgeModel(badgeModelId)
   const template = useBadgeModelTemplate(badgeModelId)
+
+  const steps = [
+    t('badge.model.mint.steps.0.header'),
+    t('badge.model.mint.steps.1.evidence'),
+    t('badge.model.mint.steps.2.preview'),
+  ]
 
   const userMetadata = useUserMetadata(
     undefined,
