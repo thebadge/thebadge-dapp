@@ -43,7 +43,7 @@ const BadgeContainer = styled(Stack)(() => ({
 
 type BadgeItemProps = {
   badgeId: string
-  onClick: VoidFunction
+  onClick?: VoidFunction
 
   badgeContractAddress?: string
   badgeNetworkName?: string

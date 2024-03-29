@@ -7,7 +7,7 @@ import { ChainsValues } from '@/types/chains'
 type AvailableBackgroundType = { disabled: boolean; key: string }
 
 export const useAvailableBackgrounds = (chainId: ChainsValues, userAddress?: string) => {
-  const { hasUserBalance } = useBadgesRequired()
+  const { hasUserBadgeBalance } = useBadgesRequired()
 
   return useSWR(userAddress ? `availableBackgrounds:${userAddress}` : null, async () => {
     const availableBackgrounds = await getBadgeModelBackgrounds()
@@ -23,7 +23,8 @@ export const useAvailableBackgrounds = (chainId: ChainsValues, userAddress?: str
                 (badgeRequired) => badgeRequired.networkId === chainId,
               )
               // If the badge is available on that network we check the balance otherwise is 0
-              const hasBalance = networkBadge && (await hasUserBalance(networkBadge, userAddress))
+              const hasBalance =
+                networkBadge && (await hasUserBadgeBalance(networkBadge, userAddress))
               backgroundConfig.disabled = !hasBalance
             }
           }

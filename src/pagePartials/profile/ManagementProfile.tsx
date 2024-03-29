@@ -8,6 +8,7 @@ import { useTranslation } from 'next-export-i18n'
 import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import { ProfileType } from '@/src/pagePartials/profile/ProfileSelector'
 import ManageBadges from '@/src/pagePartials/profile/myProfile/ManageBadges'
+import ManageSubscription from '@/src/pagePartials/profile/myProfile/ManageSubscription'
 import ProfileContextProvider from '@/src/providers/ProfileProvider'
 import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 
@@ -69,15 +70,20 @@ const ManagementProfile = () => {
             </Link>
 
             {/* manage subscriptions */}
-            <div aria-disabled={true}>{manageAccountTab}</div>
+            <Link
+              href={generateProfileUrl({
+                profileType: ProfileType.MANAGEMENT_PROFILE,
+                filter: ManagementProfileFilter.MANAGE_SUBSCRIPTIONS,
+              })}
+            >
+              {manageAccountTab}
+            </Link>
           </Box>
         </Stack>
         {/* Profile Content */}
         {!selectedFilter && <ManageBadges />}
         {selectedFilter === ManagementProfileFilter.MANAGE_BADGES && <ManageBadges />}
-        {selectedFilter === ManagementProfileFilter.MANAGE_SUBSCRIPTIONS && (
-          <div>MANAGE SUBSCRIPTIONS WIP</div>
-        )}
+        {selectedFilter === ManagementProfileFilter.MANAGE_SUBSCRIPTIONS && <ManageSubscription />}
       </SafeSuspense>
     </ProfileContextProvider>
   )

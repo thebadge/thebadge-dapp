@@ -88,5 +88,8 @@ gql`
     id
     contractAddress
     networkName
+    badgeModel {
+      id
+    }
   }
 `

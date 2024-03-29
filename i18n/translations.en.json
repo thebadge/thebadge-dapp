@@ -227,6 +227,10 @@
       "tab2": "Manage badges",
       "manageBadges": {
         "title": "Manage third party badges"
+      },
+      "manageSubscriptions": {
+        "title": "Your current subscription",
+        "nonSubscribed": "You have not subscription active"
       }
     },
     "statistics": {
