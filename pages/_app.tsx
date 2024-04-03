@@ -1,12 +1,13 @@
 import '/node_modules/react-grid-layout/css/styles.css'
 import '/node_modules/react-resizable/css/styles.css'
+
 import type { AppProps } from 'next/app'
 import dynamic from 'next/dynamic'
 
 import createCache from '@emotion/cache'
 import { CacheProvider, EmotionCache } from '@emotion/react'
-import { styled } from '@mui/material'
 import { Box } from '@mui/material'
+import { styled } from '@mui/material'
 import { GoogleAnalytics } from 'nextjs-google-analytics'
 import { SWRConfig } from 'swr'
 
@@ -14,6 +15,7 @@ import SafeSuspense from '@/src/components/helpers/SafeSuspense'
 import Toast from '@/src/components/toast/Toast'
 import ThemeProvider from '@/src/providers/themeProvider'
 import { NextPageWithLayout } from '@/types/next'
+
 import 'node_modules/@thebadge/ui-library/dist/index.css'
 import 'sanitize.css'
 import 'src/theme/global.css'
@@ -35,7 +37,7 @@ const TransactionNotificationProvider = dynamic(
 const DefaultLayout = dynamic(() => import('@/src/components/layout/DefaultLayout'), {
   ssr: false,
 })
-const Web3Modal = dynamic(() => import('@/src/providers/web3/web3ModalProvider'), {
+const Web3ModalProvider = dynamic(() => import('@/src/providers/web3/web3ModalProvider'), {
   ssr: false,
 })
 
@@ -84,7 +86,7 @@ export default function App({
           >
             <ThemeProvider>
               <SafeSuspense>
-                <Web3Modal>
+                <Web3ModalProvider>
                   <SectionReferencesProvider>
                     <TransactionNotificationProvider>
                       <CookiesWarningProvider>
@@ -92,7 +94,7 @@ export default function App({
                       </CookiesWarningProvider>
                     </TransactionNotificationProvider>
                   </SectionReferencesProvider>
-                </Web3Modal>
+                </Web3ModalProvider>
               </SafeSuspense>
               <Toast />
             </ThemeProvider>
