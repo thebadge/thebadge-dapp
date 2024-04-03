@@ -2,7 +2,7 @@ import { useRouter } from 'next/router'
 import * as React from 'react'
 import { useEffect } from 'react'
 
-import { switchNetwork } from '@wagmi/core'
+import { switchChain } from '@wagmi/core'
 
 import { withPageGenericSuspense } from '@/src/components/helpers/SafeSuspense'
 import useControllerTypeParam from '@/src/hooks/nextjs/useControllerTypeParam'
@@ -11,6 +11,7 @@ import useTransaction, { TransactionStates } from '@/src/hooks/useTransaction'
 import MintKlerosBadgeModel from '@/src/pagePartials/badge/mint/MintCommunityBadgeModel'
 import MintThirdPartyBadgeModel from '@/src/pagePartials/badge/mint/MintThirdPartyBadgeModel'
 import { ProfileType } from '@/src/pagePartials/profile/ProfileSelector'
+import { wagmiConfig } from '@/src/providers/web3/config'
 import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 import { parsePrefixedAddress } from '@/src/utils/prefixedAddress'
 import { BadgeModelControllerType } from '@/types/badges/BadgeModel'
@@ -46,7 +47,7 @@ const MintBadgeModel: NextPageWithLayout = () => {
     const { chainId } = parsePrefixedAddress(contract)
 
     if (appChainId !== chainId && isWalletConnected) {
-      switchNetwork({
+      switchChain(wagmiConfig, {
         chainId,
       })
     }
