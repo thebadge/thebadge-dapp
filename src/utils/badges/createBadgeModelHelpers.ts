@@ -159,7 +159,7 @@ async function createAndUploadDiplomaBadgeModelMetadata(
         signerTitle: rest.signatureEnabled ? rest.signerTitle : '',
         signerSubline: rest.signatureEnabled ? rest.signerSubline : '',
       },
-      filePaths: rest.signatureEnabled ? ['signatureImage'] : [],
+      filePaths: rest.signatureEnabled && rest.signatureImage ? ['signatureImage'] : [],
     }),
   )
 
