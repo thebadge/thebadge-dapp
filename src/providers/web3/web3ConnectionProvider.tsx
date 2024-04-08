@@ -4,8 +4,8 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { getPublicCompressed } from '@toruslabs/eccrypto'
 import { Web3Auth } from '@web3auth/modal'
-import { useWeb3Modal } from '@web3modal/wagmi/react'
-import { useAccount, useChainId, useDisconnect } from 'wagmi'
+import { useWeb3Modal, useWeb3ModalState } from '@web3modal/wagmi/react'
+import { useAccount, useDisconnect } from 'wagmi'
 
 import { DEFAULT_CHAINS, getValidNetwork } from './utils'
 import { INITIAL_APP_CHAIN_ID, chainsConfig } from '@/src/config/web3'
@@ -27,7 +27,7 @@ const useChainIds = (): {
   // If the connected wallet has a not supported network, or we have a query param on the url that force to read from another network
   isAppChainReadOnly: boolean
 } => {
-  const selectedNetworkId = useChainId()
+  const { selectedNetworkId } = useWeb3ModalState()
   const queryParamsChainId = useNetworkQueryParam()
 
   const [appChainId, setAppChainId] = useState<ChainsValues>(
