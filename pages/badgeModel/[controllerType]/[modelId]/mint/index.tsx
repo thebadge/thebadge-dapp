@@ -11,12 +11,12 @@ import useTransaction, { TransactionStates } from '@/src/hooks/useTransaction'
 import MintKlerosBadgeModel from '@/src/pagePartials/badge/mint/MintCommunityBadgeModel'
 import MintThirdPartyBadgeModel from '@/src/pagePartials/badge/mint/MintThirdPartyBadgeModel'
 import { ProfileType } from '@/src/pagePartials/profile/ProfileSelector'
-import { wagmiConfig } from '@/src/providers/web3/config'
 import { generateProfileUrl } from '@/src/utils/navigation/generateUrl'
 import { parsePrefixedAddress } from '@/src/utils/prefixedAddress'
 import { BadgeModelControllerType } from '@/types/badges/BadgeModel'
 import { NextPageWithLayout } from '@/types/next'
 
+const { wagmiConfig } = await import('@/src/providers/web3/config')
 const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 
 const MintBadgeModel: NextPageWithLayout = () => {
