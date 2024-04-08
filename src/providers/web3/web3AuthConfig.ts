@@ -11,6 +11,7 @@ import {
   appName,
 } from '@/src/constants/common'
 import { isTestnet } from '@/src/utils/network'
+import { isGitHubActionBuild } from '@/types/utils'
 
 // 2.1. Add Social Login with web3Auth
 // Set up your Web3Auth instance with all the features you want
@@ -47,32 +48,11 @@ const web3AuthOptions = {
   privateKeyProvider: ethereumPrivateKeyProvider,
 }
 
-export const web3AuthInstance: Web3Auth = new Web3Auth(web3AuthOptions)
-
-// TODO Commented code to be removed when we test the actual implementation properly
-// const adapters = await getDefaultExternalAdapters({ options: web3AuthOptions })
-// adapters.forEach((adapter) => {
-//   if (adapter.name === 'walletconnectv2') {
-//     web3AuthInstance?.configureAdapter(adapter)
-//   }
-// })
+export const web3AuthInstance: Web3Auth = isGitHubActionBuild
+  ? new Web3Auth(web3AuthOptions)
+  : ({} as Web3Auth) // Hack to avoid errors on GitHub build
 
 export default function web3AuthConnectorInstance() {
-  // TODO Commented code to be removed when we test the actual implementation properly
-
-  // getWalletConnectV2Settings('eip155', ['1'], '04309ed1007e77d1f119b85205bb779d').then(
-  //   (defaultWcSettings) => {
-  //     const walletConnectModal = new WalletConnectModal({ projectId: WEB3_MODAL_PROJECT_ID })
-  //     const walletConnectV2Adapter = new WalletConnectV2Adapter({
-  //       adapterSettings: { qrcodeModal: walletConnectModal, ...defaultWcSettings.adapterSettings },
-  //       loginSettings: { ...defaultWcSettings.loginSettings },
-  //     })
-  //     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  //     // @ts-ignore
-  //     web3AuthInstance.configureAdapter(walletConnectV2Adapter)
-  //   },
-  // )
-
   return Web3AuthConnector({
     web3AuthInstance,
   })
