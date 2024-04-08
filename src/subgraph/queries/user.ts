@@ -23,6 +23,9 @@ export const MY_BADGES = gql`
         id
         contractAddress
         networkName
+        badgeModel {
+          id
+        }
       }
     }
   }
