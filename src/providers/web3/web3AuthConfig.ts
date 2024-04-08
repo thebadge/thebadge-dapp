@@ -48,7 +48,7 @@ const web3AuthOptions = {
   privateKeyProvider: ethereumPrivateKeyProvider,
 }
 
-export const web3AuthInstance: Web3Auth = isGitHubActionBuild
+export const web3AuthInstance: Web3Auth = !isGitHubActionBuild
   ? new Web3Auth(web3AuthOptions)
   : ({} as Web3Auth) // Hack to avoid errors on GitHub build
 
