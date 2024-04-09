@@ -151,15 +151,17 @@ async function createAndUploadDiplomaBadgeModelMetadata(
   }
   const configsToUpload = []
 
+  // If the signature is enabled, and it doesn't have an image, we ignore the default
+  const signatureImageEnabled = !!rest.signatureEnabled && !!rest.signatureImage
   configsToUpload.push(
     await ipfsUpload<DiplomaSignatureConfig>({
       attributes: {
         signatureEnabled: !!rest.signatureEnabled,
-        signatureImage: rest.signatureEnabled ? rest.signatureImage : '',
+        signatureImage: signatureImageEnabled ? rest.signatureImage : '',
         signerTitle: rest.signatureEnabled ? rest.signerTitle : '',
         signerSubline: rest.signatureEnabled ? rest.signerSubline : '',
       },
-      filePaths: rest.signatureEnabled && rest.signatureImage ? ['signatureImage'] : [],
+      filePaths: signatureImageEnabled ? ['signatureImage'] : [],
     }),
   )
 

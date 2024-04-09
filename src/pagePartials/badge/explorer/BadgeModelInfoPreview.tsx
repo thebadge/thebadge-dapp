@@ -15,11 +15,12 @@ import useTransaction from '@/src/hooks/useTransaction'
 import BadgeIdDisplay from '@/src/pagePartials/badge/explorer/addons/BadgeIdDisplay'
 import BadgeMintCost from '@/src/pagePartials/badge/explorer/addons/BadgeMintCost'
 import CreatorInfoSmallPreview from '@/src/pagePartials/badge/explorer/addons/CreatorInfoSmallPreview'
-import { useWeb3Connection } from '@/src/providers/web3/web3ConnectionProvider'
 import { generateMintUrl, generateModelExplorerUrl } from '@/src/utils/navigation/generateUrl'
 import { BadgeModelMetadata } from '@/types/badges/BadgeMetadata'
 import { BadgeModel } from '@/types/generated/subgraph'
 import { TheBadgeModels__factory } from '@/types/generated/typechain'
+
+const { useWeb3Connection } = await import('@/src/providers/web3/web3ConnectionProvider')
 
 export default function BadgeModelInfoPreview({ badgeModel }: { badgeModel: BadgeModel }) {
   const { t } = useTranslation()
