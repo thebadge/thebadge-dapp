@@ -25,7 +25,7 @@ const DiplomaContainer = styled(Stack)(({ theme }) => ({
   flexGrow: 1,
   boxSizing: 'border-box',
   [theme.breakpoints.up(1140)]: {
-    maxWidth: '48%',
+    minWidth: '486px',
   },
   [theme.breakpoints.down(1040)]: {
     alignItems: 'center',
