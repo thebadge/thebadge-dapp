@@ -179,6 +179,7 @@
   "profile": {
     "title": "This is your profile",
     "titleOf": "This is the profile of {{address}}",
+    "verified": "Verified",
     "nearToExpire": {
       "title": "Near to expire"
     },
@@ -227,6 +228,10 @@
       "tab2": "Manage badges",
       "manageBadges": {
         "title": "Manage third party badges"
+      },
+      "manageSubscriptions": {
+        "title": "Your current subscription",
+        "nonSubscribed": "You have not subscription active"
       }
     },
     "statistics": {
@@ -481,14 +486,17 @@
         "formHelpText": "Follow the instructions that the creator has made to help you in the form fill.",
         "steps": [
           {
-            "subTitle": "**1**. You are starting the certification process for obtaining a {{badgeName}}. Please read the following instructions carefully in order to be able to complete the process correctly, if you have any doubts please check the [docs](https://docs.thebadge.xyz) or get in contact with the [certificate creator]({{creatorContact}}).",
+            "header": "Info",
+            "subTitle": "**1**. You are starting the certification process for obtaining a {{badgeName}} badge. Please read the following instructions carefully in order to be able to complete the process correctly, if you have any doubts please check the [docs](https://docs.thebadge.xyz) or get in contact with the [certificate creator]({{creatorContact}}).",
             "hint": "You can click on the links bellow, and read more about this process on the docs."
           },
           {
+            "header": "Evidence",
             "subTitle": "**2**. Please complete the following form with the evidence required, if you have any doubts about what to complete please check the guidelines offered by the creator or get in contact with the [creator]({{creatorContact}})",
             "hint": "If you are not sure about the evidence that you need to provide, do not hesitate to get in touch with the creator!"
           },
           {
+            "header": "Preview",
             "subTitle": "**3**. Your badge preview is ready, please review carefully the details of it and submit the transaction. You will have to pay a deposit that will be recovered after the curation process is done, for more details about the costs please check the following [docs]({{costDocsUrls}}).",
             "hint": "The deposit will be returned back to you after the challenge period, if everything is okay."
           },
@@ -602,7 +610,7 @@
         "explainWhyChallenge": "Explain the jurors why do you think this badge should be rejected.",
         "deposit": "Total deposit required",
         "depositValue": "{{value}} {{symbol}}",
-        "depositWarning": "Note that this is a deposit, not a fee and it will be reimbursed if the removal is accepted. The challenge period last {{period}} {{timeUnit}}."
+        "depositWarning": "Note that this is a deposit, not a fee and it will be reimbursed if the removal is accepted. The challenge period lasts {{period}} {{timeUnit}}."
       },
       "evidenceForm": {
         "title": "Title",
