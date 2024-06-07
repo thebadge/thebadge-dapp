@@ -13,5 +13,8 @@
   },
   "137": {
     "theBadge": "https://api.studio.thegraph.com/query/51391/thebadge-polygon-prod/version/latest"
+  },
+  "43114": {
+    "theBadge": "https://api.studio.thegraph.com/query/51391/thebadge-avax-prod/version/latest"
   }
 }
