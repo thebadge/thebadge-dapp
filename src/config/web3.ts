@@ -16,6 +16,7 @@ export const Chains = {
   mumbai: 80001,
   polygon: 137,
   gnosis: 100,
+  avax: 43114,
 } as const
 
 export const ChainShortName = {
@@ -25,6 +26,7 @@ export const ChainShortName = {
   goerli: 'gor',
   sepolia: 'sep',
   gnosis: 'gno',
+  avax: 'avalanche',
 }
 
 export const ChainName = {
@@ -33,6 +35,7 @@ export const ChainName = {
   [Chains.gnosis]: 'gnosis',
   [Chains.polygon]: 'matic',
   [Chains.mumbai]: 'mumbai',
+  [Chains.avax]: 'avalanche',
 }
 
 export const ChainNameToIds = {
@@ -41,6 +44,7 @@ export const ChainNameToIds = {
   [ChainName[Chains.gnosis]]: Chains.gnosis,
   [ChainName[Chains.polygon]]: Chains.polygon,
   [ChainName[Chains.mumbai]]: Chains.mumbai,
+  [ChainName[Chains.avax]]: Chains.avax,
 }
 
 const ChainLogos = {
@@ -49,6 +53,7 @@ const ChainLogos = {
   [Chains.gnosis]: '/networks/gno.png',
   [Chains.polygon]: '/networks/polygon.svg',
   [Chains.mumbai]: '/networks/polygon.svg',
+  [Chains.avax]: '/networks/avax.svg',
 }
 
 export const getChainLogo = (chainId: ChainsValues) => {
@@ -62,6 +67,7 @@ export const providerChains: ProviderChains = {
     [Chains.gnosis]: 'gnosis',
     [Chains.polygon]: 'polygon-mainnet',
     [Chains.mumbai]: 'polygon-mumbai',
+    [Chains.avax]: 'avalanche-mainnet',
   },
   [RPCProviders.alchemy]: {
     [Chains.goerli]: 'eth-goerli',
@@ -69,6 +75,7 @@ export const providerChains: ProviderChains = {
     [Chains.gnosis]: 'xDai-gnosis',
     [Chains.polygon]: 'polygon',
     [Chains.mumbai]: 'mumbai',
+    [Chains.avax]: 'avalanche-mainnet',
   },
 }
 
@@ -76,7 +83,7 @@ export const getChainName = (chainId: ChainsValues) => ChainName[chainId]
 export const getChainIdByName = (chainName: string) => ChainNameToIds[chainName]
 
 export const TestnetChains: ChainsValues[] = [Chains.goerli, Chains.sepolia, Chains.mumbai]
-export const MainnetChains: ChainsValues[] = [Chains.gnosis, Chains.polygon]
+export const MainnetChains: ChainsValues[] = [Chains.gnosis, Chains.polygon, Chains.avax]
 
 const getInfuraRPCUrl = (chainId: ChainsValues) =>
   `https://${providerChains[RPCProviders.infura][chainId]}.infura.io/v3/${
@@ -190,6 +197,16 @@ export const chainsConfig: Record<ChainsValues, ChainConfig> = {
     rpcUrl: getProviderUrl(Chains.mumbai),
     blockExplorerUrls: ['https://mumbai.polygonscan.com/'],
     token: 'MATIC',
+  },
+  [Chains.avax]: {
+    id: Chains.avax,
+    name: 'Avalanche',
+    shortName: ChainShortName.avax,
+    chainId: Chains.avax,
+    chainIdHex: '0x13881',
+    rpcUrl: getProviderUrl(Chains.avax),
+    blockExplorerUrls: ['https://snowtrace.io/'],
+    token: 'AVAX',
   },
 }
 
