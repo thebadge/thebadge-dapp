@@ -222,7 +222,7 @@ export const chainsConfig: Record<ChainsValues, ChainConfig> = {
   },
   [Chains.optimism]: {
     id: Chains.optimism,
-    name: 'Pptimism',
+    name: 'Optimism',
     shortName: ChainShortName.optimism,
     chainId: Chains.optimism,
     chainIdHex: '0x13881',
