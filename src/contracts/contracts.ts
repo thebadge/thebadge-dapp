@@ -22,7 +22,7 @@ export const contracts = {
       [Chains.gnosis]: '0x8C0DcD187127b88665fE8FD4F39Cb18758946C0f',
       [Chains.polygon]: '0x8Edfc741aED6B2C43485983d4C7b6B095b00500c',
       [Chains.mumbai]: '0xAdCd2Cd1249211EeD1D4d72b1E8B53F3A792e5da',
-      [Chains.avax]: '0xba42dC1C5aa0f1094806c2914aA916E2cFe3d10E',
+      [Chains.avax]: '0xDb5c2bcfD8cc522B8DD634DC507E135383049566',
     },
     abi: TheBadge.abi,
   },

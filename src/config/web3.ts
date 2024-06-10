@@ -205,7 +205,7 @@ export const chainsConfig: Record<ChainsValues, ChainConfig> = {
     chainId: Chains.avax,
     chainIdHex: '0x13881',
     rpcUrl: getProviderUrl(Chains.avax),
-    blockExplorerUrls: ['https://subnets.avax.network/c-chain/'],
+    blockExplorerUrls: ['https://snowtrace.io/'],
     token: 'AVAX',
   },
 }
