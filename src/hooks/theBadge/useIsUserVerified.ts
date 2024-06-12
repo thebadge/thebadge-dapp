@@ -12,6 +12,14 @@ export default function useIsUserVerified(userAddress: WCAddress | undefined, co
     user.data?.id && userAddress?.length
       ? [`isUserVerified:${userAddress}-${controller}`, userAddress, controller]
       : null,
-    ([, _address]) => theBadgeUsers.isUserVerified(_address, controller),
+    async ([, _address]) => {
+      try {
+        const isVerified = await theBadgeUsers.isUserVerified(_address, controller)
+        return isVerified
+      } catch (e) {
+        console.warn('[TheBadge] - isUserVerified', e)
+        return false
+      }
+    },
   )
 }
