@@ -215,7 +215,7 @@ export const chainsConfig: Record<ChainsValues, ChainConfig> = {
     name: 'Avalanche',
     shortName: ChainShortName.avax,
     chainId: Chains.avax,
-    chainIdHex: '0x13881',
+    chainIdHex: '0xa86a',
     rpcUrl: getProviderUrl(Chains.avax),
     blockExplorerUrls: ['https://snowtrace.io/'],
     token: 'AVAX',
@@ -225,10 +225,10 @@ export const chainsConfig: Record<ChainsValues, ChainConfig> = {
     name: 'Optimism',
     shortName: ChainShortName.optimism,
     chainId: Chains.optimism,
-    chainIdHex: '0x13881',
+    chainIdHex: '0xa',
     rpcUrl: getProviderUrl(Chains.optimism),
-    blockExplorerUrls: ['https://https://optimistic.etherscan.io/'],
-    token: 'OP',
+    blockExplorerUrls: ['https://optimistic.etherscan.io/'],
+    token: 'OETH',
   },
 }
 
