@@ -64,7 +64,7 @@ const ClaimBadge: NextPageWithLayout = () => {
 
   const { claimUUID } = useClaimParams()
   const { data: badgeId } = useBadgeIDFromULID()
-  if (!claimUUID || !badgeId) {
+  if (!claimUUID || badgeId == undefined || badgeId == null) {
     throw `No claimUUID provided us URL query param`
   }
 
