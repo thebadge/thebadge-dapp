@@ -2,6 +2,7 @@
 import * as React from 'react'
 
 import { DiplomaPreview } from '@thebadge/ui-library'
+import 'node_modules/@thebadge/ui-library/dist/index.css'
 
 type InjectedArgs = {
   imageUrl: string
