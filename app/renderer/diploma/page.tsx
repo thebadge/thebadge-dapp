@@ -7,6 +7,7 @@ import 'node_modules/@thebadge/ui-library/dist/index.css'
 type InjectedArgs = {
   imageUrl: string
   achievementDate: string
+  backgroundUrl: string
   badgeUrl: string
   courseName: string
   achievementDescription: string
