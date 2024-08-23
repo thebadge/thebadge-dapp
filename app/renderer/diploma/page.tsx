@@ -28,6 +28,7 @@ export default async function Page({ searchParams }: { searchParams: InjectedArg
   const {
     achievementDate,
     achievementDescription,
+    backgroundUrl,
     badgeUrl,
     courseName,
     decorationBackgroundUrl,
@@ -53,9 +54,12 @@ export default async function Page({ searchParams }: { searchParams: InjectedArg
         }
       : {}
 
+  const userVerified = issuerIsVerified ? JSON.parse(issuerIsVerified) : false
+
   return (
     <DiplomaPreview
       animationEffects={[]}
+      backgroundUrl={backgroundUrl}
       badgeUrl={badgeUrl}
       courseName={courseName}
       date={achievementDate}
@@ -66,7 +70,7 @@ export default async function Page({ searchParams }: { searchParams: InjectedArg
       issuedByLabel={issuedByLabel}
       issuerAvatarUrl={issuerAvatarUrl}
       issuerDescription={issuerDescription}
-      issuerIsVerified={issuerIsVerified}
+      issuerIsVerified={userVerified}
       issuerTitle={issuerTitle}
       studentName={studentName}
       textContrastRight="dark"
