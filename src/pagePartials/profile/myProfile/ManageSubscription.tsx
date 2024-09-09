@@ -5,7 +5,7 @@ import { colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 
 import InViewPort from '@/src/components/helpers/InViewPort'
-import { getRequiredPremiumBadgeByNetworkId } from '@/src/constants/premiumSubscription'
+import { getRequiredPremiumBadgesByNetworkId } from '@/src/constants/premiumSubscription'
 import useGetMultiChainsConfig from '@/src/hooks/subgraph/useGetMultiChainsConfig'
 import useMultiSubgraph from '@/src/hooks/subgraph/useMultiSubgraph'
 import { useBadgesRequired } from '@/src/hooks/theBadge/useBadgesRequired'
@@ -37,11 +37,17 @@ export default function ManageSubscription() {
 
   useEffect(() => {
     const getUserSubscriptionStatus = async () => {
-      const badgeModelRequired = getRequiredPremiumBadgeByNetworkId(readOnlyChainId)
-      const hasBalance =
-        badgeModelRequired &&
-        (await hasUserBadgeModelBalance(badgeModelRequired, address as string))
-      setIsUserPremium(hasBalance ? hasBalance : false)
+      const badgeModelsRequired = getRequiredPremiumBadgesByNetworkId(readOnlyChainId)
+
+      const balanceCheck = await Promise.all(
+        badgeModelsRequired.map(
+          async (badgeModel) => await hasUserBadgeModelBalance(badgeModel, address as string),
+        ),
+      )
+
+      const hasAnyBalance = balanceCheck.some((hasBalance) => hasBalance)
+
+      setIsUserPremium(hasAnyBalance ? hasAnyBalance : false)
 
       const where: Badge_Filter = {
         status_in: [BadgeStatus.Approved],
@@ -68,13 +74,16 @@ export default function ManageSubscription() {
   }, [address, hasUserBadgeModelBalance, multiSubgraph, readOnlyChainId])
 
   const renderPremiumBadge = () => {
-    const badgeModelRequired = getRequiredPremiumBadgeByNetworkId(readOnlyChainId)
-    const badge = ownBadges.find(
-      (badge) =>
-        badge.badgeModel?.id.toLowerCase() === badgeModelRequired?.id.toString().toLowerCase(),
+    const badgeModelRequired = getRequiredPremiumBadgesByNetworkId(readOnlyChainId)
+
+    const badges = ownBadges.filter((badge) =>
+      badgeModelRequired.some(
+        (requiredBadge) =>
+          badge.badgeModel?.id.toLowerCase() === requiredBadge.id.toString().toLowerCase(),
+      ),
     )
 
-    if (!isUserPremium || !ownBadges.length || !badge) {
+    if (!isUserPremium || !ownBadges.length || !badges) {
       return (
         <Typography
           color={mode === 'light' ? colors.blackText : colors.white}
@@ -89,17 +98,19 @@ export default function ManageSubscription() {
       )
     }
 
-    return (
-      <InViewPort key={`${badge.id}:${badge.networkName}:${badge.contractAddress}`}>
-        <BadgeItemGenerator
-          badgeContractAddress={badge.contractAddress}
-          badgeId={badge.id}
-          badgeNetworkName={badge.networkName}
-          key={badge.id}
-          showNetwork
-        />
-      </InViewPort>
-    )
+    return badges.map((badge) => {
+      return (
+        <InViewPort key={`${badge.id}:${badge.networkName}:${badge.contractAddress}`}>
+          <BadgeItemGenerator
+            badgeContractAddress={badge.contractAddress}
+            badgeId={badge.id}
+            badgeNetworkName={badge.networkName}
+            key={badge.id}
+            showNetwork
+          />
+        </InViewPort>
+      )
+    })
   }
 
   return (
