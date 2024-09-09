@@ -34,6 +34,7 @@ import BadgeTitle from '@/src/pagePartials/badge/preview/addons/BadgeTitle'
 import { reCreateThirdPartyValuesObject } from '@/src/utils/badges/mintHelpers'
 import { handleShare } from '@/src/utils/badges/viewUtils'
 import { getExpirationYearAndMonth, getIssueYearAndMonth } from '@/src/utils/dateUtils'
+import enrichTextWithValues, { EnrichTextValues } from '@/src/utils/enrichTextWithValues'
 import {
   generateExplorer,
   generateLinkedinOrganization,
@@ -246,7 +247,11 @@ export default function BadgeOwnedPreview() {
             </Box>
           </Box>
 
-          <Typography variant="dAppBody1">{badgeModelMetadata?.description}</Typography>
+          <Typography variant="dAppBody1">
+            {enrichTextWithValues(badgeModelMetadata?.description, {
+              ...values,
+            } as EnrichTextValues)}
+          </Typography>
         </Stack>
         <Divider color={colors.white} />
 

@@ -31,17 +31,12 @@ export default function ManageSubscription() {
   const { mode } = useColorMode()
   const { hasUserBadgeModelBalance } = useBadgesRequired()
   const [isUserPremium, setIsUserPremium] = useState(false)
-  const [checkingUserStatus, setCheckingUserStatus] = useState(false)
   const [ownBadges, setBadges] = useState<Badge[]>([])
   const { chainIds: defaultChains } = useGetMultiChainsConfig()
   const multiSubgraph = useMultiSubgraph(SubgraphName.TheBadge, defaultChains)
 
   useEffect(() => {
     const getUserSubscriptionStatus = async () => {
-      if (checkingUserStatus) {
-        return
-      }
-      setCheckingUserStatus(true)
       const badgeModelsRequired = getRequiredPremiumBadgesByNetworkId(readOnlyChainId)
 
       const balanceCheck = await Promise.all(
@@ -74,22 +69,21 @@ export default function ManageSubscription() {
         badges = [...badges, ...((userWithBadges?.user?.badges as Badge[]) || [])]
       })
       setBadges(badges)
-      setCheckingUserStatus(false)
     }
     getUserSubscriptionStatus()
-  }, [address, hasUserBadgeModelBalance, multiSubgraph, readOnlyChainId, checkingUserStatus])
+  }, [address, hasUserBadgeModelBalance, multiSubgraph, readOnlyChainId])
 
   const renderPremiumBadge = () => {
     const badgeModelRequired = getRequiredPremiumBadgesByNetworkId(readOnlyChainId)
 
-    const badge = ownBadges.find((badge) =>
+    const badges = ownBadges.filter((badge) =>
       badgeModelRequired.some(
         (requiredBadge) =>
           badge.badgeModel?.id.toLowerCase() === requiredBadge.id.toString().toLowerCase(),
       ),
     )
 
-    if (!isUserPremium || !ownBadges.length || !badge) {
+    if (!isUserPremium || !ownBadges.length || !badges) {
       return (
         <Typography
           color={mode === 'light' ? colors.blackText : colors.white}
@@ -104,17 +98,19 @@ export default function ManageSubscription() {
       )
     }
 
-    return (
-      <InViewPort key={`${badge.id}:${badge.networkName}:${badge.contractAddress}`}>
-        <BadgeItemGenerator
-          badgeContractAddress={badge.contractAddress}
-          badgeId={badge.id}
-          badgeNetworkName={badge.networkName}
-          key={badge.id}
-          showNetwork
-        />
-      </InViewPort>
-    )
+    return badges.map((badge) => {
+      return (
+        <InViewPort key={`${badge.id}:${badge.networkName}:${badge.contractAddress}`}>
+          <BadgeItemGenerator
+            badgeContractAddress={badge.contractAddress}
+            badgeId={badge.id}
+            badgeNetworkName={badge.networkName}
+            key={badge.id}
+            showNetwork
+          />
+        </InViewPort>
+      )
+    })
   }
 
   return (

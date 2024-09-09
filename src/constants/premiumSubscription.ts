@@ -23,6 +23,16 @@ export const RequiredPremiumBadges: { [key in ChainsValues]: BadgeRequired[] } =
       networkId: Chains.sepolia,
       contractAddress: contracts.TheBadge.address[Chains.sepolia],
     },
+    {
+      id: 75,
+      networkId: Chains.sepolia,
+      contractAddress: contracts.TheBadge.address[Chains.sepolia],
+    },
+    {
+      id: 76,
+      networkId: Chains.sepolia,
+      contractAddress: contracts.TheBadge.address[Chains.sepolia],
+    },
   ],
   [Chains.mumbai]: [
     {
