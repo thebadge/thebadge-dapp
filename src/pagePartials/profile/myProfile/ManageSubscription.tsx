@@ -5,7 +5,7 @@ import { colors } from '@thebadge/ui-library'
 import { useTranslation } from 'next-export-i18n'
 
 import InViewPort from '@/src/components/helpers/InViewPort'
-import { getRequiredPremiumBadgeByNetworkId } from '@/src/constants/premiumSubscription'
+import { getRequiredPremiumBadgesByNetworkId } from '@/src/constants/premiumSubscription'
 import useGetMultiChainsConfig from '@/src/hooks/subgraph/useGetMultiChainsConfig'
 import useMultiSubgraph from '@/src/hooks/subgraph/useMultiSubgraph'
 import { useBadgesRequired } from '@/src/hooks/theBadge/useBadgesRequired'
@@ -31,17 +31,28 @@ export default function ManageSubscription() {
   const { mode } = useColorMode()
   const { hasUserBadgeModelBalance } = useBadgesRequired()
   const [isUserPremium, setIsUserPremium] = useState(false)
+  const [checkingUserStatus, setCheckingUserStatus] = useState(false)
   const [ownBadges, setBadges] = useState<Badge[]>([])
   const { chainIds: defaultChains } = useGetMultiChainsConfig()
   const multiSubgraph = useMultiSubgraph(SubgraphName.TheBadge, defaultChains)
 
   useEffect(() => {
     const getUserSubscriptionStatus = async () => {
-      const badgeModelRequired = getRequiredPremiumBadgeByNetworkId(readOnlyChainId)
-      const hasBalance =
-        badgeModelRequired &&
-        (await hasUserBadgeModelBalance(badgeModelRequired, address as string))
-      setIsUserPremium(hasBalance ? hasBalance : false)
+      if (checkingUserStatus) {
+        return
+      }
+      setCheckingUserStatus(true)
+      const badgeModelsRequired = getRequiredPremiumBadgesByNetworkId(readOnlyChainId)
+
+      const balanceCheck = await Promise.all(
+        badgeModelsRequired.map(
+          async (badgeModel) => await hasUserBadgeModelBalance(badgeModel, address as string),
+        ),
+      )
+
+      const hasAnyBalance = balanceCheck.some((hasBalance) => hasBalance)
+
+      setIsUserPremium(hasAnyBalance ? hasAnyBalance : false)
 
       const where: Badge_Filter = {
         status_in: [BadgeStatus.Approved],
@@ -63,15 +74,19 @@ export default function ManageSubscription() {
         badges = [...badges, ...((userWithBadges?.user?.badges as Badge[]) || [])]
       })
       setBadges(badges)
+      setCheckingUserStatus(false)
     }
     getUserSubscriptionStatus()
-  }, [address, hasUserBadgeModelBalance, multiSubgraph, readOnlyChainId])
+  }, [address, hasUserBadgeModelBalance, multiSubgraph, readOnlyChainId, checkingUserStatus])
 
   const renderPremiumBadge = () => {
-    const badgeModelRequired = getRequiredPremiumBadgeByNetworkId(readOnlyChainId)
-    const badge = ownBadges.find(
-      (badge) =>
-        badge.badgeModel?.id.toLowerCase() === badgeModelRequired?.id.toString().toLowerCase(),
+    const badgeModelRequired = getRequiredPremiumBadgesByNetworkId(readOnlyChainId)
+
+    const badge = ownBadges.find((badge) =>
+      badgeModelRequired.some(
+        (requiredBadge) =>
+          badge.badgeModel?.id.toLowerCase() === requiredBadge.id.toString().toLowerCase(),
+      ),
     )
 
     if (!isUserPremium || !ownBadges.length || !badge) {
