@@ -231,7 +231,9 @@
       },
       "manageSubscriptions": {
         "title": "Your current subscription",
-        "nonSubscribed": "You have not subscription active"
+        "nonSubscribed": "You have no subscription active",
+        "noFunds": "Currently selected wallet has insufficient funds for the selected plan",
+        "rejectedPayment": "Payment was rejected, please try again"
       }
     },
     "statistics": {
