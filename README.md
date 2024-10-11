@@ -14,7 +14,7 @@
   <a href="https://github.com/thebadge/thebadge-dapp/releases"><img src="https://img.shields.io/github/v/release/thebadge/thebadge-dapp?label=Latest%20Release" alt="Latest release"></a>
 </p>
 
-For questions or request information reach out via [Discord](https://discord.gg/tVP75NqVuC).
+For questions or request information reach out via [Discord](https://discord.com/invite/FTxtkgbAC4).
 
 # Deployed environments
 
